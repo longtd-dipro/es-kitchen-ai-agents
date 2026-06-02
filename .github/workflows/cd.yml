@@ -53,4 +53,4 @@ jobs:
         env:
           DEST_DIR: "/var/www/wiki/site" # Change this to your EC2 web server path
         run: |
-          rsync -avz --delete ./es-kitchen-docs/site/ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:$DEST_DIR
+          rsync -avz --delete ./es-kitchen-docs/site/ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:$DEST_DIR
