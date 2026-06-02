@@ -44,12 +44,13 @@ tasks/task-*.md  ←── /create-tasks <feature-folder/>
 **Agent:** `ba-agent`
 **Command:** `/create-spec <tên feature>`
 **Context cần đọc:**
-- `.claude/context/specification.md` — business overview, epics, actors
-- Các SPEC hiện có trong `es-kitchen-docs/docs/features/` và `docs/epics/`
+- `.claude/context/specification.md` — business overview, actors
+- `.claude/context/doc-structure.md` — cấu trúc folder
+- Các SPEC hiện có trong `es-kitchen-docs/docs/features/`
 
-**Output:** `SPEC.md` tại:
-- Single-epic: `es-kitchen-docs/docs/epics/<E0X>/details/<feature>/SPEC.md`
-- Cross-repo: `es-kitchen-docs/docs/features/<feature>/SPEC.md`
+**Output (path duy nhất):** `es-kitchen-docs/docs/features/<feature-name>/SPEC.md`
+
+> Folder `docs/epics/` đã bị bỏ — mọi feature đặt trong `docs/features/`. Single-actor vs cross-repo phân biệt qua section Actors trong SPEC, không qua path.
 
 **Gate:** Không tiếp tục nếu SPEC chưa được PM/BrSE review.
 

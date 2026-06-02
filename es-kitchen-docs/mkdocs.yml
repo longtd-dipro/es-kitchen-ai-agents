@@ -33,6 +33,14 @@ nav:
     - Overview:
       - Structure: frontend/es-kitchen-web-company/overview/structure.md
       - Patterns: frontend/es-kitchen-web-company/overview/patterns.md
+  - Es Kitchen Web Supplier (E04):
+    - Overview:
+      - Structure: frontend/es-kitchen-web-supplier/overview/structure.md
+      - Patterns: frontend/es-kitchen-web-supplier/overview/patterns.md
+  - Es Kitchen Web Outsource Private (E05):
+    - Overview:
+      - Structure: frontend/es-kitchen-web-outsource-web-private/overview/structure.md
+      - Patterns: frontend/es-kitchen-web-outsource-web-private/overview/patterns.md
   - Es Kitchen Webapp Driver (E06):
     - Overview:
       - Structure: frontend/es-kitchen-webapp-driver/overview/structure.md
@@ -43,39 +51,83 @@ nav:
     - Overview:
       - Structure: mobile/es-kitchen-payment-app/overview/structure.md
 
-- Epics:
-  - E03 — System Admin:
-    - Admin Account Management:
-      - API Design: epics/E03/details/admin-account-management/es-kitchen-api/DESIGN.md
-      - Web Admin Design: epics/E03/details/admin-account-management/es-kitchen-web-admin/DESIGN.md
-  - E04 — Supplier:
-    - Supplier Authentication:
-      - API Design: epics/E04/details/supplier-authentication/es-kitchen-api/DESIGN.md
-      - Web Supplier Design: epics/E04/details/supplier-authentication/es-kitchen-web-supplier/DESIGN.md
-    - Order List:
-      - Specification: epics/E04/details/order-list/SPEC.md
-      - API Design: epics/E04/details/order-list/es-kitchen-api/DESIGN.md
-      - Web Supplier Design: epics/E04/details/order-list/es-kitchen-web-supplier/DESIGN.md
-      - Tasks:
-        - Task 1-1: epics/E04/details/order-list/es-kitchen-api/tasks/task-1-1.md
-        - Task 2-1: epics/E04/details/order-list/es-kitchen-api/tasks/task-2-1.md
-        - Task 2-2: epics/E04/details/order-list/es-kitchen-api/tasks/task-2-2.md
-  - E05 — Contract & Delivery:
-    - Contract Delivery Authentication:
-      - API Design: epics/E05/details/contract-delivery-authentication/es-kitchen-api/DESIGN.md
-  - E06 — Driver:
-    - Driver Authentication:
-      - API Design: epics/E06/details/driver-authentication/es-kitchen-api/DESIGN.md
-
 - Features:
+  - Admin Account Management:
+    - Specification: features/admin-account-management/SPEC.md
+    - API Design: features/admin-account-management/es-kitchen-api/DESIGN.md
+    - Web Admin Design: features/admin-account-management/es-kitchen-web-admin/DESIGN.md
+  - Admin Role & Permission:
+    - Specification: features/admin-role-permission/SPEC.md
+    - API Design: features/admin-role-permission/es-kitchen-api/DESIGN.md
+    - Web Admin Design: features/admin-role-permission/es-kitchen-web-admin/DESIGN.md
+    - Test Cases: features/admin-role-permission/test-cases/tc_role_permission.md
+  - AI Recommendation Engine:
+    - Specification: features/ai-recommendation/SPEC.md
+    - Overview: features/ai-recommendation/overview.md
+    - API Design: features/ai-recommendation/es-kitchen-api/DESIGN.md
+    - Web Company Design: features/ai-recommendation/es-kitchen-web-company/DESIGN.md
+    - Mobile Design: features/ai-recommendation/es-kitchen-payment-app/DESIGN.md
+  - API Hardening:
+    - Specification: features/api-hardening/SPEC.md
+    - API Design: features/api-hardening/es-kitchen-api/DESIGN.md
+    - API Tasks:
+      - Task 1-1: features/api-hardening/es-kitchen-api/tasks/task-1-1.md
+      - Task 1-2: features/api-hardening/es-kitchen-api/tasks/task-1-2.md
+      - Task 1-3: features/api-hardening/es-kitchen-api/tasks/task-1-3.md
+      - Task 1-4: features/api-hardening/es-kitchen-api/tasks/task-1-4.md
+      - Task 2-1: features/api-hardening/es-kitchen-api/tasks/task-2-1.md
+      - Task 2-2: features/api-hardening/es-kitchen-api/tasks/task-2-2.md
+      - Task 2-3: features/api-hardening/es-kitchen-api/tasks/task-2-3.md
+      - Task 2-4: features/api-hardening/es-kitchen-api/tasks/task-2-4.md
+      - Task 2-5: features/api-hardening/es-kitchen-api/tasks/task-2-5.md
+      - Task 2-6: features/api-hardening/es-kitchen-api/tasks/task-2-6.md
+  - Authentication:
+    - Specification: features/authentication/SPEC.md
+  - IP Whitelist:
+    - Specification: features/ip-whitelist/SPEC.md
+    - API Design: features/ip-whitelist/es-kitchen-api/DESIGN.md
+    - Web Admin Design: features/ip-whitelist/es-kitchen-web-admin/DESIGN.md
+    - Test Cases: features/ip-whitelist/test-cases/tc_ip_whitelist.md
+  - Contract & Delivery Authentication:
+    - API Design: features/contract-delivery-authentication/es-kitchen-api/DESIGN.md
+  - Driver Authentication:
+    - API Design: features/driver-authentication/es-kitchen-api/DESIGN.md
   - Maintain Management:
+    - Specification: features/maintain-management/SPEC.md
     - API Design: features/maintain-management/es-kitchen-api/DESIGN.md
     - Mobile Design: features/maintain-management/es-kitchen-payment-app/DESIGN.md
     - Web Admin Design: features/maintain-management/es-kitchen-web-admin/DESIGN.md
+  - Notification Management:
+    - Specification: features/notification-management/SPEC.md
+    - API Design: features/notification-management/es-kitchen-api/DESIGN.md
+    - Web Admin Design: features/notification-management/es-kitchen-web-admin/DESIGN.md
+    - Web Company Design: features/notification-management/es-kitchen-web-company/DESIGN.md
+    - Mobile Design: features/notification-management/es-kitchen-payment-app/DESIGN.md
+  - Order List:
+    - Specification: features/order-list/SPEC.md
+    - API Design: features/order-list/es-kitchen-api/DESIGN.md
+    - Web Supplier Design: features/order-list/es-kitchen-web-supplier/DESIGN.md
+    - API Tasks:
+      - Task 1-1: features/order-list/es-kitchen-api/tasks/task-1-1.md
+      - Task 2-1: features/order-list/es-kitchen-api/tasks/task-2-1.md
+      - Task 2-2: features/order-list/es-kitchen-api/tasks/task-2-2.md
+    - Web Supplier Tasks:
+      - Task 3-1: features/order-list/es-kitchen-web-supplier/tasks/task-3-1.md
+      - Task 3-2: features/order-list/es-kitchen-web-supplier/tasks/task-3-2.md
+      - Task 3-3: features/order-list/es-kitchen-web-supplier/tasks/task-3-3.md
+  - Supplier Authentication:
+    - API Design: features/supplier-authentication/es-kitchen-api/DESIGN.md
+    - Web Supplier Design: features/supplier-authentication/es-kitchen-web-supplier/DESIGN.md
+  - Survey Management:
+    - Specification: features/survey-management/SPEC.md
   - Version Management:
+    - Specification: features/version-management/SPEC.md
     - API Design: features/version-management/es-kitchen-api/DESIGN.md
     - Mobile Design: features/version-management/es-kitchen-payment-app/DESIGN.md
     - Web Admin Design: features/version-management/es-kitchen-web-admin/DESIGN.md
+
+- Quality:
+  - Phase 1 Quality: quality/phase1_quality.md
 
 plugins:
   - search

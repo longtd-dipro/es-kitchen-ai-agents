@@ -1,97 +1,81 @@
 ---
-description: Cập nhật bộ test cases hiện có khi requirements thay đổi — phân tích delta, xác định TCs cần sửa/thêm/xóa, output bộ TC đã được cập nhật kèm change log.
+description: Cập nhật bộ test cases hiện có khi SPEC thay đổi — phân tích delta, xác định TC cần sửa/thêm/xóa, output bộ TC cập nhật kèm Change Log.
 skills:
   - rbt_manual_testing
 ---
 
-> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`rbt_manual_testing`** (tại `.claude/skills/rbt_manual_testing/SKILL.md`) trước khi bắt đầu.
+> **Canonical workflow:** `.claude/agents/qc-agent.md`.
+> **BẮT BUỘC:** Nạp skill `rbt_manual_testing`.
 
-# Workflow: Cập Nhật Test Cases Khi Requirements Thay Đổi
-
-Workflow này phân tích **delta giữa requirements cũ và mới**, xác định chính xác những TCs nào cần cập nhật — tránh viết lại toàn bộ từ đầu.
+# /test/update_testcases_from_requirements
 
 ## Khi nào dùng
 
-- Requirements vừa được cập nhật (user thay đổi spec, user clarify thêm)
-- Q&A với user trả lời xong và cần reflect vào TC đã có
-- Tính năng được mở rộng hoặc thu hẹp scope
-- **KHÔNG dùng** khi chưa có TC nào → dùng `/generate_manual_testcases_rbt`
-- **KHÔNG dùng** khi >50% TC bị ảnh hưởng → nên chạy lại `/generate_manual_testcases_rbt`
+- SPEC.md vừa được cập nhật (BA thay đổi AC, clarify ambiguity)
+- Q&A với user đã trả lời xong, cần reflect vào TC
+- Tính năng mở rộng / thu hẹp scope
+- **KHÔNG dùng** khi chưa có TC → `/test/generate_manual_testcases_rbt`
+- **KHÔNG dùng** khi >50% TC bị ảnh hưởng → chạy lại từ đầu
 
-## Input cần từ User
+## Input
 
 | Input | Bắt buộc | Mô tả |
-|-------|----------|-------|
-| **TC hiện tại** | ✅ | File `.md`, bảng paste vào, hoặc mô tả "TC đang có gồm..." |
-| **Requirements thay đổi** | ✅ | Mô tả cụ thể thay đổi, hoặc file spec mới |
-| **Requirements cũ** | ⚠️ Nên có | Để so sánh delta chính xác hơn |
+|---|---|---|
+| Bộ TC hiện tại | ✅ | Path `tc_*.md` hoặc paste bảng |
+| SPEC.md mới hoặc danh sách thay đổi | ✅ | |
+| SPEC.md cũ (để diff) | ⚠️ Nên có | |
 
-## Các bước thực hiện
+## Quy trình
 
-### Bước 1: Đọc hiểu TC hiện tại
+### Bước 1 — Đọc TC hiện tại
+- Tóm tắt: số TC, modules cover
+- **Chờ user xác nhận** trước khi sang Bước 2
 
-1. Đọc toàn bộ bộ TC hiện tại
-2. Tóm tắt: số TC, danh sách modules
-3. Xác nhận với user trước khi tiếp tục
-4. **Chờ user xác nhận**
+### Bước 2 — Phân tích Delta
 
-### Bước 2: Phân tích Delta Requirements
+| Loại | Mô tả |
+|---|---|
+| Thêm mới | Rule/field/flow mới chưa có TC |
+| Sửa đổi | Logic / constraint thay đổi |
+| Xóa bỏ | Rule/field không còn áp dụng |
+| Làm rõ | Ambiguity được giải đáp → TC cũ có thể sai assumption |
 
-1. Đọc requirements mới / thay đổi
-2. Phân loại từng thay đổi:
-
-   | Loại | Mô tả |
-   |------|-------|
-   | **Thêm mới** | Rule/field/flow mới chưa có trong TC |
-   | **Sửa đổi** | Rule/field/flow cũ thay đổi logic hoặc constraint |
-   | **Xóa bỏ** | Rule/field/flow không còn áp dụng |
-   | **Làm rõ** | Ambiguity được giải đáp → TC cũ có thể sai assumption |
-
-3. Liệt kê bảng delta + TCs bị ảnh hưởng:
-
-   ```
-   | # | Loại     | Mô tả thay đổi                      | TCs bị ảnh hưởng      |
-   |---|----------|-------------------------------------|-----------------------|
-   | 1 | Sửa đổi  | Giới hạn tên từ 50 → 100 ký tự      | TC_003, TC_004, TC_005 |
-   | 2 | Thêm mới | Thêm validation email unique         | Cần TC mới            |
-   | 3 | Xóa bỏ   | Bỏ field "Mã nội bộ"                | TC_012 cần xóa        |
-   ```
-
-4. **Chờ user xác nhận** delta trước khi sang Bước 3
-
-### Bước 3: Phân loại hành động cho từng TC
-
-Gán trạng thái cho mỗi TC:
-
-| Trạng thái | Ký hiệu | Ý nghĩa |
-|-----------|---------|---------|
-| Giữ nguyên | ✅ KEEP | Không bị ảnh hưởng |
-| Cần cập nhật | ✏️ UPDATE | Sửa steps / expected result / test data |
-| Cần xóa | 🗑️ REMOVE | Không còn valid |
-| TC mới | ➕ NEW | Tạo mới cho requirement mới |
-
-### Bước 4: Thực hiện cập nhật
-
-1. **UPDATE** — Chỉnh sửa TC bị ảnh hưởng
-2. **NEW** — Sinh TC mới theo skill `rbt_manual_testing` (áp dụng Field-Level Validation nếu có field mới)
-3. **REMOVE** — Đánh dấu xóa, liệt kê trong Change Log
-4. **KEEP** — Copy sang output không thay đổi
-
-### Bước 5: Xuất output
-
-Bảng TC đầy đủ kèm Change Log:
-
+Bảng:
 ```
+| # | Loại | Mô tả thay đổi | TCs bị ảnh hưởng |
+```
+
+**Chờ user xác nhận delta** → Bước 3.
+
+### Bước 3 — Phân loại TC
+
+| Trạng thái | Ký hiệu |
+|---|---|
+| Giữ nguyên | ✅ KEEP |
+| Cần cập nhật | ✏️ UPDATE |
+| Cần xóa | 🗑️ REMOVE |
+| TC mới | ➕ NEW |
+
+### Bước 4 — Thực hiện cập nhật
+- UPDATE: sửa Steps/Expected/Test Data
+- NEW: sinh theo `rbt_manual_testing` (Field-Level Validation nếu có field mới)
+- REMOVE: đánh dấu xóa, liệt kê Change Log
+- KEEP: copy nguyên
+
+### Bước 5 — Output
+
+```markdown
 ## Change Log
-- ✏️ Updated [N] TCs: TC_003, TC_004 — Cập nhật max length 50 → 100
-- ➕ Added [M] TCs: TC_031, TC_032 — Email unique validation
-- 🗑️ Removed [K] TCs: TC_012 — Field "Mã nội bộ" đã xóa khỏi spec
-- ✅ Kept [X] TCs không thay đổi
+- ✏️ Updated N TCs: TC_003, TC_004 — Max length 50 → 100
+- ➕ Added M TCs: TC_031, TC_032 — Email unique validation
+- 🗑️ Removed K TCs: TC_012 — Field "Mã nội bộ" bỏ
+- ✅ Kept X TCs không đổi
 ```
 
-## Quy tắc quan trọng
+Lưu vào cùng path BMAD của TC cũ.
 
-- ❌ KHÔNG xóa TC mà không liệt kê trong Change Log
-- ❌ KHÔNG tự đoán requirements thay đổi — chỉ phân tích những gì user cung cấp
-- ✅ Test data phải cụ thể theo rule mới, không giữ nguyên data cũ nếu constraint đã thay đổi
-- ✅ Nếu thay đổi lớn (>50% TC bị ảnh hưởng) → đề xuất chạy lại `/generate_manual_testcases_rbt`
+## Quy tắc
+
+- ❌ KHÔNG xóa TC mà không liệt kê Change Log
+- ❌ KHÔNG tự đoán thay đổi — chỉ phân tích những gì user cung cấp
+- ✅ Test data update theo rule mới nếu constraint thay đổi

@@ -1,0 +1,3211 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../features/version-management/es-kitchen-web-admin/DESIGN/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Phase 1 Quality - ESKITCHEN Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bao-cao-anh-gia-chat-luong-du-an-es-kitchen-phase-1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ESKITCHEN Documentation" class="md-header__button md-logo" aria-label="ESKITCHEN Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ESKITCHEN Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Phase 1 Quality
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../backend/es-kitchen-api/overview/structure/" class="md-tabs__link">
+          
+  
+  Backend
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../frontend/es-kitchen-web-admin/overview/structure/" class="md-tabs__link">
+          
+  
+  Frontend
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mobile/es-kitchen-payment-app/overview/structure/" class="md-tabs__link">
+          
+  
+  Mobile
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/admin-account-management/es-kitchen-api/DESIGN/" class="md-tabs__link">
+          
+  
+  Features
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  Quality
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ESKITCHEN Documentation" class="md-nav__button md-logo" aria-label="ESKITCHEN Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ESKITCHEN Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Backend
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Backend
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Es Kitchen API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            Es Kitchen API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_1" id="__nav_2_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/es-kitchen-api/overview/structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Structure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/es-kitchen-api/overview/erd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ERD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/es-kitchen-api/overview/api-catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Catalog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../backend/es-kitchen-api/overview/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Frontend
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Frontend
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Es Kitchen Web Admin (E03)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Es Kitchen Web Admin (E03)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1_1" id="__nav_3_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/es-kitchen-web-admin/overview/structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Structure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/es-kitchen-web-admin/overview/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Es Kitchen Web Company (E02)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Es Kitchen Web Company (E02)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2_1" id="__nav_3_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/es-kitchen-web-company/overview/structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Structure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/es-kitchen-web-company/overview/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Es Kitchen Webapp Driver (E06)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Es Kitchen Webapp Driver (E06)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_1" id="__nav_3_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/es-kitchen-webapp-driver/overview/structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Structure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/es-kitchen-webapp-driver/overview/patterns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Patterns
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Mobile
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Mobile
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Es Kitchen Payment App (E01)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Es Kitchen Payment App (E01)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_1" id="__nav_4_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mobile/es-kitchen-payment-app/overview/structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Structure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Features
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Features
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Admin Account Management
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            Admin Account Management
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/admin-account-management/es-kitchen-api/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/admin-account-management/es-kitchen-web-admin/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Admin Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AI Recommendation Engine
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            AI Recommendation Engine
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/ai-recommendation/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Hardening
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            API Hardening
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/api-hardening/SPEC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Specification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/api-hardening/es-kitchen-api/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Authentication
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/authentication/SPEC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Specification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Contract & Delivery Authentication
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Contract & Delivery Authentication
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/contract-delivery-authentication/es-kitchen-api/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Driver Authentication
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            Driver Authentication
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/driver-authentication/es-kitchen-api/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_7" id="__nav_5_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Maintain Management
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_7">
+            <span class="md-nav__icon md-icon"></span>
+            Maintain Management
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/maintain-management/es-kitchen-api/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/maintain-management/es-kitchen-payment-app/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mobile Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/maintain-management/es-kitchen-web-admin/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Admin Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Order List
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8">
+            <span class="md-nav__icon md-icon"></span>
+            Order List
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/order-list/SPEC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Specification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/order-list/es-kitchen-api/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/order-list/es-kitchen-web-supplier/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Supplier Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_8_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_8_4" id="__nav_5_8_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Tasks
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_8_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Tasks
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/order-list/es-kitchen-api/tasks/task-1-1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 1-1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/order-list/es-kitchen-api/tasks/task-2-1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 2-1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/order-list/es-kitchen-api/tasks/task-2-2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 2-2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_8_5" id="__nav_5_8_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Web Supplier Tasks
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            Web Supplier Tasks
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/order-list/es-kitchen-web-supplier/tasks/task-3-1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 3-1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/order-list/es-kitchen-web-supplier/tasks/task-3-2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 3-2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/order-list/es-kitchen-web-supplier/tasks/task-3-3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 3-3
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_9" id="__nav_5_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Supplier Authentication
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_9">
+            <span class="md-nav__icon md-icon"></span>
+            Supplier Authentication
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/supplier-authentication/es-kitchen-api/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/supplier-authentication/es-kitchen-web-supplier/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Supplier Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_10" id="__nav_5_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Survey Management
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_10">
+            <span class="md-nav__icon md-icon"></span>
+            Survey Management
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/survey-management/SPEC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Specification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Version Management
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_11">
+            <span class="md-nav__icon md-icon"></span>
+            Version Management
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/version-management/es-kitchen-api/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/version-management/es-kitchen-payment-app/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mobile Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/version-management/es-kitchen-web-admin/DESIGN/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Web Admin Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Quality
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Quality
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Phase 1 Quality
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Phase 1 Quality
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#du-lieu-au-vao-e-tinh-toan" class="md-nav__link">
+    <span class="md-ellipsis">
+      DỮ LIỆU ĐẦU VÀO ĐỂ TÍNH TOÁN
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phan-i-tong-quan-chi-so-chat-luong-kpi-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHẦN I. TỔNG QUAN CHỈ SỐ CHẤT LƯỢNG (KPI TESTING)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phan-ii-phan-tich-va-phan-loai-loi-bug-categorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHẦN II. PHÂN TÍCH VÀ PHÂN LOẠI LỖI (BUG CATEGORIZATION)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHẦN II. PHÂN TÍCH VÀ PHÂN LOẠI LỖI (BUG CATEGORIZATION)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tong-so-14-bugs-uat-cua-phase-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tổng số 14 bugs UAT của Phase 1:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phan-iii-phan-tich-nguyen-nhan-goc-re-root-causes" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHẦN III. PHÂN TÍCH NGUYÊN NHÂN GỐC RỄ (ROOT CAUSES)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHẦN III. PHÂN TÍCH NGUYÊN NHÂN GỐC RỄ (ROOT CAUSES)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#highlights-14-bug-uat-khach-hang-phat-hien" class="md-nav__link">
+    <span class="md-ellipsis">
+      📌 HIGHLIGHTS: 14 BUG UAT (KHÁCH HÀNG PHÁT HIỆN)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phan-iv-giai-phap-hanh-ong-cho-phase-2-action-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHẦN IV. GIẢI PHÁP &amp; HÀNH ĐỘNG CHO PHASE 2 (ACTION PLAN)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHẦN IV. GIẢI PHÁP & HÀNH ĐỘNG CHO PHASE 2 (ACTION PLAN)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#danh-cho-techlead-team-dev" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dành cho TechLead / Team Dev:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#danh-cho-team-qa-qc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dành cho Team QA / QC:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#danh-cho-babrsedesigner" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dành cho BA/BRSE/DESIGNER:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#du-lieu-au-vao-e-tinh-toan" class="md-nav__link">
+    <span class="md-ellipsis">
+      DỮ LIỆU ĐẦU VÀO ĐỂ TÍNH TOÁN
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phan-i-tong-quan-chi-so-chat-luong-kpi-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHẦN I. TỔNG QUAN CHỈ SỐ CHẤT LƯỢNG (KPI TESTING)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phan-ii-phan-tich-va-phan-loai-loi-bug-categorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHẦN II. PHÂN TÍCH VÀ PHÂN LOẠI LỖI (BUG CATEGORIZATION)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHẦN II. PHÂN TÍCH VÀ PHÂN LOẠI LỖI (BUG CATEGORIZATION)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tong-so-14-bugs-uat-cua-phase-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tổng số 14 bugs UAT của Phase 1:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phan-iii-phan-tich-nguyen-nhan-goc-re-root-causes" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHẦN III. PHÂN TÍCH NGUYÊN NHÂN GỐC RỄ (ROOT CAUSES)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHẦN III. PHÂN TÍCH NGUYÊN NHÂN GỐC RỄ (ROOT CAUSES)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#highlights-14-bug-uat-khach-hang-phat-hien" class="md-nav__link">
+    <span class="md-ellipsis">
+      📌 HIGHLIGHTS: 14 BUG UAT (KHÁCH HÀNG PHÁT HIỆN)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phan-iv-giai-phap-hanh-ong-cho-phase-2-action-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      PHẦN IV. GIẢI PHÁP &amp; HÀNH ĐỘNG CHO PHASE 2 (ACTION PLAN)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PHẦN IV. GIẢI PHÁP & HÀNH ĐỘNG CHO PHASE 2 (ACTION PLAN)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#danh-cho-techlead-team-dev" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dành cho TechLead / Team Dev:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#danh-cho-team-qa-qc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dành cho Team QA / QC:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#danh-cho-babrsedesigner" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dành cho BA/BRSE/DESIGNER:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="bao-cao-anh-gia-chat-luong-du-an-es-kitchen-phase-1">BÁO CÁO ĐÁNH GIÁ CHẤT LƯỢNG DỰ ÁN ES KITCHEN PHASE 1</h1>
+<p><strong>Kỳ báo cáo:</strong> Tổng kết Phase 1 &amp; Kế hoạch Phase 2</p>
+<p><strong>Quy mô dự án Phase 1:</strong> 22.52 MM</p>
+<p><strong>Tài liệu tham chiếu</strong>: https://docs.google.com/spreadsheets/d/1hGsdIYiU7-JB36Hm67OhJZozMUdk3hxKe4UTzimh9M0/edit?gid=1374254418#gid=1374254418</p>
+<hr />
+<h3 id="du-lieu-au-vao-e-tinh-toan">DỮ LIỆU ĐẦU VÀO ĐỂ TÍNH TOÁN</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Tiêu chí</th>
+<th style="text-align: left;">Dữ liệu chi tiết</th>
+<th style="text-align: left;">Nguồn (Link Backlog)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Tổng công số (Billable Effort)</strong></td>
+<td style="text-align: left;">22.52 MM</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Số bug Khách hàng (UAT) phát hiện</strong></td>
+<td style="text-align: left;">14 bugs</td>
+<td style="text-align: left;"><a href="https://dipro-vn.backlog.com/find/ESKITCHEN?allOver=false&amp;createdUserId=2077018&amp;fixedVersionId=1599006&amp;issueTypeId=3636206&amp;limit=20&amp;offset=0&amp;order=true&amp;projectId=684621&amp;simpleSearch=false&amp;sort=VERSION">Link Backlog UAT</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Số bug Tester (QC nội bộ) phát hiện</strong></td>
+<td style="text-align: left;">185</td>
+<td style="text-align: left;"><a href="https://dipro-vn.backlog.com/find/ESKITCHEN?allOver=false&amp;issueTypeId=3636205&amp;limit=20&amp;limitDateRange.end=2026%2F05%2F20&amp;offset=0&amp;order=true&amp;projectId=684621&amp;simpleSearch=false&amp;sort=VERSION">Link Backlog QC</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="phan-i-tong-quan-chi-so-chat-luong-kpi-testing">PHẦN I. TỔNG QUAN CHỈ SỐ CHẤT LƯỢNG (KPI TESTING)</h2>
+<p>Dựa trên số liệu tổng hợp (14 lỗi Khách hàng phát hiện và 185 lỗi nội bộ phát hiện), dự án ghi nhận các chỉ số đo lường như sau:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Chỉ số đo lường</th>
+<th style="text-align: left;">Kết quả</th>
+<th style="text-align: left;">Đánh giá so với Tiêu chuẩn</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Leakage</strong><br><em>(Tỷ lệ bug lọt ra Khách hàng)</em></td>
+<td style="text-align: left;"><strong>0.62</strong> bugs/MM</td>
+<td style="text-align: left;">🟢 <strong>ĐẠT TỐT</strong> (Tiêu chuẩn công ty: &lt;= 1.0).<br>Dự án đã kiểm soát tốt các lỗi nghiêm trọng trước khi bàn giao.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Defect Leakage</strong><br><em>(Tỷ lệ lọt lưới bug của QC)</em></td>
+<td style="text-align: left;"><strong>7.04%</strong></td>
+<td style="text-align: left;">🟡 <strong>CẦN CẢI THIỆN</strong> (Tiêu chuẩn cơ bản: &lt;= 5%.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="phan-ii-phan-tich-va-phan-loai-loi-bug-categorization">PHẦN II. PHÂN TÍCH VÀ PHÂN LOẠI LỖI (BUG CATEGORIZATION)</h2>
+<p>Tổng số 185 bugs của Phase 1 được phân loại dựa trên 8 danh mục tiêu chuẩn của quy trình Testing:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Phân loại Bug</th>
+<th style="text-align: center;">Số lượng</th>
+<th style="text-align: center;">Tỷ lệ</th>
+<th style="text-align: left;">Hiện trạng thực tế tại dự án</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>1. Functional (Lỗi Chức năng)</strong></td>
+<td style="text-align: center;">101</td>
+<td style="text-align: center;"><strong>54.6%</strong></td>
+<td style="text-align: left;">Lỗi Sort/Filter xuất hiện hàng loạt ở nhiều màn hình; Tính toán tự động sai logic; Không reload trang sau khi thao tác thành công.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2. UI (Lỗi Giao diện)</strong></td>
+<td style="text-align: center;">42</td>
+<td style="text-align: center;"><strong>22.7%</strong></td>
+<td style="text-align: left;">Vỡ layout khi nội dung dài, sai kích thước font/tiêu đề, lệch các trường dữ liệu.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3. Validation (Lỗi Dữ liệu đầu vào)</strong></td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;"><strong>22.2%</strong></td>
+<td style="text-align: left;">Lỗi tràn số (numeric field overflow); Cho phép nhập chữ vào trường số; Thiếu message báo lỗi chính xác.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4. Performance (Lỗi Hiệu năng)</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;"><strong>0.5%</strong></td>
+<td style="text-align: left;">Lỗi chưa chặn Spam click dẫn đến gọi API liên tục.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Các lỗi khác</strong> (Security, REQ...)</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><strong>0%</strong></td>
+<td style="text-align: left;">Không ghi nhận. Hoặc test chưa ra.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="tong-so-14-bugs-uat-cua-phase-1">Tổng số 14 bugs UAT của Phase 1:</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Phân loại Bug</th>
+<th style="text-align: center;">Số lượng</th>
+<th style="text-align: center;">Tỷ lệ (%)</th>
+<th style="text-align: left;">Hiện trạng thực tế tại dự án</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>1. Lỗi Logic &amp; Liên kết dữ liệu</strong></td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">43%</td>
+<td style="text-align: left;">Sai luồng nghiệp vụ khi thao tác liên màn hình (lỗi khi xóa dữ liệu, gửi email, tính toán tổng tiền).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2. Lỗi Trải nghiệm người dùng (UX/UI)</strong></td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">36%</td>
+<td style="text-align: left;">Thiếu trạng thái chờ (Loading UI) khi hệ thống xử lý tác vụ nặng; Validate đầu vào quá cứng nhắc.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3. Lỗi Đặc tả yêu cầu (REQ/Spec)</strong></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">21%</td>
+<td style="text-align: left;">Tài liệu Spec thiếu định nghĩa rõ ràng về giá trị mặc định (default values) và câu từ thông báo.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>TỔNG CỘNG</strong></td>
+<td style="text-align: center;"><strong>14</strong></td>
+<td style="text-align: center;"><strong>100%</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">---</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="phan-iii-phan-tich-nguyen-nhan-goc-re-root-causes">PHẦN III. PHÂN TÍCH NGUYÊN NHÂN GỐC RỄ (ROOT CAUSES)</h2>
+<p>Từ các dữ liệu trên, dự án đang đối mặt với những vấn đề cốt lõi sau, chiếm tới gần <strong>77%</strong> rủi ro (Nằm ở nhóm lỗi Functional và Validation):</p>
+<p><strong>1. Về phía Đội ngũ Phát triển (Dev):</strong><br />
+*   <strong>Lỗ hổng Logic Query/Base Code:</strong> Luồng Search/Sort/Filter bị lỗi lặp đi lặp lại. Điều này cho thấy Backend xử lý câu lệnh truy vấn dữ liệu sai và tái sử dụng cái sai đó ở nhiều nơi.<br />
+*   <strong>Phớt lờ ràng buộc Database (Validation):</strong> Không thiết lập các rào chắn kiểm tra định dạng và độ dài dữ liệu ở cả Frontend lẫn Backend, dẫn đến lỗi Database trả về (<code>numeric overflow</code>) khi người dùng nhập sai quy định.</p>
+<p><strong>2. Về phía Đội ngũ Kiểm thử (QC):</strong><br />
+*   <strong>Thiếu độ bao phủ kiểm thử (Test Coverage):</strong> Tỷ lệ lọt lưới bug cao (7.04%) cho thấy team QC đang bị cuốn vào luồng thao tác chuẩn (Happy cases) mà bỏ qua các trường hợp ngoại lệ (Edge cases).<br />
+*   <strong>Phân tích giá trị biên kém:</strong> Việc để lọt lỗi tràn số ra Khách hàng chứng tỏ bộ kịch bản Test chưa bao phủ hết các tình huống nhập liệu rác, số âm, hoặc vượt quá giới hạn độ dài.</p>
+<hr />
+<h3 id="highlights-14-bug-uat-khach-hang-phat-hien">📌 HIGHLIGHTS: 14 BUG UAT (KHÁCH HÀNG PHÁT HIỆN)</h3>
+<p><strong>1. Tính chất lỗi tập trung vào UX và Business Logic</strong><br />
+* Lỗi chủ yếu xoay quanh Trải nghiệm người dùng (UX) và sự thiếu của Luồng nghiệp vụ liên kết, thay vì các lỗi chức năng cơ bản (như vỡ layout hay lỗi API).</p>
+<p><strong>2. Đội dự án thiếu kịch bản Test luồng liên kết (Cross-state)</strong><br />
+* QC có xu hướng chỉ test thành công trên 1 màn hình đơn lẻ mà quên kiểm tra các tác động chéo đến màn hình khác.<br />
+* <em>Ví dụ:</em> Xóa Company nhưng các User thuộc Company đó không được xử lý triệt để; Reset Password thành công nhưng bỏ sót việc gửi mail cho các người phụ trách phụ.</p>
+<p><strong>3. Bỏ quên Trạng thái chờ (Loading State) và xử lý UX kém</strong><br />
+* <em>Ví dụ:</em> Không khóa màn hình (Block UI) khi hệ thống đang xử lý tác vụ nặng như Import CSV; Validate dữ liệu quá cứng nhắc gây khó chịu (báo lỗi sai định dạng URL hợp lệ, ép nhập chữ in hoa cho Company ID).</p>
+<p><strong>4. Spec (BA/BrSE) thiếu chi tiết</strong><br />
+* Tài liệu yêu cầu thiếu định nghĩa rõ ràng về các giá trị mặc định, dẫn đến việc Dev tự code theo cảm tính và bị khách hàng bắt lỗi.<br />
+* <em>Ví dụ:</em> Trường "Số tiền tối đa" khách hàng muốn mặc định là <code>null</code> thay vì <code>0</code>; Tiêu đề thông báo thiếu chữ "Năm" theo kỳ vọng của khách hàng.</p>
+<h2 id="phan-iv-giai-phap-hanh-ong-cho-phase-2-action-plan">PHẦN IV. GIẢI PHÁP &amp; HÀNH ĐỘNG CHO PHASE 2 (ACTION PLAN)</h2>
+<h3 id="danh-cho-techlead-team-dev">Dành cho TechLead / Team Dev:</h3>
+<ol>
+<li><strong>Chuẩn hóa Common Utilities (Hàm dùng chung):</strong> BẮT BUỘC rà soát, viết lại và Review chéo các Base Controller dùng chung cho tính năng Search, Sort, Pagination và Import CSV. </li>
+<li><strong>Thiết lập Base Validation Rules:</strong> Frontend và Backend phải thống nhất cấu hình file Validation chung. Mọi trường nhập liệu tính toán tiền bạc, số lượng đều phải có Regex chặn nhập chữ và giới hạn <code>maxlength</code>.</li>
+<li><strong>Unit Test trước khi Merge:</strong> Cần bổ sung bước viết Unit Test để kiểm tra tính hợp lệ của Data API (Đặc biệt với luồng Payment và Delivery) nhằm giảm thiểu rủi ro quá tải cho QC.</li>
+</ol>
+<h3 id="danh-cho-team-qa-qc">Dành cho Team QA / QC:</h3>
+<ol>
+<li><strong>Đo lường Quality Rate (Tỷ lệ Testcase Pass):</strong> Nếu tỷ lệ Pass <code>&lt;= 50%</code>, yêu cầu QC dừng test và trả code về cho Dev làm lại</li>
+<li><strong>Cập nhật Checklist Kiểm thử:</strong> Bổ sung kỹ thuật <strong>Phân tích giá trị biên (Boundary Value Analysis)</strong> và <strong>Đoán lỗi (Error Guessing)</strong> vào toàn bộ kịch bản test Phase 2 để quét sạch các lỗi tràn số, âm số và bỏ trống trường bắt buộc.</li>
+<li><strong>Test tích hợp theo Role:</strong> Với Phase 2 có nhiều phân quyền phức tạp (Sales, CS, Logistic), QC cần thiết kế kịch bản test tích hợp đi xuyên suốt từ khi đặt hàng đến giao hàng, thay vì chỉ test chức năng đơn lẻ. Scenario Testing !!!</li>
+</ol>
+<h3 id="danh-cho-babrsedesigner">Dành cho BA/BRSE/DESIGNER:</h3>
+<ol>
+<li>Hoàn thành SPEC - FIGMA : cần có buổi TRANSFER SPEC với team đội sản xuất để thảo luận và hướng dẫn </li>
+<li>DESIGNER có trách nhiệm mô tả - hương dẫn - transfer thông tin vẽ tới toàn bộ team. Đảm bảo phần mô tả Detail Design đúng vơi cac designer thiết kế : vi dụ ô này chỉ được nhập email</li>
+</ol>
+<h1 id="phan-v-ke-hoach-chi-so-chat-luong-kpi-kiem-soat-loi-phase-2-70-mm">Phần V: KẾ HOẠCH CHỈ SỐ CHẤT LƯỢNG &amp; KPI KIỂM SOÁT LỖI PHASE 2 (70 MM)</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Tiêu chí / Chỉ số</th>
+<th style="text-align: center;">Đề xuất Tỷ lệ KPI</th>
+<th style="text-align: center;">Bug QC nội bộ cần bắt (KPI Tối thiểu)</th>
+<th style="text-align: center;">Bug UAT Khách hàng (Giới hạn Tối đa)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>A. Chỉ số Leakage</strong></td>
+<td style="text-align: center;">&lt;= 1.0 bugs / MM</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"><strong>70 bugs</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>B. Chỉ số Defect Leakage</strong></td>
+<td style="text-align: center;">&lt;= 5%</td>
+<td style="text-align: center;"><strong>&gt;= 1,330 bugs</strong></td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>1. Functional Bug</strong></td>
+<td style="text-align: center;">~40% - 45%</td>
+<td style="text-align: center;">~ 532 - 598 bugs</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2. Bug UI</strong></td>
+<td style="text-align: center;">~20% - 25%</td>
+<td style="text-align: center;">~ 266 - 332 bugs</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3. Validation Bug</strong></td>
+<td style="text-align: center;">&lt; 15%</td>
+<td style="text-align: center;">&lt; 199 bugs</td>
+<td style="text-align: center;"><strong>0 bugs</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4. Performance Bug</strong></td>
+<td style="text-align: center;">&lt; 5%</td>
+<td style="text-align: center;">&lt; 66 bugs</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Các lỗi khác</strong></td>
+<td style="text-align: center;">~10%</td>
+<td style="text-align: center;">~ 133 bugs</td>
+<td style="text-align: center;">-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="chi-so-defect-rate-mat-o-loi">CHỈ SỐ DEFECT RATE (MẬT ĐỘ LỖI)</h3>
+<p><strong>Công thức tính:</strong> <code>Defect Rate = (Số bug QC bắt được + Số bug Khách hàng bắt được) / Tổng số MM</code></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Giai đoạn</th>
+<th style="text-align: left;">Tính toán Defect Rate (Tổng Bug / MM)</th>
+<th style="text-align: center;">Dữ liệu KPI</th>
+<th style="text-align: left;">Đánh giá chất lượng Code của Dev</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Thực tế Phase 1</strong></td>
+<td style="text-align: left;">(185 bugs QC + 14 bugs UAT) / 22.52 MM = <strong>8.83 bugs/MM</strong></td>
+<td style="text-align: center;"><strong>10-15%</strong></td>
+<td style="text-align: left;"><strong>KHÁ TỐT.</strong> Trung bình cứ 1 MM code, Dev sinh ra chưa tới 9 lỗi.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Đề xuất Phase 2</strong></td>
+<td style="text-align: left;">(~1,330 bugs QC + tối đa 70 bugs UAT) / 70 MM = <strong>~ 20 bugs/MM</strong></td>
+<td style="text-align: center;"><strong>10-20%</strong></td>
+<td style="text-align: left;">Phase 2 có độ phức tạp về phân quyền lớn hơn rất nhiều.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.expand", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -95,3 +95,24 @@ socket.disconnect();
 
 - Guidelines: `.claude/skills/flutter-review/SKILL.md` · `.claude/rules/coding-style.md`
 - Mobile structure: `es-kitchen-docs/docs/mobile/es-kitchen-payment-app/overview/structure.md`
+
+## Output
+
+```
+✅ task-x-y hoàn thành
+
+Files đã thay đổi:
+  - <path> → <mô tả ngắn>
+
+Unit Tests:
+  - <provider/service>_test.dart ✅ X passed, coverage Y% (target Z%)
+
+Self-review:
+  ✅ flutter analyze pass · ✅ flutter test pass · ✅ Non-Regression verify
+
+Memory Update Gate:
+  - structure.md / patterns.md: ✅ updated / ⏭ skipped
+
+Bước tiếp theo:
+→ "Hãy là QA, verify task này: <đường dẫn task-x-y.md>"
+```

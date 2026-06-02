@@ -4,63 +4,79 @@ skills:
   - bug_reporter
 ---
 
-> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`bug_reporter`** (tại `.claude/skills/bug_reporter/SKILL.md`) trước khi bắt đầu.
+> **Canonical workflow:** `.claude/agents/qc-agent.md`.
+> **BẮT BUỘC:** Nạp skill `bug_reporter` tại `.claude/skills/bug_reporter/SKILL.md`.
 
-# Workflow: Sinh Bug Report Chuẩn
-
-Workflow này giúp QC chuyển mô tả lỗi thô thành bug report **đầy đủ, rõ ràng, sẵn sàng cho DEV** — không cần hỏi lại.
+# /test/generate_bug_report
 
 ## Khi nào dùng
 
-- QC vừa tìm được bug và muốn viết report nhanh
-- Cần chuẩn hóa bug report đang viết dở
-- Muốn kiểm tra severity/priority trước khi submit lên Backlog
-- **Không dùng** workflow này để sinh test cases
+- QC vừa tìm được bug, muốn viết report nhanh
+- Chuẩn hóa bug report đang viết dở
+- Kiểm tra severity/priority trước khi submit Backlog
+- **Không dùng** để sinh test cases
 
-## Input cần từ User
+## Input
 
 | Input | Bắt buộc | Mô tả |
-|-------|----------|-------|
-| **Mô tả bug** | ✅ | Mô tả lỗi bằng ngôn ngữ tự nhiên — viết sơ cũng được |
-| **Environment** | ⚠️ Nên có | Browser, OS, URL, build, test account |
-| **Evidence** | ⚠️ Nên có | Screenshot, video, console log |
-| **Module/Tính năng** | ⚠️ Nên có | Để gán Bug ID đúng |
-| **Mức Severity đề xuất** | ❌ Optional | Nếu không có → agent tự phân loại và giải thích |
+|---|---|---|
+| Mô tả bug | ✅ | Ngôn ngữ tự nhiên — viết sơ cũng được |
+| Environment | ⚠️ | Browser / OS / URL / Build / test account |
+| Evidence | ⚠️ | Screenshot, video, console log |
+| Module / Feature | ⚠️ | Để gán Bug ID đúng |
+| Severity đề xuất | ❌ | Nếu không có → agent tự phân loại |
 
-## Các bước thực hiện
+## ESKITCHEN bug ID convention
 
-### Bước 1: Thu thập thông tin
+```
+BUG_<EPIC>_<MODULE>_<NNN>
+ví dụ:
+BUG_E02_ORDER_001    (Company Admin — Order module)
+BUG_E03_REPORT_023   (System Admin — Report module)
+BUG_E01_PAYMENT_007  (Mobile app — Payment)
+```
 
-1. Đọc mô tả bug từ user
-2. Nếu thiếu thông tin quan trọng, hỏi **gộp 1 lần duy nhất**:
-   - Environment (nếu chưa có)
-   - Steps cụ thể để reproduce (nếu mô tả quá chung chung)
-   - Expected behavior (nếu chưa rõ)
-3. Nếu đủ thông tin → tiến hành luôn, không hỏi thêm
+## Output path
 
-### Bước 2: Phân tích và phân loại
+`es-kitchen-docs/docs/features/<feature>/bug-reports/<BUG_ID>.md`
+(hoặc paste thẳng lên Backlog — không bắt buộc lưu file)
 
-1. Xác định **Severity** theo bảng trong skill `bug_reporter`
-2. Xác định **Priority** đề xuất — giải thích lý do nếu khác với user
-3. Đánh giá **Reproducibility** từ mô tả
-4. Xác định **module** để sinh Bug ID
+## Các bước
 
-### Bước 3: Chuẩn hóa Steps to Reproduce
+### Bước 1 — Thu thập
 
-1. Viết lại steps theo quy tắc trong skill:
-   - Precondition đầy đủ (tài khoản, trạng thái ban đầu, URL)
-   - Mỗi step = 1 action
-   - Test data cụ thể
-   - Step cuối = action trigger lỗi
-2. Phân biệt rõ Expected Result vs Actual Result
+1. Đọc mô tả
+2. Nếu thiếu info quan trọng → hỏi **gộp 1 lần duy nhất**:
+   - Environment
+   - Steps cụ thể reproduce
+   - Expected behavior
+3. Đủ → tiến luôn
 
-### Bước 4: Xuất Bug Report
+### Bước 2 — Phân tích + phân loại
 
-Xuất theo Output Format trong skill `bug_reporter`. Nếu có nhiều bugs được mô tả cùng lúc → sinh **từng report riêng biệt**.
+Theo skill `bug_reporter`:
+- **Severity** (Critical / Major / Minor / Trivial)
+- **Priority** đề xuất + giải thích nếu khác user
+- **Reproducibility** (Always / Sometimes / Rare / Once)
+- Module để sinh Bug ID
 
-## Quy tắc quan trọng
+### Bước 3 — Steps to Reproduce
+
+1. Precondition đầy đủ (tài khoản, trạng thái ban đầu, URL)
+2. Mỗi step = 1 action
+3. Test data cụ thể (theo convention ESKITCHEN — không PII thật)
+4. Step cuối = trigger lỗi
+5. Phân biệt **Expected** vs **Actual**
+
+### Bước 4 — Output theo format skill `bug_reporter`
+
+Nếu nhiều bugs cùng lúc → sinh **từng report riêng**, không gộp.
+
+## Quy tắc
 
 - ❌ KHÔNG gộp nhiều bugs vào 1 report
-- ❌ KHÔNG tự giả định steps nếu user chưa mô tả rõ → hỏi trước
-- ✅ Nếu không có evidence → ghi rõ "Chưa có — QC cần bổ sung screenshot/video"
-- ✅ Luôn giải thích lý do phân loại Severity/Priority nếu có thể gây tranh luận
+- ❌ KHÔNG tự đoán steps nếu user mô tả chưa rõ → hỏi
+- ❌ KHÔNG log token / password / payment data trong steps
+- ❌ KHÔNG auto-submit lên Backlog — QC review rồi mới submit
+- ✅ Không có evidence → ghi "Chưa có — QC cần bổ sung"
+- ✅ Luôn giải thích lý do Severity/Priority nếu có thể tranh luận

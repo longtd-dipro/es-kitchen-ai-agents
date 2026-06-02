@@ -96,3 +96,26 @@ const { message, modal } = App.useApp();
 - web-admin patterns: `es-kitchen-docs/docs/frontend/es-kitchen-web-admin/overview/patterns.md`
 - web-company patterns: `es-kitchen-docs/docs/frontend/es-kitchen-web-company/overview/patterns.md`
 - web-supplier patterns: `es-kitchen-docs/docs/frontend/es-kitchen-web-supplier/overview/patterns.md`
+
+## Output
+
+```
+✅ task-x-y hoàn thành
+
+Repo: <es-kitchen-web-admin | es-kitchen-web-company | es-kitchen-web-supplier>
+
+Files đã thay đổi:
+  - <path> → <mô tả ngắn>
+
+Unit Tests:
+  - <Component>.test.tsx ✅ X passed, coverage Y% (target Z%)
+
+Self-review:
+  ✅ Lint pass · ✅ Type-check pass · ✅ Build pass · ✅ Non-Regression verify
+
+Memory Update Gate:
+  - patterns.md (repo tương ứng): ✅ updated / ⏭ skipped
+
+Bước tiếp theo:
+→ "Hãy là QA, verify task này: <đường dẫn task-x-y.md>"
+```

@@ -1,99 +1,92 @@
 ---
-description: Sinh checklist thực thi test có thứ tự ưu tiên trước release — nhóm TCs theo risk, ước lượng thời gian, đánh dấu regression candidates.
+description: Sinh checklist thực thi test có ưu tiên trước release — nhóm TC theo risk, ước lượng thời gian, đánh dấu regression candidates.
 skills:
   - rbt_manual_testing
 ---
 
-> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`rbt_manual_testing`** (tại `.claude/skills/rbt_manual_testing/SKILL.md`) để hiểu cách đánh giá risk level.
+> **Canonical workflow:** `.claude/agents/qc-agent.md`.
+> **BẮT BUỘC:** Nạp skill `rbt_manual_testing`.
 
-# Workflow: Sinh Test Execution Checklist Trước Release
-
-Workflow này giúp QC biết **chạy TC nào trước, bao lâu xong, và cái nào không thể bỏ qua** — thay vì chạy theo thứ tự trong bảng TC.
+# /test/generate_test_execution_checklist
 
 ## Khi nào dùng
 
-- Chuẩn bị cho sprint release / hotfix / UAT
+- Chuẩn bị sprint release / hotfix / UAT
 - Cần phân bổ thời gian test hợp lý trong deadline ngắn
-- Muốn xác định những TCs bắt buộc phải pass trước khi ship
-- **Không dùng** khi chưa có bộ TC → dùng `/generate_manual_testcases_rbt` trước
+- Xác định TC bắt buộc PASS trước khi ship
+- **Không dùng** khi chưa có bộ TC → `/test/generate_manual_testcases_rbt`
 
-## Input cần từ User
+## Input
 
 | Input | Bắt buộc | Mô tả |
-|-------|----------|-------|
-| **Bộ TC hiện tại** | ✅ | File `.md`, bảng paste vào |
-| **Loại release** | ✅ | Hotfix / Sprint Release / Major Release / UAT |
-| **Thời gian có sẵn** | ⚠️ Nên có | VD: "2 ngày", "4 tiếng" — để tính toán coverage khả thi |
-| **Tính năng thay đổi trong release này** | ⚠️ Nên có | Để ưu tiên test đúng vùng bị ảnh hưởng |
-| **Số lượng QC thực hiện** | ❌ Optional | Để phân chia nếu có nhiều người |
+|---|---|---|
+| Bộ TC | ✅ | Path `tc_*.md` |
+| Loại release | ✅ | Hotfix / Sprint Release / Major Release / UAT |
+| Thời gian có sẵn | ⚠️ Nên có | VD: "2 ngày", "4 tiếng" |
+| Tính năng thay đổi | ⚠️ Nên có | Để ưu tiên đúng vùng impact |
+| Số QC | ❌ | Để phân chia |
 
-## Các bước thực hiện
+## Output path
 
-### Bước 1: Phân tích TCs và ngữ cảnh release
+`es-kitchen-docs/docs/features/<feature>/test-cases/checklist_<release>.md`
 
-1. Đọc toàn bộ bộ TC
-2. Xác định loại release → áp dụng chiến lược phù hợp:
+## Các bước
 
-   | Loại release | Chiến lược |
-   |-------------|-----------|
-   | **Hotfix** | Chỉ test TCs liên quan trực tiếp đến fix + smoke test core flows |
-   | **Sprint Release** | Full test TCs của tính năng mới + regression các module phụ thuộc |
-   | **Major Release** | Full regression toàn bộ bộ TC |
-   | **UAT** | Tập trung Happy Path + business-critical scenarios |
+### Bước 1 — Phân tích TC + ngữ cảnh
 
-3. Xác nhận context với user trước khi tiếp tục
+| Loại release | Chiến lược |
+|---|---|
+| Hotfix | TC trực tiếp liên quan fix + smoke core flows |
+| Sprint Release | Full TC tính năng mới + regression module phụ thuộc |
+| Major Release | Full regression toàn bộ TC |
+| UAT | Happy Path + business-critical scenarios |
 
-### Bước 2: Phân loại TCs theo 3 nhóm
+Xác nhận context với user → Bước 2.
+
+### Bước 2 — Phân loại 3 nhóm
 
 | Nhóm | Ký hiệu | Tiêu chí |
-|------|---------|---------|
-| **Must-run** | 🔴 | Critical/High priority, core flows, tính năng thay đổi trong release |
-| **Should-run** | 🟡 | Medium priority, regression các module liên quan |
-| **Nice-to-run** | 🟢 | Low priority, edge cases ít gặp, UI cosmetic |
+|---|---|---|
+| Must-run | 🔴 | Critical/High, core flows, vùng thay đổi |
+| Should-run | 🟡 | Medium, regression module liên quan |
+| Nice-to-run | 🟢 | Low, edge case ít gặp, UI cosmetic |
 
-### Bước 3: Ước lượng thời gian
+### Bước 3 — Ước lượng thời gian
 
-Ước lượng thời gian thực thi mỗi TC (không tính setup):
+| Độ phức tạp TC | Time |
+|---|---|
+| ≤3 steps | 2-3 phút |
+| 4-7 steps | 5-10 phút |
+| >7 steps, nhiều data | 10-20 phút |
 
-| Độ phức tạp | Thời gian ước lượng |
-|------------|-------------------|
-| TC đơn giản (≤3 steps) | 2-3 phút |
-| TC trung bình (4-7 steps) | 5-10 phút |
-| TC phức tạp (>7 steps, nhiều data) | 10-20 phút |
+So sánh tổng với thời gian có sẵn.
 
-Tổng hợp thời gian theo nhóm và so sánh với thời gian user có sẵn.
-
-### Bước 4: Xuất Execution Checklist
+### Bước 4 — Output
 
 ```markdown
-## Test Execution Checklist — [Tên Release] — [Ngày]
+## Test Execution Checklist — <Release> — <Ngày>
 
 ### Tổng quan
-- Tổng TCs: [N] | Must-run: [X] | Should-run: [Y] | Nice-to-run: [Z]
-- Thời gian ước tính: Must-run [Xh] | Full [Yh]
-- Thời gian có sẵn: [Z tiếng/ngày]
+- Tổng TC: N | 🔴 X | 🟡 Y | 🟢 Z
+- Time estimate: Must-run Xh | Full Yh
+- Time có sẵn: Z giờ
 
 ### 🔴 Must-Run (không được bỏ qua)
-| STT | TC ID | Module | Test Title | Priority | Thời gian | Kết quả |
-|-----|-------|--------|-----------|----------|-----------|---------|
-| 1   | TC_001 | Login | Đăng nhập thành công | Critical | 5 phút | ⬜ |
-| ... |
+| STT | TC ID | Module | Title | Priority | Time | Kết quả |
 
-### 🟡 Should-Run (nếu còn thời gian)
-| STT | TC ID | Module | Test Title | Priority | Thời gian | Kết quả |
-|-----|-------|--------|-----------|----------|-----------|---------|
+### 🟡 Should-Run
+| STT | TC ID | Module | Title | Priority | Time | Kết quả |
 
-### 🟢 Nice-to-Run (nếu dư thời gian)
-| STT | TC ID | Module | Test Title | Priority | Thời gian | Kết quả |
-|-----|-------|--------|-----------|----------|-----------|---------|
+### 🟢 Nice-to-Run
+| STT | TC ID | Module | Title | Priority | Time | Kết quả |
 
 ### Ghi chú
-- Nếu thiếu thời gian: bỏ qua nhóm 🟢, cắt bớt nhóm 🟡
-- Release blocker: tất cả TCs nhóm 🔴 phải PASS
+- Thiếu time: bỏ 🟢, cắt 🟡
+- Release blocker: tất cả 🔴 phải PASS
 ```
 
-## Quy tắc quan trọng
+## Quy tắc
 
-- ❌ KHÔNG bỏ TC nhóm 🔴 dù thiếu thời gian — đây là release blocker
-- ✅ Nếu thời gian ước tính Must-run > thời gian có sẵn → cảnh báo user ngay
-- ✅ TCs có data phức tạp hoặc cần setup môi trường → note rõ để QC chuẩn bị trước
+- ❌ KHÔNG bỏ 🔴 dù thiếu time — release blocker
+- ✅ Nếu Must-run estimate > time có sẵn → cảnh báo ngay
+- ✅ TC cần setup phức tạp → note để QC chuẩn bị trước

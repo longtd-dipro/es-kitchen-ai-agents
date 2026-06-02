@@ -83,3 +83,24 @@ Source code tại: `es-kitchen-repository/es-kitchen-api`
 
 - DEV — kết nối trực tiếp qua DBeaver: `.claude/workflows/db-connect-dev.md`
 - Staging — kết nối qua AWS SSM tunnel: `.claude/workflows/db-connect-staging.md`
+
+## Output
+
+```
+✅ task-x-y hoàn thành
+
+Files đã thay đổi:
+  - <path> → <mô tả ngắn>
+
+Unit Tests:
+  - <file>.spec.ts ✅ X passed, coverage Y% (target Z%)
+
+Self-review:
+  ✅ Lint pass · ✅ Build pass · ✅ Non-Regression verify
+
+Memory Update Gate:
+  - api-catalog.md / erd.md / patterns.md: ✅ updated / ⏭ skipped
+
+Bước tiếp theo:
+→ "Hãy là QA, verify task này: <đường dẫn task-x-y.md>"
+```
