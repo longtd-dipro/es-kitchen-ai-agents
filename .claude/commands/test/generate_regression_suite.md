@@ -1,101 +1,89 @@
 ---
-description: Xác định bộ TCs cần chạy lại khi có code change — map thay đổi vào modules bị ảnh hưởng, phân loại direct/indirect impact, output regression suite có thứ tự ưu tiên.
+description: Xác định bộ TC cần chạy lại khi có code change — map thay đổi vào modules bị ảnh hưởng, phân loại direct/indirect impact, output regression suite có ưu tiên.
 skills:
   - rbt_manual_testing
 ---
 
-> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`rbt_manual_testing`** (tại `.claude/skills/rbt_manual_testing/SKILL.md`) để hiểu cách đánh giá risk level.
+> **Canonical workflow:** `.claude/agents/qc-agent.md`.
+> **BẮT BUỘC:** Nạp skill `rbt_manual_testing` để hiểu cách đánh giá risk.
 
-# Workflow: Sinh Regression Suite
-
-Workflow này giúp QC **không phải chạy toàn bộ TC mỗi sprint** — chỉ chạy đúng những TC có khả năng bị ảnh hưởng bởi code change, theo thứ tự risk.
+# /test/generate_regression_suite
 
 ## Khi nào dùng
 
-- Sau mỗi sprint có code changes cần xác định scope regression
+- Sau mỗi sprint có code change → xác định scope regression
 - Hotfix cần verify không break tính năng khác
-- Refactor code và cần chọn safety net TCs
-- **Không dùng** khi cần full regression → dùng `/generate_test_execution_checklist`
+- Refactor → chọn safety net TCs
+- **Không dùng** khi cần full regression → `/test/generate_test_execution_checklist`
 
-## Input cần từ User
+## Input
 
 | Input | Bắt buộc | Mô tả |
-|-------|----------|-------|
-| **Bộ TC hiện tại** | ✅ | File `.md` hoặc bảng TC paste vào |
-| **Danh sách thay đổi** | ✅ | Tính năng/module/fix được thay đổi trong release này |
-| **Module map** | ⚠️ Nên có | Sơ đồ dependencies giữa các modules (nếu có) |
+|---|---|---|
+| Bộ TC hiện tại | ✅ | Path `tc_*.md` của feature |
+| Danh sách thay đổi | ✅ | Từ PR description, task file Non-Regression table, hoặc commit log |
+| Module map | ⚠️ Nên có | Dependencies giữa modules |
 
-## Các bước thực hiện
+## Output path
 
-### Bước 1: Phân tích scope thay đổi
+`es-kitchen-docs/docs/features/<feature>/test-cases/regression_<release>.md`
 
-1. Đọc danh sách thay đổi từ user
-2. Phân loại từng thay đổi:
+## Các bước
 
-   | Loại thay đổi | Ví dụ | Mức ảnh hưởng |
-   |--------------|-------|--------------|
-   | **New feature** | Thêm tính năng export PDF | Trực tiếp + modules dùng chung data |
-   | **Bug fix** | Fix lỗi validation email | Trực tiếp tính năng đó |
-   | **Refactor** | Tách service layer | Tất cả modules dùng service đó |
-   | **Config change** | Thay đổi timeout, limit | Tất cả flows có timeout/limit |
-   | **Database change** | Thêm/sửa cột | Tất cả TCs liên quan đến entity đó |
+### Bước 1 — Phân tích scope thay đổi
 
-3. Tóm tắt scope và hỏi user bổ sung nếu cần
+| Loại | Ví dụ ESKITCHEN | Mức ảnh hưởng |
+|---|---|---|
+| New feature | Thêm export PDF Order | Direct + module dùng chung Order data |
+| Bug fix | Fix validation email | Direct module đó |
+| Refactor | Tách OrderService → OrderQueryService + OrderCommandService | Tất cả module gọi OrderService |
+| Config change | Tăng timeout API gọi elepay | Tất cả flow payment |
+| DB migration | Thêm cột `delivery_window` vào `orders` | Tất cả TC liên quan Order |
 
-### Bước 2: Map thay đổi → Modules bị ảnh hưởng
+### Bước 2 — Map thay đổi → Modules
 
-Xác định 2 mức ảnh hưởng:
-
-- **Direct impact** — Module được thay đổi trực tiếp
-- **Indirect impact** — Module phụ thuộc vào module thay đổi (shared components, API, data)
+- **Direct impact:** module được sửa trực tiếp
+- **Indirect impact:** module phụ thuộc (shared component, API, data, Redis cache)
 
 ```markdown
-| Thay đổi | Direct Impact | Indirect Impact |
-|---------|--------------|----------------|
-| Fix login validation | Module: Login | Module: Dashboard (dùng login state), Profile |
-| Thêm field "Địa chỉ" | Module: User Create/Edit | Module: Report (có thể hiển thị địa chỉ) |
+| Thay đổi | Direct | Indirect |
+|---|---|---|
+| Fix login validation | Auth | Dashboard, Profile |
+| Thêm field "Delivery Window" vào Order | Order Create/Edit | Order Report, Driver app screen Order Detail |
 ```
 
-### Bước 3: Chọn TCs cho regression suite
+### Bước 3 — Chọn TC
 
-Với mỗi module bị ảnh hưởng, chọn TCs theo tiêu chí:
+| Ưu tiên | Loại TC |
+|---|---|
+| 1 — Bắt buộc | TC liên quan **trực tiếp** thay đổi |
+| 2 — Bắt buộc | Happy Path của module Direct |
+| 3 — Nên có | Smoke test của module Indirect |
+| 4 — Optional | Edge cases của module Direct |
 
-| Ưu tiên | Loại TC cần chọn |
-|---------|----------------|
-| **1 — Bắt buộc** | TCs liên quan trực tiếp đến thay đổi |
-| **2 — Bắt buộc** | Happy Path của module bị ảnh hưởng |
-| **3 — Nên có** | TCs của module indirect impact (smoke test) |
-| **4 — Optional** | Edge cases của module thay đổi |
-
-### Bước 4: Xuất Regression Suite
+### Bước 4 — Output
 
 ```markdown
-## Regression Suite — [Sprint/Release Name]
+## Regression Suite — <Release name>
 
 ### Scope thay đổi
-[Tóm tắt 2-3 dòng những gì thay đổi]
+[2-3 dòng tóm tắt]
 
 ### Modules bị ảnh hưởng
-- 🔴 Direct: [Module A, Module B]
-- 🟡 Indirect: [Module C, Module D]
+- 🔴 Direct: <Module A, B>
+- 🟡 Indirect: <Module C, D>
 
-### Regression TCs ([N] TCs — est. [X] giờ)
-
-| STT | TC ID | Module | Test Title | Impact | Priority | Kết quả |
-|-----|-------|--------|-----------|--------|----------|---------|
+### Regression TCs (<N> TCs — est. <X>h)
+| STT | TC ID | Module | Title | Impact | Priority | Kết quả |
+|---|---|---|---|---|---|---|
 | 1 | TC_001 | Login | Đăng nhập thành công | Direct | Critical | ⬜ |
-| 2 | TC_015 | Dashboard | Load dashboard sau login | Indirect | High | ⬜ |
-| ... |
 
-### TCs không cần chạy lại
-Các module sau không bị ảnh hưởng, bỏ qua để tiết kiệm thời gian:
-- [Module X] — không có dependency với thay đổi
-- [Module Y] — isolated, không dùng shared components
+### TC không cần chạy lại
+- <Module X> — isolated, không dùng shared component
 ```
 
-## Quy tắc quan trọng
+## Quy tắc
 
-- ❌ KHÔNG bỏ qua indirect impact — bug regression thường xuất hiện ở đây
-- ❌ KHÔNG chọn TC chỉ dựa trên tên module — phải verify dependency thực tế
-- ✅ Nếu không có module map → hỏi user về dependencies trước khi chọn TCs
-- ✅ Regression suite nên chiếm 20-40% tổng bộ TC — nếu >60% thì nên dùng full regression
+- ❌ KHÔNG bỏ qua Indirect — bug regression thường ở đây
+- ❌ KHÔNG chọn TC theo tên module — verify dependency thực tế (qua `tilth_deps` nếu cần)
+- ✅ Regression nên chiếm 20-40% bộ TC. >60% → dùng full regression

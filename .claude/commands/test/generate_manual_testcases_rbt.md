@@ -1,80 +1,78 @@
 ---
-description: Sinh manual test cases chất lượng cao theo quy trình AI-RBT 6 bước (Risk-Based Testing) từ requirements.
+description: Sinh manual test cases chất lượng cao theo quy trình AI-RBT 6 bước (Risk-Based Testing) từ SPEC.md của feature.
 skills:
   - rbt_manual_testing
   - requirements_analyzer
 ---
 
-> **BẮT BUỘC (MANDATORY SKILL):** Bạn PHẢI nạp và đọc kỹ nội dung của skill **`rbt_manual_testing`** (tại `.claude/skills/rbt_manual_testing/SKILL.md`) trước khi bắt đầu thực hiện tác vụ này. Sử dụng **Mode FULL RBT** của skill. Ngoài ra, tham khảo thêm skill **`requirements_analyzer`** để hiểu cách phân tích giao diện nếu cần.
+> **Canonical workflow:** `.claude/agents/qc-agent.md` — file này chỉ là entry point.
+> **BẮT BUỘC:** Nạp và đọc kỹ skill `rbt_manual_testing` (Mode FULL RBT) tại `.claude/skills/rbt_manual_testing/SKILL.md`.
 
-# Workflow: Sinh Manual Test Cases theo AI-RBT Framework (FULL RBT Mode)
+# /test/generate_manual_testcases_rbt — FULL RBT 6 bước
 
-Workflow này sử dụng **Mode FULL RBT** của skill `rbt_manual_testing` — quy trình **AI-RBT (AI-Driven Risk-Based Testing)** gồm 6 bước tuần tự để sinh manual test cases từ tài liệu yêu cầu.
+## Input
 
-> [!NOTE]
-> **Luồng Claude Code:** Agent thực hiện theo hướng dẫn trong skill, KHÔNG cần đọc file prompt.txt.
+| Input | Bắt buộc | Mô tả |
+|---|---|---|
+| SPEC.md của feature | ✅ | `es-kitchen-docs/docs/features/<feature>/SPEC.md` |
+| Module / scope | ✅ | Module nào trong SPEC sẽ sinh TC lần này |
+| Figma / design link | ⚠️ Nên có | Để sinh UI Visual TCs cụ thể |
 
-## ⚠️ Nguyên tắc thực thi
+## Nguyên tắc
 
-- **Mode:** FULL RBT (6 bước tuần tự)
-- **BẮT BUỘC chạy tuần tự** từng bước, KHÔNG gộp nhiều bước
-- **PHẢI dừng lại** chờ user phản hồi tại Bước 2 (Q&A) và Bước 4 (Review Scenarios)
-- Nếu user chưa cung cấp requirements, hỏi user cung cấp trước khi bắt đầu
+- **Mode:** FULL RBT (6 bước **tuần tự**, không gộp)
+- **DỪNG checkpoint** tại Bước 2 (Q&A) và Bước 4 (Scenarios review)
+- AC trong SPEC.md là nguồn để build Traceability Matrix — 100% AC phải cover
 - Tất cả output bằng **Tiếng Việt**
+- Output path: `es-kitchen-docs/docs/features/<feature>/test-cases/tc_<module>.md`
 
-## Các bước thực hiện
+## 6 bước (theo skill `rbt_manual_testing` Mode FULL RBT)
 
-Thực hiện theo hướng dẫn chi tiết trong skill `rbt_manual_testing` → phần **Mode 2: FULL RBT**.
+### Bước 1 — Context & Role-play
+1. Đọc SPEC.md + Figma (nếu có)
+2. Tóm tắt scope test + xác nhận đã hiểu
+3. **Chờ user xác nhận** → Bước 2
 
-### Bước 1: Khởi tạo ngữ cảnh (Context & Role-play)
-1. Yêu cầu user cung cấp: tên dự án, mô tả hệ thống, mục tiêu MVP, tài liệu yêu cầu
-2. Đọc kỹ tài liệu, xác nhận hiểu bối cảnh
-3. **Chờ user xác nhận** → sang Bước 2
+### Bước 2 — Analysis & QnA
+1. Xác định Happy / Alternate / Exception paths
+2. Phát hiện Ambiguities (yêu cầu thiếu/mâu thuẫn/chưa rõ)
+3. Nếu có Figma → phát hiện UI ambiguities (Error/Empty/Loading states)
+4. Đặt Q&A đánh số (Q1, Q2...) — **DỪNG chờ user trả lời**
 
-### Bước 2: Phân tích yêu cầu (Analysis & QnA)
+### Bước 3 — Decomposition
+1. Phân rã feature thành Modules/Sub-modules (theo UI hoặc luồng)
+2. Liệt kê Dependencies
 
-> Nếu user cung cấp AC + Q&A đã chốt (output từ `/analyze_requirement_document`):
-> → Bỏ qua step 2 (Phát hiện Ambiguities), chỉ thực hiện step 1 (xác định luồng) + hỏi thêm nếu còn thiếu.
+### Bước 4 — Traceability
+1. Map mỗi AC trong SPEC → Module + REQ-ID
+2. Gap Analysis: AC nào chưa có Scenario cover
+3. High-Level Scenarios cho từng Module
+4. **DỪNG chờ user review scenarios** → Bước 5
 
-1. Xác định Happy Path, Alternate Paths, Exception Paths
-2. Phát hiện Ambiguities (thiếu sót, mâu thuẫn, chưa rõ ràng)
-3. Đặt câu hỏi Q&A có đánh số (Q1, Q2...) cho user, kèm ngữ cảnh + assumption
-4. **DỪNG LẠI — Chờ user trả lời câu hỏi** → sang Bước 3
+### Bước 5 — RBT & TC Generation
+1. Risk Level (High/Medium/Low) per Module
+2. Sinh TC đầy đủ field: ID, Function, Category, Risk, Scenario, Precondition, Steps, Expected, Test Data (cụ thể!), Priority
+3. **Field-Level Validation** — mỗi field input có TC riêng theo bảng trong skill
+4. **UI Visual TCs** — 6 states per field, đặt TRƯỚC logic TCs
+5. Kỹ thuật: EP, BVA, Decision Table, State Transition tùy bài toán
 
-### Bước 3: Phân rã hệ thống (Decomposition)
-1. Chia tính năng thành Modules / Sub-modules
-2. Mô tả chức năng từng Module + Dependencies giữa chúng
+### Bước 6 — Template Mapping
+1. Đóng gói vào bảng Markdown chuẩn
+2. Thêm section Traceability AC → TC
+3. Lưu vào path BMAD đúng feature
+4. Format ID: `ESK_<MODULE>_TC_<NNN>` (ví dụ: `ESK_ORDER_TC_001`)
 
-### Bước 4: Đảm bảo độ bao phủ (Traceability)
-1. Map Module → mã Yêu cầu (REQ-01, REQ-02...)
-2. Cross-check thiếu sót (Gap Analysis)
-3. Nếu AC được cung cấp trong input: map từng AC item vào Module → đảm bảo mỗi AC có ít nhất 1 Scenario cover; nếu không có AC → bỏ qua
-4. Liệt kê High-Level Scenarios cho từng Module
-5. **Chờ user review** scenarios → sang Bước 5
+## Bảng output
 
-### Bước 5: Sinh Test Case chi tiết (RBT & TC Generation)
-1. Đánh giá Risk Level (High/Medium/Low) cho mỗi Module
-2. Sinh test cases đầy đủ: Title, Pre-condition, Steps, Expected, Test Data, Priority
-3. Áp dụng kỹ thuật: EP, BVA, Decision Table, State Transition
-4. **Validation chuyên biệt từng trường (Field-Level Validation):**
-   - Liệt kê tất cả input fields trên form/UI đang test
-   - Sinh validation TCs **riêng cho TỪNG trường** theo đặc tính riêng
-   - Tham chiếu **Bảng Field-Level Validation** trong skill `rbt_manual_testing`
-   - **KHÔNG** gộp validation nhiều trường vào 1 TC
-5. Bao phủ đầy đủ: Happy Path, Negative, Boundary, Edge Cases
-6. Test Data phải cụ thể (không placeholder chung)
-7. Nếu quá nhiều → sinh từng Module, hỏi user để tiếp tục
-8. **Sinh UI Visual TCs** theo Bảng Field-Level Visual States Validation trong skill — đặt TRƯỚC logic TCs của cùng field, trong cùng bảng TC
+```
+| ID | Function Name | Category | Risk Level | Test Scenario | Precondition | Steps | Expected Results | Test Data | Priority |
+```
 
-### Bước 6: Chuẩn hóa Format (Template Mapping)
-1. Đóng gói toàn bộ test cases vào bảng Markdown chuẩn:
-   `| ID | Function Name | Category | Risk Level | Test Scenario | Precondition | Steps | Expected Results | Test Data | Priority |`
-2. Không được bỏ sót test case nào
-3. Xuất dưới dạng Artifact nếu dài
+## Traceability section (bắt buộc cuối file)
 
-## Output
-
-- Bảng Test Cases Markdown hoàn chỉnh, sẵn sàng copy sang Backlog/Excel
-- UI Visual TCs (screen level + component level + field level) — trong cùng bảng với logic TCs
-- Traceability Matrix
-- Danh sách Ambiguities đã giải quyết
+```markdown
+## Traceability — AC → TC
+| AC ID | TC IDs cover |
+|---|---|
+| AC-01 | ESK_ORDER_TC_001, ESK_ORDER_TC_002 |
+```

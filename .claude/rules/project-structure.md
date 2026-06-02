@@ -42,20 +42,21 @@ src/
 
 ## Doc Structure (BMAD)
 
+> Path duy nhất cho mọi feature — `docs/features/<feature-name>/`. Folder `docs/epics/` đã bị bỏ. Single-actor (1 repo) hay cross-repo (N repos) chỉ khác nhau ở số subfolder repo bên trong.
+
 ```
-es-kitchen-docs/docs/
-├── features/<feature>/          ← Cross-repo feature
-│   ├── SPEC.md                  ← BA
-│   ├── PLAN.md                  ← PM
-│   ├── es-kitchen-api/
-│   │   ├── DESIGN.md            ← Tech Lead
-│   │   └── tasks/task-X-Y.md
-│   └── es-kitchen-web-admin/
-│       ├── DESIGN.md
-│       └── tasks/task-X-Y.md
-└── epics/<E0X>/details/<feature>/  ← Single-repo epic
-    ├── SPEC.md
-    └── ...
+es-kitchen-docs/docs/features/<feature>/
+├── SPEC.md                  ← BA
+├── PLAN.md                  ← PM
+├── es-kitchen-api/
+│   ├── DESIGN.md            ← Tech Lead
+│   └── tasks/task-X-Y.md
+├── es-kitchen-web-admin/    ← nếu E03 liên quan
+│   ├── DESIGN.md
+│   └── tasks/task-X-Y.md
+├── es-kitchen-web-company/  ← nếu E02 liên quan
+├── es-kitchen-web-supplier/ ← nếu E04 liên quan
+└── es-kitchen-payment-app/  ← nếu E01 Mobile liên quan
 ```
 
 ## Tilth — Code Analysis Tool

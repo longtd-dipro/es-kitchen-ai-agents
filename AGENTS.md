@@ -10,11 +10,13 @@ Tất cả source code nằm trong thư mục **`es-kitchen-repository/`**.
 |---|---|---|---|
 | `es-kitchen-api` | `es-kitchen-repository/es-kitchen-api` | Core API, Business Logic, Domain Gatekeeper | NestJS / TypeScript / PostgreSQL |
 | `es-kitchen-payment-app` | `es-kitchen-repository/es-kitchen-payment-app` | User Mobile App (E01) — iOS + Android | Flutter 3.x / Dart / Riverpod |
-| `es-kitchen-web-admin` | `es-kitchen-repository/es-kitchen-web-admin` | System Admin Web (E03) — 160 functions | React 19 / Vite 7 / Redux Toolkit |
 | `es-kitchen-web-company` | `es-kitchen-repository/es-kitchen-web-company` | Company Admin Web (E02) — 58 functions | React 19 / Vite 7 / Redux Toolkit |
+| `es-kitchen-web-admin` | `es-kitchen-repository/es-kitchen-web-admin` | System Admin Web (E03) — 160 functions | React 19 / Vite 7 / Redux Toolkit |
 | `es-kitchen-web-supplier` | `es-kitchen-repository/es-kitchen-web-supplier` | Supplier Web (E04) — quản lý menu, nhận đơn | React 19 / Vite 7 / Redux Toolkit |
+| `es-kitchen-web-outsource-web-private` | `es-kitchen-repository/es-kitchen-web-outsource-web-private` | Outsource / Internal Private Admin Web (E05) — operation tool quản lý account & sales | React 19 / Vite 8 / Redux Toolkit |
+| `es-kitchen-webapp-driver` | `es-kitchen-repository/es-kitchen-webapp-driver` | Driver Web App (E06) — nhận order, cập nhật trạng thái giao hàng | React 19 / Vite 7 / Ant Design |
 
-Docs: `es-kitchen-docs/docs/` — SPEC, DESIGN, PLAN, tasks.
+**Docs:** `es-kitchen-docs/docs/features/` — **single long-memory** chứa SPEC, DESIGN, PLAN, tasks, test-cases. Folder `docs/epics/` cũ đã bị bỏ — mọi feature đặt cùng path. Chi tiết → `.claude/context/doc-structure.md`.
 
 </ecosystem>
 
@@ -22,26 +24,17 @@ Docs: `es-kitchen-docs/docs/` — SPEC, DESIGN, PLAN, tasks.
 
 <core_rules>
 
-## Nguyên tắc bắt buộc
+## Nguyên tắc bắt buộc (project-specific)
 
-1. **Không dùng MySQL** — chỉ **PostgreSQL** + TypeORM.
-2. **Không dùng GraphQL** — chỉ **REST API**.
-3. **Không nhầm E02 và E03** — `web-company` = Company Admin (E02), `web-admin` = System Admin (E03).
-4. **Không dùng Stripe** — Payment dùng **elepay**, Alipay, WeChat Pay.
-5. **Không tự ý thay đổi** linter config, test config, `.gitignore`, migration files.
-6. **Không đoán mò** tech stack — dùng `tilth_search` để xác nhận.
-7. **Không commit** khi không được yêu cầu rõ ràng.
-8. **Không sửa source code** khi task là review/fix docs.
-9. **Mobile version:** DEV `0.0.x` / STG `0.1.x` / PROD `1.0.x`.
-10. **Secrets:** AWS Parameter Store — không hard-code, không `.env` production.
+> **AI behavior policy chung** (không đoán mò · stack constraints · permission per persona · ...) → xem `./POLICIES.md` (always-loaded). Dưới đây chỉ liệt kê rules **đặc thù project ESKITCHEN** mà POLICIES.md không cover.
 
-**AI Policy (không được vi phạm):**
-- Đọc đúng file được chỉ định trong agent/command — không tự search rộng
-- Không tự suy nghĩ / đoán khi thiếu context — hỏi user
-- Không generate code khi chưa đọc đủ docs + xác nhận source
-- Context files chỉ đọc đúng theo role (xem cột "Ai đọc" trong bảng Context bên dưới)
+1. **Không nhầm E02 ↔ E03** — `web-company` = Company Admin (E02), `web-admin` = System Admin (E03). Đây là bug phổ biến nhất.
+2. **Không nhầm E04 ↔ E05** — `web-supplier` = Supplier domain (E04, public-facing), `web-outsource-web-private` = internal operation tool (E05).
+3. **Context files đọc đúng theo role** — xem cột "Ai đọc" trong bảng Context (section `<agent_architecture>` bên dưới). Không đọc rộng ra ngoài role.
+4. **Doc location single path:** mọi feature docs đặt trong `es-kitchen-docs/docs/features/<feature>/`. Folder `docs/epics/` cũ đã bị bỏ.
+5. **Memory Update Gate** sau mỗi dev task (xem section `<memory_update_gate>` bên dưới) — không skip.
 
-Chi tiết → `.claude/rules/`: `stack-constraints.md` · `security-rules.md` · `git-workflow.md` · `coding-style.md` · `project-structure.md`
+Chi tiết per-layer rules → `.claude/rules/`: `stack-constraints.md` · `security-rules.md` · `git-workflow.md` · `coding-style.md` · `project-structure.md`
 
 </core_rules>
 
@@ -66,17 +59,16 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 
 <red_line_rules>
 
-## Phân công theo repo
+## Phân công cross-repo (tính năng chạm nhiều repo)
 
-| Tính năng | Repo |
+> Mapping 1 repo → 1 epic: xem bảng **Repos** ở section `<ecosystem>`. Phần dưới chỉ liệt kê các tính năng **đụng nhiều repo cùng lúc** — dev phải đụng vào cả 2 bên.
+
+| Tính năng cross-repo | Repos liên quan |
 |---|---|
-| API, business logic, database, auth, tích hợp ngoài | `es-kitchen-repository/es-kitchen-api` |
-| User mobile app — order, menu, delivery, payment (E01) | `es-kitchen-repository/es-kitchen-payment-app` |
-| System Admin (E03) | `es-kitchen-repository/es-kitchen-web-admin` |
-| Company Admin (E02) | `es-kitchen-repository/es-kitchen-web-company` |
-| Supplier Web (E04) — menu, nhận đơn, account | `es-kitchen-repository/es-kitchen-web-supplier` |
-| elepay / Alipay / WeChat Pay | `es-kitchen-repository/es-kitchen-api` + `es-kitchen-repository/es-kitchen-payment-app` |
-| Push notification Firebase | `es-kitchen-repository/es-kitchen-api` (send) + `es-kitchen-repository/es-kitchen-payment-app` (receive) |
+| elepay / Alipay / WeChat Pay | `es-kitchen-api` (server-side intent) + `es-kitchen-payment-app` (client SDK) |
+| Push notification Firebase | `es-kitchen-api` (send via FCM) + `es-kitchen-payment-app` (receive + display) |
+| Auth flow (JWT) | `es-kitchen-api` (issue + verify) + tất cả FE/Mobile (lưu cookie/secure storage) |
+| WebSocket real-time | `es-kitchen-api` (socket.io server) + repo nào subscribe event đó |
 
 </red_line_rules>
 
@@ -86,32 +78,63 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 
 ## Kiến trúc Agent — `.claude/`
 
+### Nguyên tắc — Agent vs Command
+
+- **Agent** (`.claude/agents/*.md`) = **canonical workflow** + persona + ràng buộc + template. Single source of truth cho từng vai trò.
+- **Command** (`.claude/commands/*.md`) = **thin entry point** (5–8 dòng). Mỗi BMAD command chỉ trỏ về agent tương ứng và truyền `$ARGUMENTS`. Không chứa workflow.
+- Khi sửa quy trình BA / Tech Lead / PM → **chỉ sửa file agent**, không sửa command (trừ khi đổi command name hoặc cách parse args).
+- User có thể trigger theo 2 cách: gõ slash command (`/create-spec login`) hoặc nói tự nhiên ("hãy là BA, làm SPEC cho login") — cả hai cùng load file agent.
+- **Handover hint:** Section "Bước tiếp theo" trong Output của mỗi agent dùng natural language (vd `"Hãy là Tech Lead Design, làm DESIGN.md từ SPEC: <path>"`) — user copy-paste làm prompt turn kế tiếp. Slash command tương ứng vẫn work song song.
+- **Handover chain:** chi tiết step-by-step ở bảng **BMAD Workflow** bên dưới. Sơ đồ trực quan ở `es-kitchen-docs/docs/index.md` (mermaid). Lưu ý: **QC chạy 2 lần** — lần 1 sau SPEC (sinh TC song song với Tech Lead Design), lần 2 sau khi dev xong (execute TC + bug report + regression).
+
 ### Sub-agents — `.claude/agents/`
 
-| Agent | Vai trò | Trigger khi |
-|---|---|---|
-| `ba-agent.md` | Business Analyst | Phân tích yêu cầu, tạo SPEC.md |
-| `techlead-design-agent.md` | Tech Lead Design | Đọc SPEC → tạo DESIGN.md per repo |
-| `techlead-tasks-agent.md` | Tech Lead Tasks | Đọc DESIGN → phân rã task files |
-| `backend-agent.md` | NestJS Developer | Implement/review API, service, entity, migration, Redis |
-| `frontend-agent.md` | React Developer | Implement/review component, hook, store (E02 + E03 + E04) |
-| `mobile-agent.md` | Flutter Developer | Implement/review screen, Socket.IO, payment (E01) |
-| `pm-agent.md` | Project Manager | Tạo PLAN.md, phase-gate, timeline |
-| `qa-agent.md` | QA Engineer | Verify test coverage, validate AC, non-regression |
+| Agent | Vai trò | Trigger khi | Slash command |
+|---|---|---|---|
+| `ba-agent.md` | Business Analyst | Phân tích yêu cầu, tạo SPEC.md | `/create-spec` |
+| `techlead-design-agent.md` | Tech Lead Design | Đọc SPEC → tạo DESIGN.md per repo | `/create-design` |
+| `techlead-tasks-agent.md` | Tech Lead Tasks | Đọc DESIGN → phân rã task files | `/create-tasks` |
+| `pm-agent.md` | Project Manager | Tạo PLAN.md, phase-gate, timeline | `/create-plan` |
+| `backend-agent.md` | NestJS Developer | Implement/review API, service, entity, migration, Redis | `/generate-api`, `/review-code` |
+| `frontend-agent.md` | React Developer | Implement/review component, hook, store (E02 + E03 + E04 + E05 + E06) | `/create-component`, `/review-code` |
+| `mobile-agent.md` | Flutter Developer | Implement/review screen, Socket.IO, payment (E01) | `/review-code` |
+| `qc-agent.md` | QC Manual Tester | **Sau SPEC, trước/trong khi test** — sinh TC (RBT/QUICK), regression, execution checklist, bug report, test data, exploratory charter | `/test/generate_*` (11 commands) |
+| `qa-agent.md` | QA Engineer | **Sau khi dev xong task** — chạy test suite, verify coverage, validate AC, non-regression | — (chạy manual hoặc qua sub-agent) |
 
-> Tech Lead trigger qua: agent (`subagent_type: techlead-design-agent / techlead-tasks-agent`) hoặc slash command (`/create-design`, `/create-tasks`).
+> **QC vs QA:** `qc-agent` = manual tester chuẩn bị/thực thi TC (output là artifact `.md` cho QC team); `qa-agent` = post-dev verification (output là QA Report per task). Không trùng nhau.
 
 ### Slash Commands — `.claude/commands/`
 
-| Command | Chức năng |
-|---|---|
-| `/create-spec <feature>` | Tạo SPEC.md |
-| `/create-design <SPEC.md>` | Tạo DESIGN.md per repo |
-| `/create-tasks <feature/>` | Phân rã DESIGN → task files |
-| `/create-plan <feature/>` | Tạo PLAN.md |
-| `/review-code [path]` | Review code |
-| `/generate-api <module>` | Scaffold NestJS module |
-| `/create-component <Name> [admin\|company]` | Scaffold React component |
+**BMAD core:**
+
+| Command | Chức năng | Loại | Canonical workflow |
+|---|---|---|---|
+| `/create-spec <feature>` | Tạo SPEC.md | thin entry | `ba-agent.md` |
+| `/create-design <SPEC.md>` | Tạo DESIGN.md per repo | thin entry | `techlead-design-agent.md` |
+| `/create-tasks <feature/>` | Phân rã DESIGN → task files | thin entry | `techlead-tasks-agent.md` |
+| `/create-plan <feature/>` | Tạo PLAN.md | thin entry | `pm-agent.md` |
+| `/create-backlog <feature/>` | Sync task files → Backlog issues qua MCP | thin entry | `pm-agent.md` (Bước 4) |
+| `/review-code [path]` | Review code thay đổi trên branch | standalone | repo-specific (BE/FE/Mobile) |
+| `/generate-api <module>` | Scaffold NestJS module | standalone | follow `backend-agent` + `nestjs-best-practices` skill |
+| `/create-component <Name> [admin\|company]` | Scaffold React component | standalone | follow `frontend-agent` + `react-expert` skill |
+
+**QC manual testing (`/test/*`)** — canonical workflow: `qc-agent.md`:
+
+| Command | Chức năng | Loại | Skill |
+|---|---|---|---|
+| `/test/generate_manual_testcases_rbt` | Sinh TC theo FULL RBT 6 bước từ SPEC.md | thin entry | `rbt_manual_testing` (FULL) |
+| `/test/generate_testcases_from_requirements` | Sinh TC nhanh (QUICK mode) | thin entry | `rbt_manual_testing` (QUICK) |
+| `/test/update_testcases_from_requirements` | Cập nhật TC khi SPEC thay đổi (delta) | thin entry | `rbt_manual_testing` |
+| `/test/generate_cross_module_test_plan` | Sinh ma trận tổ hợp Pairwise đa module | thin entry | `requirements_analyzer` |
+| `/test/generate_regression_suite` | Chọn TC chạy lại sau code change | thin entry | `rbt_manual_testing` |
+| `/test/generate_test_execution_checklist` | Checklist ưu tiên trước release (Must/Should/Nice) | thin entry | `rbt_manual_testing` |
+| `/test/generate_exploratory_charter` | Structured exploratory testing session | thin entry | `rbt_manual_testing` |
+| `/test/generate_qc_onboarding_report` | Coverage map + task list cho QC mới | thin entry | `rbt_manual_testing` + `requirements_analyzer` |
+| `/test/generate_test_data` | Test data positive/negative/boundary/edge | standalone | — |
+| `/test/generate_bug_report` | Chuẩn hóa bug report cho Backlog | thin entry | `bug_reporter` |
+| `/test/export_to_drive` | Export bảng markdown → Google Sheet | standalone | — |
+
+> **thin entry** = command chỉ load agent canonical, không chứa workflow. **standalone** = command có workflow riêng (chưa refactor hoặc không cần agent persona).
 
 ### Skills — `.claude/skills/`
 
@@ -120,21 +143,26 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | `nestjs-best-practices/` | `es-kitchen-api` | Viết/review NestJS |
 | `postgresql/` | `es-kitchen-api` | Schema, migration, query |
 | `redis-development/` | `es-kitchen-api` | Redis cache pattern |
-| `react-expert/` | web-admin, web-company | React hooks/component |
-| `frontend-review/` | web-admin, web-company | Code review E02 + E03 |
+| `react-expert/` | All FE repos (E02–E06) | React 19 hooks/component patterns |
+| `frontend-review/` | All FE repos (E02–E06) | Code review React 19 / TanStack v5 / RTK v2 / AntD v6 |
 | `flutter-review/` | payment-app | Code review Flutter E01 |
 | `business-analyst/` | — | Discovery, SPEC template |
 | `technical-writing/` | Tất cả | Viết/cập nhật docs |
 | `solution-architect/` | — | Kiến trúc cross-cutting |
+| `rbt_manual_testing/` | — | Sinh manual TC (QUICK + FULL RBT 6 bước) — master skill cho `qc-agent` |
+| `requirements_analyzer/` | — | Phân tích requirements (Drive/Docs/Figma/Backlog) — extract AC, phát hiện ambiguity |
+| `bug_reporter/` | — | Chuẩn hóa bug report — severity/priority/repro steps cho `qc-agent` |
 
 ### Context — `.claude/context/` (đọc on-demand)
 
+> Liệt kê chỉ tên agent — slash command tương ứng tự load context qua agent canonical (xem mapping ở bảng Sub-agents).
+
 | File | Nội dung | Ai đọc |
 |---|---|---|
-| `specification.md` | Business context, epics, phase-gate G1-G6 | `ba-agent`, `pm-agent`, `/create-spec`, `/create-plan` |
-| `technical.md` | Tech stack, CI/CD, known bugs | `techlead-design-agent`, `/create-design`, `backend-agent` |
-| `backlog-workflow.md` | Quy tắc tạo issue/task, status workflow | `techlead-tasks-agent`, `/create-tasks`, tất cả agents khi tạo task |
-| `doc-structure.md` | Cấu trúc SPEC/DESIGN/PLAN theo feature type | `ba-agent`, `techlead-design-agent`, `techlead-tasks-agent`, `/create-spec`, `/create-design`, `/create-tasks` |
+| `specification.md` | Business context, epics, phase-gate G1-G6 | `ba-agent`, `pm-agent` |
+| `technical.md` | Tech stack, CI/CD, known bugs | `techlead-design-agent`, `backend-agent` |
+| `backlog-workflow.md` | Quy tắc tạo issue/task, status workflow | `techlead-tasks-agent` + tất cả agents khi tạo task |
+| `doc-structure.md` | Cấu trúc SPEC/DESIGN/PLAN theo feature type | `ba-agent`, `techlead-design-agent`, `techlead-tasks-agent` |
 | `ai-workflow.md` | Kiến trúc AI Agent system | Khi mở rộng agent system |
 
 ### Workflows — `.claude/workflows/` (đọc on-demand)
@@ -154,20 +182,31 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 
 ## BMAD Workflow
 
-| Bước | Command | Output | Agent |
-|---|---|---|---|
-| 1 | `/create-spec <feature>` | `SPEC.md` | `ba-agent` |
-| 2 | `/create-design <SPEC.md>` | `DESIGN.md` per repo | `techlead-design-agent` |
-| 3 | `/create-tasks <feature/>` | `tasks/task-*.md` | `techlead-tasks-agent` |
-| 4 | `/create-plan <feature/>` | `PLAN.md` | `pm-agent` |
-| 5a | Implement BE task | Working code | `backend-agent` |
-| 5b | Implement FE task | Working code | `frontend-agent` |
-| 5c | Implement Mobile task | Working code | `mobile-agent` |
-| 6 | QA Verify | QA Report | `qa-agent` |
+| Bước | Command | Output | Agent | Phase |
+|---|---|---|---|---|
+| 1 | `/create-spec <feature>` | `SPEC.md` | `ba-agent` | Discovery |
+| 2a | `/create-design <SPEC.md>` | `DESIGN.md` per repo | `techlead-design-agent` | Design |
+| 2b | `/test/generate_manual_testcases_rbt` (parallel) | `test-cases/tc_*.md` | `qc-agent` | Design |
+| 3 | `/create-tasks <feature/>` | `tasks/task-*.md` | `techlead-tasks-agent` | Planning |
+| 4 | `/create-plan <feature/>` | `PLAN.md` | `pm-agent` | Planning |
+| 4b | (optional) `/create-backlog <feature/>` | Backlog issues (1 per task) | `pm-agent` (Bước 4) | Planning |
+| 5a | Implement BE task | Working code | `backend-agent` | Build |
+| 5b | Implement FE task | Working code | `frontend-agent` | Build |
+| 5c | Implement Mobile task | Working code | `mobile-agent` | Build |
+| 6 | QA verify per task | QA Report | `qa-agent` | Verify |
+| 7a | Execute manual TC | Test execution checklist + Bug reports | `qc-agent` | Test |
+| 7b | (optional) `/test/generate_regression_suite` | Regression suite | `qc-agent` | Test |
 
 **Phase order:** Phase 1 (DB migration) → Phase 2 (API) → Phase 3 (FE + Mobile song song) → Phase 4 (Integration)
 
-**Contract Lock** trước Phase 3: REST API + WebSocket events + Push notification payload — confirm bởi BE + FE + Mobile + PM.
+**Contract Lock** trước Phase 3: REST API + WebSocket events + Push notification payload — confirm bởi BE + FE + Mobile + PM + QC (để QC chốt TC dựa trên contract).
+
+**QC khi nào tham gia:**
+- **Sau bước 1 (SPEC ready):** chạy `/test/generate_manual_testcases_rbt` song song với Tech Lead design — TC sẵn sàng khi dev xong
+- **Khi SPEC update:** `/test/update_testcases_from_requirements` để delta-update bộ TC
+- **Trước release:** `/test/generate_test_execution_checklist` + `/test/generate_regression_suite`
+- **Trong sprint:** `/test/generate_bug_report` mỗi lần tìm bug
+- **QC mới join:** `/test/generate_qc_onboarding_report`
 
 Chi tiết → `.claude/workflows/new-feature.md`
 
@@ -190,9 +229,13 @@ Chi tiết → `.claude/workflows/new-feature.md`
 ```
 ✅ task-x-y hoàn thành
 Files đã thay đổi:  <path> → <mô tả>
+Unit Tests:         ✅ <file>.spec.ts pass, coverage X% (target Y%)
 Non-Regression:     ✅ <tính năng X> vẫn hoạt động
 Memory Update Gate: ✅/skipped api-catalog / erd / patterns
-Bước tiếp:          → task-x-(y+1)
+Bước tiếp theo:     → "Hãy là QA, verify task này: <task-x-y.md>"
+                    → sau khi QA PASS: task-x-(y+1)
 ```
+
+> Dev agent (`backend-agent`, `frontend-agent`, `mobile-agent`) **handover qa-agent** trước khi sang task tiếp theo. `qa-agent` chạy unit test + validate AC + check non-regression. Nếu QA FAIL, dev fix rồi loop lại; nếu QA PASS, dev mới move sang task kế tiếp.
 
 </memory_update_gate>

@@ -12,6 +12,8 @@ tools:
 
 Bạn là **Business Analyst** của dự án ESKITCHEN Phase 2 — hệ thống quản lý bếp doanh nghiệp cho client Nhật Bản.
 
+> **File này là canonical workflow cho mọi tác vụ BA.** Slash command `/create-spec` chỉ là entry point — toàn bộ Domain Knowledge, ràng buộc, quy trình hỏi-đáp, và cấu trúc SPEC đều nằm ở đây. Khi sửa quy trình BA, chỉ sửa file này.
+
 ## Domain Knowledge
 
 **Actors:**
@@ -54,10 +56,11 @@ tilth_files(pattern: "**/SPEC.md", path: "es-kitchen-docs/docs/")
 9. Cần real-time không? (WebSocket, push notification)
 10. Liên quan tích hợp bên ngoài không? (Yamato/Sagawa/HubSpot/elepay)
 
-### Bước 3 — Xác định loại feature
+### Bước 3 — Xác định path
 
-- Chỉ 1 actor / 1 repo → **Single-epic**: `docs/epics/<id>/details/<feature>/SPEC.md`
-- Nhiều actor / nhiều repo → **Cross-repo**: `docs/features/<feature>/SPEC.md`
+**Path duy nhất** cho mọi feature: `es-kitchen-docs/docs/features/<feature-name>/SPEC.md`
+
+> Số lượng actor / repo bị ảnh hưởng được ghi trong section **Actors & Preconditions** của SPEC — đó là tín hiệu để PM biết có cần Contract Lock trước Phase 3 hay không (xem `.claude/context/doc-structure.md`). Folder `docs/epics/` đã bị bỏ — tất cả features đặt cùng chỗ.
 
 ### Bước 4 — Tạo SPEC.md
 
@@ -77,7 +80,9 @@ Cấu trúc bắt buộc:
 
 ```
 ✅ SPEC đã tạo tại: <đường dẫn>
-Loại: Single-epic / Cross-repo
-Bước tiếp theo:
-→ /create-design <đường dẫn SPEC.md>
+Phạm vi: Single-actor (1 repo) / Cross-repo (N repos)
+Bước tiếp theo (chạy song song):
+→ "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: <đường dẫn SPEC.md>"
+→ "Hãy là QC, sinh test cases từ SPEC này: <đường dẫn SPEC.md>"
+  (hoặc slash command: `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
 ```

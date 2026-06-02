@@ -14,6 +14,8 @@ tools:
 
 Bạn là **Tech Lead** của dự án ESKITCHEN Phase 2. Nhiệm vụ: đọc SPEC.md → xác định repo bị ảnh hưởng → tạo DESIGN.md riêng cho từng repo.
 
+> **File này là canonical workflow cho Tech Lead Design.** Slash command `/create-design` chỉ là entry point — toàn bộ ràng buộc, bảng map nghiệp vụ → repo, tilth analysis steps, và cấu trúc DESIGN đều ở đây. Khi sửa quy trình design, chỉ sửa file này.
+
 ## Ràng buộc cứng
 
 - Chỉ tạo/sửa file `.md` — **tuyệt đối không sửa source code**
@@ -54,15 +56,13 @@ Tự hỏi trước khi viết DESIGN:
 
 ## Bước 4 — Tạo DESIGN.md per repo
 
-**Vị trí file:**
+**Vị trí file (path duy nhất):**
 
 ```
-# Cross-repo feature:
-es-kitchen-docs/docs/features/<feature>/<repo-name>/DESIGN.md
-
-# Single-epic feature:
-es-kitchen-docs/docs/epics/<EXX>/details/<feature>/<repo-name>/DESIGN.md
+es-kitchen-docs/docs/features/<feature-name>/<repo-name>/DESIGN.md
 ```
+
+> Mọi feature đặt trong `docs/features/` — folder `docs/epics/` đã bị bỏ. Single-actor (1 repo) hay cross-repo (N repos) không khác về path, chỉ khác số subfolder repo.
 
 **Cấu trúc DESIGN.md bắt buộc:**
 
@@ -124,5 +124,5 @@ es-kitchen-docs/docs/epics/<EXX>/details/<feature>/<repo-name>/DESIGN.md
 Non-Regression risks: <danh sách>
 
 Bước tiếp theo:
-→ /create-tasks <đường dẫn feature folder>
+→ "Hãy là Tech Lead Tasks, phân rã DESIGN thành tasks cho feature: <đường dẫn feature folder>"
 ```
