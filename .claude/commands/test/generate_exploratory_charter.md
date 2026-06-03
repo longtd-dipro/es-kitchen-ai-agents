@@ -2,7 +2,6 @@
 description: Sinh structured exploratory testing charter — mission, scope, time-box, ghi chép kết quả. Biến exploratory testing từ ad-hoc thành có hệ thống.
 skills:
   - rbt_manual_testing
-  - requirements_analyzer
 ---
 
 > **Canonical workflow:** `.claude/agents/qc-agent.md`.

@@ -2,7 +2,6 @@
 description: Sinh manual test cases chất lượng cao theo quy trình AI-RBT 6 bước (Risk-Based Testing) từ SPEC.md của feature.
 skills:
   - rbt_manual_testing
-  - requirements_analyzer
 ---
 
 > **Canonical workflow:** `.claude/agents/qc-agent.md` — file này chỉ là entry point.
