@@ -1,0 +1,54 @@
+# BF_MENU & ORDER Quản lý Thực đơ
+
+> Domain slug: `menu-order` · 46 stories
+
+## Stories
+
+| ID | EPIC | STORY | STORY_2 | STORY_3 | DESCRIPTION | PRIORITY | BUSINESS FLOW |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 | Monthly prepared food order | Menu List |  | Hiển thị danh sách thực đơn của tháng này và tháng sau. Phân chia theo tab sản phẩm Lạnh / Đông lạnh / Thường. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | Product Search | Keyword search | Tìm kiếm sản phẩm trong thực đơn bằng từ khóa. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | Product information | Product information display | Xem chi tiết sản phẩm: hình ảnh, mô tả, thành phần dị ứng, dinh dưỡng, mức giá nhân viên phải trả. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  |  | View product reviews | Xem đánh giá (review) của nhân viên về sản phẩm đó. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | Order (manual) | Displayed in product card format | Đặt hàng thủ công: Hiển thị sản phẩm dưới dạng thẻ (Card), người dùng nhập số lượng cần đặt vào từng món. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  |  | Switch to product list view | Đổi giao diện đặt hàng sang dạng danh sách (Matrix list) giúp nhìn tổng quan nhanh hơn. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  |  | Orders placed via CSV file upload | Đặt món hàng loạt bằng cách tải file CSV lên hệ thống. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 | AI PRO | Order (automatic) | Mode 1: Recommend evenly distributed | Mode 1: Nút tự động phân bổ đồng đều số lượng món ăn cho khớp với gói hợp đồng (không dựa trên lịch sử). | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 | AI PRO |  | Mode 2: AI-powered recommendations based on past performance by company. | Mode 2: Hệ thống tự động phân tích tần suất, lịch sử đặt hàng của công ty để đề xuất số lượng món phù hợp. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 | AI PRO |  | Mode 4: Employee-requested recommendations | Mode 4: Tự động lên đơn đặt hàng dựa trên kết quả thu thập từ nguyện vọng (khảo sát) của nhân viên. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 | AI PRO |  | Mode 6: AI recommends chats. | Mode 6: Nhập yêu cầu dạng chat, Chatbot AI sẽ tự động phân tích và đưa ra giỏ hàng đề xuất. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | Automatic calculation of order quantity | Automatic calculation of required quantity | Tự động tính toán xem doanh nghiệp cần chọn bao nhiêu món dựa trên giới hạn của gói hợp đồng (VD: Gói 100 món). | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  |  | Real-time quantity and amount aggregation | Tự động cộng dồn tổng số lượng và số tiền theo thời gian thực ngay khi doanh nghiệp chọn món. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  |  | Check if the number of employee benefits exceeds the limit (82 to 38 items). | Cảnh báo thời gian thực nếu số lượng món ăn vượt quá ngân sách phúc lợi do công ty tài trợ. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | Order Confirmation and Submission |  | Xác nhận và gửi đơn hàng. Cho phép sửa trong hạn, sau thời hạn chốt sẽ khóa chức năng chỉnh sửa. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | Order History | Monthly order details display | Hiển thị chi tiết lịch sử đơn đặt hàng Món ăn của các tháng trước. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 | Material Order | Enter your order for the current month. |  | Đặt hàng các vật tư/dụng cụ đi kèm (đũa, thìa, khay...). Hệ thống có popup nhắc đặt vật tư sau khi đặt món. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | Order History |  | Xem lịch sử đặt hàng vật tư và theo dõi ngày dự kiến giao (lấy dữ liệu API từ bên vận chuyển). | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 | Legal Establishment Usage Report | Corporate and employee utilization rate report automatically generated |  | Hệ thống tự động trích xuất báo cáo tỷ lệ tiêu thụ, số lượng mua, hàng hủy của nhân viên. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | Popular Products Ranking |  | Xem bảng xếp hạng các món ăn được nhân viên mua nhiều nhất (bán chạy nhất). | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | List of usage status by location |  | Danh sách tình trạng sử dụng phân bổ theo từng chi nhánh cụ thể (Dành cho Admin tổng). | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | CSV/Excel Export |  | Tải xuống báo cáo số liệu hoạt động ra định dạng Excel/CSV. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | 法人顧客向けWEB-Company Admin_画面一覧 |  | An alert will be displayed for companies that have not submitted their information by the deadline. |  | Hệ thống tự động gửi email và hiển thị cảnh báo trước 7 ngày / 3 ngày đối với các công ty chưa chốt đơn hàng tháng. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 02 | ユーザーモバイルアプリ-UserMobileApp_画面一覧 |  | Gợi ý sản phẩm (Cá nhân hóa) | Giá sản phẩm | Gợi ý sản phẩm cá nhân hóa và hiển thị mức giá tương ứng. (Thuộc phân hệ mua sắm của User App). | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 | Monthly menu registration (manual) | Add product |  | Click thêm sản phẩm, hiển thị popup toàn bộ danh sách món từ Master Product để cho vào Menu tháng. Có chức năng search. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Recommendation display of popular products |  | Tại popup chọn sản phẩm, hiển thị tab gợi ý các sản phẩm đang phổ biến để hỗ trợ Admin khi tạo Menu. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Change the display order of products |  | Hỗ trợ kéo thả (drag & drop) để thay đổi vị trí, thứ tự hiển thị của các sản phẩm trên Menu tháng. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Add/Display Menu PDF |  | Chức năng tải lên, thay thế và quản lý phiên bản file PDF của Menu. File lớn sẽ được tự động nén. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 | Create new menu by duplicating past menu |  |  | Tạo menu tháng mới bằng cách sao chép menu tháng cũ. Tự động cảnh báo và lọc ra các món đã xuất hiện liên tiếp 2 tháng. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 | View past menus |  |  | Tra cứu và xem lại các Menu của các tháng trước (Tìm theo năm/tháng, loại menu). | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 | Deli order management | Refined search criteria |  | Tìm kiếm đơn đặt hàng Món ăn theo chế độ (KH/Sản phẩm), lọc theo tháng, tên KH, trạng thái đơn và loại tủ/máy bán hàng. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Order List | Order list display | Hiển thị danh sách Đơn đặt hàng (Mã đơn, Tên gói, KH, Trạng thái). Sắp xếp theo dòng thời gian. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | CSV Download | Tải xuống dữ liệu danh sách đơn đặt hàng dưới định dạng file CSV theo bộ lọc tìm kiếm. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Order details / Edit | Order details / Edit | Xem nội dung đơn hàng, chỉnh sửa số lượng đặt món ăn/vật tư, thiết lập số lượng tối thiểu hoặc clear số lượng. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Register notifications for order status | Soạn thảo và gửi thông báo thay đổi tình trạng đơn hàng đến Khách hàng, NCC, Tài xế theo từng hạng mục sản phẩm. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 | Material order management | Order List | Order list display | Hiển thị danh sách đơn đặt hàng dành cho Vật tư (Dụng cụ/Khay...). | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Order details / Edit | Order details / Edit | Xem chi tiết, điều chỉnh hoặc hủy số lượng cho đơn đặt hàng Vật tư. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Order List | Order list display | (Mục hiển thị bảng dữ liệu đơn hàng vật tư và cho phép xóa/sửa số lượng). | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Memo | Thêm nội dung Ghi chú nội bộ (Memo) lưu ý cho từng đơn đặt hàng. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Order details list | Click từ danh sách đơn để xem breakdown chi tiết các hạng mục bên trong một đơn hàng. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Provisional Order | Lập đơn đặt hàng tạm tính (Provisional Order): Chọn nhà cung cấp, nhập số lượng tạm, ngày giao và hạn sử dụng mong muốn. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Calculation logic for provisional orders | Hệ thống tự động tính toán số lượng đặt hàng tạm tính dựa vào trung bình lịch sử mua hàng và tỷ lệ tăng trưởng khách hàng hiện tại. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Final Order | Lập đơn đặt hàng chính thức (Final Order): Nhập số lượng chốt cuối cùng và các yêu cầu giao hàng gửi nhà cung cấp. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Order Status Management | Hệ thống tự động cập nhật Trạng thái đơn hàng dựa trên phản hồi của Nhà cung cấp hoặc thao tác của Admin. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Order history | Order History List | Hiển thị bảng lịch sử đặt hàng, tìm theo nhà cung cấp, hiển thị tổng tiền tự động tính toán. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+| 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Detailed information on order history | Nhấn vào chi tiết trong lịch sử để xem breakdown số lượng đặt của từng mặt hàng từ nhà cung cấp đó. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |

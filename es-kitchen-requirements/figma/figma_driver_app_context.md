@@ -18,7 +18,7 @@
 | `DA_HOME_*` | 001, 001-01/02, 002, 003, 005 | Home dashboard driver |
 | `DA_RECV_*` | 001, 001-02, 001-3, 003 | Nhận đơn (có popup confirm) |
 | `DA_DLVR_*` | 001 (7 variants), 002 (3), 003 (5), 004 (2), 005 (2) | Flow giao hàng + cập nhật trạng thái |
-| `DA_RPTD_*` | 001-01 → 001-5 | Report / báo cáo sau giao |
+| `<br/>` | 001-01 → 001-5 | Report / báo cáo sau giao |
 | `DA_CHAT_001` | 1 | Chatbox với khách / điều phối |
 | `DA_NOTI_*` | 001, 002 | Notification list + detail |
 

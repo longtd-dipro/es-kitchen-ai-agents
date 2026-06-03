@@ -163,6 +163,11 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | `technical.md` | Tech stack, CI/CD, known bugs | `techlead-design-agent`, `backend-agent` |
 | `backlog-workflow.md` | Quy tắc tạo issue/task, status workflow | `techlead-tasks-agent` + tất cả agents khi tạo task |
 | `doc-structure.md` | Cấu trúc SPEC/DESIGN/PLAN theo feature type | `ba-agent`, `techlead-design-agent`, `techlead-tasks-agent` |
+| `business-flows/README.md` | Index 15 domain + map repo→domain (long-term business memory, nguồn `function_list.xlsx`) | `ba-agent`, `techlead-design-agent`, `pm-agent` |
+| `business-flows/business-flow-index.md` | 23 nghiệp vụ + Target + Backlog ID + FigJam link | `ba-agent` (lookup domain), `pm-agent` (scope) |
+| `business-flows/domains/<slug>.md` | Stories per domain (Hợp đồng, Menu & Order, Giao hàng…) — đọc đúng 1 domain liên quan | `ba-agent` (Discovery/SPEC), `techlead-design-agent` (Design) |
+| `business-flows/function-list.md` | Master function list — Summary by epic + Phase 1/2 stories (135 KB, chỉ load khi cần lookup function cụ thể) | `pm-agent` (estimate), `techlead-design-agent` (scope check) |
+| `business-flows/screen-code-rule.md` | Quy tắc `<Module>_<Feature>_<Seq>` | Dev / QC khi đặt screen code mới |
 | `ai-workflow.md` | Kiến trúc AI Agent system | Khi mở rộng agent system |
 
 ### Workflows — `.claude/workflows/` (đọc on-demand)
