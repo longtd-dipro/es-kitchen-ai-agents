@@ -52,6 +52,7 @@ nav:
       - Structure: mobile/es-kitchen-payment-app/overview/structure.md
 
 - Features:
+  - DOCUMENT OVERVIEW: features/index.md
   - BA TODOs (Client Questions): features/BA_TODO_for_client.md
   - Admin Account Management:
     - Specification: features/admin-account-management/SPEC.md
