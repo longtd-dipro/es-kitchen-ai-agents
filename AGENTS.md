@@ -150,7 +150,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | `technical-writing/` | Tất cả | Viết/cập nhật docs |
 | `solution-architect/` | — | Kiến trúc cross-cutting |
 | `rbt_manual_testing/` | — | Sinh manual TC (QUICK + FULL RBT 6 bước) — master skill cho `qc-agent` |
-| `requirements_analyzer/` | — | Phân tích requirements (Drive/Docs/Figma/Backlog) — extract AC, phát hiện ambiguity |
+| `requirements_analyzer/` | — | Phân tích requirements **đa nguồn** (cross-SPEC, Drive, Backlog) — chỉ dùng cho `/test/generate_cross_module_test_plan` + `/test/generate_qc_onboarding_report`. Không cần khi chỉ đọc 1 SPEC.md đã structured. |
 | `bug_reporter/` | — | Chuẩn hóa bug report — severity/priority/repro steps cho `qc-agent` |
 
 ### Context — `.claude/context/` (đọc on-demand)
