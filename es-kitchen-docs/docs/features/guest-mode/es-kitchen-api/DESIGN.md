@@ -4,7 +4,7 @@
 > **Repo:** `es-kitchen-api`
 > **SPEC:** `es-kitchen-docs/docs/features/guest-mode/SPEC.md`
 > **Ngày tạo:** 2026-06-05
-> **Tech Lead:** ngaht@dipro.vn
+> **Tech Lead:** longtd@dipro.vn
 
 ---
 
