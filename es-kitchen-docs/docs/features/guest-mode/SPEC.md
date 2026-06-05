@@ -2,7 +2,7 @@
 
 > **Feature:** Guest Mode — cho phép người dùng trải nghiệm app mà không cần đăng ký tài khoản đầy đủ.
 > **Ngày tạo:** 2026-06-05
-> **BA:** ngaht@dipro.vn
+> **BA:** longtd@dipro.vn
 > **Scope:** Cross-repo — `es-kitchen-api` · `es-kitchen-payment-app` · `es-kitchen-web-admin`
 > **Contract Lock cần thiết:** Có (3 repos)
 
