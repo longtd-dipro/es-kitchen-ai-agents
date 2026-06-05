@@ -3,8 +3,8 @@
 > Trang tổng hợp toàn bộ SPEC.md trong `/features`.
 > Mỗi dòng = 1 Feature → 1 SPEC.md tương ứng.
 
-**Tổng:** 15 Business Flows + 11 Features khác = 26 SPEC.md
-**Last updated:** 2026-06-04
+**Tổng:** 15 Business Flows + 12 Features khác = 27 SPEC.md
+**Last updated:** 2026-06-05
 
 ---
 
@@ -39,6 +39,7 @@
 | AI Recommendation Engine | Engine gợi ý món ăn dựa trên lịch sử và preference của End User (E01). | [http://wiki.es-kitchen.co.jp/features/ai-recommendation/SPEC/](http://wiki.es-kitchen.co.jp/features/ai-recommendation/SPEC/) |
 | API Hardening | Tăng cường bảo mật API: rate limit, validation, audit log, error handling. | [http://wiki.es-kitchen.co.jp/features/api-hardening/SPEC/](http://wiki.es-kitchen.co.jp/features/api-hardening/SPEC/) |
 | Authentication | Authentication chung — đăng nhập, JWT, refresh token, OTP. | [http://wiki.es-kitchen.co.jp/features/authentication/SPEC/](http://wiki.es-kitchen.co.jp/features/authentication/SPEC/) |
+| Guest Mode | End User (E01) đăng nhập nhanh không cần tài khoản — block cash, nhập Company ID per checkout, upgrade qua OTP email. Admin (E03) toggle `guestPaymentAllowed` per company. | [http://wiki.es-kitchen.co.jp/features/guest-mode/SPEC/](http://wiki.es-kitchen.co.jp/features/guest-mode/SPEC/) |
 | IP Whitelist | Kiểm soát truy cập theo IP cho các portal admin nội bộ. | [http://wiki.es-kitchen.co.jp/features/ip-whitelist/SPEC/](http://wiki.es-kitchen.co.jp/features/ip-whitelist/SPEC/) |
 | Maintain Management | Quản lý chế độ bảo trì hệ thống — bật/tắt portal, thông báo người dùng. | [http://wiki.es-kitchen.co.jp/features/maintain-management/SPEC/](http://wiki.es-kitchen.co.jp/features/maintain-management/SPEC/) |
 | Notification Management | Quản lý thông báo đẩy/email/in-app gửi đến các actor. | [http://wiki.es-kitchen.co.jp/features/notification-management/SPEC/](http://wiki.es-kitchen.co.jp/features/notification-management/SPEC/) |

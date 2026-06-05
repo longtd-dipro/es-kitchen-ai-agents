@@ -101,6 +101,32 @@ nav:
     - Specification: features/delivery-partner/SPEC.md
   - Driver Authentication:
     - API Design: features/driver-authentication/es-kitchen-api/DESIGN.md
+  - Guest Mode:
+    - Specification: features/guest-mode/SPEC.md
+    - API Design: features/guest-mode/es-kitchen-api/DESIGN.md
+    - Mobile Design: features/guest-mode/es-kitchen-payment-app/DESIGN.md
+    - Web Admin Design: features/guest-mode/es-kitchen-web-admin/DESIGN.md
+    - Test Cases: features/guest-mode/test-cases/README.md
+    - Test Cases - Guest Login: features/guest-mode/test-cases/tc_guest_login.md
+    - Test Cases - Feature Restriction: features/guest-mode/test-cases/tc_feature_restriction.md
+    - Test Cases - Checkout: features/guest-mode/test-cases/tc_guest_checkout.md
+    - Test Cases - Link Email: features/guest-mode/test-cases/tc_link_email.md
+    - Test Cases - Order History: features/guest-mode/test-cases/tc_order_history.md
+    - Test Cases - Admin Toggle: features/guest-mode/test-cases/tc_admin_toggle.md
+    - Test Cases - Cross Flow: features/guest-mode/test-cases/tc_cross_flow.md
+    - API Tasks:
+      - Task 1-1: features/guest-mode/es-kitchen-api/tasks/task-1-1.md
+      - Task 2-1: features/guest-mode/es-kitchen-api/tasks/task-2-1.md
+      - Task 2-2: features/guest-mode/es-kitchen-api/tasks/task-2-2.md
+      - Task 2-3: features/guest-mode/es-kitchen-api/tasks/task-2-3.md
+      - Task 2-4: features/guest-mode/es-kitchen-api/tasks/task-2-4.md
+      - Task 4-1: features/guest-mode/es-kitchen-api/tasks/task-4-1.md
+    - Mobile Tasks:
+      - Task 3-1: features/guest-mode/es-kitchen-payment-app/tasks/task-3-1.md
+      - Task 3-2: features/guest-mode/es-kitchen-payment-app/tasks/task-3-2.md
+      - Task 3-3: features/guest-mode/es-kitchen-payment-app/tasks/task-3-3.md
+    - Web Admin Tasks:
+      - Task 3-4: features/guest-mode/es-kitchen-web-admin/tasks/task-3-4.md
   - Inventory & Equipment:
     - Specification: features/inventory-equipment/SPEC.md
   - IP Whitelist:
