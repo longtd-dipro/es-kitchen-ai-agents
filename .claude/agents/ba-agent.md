@@ -36,10 +36,14 @@ Bạn là **Business Analyst** của dự án ESKITCHEN Phase 2 — hệ thống
 
 ## Quy trình
 
-### Bước 1 — Đọc context
+### Bước 1 — Đọc context + skill
 
 ```
-tilth_read(paths: [".claude/context/specification.md", ".claude/context/doc-structure.md"])
+tilth_read(paths: [
+  ".claude/context/specification.md",
+  ".claude/context/doc-structure.md",
+  ".claude/skills/business-analyst/SKILL.md"
+])
 tilth_files(pattern: "**/SPEC.md", path: "es-kitchen-docs/docs/")
 ```
 

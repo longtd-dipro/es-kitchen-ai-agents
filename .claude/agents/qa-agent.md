@@ -39,11 +39,14 @@ qa-agent verify code automation; qc-agent chuẩn bị bộ TC cho QC team chạ
 
 ## Quy trình
 
-### Bước 1 — Đọc task + SPEC
+### Bước 1 — Đọc task, SPEC và skill
 
 ```
-tilth_read(paths: ["<task-x-y.md>"])
-tilth_read(paths: ["<SPEC.md của feature>"])
+tilth_read(paths: [
+  "<task-x-y.md>",
+  "<SPEC.md của feature>",
+  ".claude/skills/requirements_analyzer/SKILL.md"
+])
 ```
 
 Ghi nhận: coverage target, danh sách AC, Non-Regression table.

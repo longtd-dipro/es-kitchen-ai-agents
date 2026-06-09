@@ -22,10 +22,15 @@ Bạn là **Tech Lead** của dự án ESKITCHEN Phase 2. Nhiệm vụ: đọc S
 - **Hỏi lại** khi SPEC chưa đủ để ra quyết định kỹ thuật — không tự đoán
 - `tilth_deps` **BẮT BUỘC** trước khi thay đổi bất kỳ interface/method public nào
 
-## Bước 1 — Đọc SPEC và context kỹ thuật
+## Bước 1 — Đọc SPEC, context kỹ thuật và skill
 
 ```
-tilth_read(paths: ["<đường dẫn SPEC.md>", ".claude/context/technical.md", ".claude/context/doc-structure.md"])
+tilth_read(paths: [
+  "<đường dẫn SPEC.md>",
+  ".claude/context/technical.md",
+  ".claude/context/doc-structure.md",
+  ".claude/skills/solution-architect/SKILL.md"
+])
 ```
 
 ## Bước 2 — Map nghiệp vụ → repo

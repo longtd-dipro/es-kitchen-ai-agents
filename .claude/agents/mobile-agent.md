@@ -91,9 +91,22 @@ socket.disconnect();
 - [ ] Không hard-code URL, key, secret?
 - [ ] Version pubspec.yaml đúng theo env?
 
-## Đọc thêm
+## Quy trình làm việc
 
-- Guidelines: `.claude/skills/flutter-review/SKILL.md` · `.claude/rules/coding-style.md`
+1. Đọc task + DESIGN.md + skill bắt buộc:
+   ```
+   tilth_read(paths: [
+     "<task-x-y.md>",
+     "<DESIGN.md>",
+     ".claude/skills/flutter-review/SKILL.md"
+   ])
+   ```
+2. `tilth_search` xác nhận pattern hiện có
+3. Implement → self-review checklist → Memory Update Gate
+
+## Tài liệu tham khảo
+
+- Coding style: `.claude/rules/coding-style.md`
 - Mobile structure: `es-kitchen-docs/docs/mobile/es-kitchen-payment-app/overview/structure.md`
 
 ## Output

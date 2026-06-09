@@ -51,6 +51,113 @@ Quy trình đặt hàng từ hệ thống ESKitchen gửi đến Nhà cung cấp
 
 ---
 
+## Cấu trúc đơn hàng Supplier (Order Template)
+
+Mô tả đầy đủ các trường dữ liệu của 1 đơn hàng từ System Admin gửi đến Supplier, bao gồm các mốc thời gian và vòng đời trạng thái.
+
+### 1. Header đơn hàng (System Admin tạo)
+
+| Field | Tên hiển thị | Kiểu dữ liệu | Ví dụ | Ghi chú |
+|---|---|---|---|---|
+| `order_code` | Số đơn hàng | string | `SO-2026-0601-001` | Auto-generate |
+| `created_at` | Ngày tạo đơn | date | `2026-06-01` | Mốc 1 |
+| `company_name` | Tên công ty đặt hàng | string | `株式会社ABC` | Công ty đặt order từ luồng ESKITCHEN-1239 |
+| `picking_date` | Ngày dự kiến giao hàng | date | `2026-06-10` | Mốc 2 — lấy từ contract (ESKITCHEN-1235) |
+| `delivery_location` | Nơi giao hàng | string | `東京都渋谷区XX 1-2-3` | Địa chỉ kho nhận hàng |
+| `status` | Trạng thái đơn | enum | `waiting_response` | Xem bảng trạng thái bên dưới |
+| `admin_note` | Ghi chú System Admin | string (optional) | — | |
+
+### 2. Danh sách sản phẩm (Line Items — 1 đơn có thể có nhiều dòng)
+
+| Field | Tên hiển thị | Kiểu dữ liệu | Ví dụ | Ghi chú |
+|---|---|---|---|---|
+| `product_code` | Mã sản phẩm | string | `PRD-001` | |
+| `product_name` | Tên sản phẩm | string | `豚バラ肉 スライス` | |
+| `quantity` | Số lượng đặt | number | `50` | |
+| `unit` | Đơn vị | string | `kg` | |
+| `requested_expiry_date` | Hạn sử dụng yêu cầu | date | `2026-06-20` | Admin điền yêu cầu |
+
+### 3. Phản hồi Supplier — Ngày dự kiến xuất (Supplier điền — Mốc 4)
+
+| Field | Tên hiển thị | Kiểu dữ liệu | Ví dụ | Ghi chú |
+|---|---|---|---|---|
+| `planned_shipping_date` | Ngày dự kiến xuất hàng | date | `2026-06-08` | Mốc 4 — trigger chuyển trạng thái |
+| `supplier_response_note` | Ghi chú phản hồi | string (optional) | `在庫確認済み` | |
+
+### 4. Báo cáo xuất hàng thực tế (Supplier điền — Mốc 5)
+
+| Field | Tên hiển thị | Kiểu dữ liệu | Ví dụ | Ghi chú |
+|---|---|---|---|---|
+| `actual_shipping_date` | Ngày xuất hàng thực tế | date | `2026-06-08` | Mốc 5 |
+| `transport_company` | Tên công ty vận chuyển | string | `ヤマト運輸` | Nhập text tự do (Out of scope: tích hợp Yamato/Sagawa) |
+| `payment_method` | Phương thức thanh toán | enum | `銀行振込` | **TODO (BA):** xác nhận danh sách phương thức với client |
+| `actual_expiry_date` | Hạn sử dụng thực tế sản phẩm | date | `2026-06-25` | Supplier điền khi xuất hàng thực tế |
+| `shipping_note` | Ghi chú xuất hàng | string (optional) | — | |
+
+### 5. Xác nhận giao hàng (Driver App điền — dependency E06, Mốc 3)
+
+| Field | Tên hiển thị | Kiểu dữ liệu | Ví dụ | Ghi chú |
+|---|---|---|---|---|
+| `actual_delivery_date` | Ngày giao hàng thực tế | date | `2026-06-09` | Mốc 3 — Driver chụp ảnh + submit trên E06 |
+
+---
+
+### Vòng đời trạng thái (Status Flow)
+
+> **TODO (BA) — AF-04:** Cần xác nhận tên status chính xác (tiếng Nhật / tiếng Anh) với client. Bảng dưới dùng tên tạm.
+
+| Status | Tên tạm (VI) | Trigger | Hiển thị trên E04 |
+|---|---|---|---|
+| `waiting_response` | Chờ phản hồi ngày xuất | System Admin tạo và gửi đơn | Tab "Chờ phản hồi ngày giao" |
+| `response_confirmed` | Đã xác nhận ngày dự kiến xuất | Supplier nhập `planned_shipping_date` và lưu | Tab "Chờ xuất hàng" |
+| `shipped` | Đã xuất hàng | Supplier submit báo cáo xuất hàng thực tế | Tab "Đã xuất hàng" |
+| `delivered` | Đã giao hàng | Driver App submit `actual_delivery_date` (E06) | — (phụ thuộc E06, xác nhận UI sau) |
+
+```
+System Admin tạo & gửi đơn
+        ↓
+[waiting_response] Chờ phản hồi ngày xuất
+        ↓  Supplier nhập planned_shipping_date (Mốc 4)
+[response_confirmed] Đã xác nhận ngày dự kiến xuất
+        ↓  Supplier submit báo cáo xuất hàng (Mốc 5)
+[shipped] Đã xuất hàng
+        ↓  Driver App confirm giao hàng (E06 — Mốc 3)
+[delivered] Đã giao hàng
+```
+
+---
+
+### Ví dụ đơn hàng cụ thể
+
+**Đơn hàng: SO-2026-0601-001** (trạng thái: Chờ phản hồi ngày xuất)
+
+| Trường | Giá trị |
+|---|---|
+| Số đơn | SO-2026-0601-001 |
+| Ngày tạo | 2026-06-01 |
+| Công ty đặt hàng | 株式会社ABC |
+| Ngày dự kiến giao hàng (picking date) | 2026-06-10 |
+| Nơi giao hàng | 東京都渋谷区XX 1-2-3 ABC倉庫 |
+| Trạng thái | Chờ phản hồi ngày xuất |
+| Ghi chú Admin | — |
+
+**Danh sách sản phẩm:**
+
+| Mã SP | Tên sản phẩm | Số lượng | Đơn vị | Hạn SX yêu cầu |
+|---|---|---|---|---|
+| PRD-001 | 豚バラ肉 スライス | 50 | kg | 2026-06-20 |
+| PRD-002 | 鶏もも肉 | 30 | kg | 2026-06-20 |
+| PRD-003 | 玉ねぎ | 20 | kg | 2026-06-25 |
+
+**Phản hồi Supplier (chưa điền — trạng thái hiện tại):**
+
+| Trường | Giá trị |
+|---|---|
+| Ngày dự kiến xuất | *(chờ Supplier điền)* |
+| Ghi chú | *(chờ Supplier điền)* |
+
+---
+
 ## Happy Path
 
 ### Luồng 1 — System Admin quản lý tài khoản Supplier (E03)
