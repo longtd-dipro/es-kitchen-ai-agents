@@ -208,6 +208,8 @@ tasks/task-*.md
 | 3 | Frontend E02–E06 + Mobile E01 (song song) | web + payment-app |
 | 4 | Integration test | tất cả repo |
 
+BMAD document : https://docs.bmad-method.org/vi-vn/reference/workflow-map/
+
 ---
 
 ## 10. 2 cách trigger agent
