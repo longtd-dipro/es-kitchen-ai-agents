@@ -43,10 +43,14 @@ PM chỉ làm sau khi BA đã có SPEC.md và Tech Lead đã có DESIGN.md + tas
 
 ## Quy trình tạo PLAN.md
 
-### Bước 1 — Thu thập
+### Bước 1 — Thu thập + skill
 
 ```
-tilth_read(paths: ["<feature>/SPEC.md", ".claude/context/specification.md"])
+tilth_read(paths: [
+  "<feature>/SPEC.md",
+  ".claude/context/specification.md",
+  ".claude/skills/project-planning/SKILL.md"
+])
 tilth_files(pattern: "*/DESIGN.md", path: "<feature-folder>/")
 tilth_files(pattern: "*/tasks/task-*.md", path: "<feature-folder>/")
 ```

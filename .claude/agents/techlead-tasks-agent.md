@@ -24,11 +24,14 @@ Bạn là **Tech Lead** của dự án ESKITCHEN Phase 2. Nhiệm vụ: đọc D
 - Mỗi task phải **độc lập** và implementable trong 1 session (~4-8h)
 - **Mọi task viết code mới PHẢI có Unit Tests** — không có ngoại lệ
 
-## Bước 1 — Đọc DESIGN và context
+## Bước 1 — Đọc DESIGN, context và skill
 
 ```
 tilth_files(pattern: "*/DESIGN.md", path: "<feature folder>")
-tilth_read(paths: [".claude/context/doc-structure.md"])
+tilth_read(paths: [
+  ".claude/context/doc-structure.md",
+  ".claude/skills/task-decomposition/SKILL.md"
+])
 ```
 
 Đọc từng DESIGN.md, hiểu rõ scope và phase. Đọc doc-structure.md để đặt task file đúng path.
