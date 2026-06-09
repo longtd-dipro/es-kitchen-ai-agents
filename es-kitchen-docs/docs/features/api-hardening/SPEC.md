@@ -443,17 +443,17 @@ Tất cả end-user actors hưởng lợi từ API ổn định và an toàn hơ
 
 > **Lưu ý:** API Hardening là initiative nội bộ backend — không tạo màn hình mới. Bảng dưới liệt kê các màn hình hiện có bị **ảnh hưởng gián tiếp** (nhận lợi ích từ hardening). Không cần thiết kế UI mới cho feature này.
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Login / OTP Verification* | E01 | E01 (es-kitchen-payment-app) | OTP expires_at tính đúng timezone sau D1; rate limiting S2 bảo vệ brute-force |
-| Menu List / Category Browse* | E01 | E01 (es-kitchen-payment-app) | Menu load nhanh hơn sau khi có Redis cache P3; không bị gián đoạn do pod restart P1 |
-| Checkout / Payment* | E01 | E01 (es-kitchen-payment-app) | Payment data không còn bị log ra stdout S4; checkout có unit test safety net T1 |
-| Company Admin Login* | E02 | E02 (es-kitchen-web-company) | Rate limiting S2 áp dụng cho company-admin login endpoint |
-| Order List / Checkout* | E02 | E02 (es-kitchen-web-company) | Checkout tin cậy hơn sau khi có unit test T1 và transaction D2 |
-| System Admin Login* | E03 | E03 (es-kitchen-web-admin) | Rate limiting S2 áp dụng cho admin login endpoint |
-| Sales Analytics / Report* | E03 | E03 (es-kitchen-web-admin) | SQL injection trong orderBy được đóng S3; báo cáo thời gian đúng timezone sau D1 |
-| Admin Dashboard* | E03 | E03 (es-kitchen-web-admin) | Dashboard không còn gây full-table scan P2; load nhanh hơn |
-| Menu Management (Supplier)* | E04 | E04 (es-kitchen-web-supplier) | Cache invalidation P3 đảm bảo menu update phản ánh ngay sau khi supplier lưu |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| UA_APIH_001 | Login / OTP Verification* | E01 | E01 (es-kitchen-payment-app) | Wizard | OTP expires_at tính đúng timezone sau D1; rate limiting S2 bảo vệ brute-force |
+| UA_APIH_002 | Menu List / Category Browse* | E01 | E01 (es-kitchen-payment-app) | Card-list | Menu load nhanh hơn sau khi có Redis cache P3; không bị gián đoạn do pod restart P1 |
+| UA_APIH_003 | Checkout / Payment* | E01 | E01 (es-kitchen-payment-app) | Wizard | Payment data không còn bị log ra stdout S4; checkout có unit test safety net T1 |
+| CW_APIH_001 | Company Admin Login* | E02 | E02 (es-kitchen-web-company) | Form | Rate limiting S2 áp dụng cho company-admin login endpoint |
+| CW_APIH_002 | Order List / Checkout* | E02 | E02 (es-kitchen-web-company) | List | Checkout tin cậy hơn sau khi có unit test T1 và transaction D2 |
+| AW_APIH_001 | System Admin Login* | E03 | E03 (es-kitchen-web-admin) | Form | Rate limiting S2 áp dụng cho admin login endpoint |
+| AW_APIH_002 | Sales Analytics / Report* | E03 | E03 (es-kitchen-web-admin) | Report | SQL injection trong orderBy được đóng S3; báo cáo thời gian đúng timezone sau D1 |
+| AW_APIH_003 | Admin Dashboard* | E03 | E03 (es-kitchen-web-admin) | Dashboard | Dashboard không còn gây full-table scan P2; load nhanh hơn |
+| SW_APIH_001 | Menu Management (Supplier)* | E04 | E04 (es-kitchen-web-supplier) | List | Cache invalidation P3 đảm bảo menu update phản ánh ngay sau khi supplier lưu |
 
 *inferred — không có màn hình mới, chỉ là màn hình hiện có nhận lợi ích từ hardening backend.
 

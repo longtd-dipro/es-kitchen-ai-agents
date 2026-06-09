@@ -149,14 +149,14 @@ System Admin (super-admin) có thể **quản lý tài khoản admin cấp dư�
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Admin Account List | System Admin | E03 (es-kitchen-web-admin) | Bảng danh sách admin accounts: ID, email, tên, role(s), status, last login, action buttons (Edit / Disable / Delete) |
-| Add Admin Form | System Admin | E03 (es-kitchen-web-admin) | Form tạo admin mới: nhập username, email, họ tên, password, chọn role(s), set status; có popup warning + confirm trước khi Save |
-| Edit Admin Form | System Admin | E03 (es-kitchen-web-admin) | Form sửa thông tin admin đã có (pre-fill): email, họ tên, role(s), status; username read-only; có nút "Reset Password" riêng; popup confirm trước Save |
-| Reset Password Dialog *inferred | System Admin | E03 (es-kitchen-web-admin) | Dialog xác nhận reset password cho admin được chọn; trigger gửi email link reset hoặc hiển thị password mới |
-| Disable Admin Confirmation Dialog | System Admin | E03 (es-kitchen-web-admin) | Popup warning + confirm trước khi disable admin; chặn nếu Super Admin tự disable mình |
-| Delete Admin Confirmation Dialog | System Admin | E03 (es-kitchen-web-admin) | Popup warning + confirm (nguy hiểm cao) trước khi logical-delete admin; chặn nếu Super Admin tự xóa mình |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| AW_AACC_001 | Admin Account List | System Admin | E03 (es-kitchen-web-admin) | List | Bảng danh sách admin accounts: ID, email, tên, role(s), status, last login, action buttons (Edit / Disable / Delete) |
+| AW_AACC_002 | Add Admin Form | System Admin | E03 (es-kitchen-web-admin) | Form | Form tạo admin mới: nhập username, email, họ tên, password, chọn role(s), set status; có popup warning + confirm trước khi Save |
+| AW_AACC_003 | Edit Admin Form | System Admin | E03 (es-kitchen-web-admin) | Form | Form sửa thông tin admin đã có (pre-fill): email, họ tên, role(s), status; username read-only; có nút "Reset Password" riêng; popup confirm trước Save |
+| AW_AACC_004 | Reset Password Dialog *inferred | System Admin | E03 (es-kitchen-web-admin) | Modal | Dialog xác nhận reset password cho admin được chọn; trigger gửi email link reset hoặc hiển thị password mới |
+| AW_AACC_005 | Disable Admin Confirmation Dialog | System Admin | E03 (es-kitchen-web-admin) | Modal | Popup warning + confirm trước khi disable admin; chặn nếu Super Admin tự disable mình |
+| AW_AACC_006 | Delete Admin Confirmation Dialog | System Admin | E03 (es-kitchen-web-admin) | Modal | Popup warning + confirm (nguy hiểm cao) trước khi logical-delete admin; chặn nếu Super Admin tự xóa mình |
 
 ---
 

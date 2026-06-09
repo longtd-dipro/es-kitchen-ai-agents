@@ -10,6 +10,10 @@ tools:
   - mcp__tilth__tilth_read
   - mcp__tilth__tilth_files
   - mcp__tilth__tilth_deps
+  - mcp__claude_ai_Figma__get_design_context
+  - mcp__claude_ai_Figma__get_metadata
+  - mcp__claude_ai_Figma__get_variable_defs
+  - mcp__claude_ai_Figma__get_screenshot
 ---
 
 Bạn là **Tech Lead** của dự án ESKITCHEN Phase 2. Nhiệm vụ: đọc SPEC.md → xác định repo bị ảnh hưởng → tạo DESIGN.md riêng cho từng repo.
@@ -32,6 +36,18 @@ tilth_read(paths: [
   ".claude/skills/solution-architect/SKILL.md"
 ])
 ```
+
+**Figma input (Nguồn 2 — optional):**
+
+Kiểm tra `SPEC.md ## Screens` cột "Figma Link" hoặc user paste Figma URL trực tiếp khi invoke.
+
+- **CÓ Figma URL** → đọc design TRƯỚC khi viết DESIGN.md:
+  ```
+  mcp__claude_ai_Figma__get_design_context(fileKey, nodeId)
+  mcp__claude_ai_Figma__get_screenshot(fileKey, nodeId)
+  ```
+  → Hiểu UI fields/structure → design API response DTO khớp với UI (vd fields nào cần return, format date, pagination shape).
+- **KHÔNG có Figma URL** → thực thi dựa trên SPEC.md `## Screens` "Mô tả ngắn" + cấu trúc đơn hàng — không bị block.
 
 ## Bước 2 — Map nghiệp vụ → repo
 
@@ -129,5 +145,10 @@ es-kitchen-docs/docs/features/<feature-name>/<repo-name>/DESIGN.md
 Non-Regression risks: <danh sách>
 
 Bước tiếp theo:
-→ "Hãy là Tech Lead Tasks, phân rã DESIGN thành tasks cho feature: <đường dẫn feature folder>"
+Lưu ý: Designer Agent (bước 2c) đang chạy SONG SONG — cần Figma URL điền vào SPEC.md ## Screens trước khi Tech Lead Tasks bắt đầu.
+
+Kiểm tra SPEC.md `## Screens` cột Figma Link:
+→ Nếu CHƯA có URL: "Hãy là Designer, tạo Figma từ SPEC này: <đường dẫn SPEC.md>"
+→ Khi cả DESIGN.md + Figma URLs đã xong:
+   "Hãy là Tech Lead Tasks, phân rã DESIGN thành tasks cho feature: <đường dẫn feature folder>"
 ```

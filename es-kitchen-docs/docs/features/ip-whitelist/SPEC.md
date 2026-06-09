@@ -119,15 +119,15 @@ Trạng thái mặc định: **whitelist rỗng → tất cả IP đều vào đ
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| IP Whitelist List | System Admin | E03 (es-kitchen-web-admin) | Xem danh sách IP/CIDR đã whitelist (cột: IP, Mô tả, Ngày thêm, Người thêm, Action); có nút Add IP |
-| Add IP Form *inferred | System Admin | E03 (es-kitchen-web-admin) | Form thêm IP/CIDR mới: input địa chỉ IP hoặc CIDR range, description (optional), enabled toggle, validate format |
-| Edit IP Form *inferred | System Admin | E03 (es-kitchen-web-admin) | Form sửa IP/CIDR đã có: chỉnh sửa địa chỉ, mô tả, trạng thái enabled |
-| Delete IP Confirm Dialog *inferred | System Admin | E03 (es-kitchen-web-admin) | Popup xác nhận xóa IP khỏi whitelist (theo AC-09 — warning + confirm trước khi xóa) |
-| Login — OTP Step (E03) | System Admin | E03 (es-kitchen-web-admin) | Màn hình nhập OTP sau khi login từ IP ngoài whitelist; hiển thị kênh nhận OTP, nút Resend, countdown hết hạn |
-| Login — OTP Step (E04) *inferred | Supplier | E04 (es-kitchen-web-supplier) | Nhập OTP sau khi login từ IP ngoài whitelist — nếu OQ-1 confirm mở rộng sang E04 |
-| Login — OTP Step (E05) *inferred | Outsource | E05 (es-kitchen-web-outsource-web-private) | Nhập OTP sau khi login từ IP ngoài whitelist — nếu OQ-1 confirm mở rộng sang E05 |
-| Login — OTP Step (E06) *inferred | Driver | E06 (es-kitchen-webapp-driver) | Nhập OTP sau khi login từ IP ngoài whitelist — nếu OQ-1 confirm mở rộng sang E06 |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| AW_IPWL_001 | IP Whitelist List | System Admin | E03 (es-kitchen-web-admin) | List | Xem danh sách IP/CIDR đã whitelist (cột: IP, Mô tả, Ngày thêm, Người thêm, Action); có nút Add IP |
+| AW_IPWL_002 | Add IP Form *inferred | System Admin | E03 (es-kitchen-web-admin) | Form | Form thêm IP/CIDR mới: input địa chỉ IP hoặc CIDR range, description (optional), enabled toggle, validate format |
+| AW_IPWL_003 | Edit IP Form *inferred | System Admin | E03 (es-kitchen-web-admin) | Form | Form sửa IP/CIDR đã có: chỉnh sửa địa chỉ, mô tả, trạng thái enabled |
+| AW_IPWL_004 | Delete IP Confirm Dialog *inferred | System Admin | E03 (es-kitchen-web-admin) | Modal | Popup xác nhận xóa IP khỏi whitelist (theo AC-09 — warning + confirm trước khi xóa) |
+| AW_IPWL_005 | Login — OTP Step (E03) | System Admin | E03 (es-kitchen-web-admin) | Form* | Màn hình nhập OTP sau khi login từ IP ngoài whitelist; hiển thị kênh nhận OTP, nút Resend, countdown hết hạn |
+| SW_IPWL_001 | Login — OTP Step (E04) *inferred | Supplier | E04 (es-kitchen-web-supplier) | Form* | Nhập OTP sau khi login từ IP ngoài whitelist — nếu OQ-1 confirm mở rộng sang E04 |
+| OW_IPWL_001 | Login — OTP Step (E05) *inferred | Outsource | E05 (es-kitchen-web-outsource-web-private) | Form* | Nhập OTP sau khi login từ IP ngoài whitelist — nếu OQ-1 confirm mở rộng sang E05 |
+| DA_IPWL_001 | Login — OTP Step (E06) *inferred | Driver | E06 (es-kitchen-webapp-driver) | Form* | Nhập OTP sau khi login từ IP ngoài whitelist — nếu OQ-1 confirm mở rộng sang E06 |
 
 > **Lưu ý:** Screens E04/E05/E06 được đánh dấu *inferred và phụ thuộc kết quả confirm OQ-1 (scope áp dụng). Nếu OQ-1 xác nhận chỉ E03 thì chỉ giữ 5 screens đầu.

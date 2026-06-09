@@ -18,14 +18,14 @@
 
 ## 2. Phân quyền Action theo Persona
 
-| Action | BA | Tech Lead (Design/Tasks) | PM | QC | QA | Dev (BE/FE/Mobile) |
-|---|---|---|---|---|---|---|
-| Tạo / sửa file `.md` | ✅ | ✅ | ✅ | ✅ | ✅ (chỉ QA Report) | ✅ |
-| Sửa source code | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (trong scope task) |
-| Chạy test suite | ❌ | ❌ | ❌ | ✅ (manual TC) | ✅ (unit + coverage) | ✅ |
-| Commit code | ❌ | ❌ | ❌ | ❌ | ❌ | ❌* |
-| Push remote | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Sửa migration / linter / test config | ❌ | ❌ | ❌ | ❌ | ❌ | ❌** |
+| Action | BA | Tech Lead (Design/Tasks) | PM | QC | QA | Designer | Dev (BE/FE/Mobile) |
+|---|---|---|---|---|---|---|---|
+| Tạo / sửa file `.md` | ✅ | ✅ | ✅ | ✅ | ✅ (chỉ QA Report) | ✅ (chỉ SPEC.md ## Screens — điền Figma Link) | ✅ |
+| Sửa source code | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (trong scope task) |
+| Chạy test suite | ❌ | ❌ | ❌ | ✅ (manual TC) | ✅ (unit + coverage) | ❌ | ✅ |
+| Commit code | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌* |
+| Push remote | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Sửa migration / linter / test config | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌** |
 
 > \* Dev chỉ commit khi user yêu cầu rõ ràng.
 > \*\* Dev không tự sửa migration / linter / test config — phải đề xuất với Tech Lead trước.

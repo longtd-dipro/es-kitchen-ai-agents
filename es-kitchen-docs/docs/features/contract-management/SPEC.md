@@ -277,29 +277,29 @@ Domain này là điểm khởi đầu của toàn bộ nghiệp vụ vận hành
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Trial Registration Form | E02 | E02 (Company Admin Web) | Form đăng ký dùng thử — điền thông tin pháp nhân, người phụ trách, địa chỉ giao hàng, điều kiện đơn hàng, xác nhận điều khoản |
-| Official Contract Registration Form | E02 | E02 (Company Admin Web) | Form chuyển đổi sang hợp đồng chính thức — cùng cấu trúc Trial form, gửi yêu cầu lên System Admin |
-| Site Management - List *inferred | E02 | E02 (Company Admin Web) | Danh sách cơ sở trực thuộc pháp nhân: Tên, Địa chỉ, Người phụ trách |
-| Site Management - Detail & Edit | E02 | E02 (Company Admin Web) | Chi tiết cơ sở: thông tin liên hệ, danh sách thiết bị, chỉnh sửa địa chỉ/người phụ trách |
-| Site Management - Exclusion Days *inferred | E02 | E02 (Company Admin Web) | Đăng ký ngày tòa nhà cúp điện/bảo trì — loại trừ khỏi lịch giao hàng tự động |
-| Site Management - Change History *inferred | E02 | E02 (Company Admin Web) | Lịch sử thay đổi người phụ trách tại cơ sở |
-| Contract Management - Current Plan | E02 | E02 (Company Admin Web) | Xem gói hợp đồng hiện tại theo từng cơ sở và danh sách ID thiết bị đang thuê |
-| Contract Management - History *inferred | E02 | E02 (Company Admin Web) | Lịch sử ký kết và thay đổi hợp đồng |
-| Contract Change / Cancel Request | E02 | E02 (Company Admin Web) | Form gửi yêu cầu đổi sang gói hợp đồng khác hoặc yêu cầu hủy hợp đồng |
-| My Page | E02 | E02 (Company Admin Web) | Chỉnh sửa thông tin liên hệ quản trị viên, xem Điều khoản & Chính sách bảo mật |
-| Dashboard | E02 | E02 (Company Admin Web) | Ngày giao hàng dự kiến tiếp theo, biểu đồ tổng tiền, tỷ lệ sử dụng, top 3 sản phẩm, số lần giao hàng |
-| Trial Approval - List | E03 | E03 (System Admin Web) | Danh sách yêu cầu Trial chờ phê duyệt |
-| Trial Approval - Detail | E03 | E03 (System Admin Web) | Xem thông tin đơn đăng ký Trial, thực hiện phê duyệt |
-| Location Management - List | E03 | E03 (System Admin Web) | Danh sách tất cả cơ sở trong hệ thống, hỗ trợ cấu trúc cây Pháp nhân cha–con |
-| Location Management - Detail & Edit | E03 | E03 (System Admin Web) | Đăng ký/sửa thông tin cơ sở thủ công: Pháp nhân, địa chỉ, người phụ trách, quy tắc giao hàng, thiết bị |
-| Location Move History *inferred | E03 | E03 (System Admin Web) | Lịch sử di dời/chuyển đổi địa chỉ của cơ sở |
-| Plan Management - List | E03 | E03 (System Admin Web) | Danh sách gói dịch vụ, tìm kiếm theo loại menu, bao gồm gói đã ẩn |
-| Plan Management - Create & Edit | E03 | E03 (System Admin Web) | Đăng ký gói mới hoặc chỉnh sửa gói: loại menu, chi tiết gói, bật/ẩn (Show/Hide) |
-| Plan Contract - List | E03 | E03 (System Admin Web) | Danh sách hợp đồng Plan, lọc theo năm/tháng/loại menu/tên pháp nhân/trạng thái, tải CSV |
-| Plan Contract - Detail & Edit | E03 | E03 (System Admin Web) | Chi tiết hợp đồng: giao hàng tự động, phí khởi tạo, phí hàng tháng, trạng thái hủy/đổi và lý do |
-| Plan Contract - Create | E03 | E03 (System Admin Web) | Thêm hợp đồng Plan mới: thông tin Plan, ngày giao hàng tự động, địa điểm, tùy chọn không nhận hàng |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| CW_CONT_001 | Trial Registration Form | E02 | E02 (Company Admin Web) | Form | Form đăng ký dùng thử — điền thông tin pháp nhân, người phụ trách, địa chỉ giao hàng, điều kiện đơn hàng, xác nhận điều khoản |
+| CW_CONT_002 | Official Contract Registration Form | E02 | E02 (Company Admin Web) | Form | Form chuyển đổi sang hợp đồng chính thức — cùng cấu trúc Trial form, gửi yêu cầu lên System Admin |
+| CW_CONT_003 | Site Management - List *inferred | E02 | E02 (Company Admin Web) | List | Danh sách cơ sở trực thuộc pháp nhân: Tên, Địa chỉ, Người phụ trách |
+| CW_CONT_004 | Site Management - Detail & Edit | E02 | E02 (Company Admin Web) | Detail | Chi tiết cơ sở: thông tin liên hệ, danh sách thiết bị, chỉnh sửa địa chỉ/người phụ trách |
+| CW_CONT_005 | Site Management - Exclusion Days *inferred | E02 | E02 (Company Admin Web) | Form | Đăng ký ngày tòa nhà cúp điện/bảo trì — loại trừ khỏi lịch giao hàng tự động |
+| CW_CONT_006 | Site Management - Change History *inferred | E02 | E02 (Company Admin Web) | Detail | Lịch sử thay đổi người phụ trách tại cơ sở |
+| CW_CONT_007 | Contract Management - Current Plan | E02 | E02 (Company Admin Web) | Detail | Xem gói hợp đồng hiện tại theo từng cơ sở và danh sách ID thiết bị đang thuê |
+| CW_CONT_008 | Contract Management - History *inferred | E02 | E02 (Company Admin Web) | Detail | Lịch sử ký kết và thay đổi hợp đồng |
+| CW_CONT_009 | Contract Change / Cancel Request | E02 | E02 (Company Admin Web) | Form | Form gửi yêu cầu đổi sang gói hợp đồng khác hoặc yêu cầu hủy hợp đồng |
+| CW_CONT_010 | My Page | E02 | E02 (Company Admin Web) | Form | Chỉnh sửa thông tin liên hệ quản trị viên, xem Điều khoản & Chính sách bảo mật |
+| CW_CONT_011 | Dashboard | E02 | E02 (Company Admin Web) | Dashboard | Ngày giao hàng dự kiến tiếp theo, biểu đồ tổng tiền, tỷ lệ sử dụng, top 3 sản phẩm, số lần giao hàng |
+| AW_CONT_001 | Trial Approval - List | E03 | E03 (System Admin Web) | List | Danh sách yêu cầu Trial chờ phê duyệt |
+| AW_CONT_002 | Trial Approval - Detail | E03 | E03 (System Admin Web) | Detail | Xem thông tin đơn đăng ký Trial, thực hiện phê duyệt |
+| AW_CONT_003 | Location Management - List | E03 | E03 (System Admin Web) | List | Danh sách tất cả cơ sở trong hệ thống, hỗ trợ cấu trúc cây Pháp nhân cha–con |
+| AW_CONT_004 | Location Management - Detail & Edit | E03 | E03 (System Admin Web) | Detail | Đăng ký/sửa thông tin cơ sở thủ công: Pháp nhân, địa chỉ, người phụ trách, quy tắc giao hàng, thiết bị |
+| AW_CONT_005 | Location Move History *inferred | E03 | E03 (System Admin Web) | Detail | Lịch sử di dời/chuyển đổi địa chỉ của cơ sở |
+| AW_CONT_006 | Plan Management - List | E03 | E03 (System Admin Web) | List | Danh sách gói dịch vụ, tìm kiếm theo loại menu, bao gồm gói đã ẩn |
+| AW_CONT_007 | Plan Management - Create & Edit | E03 | E03 (System Admin Web) | Form | Đăng ký gói mới hoặc chỉnh sửa gói: loại menu, chi tiết gói, bật/ẩn (Show/Hide) |
+| AW_CONT_008 | Plan Contract - List | E03 | E03 (System Admin Web) | List | Danh sách hợp đồng Plan, lọc theo năm/tháng/loại menu/tên pháp nhân/trạng thái, tải CSV |
+| AW_CONT_009 | Plan Contract - Detail & Edit | E03 | E03 (System Admin Web) | Detail | Chi tiết hợp đồng: giao hàng tự động, phí khởi tạo, phí hàng tháng, trạng thái hủy/đổi và lý do |
+| AW_CONT_010 | Plan Contract - Create | E03 | E03 (System Admin Web) | Form | Thêm hợp đồng Plan mới: thông tin Plan, ngày giao hàng tự động, địa điểm, tùy chọn không nhận hàng |
 
 ---
 

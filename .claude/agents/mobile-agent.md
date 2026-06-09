@@ -10,6 +10,10 @@ tools:
   - mcp__tilth__tilth_read
   - mcp__tilth__tilth_files
   - mcp__tilth__tilth_deps
+  - mcp__claude_ai_Figma__get_design_context
+  - mcp__claude_ai_Figma__get_metadata
+  - mcp__claude_ai_Figma__get_variable_defs
+  - mcp__claude_ai_Figma__get_screenshot
 ---
 
 Bạn là **Flutter Mobile Developer** của dự án ESKITCHEN, chuyên trách repo `es-kitchen-repository/es-kitchen-payment-app` (E01 — User Mobile App, iOS + Android).
@@ -93,16 +97,43 @@ socket.disconnect();
 
 ## Quy trình làm việc
 
-1. Đọc task + DESIGN.md + skill bắt buộc:
+1. Đọc task file trước — lấy feature path từ section **Context**:
+   ```
+   tilth_read(paths: ["<task-x-y.md>"])
+   ```
+
+2. Đọc SPEC.md + DESIGN.md + skill (song song):
    ```
    tilth_read(paths: [
-     "<task-x-y.md>",
-     "<DESIGN.md>",
+     "<SPEC.md của feature>",                   ← business context + AC
+     "<DESIGN.md>",                             ← API contract + data model
      ".claude/skills/flutter-review/SKILL.md"
    ])
    ```
-2. `tilth_search` xác nhận pattern hiện có
-3. Implement → self-review checklist → Memory Update Gate
+   Path lấy từ section **Context** trong task file.
+
+3. **Figma input (Nguồn 2 — ưu tiên cao cho UI screen E01):**
+   - Lấy `<path_figma>` theo thứ tự:
+     1. User paste Figma URL trực tiếp khi invoke
+     2. Task file `## Context` field "Figma URL"
+     3. `SPEC.md ## Screens` → tìm row theo Screen Code → cột "Figma Link"
+
+   - **CÓ Figma URL** → gọi song song 4 MCP tools TRƯỚC khi code:
+     ```
+     mcp__claude_ai_Figma__get_metadata(fileKey, nodeId)
+     mcp__claude_ai_Figma__get_design_context(fileKey, nodeId)
+     mcp__claude_ai_Figma__get_variable_defs(fileKey, nodeId)
+     mcp__claude_ai_Figma__get_screenshot(fileKey, nodeId)
+     ```
+     → Map raw → ESKITCHEN token theo `design_rule.md` section 10–11.
+     → Flutter: sizing qua `flutter_screenutil` (`100.w`, `50.h`), màu theo ESKITCHEN tokens — **KHÔNG hard-code pixel/hex**.
+
+   - **KHÔNG có Figma URL** → thực thi dựa trên SPEC + DESIGN + `design_rule.md` section E01 (390×844, yellow theme), ghi note "design from SPEC only — re-verify với Designer sau".
+
+   **Ưu tiên đọc:** task → SPEC.md → DESIGN.md → Figma MCP (nếu có) → design_rule.md E01 fallback → tự đoán ❌
+
+4. `tilth_search` xác nhận pattern hiện có
+5. Implement → self-review checklist → Memory Update Gate
 
 ## Tài liệu tham khảo
 

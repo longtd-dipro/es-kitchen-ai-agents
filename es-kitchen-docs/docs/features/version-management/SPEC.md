@@ -160,13 +160,13 @@ Mục tiêu: kiểm soát version người dùng đang dùng, đảm bảo bug f
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Version Management List | System Admin | E03 (System Admin Web) | Danh sách version records, filter theo platform / environment, action Edit / Delete |
-| Add Version Form | System Admin | E03 (System Admin Web) | Form tạo version mới: platform, version name, version code, environment, description, download URL, force update toggle |
-| Edit Version Form | System Admin | E03 (System Admin Web) | Form sửa version đã có, pre-fill data; bật Force Update hiện popup warning đặc biệt |
-| Force Update Popup (Mobile) | End User | E01 (Mobile App) | Popup block usage khi `force_update = true` và version cũ hơn; chỉ có nút "Update now" |
-| Optional Update Popup (Mobile) | End User | E01 (Mobile App) | Popup gợi ý update khi `force_update = false` và version cũ hơn; có nút "Update later" và "Update now" |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| AW_VERS_001 | Version Management List | System Admin | E03 (System Admin Web) | List | Danh sách version records, filter theo platform / environment, action Edit / Delete |
+| AW_VERS_002 | Add Version Form | System Admin | E03 (System Admin Web) | Form | Form tạo version mới: platform, version name, version code, environment, description, download URL, force update toggle |
+| AW_VERS_003 | Edit Version Form | System Admin | E03 (System Admin Web) | Form | Form sửa version đã có, pre-fill data; bật Force Update hiện popup warning đặc biệt |
+| UA_VERS_001 | Force Update Popup (Mobile) | End User | E01 (Mobile App) | Modal | Popup block usage khi `force_update = true` và version cũ hơn; chỉ có nút "Update now" |
+| UA_VERS_002 | Optional Update Popup (Mobile) | End User | E01 (Mobile App) | Modal | Popup gợi ý update khi `force_update = false` và version cũ hơn; có nút "Update later" và "Update now" |
 
 ---
 

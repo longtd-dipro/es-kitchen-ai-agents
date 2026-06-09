@@ -85,7 +85,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 - Khi sửa quy trình BA / Tech Lead / PM → **chỉ sửa file agent**, không sửa command (trừ khi đổi command name hoặc cách parse args).
 - User có thể trigger theo 2 cách: gõ slash command (`/create-spec login`) hoặc nói tự nhiên ("hãy là BA, làm SPEC cho login") — cả hai cùng load file agent.
 - **Handover hint:** Section "Bước tiếp theo" trong Output của mỗi agent dùng natural language (vd `"Hãy là Tech Lead Design, làm DESIGN.md từ SPEC: <path>"`) — user copy-paste làm prompt turn kế tiếp. Slash command tương ứng vẫn work song song.
-- **Handover chain:** chi tiết step-by-step ở bảng **BMAD Workflow** bên dưới. Sơ đồ trực quan ở `es-kitchen-docs/docs/index.md` (mermaid). Lưu ý: **QC chạy 2 lần** — lần 1 sau SPEC (sinh TC song song với Tech Lead Design), lần 2 sau khi dev xong (execute TC + bug report + regression).
+- **Handover chain:** chi tiết step-by-step ở bảng **BMAD Workflow** bên dưới. Sơ đồ trực quan ở `es-kitchen-docs/docs/index.md` (mermaid). Lưu ý: **Bước 2 gồm 3 agent chạy song song** — 2a Tech Lead Design (DESIGN.md) · 2b QC (test cases) · 2c Designer (Figma frames + URL điền vào SPEC.md ## Screens). **QC chạy 2 lần** — lần 1 sau SPEC (sinh TC), lần 2 sau dev xong (execute TC + bug report + regression).
 
 ### Sub-agents — `.claude/agents/`
 
@@ -99,6 +99,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | `frontend-agent.md` | React Developer | Implement/review component, hook, store (E02 + E03 + E04 + E05 + E06) | `/create-component`, `/review-code` |
 | `mobile-agent.md` | Flutter Developer | Implement/review screen, Socket.IO, payment (E01) | `/review-code` |
 | `qc-agent.md` | QC Manual Tester | **Sau SPEC, trước/trong khi test** — sinh TC (RBT/QUICK), regression, execution checklist, bug report, test data, exploratory charter | `/test/generate_*` (11 commands) |
+| `designer-agent.md` | UI Designer | **Sau SPEC** — tạo Figma screens, điền Figma URL vào SPEC.md ## Screens | `/create-ui-design` |
 | `qa-agent.md` | QA Engineer | **Sau khi dev xong task** — chạy test suite, verify coverage, validate AC, non-regression | — (chạy manual hoặc qua sub-agent) |
 
 > **QC vs QA:** `qc-agent` = manual tester chuẩn bị/thực thi TC (output là artifact `.md` cho QC team); `qa-agent` = post-dev verification (output là QA Report per task). Không trùng nhau.
@@ -111,6 +112,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 |---|---|---|---|
 | `/create-spec <feature>` | Tạo SPEC.md | thin entry | `ba-agent.md` |
 | `/create-design <SPEC.md>` | Tạo DESIGN.md per repo | thin entry | `techlead-design-agent.md` |
+| `/create-ui-design <SPEC.md>` | Tạo Figma screens + điền Figma URL vào SPEC.md ## Screens | thin entry | `designer-agent.md` |
 | `/create-tasks <feature/>` | Phân rã DESIGN → task files | thin entry | `techlead-tasks-agent.md` |
 | `/create-plan <feature/>` | Tạo PLAN.md | thin entry | `pm-agent.md` |
 | `/create-backlog <feature/>` | Sync task files → Backlog issues qua MCP | thin entry | `pm-agent.md` (Bước 4) |
@@ -152,6 +154,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | `rbt_manual_testing/` | — | Sinh manual TC (QUICK + FULL RBT 6 bước) — master skill cho `qc-agent` |
 | `requirements_analyzer/` | — | Phân tích requirements **đa nguồn** (cross-SPEC, Drive, Backlog) — chỉ dùng cho `/test/generate_cross_module_test_plan` + `/test/generate_qc_onboarding_report`. Không cần khi chỉ đọc 1 SPEC.md đã structured. |
 | `bug_reporter/` | — | Chuẩn hóa bug report — severity/priority/repro steps cho `qc-agent` |
+| `figma-design/` | All FE repos (E02–E06) + E01 Mobile | Figma MCP tools (read + write), token mapping Figma → ESKITCHEN |
 
 ### Context — `.claude/context/` (đọc on-demand)
 
@@ -162,12 +165,13 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | `specification.md` | Business context, epics, phase-gate G1-G6 | `ba-agent`, `pm-agent` |
 | `technical.md` | Tech stack, CI/CD, known bugs | `techlead-design-agent`, `backend-agent` |
 | `backlog-workflow.md` | Quy tắc tạo issue/task, status workflow | `techlead-tasks-agent` + tất cả agents khi tạo task |
-| `doc-structure.md` | Cấu trúc SPEC/DESIGN/PLAN theo feature type | `ba-agent`, `techlead-design-agent`, `techlead-tasks-agent` |
+| `doc-structure.md` | Cấu trúc SPEC/DESIGN/PLAN theo feature type | `ba-agent`, `techlead-design-agent`, `techlead-tasks-agent`, `designer-agent` |
+| `designer-context.md` | UI components catalog (30+ Base*) per repo, theme thực tế, conflicts (E04 color), sample data tiếng Nhật. Auto-extracted từ source code es-kitchen-repository/. | `designer-agent` (BẮT BUỘC mỗi lần chạy) |
 | `business-flows/README.md` | Index 15 domain + map repo→domain (long-term business memory, nguồn `function_list.xlsx`) | `ba-agent`, `techlead-design-agent`, `pm-agent` |
 | `business-flows/business-flow-index.md` | 23 nghiệp vụ + Target + Backlog ID + FigJam link | `ba-agent` (lookup domain), `pm-agent` (scope) |
 | `business-flows/domains/<slug>.md` | Stories per domain (Hợp đồng, Menu & Order, Giao hàng…) — đọc đúng 1 domain liên quan | `ba-agent` (Discovery/SPEC), `techlead-design-agent` (Design) |
 | `business-flows/function-list.md` | Master function list — Summary by epic + Phase 1/2 stories (135 KB, chỉ load khi cần lookup function cụ thể) | `pm-agent` (estimate), `techlead-design-agent` (scope check) |
-| `business-flows/screen-code-rule.md` | Quy tắc `<Module>_<Feature>_<Seq>` | Dev / QC khi đặt screen code mới |
+| `business-flows/screen-code-rule.md` | Quy tắc `<Module>_<Feature>_<Seq>` | `ba-agent` (điền Screen Code vào SPEC) · `designer-agent` (đặt frame name Figma) · Dev / QC khi đặt screen code mới |
 | `ai-workflow.md` | Kiến trúc AI Agent system | Khi mở rộng agent system |
 
 ### Workflows — `.claude/workflows/` (đọc on-demand)
@@ -192,6 +196,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | 1 | `/create-spec <feature>` | `SPEC.md` | `ba-agent` | Discovery |
 | 2a | `/create-design <SPEC.md>` | `DESIGN.md` per repo | `techlead-design-agent` | Design |
 | 2b | `/test/generate_manual_testcases_rbt` (parallel) | `test-cases/tc_*.md` | `qc-agent` | Design |
+| 2c | `/create-ui-design <SPEC.md>` (parallel) | Figma frames + URL điền vào SPEC.md ## Screens | `designer-agent` | Design |
 | 3 | `/create-tasks <feature/>` | `tasks/task-*.md` | `techlead-tasks-agent` | Planning |
 | 4 | `/create-plan <feature/>` | `PLAN.md` | `pm-agent` | Planning |
 | 4b | (optional) `/create-backlog <feature/>` | Backlog issues (1 per task) | `pm-agent` (Bước 4) | Planning |
@@ -205,6 +210,18 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 **Phase order:** Phase 1 (DB migration) → Phase 2 (API) → Phase 3 (FE + Mobile song song) → Phase 4 (Integration)
 
 **Contract Lock** trước Phase 3: REST API + WebSocket events + Push notification payload — confirm bởi BE + FE + Mobile + PM + QC (để QC chốt TC dựa trên contract).
+
+**Designer khi nào tham gia:**
+- **Sau bước 1 (SPEC ready):** chạy `/create-ui-design <SPEC.md>` song song với Tech Lead Design (2a) và QC (2b)
+  - Nếu **chưa có Figma URL**: Designer tạo mới frames trong Figma `01. Design` page, frame name = Screen Code
+  - Nếu **đã có Figma URL** (client gửi): paste URL vào cột `Figma Link` trong `## Screens` → Designer đọc, map token, viết context
+- **Khi SPEC `## Screens` thay đổi:** chạy lại `/create-ui-design` để update/tạo Figma frames + refresh URL
+- **Trước khi Tech Lead Tasks bắt đầu:** đảm bảo cột Figma Link trong SPEC.md ## Screens đã có URL (không phải TBD/trống) — Tech Lead Tasks cần URL để truyền vào task file Context cho FE/Mobile
+- **Trigger tự nhiên:** `"Hãy là Designer, tạo Figma từ SPEC này: <path/SPEC.md>"`
+
+**Designer KHÔNG tham gia:**
+- Feature pure backend (không có UI) — bỏ qua bước 2c
+- Hotfix bug logic (không thay đổi UI)
 
 **QC khi nào tham gia:**
 - **Sau bước 1 (SPEC ready):** chạy `/test/generate_manual_testcases_rbt` song song với Tech Lead design — TC sẵn sàng khi dev xong

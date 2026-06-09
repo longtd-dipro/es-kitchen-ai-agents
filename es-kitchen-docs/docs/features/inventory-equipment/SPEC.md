@@ -204,22 +204,22 @@ Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành 
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Equipment List | E03 | E03 (System Admin) | Danh sách thiết bị phân tab theo loại (Tủ lạnh / Tủ đông / Máy bán hàng / Lò vi sóng); tìm kiếm và lọc |
-| Equipment Register | E03 | E03 (System Admin) | Form đăng ký thiết bị mới: nhập sê-ri, loại, kích thước, phí cài đặt / phí tháng / tiền phạt; hệ thống sinh ID + QR |
-| Equipment Detail / Edit | E03 | E03 (System Admin) | Xem chi tiết và chỉnh sửa thông số thiết bị (sê-ri, kích thước, trạng thái hoạt động, lịch sử phí) |
-| Material Master List | E03 | E03 (System Admin) | Danh sách vật tư với bộ tiêu chuẩn và số lượng phân bổ theo kích cỡ tủ |
-| Material Master Register | E03 | E03 (System Admin) | Form thêm vật tư mới: tên, số lượng bộ tiêu chuẩn, cấu hình phân bổ theo kích cỡ tủ |
-| Material Master Detail / Edit | E03 | E03 (System Admin) | Xem chi tiết và chỉnh sửa / xóa vật tư đã đăng ký |
-| Inventory List | E03 | E03 (System Admin) | Danh sách tồn kho vật tư (món ăn chế biến sẵn, vật tư, hàng mẫu); tìm kiếm theo tên và địa điểm bảo quản |
-| Inventory Register (Nhập/Xuất) | E03 | E03 (System Admin) | Form nhập dữ liệu tăng/giảm tồn kho; hệ thống tính tồn thực tế = nhập − xuất − phân bổ |
-| Inventory Detail / Edit | E03 | E03 (System Admin) | Xem chi tiết và chỉnh sửa / xóa dữ liệu tồn kho |
-| Arrival List | E03 | E03 (System Admin) | Danh sách hàng dự kiến nhập kho (ngày + tháng); lọc theo Tháng/Năm, kho bảo quản, trạng thái |
-| Arrival Confirm | E03 | E03 (System Admin) | Xác nhận nhập hàng thủ công cho lô đã chọn; nhập hạn sử dụng; cập nhật trạng thái |
-| Arrival Detail | E03 | E03 (System Admin) | Xem chi tiết lô hàng đã xác nhận; đối chiếu với phản hồi nhà cung cấp và đơn đặt hàng gốc |
-| Thomas CSV Export | E03 | E03 (System Admin) | Trigger xuất file CSV (lệnh xuất hàng / Product Master / chỉ thị nhập hàng) và tải về |
-| Thomas CSV Import | E03 | E03 (System Admin) | Upload file CSV từ Thomas (kết quả xuất hàng thực tế / báo cáo nhập hàng thực tế); hệ thống parse và cập nhật tồn kho |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| AW_INVT_001 | Equipment List | E03 | E03 (System Admin) | List | Danh sách thiết bị phân tab theo loại (Tủ lạnh / Tủ đông / Máy bán hàng / Lò vi sóng); tìm kiếm và lọc |
+| AW_INVT_002 | Equipment Register | E03 | E03 (System Admin) | Form | Form đăng ký thiết bị mới: nhập sê-ri, loại, kích thước, phí cài đặt / phí tháng / tiền phạt; hệ thống sinh ID + QR |
+| AW_INVT_003 | Equipment Detail / Edit | E03 | E03 (System Admin) | Detail | Xem chi tiết và chỉnh sửa thông số thiết bị (sê-ri, kích thước, trạng thái hoạt động, lịch sử phí) |
+| AW_INVT_004 | Material Master List | E03 | E03 (System Admin) | List | Danh sách vật tư với bộ tiêu chuẩn và số lượng phân bổ theo kích cỡ tủ |
+| AW_INVT_005 | Material Master Register | E03 | E03 (System Admin) | Form | Form thêm vật tư mới: tên, số lượng bộ tiêu chuẩn, cấu hình phân bổ theo kích cỡ tủ |
+| AW_INVT_006 | Material Master Detail / Edit | E03 | E03 (System Admin) | Detail | Xem chi tiết và chỉnh sửa / xóa vật tư đã đăng ký |
+| AW_INVT_007 | Inventory List | E03 | E03 (System Admin) | List | Danh sách tồn kho vật tư (món ăn chế biến sẵn, vật tư, hàng mẫu); tìm kiếm theo tên và địa điểm bảo quản |
+| AW_INVT_008 | Inventory Register (Nhập/Xuất) | E03 | E03 (System Admin) | Form | Form nhập dữ liệu tăng/giảm tồn kho; hệ thống tính tồn thực tế = nhập − xuất − phân bổ |
+| AW_INVT_009 | Inventory Detail / Edit | E03 | E03 (System Admin) | Detail | Xem chi tiết và chỉnh sửa / xóa dữ liệu tồn kho |
+| AW_INVT_010 | Arrival List | E03 | E03 (System Admin) | List | Danh sách hàng dự kiến nhập kho (ngày + tháng); lọc theo Tháng/Năm, kho bảo quản, trạng thái |
+| AW_INVT_011 | Arrival Confirm | E03 | E03 (System Admin) | Form | Xác nhận nhập hàng thủ công cho lô đã chọn; nhập hạn sử dụng; cập nhật trạng thái |
+| AW_INVT_012 | Arrival Detail | E03 | E03 (System Admin) | Detail | Xem chi tiết lô hàng đã xác nhận; đối chiếu với phản hồi nhà cung cấp và đơn đặt hàng gốc |
+| AW_INVT_013 | Thomas CSV Export | E03 | E03 (System Admin) | Report | Trigger xuất file CSV (lệnh xuất hàng / Product Master / chỉ thị nhập hàng) và tải về |
+| AW_INVT_014 | Thomas CSV Import | E03 | E03 (System Admin) | Form | Upload file CSV từ Thomas (kết quả xuất hàng thực tế / báo cáo nhập hàng thực tế); hệ thống parse và cập nhật tồn kho |
 
 ---
 

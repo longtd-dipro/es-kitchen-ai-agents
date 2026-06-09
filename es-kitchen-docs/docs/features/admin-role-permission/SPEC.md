@@ -157,11 +157,11 @@ Super Admin có thể tạo / sửa / xóa role và cấu hình permission cho t
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Role List | Super Admin (E03) | E03 (es-kitchen-web-admin) | Danh sách tất cả role: tên, mô tả, số quyền, số admin đang gán, action Edit/Delete |
-| Create Role | Super Admin (E03) | E03 (es-kitchen-web-admin) | Form tạo role mới: nhập tên, mô tả, chọn permissions từ tree theo module |
-| Edit Role | Super Admin (E03) | E03 (es-kitchen-web-admin) | Form sửa role pre-filled: cập nhật tên, mô tả, thêm/bớt permission checkbox |
-| Delete Role Confirmation* | Super Admin (E03) | E03 (es-kitchen-web-admin) | Popup confirm xóa role; block + hiển thị danh sách admin cần unassign nếu role đang được dùng |
-| Permission Tree (embedded)* | Super Admin (E03) | E03 (es-kitchen-web-admin) | Component tree phân cấp module → action (View/Create/Edit/Delete/Export); hiển thị trong Create/Edit Role |
-| Admin Dashboard (permission-enforced)* | Admin user (E03) | E03 (es-kitchen-web-admin) | Giao diện admin sau login — menu và button bị ẩn/disable tự động theo permission của role được gán |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| AW_ROLE_001 | Role List | Super Admin (E03) | E03 (es-kitchen-web-admin) | List | Danh sách tất cả role: tên, mô tả, số quyền, số admin đang gán, action Edit/Delete |
+| AW_ROLE_002 | Create Role | Super Admin (E03) | E03 (es-kitchen-web-admin) | Form | Form tạo role mới: nhập tên, mô tả, chọn permissions từ tree theo module |
+| AW_ROLE_003 | Edit Role | Super Admin (E03) | E03 (es-kitchen-web-admin) | Form | Form sửa role pre-filled: cập nhật tên, mô tả, thêm/bớt permission checkbox |
+| AW_ROLE_004 | Delete Role Confirmation* | Super Admin (E03) | E03 (es-kitchen-web-admin) | Modal | Popup confirm xóa role; block + hiển thị danh sách admin cần unassign nếu role đang được dùng |
+| AW_ROLE_005 | Permission Tree (embedded)* | Super Admin (E03) | E03 (es-kitchen-web-admin) | Form* | Component tree phân cấp module → action (View/Create/Edit/Delete/Export); hiển thị trong Create/Edit Role |
+| AW_ROLE_006 | Admin Dashboard (permission-enforced)* | Admin user (E03) | E03 (es-kitchen-web-admin) | Dashboard* | Giao diện admin sau login — menu và button bị ẩn/disable tự động theo permission của role được gán |

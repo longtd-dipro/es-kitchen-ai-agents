@@ -124,20 +124,20 @@ Mục tiêu: 4 chức năng auth thống nhất giữa 3 actor — Login, Logout
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Login | Supplier | E04 (es-kitchen-web-supplier) | Form nhập ID + Password; submit để lấy JWT và redirect dashboard |
-| Login | Outsource | E05 (es-kitchen-web-outsource-web-private) | Form nhập ID + Password; submit để lấy JWT và redirect dashboard |
-| Login | Driver | E06 (es-kitchen-webapp-driver) | Form nhập ID + Password trên mobile web; submit để lấy JWT và redirect dashboard |
-| Forgot Password | Supplier | E04 (es-kitchen-web-supplier) | Form nhập ID hoặc email để request email reset password |
-| Forgot Password | Outsource | E05 (es-kitchen-web-outsource-web-private) | Form nhập ID hoặc email để request email reset password |
-| Forgot Password | Driver | E06 (es-kitchen-webapp-driver) | Form nhập ID hoặc email để request email reset password trên mobile web |
-| Reset Password (via email link) * inferred | Supplier | E04 (es-kitchen-web-supplier) | Màn hình set password mới sau khi click link từ email; nhập New Password + Confirm |
-| Reset Password (via email link) * inferred | Outsource | E05 (es-kitchen-web-outsource-web-private) | Màn hình set password mới sau khi click link từ email; nhập New Password + Confirm |
-| Reset Password (via email link) * inferred | Driver | E06 (es-kitchen-webapp-driver) | Màn hình set password mới trên mobile web sau khi click link từ email |
-| Change Password | Supplier | E04 (es-kitchen-web-supplier) | Form đổi mật khẩu sau login: Current Password + New Password + Confirm; nằm trong Profile/Settings |
-| Change Password | Outsource | E05 (es-kitchen-web-outsource-web-private) | Form đổi mật khẩu sau login: Current Password + New Password + Confirm; nằm trong Profile/Settings |
-| Change Password | Driver | E06 (es-kitchen-webapp-driver) | Form đổi mật khẩu sau login trên mobile web; nằm trong Profile/Settings |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| SW_AUTH_001 | Login | Supplier | E04 (es-kitchen-web-supplier) | Form | Form nhập ID + Password; submit để lấy JWT và redirect dashboard |
+| OW_AUTH_001 | Login | Outsource | E05 (es-kitchen-web-outsource-web-private) | Form | Form nhập ID + Password; submit để lấy JWT và redirect dashboard |
+| DA_AUTH_001 | Login | Driver | E06 (es-kitchen-webapp-driver) | Form | Form nhập ID + Password trên mobile web; submit để lấy JWT và redirect dashboard |
+| SW_AUTH_002 | Forgot Password | Supplier | E04 (es-kitchen-web-supplier) | Form | Form nhập ID hoặc email để request email reset password |
+| OW_AUTH_002 | Forgot Password | Outsource | E05 (es-kitchen-web-outsource-web-private) | Form | Form nhập ID hoặc email để request email reset password |
+| DA_AUTH_002 | Forgot Password | Driver | E06 (es-kitchen-webapp-driver) | Form | Form nhập ID hoặc email để request email reset password trên mobile web |
+| SW_AUTH_003 | Reset Password (via email link) * inferred | Supplier | E04 (es-kitchen-web-supplier) | Form | Màn hình set password mới sau khi click link từ email; nhập New Password + Confirm |
+| OW_AUTH_003 | Reset Password (via email link) * inferred | Outsource | E05 (es-kitchen-web-outsource-web-private) | Form | Màn hình set password mới sau khi click link từ email; nhập New Password + Confirm |
+| DA_AUTH_003 | Reset Password (via email link) * inferred | Driver | E06 (es-kitchen-webapp-driver) | Form | Màn hình set password mới trên mobile web sau khi click link từ email |
+| SW_AUTH_004 | Change Password | Supplier | E04 (es-kitchen-web-supplier) | Form | Form đổi mật khẩu sau login: Current Password + New Password + Confirm; nằm trong Profile/Settings |
+| OW_AUTH_004 | Change Password | Outsource | E05 (es-kitchen-web-outsource-web-private) | Form | Form đổi mật khẩu sau login: Current Password + New Password + Confirm; nằm trong Profile/Settings |
+| DA_AUTH_004 | Change Password | Driver | E06 (es-kitchen-webapp-driver) | Form | Form đổi mật khẩu sau login trên mobile web; nằm trong Profile/Settings |
 
 ---
 

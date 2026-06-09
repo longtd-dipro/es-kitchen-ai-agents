@@ -190,24 +190,24 @@ Quy tắc trả hoa hồng áp dụng theo Plan được chọn cho đại lý/n
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Referral Campaign Page | E02 | E02 (es-kitchen-web-company) | Trang tổng hợp Referral Campaign — entry point xem lịch sử và tạo giới thiệu mới |
-| Business Partner Introduction Form | E02 | E02 (es-kitchen-web-company) | Form điền thông tin công ty được giới thiệu + người liên hệ + ghi chú nội bộ, submit tạo referral mới |
-| Referral History List (Company) | E02 | E02 (es-kitchen-web-company) | Danh sách tất cả referral đã gửi — tên công ty, ngày gửi, trạng thái tiến độ, thông tin bonus khi trạng thái = Đã ký |
-| Referral Campaign Management — List of Introductions | E03 | E03 (es-kitchen-web-admin) | Danh sách toàn bộ referral từ tất cả Company Admin — Plan áp dụng, trạng thái hợp đồng, ngày ký |
-| Referral Registration / Approval Form | E03 | E03 (es-kitchen-web-admin) | Form đánh giá tín dụng và điều kiện hợp đồng, thực hiện phê duyệt hoặc từ chối referral |
-| Referral Detail | E03 | E03 (es-kitchen-web-admin) | Xem đầy đủ thông tin referral; trường Plan bị khóa sau duyệt; toàn bộ form bị khóa sau thanh toán |
-| Free Campaign / Sample Management — Campaign History List | E03 | E03 (es-kitchen-web-admin) | Danh sách tất cả đợt phát hàng mẫu/dùng thử, hiển thị Success Rate (tỷ lệ chuyển đổi) |
-| Free Campaign New Registration Form | E03 | E03 (es-kitchen-web-admin) | Form tạo chiến dịch dùng thử mới — thông tin giao hàng, thời gian, số lượng mẫu (không cần Master Pháp nhân) |
-| Free Campaign Detail / Edit | E03 | E03 (es-kitchen-web-admin) | Xem và chỉnh sửa thông tin chiến dịch dùng thử; hỗ trợ đồng bộ tự động từ HubSpot |
-| Agency Management — List of Agents | E03 | E03 (es-kitchen-web-admin) | Danh sách tất cả đại lý/đối tác tiếp thị kèm trạng thái (Đang chạy / Đã hủy) |
-| Agency Registration Form | E03 | E03 (es-kitchen-web-admin) | Form đăng ký đại lý mới — tên công ty, trạng thái, thông tin người liên hệ |
-| Agency Detail — Basic Information tab | E03 | E03 (es-kitchen-web-admin) | Tab thông tin cơ bản đại lý: ID hệ thống, tên công ty, trạng thái, người liên hệ |
-| Agency Detail — Contract and Compensation Settings tab | E03 | E03 (es-kitchen-web-admin) | Tab cấu hình hợp đồng: chọn Plan hoa hồng (A/B/C/D), tài khoản ngân hàng, khai báo thuế, ghi chú |
-| Agency Detail — Performance Summary tab | E03 | E03 (es-kitchen-web-admin) | Tab tổng hợp hiệu suất: lũy kế KH giới thiệu, KH active, tổng hoa hồng đã trả / chưa trả |
-| Agency Detail — Referral History tab | E03 | E03 (es-kitchen-web-admin) | Tab chi tiết từng KH đại lý đã giới thiệu — tình trạng, số tháng đã trôi qua, hoa hồng tháng này |
-| Agency Detail — Payment History tab | E03 | E03 (es-kitchen-web-admin) | Tab lịch sử thanh toán hoa hồng — tháng, số tiền, trạng thái (Đã chuyển / Chưa chuyển), ngày chuyển |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| CW_MKTG_001 | Referral Campaign Page | E02 | E02 (es-kitchen-web-company) | Dashboard* | Trang tổng hợp Referral Campaign — entry point xem lịch sử và tạo giới thiệu mới |
+| CW_MKTG_002 | Business Partner Introduction Form | E02 | E02 (es-kitchen-web-company) | Form | Form điền thông tin công ty được giới thiệu + người liên hệ + ghi chú nội bộ, submit tạo referral mới |
+| CW_MKTG_003 | Referral History List (Company) | E02 | E02 (es-kitchen-web-company) | List | Danh sách tất cả referral đã gửi — tên công ty, ngày gửi, trạng thái tiến độ, thông tin bonus khi trạng thái = Đã ký |
+| AW_MKTG_001 | Referral Campaign Management — List of Introductions | E03 | E03 (es-kitchen-web-admin) | List | Danh sách toàn bộ referral từ tất cả Company Admin — Plan áp dụng, trạng thái hợp đồng, ngày ký |
+| AW_MKTG_002 | Referral Registration / Approval Form | E03 | E03 (es-kitchen-web-admin) | Form | Form đánh giá tín dụng và điều kiện hợp đồng, thực hiện phê duyệt hoặc từ chối referral |
+| AW_MKTG_003 | Referral Detail | E03 | E03 (es-kitchen-web-admin) | Detail | Xem đầy đủ thông tin referral; trường Plan bị khóa sau duyệt; toàn bộ form bị khóa sau thanh toán |
+| AW_MKTG_004 | Free Campaign / Sample Management — Campaign History List | E03 | E03 (es-kitchen-web-admin) | List | Danh sách tất cả đợt phát hàng mẫu/dùng thử, hiển thị Success Rate (tỷ lệ chuyển đổi) |
+| AW_MKTG_005 | Free Campaign New Registration Form | E03 | E03 (es-kitchen-web-admin) | Form | Form tạo chiến dịch dùng thử mới — thông tin giao hàng, thời gian, số lượng mẫu (không cần Master Pháp nhân) |
+| AW_MKTG_006 | Free Campaign Detail / Edit | E03 | E03 (es-kitchen-web-admin) | Detail | Xem và chỉnh sửa thông tin chiến dịch dùng thử; hỗ trợ đồng bộ tự động từ HubSpot |
+| AW_MKTG_007 | Agency Management — List of Agents | E03 | E03 (es-kitchen-web-admin) | List | Danh sách tất cả đại lý/đối tác tiếp thị kèm trạng thái (Đang chạy / Đã hủy) |
+| AW_MKTG_008 | Agency Registration Form | E03 | E03 (es-kitchen-web-admin) | Form | Form đăng ký đại lý mới — tên công ty, trạng thái, thông tin người liên hệ |
+| AW_MKTG_009 | Agency Detail — Basic Information tab | E03 | E03 (es-kitchen-web-admin) | Detail | Tab thông tin cơ bản đại lý: ID hệ thống, tên công ty, trạng thái, người liên hệ |
+| AW_MKTG_010 | Agency Detail — Contract and Compensation Settings tab | E03 | E03 (es-kitchen-web-admin) | Form* | Tab cấu hình hợp đồng: chọn Plan hoa hồng (A/B/C/D), tài khoản ngân hàng, khai báo thuế, ghi chú |
+| AW_MKTG_011 | Agency Detail — Performance Summary tab | E03 | E03 (es-kitchen-web-admin) | Dashboard* | Tab tổng hợp hiệu suất: lũy kế KH giới thiệu, KH active, tổng hoa hồng đã trả / chưa trả |
+| AW_MKTG_012 | Agency Detail — Referral History tab | E03 | E03 (es-kitchen-web-admin) | List | Tab chi tiết từng KH đại lý đã giới thiệu — tình trạng, số tháng đã trôi qua, hoa hồng tháng này |
+| AW_MKTG_013 | Agency Detail — Payment History tab | E03 | E03 (es-kitchen-web-admin) | List | Tab lịch sử thanh toán hoa hồng — tháng, số tiền, trạng thái (Đã chuyển / Chưa chuyển), ngày chuyển |
 
 ---
 

@@ -11,18 +11,16 @@ Khi feature chỉ ảnh hưởng **1 repo duy nhất** (ví dụ: supplier authe
 
 ```
 es-kitchen-docs/docs/features/<feature-name>/
-├── SPEC.md                  ← BA tạo (nghiệp vụ + Screens table)
-├── UI-SPEC.md               ← Designer tạo (screen inventory, component inventory, token usage)
+├── SPEC.md                  ← BA tạo (nghiệp vụ + Screens table); Designer điền cột Figma Link
 ├── PLAN.md                  ← PM tạo (kế hoạch)
-├── figma/
-│   ├── figma_<Component>_context.md  ← Designer tạo (1 file per component)
-│   └── figma_<Component>.png
 └── es-kitchen-api/
     ├── DESIGN.md            ← Tech Lead tạo
     └── tasks/
         ├── task-1-1.md
         └── task-2-1.md
 ```
+
+> **Designer không tạo file `.md` nào trong folder feature.** Output Designer = Figma frames (cloud) + URL điền vào cột `Figma Link` của bảng `## Screens` trong SPEC.md. FE/Mobile/QC/QA agents tự gọi Figma MCP để đọc design khi cần.
 
 ---
 
@@ -32,12 +30,8 @@ Khi feature ảnh hưởng **nhiều repo** (BE + FE, BE + Mobile, hoặc cả 3
 
 ```
 es-kitchen-docs/docs/features/<feature-name>/
-├── SPEC.md                          ← BA tạo (1 file, nghiệp vụ + Screens table)
-├── UI-SPEC.md                       ← Designer tạo (screen inventory, components, token usage)
+├── SPEC.md                          ← BA tạo (1 file, nghiệp vụ + Screens table); Designer điền cột Figma Link
 ├── PLAN.md                          ← PM tạo (tổng hợp tất cả repo)
-├── figma/
-│   ├── figma_<Component>_context.md ← Designer tạo
-│   └── figma_<Component>.png
 ├── es-kitchen-api/
 │   ├── DESIGN.md                    ← Tech Lead (kỹ thuật BE)
 │   └── tasks/
@@ -71,8 +65,8 @@ es-kitchen-docs/docs/features/<feature-name>/
 | Role | Trách nhiệm |
 |---|---|
 | BA | Tạo **1 SPEC** — nghiệp vụ, actors, flow, AC, **Screens table**. Không cần biết ranh giới repo. |
-| Designer | Đọc SPEC (section `## Screens`) → tạo Figma → **UI-SPEC.md** + `figma/figma_*.md`. Sau khi có Figma URL → điền cột Figma Link vào `## Screens` trong SPEC. |
-| Tech Lead | Đọc SPEC + UI-SPEC → xác định repo → tạo **DESIGN per repo** + tasks |
+| Designer | Đọc SPEC (section `## Screens`) → tạo Figma frames → **điền Figma URL vào cột Figma Link** trong `## Screens` của SPEC.md. Không viết file `.md` riêng. |
+| Tech Lead | Đọc SPEC (gồm Figma URLs) → xác định repo → tạo **DESIGN per repo** + tasks (truyền Figma URL vào task Context cho FE/Mobile) |
 | PM | Tổng hợp → tạo **1 PLAN** với timeline cross-repo |
 | Dev | Implement task của repo mình |
 

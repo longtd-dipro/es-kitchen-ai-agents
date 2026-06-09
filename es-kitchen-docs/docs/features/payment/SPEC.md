@@ -141,16 +141,16 @@ Hệ thống thanh toán của ESKITCHEN bao gồm hai luồng chính:
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Order Summary (Payment Entry) | E01 | E01 (es-kitchen-payment-app) | Xem tóm tắt đơn hàng (tên món, số lượng, tổng tiền, trợ giá company) trước khi thanh toán |
-| Payment Method Selection | E01 | E01 (es-kitchen-payment-app) | Chọn phương thức thanh toán: Rakuten Pay / Alipay / WeChat Pay |
-| elepay SDK Payment Sheet | E01 | E01 (es-kitchen-payment-app) | Native sheet của elepay SDK — E01 xác nhận thanh toán trong luồng bên thứ ba |
-| Payment Success / Receipt | E01 | E01 (es-kitchen-payment-app) | Xác nhận thanh toán thành công: tên món, số tiền, thời gian, mã giao dịch |
-| Payment Error *inferred | E01 | E01 (es-kitchen-payment-app) | Hiển thị lỗi thanh toán (elepay trả lỗi), cho phép retry hoặc đổi phương thức |
-| List of Invoices | E02 | E02 (es-kitchen-web-company) | Danh sách hóa đơn theo tháng của company: tháng phát hành, tổng tiền, trạng thái, tải PDF |
-| Invoices by Contract | E03 | E03 (es-kitchen-web-admin) | Danh sách hợp đồng cần phát hành hóa đơn tháng này; E03 chọn contract để xem preview |
-| Invoice Preview | E03 | E03 (es-kitchen-web-admin) | Xem trước toàn bộ nội dung hóa đơn (tổng đơn hàng tháng theo contract) trước khi confirm phát hành |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| UA_PAYM_001 | Order Summary (Payment Entry) | E01 | E01 (es-kitchen-payment-app) | Detail | Xem tóm tắt đơn hàng (tên món, số lượng, tổng tiền, trợ giá company) trước khi thanh toán |
+| UA_PAYM_002 | Payment Method Selection | E01 | E01 (es-kitchen-payment-app) | Form | Chọn phương thức thanh toán: Rakuten Pay / Alipay / WeChat Pay |
+| UA_PAYM_003 | elepay SDK Payment Sheet | E01 | E01 (es-kitchen-payment-app) | Modal | Native sheet của elepay SDK — E01 xác nhận thanh toán trong luồng bên thứ ba |
+| UA_PAYM_004 | Payment Success / Receipt | E01 | E01 (es-kitchen-payment-app) | Detail | Xác nhận thanh toán thành công: tên món, số tiền, thời gian, mã giao dịch |
+| UA_PAYM_005 | Payment Error *inferred | E01 | E01 (es-kitchen-payment-app) | Detail | Hiển thị lỗi thanh toán (elepay trả lỗi), cho phép retry hoặc đổi phương thức |
+| CW_PAYM_001 | List of Invoices | E02 | E02 (es-kitchen-web-company) | List | Danh sách hóa đơn theo tháng của company: tháng phát hành, tổng tiền, trạng thái, tải PDF |
+| AW_PAYM_001 | Invoices by Contract | E03 | E03 (es-kitchen-web-admin) | List | Danh sách hợp đồng cần phát hành hóa đơn tháng này; E03 chọn contract để xem preview |
+| AW_PAYM_002 | Invoice Preview | E03 | E03 (es-kitchen-web-admin) | Detail | Xem trước toàn bộ nội dung hóa đơn (tổng đơn hàng tháng theo contract) trước khi confirm phát hành |
 
 ---
 

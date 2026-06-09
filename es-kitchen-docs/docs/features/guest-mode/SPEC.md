@@ -272,20 +272,20 @@
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Login Screen (với Guest Mode button) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình đăng nhập hiện có — có thêm button "ゲストとして利用する" để vào app không cần tài khoản |
-| Home / Main Menu Screen (Guest) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình chính sau khi đăng nhập guest — menu items bị giới hạn (7 items ẩn), duyệt menu và thêm vào giỏ hàng |
-| Restricted Page Placeholder *inferred | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình / inline placeholder hiển thị "登録が必要です" khi guest cố truy cập URL của tính năng bị block |
-| Company ID Input Screen | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình nhập Company ID trước khi checkout — bắt buộc mỗi lần, không lưu lại |
-| Guest Payment Blocked Screen *inferred | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình / dialog thông báo không thể thanh toán khi company có `guestPaymentAllowed = false` — kèm CTA "アカウントを作成する" |
-| Checkout / Payment Screen (Guest) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình thanh toán cho guest — không có option tiền mặt, chỉ hiện credit card / PayPay / Apple Pay qua elepay |
-| Order History Screen (Guest) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Danh sách đơn hàng của session guest hiện tại (filter theo userId), có thể xem chi tiết từng order |
-| Link Email Screen | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình nhập địa chỉ email để upgrade guest → full account ("メールアドレスを連携する") |
-| OTP Verify Screen (Link Email) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình nhập OTP 4 chữ số gửi về email, có nút Resend (cooldown 60 giây) |
-| Set Password Screen (Link Email) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Form đặt password sau khi OTP xác thực thành công — nhập password + xác nhận password |
-| Link Email Success Screen *inferred | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình xác nhận "連携完了" sau khi upgrade thành công — redirect vào app với full account |
-| Edit Company Form (with Guest Payment Toggle) | E03 — System Admin | E03 (es-kitchen-web-admin) | Form Edit Company hiện có — bổ sung toggle "ゲスト支払いを許可する" để System Admin bật/tắt guest payment per company |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| UA_GUST_001 | Login Screen (với Guest Mode button) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Form | Màn hình đăng nhập hiện có — có thêm button "ゲストとして利用する" để vào app không cần tài khoản |
+| UA_GUST_002 | Home / Main Menu Screen (Guest) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Card-list | Màn hình chính sau khi đăng nhập guest — menu items bị giới hạn (7 items ẩn), duyệt menu và thêm vào giỏ hàng |
+| UA_GUST_003 | Restricted Page Placeholder *inferred | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Modal* | Màn hình / inline placeholder hiển thị "登録が必要です" khi guest cố truy cập URL của tính năng bị block |
+| UA_GUST_004 | Company ID Input Screen | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Form | Màn hình nhập Company ID trước khi checkout — bắt buộc mỗi lần, không lưu lại |
+| UA_GUST_005 | Guest Payment Blocked Screen *inferred | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Modal | Màn hình / dialog thông báo không thể thanh toán khi company có `guestPaymentAllowed = false` — kèm CTA "アカウントを作成する" |
+| UA_GUST_006 | Checkout / Payment Screen (Guest) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Form | Màn hình thanh toán cho guest — không có option tiền mặt, chỉ hiện credit card / PayPay / Apple Pay qua elepay |
+| UA_GUST_007 | Order History Screen (Guest) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | List | Danh sách đơn hàng của session guest hiện tại (filter theo userId), có thể xem chi tiết từng order |
+| UA_GUST_008 | Link Email Screen | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Form | Màn hình nhập địa chỉ email để upgrade guest → full account ("メールアドレスを連携する") |
+| UA_GUST_009 | OTP Verify Screen (Link Email) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Form | Màn hình nhập OTP 4 chữ số gửi về email, có nút Resend (cooldown 60 giây) |
+| UA_GUST_010 | Set Password Screen (Link Email) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Form | Form đặt password sau khi OTP xác thực thành công — nhập password + xác nhận password |
+| UA_GUST_011 | Link Email Success Screen *inferred | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Detail* | Màn hình xác nhận "連携完了" sau khi upgrade thành công — redirect vào app với full account |
+| AW_GUST_001 | Edit Company Form (with Guest Payment Toggle) | E03 — System Admin | E03 (es-kitchen-web-admin) | Form | Form Edit Company hiện có — bổ sung toggle "ゲスト支払いを許可する" để System Admin bật/tắt guest payment per company |
 
 ---
 

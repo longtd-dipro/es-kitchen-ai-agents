@@ -215,20 +215,20 @@ Tài xế xem lại toàn bộ báo cáo cuối ca trước khi xác nhận gử
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Collection Report | E06 | E06 (es-kitchen-webapp-driver) | Nhập số tiền mặt thực tế thu được tại điểm giao; hiển thị chênh lệch với số tiền dự kiến |
-| Disposal Report | E06 | E06 (es-kitchen-webapp-driver) | Nhập số lượng hàng hủy theo từng mặt hàng; hỗ trợ nhập hạn sử dụng + số lượng từng lô cho sản phẩm nhiệt độ thường |
-| Parking Report | E06 | E06 (es-kitchen-webapp-driver) | Upload ảnh biên lai đỗ xe và nhập số tiền phí đỗ xe |
-| Final Report Confirmation | E06 | E06 (es-kitchen-webapp-driver) | Xem toàn bộ báo cáo cuối ca (thu tiền + hàng hủy + phí đỗ xe); xác nhận gửi hoặc quay về sửa |
-| Collection Management List | E03 | E03 (es-kitchen-web-admin) | Tìm kiếm và xem tổng tiền thu theo từng công ty vận chuyển ủy thác theo tháng giao hàng |
-| Collection Management Detail | E03 | E03 (es-kitchen-web-admin) | Xem chi tiết thu tiền theo từng tài xế thuộc một công ty vận chuyển |
-| Waste Disposal & Collection List | E03 | E03 (es-kitchen-web-admin) | Tìm kiếm và xem danh sách hàng hủy + trạng thái thanh toán theo khách hàng pháp nhân; chuyển trạng thái Chưa xuất → Đã xuất → Đã thanh toán |
-| Waste Disposal Invoice Detail | E03 | E03 (es-kitchen-web-admin) | Xem danh sách hóa đơn thanh toán hàng hủy của một khách hàng; xóa báo cáo hàng hủy |
-| Discard Input List | E03 | E03 (es-kitchen-web-admin) | Tìm kiếm và xem danh sách dữ liệu nhập hàng hủy phân chia theo gói hợp đồng; hiển thị trạng thái "Chưa nhập hàng hủy" |
-| Discard Input Form | E03 | E03 (es-kitchen-web-admin) | Nhập hoặc chỉnh sửa số liệu hàng hủy; đăng ký mặt hàng hủy mới |
-| Disposal Report (Company) | E02 | E02 (es-kitchen-web-company) | Xem báo cáo số lượng hàng hóa nhiệt độ thường bị hết hạn/cần hủy của công ty mình |
-| Disposal History | E02 | E02 (es-kitchen-web-company) | Xem lịch sử hàng hủy theo tháng của công ty mình |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| DA_CNCL_001 | Collection Report | E06 | E06 (es-kitchen-webapp-driver) | Form | Nhập số tiền mặt thực tế thu được tại điểm giao; hiển thị chênh lệch với số tiền dự kiến |
+| DA_CNCL_002 | Disposal Report | E06 | E06 (es-kitchen-webapp-driver) | Form | Nhập số lượng hàng hủy theo từng mặt hàng; hỗ trợ nhập hạn sử dụng + số lượng từng lô cho sản phẩm nhiệt độ thường |
+| DA_CNCL_003 | Parking Report | E06 | E06 (es-kitchen-webapp-driver) | Form | Upload ảnh biên lai đỗ xe và nhập số tiền phí đỗ xe |
+| DA_CNCL_004 | Final Report Confirmation | E06 | E06 (es-kitchen-webapp-driver) | Detail | Xem toàn bộ báo cáo cuối ca (thu tiền + hàng hủy + phí đỗ xe); xác nhận gửi hoặc quay về sửa |
+| AW_CNCL_001 | Collection Management List | E03 | E03 (es-kitchen-web-admin) | List | Tìm kiếm và xem tổng tiền thu theo từng công ty vận chuyển ủy thác theo tháng giao hàng |
+| AW_CNCL_002 | Collection Management Detail | E03 | E03 (es-kitchen-web-admin) | Detail | Xem chi tiết thu tiền theo từng tài xế thuộc một công ty vận chuyển |
+| AW_CNCL_003 | Waste Disposal & Collection List | E03 | E03 (es-kitchen-web-admin) | List | Tìm kiếm và xem danh sách hàng hủy + trạng thái thanh toán theo khách hàng pháp nhân; chuyển trạng thái Chưa xuất → Đã xuất → Đã thanh toán |
+| AW_CNCL_004 | Waste Disposal Invoice Detail | E03 | E03 (es-kitchen-web-admin) | Detail | Xem danh sách hóa đơn thanh toán hàng hủy của một khách hàng; xóa báo cáo hàng hủy |
+| AW_CNCL_005 | Discard Input List | E03 | E03 (es-kitchen-web-admin) | List | Tìm kiếm và xem danh sách dữ liệu nhập hàng hủy phân chia theo gói hợp đồng; hiển thị trạng thái "Chưa nhập hàng hủy" |
+| AW_CNCL_006 | Discard Input Form | E03 | E03 (es-kitchen-web-admin) | Form | Nhập hoặc chỉnh sửa số liệu hàng hủy; đăng ký mặt hàng hủy mới |
+| CW_CNCL_001 | Disposal Report (Company) | E02 | E02 (es-kitchen-web-company) | Report | Xem báo cáo số lượng hàng hóa nhiệt độ thường bị hết hạn/cần hủy của công ty mình |
+| CW_CNCL_002 | Disposal History | E02 | E02 (es-kitchen-web-company) | List | Xem lịch sử hàng hủy theo tháng của công ty mình |
 
 ---
 
