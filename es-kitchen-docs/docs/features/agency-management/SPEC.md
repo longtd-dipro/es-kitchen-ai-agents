@@ -203,9 +203,27 @@ Hệ thống cho phép System Admin quản lý toàn bộ vòng đời của đ�
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Danh sách Đại lý & Đối tác | E03 | E03 (System Admin) | Xem danh sách đại lý với tìm kiếm/lọc theo tên; điều hướng vào chi tiết hoặc đăng ký mới |
+| Đăng ký Đại lý Mới | E03 | E03 (System Admin) | Form nhập thông tin đại lý (tên, liên hệ, điều kiện hợp đồng, tỷ lệ hoa hồng); validate và lưu bản ghi |
+| Chi tiết Đại lý *inferred | E03 | E03 (System Admin) | Xem thông tin chi tiết đại lý đã chọn; điều hướng sang Referral List và Fee List của đại lý đó |
+| Danh sách Cơ hội Giới thiệu (Referral List) | E03 | E03 (System Admin) | Xem danh sách pháp nhân được đại lý giới thiệu kèm trạng thái tiến độ |
+| Chi tiết / Chỉnh sửa Cơ hội Giới thiệu | E03 | E03 (System Admin) | Xem chi tiết, cập nhật trạng thái tiến độ, xóa (có confirm dialog) một cơ hội giới thiệu |
+| Doanh số theo Đại lý | E03 | E03 (System Admin) | Bảng tổng doanh thu phát sinh từng đại lý theo kỳ (tháng/quý); bộ lọc theo kỳ thời gian |
+| Danh sách Thanh toán Hoa hồng (Fee List) | E03 | E03 (System Admin) | Danh sách khoản hoa hồng cần/đã thanh toán theo tháng và đại lý; filter theo trạng thái; nút tải CSV |
+| Cập nhật Trạng thái Thanh toán Hoa hồng *inferred | E03 | E03 (System Admin) | Inline hoặc modal cập nhật trạng thái Chưa thanh toán ↔ Đã thanh toán cho một khoản hoa hồng |
+| Dashboard Hiệu suất Giới thiệu (Referral Performance) | E03 | E03 (System Admin) | Tổng số pháp nhân giới thiệu thành công, tổng doanh thu kênh giới thiệu, biểu đồ xu hướng; filter theo kỳ/đại lý |
+
+---
+
 ## Bước tiếp theo
 
 Sau khi SPEC được BA/PM sign-off:
 
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `es-kitchen-docs/docs/features/agency-management/SPEC.md`" (cần DESIGN cho `es-kitchen-api` + `es-kitchen-web-admin`)
 - "Hãy là QC, sinh test cases từ SPEC này: `es-kitchen-docs/docs/features/agency-management/SPEC.md`" (hoặc `/test/generate_manual_testcases_rbt`)
+- "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/agency-management/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/agency-management/SPEC.md)

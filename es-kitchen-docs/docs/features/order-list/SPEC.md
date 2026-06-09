@@ -153,3 +153,22 @@ Trạng thái đơn hàng được **tự động cập nhật** dựa trên hà
 - Export danh sách đơn hàng ra file
 - Real-time notification khi có đơn mới (push notification / WebSocket)
 - Phân trang *(TBD - OQ-11: xác nhận có cần pagination không?)*
+
+---
+
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Order List — Tab: Waiting for Delivery Date Response | Supplier | E04 (es-kitchen-web-supplier) | Danh sách đơn hàng chờ Supplier phản hồi ngày giao hàng; hiển thị badge số đơn chưa xử lý; Supplier nhập Scheduled Shipment Date để chuyển trạng thái |
+| Order List — Tab: Waiting for Shipment | Supplier | E04 (es-kitchen-web-supplier) | Danh sách đơn hàng chờ xuất hàng; Supplier xác nhận xuất hàng bằng cách nhập Tracking Number + Shipment Date để chuyển trạng thái |
+| Order List — Tab: Shipped | Supplier | E04 (es-kitchen-web-supplier) | Danh sách đơn hàng đã xuất hàng; chỉ xem, không có action chuyển trạng thái |
+| Order List — Search & Filter *inferred | Supplier | E04 (es-kitchen-web-supplier) | Form tìm kiếm/lọc nằm trong màn hình Order List; lọc theo Shipping Date (khoảng ngày) và Status (dropdown); kết quả span qua nhiều tab |
+| Order Detail *inferred | Supplier | E04 (es-kitchen-web-supplier) | Xem chi tiết 1 đơn hàng; truy cập từ click vào hàng trong danh sách; nằm ngoài scope màn hình này nhưng là điểm đến navigation |
+
+---
+
+## Bước tiếp theo
+
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/order-list/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/order-list/SPEC.md)

@@ -175,6 +175,19 @@ Mode 2 là core AI engine, sử dụng **MILP solver (OR-Tools)** cho bước t�
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Order Creation — Select Order Method | Company Admin | E02 (es-kitchen-web-company) | Chọn Branch + Plan, chọn 1 trong 5 mode recommendation (Mode 1/2/4/5/6) khi tạo order tháng N+1 |
+| AI Recommendation Result | Company Admin | E02 (es-kitchen-web-company) | Xem bảng recommended order (Product ID, tên món, category, unit price, recommended qty), chỉnh số lượng từng item, submit final order |
+| Mode 5 Manual Input | Company Admin | E02 (es-kitchen-web-company) | Nhập tay số lượng từng menu item, inline validation (sum = plan total, max per item, category ratio) |
+| Mode 6 Chat AI — Nhập Condition | Company Admin | E02 (es-kitchen-web-company) | Nhập condition tự nhiên (ví dụ "không muốn ăn cá"), xem recommended list sau khi AI inject constraint, refine tiếp nếu cần |
+| Employee Preference Survey | End User | E01 (es-kitchen-payment-app) | Trả lời khảo sát "Bạn muốn ăn gì tháng tới?", chọn món yêu thích / ưu tiên cho Mode 4 |
+| AI Config — Constraints Setup * inferred | System Admin | E03 (es-kitchen-web-admin) | Cấu hình constraints chung cho AI: category ratio, price tier ratio áp dụng toàn hệ thống |
+
+---
+
 ## 12. Phần kỹ thuật chi tiết
 
 Xem `overview.md` cùng folder cho:
@@ -185,3 +198,10 @@ Xem `overview.md` cùng folder cho:
 - Constraint formula
 - Blast radius cross-repo
 - Reference Figjam business flow
+
+---
+
+## Bước tiếp theo
+
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/ai-recommendation/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/ai-recommendation/SPEC.md)

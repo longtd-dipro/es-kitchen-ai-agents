@@ -78,7 +78,27 @@ Cấu trúc bắt buộc:
 ## Alternative Flows & Edge Cases
 ## Acceptance Criteria
 ## Out of Scope
+## Screens
 ```
+
+**Hướng dẫn điền section `## Screens`:**
+
+Từ Happy Path và Acceptance Criteria đã viết, liệt kê các màn hình (screen) mà người dùng sẽ thấy. Mỗi màn hình = 1 dòng trong bảng.
+
+```markdown
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| <Tên màn hình — PascalCase hoặc rõ nghĩa> | <E01/E02/E03/E04/E05/E06> | <E0X (tên app)> | <1 câu mô tả nội dung chính> |
+```
+
+- **Screen**: Tên màn hình — đủ rõ để Designer biết tạo gì (ví dụ: "Monthly Menu Management", "Login", "Order Checkout")
+- **Actor**: Actor thao tác trên màn hình đó
+- **App**: E01 (mobile) · E02 (web-company) · E03 (web-admin) · E04 (web-supplier) · E05 (web-outsource) · E06 (webapp-driver)
+- **Mô tả ngắn**: Nội dung chính hoặc action chính của màn hình (table/form/modal/list...)
+
+Nếu thiếu thông tin để xác định screens cụ thể → tạo screens hợp lý nhất từ context (đạt ~90% độ chính xác), ghi chú `*` và note cuối bảng.
 
 ## Output
 
@@ -87,6 +107,8 @@ Cấu trúc bắt buộc:
 Phạm vi: Single-actor (1 repo) / Cross-repo (N repos)
 Bước tiếp theo (chạy song song):
 → "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: <đường dẫn SPEC.md>"
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: <đường dẫn SPEC.md>"
+  (hoặc slash command: `/create-ui-design <đường dẫn SPEC.md>`)
 → "Hãy là QC, sinh test cases từ SPEC này: <đường dẫn SPEC.md>"
   (hoặc slash command: `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
 ```

@@ -325,9 +325,35 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Onboarding Tutorial Slide | E01 | E01 (es-kitchen-payment-app) | Màn hình slide ngang xuất hiện khi đăng nhập lần đầu, hướng dẫn sử dụng app |
+| Allergen Settings | E01 | E01 (es-kitchen-payment-app) | Danh sách chất gây dị ứng để user chọn và lưu vào profile |
+| Unsuitable Food Settings | E01 | E01 (es-kitchen-payment-app) | Chỉnh sửa danh sách dị ứng và đăng ký thực phẩm không thích hợp (kết hợp ST-02 + ST-03) |
+| Product Rating Form | E01 | E01 (es-kitchen-payment-app) | Form đánh giá sao (1–5) và bình luận cho từng sản phẩm sau khi đơn hoàn tất |
+| Product Detail — Ratings Tab | E01 | E01 (es-kitchen-payment-app) | Trang chi tiết sản phẩm hiển thị điểm trung bình và danh sách bình luận từ người dùng khác |
+| Home / Menu — Recommendation Section | E01 | E01 (es-kitchen-payment-app) | Trang chủ / menu hiển thị section "Gợi ý cho bạn" và "Phổ biến" dựa trên lịch sử mua |
+| Survey List (E01) | E01 | E01 (es-kitchen-payment-app) | Danh sách khảo sát đang mở dành cho user, có thể mở để trả lời |
+| Survey Answer Form | E01 | E01 (es-kitchen-payment-app) | Form trả lời khảo sát từng câu hỏi, có deadline countdown |
+| Wish Survey — Desired Products | E01 | E01 (es-kitchen-payment-app) | Danh sách thực đơn tháng sau để user chọn sản phẩm mong muốn |
+| Feedback Form | E01 | E01 (es-kitchen-payment-app) | Form gửi ý kiến / yêu cầu / khiếu nại / đề xuất đến admin |
+| Order List — Driver Rating Action | E02 | E02 (es-kitchen-web-company) | Danh sách đơn hàng hoàn tất, có nút "Đánh giá tài xế" trên từng đơn |
+| Driver Rating Form | E02 | E02 (es-kitchen-web-company) | Form đánh giá sao (1–5) và bình luận cho tài xế sau giao hàng hoàn tất |
+| Survey Creation | E03 | E03 (es-kitchen-web-admin) | Form tạo khảo sát mới: chọn template, cấu hình thời gian, chọn doanh nghiệp nhận |
+| Survey Distribution History | E03 | E03 (es-kitchen-web-admin) | Danh sách chiến dịch khảo sát đã tạo, filter theo trạng thái/thời gian |
+| Survey Results — Visualization | E03 | E03 (es-kitchen-web-admin) | Biểu đồ tổng hợp kết quả khảo sát theo từng chiến dịch (pie chart, bar chart, export) |
+| Product Rating Dashboard (E03) *inferred | E03 | E03 (es-kitchen-web-admin) | Tổng hợp điểm đánh giá sản phẩm, cảnh báo khi điểm trung bình dưới ngưỡng |
+| Feedback Inbox (E03) *inferred | E03 | E03 (es-kitchen-web-admin) | Danh sách feedback nhận từ E01, có thể phản hồi qua email |
+
+---
+
 ## Bước tiếp theo
 
 Chạy song song sau khi SPEC được sign-off:
 
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/user-engagement/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/user-engagement/SPEC.md`" (hoặc slash command `/test/generate_manual_testcases_rbt` cho FULL RBT)
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/user-engagement/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/user-engagement/SPEC.md)

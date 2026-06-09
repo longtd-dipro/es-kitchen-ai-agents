@@ -483,3 +483,200 @@ When generating any UI or design spec for ESKitchen, follow these rules:
   - Tooltips, popovers → `float`
   - Modals, dropdowns → `popout`
 
+---
+
+## 10. Per-Site Layout Rules
+
+> Dùng section này khi Designer Agent tạo Figma cho từng app cụ thể.
+> **[confirmed]** = đọc trực tiếp từ Figma. **[inferred]** = suy luận từ token system + site type.
+
+---
+
+### E03 — System Admin Web (`es-kitchen-web-admin`) [confirmed]
+
+**Color theme:** `colors.semantics.admin.*` (orange — `#f4860c` và scale)
+
+**Viewport:** 1440 × 1024px (desktop)
+
+**Layout structure:**
+```
+┌──────────┬────────────────────────────────────┐
+│ Sidebar  │ Header (54px)                      │
+│ 210px    ├────────────────────────────────────┤
+│          │ Page Header: Breadcrumb + Title     │
+│          │ (94px: 20px top pad + 22px + 32px) │
+│          ├────────────────────────────────────┤
+│          │ Main Content (padding: 24px horiz) │
+│          │                                    │
+└──────────┴────────────────────────────────────┘
+```
+
+| Yếu tố | Giá trị |
+|---|---|
+| Sidebar width | 210px |
+| Header height | 54px |
+| Page header height | 94px |
+| Content horizontal padding | 24px |
+| Content starts at | x=210, y=148 |
+| Content area width | 1183px (1231 - 24×2) |
+
+**Navigation:** Left sidebar (fixed), top header (user profile + title)
+
+**Common components (confirmed từ Figma):**
+- `Sidebar` instance — 210×1024
+- `Header` instance — 1231×54
+- `Breadcrumb` — 22px height
+- Page title — `font.text xl.bold` (20px/700) or `font.display xs.*` (24px)
+- Table columns: row height **54px**, header row **55px**
+- Table pagination: **48px** height
+- Filter/search bar: **112px** height
+- Buttons in page header: **48px** height
+- Table cell action column: **96px** width
+
+**Screen naming convention:** `AW_<MODULE>_<SEQ>_<日本語>`
+
+---
+
+### E02 — Company Admin Web (`es-kitchen-web-company`) [inferred]
+
+**Color theme:** `colors.semantics.company.*` (blue — `#0969da` và scale)
+
+**Viewport:** 1440 × 1024px (desktop)
+
+**Layout structure:** Tương tự E03 — left sidebar + header + content
+
+| Yếu tố | Giá trị |
+|---|---|
+| Sidebar width | ~210px (inferred same as E03) |
+| Header height | ~54px |
+| Page header height | ~94px |
+| Content horizontal padding | 24px |
+
+**Navigation:** Left sidebar, top header
+
+**Phân biệt với E03:** Blue accent thay vì orange. Ít chức năng hơn (58 functions vs 160). Scope chỉ quản lý company của mình, không có system-wide management.
+
+**Screen naming convention:** `CW_<MODULE>_<SEQ>_<日本語>` (inferred)
+
+---
+
+### E01 — User Mobile App (`es-kitchen-payment-app`) [inferred]
+
+**Color theme:** `colors.semantics.app.*` (yellow — `#eab308` và scale)
+
+**Viewport:** 390 × 844px (iPhone 14 standard) / responsive mobile
+
+**Layout structure:**
+```
+┌──────────────────────┐
+│ Status Bar (safe)    │  ~44px
+├──────────────────────┤
+│ Navigation Bar       │  ~56px (title + back)
+├──────────────────────┤
+│                      │
+│   Main Content       │  scroll vertical
+│                      │
+├──────────────────────┤
+│ Bottom Tab Bar       │  ~83px (safe area incl.)
+└──────────────────────┘
+```
+
+| Yếu tố | Giá trị |
+|---|---|
+| Screen width | 390px |
+| Top nav bar | ~56px |
+| Bottom tab bar | ~83px (bao gồm safe area iOS) |
+| Content horizontal padding | 16px |
+| Card border radius | `borders.semantics.border-radius.halfmodal` (8px) |
+| Bottom sheet border radius | `borders.semantics.border-radius.halfmodal` (8px) |
+
+**Navigation:** Bottom tab bar (home, order, history, profile)
+
+**Platform:** Flutter 3.x — sizing dùng `flutter_screenutil` (`100.w`, `50.h`), không hard-code pixel.
+
+**Screen naming convention:** `APP_<MODULE>_<SEQ>_<日本語>` (inferred)
+
+---
+
+### E04 — Supplier Web (`es-kitchen-web-supplier`) [inferred]
+
+**Color theme:** `colors.semantics.company.*` (blue) hoặc neutral — cần confirm từ Figma khi E05 URL được fix
+
+**Viewport:** 1440px desktop (inferred)
+
+**Layout structure:** Left sidebar + content — tương tự E03/E02 nhưng đơn giản hơn (ít module hơn)
+
+**Navigation:** Left sidebar
+
+**Screen naming convention:** `SW_<MODULE>_<SEQ>_<日本語>` (inferred)
+
+> ⚠️ URL Figma cần verify: node-id `16479:123684` — gọi get_metadata để confirm khi Figma Desktop mở đúng page.
+
+---
+
+### E05 — Outsource / Internal Private Web (`es-kitchen-web-outsource-web-private`) [needs verification]
+
+**Viewport:** 1440px desktop (inferred)
+
+**Layout structure:** Desktop web, internal operation tool
+
+> ⚠️ URL Figma cần verify: user cung cấp cùng node-id với E04 (`16479:123380`). Cần URL đúng để confirm layout.
+
+**Screen naming convention:** `OW_<MODULE>_<SEQ>_<日本語>` (inferred)
+
+---
+
+### E06 — Driver Web App (`es-kitchen-webapp-driver`) [inferred]
+
+**Color theme:** Neutral / `colors.semantics.neutral.*` — driver app đơn giản, tập trung vào task
+
+**Viewport:** ~390px (mobile-optimized web, không phải native app)
+
+**Layout structure:**
+```
+┌──────────────────────┐
+│ Top Bar / Header     │  ~56px
+├──────────────────────┤
+│                      │
+│   Main Content       │  scroll vertical
+│   (order cards,      │
+│    status updates)   │
+│                      │
+└──────────────────────┘
+```
+
+| Yếu tố | Giá trị |
+|---|---|
+| Screen width | ~390px |
+| Top bar | ~56px |
+| Content padding | 16px |
+
+**Navigation:** Top bar (không có bottom tab bar — driver workflow linear)
+
+**Stack:** React 19 / Ant Design (mobile-first breakpoint)
+
+**Screen naming convention:** `DW_<MODULE>_<SEQ>_<日本語>` (inferred)
+
+> ⚠️ URL Figma cần verify: node-id `15719:120976` — gọi get_metadata để confirm khi Figma Desktop mở đúng page.
+
+---
+
+## 11. Figma → ESKITCHEN Token Quick Lookup (per site)
+
+Khi đọc Figma của 1 site cụ thể, map primary color theo:
+
+| Site | Primary color hex | ESKITCHEN semantic token |
+|---|---|---|
+| E03 System Admin | `#f4860c` | `colors.semantics.admin.500` |
+| E02 Company Admin | `#0969da` | `colors.semantics.company.500` |
+| E01 Mobile App | `#eab308` | `colors.semantics.app.500` |
+| E04 Supplier | TBD — verify từ Figma | — |
+| E05 Outsource | TBD — verify từ Figma | — |
+| E06 Driver | `#24292f` (neutral dark) | `colors.components.text.high` |
+
+**Error / success / warning** — dùng chung cho tất cả sites:
+- Error: `colors.semantics.negative.500` (`#cf222e`)
+- Success: `colors.semantics.success.400` (`#2da44e`)
+- Warning: `colors.semantics.warning.400` (`#fac215`)
+- Info: `colors.semantics.info.500` (`#0969da`)
+

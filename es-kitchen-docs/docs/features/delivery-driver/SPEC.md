@@ -200,6 +200,24 @@ Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Login Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Đăng nhập bằng ID + mật khẩu; hỗ trợ quên mật khẩu |
+| Home Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Hiển thị thông báo mới nhất; phím tắt đến Delivery List, Báo cáo sự cố, Hỗ trợ |
+| Delivery List Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Danh sách điểm giao trong ngày của tài xế; lọc theo ngày/tháng/năm |
+| Delivery Details Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Chi tiết điểm giao: ghi chú doanh nghiệp, vận đơn, danh sách đồ ăn + vật tư; cập nhật trạng thái (Bắt đầu → Đã đến → Hoàn tất) |
+| Delivery Status Management Screen * inferred | E06 — Driver | E06 (es-kitchen-webapp-driver) | Thiết lập cờ "Chưa giao" hoặc "Giao lại" cho điểm giao |
+| Delivery Inspection Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Kiểm đếm hàng hóa (product inspection) và vật tư dụng cụ (material inspection); cảnh báo thừa/thiếu |
+| Report Completion — Pre/Post Photo Upload Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Upload ảnh trước và sau khi trưng bày sản phẩm; xem popup hướng dẫn trưng bày dạng slide |
+| Signature Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Hiển thị nội dung báo cáo hoàn thành; thu chữ ký đại diện công ty và chữ ký tài xế; nhập ghi chú tự do |
+| Incident / Delay Report Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Báo cáo trễ hàng (chọn lý do) hoặc sự cố (hàng hỏng/thiếu + mô tả); gửi thông báo real-time đến E03 |
+| Manual Display Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Xem tài liệu hướng dẫn theo danh mục: Quy trình, Chuẩn bị, Lấy đồ, Cách chụp ảnh, Trưng bày |
+| Inquiry / Support Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | HubSpot Widget chatbot nhúng; xử lý FAQ tự động và hỗ trợ real-time |
+
+---
+
 ## Out of Scope
 
 - Luồng phân công đơn cho tài xế (do E05 Outsource Admin hoặc E03 System Admin quản lý — xem SPEC riêng).
@@ -229,3 +247,5 @@ Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/delivery-driver/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/delivery-driver/SPEC.md`"
   (hoặc slash command: `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
+- → "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/delivery-driver/SPEC.md"
+  (hoặc slash command: `/create-ui-design es-kitchen-docs/docs/features/delivery-driver/SPEC.md`)

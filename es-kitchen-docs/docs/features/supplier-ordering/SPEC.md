@@ -325,6 +325,24 @@ Khi điều kiện lọc không trả về đơn hàng nào, hệ thống hiển
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Supplier Management | E03 | E03 (es-kitchen-web-admin) | Xem danh sách, tìm kiếm, chỉnh sửa, xóa tài khoản Supplier |
+| Login | E04 | E04 (es-kitchen-web-supplier) | Đăng nhập bằng ID / Mật khẩu |
+| Forgot Password | E04 | E04 (es-kitchen-web-supplier) | Nhập email để nhận link reset mật khẩu *inferred |
+| Reset Password *inferred | E04 | E04 (es-kitchen-web-supplier) | Đặt lại mật khẩu qua link email |
+| TOP Screen (Announcement) | E04 | E04 (es-kitchen-web-supplier) | Màn hình chính: danh sách thông báo + dropdown chi tiết + tải file đính kèm |
+| Order List | E04 | E04 (es-kitchen-web-supplier) | Danh sách đơn hàng phân tab theo trạng thái, lọc theo tháng/năm/ngày xuất/trạng thái |
+| Order Detail | E04 | E04 (es-kitchen-web-supplier) | Chi tiết đơn: Số đơn, ngày giao, hạn sử dụng, sản phẩm, số lượng, nơi giao hàng |
+| Shipping Schedule Response | E04 | E04 (es-kitchen-web-supplier) | Nhập ngày dự kiến xuất hàng và ghi chú phản hồi đơn (Mốc 4) *inferred |
+| Shipping Report Form | E04 | E04 (es-kitchen-web-supplier) | Báo cáo xuất hàng thực tế: ngày xuất, công ty vận chuyển, thanh toán, hạn sử dụng (Mốc 5) |
+| CSV Download | E04 | E04 (es-kitchen-web-supplier) | Chọn điều kiện lọc (khoảng thời gian / sản phẩm) và tải CSV đơn hàng |
+| Change Password | E04 | E04 (es-kitchen-web-supplier) | Đổi mật khẩu: nhập mật khẩu hiện tại và mật khẩu mới |
+
+---
+
 ## Bước tiếp theo
 
 Chạy song song sau khi SPEC được sign-off:
@@ -337,3 +355,6 @@ Chạy song song sau khi SPEC được sign-off:
    - Slash command: `/test/generate_testcases_from_requirements` cho QUICK
 
 > **Contract Lock cần thiết** (cross-repo: API + E03 + E04) trước khi bắt đầu Phase 3 FE implementation. PM cần schedule Contract Lock session sau khi 3 DESIGN.md hoàn thành.
+
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/supplier-ordering/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/supplier-ordering/SPEC.md)

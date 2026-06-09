@@ -139,6 +139,21 @@ Hệ thống thanh toán của ESKITCHEN bao gồm hai luồng chính:
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Order Summary (Payment Entry) | E01 | E01 (es-kitchen-payment-app) | Xem tóm tắt đơn hàng (tên món, số lượng, tổng tiền, trợ giá company) trước khi thanh toán |
+| Payment Method Selection | E01 | E01 (es-kitchen-payment-app) | Chọn phương thức thanh toán: Rakuten Pay / Alipay / WeChat Pay |
+| elepay SDK Payment Sheet | E01 | E01 (es-kitchen-payment-app) | Native sheet của elepay SDK — E01 xác nhận thanh toán trong luồng bên thứ ba |
+| Payment Success / Receipt | E01 | E01 (es-kitchen-payment-app) | Xác nhận thanh toán thành công: tên món, số tiền, thời gian, mã giao dịch |
+| Payment Error *inferred | E01 | E01 (es-kitchen-payment-app) | Hiển thị lỗi thanh toán (elepay trả lỗi), cho phép retry hoặc đổi phương thức |
+| List of Invoices | E02 | E02 (es-kitchen-web-company) | Danh sách hóa đơn theo tháng của company: tháng phát hành, tổng tiền, trạng thái, tải PDF |
+| Invoices by Contract | E03 | E03 (es-kitchen-web-admin) | Danh sách hợp đồng cần phát hành hóa đơn tháng này; E03 chọn contract để xem preview |
+| Invoice Preview | E03 | E03 (es-kitchen-web-admin) | Xem trước toàn bộ nội dung hóa đơn (tổng đơn hàng tháng theo contract) trước khi confirm phát hành |
+
+---
+
 ## Bước tiếp theo
 
 SPEC này là **cross-repo** (E01 Mobile + E02 Web + E03 Web + API). Cần Contract Lock trước Phase 3.
@@ -147,3 +162,5 @@ Chạy song song:
 
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/payment/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/payment/SPEC.md`" (hoặc `/test/generate_manual_testcases_rbt`)
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/payment/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/payment/SPEC.md)

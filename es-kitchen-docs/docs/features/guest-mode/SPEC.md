@@ -270,6 +270,25 @@
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Login Screen (với Guest Mode button) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình đăng nhập hiện có — có thêm button "ゲストとして利用する" để vào app không cần tài khoản |
+| Home / Main Menu Screen (Guest) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình chính sau khi đăng nhập guest — menu items bị giới hạn (7 items ẩn), duyệt menu và thêm vào giỏ hàng |
+| Restricted Page Placeholder *inferred | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình / inline placeholder hiển thị "登録が必要です" khi guest cố truy cập URL của tính năng bị block |
+| Company ID Input Screen | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình nhập Company ID trước khi checkout — bắt buộc mỗi lần, không lưu lại |
+| Guest Payment Blocked Screen *inferred | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình / dialog thông báo không thể thanh toán khi company có `guestPaymentAllowed = false` — kèm CTA "アカウントを作成する" |
+| Checkout / Payment Screen (Guest) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình thanh toán cho guest — không có option tiền mặt, chỉ hiện credit card / PayPay / Apple Pay qua elepay |
+| Order History Screen (Guest) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Danh sách đơn hàng của session guest hiện tại (filter theo userId), có thể xem chi tiết từng order |
+| Link Email Screen | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình nhập địa chỉ email để upgrade guest → full account ("メールアドレスを連携する") |
+| OTP Verify Screen (Link Email) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình nhập OTP 4 chữ số gửi về email, có nút Resend (cooldown 60 giây) |
+| Set Password Screen (Link Email) | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Form đặt password sau khi OTP xác thực thành công — nhập password + xác nhận password |
+| Link Email Success Screen *inferred | E01 — End User (Guest) | E01 (es-kitchen-payment-app) | Màn hình xác nhận "連携完了" sau khi upgrade thành công — redirect vào app với full account |
+| Edit Company Form (with Guest Payment Toggle) | E03 — System Admin | E03 (es-kitchen-web-admin) | Form Edit Company hiện có — bổ sung toggle "ゲスト支払いを許可する" để System Admin bật/tắt guest payment per company |
+
+---
+
 ## Bước tiếp theo
 
 Contract Lock cần thiết trước Phase 3 (3 repos):
@@ -280,3 +299,5 @@ Contract Lock cần thiết trước Phase 3 (3 repos):
 Handover hints (chạy song song):
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `es-kitchen-docs/docs/features/guest-mode/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `es-kitchen-docs/docs/features/guest-mode/SPEC.md`" (slash command: `/test/generate_manual_testcases_rbt`)
+- "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/guest-mode/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/guest-mode/SPEC.md)

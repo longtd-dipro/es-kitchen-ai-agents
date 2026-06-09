@@ -180,3 +180,24 @@ Có cơ chế **DRAFT → PUBLISHED → DELETED**, **scheduled publish**, **read
 - SMS notification — chỉ in-app + email
 - Notification scheduling lặp lại (vd mỗi tuần)
 - Phân tích thống kê đọc (ai đã đọc, % đọc...) — chỉ track đã đọc per user, không dashboard
+
+---
+
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Notification Management List | System Admin | E03 (es-kitchen-web-admin) | Danh sách tất cả notification (DRAFT / PUBLISHED / DELETED), tìm kiếm, filter, action Delete |
+| Create Notification — Step 1: Filter Recipients | System Admin | E03 (es-kitchen-web-admin) | Lọc đối tượng nhận theo loại / tên công ty / plan / contract status / tháng đặt hàng / sản phẩm; hiển thị danh sách match để check/uncheck |
+| Create Notification — Step 2: Enter Content | System Admin | E03 (es-kitchen-web-admin) | Nhập tiêu đề, nội dung, file đính kèm, thời gian hiển thị, toggle email / người phụ trách phụ; action Save Draft / Publish |
+| Notification Detail & Edit (Admin) | System Admin | E03 (es-kitchen-web-admin) | Xem chi tiết, chỉnh sửa nội dung notification đã PUBLISHED; Save cập nhật nội dung mới |
+| Notification Badge & List — TOP Bar | Company Admin | E02 (es-kitchen-web-company) | Badge đếm chưa đọc trên TOP browser; dropdown list sắp xếp mới nhất trước, chưa đọc highlight + nhãn NEW |
+| Notification Detail (Company Admin) | Company Admin | E02 (es-kitchen-web-company) | Xem chi tiết notification; tự động đánh dấu đã đọc khi mở |
+| Notification Badge & List — TOP Bar * inferred | End User | E01 (es-kitchen-payment-app) | List notification trong app; item chưa đọc highlight; nhận push notification trigger |
+| Notification Detail (End User) | End User | E01 (es-kitchen-payment-app) | Xem chi tiết notification từ list hoặc tap push; tự động đánh dấu đã đọc |
+| Notification Badge & List — TOP Bar | Supplier | E04 (es-kitchen-web-supplier) | Badge đếm chưa đọc trên TOP browser; dropdown list sắp xếp mới nhất trước, chưa đọc highlight + nhãn NEW |
+| Notification Detail (Supplier) | Supplier | E04 (es-kitchen-web-supplier) | Xem chi tiết notification; tự động đánh dấu đã đọc khi mở |
+| Notification Badge & List — TOP Bar | Outsource | E05 (es-kitchen-web-outsource-web-private) | Badge đếm chưa đọc trên TOP browser; dropdown list sắp xếp mới nhất trước, chưa đọc highlight + nhãn NEW |
+| Notification Detail (Outsource) | Outsource | E05 (es-kitchen-web-outsource-web-private) | Xem chi tiết notification; tự động đánh dấu đã đọc khi mở |
+| Notification Badge & List — TOP Bar | Driver | E06 (es-kitchen-webapp-driver) | Badge đếm chưa đọc trên TOP browser; dropdown list sắp xếp mới nhất trước, chưa đọc highlight + nhãn NEW |
+| Notification Detail (Driver) | Driver | E06 (es-kitchen-webapp-driver) | Xem chi tiết notification; tự động đánh dấu đã đọc khi mở |

@@ -484,6 +484,32 @@ Domain này gồm nhiều sub-feature độc lập. Mỗi sub-feature được m
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Notification Settings | E01 | E01 (es-kitchen-payment-app) | Danh sách các loại thông báo, toggle Bật/Tắt từng loại |
+| Announcements List | E02 | E02 (es-kitchen-web-company) | Danh sách thông báo hệ thống từ ES Kitchen, sắp xếp theo thời gian mới nhất |
+| Announcement Detail | E02 | E02 (es-kitchen-web-company) | Nội dung đầy đủ thông báo, file đính kèm, tải về |
+| Dashboard | E03 | E03 (es-kitchen-web-admin) | Hiển thị chỉ số HubSpot, lịch giao hàng trong tuần, tỉ lệ hoàn thành giao hàng |
+| Dashboard Personalization | E03 | E03 (es-kitchen-web-admin) | Kéo thả sắp xếp lại thẻ dashboard, ẩn/hiện thẻ, lưu cấu hình per-user |
+| Maintenance Management List | E03 | E03 (es-kitchen-web-admin) | Lịch sử bật/tắt maintenance: thời gian, người thực hiện, lý do |
+| Maintenance Create/Edit | E03 | E03 (es-kitchen-web-admin) | Tạo maintenance mới: nhập lý do, thời gian dự kiến, bật/tắt chế độ bảo trì |
+| Version Management List | E03 | E03 (es-kitchen-web-admin) | Danh sách phiên bản mobile app: version name, build number, ngày, môi trường, trạng thái |
+| Account Management List | E03 | E03 (es-kitchen-web-admin) | Danh sách tài khoản Admin/Supplier/Outsource, tìm kiếm và lọc theo loại/tên/trạng thái |
+| Account Create/Edit | E03 | E03 (es-kitchen-web-admin) | Tạo/chỉnh sửa tài khoản, gán Role cho Admin, cấp quyền mặc định cho Supplier/Outsource |
+| Role & Permission Management | E03 | E03 (es-kitchen-web-admin) | Bảng phân quyền theo Role (dạng tab), bật/tắt CRUD từng chức năng, thêm/đổi tên/xóa Role |
+| Notification Management List | E03 | E03 (es-kitchen-web-admin) | Danh sách thông báo nội bộ và đối tác, lọc theo đối tượng nhận |
+| Notification Create/Edit | E03 | E03 (es-kitchen-web-admin) | Tạo/chỉnh sửa thông báo: tiêu đề, nội dung, file đính kèm, chọn đối tượng nhận, tùy chọn gửi email |
+| Notification Detail (E03) | E03 | E03 (es-kitchen-web-admin) | Xem chi tiết thông báo, trạng thái gửi email, tùy chọn sửa/xóa |
+| Operation Manual (E03) | E03 | E03 (es-kitchen-web-admin) | Danh sách tài liệu PDF nội bộ, tải về file hướng dẫn sử dụng |
+| HubSpot Sync Management | E03 | E03 (es-kitchen-web-admin) | Trạng thái đồng bộ 2 chiều với HubSpot, kích hoạt đồng bộ thủ công *inferred |
+| Operation Manual (E04) | E04 | E04 (es-kitchen-web-supplier) | Tài liệu hướng dẫn dành cho Supplier, tải về file |
+| Operation Manual (E05) | E05 | E05 (es-kitchen-web-outsource-web-private) | Tài liệu hướng dẫn dành cho đơn vị vận chuyển, tải về file |
+| Notification History (E06) | E06 | E06 (es-kitchen-webapp-driver) | Lịch sử thông báo push notification đã nhận, điều hướng đến nội dung liên quan |
+
+---
+
 ## Bước tiếp theo
 
 **Handover:**
@@ -495,3 +521,5 @@ Domain này gồm nhiều sub-feature độc lập. Mỗi sub-feature được m
 - Trả lời toàn bộ các `TODO (BA)` được đánh dấu inline — đặc biệt SF-02, SF-06, SF-07, SF-12, SF-14, SF-15, SF-17, SF-19
 - Xác nhận behavior maintenance mode: portal nào bị ảnh hưởng
 - Xác nhận flow quản lý file Operation Manual (ai upload, từ đâu)
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/system-other/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/system-other/SPEC.md)
