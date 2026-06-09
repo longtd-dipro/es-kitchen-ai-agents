@@ -152,3 +152,16 @@ Super Admin có thể tạo / sửa / xóa role và cấu hình permission cho t
 - Multi-tenant role isolation
 - Role inheritance (role cha-con)
 - Time-based permission (chỉ active business hour)
+
+---
+
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Role List | Super Admin (E03) | E03 (es-kitchen-web-admin) | Danh sách tất cả role: tên, mô tả, số quyền, số admin đang gán, action Edit/Delete |
+| Create Role | Super Admin (E03) | E03 (es-kitchen-web-admin) | Form tạo role mới: nhập tên, mô tả, chọn permissions từ tree theo module |
+| Edit Role | Super Admin (E03) | E03 (es-kitchen-web-admin) | Form sửa role pre-filled: cập nhật tên, mô tả, thêm/bớt permission checkbox |
+| Delete Role Confirmation* | Super Admin (E03) | E03 (es-kitchen-web-admin) | Popup confirm xóa role; block + hiển thị danh sách admin cần unassign nếu role đang được dùng |
+| Permission Tree (embedded)* | Super Admin (E03) | E03 (es-kitchen-web-admin) | Component tree phân cấp module → action (View/Create/Edit/Delete/Export); hiển thị trong Create/Edit Role |
+| Admin Dashboard (permission-enforced)* | Admin user (E03) | E03 (es-kitchen-web-admin) | Giao diện admin sau login — menu và button bị ẩn/disable tự động theo permission của role được gán |

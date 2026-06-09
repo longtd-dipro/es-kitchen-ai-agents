@@ -132,6 +132,17 @@ Tính năng cho phép nhân viên (E01) liên kết tài khoản cá nhân với
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Màn hình Liên kết Công ty (QR Scan) | E01 | E01 (es-kitchen-payment-app) | Hiển thị camera quét mã QR công ty; xác nhận liên kết thành công hoặc thông báo lỗi |
+| Màn hình Hồ sơ — Trạng thái liên kết * inferred | E01 | E01 (es-kitchen-payment-app) | Hiển thị tên công ty đã liên kết; điểm vào để xem hoặc hủy liên kết |
+| Màn hình Giỏ hàng / Checkout — Hiển thị trợ giá * inferred | E01 | E01 (es-kitchen-payment-app) | Hiển thị giá sau trợ giá (một phần hoặc 100% / "Miễn phí"); khóa thêm món khi đạt giới hạn ngày |
+| Màn hình Thiết lập Phúc lợi Nhân viên | E02 | E02 (es-kitchen-web-company) | Cấu hình giới hạn số lượng mua trong ngày và mức trợ giá (một phần / 100%) cho toàn công ty |
+
+---
+
 ## Bước tiếp theo
 
 Chạy song song:
@@ -139,3 +150,5 @@ Chạy song song:
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/user-binding/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/user-binding/SPEC.md`"
   (slash command: `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
+- "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/user-binding/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/user-binding/SPEC.md)

@@ -230,6 +230,25 @@ Hệ thống này là cầu nối giữa **ES Kitchen (System Admin / E03)** và
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Login | E05 | E05 (es-kitchen-web-outsource-web-private) | Nhập ID + mật khẩu để đăng nhập portal đối tác vận chuyển |
+| Forgot Password | E05 | E05 (es-kitchen-web-outsource-web-private) | Nhập email để nhận link đặt lại mật khẩu |
+| Reset Password | E05 | E05 (es-kitchen-web-outsource-web-private) | Nhập mật khẩu mới sau khi click link từ email |
+| TOP Screen | E05 | E05 (es-kitchen-web-outsource-web-private) | Dashboard chính — danh sách thông báo, shortcut đến các mục quản lý |
+| Announcement Detail | E05 | E05 (es-kitchen-web-outsource-web-private) | Xem nội dung chi tiết thông báo và tải file đính kèm |
+| Delivery Status List | E05 | E05 (es-kitchen-web-outsource-web-private) | Tìm kiếm và xem danh sách đơn giao hàng được ủy thác theo trạng thái |
+| Delivery Status Detail | E05 | E05 (es-kitchen-web-outsource-web-private) | Xem chi tiết 4 tab (địa chỉ / trung chuyển / hàng hóa / báo cáo) và phân công tài xế |
+| Collected Amount List | E05 | E05 (es-kitchen-web-outsource-web-private) | Danh sách tổng hợp số tiền thu theo nhân viên giao hàng, hỗ trợ xuất CSV |
+| Collected Amount Detail | E05 | E05 (es-kitchen-web-outsource-web-private) | Chi tiết số tiền thu của từng nhân viên kèm hình ảnh biên lai và báo cáo đỗ xe |
+| Delivery Staff List | E05 | E05 (es-kitchen-web-outsource-web-private) | Danh sách nhân viên giao hàng, tìm kiếm, xem cả bản đã xóa |
+| Delivery Staff Register / Edit Form | E05 | E05 (es-kitchen-web-outsource-web-private) | Đăng ký mới hoặc chỉnh sửa thông tin nhân viên giao hàng và upload ảnh giấy phép lái xe |
+| Change Password | E05 | E05 (es-kitchen-web-outsource-web-private) | Thay đổi mật khẩu tài khoản đối tác |
+
+---
+
 ## Bước tiếp theo
 
 Chạy song song sau khi SPEC được sign-off:
@@ -237,3 +256,5 @@ Chạy song song sau khi SPEC được sign-off:
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/delivery-partner/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/delivery-partner/SPEC.md`"
   (slash command: `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
+- "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/delivery-partner/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/delivery-partner/SPEC.md)

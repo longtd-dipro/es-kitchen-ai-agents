@@ -202,6 +202,27 @@ Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành 
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Equipment List | E03 | E03 (System Admin) | Danh sách thiết bị phân tab theo loại (Tủ lạnh / Tủ đông / Máy bán hàng / Lò vi sóng); tìm kiếm và lọc |
+| Equipment Register | E03 | E03 (System Admin) | Form đăng ký thiết bị mới: nhập sê-ri, loại, kích thước, phí cài đặt / phí tháng / tiền phạt; hệ thống sinh ID + QR |
+| Equipment Detail / Edit | E03 | E03 (System Admin) | Xem chi tiết và chỉnh sửa thông số thiết bị (sê-ri, kích thước, trạng thái hoạt động, lịch sử phí) |
+| Material Master List | E03 | E03 (System Admin) | Danh sách vật tư với bộ tiêu chuẩn và số lượng phân bổ theo kích cỡ tủ |
+| Material Master Register | E03 | E03 (System Admin) | Form thêm vật tư mới: tên, số lượng bộ tiêu chuẩn, cấu hình phân bổ theo kích cỡ tủ |
+| Material Master Detail / Edit | E03 | E03 (System Admin) | Xem chi tiết và chỉnh sửa / xóa vật tư đã đăng ký |
+| Inventory List | E03 | E03 (System Admin) | Danh sách tồn kho vật tư (món ăn chế biến sẵn, vật tư, hàng mẫu); tìm kiếm theo tên và địa điểm bảo quản |
+| Inventory Register (Nhập/Xuất) | E03 | E03 (System Admin) | Form nhập dữ liệu tăng/giảm tồn kho; hệ thống tính tồn thực tế = nhập − xuất − phân bổ |
+| Inventory Detail / Edit | E03 | E03 (System Admin) | Xem chi tiết và chỉnh sửa / xóa dữ liệu tồn kho |
+| Arrival List | E03 | E03 (System Admin) | Danh sách hàng dự kiến nhập kho (ngày + tháng); lọc theo Tháng/Năm, kho bảo quản, trạng thái |
+| Arrival Confirm | E03 | E03 (System Admin) | Xác nhận nhập hàng thủ công cho lô đã chọn; nhập hạn sử dụng; cập nhật trạng thái |
+| Arrival Detail | E03 | E03 (System Admin) | Xem chi tiết lô hàng đã xác nhận; đối chiếu với phản hồi nhà cung cấp và đơn đặt hàng gốc |
+| Thomas CSV Export | E03 | E03 (System Admin) | Trigger xuất file CSV (lệnh xuất hàng / Product Master / chỉ thị nhập hàng) và tải về |
+| Thomas CSV Import | E03 | E03 (System Admin) | Upload file CSV từ Thomas (kết quả xuất hàng thực tế / báo cáo nhập hàng thực tế); hệ thống parse và cập nhật tồn kho |
+
+---
+
 ## Out of Scope
 
 - Giao diện E02 Company Admin (xem lại TODO: cần xác nhận trước Design phase).
@@ -231,6 +252,9 @@ SPEC hoàn thành. Chạy song song 2 bước:
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/inventory-equipment/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/inventory-equipment/SPEC.md`"
   (hoặc slash command `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
+
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/inventory-equipment/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/inventory-equipment/SPEC.md)
 
 **Ưu tiên giải quyết TODO (BA) trước Design phase:**
 1. Phạm vi E02 trong module này (xác nhận với client/PM).

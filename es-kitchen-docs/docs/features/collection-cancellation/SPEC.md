@@ -213,6 +213,25 @@ Tài xế xem lại toàn bộ báo cáo cuối ca trước khi xác nhận gử
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Collection Report | E06 | E06 (es-kitchen-webapp-driver) | Nhập số tiền mặt thực tế thu được tại điểm giao; hiển thị chênh lệch với số tiền dự kiến |
+| Disposal Report | E06 | E06 (es-kitchen-webapp-driver) | Nhập số lượng hàng hủy theo từng mặt hàng; hỗ trợ nhập hạn sử dụng + số lượng từng lô cho sản phẩm nhiệt độ thường |
+| Parking Report | E06 | E06 (es-kitchen-webapp-driver) | Upload ảnh biên lai đỗ xe và nhập số tiền phí đỗ xe |
+| Final Report Confirmation | E06 | E06 (es-kitchen-webapp-driver) | Xem toàn bộ báo cáo cuối ca (thu tiền + hàng hủy + phí đỗ xe); xác nhận gửi hoặc quay về sửa |
+| Collection Management List | E03 | E03 (es-kitchen-web-admin) | Tìm kiếm và xem tổng tiền thu theo từng công ty vận chuyển ủy thác theo tháng giao hàng |
+| Collection Management Detail | E03 | E03 (es-kitchen-web-admin) | Xem chi tiết thu tiền theo từng tài xế thuộc một công ty vận chuyển |
+| Waste Disposal & Collection List | E03 | E03 (es-kitchen-web-admin) | Tìm kiếm và xem danh sách hàng hủy + trạng thái thanh toán theo khách hàng pháp nhân; chuyển trạng thái Chưa xuất → Đã xuất → Đã thanh toán |
+| Waste Disposal Invoice Detail | E03 | E03 (es-kitchen-web-admin) | Xem danh sách hóa đơn thanh toán hàng hủy của một khách hàng; xóa báo cáo hàng hủy |
+| Discard Input List | E03 | E03 (es-kitchen-web-admin) | Tìm kiếm và xem danh sách dữ liệu nhập hàng hủy phân chia theo gói hợp đồng; hiển thị trạng thái "Chưa nhập hàng hủy" |
+| Discard Input Form | E03 | E03 (es-kitchen-web-admin) | Nhập hoặc chỉnh sửa số liệu hàng hủy; đăng ký mặt hàng hủy mới |
+| Disposal Report (Company) | E02 | E02 (es-kitchen-web-company) | Xem báo cáo số lượng hàng hóa nhiệt độ thường bị hết hạn/cần hủy của công ty mình |
+| Disposal History | E02 | E02 (es-kitchen-web-company) | Xem lịch sử hàng hủy theo tháng của công ty mình |
+
+---
+
 ## Dependencies
 
 | Dependency | Mô tả | Domain/Feature liên quan |
@@ -231,3 +250,5 @@ Chạy song song:
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/collection-cancellation/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/collection-cancellation/SPEC.md`"
   (slash command: `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/collection-cancellation/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/collection-cancellation/SPEC.md)

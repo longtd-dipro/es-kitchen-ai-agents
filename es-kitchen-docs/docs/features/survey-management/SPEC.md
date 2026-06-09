@@ -217,3 +217,18 @@ Admin (E03)
 - Gửi reminder tự động đến user chưa trả lời
 - Survey analytics cross-distribution (so sánh nhiều lần phân phối)
 - Company Admin (E02) tạo hoặc xem survey
+
+---
+
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Survey Management (List) | System Admin | E03 (es-kitchen-web-admin) | Màn hình chính — danh sách survey distributions, entry point để tạo mới và xem lịch sử |
+| Create Distribution Form | System Admin | E03 (es-kitchen-web-admin) | Form tạo distribution: chọn loại survey, thời gian gửi (immediate/scheduled), đối tượng (Corporations/Individuals) và danh sách công ty |
+| Distribution History | System Admin | E03 (es-kitchen-web-admin) | Danh sách distributions đã tạo với các cột: Survey Type, Distribution Time, Target, Companies, Responses, Status |
+| Response Analysis | System Admin | E03 (es-kitchen-web-admin) | Chi tiết kết quả 1 distribution: response rate, tổng hợp từng câu hỏi theo số liệu + biểu đồ tương ứng |
+| Survey Inbox / Notification Entry *inferred | End User | E01 (es-kitchen-payment-app) | Danh sách hoặc entry point survey chưa trả lời — user truy cập từ push notification hoặc từ trong app |
+| Survey Form | End User | E01 (es-kitchen-payment-app) | Form trả lời survey — hiển thị tiêu đề và từng câu hỏi theo thứ tự (rating / nps / single_choice / multi_choice / free_text) |
+| Survey Thank You | End User | E01 (es-kitchen-payment-app) | Màn hình xác nhận sau khi submit — thông báo đã gửi thành công, không thể submit lần 2 |
+| Already Submitted *inferred | End User | E01 (es-kitchen-payment-app) | Màn hình hoặc trạng thái hiển thị khi user cố truy cập survey đã trả lời rồi |

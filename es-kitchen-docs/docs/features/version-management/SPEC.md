@@ -155,3 +155,22 @@ Mục tiêu: kiểm soát version người dùng đang dùng, đảm bảo bug f
 - Rollback user về version cũ
 - Update web app version (chỉ CDN cache invalidate, không trong scope)
 - Multi-language description (Phase sau)
+
+---
+
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Version Management List | System Admin | E03 (System Admin Web) | Danh sách version records, filter theo platform / environment, action Edit / Delete |
+| Add Version Form | System Admin | E03 (System Admin Web) | Form tạo version mới: platform, version name, version code, environment, description, download URL, force update toggle |
+| Edit Version Form | System Admin | E03 (System Admin Web) | Form sửa version đã có, pre-fill data; bật Force Update hiện popup warning đặc biệt |
+| Force Update Popup (Mobile) | End User | E01 (Mobile App) | Popup block usage khi `force_update = true` và version cũ hơn; chỉ có nút "Update now" |
+| Optional Update Popup (Mobile) | End User | E01 (Mobile App) | Popup gợi ý update khi `force_update = false` và version cũ hơn; có nút "Update later" và "Update now" |
+
+---
+
+## Bước tiếp theo
+
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/version-management/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/version-management/SPEC.md)

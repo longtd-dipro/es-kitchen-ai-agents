@@ -188,6 +188,29 @@ Quy tắc trả hoa hồng áp dụng theo Plan được chọn cho đại lý/n
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Referral Campaign Page | E02 | E02 (es-kitchen-web-company) | Trang tổng hợp Referral Campaign — entry point xem lịch sử và tạo giới thiệu mới |
+| Business Partner Introduction Form | E02 | E02 (es-kitchen-web-company) | Form điền thông tin công ty được giới thiệu + người liên hệ + ghi chú nội bộ, submit tạo referral mới |
+| Referral History List (Company) | E02 | E02 (es-kitchen-web-company) | Danh sách tất cả referral đã gửi — tên công ty, ngày gửi, trạng thái tiến độ, thông tin bonus khi trạng thái = Đã ký |
+| Referral Campaign Management — List of Introductions | E03 | E03 (es-kitchen-web-admin) | Danh sách toàn bộ referral từ tất cả Company Admin — Plan áp dụng, trạng thái hợp đồng, ngày ký |
+| Referral Registration / Approval Form | E03 | E03 (es-kitchen-web-admin) | Form đánh giá tín dụng và điều kiện hợp đồng, thực hiện phê duyệt hoặc từ chối referral |
+| Referral Detail | E03 | E03 (es-kitchen-web-admin) | Xem đầy đủ thông tin referral; trường Plan bị khóa sau duyệt; toàn bộ form bị khóa sau thanh toán |
+| Free Campaign / Sample Management — Campaign History List | E03 | E03 (es-kitchen-web-admin) | Danh sách tất cả đợt phát hàng mẫu/dùng thử, hiển thị Success Rate (tỷ lệ chuyển đổi) |
+| Free Campaign New Registration Form | E03 | E03 (es-kitchen-web-admin) | Form tạo chiến dịch dùng thử mới — thông tin giao hàng, thời gian, số lượng mẫu (không cần Master Pháp nhân) |
+| Free Campaign Detail / Edit | E03 | E03 (es-kitchen-web-admin) | Xem và chỉnh sửa thông tin chiến dịch dùng thử; hỗ trợ đồng bộ tự động từ HubSpot |
+| Agency Management — List of Agents | E03 | E03 (es-kitchen-web-admin) | Danh sách tất cả đại lý/đối tác tiếp thị kèm trạng thái (Đang chạy / Đã hủy) |
+| Agency Registration Form | E03 | E03 (es-kitchen-web-admin) | Form đăng ký đại lý mới — tên công ty, trạng thái, thông tin người liên hệ |
+| Agency Detail — Basic Information tab | E03 | E03 (es-kitchen-web-admin) | Tab thông tin cơ bản đại lý: ID hệ thống, tên công ty, trạng thái, người liên hệ |
+| Agency Detail — Contract and Compensation Settings tab | E03 | E03 (es-kitchen-web-admin) | Tab cấu hình hợp đồng: chọn Plan hoa hồng (A/B/C/D), tài khoản ngân hàng, khai báo thuế, ghi chú |
+| Agency Detail — Performance Summary tab | E03 | E03 (es-kitchen-web-admin) | Tab tổng hợp hiệu suất: lũy kế KH giới thiệu, KH active, tổng hoa hồng đã trả / chưa trả |
+| Agency Detail — Referral History tab | E03 | E03 (es-kitchen-web-admin) | Tab chi tiết từng KH đại lý đã giới thiệu — tình trạng, số tháng đã trôi qua, hoa hồng tháng này |
+| Agency Detail — Payment History tab | E03 | E03 (es-kitchen-web-admin) | Tab lịch sử thanh toán hoa hồng — tháng, số tiền, trạng thái (Đã chuyển / Chưa chuyển), ngày chuyển |
+
+---
+
 ## Bước tiếp theo
 
 Chạy song song sau khi SPEC được review:
@@ -195,3 +218,5 @@ Chạy song song sau khi SPEC được review:
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/marketing/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/marketing/SPEC.md`"
   (hoặc slash command: `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
+- "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/marketing/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/marketing/SPEC.md)

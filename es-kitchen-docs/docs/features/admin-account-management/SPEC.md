@@ -144,3 +144,23 @@ System Admin (super-admin) có thể **quản lý tài khoản admin cấp dư�
 - Phân quyền theo level (level 1/2/3) — chỉ role-based
 - Multi-tenant isolation (1 admin chỉ thấy data của 1 company)
 - Activity dashboard chi tiết per admin (chỉ audit log)
+
+---
+
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Admin Account List | System Admin | E03 (es-kitchen-web-admin) | Bảng danh sách admin accounts: ID, email, tên, role(s), status, last login, action buttons (Edit / Disable / Delete) |
+| Add Admin Form | System Admin | E03 (es-kitchen-web-admin) | Form tạo admin mới: nhập username, email, họ tên, password, chọn role(s), set status; có popup warning + confirm trước khi Save |
+| Edit Admin Form | System Admin | E03 (es-kitchen-web-admin) | Form sửa thông tin admin đã có (pre-fill): email, họ tên, role(s), status; username read-only; có nút "Reset Password" riêng; popup confirm trước Save |
+| Reset Password Dialog *inferred | System Admin | E03 (es-kitchen-web-admin) | Dialog xác nhận reset password cho admin được chọn; trigger gửi email link reset hoặc hiển thị password mới |
+| Disable Admin Confirmation Dialog | System Admin | E03 (es-kitchen-web-admin) | Popup warning + confirm trước khi disable admin; chặn nếu Super Admin tự disable mình |
+| Delete Admin Confirmation Dialog | System Admin | E03 (es-kitchen-web-admin) | Popup warning + confirm (nguy hiểm cao) trước khi logical-delete admin; chặn nếu Super Admin tự xóa mình |
+
+---
+
+## Bước tiếp theo
+
+→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/admin-account-management/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/admin-account-management/SPEC.md)

@@ -339,6 +339,33 @@ Hệ thống quản lý toàn bộ vòng đời lịch giao hàng: từ thiết 
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Lịch giao hàng năm (Annual Delivery Calendar) | E02 | E02 — es-kitchen-web-company | Xem lịch năm với ngày giao được đánh dấu, chuyển chế độ tháng/tuần/chu kỳ |
+| Quy tắc giao hàng đặc biệt (Special Delivery Rules) | E02 | E02 — es-kitchen-web-company | Tạo/sửa/xóa quy tắc giao đặc biệt (bảo vệ, đường cấm tải, ghi chú tài xế) |
+| Yêu cầu đổi ngày giao hàng (Delivery Date Change Request) | E02 | E02 — es-kitchen-web-company | Chọn ngày giao cần thay đổi, điền lý do và ngày mong muốn, gửi yêu cầu tới System Admin |
+| Danh sách đối tác vận chuyển ủy thác (Consignment Delivery Partners List) | E03 | E03 — es-kitchen-web-admin | Xem/tìm kiếm danh sách đối tác vận chuyển theo tên, khu vực |
+| Chi tiết / Đăng ký đối tác vận chuyển (Consignment Delivery Partner Detail/Register) | E03 | E03 — es-kitchen-web-admin | Tạo mới hoặc xem/sửa/xóa thông tin đối tác vận chuyển ủy thác |
+| Danh sách tài xế (Delivery Staff List) | E03 | E03 — es-kitchen-web-admin | Xem/tìm kiếm tài xế theo tên, trạng thái, đối tác vận chuyển |
+| Chi tiết / Đăng ký tài xế (Delivery Staff Detail/Register) | E03 | E03 — es-kitchen-web-admin | Tạo tài xế mới (đồng thời tạo tài khoản E06), xem lịch sử phân công, sửa/deactivate |
+| Danh sách trạm trung chuyển (Relay Destination List) | E03 | E03 — es-kitchen-web-admin | Xem/tìm kiếm danh sách trạm trung chuyển |
+| Chi tiết / Đăng ký trạm trung chuyển (Relay Destination Detail/Register) | E03 | E03 — es-kitchen-web-admin | Tạo mới hoặc sửa/xóa thông tin trạm trung chuyển |
+| Lịch picking & Chu kỳ giao hàng (Picking Schedule & Delivery Cycles) | E03 | E03 — es-kitchen-web-admin | Xem lịch tuần/tháng/chu kỳ, đánh dấu ngày không picking, trigger phân chia 20 chu kỳ tự động, kéo thả dời lịch |
+| Import ngày không picking (Import Picking Unavailable Days) | E03 | E03 — es-kitchen-web-admin | Upload CSV danh sách ngày không picking, xem kết quả validate và lỗi từng dòng |
+| Danh sách xuất hàng & giao hàng (Shipping and Delivery List) | E03 | E03 — es-kitchen-web-admin | Xem bảng danh sách với bộ lọc Contract ID, Pháp nhân, Plan, Trạng thái |
+| Chi tiết block giao hàng (Shipping and Delivery Detail) | E03 | E03 — es-kitchen-web-admin | Xem mã xuất hàng, lịch lấy hàng, kho trung chuyển, trạng thái tracking real-time từ Yamato |
+| Đăng ký thủ công dữ liệu giao hàng (Manual Shipping Data Registration) | E03 | E03 — es-kitchen-web-admin | Tạo bản ghi giao hàng thủ công, liên kết với Order hiện có |
+| Xuất chỉ thị giao hàng Thomas (Thomas Shipping Instructions Export) | E03 | E03 — es-kitchen-web-admin | Chọn bản ghi xuất hàng, xuất file CSV format Thomas để download/gửi |
+| Import kết quả Thomas (Thomas Shipping Record Import) | E03 | E03 — es-kitchen-web-admin | Upload CSV báo cáo thực tế từ Thomas, xem kết quả cập nhật trạng thái giao hàng |
+| Danh sách đề xuất công ty vận chuyển (Recommended Delivery Companies) * *inferred | E03 | E03 — es-kitchen-web-admin | Xem danh sách đề xuất đối tác vận chuyển phù hợp (scoring theo kho bãi, hiệu suất, chi phí) |
+| Xuất CSV Google MyMaps (Google MyMaps CSV Export) | E03 | E03 — es-kitchen-web-admin | Chọn lịch giao, xuất CSV địa chỉ điểm giao để import vào Google MyMaps |
+| Cấu hình đối tác kho bãi / vận chuyển mới (New Partner Configuration) *inferred | E03 | E03 — es-kitchen-web-admin | Cấu hình Master Data và kết nối API cho đối tác kho bãi/vận chuyển mới |
+| Xem thông tin chuyến giao kèm quy tắc đặc biệt (Driver Assignment Detail) *inferred | E06 | E06 — es-kitchen-webapp-driver | Xem thông tin phân công chuyến giao, hiển thị quy tắc giao đặc biệt từ E02 |
+
+---
+
 ## Out of Scope
 
 - Tính toán cước vận chuyển, thanh toán với đối tác vận chuyển
@@ -371,3 +398,5 @@ Chạy song song sau khi SPEC được sign-off:
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/delivery-dispatching/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/delivery-dispatching/SPEC.md`"
   (slash command: `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
+- "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/delivery-dispatching/SPEC.md"
+  (hoặc slash command: /create-ui-design es-kitchen-docs/docs/features/delivery-dispatching/SPEC.md)

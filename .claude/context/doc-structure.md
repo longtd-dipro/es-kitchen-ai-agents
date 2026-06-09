@@ -11,8 +11,12 @@ Khi feature chỉ ảnh hưởng **1 repo duy nhất** (ví dụ: supplier authe
 
 ```
 es-kitchen-docs/docs/features/<feature-name>/
-├── SPEC.md                  ← BA tạo (nghiệp vụ)
+├── SPEC.md                  ← BA tạo (nghiệp vụ + Screens table)
+├── UI-SPEC.md               ← Designer tạo (screen inventory, component inventory, token usage)
 ├── PLAN.md                  ← PM tạo (kế hoạch)
+├── figma/
+│   ├── figma_<Component>_context.md  ← Designer tạo (1 file per component)
+│   └── figma_<Component>.png
 └── es-kitchen-api/
     ├── DESIGN.md            ← Tech Lead tạo
     └── tasks/
@@ -28,8 +32,12 @@ Khi feature ảnh hưởng **nhiều repo** (BE + FE, BE + Mobile, hoặc cả 3
 
 ```
 es-kitchen-docs/docs/features/<feature-name>/
-├── SPEC.md                          ← BA tạo (1 file, góc nhìn nghiệp vụ)
+├── SPEC.md                          ← BA tạo (1 file, nghiệp vụ + Screens table)
+├── UI-SPEC.md                       ← Designer tạo (screen inventory, components, token usage)
 ├── PLAN.md                          ← PM tạo (tổng hợp tất cả repo)
+├── figma/
+│   ├── figma_<Component>_context.md ← Designer tạo
+│   └── figma_<Component>.png
 ├── es-kitchen-api/
 │   ├── DESIGN.md                    ← Tech Lead (kỹ thuật BE)
 │   └── tasks/
@@ -62,8 +70,9 @@ es-kitchen-docs/docs/features/<feature-name>/
 
 | Role | Trách nhiệm |
 |---|---|
-| BA | Tạo **1 SPEC** — nghiệp vụ, actors, flow, AC. Không cần biết ranh giới repo. |
-| Tech Lead | Đọc SPEC → xác định repo → tạo **DESIGN per repo** + tasks |
+| BA | Tạo **1 SPEC** — nghiệp vụ, actors, flow, AC, **Screens table**. Không cần biết ranh giới repo. |
+| Designer | Đọc SPEC (section `## Screens`) → tạo Figma → **UI-SPEC.md** + `figma/figma_*.md`. Sau khi có Figma URL → điền cột Figma Link vào `## Screens` trong SPEC. |
+| Tech Lead | Đọc SPEC + UI-SPEC → xác định repo → tạo **DESIGN per repo** + tasks |
 | PM | Tổng hợp → tạo **1 PLAN** với timeline cross-repo |
 | Dev | Implement task của repo mình |
 

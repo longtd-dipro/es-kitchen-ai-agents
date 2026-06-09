@@ -284,6 +284,21 @@ Task Management là hệ thống quản lý công việc nội bộ dành cho c�
 
 ---
 
+## Screens
+
+| Screen | Actor | App | Mô tả ngắn |
+|---|---|---|---|
+| Task List | E03 System Admin | E03 (es-kitchen-web-admin) | Danh sách Task chưa hoàn thành theo Role/phòng ban; hỗ trợ phân trang; nhấn vào Task để xem chi tiết |
+| Kanban Board | E03 System Admin | E03 (es-kitchen-web-admin) | Hiển thị Task dạng 4 cột (Todo / In Progress / Pending Review / Done); kéo thả hoặc bấm nút chuyển trạng thái |
+| Task Detail | E03 System Admin | E03 (es-kitchen-web-admin) | Xem và sửa chi tiết Task (Tiêu đề, Assignee, Description, Contract link); chuyển trạng thái; xem lịch sử thay đổi dạng timeline |
+| Task Create — Form* | E03 System Admin | E03 (es-kitchen-web-admin) | Form tạo Task thủ công (Tiêu đề bắt buộc, Assignee bắt buộc, Description tùy chọn, Contract liên kết tùy chọn) |
+| Task Template List* | E03 System Admin | E03 (es-kitchen-web-admin) | Danh sách các Task Template đã tạo; hỗ trợ kích hoạt / vô hiệu hóa từng Template |
+| Task Template Detail / Edit* | E03 System Admin | E03 (es-kitchen-web-admin) | Tạo mới hoặc sửa Template (Tên, Trigger, Tiêu đề mẫu, Nội dung, Assignee mặc định, Trạng thái khởi tạo) |
+
+> \* *inferred* — screen suy luận từ Happy Path / AC; chưa có mockup Figma xác nhận tên chính xác.
+
+---
+
 ## Out of Scope
 
 - Tích hợp với hệ thống quản lý task bên ngoài (Jira, Notion, Asana, Trello).
@@ -312,3 +327,5 @@ Chạy song song sau khi SPEC được sign-off:
 - "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/task-management/SPEC.md`"
 - "Hãy là QC, sinh test cases từ SPEC này: `/Users/longtd/Desktop/WORK/AI_AGENTS_ES_KITCHEN/es-kitchen-docs/docs/features/task-management/SPEC.md`"
   (hoặc slash command: `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
+- "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: es-kitchen-docs/docs/features/task-management/SPEC.md"
+  (hoặc slash command: `/create-ui-design es-kitchen-docs/docs/features/task-management/SPEC.md`)
