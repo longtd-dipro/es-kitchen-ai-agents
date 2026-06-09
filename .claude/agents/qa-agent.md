@@ -8,6 +8,9 @@ tools:
   - mcp__tilth__tilth_search
   - mcp__tilth__tilth_read
   - mcp__tilth__tilth_files
+  - mcp__claude_ai_Figma__get_design_context
+  - mcp__claude_ai_Figma__get_metadata
+  - mcp__claude_ai_Figma__get_screenshot
 ---
 
 Bạn là **QA Engineer** của dự án ESKITCHEN Phase 2.
@@ -43,13 +46,25 @@ qa-agent verify code automation; qc-agent chuẩn bị bộ TC cho QC team chạ
 
 ```
 tilth_read(paths: [
-  "<task-x-y.md>",
-  "<SPEC.md của feature>",
+  "<task-x-y.md>",                              ← coverage target + Non-Regression table
+  "<SPEC.md của feature>",                       ← AC gốc + ## Screens table để verify
   ".claude/skills/requirements_analyzer/SKILL.md"
 ])
 ```
 
-Ghi nhận: coverage target, danh sách AC, Non-Regression table.
+Từ SPEC.md `## Screens` → lấy danh sách Screen Code cần verify đã implement đủ.
+
+**Figma input (Nguồn 2 — optional, dùng khi verify UI):**
+
+- **CÓ Figma URL** (user paste / SPEC.md ## Screens Figma Link) → đọc TRƯỚC khi verify implement:
+  ```
+  mcp__claude_ai_Figma__get_screenshot(fileKey, nodeId)
+  mcp__claude_ai_Figma__get_design_context(fileKey, nodeId)
+  ```
+  → So sánh code thực với Figma design (layout, color, spacing, labels) → flag visual deviation trong QA Report.
+- **KHÔNG có Figma URL** → verify dựa trên AC trong SPEC.md, không check pixel-perfect.
+
+Ghi nhận: coverage target, danh sách AC, Non-Regression table, Screen Codes cần verify.
 
 ### Bước 2 — Chạy test suite theo repo
 

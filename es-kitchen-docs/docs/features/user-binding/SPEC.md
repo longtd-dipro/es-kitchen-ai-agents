@@ -134,12 +134,12 @@ Tính năng cho phép nhân viên (E01) liên kết tài khoản cá nhân với
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Màn hình Liên kết Công ty (QR Scan) | E01 | E01 (es-kitchen-payment-app) | Hiển thị camera quét mã QR công ty; xác nhận liên kết thành công hoặc thông báo lỗi |
-| Màn hình Hồ sơ — Trạng thái liên kết * inferred | E01 | E01 (es-kitchen-payment-app) | Hiển thị tên công ty đã liên kết; điểm vào để xem hoặc hủy liên kết |
-| Màn hình Giỏ hàng / Checkout — Hiển thị trợ giá * inferred | E01 | E01 (es-kitchen-payment-app) | Hiển thị giá sau trợ giá (một phần hoặc 100% / "Miễn phí"); khóa thêm món khi đạt giới hạn ngày |
-| Màn hình Thiết lập Phúc lợi Nhân viên | E02 | E02 (es-kitchen-web-company) | Cấu hình giới hạn số lượng mua trong ngày và mức trợ giá (một phần / 100%) cho toàn công ty |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| UA_BIND_001 | Màn hình Liên kết Công ty (QR Scan) | E01 | E01 (es-kitchen-payment-app) | Wizard | Hiển thị camera quét mã QR công ty; xác nhận liên kết thành công hoặc thông báo lỗi |
+| UA_BIND_002 | Màn hình Hồ sơ — Trạng thái liên kết * inferred | E01 | E01 (es-kitchen-payment-app) | Detail | Hiển thị tên công ty đã liên kết; điểm vào để xem hoặc hủy liên kết |
+| UA_BIND_003 | Màn hình Giỏ hàng / Checkout — Hiển thị trợ giá * inferred | E01 | E01 (es-kitchen-payment-app) | Detail* | Hiển thị giá sau trợ giá (một phần hoặc 100% / "Miễn phí"); khóa thêm món khi đạt giới hạn ngày |
+| CW_BIND_001 | Màn hình Thiết lập Phúc lợi Nhân viên | E02 | E02 (es-kitchen-web-company) | Settings | Cấu hình giới hạn số lượng mua trong ngày và mức trợ giá (một phần / 100%) cho toàn công ty |
 
 ---
 

@@ -202,19 +202,19 @@ Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Login Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Đăng nhập bằng ID + mật khẩu; hỗ trợ quên mật khẩu |
-| Home Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Hiển thị thông báo mới nhất; phím tắt đến Delivery List, Báo cáo sự cố, Hỗ trợ |
-| Delivery List Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Danh sách điểm giao trong ngày của tài xế; lọc theo ngày/tháng/năm |
-| Delivery Details Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Chi tiết điểm giao: ghi chú doanh nghiệp, vận đơn, danh sách đồ ăn + vật tư; cập nhật trạng thái (Bắt đầu → Đã đến → Hoàn tất) |
-| Delivery Status Management Screen * inferred | E06 — Driver | E06 (es-kitchen-webapp-driver) | Thiết lập cờ "Chưa giao" hoặc "Giao lại" cho điểm giao |
-| Delivery Inspection Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Kiểm đếm hàng hóa (product inspection) và vật tư dụng cụ (material inspection); cảnh báo thừa/thiếu |
-| Report Completion — Pre/Post Photo Upload Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Upload ảnh trước và sau khi trưng bày sản phẩm; xem popup hướng dẫn trưng bày dạng slide |
-| Signature Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Hiển thị nội dung báo cáo hoàn thành; thu chữ ký đại diện công ty và chữ ký tài xế; nhập ghi chú tự do |
-| Incident / Delay Report Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Báo cáo trễ hàng (chọn lý do) hoặc sự cố (hàng hỏng/thiếu + mô tả); gửi thông báo real-time đến E03 |
-| Manual Display Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Xem tài liệu hướng dẫn theo danh mục: Quy trình, Chuẩn bị, Lấy đồ, Cách chụp ảnh, Trưng bày |
-| Inquiry / Support Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | HubSpot Widget chatbot nhúng; xử lý FAQ tự động và hỗ trợ real-time |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| DA_DRVR_001 | Login Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Đăng nhập bằng ID + mật khẩu; hỗ trợ quên mật khẩu |
+| DA_DRVR_002 | Home Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Dashboard | Hiển thị thông báo mới nhất; phím tắt đến Delivery List, Báo cáo sự cố, Hỗ trợ |
+| DA_DRVR_003 | Delivery List Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | List | Danh sách điểm giao trong ngày của tài xế; lọc theo ngày/tháng/năm |
+| DA_DRVR_004 | Delivery Details Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Detail | Chi tiết điểm giao: ghi chú doanh nghiệp, vận đơn, danh sách đồ ăn + vật tư; cập nhật trạng thái (Bắt đầu → Đã đến → Hoàn tất) |
+| DA_DRVR_005 | Delivery Status Management Screen * inferred | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Thiết lập cờ "Chưa giao" hoặc "Giao lại" cho điểm giao |
+| DA_DRVR_006 | Delivery Inspection Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Kiểm đếm hàng hóa (product inspection) và vật tư dụng cụ (material inspection); cảnh báo thừa/thiếu |
+| DA_DRVR_007 | Report Completion — Pre/Post Photo Upload Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Wizard | Upload ảnh trước và sau khi trưng bày sản phẩm; xem popup hướng dẫn trưng bày dạng slide |
+| DA_DRVR_008 | Signature Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Hiển thị nội dung báo cáo hoàn thành; thu chữ ký đại diện công ty và chữ ký tài xế; nhập ghi chú tự do |
+| DA_DRVR_009 | Incident / Delay Report Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Báo cáo trễ hàng (chọn lý do) hoặc sự cố (hàng hỏng/thiếu + mô tả); gửi thông báo real-time đến E03 |
+| DA_DRVR_010 | Manual Display Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Detail | Xem tài liệu hướng dẫn theo danh mục: Quy trình, Chuẩn bị, Lấy đồ, Cách chụp ảnh, Trưng bày |
+| DA_DRVR_011 | Inquiry / Support Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Chat | HubSpot Widget chatbot nhúng; xử lý FAQ tự động và hỗ trợ real-time |
 
 ---
 

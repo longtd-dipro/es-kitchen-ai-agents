@@ -232,20 +232,20 @@ Hệ thống này là cầu nối giữa **ES Kitchen (System Admin / E03)** và
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Login | E05 | E05 (es-kitchen-web-outsource-web-private) | Nhập ID + mật khẩu để đăng nhập portal đối tác vận chuyển |
-| Forgot Password | E05 | E05 (es-kitchen-web-outsource-web-private) | Nhập email để nhận link đặt lại mật khẩu |
-| Reset Password | E05 | E05 (es-kitchen-web-outsource-web-private) | Nhập mật khẩu mới sau khi click link từ email |
-| TOP Screen | E05 | E05 (es-kitchen-web-outsource-web-private) | Dashboard chính — danh sách thông báo, shortcut đến các mục quản lý |
-| Announcement Detail | E05 | E05 (es-kitchen-web-outsource-web-private) | Xem nội dung chi tiết thông báo và tải file đính kèm |
-| Delivery Status List | E05 | E05 (es-kitchen-web-outsource-web-private) | Tìm kiếm và xem danh sách đơn giao hàng được ủy thác theo trạng thái |
-| Delivery Status Detail | E05 | E05 (es-kitchen-web-outsource-web-private) | Xem chi tiết 4 tab (địa chỉ / trung chuyển / hàng hóa / báo cáo) và phân công tài xế |
-| Collected Amount List | E05 | E05 (es-kitchen-web-outsource-web-private) | Danh sách tổng hợp số tiền thu theo nhân viên giao hàng, hỗ trợ xuất CSV |
-| Collected Amount Detail | E05 | E05 (es-kitchen-web-outsource-web-private) | Chi tiết số tiền thu của từng nhân viên kèm hình ảnh biên lai và báo cáo đỗ xe |
-| Delivery Staff List | E05 | E05 (es-kitchen-web-outsource-web-private) | Danh sách nhân viên giao hàng, tìm kiếm, xem cả bản đã xóa |
-| Delivery Staff Register / Edit Form | E05 | E05 (es-kitchen-web-outsource-web-private) | Đăng ký mới hoặc chỉnh sửa thông tin nhân viên giao hàng và upload ảnh giấy phép lái xe |
-| Change Password | E05 | E05 (es-kitchen-web-outsource-web-private) | Thay đổi mật khẩu tài khoản đối tác |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| OW_DLVP_001 | Login | E05 | E05 (es-kitchen-web-outsource-web-private) | Form | Nhập ID + mật khẩu để đăng nhập portal đối tác vận chuyển |
+| OW_DLVP_002 | Forgot Password | E05 | E05 (es-kitchen-web-outsource-web-private) | Form | Nhập email để nhận link đặt lại mật khẩu |
+| OW_DLVP_003 | Reset Password | E05 | E05 (es-kitchen-web-outsource-web-private) | Form | Nhập mật khẩu mới sau khi click link từ email |
+| OW_DLVP_004 | TOP Screen | E05 | E05 (es-kitchen-web-outsource-web-private) | Dashboard | Dashboard chính — danh sách thông báo, shortcut đến các mục quản lý |
+| OW_DLVP_005 | Announcement Detail | E05 | E05 (es-kitchen-web-outsource-web-private) | Detail | Xem nội dung chi tiết thông báo và tải file đính kèm |
+| OW_DLVP_006 | Delivery Status List | E05 | E05 (es-kitchen-web-outsource-web-private) | List | Tìm kiếm và xem danh sách đơn giao hàng được ủy thác theo trạng thái |
+| OW_DLVP_007 | Delivery Status Detail | E05 | E05 (es-kitchen-web-outsource-web-private) | Detail | Xem chi tiết 4 tab (địa chỉ / trung chuyển / hàng hóa / báo cáo) và phân công tài xế |
+| OW_DLVP_008 | Collected Amount List | E05 | E05 (es-kitchen-web-outsource-web-private) | List | Danh sách tổng hợp số tiền thu theo nhân viên giao hàng, hỗ trợ xuất CSV |
+| OW_DLVP_009 | Collected Amount Detail | E05 | E05 (es-kitchen-web-outsource-web-private) | Detail | Chi tiết số tiền thu của từng nhân viên kèm hình ảnh biên lai và báo cáo đỗ xe |
+| OW_DLVP_010 | Delivery Staff List | E05 | E05 (es-kitchen-web-outsource-web-private) | List | Danh sách nhân viên giao hàng, tìm kiếm, xem cả bản đã xóa |
+| OW_DLVP_011 | Delivery Staff Register / Edit Form | E05 | E05 (es-kitchen-web-outsource-web-private) | Form | Đăng ký mới hoặc chỉnh sửa thông tin nhân viên giao hàng và upload ảnh giấy phép lái xe |
+| OW_DLVP_012 | Change Password | E05 | E05 (es-kitchen-web-outsource-web-private) | Form | Thay đổi mật khẩu tài khoản đối tác |
 
 ---
 

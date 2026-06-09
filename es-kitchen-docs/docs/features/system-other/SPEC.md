@@ -486,27 +486,27 @@ Domain này gồm nhiều sub-feature độc lập. Mỗi sub-feature được m
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Notification Settings | E01 | E01 (es-kitchen-payment-app) | Danh sách các loại thông báo, toggle Bật/Tắt từng loại |
-| Announcements List | E02 | E02 (es-kitchen-web-company) | Danh sách thông báo hệ thống từ ES Kitchen, sắp xếp theo thời gian mới nhất |
-| Announcement Detail | E02 | E02 (es-kitchen-web-company) | Nội dung đầy đủ thông báo, file đính kèm, tải về |
-| Dashboard | E03 | E03 (es-kitchen-web-admin) | Hiển thị chỉ số HubSpot, lịch giao hàng trong tuần, tỉ lệ hoàn thành giao hàng |
-| Dashboard Personalization | E03 | E03 (es-kitchen-web-admin) | Kéo thả sắp xếp lại thẻ dashboard, ẩn/hiện thẻ, lưu cấu hình per-user |
-| Maintenance Management List | E03 | E03 (es-kitchen-web-admin) | Lịch sử bật/tắt maintenance: thời gian, người thực hiện, lý do |
-| Maintenance Create/Edit | E03 | E03 (es-kitchen-web-admin) | Tạo maintenance mới: nhập lý do, thời gian dự kiến, bật/tắt chế độ bảo trì |
-| Version Management List | E03 | E03 (es-kitchen-web-admin) | Danh sách phiên bản mobile app: version name, build number, ngày, môi trường, trạng thái |
-| Account Management List | E03 | E03 (es-kitchen-web-admin) | Danh sách tài khoản Admin/Supplier/Outsource, tìm kiếm và lọc theo loại/tên/trạng thái |
-| Account Create/Edit | E03 | E03 (es-kitchen-web-admin) | Tạo/chỉnh sửa tài khoản, gán Role cho Admin, cấp quyền mặc định cho Supplier/Outsource |
-| Role & Permission Management | E03 | E03 (es-kitchen-web-admin) | Bảng phân quyền theo Role (dạng tab), bật/tắt CRUD từng chức năng, thêm/đổi tên/xóa Role |
-| Notification Management List | E03 | E03 (es-kitchen-web-admin) | Danh sách thông báo nội bộ và đối tác, lọc theo đối tượng nhận |
-| Notification Create/Edit | E03 | E03 (es-kitchen-web-admin) | Tạo/chỉnh sửa thông báo: tiêu đề, nội dung, file đính kèm, chọn đối tượng nhận, tùy chọn gửi email |
-| Notification Detail (E03) | E03 | E03 (es-kitchen-web-admin) | Xem chi tiết thông báo, trạng thái gửi email, tùy chọn sửa/xóa |
-| Operation Manual (E03) | E03 | E03 (es-kitchen-web-admin) | Danh sách tài liệu PDF nội bộ, tải về file hướng dẫn sử dụng |
-| HubSpot Sync Management | E03 | E03 (es-kitchen-web-admin) | Trạng thái đồng bộ 2 chiều với HubSpot, kích hoạt đồng bộ thủ công *inferred |
-| Operation Manual (E04) | E04 | E04 (es-kitchen-web-supplier) | Tài liệu hướng dẫn dành cho Supplier, tải về file |
-| Operation Manual (E05) | E05 | E05 (es-kitchen-web-outsource-web-private) | Tài liệu hướng dẫn dành cho đơn vị vận chuyển, tải về file |
-| Notification History (E06) | E06 | E06 (es-kitchen-webapp-driver) | Lịch sử thông báo push notification đã nhận, điều hướng đến nội dung liên quan |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| UA_SYSO_001 | Notification Settings | E01 | E01 (es-kitchen-payment-app) | Settings | Danh sách các loại thông báo, toggle Bật/Tắt từng loại |
+| CW_SYSO_001 | Announcements List | E02 | E02 (es-kitchen-web-company) | List | Danh sách thông báo hệ thống từ ES Kitchen, sắp xếp theo thời gian mới nhất |
+| CW_SYSO_002 | Announcement Detail | E02 | E02 (es-kitchen-web-company) | Detail | Nội dung đầy đủ thông báo, file đính kèm, tải về |
+| AW_SYSO_001 | Dashboard | E03 | E03 (es-kitchen-web-admin) | Dashboard | Hiển thị chỉ số HubSpot, lịch giao hàng trong tuần, tỉ lệ hoàn thành giao hàng |
+| AW_SYSO_002 | Dashboard Personalization | E03 | E03 (es-kitchen-web-admin) | Settings | Kéo thả sắp xếp lại thẻ dashboard, ẩn/hiện thẻ, lưu cấu hình per-user |
+| AW_SYSO_003 | Maintenance Management List | E03 | E03 (es-kitchen-web-admin) | List | Lịch sử bật/tắt maintenance: thời gian, người thực hiện, lý do |
+| AW_SYSO_004 | Maintenance Create/Edit | E03 | E03 (es-kitchen-web-admin) | Form | Tạo maintenance mới: nhập lý do, thời gian dự kiến, bật/tắt chế độ bảo trì |
+| AW_SYSO_005 | Version Management List | E03 | E03 (es-kitchen-web-admin) | List | Danh sách phiên bản mobile app: version name, build number, ngày, môi trường, trạng thái |
+| AW_SYSO_006 | Account Management List | E03 | E03 (es-kitchen-web-admin) | List | Danh sách tài khoản Admin/Supplier/Outsource, tìm kiếm và lọc theo loại/tên/trạng thái |
+| AW_SYSO_007 | Account Create/Edit | E03 | E03 (es-kitchen-web-admin) | Form | Tạo/chỉnh sửa tài khoản, gán Role cho Admin, cấp quyền mặc định cho Supplier/Outsource |
+| AW_SYSO_008 | Role & Permission Management | E03 | E03 (es-kitchen-web-admin) | Settings | Bảng phân quyền theo Role (dạng tab), bật/tắt CRUD từng chức năng, thêm/đổi tên/xóa Role |
+| AW_SYSO_009 | Notification Management List | E03 | E03 (es-kitchen-web-admin) | List | Danh sách thông báo nội bộ và đối tác, lọc theo đối tượng nhận |
+| AW_SYSO_010 | Notification Create/Edit | E03 | E03 (es-kitchen-web-admin) | Form | Tạo/chỉnh sửa thông báo: tiêu đề, nội dung, file đính kèm, chọn đối tượng nhận, tùy chọn gửi email |
+| AW_SYSO_011 | Notification Detail (E03) | E03 | E03 (es-kitchen-web-admin) | Detail | Xem chi tiết thông báo, trạng thái gửi email, tùy chọn sửa/xóa |
+| AW_SYSO_012 | Operation Manual (E03) | E03 | E03 (es-kitchen-web-admin) | List | Danh sách tài liệu PDF nội bộ, tải về file hướng dẫn sử dụng |
+| AW_SYSO_013 | HubSpot Sync Management | E03 | E03 (es-kitchen-web-admin) | Detail* | Trạng thái đồng bộ 2 chiều với HubSpot, kích hoạt đồng bộ thủ công *inferred |
+| SW_SYSO_001 | Operation Manual (E04) | E04 | E04 (es-kitchen-web-supplier) | List | Tài liệu hướng dẫn dành cho Supplier, tải về file |
+| OW_SYSO_001 | Operation Manual (E05) | E05 | E05 (es-kitchen-web-outsource-web-private) | List | Tài liệu hướng dẫn dành cho đơn vị vận chuyển, tải về file |
+| DA_SYSO_001 | Notification History (E06) | E06 | E06 (es-kitchen-webapp-driver) | List | Lịch sử thông báo push notification đã nhận, điều hướng đến nội dung liên quan |
 
 ---
 

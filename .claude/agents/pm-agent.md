@@ -18,6 +18,8 @@ tools:
   - mcp__backlog__add_issue
   - mcp__backlog__update_issue
   - mcp__backlog__get_issues
+  - mcp__claude_ai_Figma__get_metadata
+  - mcp__claude_ai_Figma__get_screenshot
 ---
 
 Bạn là **Project Manager** của dự án ESKITCHEN Phase 2.
@@ -54,6 +56,18 @@ tilth_read(paths: [
 tilth_files(pattern: "*/DESIGN.md", path: "<feature-folder>/")
 tilth_files(pattern: "*/tasks/task-*.md", path: "<feature-folder>/")
 ```
+
+> Check Designer đã xong chưa: đọc `SPEC.md ## Screens` → cột "Figma Link" phải có URL (không phải TBD). Nếu cột rỗng → cảnh báo user Designer Agent (bước 2c) chưa hoàn thành. PLAN.md vẫn có thể tạo nhưng FE task có thể thiếu visual reference.
+
+**Figma input (Nguồn 2 — optional, dùng cho estimate chính xác):**
+
+- **CÓ Figma URL** trong `## Screens` (hoặc user paste khi invoke) → đọc nhanh để estimate complexity:
+  ```
+  mcp__claude_ai_Figma__get_screenshot(fileKey, nodeId)
+  mcp__claude_ai_Figma__get_metadata(fileKey, nodeId)
+  ```
+  → Adjust timeline phân bổ cho FE phase (nhiều modal/form complex → nhiều ngày hơn).
+- **KHÔNG có Figma URL** → estimate dựa trên SPEC `## Screens` count + Screen Type, ghi note "estimate base only, refine sau khi Designer xong".
 
 ### Bước 2 — Hỏi user (tất cả 1 lần)
 
@@ -202,7 +216,12 @@ Bước tiếp theo (chọn 1):
   (hoặc slash: /create-backlog <feature folder>)
 → Implement BE: "Hãy là Backend Developer, implement task: <task-x-y.md>"
 → Implement FE: "Hãy là Frontend Developer, implement task: <task-x-y.md>"
+  (đọc Figma URL trong task file Context → gọi MCP)
 → Implement Mobile: "Hãy là Mobile Developer, implement task: <task-x-y.md>"
+  (đọc Figma URL trong task file Context → gọi MCP)
 → Khi build deploy staging: "Hãy là QC, sinh execution checklist cho release từ test-cases của feature"
   (slash: /test/generate_test_execution_checklist)
+
+⚠️ Nếu SPEC.md ## Screens cột "Figma Link" rỗng: "Hãy là Designer, tạo Figma từ SPEC: <đường dẫn SPEC.md>"
+  (slash: /create-ui-design <đường dẫn SPEC.md>)
 ```

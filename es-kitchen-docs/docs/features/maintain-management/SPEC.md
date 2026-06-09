@@ -120,12 +120,12 @@ Mục tiêu: cho phép vận hành (deploy / DB migration / fix hot bug) mà kh�
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Maintenance Management — Matrix | System Admin | E03 (System Admin Web) | Bảng matrix `platform × environment` (iOS/Android × DEV/STG/PROD) với toggle bật/tắt từng cell |
-| Confirm Toggle Maintenance Popup | System Admin | E03 (System Admin Web) | Popup warning + confirm khi Admin click toggle một cell; hiển thị thông tin platform + env đang thay đổi |
-| Maintenance Audit Log | System Admin | E03 (System Admin Web) | Danh sách lịch sử bật/tắt maintenance: ai thực hiện, thời gian, platform + env nào *inferred |
-| Maintenance Block Screen (Popup) | End User | E01 (Mobile App) | Full-screen popup block toàn bộ usage khi app nhận `maintenance: true`; user không thao tác được tính năng khác |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| AW_MANT_001 | Maintenance Management — Matrix | System Admin | E03 (System Admin Web) | Settings | Bảng matrix `platform × environment` (iOS/Android × DEV/STG/PROD) với toggle bật/tắt từng cell |
+| AW_MANT_002 | Confirm Toggle Maintenance Popup | System Admin | E03 (System Admin Web) | Modal | Popup warning + confirm khi Admin click toggle một cell; hiển thị thông tin platform + env đang thay đổi |
+| AW_MANT_003 | Maintenance Audit Log | System Admin | E03 (System Admin Web) | List | Danh sách lịch sử bật/tắt maintenance: ai thực hiện, thời gian, platform + env nào *inferred |
+| UA_MANT_001 | Maintenance Block Screen (Popup) | End User | E01 (Mobile App) | Modal* | Full-screen popup block toàn bộ usage khi app nhận `maintenance: true`; user không thao tác được tính năng khác |
 
 ---
 

@@ -88,15 +88,34 @@ Từ Happy Path và Acceptance Criteria đã viết, liệt kê các màn hình 
 ```markdown
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| <Tên màn hình — PascalCase hoặc rõ nghĩa> | <E01/E02/E03/E04/E05/E06> | <E0X (tên app)> | <1 câu mô tả nội dung chính> |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| <XX_FEAT_001> | <Tên màn hình> | <E01/E02/E03/E04/E05/E06> | <E0X (tên app)> | <type> | <1 câu mô tả nội dung chính> |
 ```
 
+- **Screen Code**: `<Module(2)>_<Feature(4)>_<Seq(3)>` — theo `.claude/context/business-flows/screen-code-rule.md`
+  - Module: `UA`(E01) · `CW`(E02) · `AW`(E03) · `SW`(E04) · `OW`(E05) · `DA`(E06)
+  - Feature: 4 chữ hoa viết tắt từ tên feature (ví dụ: `MENU`, `AUTH`, `PAYM`, `DLVR`, `CONT`)
+  - Seq: `001`, `002`, `003`... theo thứ tự screen trong feature
+  - Unique toàn dự án — không trùng với screen khác
 - **Screen**: Tên màn hình — đủ rõ để Designer biết tạo gì (ví dụ: "Monthly Menu Management", "Login", "Order Checkout")
 - **Actor**: Actor thao tác trên màn hình đó
 - **App**: E01 (mobile) · E02 (web-company) · E03 (web-admin) · E04 (web-supplier) · E05 (web-outsource) · E06 (webapp-driver)
-- **Mô tả ngắn**: Nội dung chính hoặc action chính của màn hình (table/form/modal/list...)
+- **Screen Type**: `List` · `Form` · `Detail` · `Dashboard` · `Modal` · `Card-list` · `Chat` · `Wizard` · `Calendar` · `Report` · `Settings`
+- **Mô tả ngắn**: Nội dung chính hoặc action chính của màn hình
+
+**Screen Type guide:**
+- `List` — bảng dữ liệu có filter/search/pagination (table screen)
+- `Form` — tạo mới hoặc chỉnh sửa record (create/edit)
+- `Detail` — xem chi tiết 1 record, read-only hoặc có action buttons
+- `Dashboard` — overview với stats, KPIs, summary cards
+- `Modal` — popup/dialog overlay (không phải full page)
+- `Card-list` — danh sách dạng card (chủ yếu mobile E01)
+- `Chat` — giao diện chat/AI (AI Auto-Order Mode 6)
+- `Wizard` — multi-step flow (onboarding, checkout steps)
+- `Calendar` — lịch, schedule view
+- `Report` — biểu đồ, báo cáo, export
+- `Settings` — cài đặt, toggle, configuration
 
 Nếu thiếu thông tin để xác định screens cụ thể → tạo screens hợp lý nhất từ context (đạt ~90% độ chính xác), ghi chú `*` và note cuối bảng.
 
@@ -107,8 +126,9 @@ Nếu thiếu thông tin để xác định screens cụ thể → tạo screens
 Phạm vi: Single-actor (1 repo) / Cross-repo (N repos)
 Bước tiếp theo (chạy song song):
 → "Hãy là Tech Lead Design, làm DESIGN.md từ SPEC này: <đường dẫn SPEC.md>"
-→ "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC này: <đường dẫn SPEC.md>"
+→ "Hãy là Designer, tạo Figma từ SPEC này: <đường dẫn SPEC.md>"
   (hoặc slash command: `/create-ui-design <đường dẫn SPEC.md>`)
+  Designer sẽ điền Figma URL vào cột "Figma Link" trong SPEC.md ## Screens.
 → "Hãy là QC, sinh test cases từ SPEC này: <đường dẫn SPEC.md>"
   (hoặc slash command: `/test/generate_manual_testcases_rbt` cho FULL RBT / `/test/generate_testcases_from_requirements` cho QUICK)
 ```

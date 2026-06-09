@@ -327,19 +327,19 @@ Khi điều kiện lọc không trả về đơn hàng nào, hệ thống hiển
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Supplier Management | E03 | E03 (es-kitchen-web-admin) | Xem danh sách, tìm kiếm, chỉnh sửa, xóa tài khoản Supplier |
-| Login | E04 | E04 (es-kitchen-web-supplier) | Đăng nhập bằng ID / Mật khẩu |
-| Forgot Password | E04 | E04 (es-kitchen-web-supplier) | Nhập email để nhận link reset mật khẩu *inferred |
-| Reset Password *inferred | E04 | E04 (es-kitchen-web-supplier) | Đặt lại mật khẩu qua link email |
-| TOP Screen (Announcement) | E04 | E04 (es-kitchen-web-supplier) | Màn hình chính: danh sách thông báo + dropdown chi tiết + tải file đính kèm |
-| Order List | E04 | E04 (es-kitchen-web-supplier) | Danh sách đơn hàng phân tab theo trạng thái, lọc theo tháng/năm/ngày xuất/trạng thái |
-| Order Detail | E04 | E04 (es-kitchen-web-supplier) | Chi tiết đơn: Số đơn, ngày giao, hạn sử dụng, sản phẩm, số lượng, nơi giao hàng |
-| Shipping Schedule Response | E04 | E04 (es-kitchen-web-supplier) | Nhập ngày dự kiến xuất hàng và ghi chú phản hồi đơn (Mốc 4) *inferred |
-| Shipping Report Form | E04 | E04 (es-kitchen-web-supplier) | Báo cáo xuất hàng thực tế: ngày xuất, công ty vận chuyển, thanh toán, hạn sử dụng (Mốc 5) |
-| CSV Download | E04 | E04 (es-kitchen-web-supplier) | Chọn điều kiện lọc (khoảng thời gian / sản phẩm) và tải CSV đơn hàng |
-| Change Password | E04 | E04 (es-kitchen-web-supplier) | Đổi mật khẩu: nhập mật khẩu hiện tại và mật khẩu mới |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn | Figma Link |
+|---|---|---|---|---|---|---|
+| AW_SUPO_001 | Supplier Management | E03 | E03 (es-kitchen-web-admin) | List | Xem danh sách, tìm kiếm, chỉnh sửa, xóa tài khoản Supplier | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75411&m=dev) |
+| SW_SUPO_001 | Login | E04 | E04 (es-kitchen-web-supplier) | Form | Đăng nhập bằng ID / Mật khẩu | [Figma](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=16479-124158&m=dev) |
+| SW_SUPO_002 | Forgot Password | E04 | E04 (es-kitchen-web-supplier) | Form | Nhập email để nhận link reset mật khẩu *inferred | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75640&m=dev) |
+| SW_SUPO_003 | Reset Password *inferred | E04 | E04 (es-kitchen-web-supplier) | Form | Đặt lại mật khẩu qua link email | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75658&m=dev) |
+| SW_SUPO_004 | TOP Screen (Announcement) | E04 | E04 (es-kitchen-web-supplier) | List | Màn hình chính: danh sách thông báo + dropdown chi tiết + tải file đính kèm | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75676&m=dev) |
+| SW_SUPO_005 | Order List | E04 | E04 (es-kitchen-web-supplier) | List | Danh sách đơn hàng phân tab theo trạng thái, lọc theo tháng/năm/ngày xuất/trạng thái | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19607-74826&m=dev) |
+| SW_SUPO_006 | Order Detail | E04 | E04 (es-kitchen-web-supplier) | Detail | Chi tiết đơn: Số đơn, ngày giao, hạn sử dụng, sản phẩm, số lượng, nơi giao hàng | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75905&m=dev) |
+| SW_SUPO_007 | Shipping Schedule Response | E04 | E04 (es-kitchen-web-supplier) | Form | Nhập ngày dự kiến xuất hàng và ghi chú phản hồi đơn (Mốc 4) *inferred | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75995&m=dev) |
+| SW_SUPO_008 | Shipping Report Form | E04 | E04 (es-kitchen-web-supplier) | Modal | Báo cáo xuất hàng thực tế (Modal trong Order Detail): ngày xuất, công ty vận chuyển, thanh toán, hạn sử dụng (Mốc 5) | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-76085&m=dev) |
+| SW_SUPO_009 | CSV Download | E04 | E04 (es-kitchen-web-supplier) | Form | Chọn điều kiện lọc (khoảng thời gian / sản phẩm) và tải CSV đơn hàng | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-76175&m=dev) |
+| SW_SUPO_010 | Change Password | E04 | E04 (es-kitchen-web-supplier) | Form | Đổi mật khẩu: nhập mật khẩu hiện tại và mật khẩu mới | TBD — reuse existing design |
 
 ---
 

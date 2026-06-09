@@ -205,17 +205,17 @@ Hệ thống cho phép System Admin quản lý toàn bộ vòng đời của đ�
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Danh sách Đại lý & Đối tác | E03 | E03 (System Admin) | Xem danh sách đại lý với tìm kiếm/lọc theo tên; điều hướng vào chi tiết hoặc đăng ký mới |
-| Đăng ký Đại lý Mới | E03 | E03 (System Admin) | Form nhập thông tin đại lý (tên, liên hệ, điều kiện hợp đồng, tỷ lệ hoa hồng); validate và lưu bản ghi |
-| Chi tiết Đại lý *inferred | E03 | E03 (System Admin) | Xem thông tin chi tiết đại lý đã chọn; điều hướng sang Referral List và Fee List của đại lý đó |
-| Danh sách Cơ hội Giới thiệu (Referral List) | E03 | E03 (System Admin) | Xem danh sách pháp nhân được đại lý giới thiệu kèm trạng thái tiến độ |
-| Chi tiết / Chỉnh sửa Cơ hội Giới thiệu | E03 | E03 (System Admin) | Xem chi tiết, cập nhật trạng thái tiến độ, xóa (có confirm dialog) một cơ hội giới thiệu |
-| Doanh số theo Đại lý | E03 | E03 (System Admin) | Bảng tổng doanh thu phát sinh từng đại lý theo kỳ (tháng/quý); bộ lọc theo kỳ thời gian |
-| Danh sách Thanh toán Hoa hồng (Fee List) | E03 | E03 (System Admin) | Danh sách khoản hoa hồng cần/đã thanh toán theo tháng và đại lý; filter theo trạng thái; nút tải CSV |
-| Cập nhật Trạng thái Thanh toán Hoa hồng *inferred | E03 | E03 (System Admin) | Inline hoặc modal cập nhật trạng thái Chưa thanh toán ↔ Đã thanh toán cho một khoản hoa hồng |
-| Dashboard Hiệu suất Giới thiệu (Referral Performance) | E03 | E03 (System Admin) | Tổng số pháp nhân giới thiệu thành công, tổng doanh thu kênh giới thiệu, biểu đồ xu hướng; filter theo kỳ/đại lý |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| AW_AGCY_001 | Danh sách Đại lý & Đối tác | E03 | E03 (System Admin) | List | Xem danh sách đại lý với tìm kiếm/lọc theo tên; điều hướng vào chi tiết hoặc đăng ký mới |
+| AW_AGCY_002 | Đăng ký Đại lý Mới | E03 | E03 (System Admin) | Form | Form nhập thông tin đại lý (tên, liên hệ, điều kiện hợp đồng, tỷ lệ hoa hồng); validate và lưu bản ghi |
+| AW_AGCY_003 | Chi tiết Đại lý *inferred | E03 | E03 (System Admin) | Detail | Xem thông tin chi tiết đại lý đã chọn; điều hướng sang Referral List và Fee List của đại lý đó |
+| AW_AGCY_004 | Danh sách Cơ hội Giới thiệu (Referral List) | E03 | E03 (System Admin) | List | Xem danh sách pháp nhân được đại lý giới thiệu kèm trạng thái tiến độ |
+| AW_AGCY_005 | Chi tiết / Chỉnh sửa Cơ hội Giới thiệu | E03 | E03 (System Admin) | Detail | Xem chi tiết, cập nhật trạng thái tiến độ, xóa (có confirm dialog) một cơ hội giới thiệu |
+| AW_AGCY_006 | Doanh số theo Đại lý | E03 | E03 (System Admin) | Report | Bảng tổng doanh thu phát sinh từng đại lý theo kỳ (tháng/quý); bộ lọc theo kỳ thời gian |
+| AW_AGCY_007 | Danh sách Thanh toán Hoa hồng (Fee List) | E03 | E03 (System Admin) | List | Danh sách khoản hoa hồng cần/đã thanh toán theo tháng và đại lý; filter theo trạng thái; nút tải CSV |
+| AW_AGCY_008 | Cập nhật Trạng thái Thanh toán Hoa hồng *inferred | E03 | E03 (System Admin) | Modal | Inline hoặc modal cập nhật trạng thái Chưa thanh toán ↔ Đã thanh toán cho một khoản hoa hồng |
+| AW_AGCY_009 | Dashboard Hiệu suất Giới thiệu (Referral Performance) | E03 | E03 (System Admin) | Dashboard | Tổng số pháp nhân giới thiệu thành công, tổng doanh thu kênh giới thiệu, biểu đồ xu hướng; filter theo kỳ/đại lý |
 
 ---
 

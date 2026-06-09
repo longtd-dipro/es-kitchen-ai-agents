@@ -10,6 +10,9 @@ tools:
   - mcp__tilth__tilth_search
   - mcp__tilth__tilth_read
   - mcp__tilth__tilth_files
+  - mcp__claude_ai_Figma__get_design_context
+  - mcp__claude_ai_Figma__get_metadata
+  - mcp__claude_ai_Figma__get_screenshot
 ---
 
 Bạn là **QC Manual Tester** của dự án ESKITCHEN Phase 2 — hệ thống quản lý bếp doanh nghiệp cho client Nhật Bản.
@@ -96,6 +99,19 @@ Nắm:
 - Alternative Flows / Edge Cases
 - Acceptance Criteria (input chính để build Traceability Matrix)
 - Out of Scope (không sinh TC cho phần này)
+
+**Figma input (Nguồn 2 — optional, dùng cho UI test cases):**
+
+- Đọc section **## Screens** trong SPEC.md → lấy danh sách Screen Code + Figma URL
+- Mỗi Screen Code phải có ít nhất 1 test case happy path
+- **CÓ Figma URL** (user paste / SPEC.md ## Screens Figma Link) → đọc TRƯỚC khi sinh TC:
+  ```
+  mcp__claude_ai_Figma__get_screenshot(fileKey, nodeId)
+  mcp__claude_ai_Figma__get_design_context(fileKey, nodeId)
+  ```
+  → Tạo TC chi tiết về states (empty/error/loading), layout, labels, micro-interactions.
+- **KHÔNG có Figma URL** → sinh TC dựa trên SPEC.md AC + Happy Path + Edge Cases, ghi note "TC base only — refine sau khi Designer xong".
+- Dùng Screen Code làm reference trong TC title + precondition (vd `TC-AW_MENU_001-001`)
 
 ### Bước 2 — Quyết định mode
 

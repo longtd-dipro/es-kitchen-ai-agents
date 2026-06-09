@@ -222,13 +222,13 @@ Admin (E03)
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Survey Management (List) | System Admin | E03 (es-kitchen-web-admin) | Màn hình chính — danh sách survey distributions, entry point để tạo mới và xem lịch sử |
-| Create Distribution Form | System Admin | E03 (es-kitchen-web-admin) | Form tạo distribution: chọn loại survey, thời gian gửi (immediate/scheduled), đối tượng (Corporations/Individuals) và danh sách công ty |
-| Distribution History | System Admin | E03 (es-kitchen-web-admin) | Danh sách distributions đã tạo với các cột: Survey Type, Distribution Time, Target, Companies, Responses, Status |
-| Response Analysis | System Admin | E03 (es-kitchen-web-admin) | Chi tiết kết quả 1 distribution: response rate, tổng hợp từng câu hỏi theo số liệu + biểu đồ tương ứng |
-| Survey Inbox / Notification Entry *inferred | End User | E01 (es-kitchen-payment-app) | Danh sách hoặc entry point survey chưa trả lời — user truy cập từ push notification hoặc từ trong app |
-| Survey Form | End User | E01 (es-kitchen-payment-app) | Form trả lời survey — hiển thị tiêu đề và từng câu hỏi theo thứ tự (rating / nps / single_choice / multi_choice / free_text) |
-| Survey Thank You | End User | E01 (es-kitchen-payment-app) | Màn hình xác nhận sau khi submit — thông báo đã gửi thành công, không thể submit lần 2 |
-| Already Submitted *inferred | End User | E01 (es-kitchen-payment-app) | Màn hình hoặc trạng thái hiển thị khi user cố truy cập survey đã trả lời rồi |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| AW_SURV_001 | Survey Management (List) | System Admin | E03 (es-kitchen-web-admin) | List | Màn hình chính — danh sách survey distributions, entry point để tạo mới và xem lịch sử |
+| AW_SURV_002 | Create Distribution Form | System Admin | E03 (es-kitchen-web-admin) | Form | Form tạo distribution: chọn loại survey, thời gian gửi (immediate/scheduled), đối tượng (Corporations/Individuals) và danh sách công ty |
+| AW_SURV_003 | Distribution History | System Admin | E03 (es-kitchen-web-admin) | List | Danh sách distributions đã tạo với các cột: Survey Type, Distribution Time, Target, Companies, Responses, Status |
+| AW_SURV_004 | Response Analysis | System Admin | E03 (es-kitchen-web-admin) | Report | Chi tiết kết quả 1 distribution: response rate, tổng hợp từng câu hỏi theo số liệu + biểu đồ tương ứng |
+| UA_SURV_001 | Survey Inbox / Notification Entry *inferred | End User | E01 (es-kitchen-payment-app) | Card-list | Danh sách hoặc entry point survey chưa trả lời — user truy cập từ push notification hoặc từ trong app |
+| UA_SURV_002 | Survey Form | End User | E01 (es-kitchen-payment-app) | Form | Form trả lời survey — hiển thị tiêu đề và từng câu hỏi theo thứ tự (rating / nps / single_choice / multi_choice / free_text) |
+| UA_SURV_003 | Survey Thank You | End User | E01 (es-kitchen-payment-app) | Detail* | Màn hình xác nhận sau khi submit — thông báo đã gửi thành công, không thể submit lần 2 |
+| UA_SURV_004 | Already Submitted *inferred | End User | E01 (es-kitchen-payment-app) | Detail* | Màn hình hoặc trạng thái hiển thị khi user cố truy cập survey đã trả lời rồi |

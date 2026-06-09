@@ -15,6 +15,7 @@ theme:
 
 nav:
 - Home: index.md
+- Setup Template: setup-template.md
 
 - Backend:
   - Es Kitchen API:

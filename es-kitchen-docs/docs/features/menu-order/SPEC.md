@@ -294,27 +294,27 @@ Feature này có **phụ thuộc trực tiếp** vào domain Hợp đồng (cont
 
 ## Screens
 
-| Screen | Actor | App | Mô tả ngắn |
-|---|---|---|---|
-| Monthly Menu Management | E03 | E03 (es-kitchen-web-admin) | Danh sách menu tháng; thêm/xóa sản phẩm; drag & drop sắp xếp thứ tự; tải lên PDF menu; publish |
-| Add Product Popup | E03 | E03 (es-kitchen-web-admin) | Popup chọn sản phẩm từ Master Product (có search + tab Popular Products) để thêm vào menu tháng |
-| Duplicate Menu | E03 | E03 (es-kitchen-web-admin) | Chọn tháng/năm nguồn để sao chép; xem danh sách sản phẩm bị đánh dấu xuất hiện ≥ 2 tháng liên tiếp *inferred |
-| Deli Order Management | E03 | E03 (es-kitchen-web-admin) | Danh sách Deli Order; tìm kiếm/lọc theo KH/sản phẩm/tháng/trạng thái/loại tủ; tải CSV |
-| Deli Order Detail | E03 | E03 (es-kitchen-web-admin) | Chi tiết 1 Deli Order; chỉnh sửa số lượng; set tối thiểu; clear số lượng; gửi thông báo trạng thái tới KH/NCC/Driver |
-| Material Order Management | E03 | E03 (es-kitchen-web-admin) | Danh sách đơn vật tư; xem breakdown hạng mục; thêm Memo nội bộ; tạo Provisional Order và Final Order |
-| Order History (E03) | E03 | E03 (es-kitchen-web-admin) | Lịch sử đặt hàng lọc theo NCC; tổng tiền tự động tính; xem breakdown từng mặt hàng |
-| Monthly Prepared Food Order | E02 | E02 (es-kitchen-web-company) | Đặt hàng món ăn tháng; Card view + Matrix view; real-time tổng số lượng & tổng tiền; cảnh báo ngân sách; submit/lock sau deadline |
-| Product Detail (E02) | E02 | E02 (es-kitchen-web-company) | Chi tiết sản phẩm: hình ảnh, mô tả, dị ứng, dinh dưỡng, giá nhân viên, review nhân viên *inferred |
-| AI Auto-Order | E02 | E02 (es-kitchen-web-company) | Chọn Mode AI (Mode 1 Even / Mode 2 History / Mode 4 Survey); xem giỏ hàng đề xuất; chỉnh sửa trước khi submit |
-| AI Chat Order | E02 | E02 (es-kitchen-web-company) | Chat với Chatbot AI (Mode 6); nhập yêu cầu tự nhiên; nhận giỏ hàng đề xuất |
-| CSV Upload Order | E02 | E02 (es-kitchen-web-company) | Tải template CSV; upload file; xem preview; xem danh sách lỗi theo dòng nếu có |
-| Material Order Popup | E02 | E02 (es-kitchen-web-company) | Popup nhắc đặt vật tư sau khi submit đơn món ăn; nhập số lượng vật tư; có thể bỏ qua |
-| Material Order (E02) | E02 | E02 (es-kitchen-web-company) | Đặt vật tư độc lập; nhập số lượng từng loại vật tư (đũa, thìa, khay...) *inferred |
-| Material Order History (E02) | E02 | E02 (es-kitchen-web-company) | Lịch sử đơn vật tư; xem ngày dự kiến giao từ API vận chuyển |
-| Order History (E02) | E02 | E02 (es-kitchen-web-company) | Lịch sử đơn món ăn các tháng trước; xem chi tiết từng đơn *inferred |
-| Usage Report | E02 | E02 (es-kitchen-web-company) | Báo cáo tỷ lệ tiêu thụ / số lượng mua / hàng hủy; Popular Products Ranking; xem theo chi nhánh; tải Excel/CSV |
-| Product Suggestion (Home) | E01 | E01 (es-kitchen-payment-app) | Màn hình chính app; danh sách gợi ý sản phẩm cá nhân hóa kèm giá |
-| Product Detail (E01) | E01 | E01 (es-kitchen-payment-app) | Chi tiết sản phẩm trên mobile; xem hình ảnh, mô tả, giá; thêm vào giỏ |
+| Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn |
+|---|---|---|---|---|---|
+| AW_MENU_001 | Monthly Menu Management | E03 | E03 (es-kitchen-web-admin) | List | Danh sách menu tháng; thêm/xóa sản phẩm; drag & drop sắp xếp thứ tự; tải lên PDF menu; publish |
+| AW_MENU_002 | Add Product Popup | E03 | E03 (es-kitchen-web-admin) | Modal | Popup chọn sản phẩm từ Master Product (có search + tab Popular Products) để thêm vào menu tháng |
+| AW_MENU_003 | Duplicate Menu | E03 | E03 (es-kitchen-web-admin) | Wizard | Chọn tháng/năm nguồn để sao chép; xem danh sách sản phẩm bị đánh dấu xuất hiện ≥ 2 tháng liên tiếp *inferred |
+| AW_MENU_004 | Deli Order Management | E03 | E03 (es-kitchen-web-admin) | List | Danh sách Deli Order; tìm kiếm/lọc theo KH/sản phẩm/tháng/trạng thái/loại tủ; tải CSV |
+| AW_MENU_005 | Deli Order Detail | E03 | E03 (es-kitchen-web-admin) | Detail | Chi tiết 1 Deli Order; chỉnh sửa số lượng; set tối thiểu; clear số lượng; gửi thông báo trạng thái tới KH/NCC/Driver |
+| AW_MENU_006 | Material Order Management | E03 | E03 (es-kitchen-web-admin) | List | Danh sách đơn vật tư; xem breakdown hạng mục; thêm Memo nội bộ; tạo Provisional Order và Final Order |
+| AW_MENU_007 | Order History (E03) | E03 | E03 (es-kitchen-web-admin) | List | Lịch sử đặt hàng lọc theo NCC; tổng tiền tự động tính; xem breakdown từng mặt hàng |
+| CW_MENU_001 | Monthly Prepared Food Order | E02 | E02 (es-kitchen-web-company) | Form | Đặt hàng món ăn tháng; Card view + Matrix view; real-time tổng số lượng & tổng tiền; cảnh báo ngân sách; submit/lock sau deadline |
+| CW_MENU_002 | Product Detail (E02) | E02 | E02 (es-kitchen-web-company) | Detail | Chi tiết sản phẩm: hình ảnh, mô tả, dị ứng, dinh dưỡng, giá nhân viên, review nhân viên *inferred |
+| CW_MENU_003 | AI Auto-Order | E02 | E02 (es-kitchen-web-company) | Wizard | Chọn Mode AI (Mode 1 Even / Mode 2 History / Mode 4 Survey); xem giỏ hàng đề xuất; chỉnh sửa trước khi submit |
+| CW_MENU_004 | AI Chat Order | E02 | E02 (es-kitchen-web-company) | Chat | Chat với Chatbot AI (Mode 6); nhập yêu cầu tự nhiên; nhận giỏ hàng đề xuất |
+| CW_MENU_005 | CSV Upload Order | E02 | E02 (es-kitchen-web-company) | Form | Tải template CSV; upload file; xem preview; xem danh sách lỗi theo dòng nếu có |
+| CW_MENU_006 | Material Order Popup | E02 | E02 (es-kitchen-web-company) | Modal | Popup nhắc đặt vật tư sau khi submit đơn món ăn; nhập số lượng vật tư; có thể bỏ qua |
+| CW_MENU_007 | Material Order (E02) | E02 | E02 (es-kitchen-web-company) | Form | Đặt vật tư độc lập; nhập số lượng từng loại vật tư (đũa, thìa, khay...) *inferred |
+| CW_MENU_008 | Material Order History (E02) | E02 | E02 (es-kitchen-web-company) | List | Lịch sử đơn vật tư; xem ngày dự kiến giao từ API vận chuyển |
+| CW_MENU_009 | Order History (E02) | E02 | E02 (es-kitchen-web-company) | List | Lịch sử đơn món ăn các tháng trước; xem chi tiết từng đơn *inferred |
+| CW_MENU_010 | Usage Report | E02 | E02 (es-kitchen-web-company) | Report | Báo cáo tỷ lệ tiêu thụ / số lượng mua / hàng hủy; Popular Products Ranking; xem theo chi nhánh; tải Excel/CSV |
+| UA_MENU_001 | Product Suggestion (Home) | E01 | E01 (es-kitchen-payment-app) | Card-list | Màn hình chính app; danh sách gợi ý sản phẩm cá nhân hóa kèm giá |
+| UA_MENU_002 | Product Detail (E01) | E01 | E01 (es-kitchen-payment-app) | Detail | Chi tiết sản phẩm trên mobile; xem hình ảnh, mô tả, giá; thêm vào giỏ |
 
 ---
 

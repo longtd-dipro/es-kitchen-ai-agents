@@ -35,6 +35,7 @@ Mỗi vai có quyền và nhiệm vụ khác nhau. Gọi sai vai → AI làm qu�
 |---|---|---|
 | Phân tích yêu cầu mới | `Hãy là BA, làm SPEC cho feature: <mô tả ngắn>` | `/create-spec <feature>` |
 | Thiết kế technical | `Hãy là Tech Lead Design, làm DESIGN từ SPEC: <path/SPEC.md>` | `/create-design <SPEC.md>` |
+| **Thiết kế UI + Figma** (sau SPEC) | `Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC: <path/SPEC.md>` | `/create-ui-design <SPEC.md>` |
 | Tạo task files | `Hãy là Tech Lead Tasks, phân rã tasks: <path/feature-folder/>` | `/create-tasks <feature/>` |
 | Lập kế hoạch sprint | `Hãy là PM, làm PLAN.md: <path/feature-folder/>` | `/create-plan <feature/>` |
 | Sync tasks → Backlog | `Hãy là PM, sync tasks lên Backlog: <feature-folder/>` | `/create-backlog <feature/>` |
@@ -56,9 +57,10 @@ BA sẽ hỏi thêm **10 câu** trước khi viết SPEC — đừng ngắt, c�
 **Ví dụ thực tế — sau khi SPEC xong (chạy song song):**
 
 - "Hãy là Tech Lead Design, làm DESIGN từ SPEC: docs/features/import-csv/SPEC.md"
+- "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC: docs/features/import-csv/SPEC.md"
 - "Hãy là QC, sinh test cases từ SPEC: docs/features/import-csv/SPEC.md"
 
-→ 2 prompts chạy song song. Khi dev có code, QC đã có TC sẵn để verify.
+→ 3 prompts chạy song song. Khi dev implement: có DESIGN.md (kỹ thuật) + UI-SPEC.md / Figma context (giao diện) + TC (test) sẵn sàng.
 
 ---
 
@@ -170,40 +172,44 @@ Khi phát hiện pattern quan trọng bị AI bỏ qua nhiều lần → yêu c�
 
 ```
 SPEC (BA)
-  ├─→ DESIGN (Tech Lead)         ──→ Tasks (Tech Lead) ──→ PLAN (PM)
-  └─→ Test Cases (QC) song song                              │
-                                                             ├─→ /create-backlog (optional)
-                                                             ▼
-                                                     Contract Lock 🔒
-                                                             │
-                              ┌──────────────────┬───────────┘
-                              ▼                  ▼          ▼
-                          Backend            Frontend     Mobile
-                          (Phase 1-2)        (Phase 3)    (Phase 3)
-                              │                  │          │
-                              └──────────────────┴──────────┘
-                                                │
-                                                ▼ Mỗi task done
-                                              QA verify (qa-agent)
-                                                │
-                                                ▼
-                                       QC execute TC + bug report
-                                                │
-                                                ▼
-                                          Deploy STG → PROD
+  ├─→ DESIGN.md    (Tech Lead Design) ─┐
+  ├─→ UI-SPEC.md   (Designer Agent)   ─┼──→ Tasks (Tech Lead Tasks) ──→ PLAN (PM)
+  └─→ Test Cases   (QC) song song     ─┘         │                        │
+                                                  │                        ├─→ /create-backlog (optional)
+                                                  │                        ▼
+                                                  │                Contract Lock 🔒
+                                                  │                        │
+                              ┌───────────────────┴──────────┬─────────────┘
+                              ▼                              ▼             ▼
+                          Backend                        Frontend        Mobile
+                          (Phase 1-2)                    (Phase 3)       (Phase 3)
+                                                         ↑ đọc Figma     ↑ đọc Figma
+                              │                              │             │
+                              └──────────────────────────────┴─────────────┘
+                                                            │
+                                                            ▼ Mỗi task done
+                                                          QA verify (qa-agent)
+                                                            │
+                                                            ▼
+                                                   QC execute TC + bug report
+                                                            │
+                                                            ▼
+                                                      Deploy STG → PROD
 ```
 
 Chi tiết sơ đồ mermaid đầy đủ → `es-kitchen-docs/docs/index.md` section "Sơ đồ pipeline".
 
 ---
 
-## Cheat sheet: 6 prompt thường dùng nhất
+## Cheat sheet: 7 prompt thường dùng nhất
 
 ```
 1. "Hãy là BA, làm SPEC cho feature <X>"
-2. "Hãy là Tech Lead Design, làm DESIGN từ SPEC: <path>"
+2. "Hãy là Tech Lead Design, làm DESIGN từ SPEC: <path>"           ─┐ song song
+   "Hãy là Designer, tạo UI-SPEC.md + Figma từ SPEC: <path>"      ─┤ sau SPEC
+   "Hãy là QC, sinh test cases từ SPEC: <path>"                    ─┘
 3. "Hãy là Tech Lead Tasks, phân rã tasks cho: <feature folder>"
-4. "Hãy là QC, sinh test cases từ SPEC: <path>"
+4. "Hãy là PM, làm PLAN.md cho: <feature folder>"
 5. "Hãy là <Backend/Frontend/Mobile> Developer, implement task: <path>"
 6. "Hãy là QA, verify task: <path>"
 ```
