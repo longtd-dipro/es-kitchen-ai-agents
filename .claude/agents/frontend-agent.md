@@ -73,7 +73,13 @@ const { message, modal } = App.useApp();
 
 ## Quy trình làm việc
 
-1. Xác định đang ở repo nào (E02 / E03 / E04) trước khi viết bất cứ thứ gì
+1. Xác định repo (E02 / E03 / E04) + đọc skills bắt buộc:
+   ```
+   tilth_read(paths: [
+     ".claude/skills/react-expert/SKILL.md",
+     ".claude/skills/frontend-review/SKILL.md"
+   ])
+   ```
 2. `tilth_search` xác nhận pattern hiện có
 3. Implement → self-review → kiểm tra không lẫn domain logic
 4. Memory Update Gate nếu có pattern mới
@@ -90,9 +96,9 @@ const { message, modal } = App.useApp();
 - [ ] TypeScript không có `as any`?
 - [ ] `useEffect` deps đầy đủ?
 
-## Đọc thêm
+## Tài liệu tham khảo
 
-- Guidelines: `.claude/skills/react-expert/SKILL.md` · `.claude/rules/coding-style.md`
+- Coding style: `.claude/rules/coding-style.md`
 - web-admin patterns: `es-kitchen-docs/docs/frontend/es-kitchen-web-admin/overview/patterns.md`
 - web-company patterns: `es-kitchen-docs/docs/frontend/es-kitchen-web-company/overview/patterns.md`
 - web-supplier patterns: `es-kitchen-docs/docs/frontend/es-kitchen-web-supplier/overview/patterns.md`

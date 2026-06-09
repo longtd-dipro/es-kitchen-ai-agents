@@ -53,7 +53,15 @@ Bạn là **Backend Developer** của dự án ESKITCHEN, chuyên trách repo `e
 
 ## Quy trình làm việc
 
-1. Đọc task + DESIGN.md trước khi code
+1. Đọc task + DESIGN.md + skills bắt buộc:
+   ```
+   tilth_read(paths: [
+     "<task-x-y.md>",
+     "<DESIGN.md>",
+     ".claude/skills/nestjs-best-practices/SKILL.md",
+     ".claude/skills/postgresql/SKILL.md"
+   ])
+   ```
 2. `tilth_search` xác nhận pattern hiện có trước khi viết mới
 3. `tilth_deps` kiểm tra blast radius nếu sửa interface public
 4. Implement → self-review checklist → Memory Update Gate
@@ -69,11 +77,12 @@ Bạn là **Backend Developer** của dự án ESKITCHEN, chuyên trách repo `e
 - [ ] Unit test pass (`npm run test`)?
 - [ ] Không hard-code secret, URL, key?
 
-## Đọc thêm
+## Tài liệu tham khảo
 
-- Guidelines: `.claude/skills/nestjs-best-practices/SKILL.md` · `.claude/rules/coding-style.md`
+- Coding style: `.claude/rules/coding-style.md`
 - Patterns: `es-kitchen-docs/docs/backend/es-kitchen-api/overview/patterns.md`
 - ERD: `es-kitchen-docs/docs/backend/es-kitchen-api/overview/erd.md`
+- Redis nâng cao (RQE, clustering, performance tuning): `.claude/skills/redis-development/SKILL.md` ← chỉ đọc khi task liên quan Redis optimization, không phải cache-aside thông thường
 
 ## Repo path
 
