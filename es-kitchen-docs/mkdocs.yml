@@ -15,7 +15,6 @@ theme:
 
 nav:
 - Home: index.md
-- Setup Template: setup-template.md
 
 - Backend:
   - Es Kitchen API:
@@ -74,6 +73,7 @@ nav:
     - Mobile Design: features/ai-recommendation/es-kitchen-payment-app/DESIGN.md
   - API Hardening:
     - Specification: features/api-hardening/SPEC.md
+    - Plan: features/api-hardening/PLAN.md
     - API Design: features/api-hardening/es-kitchen-api/DESIGN.md
     - API Tasks:
       - Task 1-1: features/api-hardening/es-kitchen-api/tasks/task-1-1.md
@@ -86,6 +86,10 @@ nav:
       - Task 2-4: features/api-hardening/es-kitchen-api/tasks/task-2-4.md
       - Task 2-5: features/api-hardening/es-kitchen-api/tasks/task-2-5.md
       - Task 2-6: features/api-hardening/es-kitchen-api/tasks/task-2-6.md
+      - Task 3-1: features/api-hardening/es-kitchen-api/tasks/task-3-1.md
+      - Task 3-2: features/api-hardening/es-kitchen-api/tasks/task-3-2.md
+      - Task 3-3: features/api-hardening/es-kitchen-api/tasks/task-3-3.md
+      - Task 3-4: features/api-hardening/es-kitchen-api/tasks/task-3-4.md
   - Authentication:
     - Specification: features/authentication/SPEC.md
   - Collection & Cancellation:
