@@ -195,6 +195,160 @@ describe('<ClassName>', () => {
 - [ ] Status → Request Review
 ```
 
+## Bước 6b — Template FE/Mobile task (Phase 3)
+
+> Dùng template này **thay thế Bước 6** khi tạo task Phase 3 cho `es-kitchen-web-*` hoặc `es-kitchen-payment-app`.
+> Bắt buộc có 3 sub-step để đảm bảo FE ráp được API vào UI khi chạy localhost.
+
+```markdown
+# [FE] [Category] — <Mô tả ngắn gọn>
+
+## Backlog Info
+- **Issue Type:** Task
+- **Category:** <Admin_Web | Company_Web | Payment_App_Mobile | Supplier_Web>
+- **Parent Issue:** <User Story title hoặc Epic ID>
+- **Version:** Phase 2
+- **Milestone:** <Released xxx>
+- **Estimate Hour:** Xh
+- **Actual Hour:** — _(điền khi Resolved)_
+- **Status:** Open
+
+## Metadata
+| Thuộc tính | Giá trị |
+|---|---|
+| Phase | 3 — React FE / Flutter Mobile |
+| Repo | `<repo-name>` |
+| Depends on | task-2-X ← BE API phải xong trước |
+| Song song với | task-3-Y (FE khác nếu có) / task-3-Z (Mobile) |
+| Estimate | ~Xh |
+
+## Mục tiêu
+[1-2 câu: task này implement screen nào, kết quả khi chạy FE-localhost + BE-localhost sẽ thấy gì]
+
+## Context (đọc trước khi code)
+- SPEC.md: `<es-kitchen-docs/docs/features/<feature>/SPEC.md>`
+- DESIGN.md (FE): `<es-kitchen-docs/docs/features/<feature>/<fe-repo>/DESIGN.md>`
+- **BE task liên quan:** `<task-2-X.md>` ← đọc section **API Contract** để lấy endpoint
+- Screen Code: `<XX_FEAT_001>` _(lấy từ SPEC.md ## Screens)_
+- Figma URL: `<path_figma>` _(lấy từ cột Figma Link trong SPEC.md ## Screens)_
+- File liên quan:
+  - `<path/to/existing-service>` — xem pattern service file hiện có
+  - `<path/to/existing-hook>` — xem pattern useQuery hook hiện có
+
+## API Contract (copy từ BE task-2-X)
+
+> Copy từ section **API Contract** trong task BE tương ứng — không tự đoán endpoint.
+
+| Method | Endpoint | Request | Response |
+|---|---|---|---|
+| GET | `/api/<resource>` | `?page=1&limit=10` | `{ items: [], total }` |
+| POST | `/api/<resource>` | `{ field: type }` | `{ id, field }` |
+
+**Base URL:** `import.meta.env.VITE_API_URL` (không hard-code)
+
+## Yêu cầu implement
+
+### Step 1 — Tạo API service file
+
+**File:** `src/services/<feature>Api.ts`
+
+```typescript
+// Gọi đúng endpoint trong API Contract bên trên
+export const <feature>Api = {
+  getList: (params: ListParams): Promise<ListResponse> =>
+    apiClient.get('/api/<resource>', { params }),
+  create: (data: CreateDto): Promise<XxxResponse> =>
+    apiClient.post('/api/<resource>', data),
+};
+```
+
+### Step 2 — Tạo TanStack Query hooks
+
+**File:** `src/hooks/use<Feature>.ts`
+
+```typescript
+export const use<Feature>List = (params: ListParams) =>
+  useQuery({
+    queryKey: ['<feature>', params],
+    queryFn: () => <feature>Api.getList(params),
+  });
+
+export const useCreate<Feature> = () =>
+  useMutation({
+    mutationFn: <feature>Api.create,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['<feature>'] }),
+  });
+```
+
+### Step 3 — Implement UI Component (wire hooks vào giao diện)
+
+**File:** `src/pages/<Feature>Page.tsx` hoặc `src/components/<Feature>/<Component>.tsx`
+
+```typescript
+// Wire hooks vào component — loading / error / data states đủ cả
+const { data, isLoading } = use<Feature>List(params);
+const { mutate: create<Feature>, isPending } = useCreate<Feature>();
+// Mọi data hiển thị phải đến từ hook — không hard-code, không mock
+```
+
+## Unit Tests (BẮT BUỘC)
+
+### Test file: `src/services/<feature>Api.test.ts`
+
+```typescript
+// Test service functions với mock HTTP client (msw)
+```
+
+### Test file: `src/hooks/use<Feature>.test.ts`
+
+```typescript
+// Test hook với QueryClientWrapper + msw mock server
+```
+
+**Coverage target:**
+| File | Target |
+|---|---|
+| `<feature>Api.ts` | ≥ 70% |
+| `use<Feature>.ts` | ≥ 70% |
+| `<Feature>Page.tsx` (critical path) | ≥ 70% |
+
+**Verify:** `npm run test -- --coverage`
+
+## Kiểm tra Integration (BẮT BUỘC trước Request Review)
+
+- [ ] Chạy BE-localhost + FE-localhost kết nối nhau
+- [ ] Screen `<XX_FEAT_001>` load được data thật từ API (không mock)
+- [ ] Các nút bấm / form submit gọi đúng endpoint trong API Contract
+- [ ] Loading state hiển thị khi đang fetch
+- [ ] Error state hiển thị khi API lỗi
+
+## Non-Regression Table
+| Tính năng | File liên quan | Cách verify |
+|---|---|---|
+| <feature khác dùng cùng service/hook> | `<path>` | <bước test> |
+
+## Không được làm
+- Không hard-code URL endpoint — luôn dùng `import.meta.env.VITE_API_URL`
+- Không mock data trong production code (chỉ mock trong test)
+- Không tự thay đổi API Contract — nếu BE endpoint sai thì báo BE fix trước
+- Không sửa file ngoài scope (entity, migration, BE service)
+
+## Definition of Done
+- [ ] Step 1: Service file tạo xong, gọi đúng endpoint
+- [ ] Step 2: Hooks tạo xong, wrap đúng service functions
+- [ ] Step 3: UI component wire hooks, hiển thị data / loading / error
+- [ ] Build pass (`npm run build`)
+- [ ] Lint pass (`npm run lint`)
+- [ ] Type-check pass (`npm run type-check`)
+- [ ] Unit Tests pass — coverage đạt target
+- [ ] **Integration check pass** — localhost kết nối BE, data hiển thị đúng
+- [ ] Non-Regression verify đủ
+- [ ] Actual Hour cập nhật
+- [ ] Status → Request Review
+```
+
+---
+
 ## Unit Test frameworks theo repo
 
 | Repo | Framework | Pattern |

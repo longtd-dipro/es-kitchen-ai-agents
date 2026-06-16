@@ -12,23 +12,36 @@ User requirement
       ▼ [ba-agent]
    SPEC.md  ←── /create-spec <feature>
       │
-      ▼ [techlead-design-agent]
+      ▼ [techlead-design-agent + qc-agent + designer-agent song song]
 DESIGN.md per repo  ←── /create-design <SPEC.md>
       │
       ▼ [techlead-tasks-agent]
 tasks/task-*.md  ←── /create-tasks <feature-folder/>
+  Phase 1,2 → template Bước 6 (BE)
+  Phase 3   → template Bước 6b (FE/Mobile — có ## API Contract)
       │
       ▼ [pm-agent]
    PLAN.md  ←── /create-plan <feature-folder/>
       │
-      ▼ CONTRACT LOCK ← phải confirm trước bước này
+      ▼ CONTRACT LOCK ← REST endpoints + WebSocket + Push payload confirm
       │
-      ┌──────────┬──────────────┐
-      │          │              │
-[backend-agent] [frontend-agent] [mobile-agent]
-  task-1,2-x    task-3-x (FE)   task-3-x (Mobile)
-      │          │              │
-      └──────────┴──────────────┘
+      ▼ [backend-agent]
+  task-1-x (DB migration)
+  task-2-x (API endpoint) → output: API Contract table
+      │
+      ▼ copy API Contract vào task-3-x.md
+      │
+      ┌─────────────────┬──────────────────┐
+      │                 │                  │
+[frontend-agent]  [frontend-agent]  [mobile-agent]
+ task-3-x (E03)   task-3-x (E02)   task-3-x (E01)
+ Step1 service     Step1 service    Step1 service
+ Step2 hooks       Step2 hooks      Step2 provider
+ Step3 wire UI     Step3 wire UI    Step3 wire UI
+      │                 │                  │
+      └─────────────────┴──────────────────┘
+      │
+      ▼ Integration check (localhost BE + FE = data thật)
       │
       ▼ [qa-agent]
   QA Report  ←── verify AC + non-regression
@@ -80,14 +93,16 @@ tilth_deps(path: "<file sẽ thay đổi>")
 **Command:** `/create-tasks <path/to/feature-folder/>`
 **Phase numbering global:**
 
-| Phase | Nội dung | Repo |
-|---|---|---|
-| 1 | DB migration / schema | `es-kitchen-api` |
-| 2 | Service + API endpoint | `es-kitchen-api` |
-| 3 | Frontend E02/E03 + Mobile (song song) | `web-*` + `payment-app` |
-| 4 | Integration test | Tất cả |
+| Phase | Nội dung | Repo | Template |
+|---|---|---|---|
+| 1 | DB migration / schema | `es-kitchen-api` | Bước 6 (template chung) |
+| 2 | Service + API endpoint | `es-kitchen-api` | Bước 6 (template chung) |
+| 3 | Frontend E02/E03/E04 + Mobile (song song) | `web-*` + `payment-app` | **Bước 6b** (template FE/Mobile) |
+| 4 | Integration test | Tất cả | Bước 6 (template chung) |
 
 **Output:** `tasks/task-X-Y.md` per repo
+
+> **Quan trọng:** Task Phase 3 (FE/Mobile) dùng template riêng (Bước 6b trong `techlead-tasks-agent.md`). Template này có sẵn section `## API Contract` chờ BE điền sau khi hoàn thành task-2-X.
 
 ---
 
@@ -118,13 +133,27 @@ Phải confirm đầy đủ trước khi FE/Mobile bắt đầu implement:
 
 **Agent theo repo:**
 - `es-kitchen-api` → `backend-agent`
-- `es-kitchen-web-admin` / `es-kitchen-web-company` → `frontend-agent`
+- `es-kitchen-web-admin` / `es-kitchen-web-company` / `es-kitchen-web-supplier` → `frontend-agent`
 - `es-kitchen-payment-app` → `mobile-agent`
 
-**Thứ tự thực hiện:**
+**Thứ tự bắt buộc:**
+
 ```
-task-1-x (DB)  →  task-2-x (API)  →  task-3-x (FE + Mobile, song song)  →  task-4-x (Integration)
+task-1-x (BE — DB migration)
+    ↓
+task-2-x (BE — API endpoint)
+    ↓ [BE output API Contract → copy vào task-3-x trước khi FE bắt đầu]
+task-3-x (FE + Mobile, song song):
+    Step 1 — Tạo service file  (gọi đúng endpoint trong API Contract)
+    Step 2 — Tạo TanStack Query hooks
+    Step 3 — Implement UI, wire hooks vào giao diện
+    ↓ [Integration check: FE-localhost + BE-localhost = data thật trên màn hình]
+task-4-x (Integration test)
 ```
+
+**Sau khi BE xong task-2-x:**
+1. Copy bảng `## API Contract` từ BE output vào section tương ứng trong `task-3-x.md`
+2. FE/Mobile mới bắt đầu implement — không code FE trước khi có API Contract
 
 **Sau mỗi task:** Chạy Memory Update Gate (xem `AGENTS.md`).
 

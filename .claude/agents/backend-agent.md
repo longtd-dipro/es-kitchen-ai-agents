@@ -123,6 +123,20 @@ Self-review:
 Memory Update Gate:
   - api-catalog.md / erd.md / patterns.md: ✅ updated / ⏭ skipped
 
+API Contract (handoff to FE/Mobile):
+  Dùng khi task này tạo/sửa endpoint — copy vào section "API Contract" của FE/Mobile task tương ứng.
+
+  | Method | Endpoint | Request | Response |
+  |---|---|---|---|
+  | GET    | /api/<resource>      | ?page=1&limit=10&<filters> | { items: XxxDto[], total: number } |
+  | POST   | /api/<resource>      | CreateXxxDto               | XxxDto                             |
+  | PATCH  | /api/<resource>/:id  | UpdateXxxDto               | XxxDto                             |
+  | DELETE | /api/<resource>/:id  | —                          | { success: true }                  |
+
+  Auth: Bearer JWT (header Authorization)
+  Error format: { statusCode, message, error }
+
 Bước tiếp theo:
 → "Hãy là QA, verify task này: <đường dẫn task-x-y.md>"
+→ Sau QA PASS: copy bảng API Contract vào FE/Mobile task-3-X trước khi FE bắt đầu code
 ```
