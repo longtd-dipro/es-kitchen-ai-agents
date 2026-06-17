@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E02 · 拠点一覧 — Danh sách chi nhánh con</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="../index.html">← Mockup Index</a>
+  <div class="tb-user"><span class="avatar">夢</span> 夢の扉</div>
+</div>
+
+<div class="page">
+
+  <div class="breadcrumb">
+    <a href="../index.html">Home</a><span class="sep">›</span>
+    <b>拠点管理</b> <span class="vi">(Quản lý chi nhánh con)</span>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <div class="page-title"><span class="accent-bar"></span> 拠点一覧 <span class="vi">Danh sách chi nhánh con</span></div>
+      <div class="page-sub">公司Mẹ 管理者が自社サブツリー内の子会社（拠点）を閲覧・作成・管理する。 <span class="vi">Quản lý các công ty con trong subtree.</span></div>
+    </div>
+  </div>
+
+  <!-- Scope notice -->
+  <div class="notice notice-info">
+    <span class="ic">ℹ️</span>
+    <div>Chỉ hiển thị công ty con trong subtree của công ty đăng nhập (scope theo <code>parent_id</code>). Truy cập ngoài scope → <b>403 COMPANY_OUT_OF_SCOPE</b>. <span class="vi">「拠点 / location」は UI 用語、技術的には <code>parent_id</code> を持つ Company 行。</span></div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="openModal('mCreate')">＋ 拠点追加 <span class="vi">Thêm chi nhánh con</span>
+      <span class="api-note">→ <b>POST /company-admin/company/sub-companies</b> (G2)</span>
+    </button>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter">
+    <div class="filter-grid">
+      <div class="field">
+        <label>キーワード <span class="vi">ID / tên / địa chỉ</span> <span class="ftag q">?q=</span></label>
+        <input type="text" placeholder="キーワードを入力">
+      </div>
+      <div class="field">
+        <label>ステータス <span class="vi">Trạng thái</span> <span class="ftag q">?status=</span></label>
+        <select>
+          <option value="">全て (Tất cả)</option>
+          <option value="1">仮登録 (PROVISIONAL)</option>
+          <option value="2">本登録 (REGISTERED)</option>
+          <option value="4">休止中 (SUSPENDED)</option>
+          <option value="5">解約済 (CANCELLED)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>並び順 <span class="vi">Sắp xếp</span> <span class="ftag q">?orderBy= &amp; ?order=</span></label>
+        <select>
+          <option value="createdAt">登録日 (createdAt)</option>
+          <option value="companyCode">拠点ID (companyCode)</option>
+          <option value="name">拠点名 (name)</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="btn">クリア <span class="vi">Xóa lọc</span></button>
+      <button class="btn btn-primary">🔍 検索 <span class="vi">Tìm</span></button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr>
+          <th style="width:38px"><input type="checkbox" title="Chọn tất cả"></th>
+          <th class="col-num">No</th>
+          <th>拠点ID <span class="vi-b">Mã</span><span class="api-note">companyCode</span></th>
+          <th>拠点名 <span class="vi-b">Tên</span><span class="api-note">name</span></th>
+          <th>住所 / 担当者 <span class="vi-b">Địa chỉ / Người PT</span><span class="api-note">addressPrefecture·addressCity · contactName</span></th>
+          <th>電話 <span class="vi-b">SĐT</span><span class="api-note">customerTel</span></th>
+          <th>ステータス <span class="vi-b">Trạng thái</span><span class="api-note">status (số 1–5)</span></th>
+          <th class="col-actions">操作 <span class="vi-b">Thao tác</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td class="col-num">1</td>
+          <td><b>CU10001</b></td>
+          <td>🏠 京都支店 <span class="chip chip-gray no-dot" style="margin-left:6px">子 Con</span></td>
+          <td>京都府京都市中京区烏丸通 / 田中一郎</td>
+          <td>075-111-1111</td>
+          <td><span class="chip chip-blue">本登録</span></td>
+          <td class="col-actions">
+            <a class="btn btn-sm" href="location_basic_infor_mockup.html">詳細</a>
+            <button class="btn btn-sm" onclick="if(confirm('この拠点を親会社にしますか？\nPOST .../:id/invert-role'))return false;">親会社にする</button>
+            <button class="btn btn-sm btn-danger" onclick="openModal('mDelete')">削除</button>
+            <span class="api-note">親会社にする → <b>POST /company-admin/company/sub-companies/CU10001/invert-role</b></span>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td class="col-num">2</td>
+          <td><b>CU10002</b></td>
+          <td>🏠 大阪支店 <span class="chip chip-gray no-dot" style="margin-left:6px">子 Con</span></td>
+          <td>大阪府大阪市北区梅田 / 佐藤花子</td>
+          <td>06-222-2222</td>
+          <td><span class="chip chip-orange">仮登録</span></td>
+          <td class="col-actions">
+            <a class="btn btn-sm" href="location_basic_infor_mockup.html">詳細</a>
+            <button class="btn btn-sm" onclick="if(confirm('この拠点を親会社にしますか？\nPOST .../:id/invert-role'))return false;">親会社にする</button>
+            <button class="btn btn-sm btn-danger" onclick="openModal('mDelete')">削除</button>
+            <span class="api-note">親会社にする → <b>POST /company-admin/company/sub-companies/CU10002/invert-role</b></span>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td class="col-num">3</td>
+          <td><b>CU10003</b></td>
+          <td>🏠 神戸支店 <span class="chip chip-gray no-dot" style="margin-left:6px">子 Con</span></td>
+          <td>兵庫県神戸市中央区三宮 / 鈴木次郎</td>
+          <td>078-333-3333</td>
+          <td><span class="chip chip-gray">休止中</span></td>
+          <td class="col-actions">
+            <a class="btn btn-sm" href="location_basic_infor_mockup.html">詳細</a>
+            <button class="btn btn-sm" onclick="if(confirm('この拠点を親会社にしますか？\nPOST .../:id/invert-role'))return false;">親会社にする</button>
+            <button class="btn btn-sm btn-danger" onclick="openModal('mDelete')">削除</button>
+            <span class="api-note">親会社にする → <b>POST /company-admin/company/sub-companies/CU10003/invert-role</b></span>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td class="col-num">4</td>
+          <td>CU10004</td>
+          <td>🏠 福岡支店</td>
+          <td>福岡県福岡市博多区博多駅前 / 高橋三郎</td>
+          <td>092-444-4444</td>
+          <td><span class="chip chip-gray">解約済</span></td>
+          <td class="col-actions">
+            <a class="btn btn-sm" href="location_basic_infor_mockup.html">詳細</a>
+            <span class="muted">—</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pager -->
+  <div class="pager">
+    <div class="muted">24件中 1–10件 <span class="api-note">total:24 · page:1 · limit:10</span></div>
+    <div class="pages"><span class="active">1</span><span>2</span><span>3</span><span>›</span></div>
+    <div class="field" style="width:auto">
+      <select><option>10件/ページ</option><option>20件/ページ</option><option>50件/ページ</option></select>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== MODAL: 拠点追加 (G2 create) ===================== -->
+<div class="modal-mask" id="mCreate">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-head">
+      <h3>＋ 拠点追加 <span class="vi">Thêm chi nhánh con</span></h3>
+      <button class="x" onclick="closeModal('mCreate')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="notice notice-info"><span class="ic">💡</span><div>拠点 = công ty con (<code>parent_id</code> = công ty đăng nhập). Tạo mới sẽ nằm trong subtree hiện tại. <span class="vi">CreateSubCompanyRequest</span></div></div>
+      <div class="form-grid">
+        <div class="field">
+          <label>拠点名 <span class="vi">Tên chi nhánh</span> <span class="ftag">name</span> <span style="color:var(--red-500)">*</span></label>
+          <input placeholder="例: 京都支店">
+        </div>
+        <div class="field">
+          <label>カナ <span class="vi">Katakana</span> <span class="ftag">nameKana</span></label>
+          <input placeholder="例: キョウトシテン">
+        </div>
+        <div class="field">
+          <label>拠点ID <span class="vi">Mã chi nhánh</span> <span class="ftag">companyCode</span></label>
+          <input placeholder="tự sinh nếu trống">
+          <span class="hint">Bỏ trống → hệ thống tự sinh mã.</span>
+        </div>
+        <div class="field">
+          <label>都道府県 <span class="vi">Tỉnh/Phủ</span> <span class="ftag">addressPrefecture</span></label>
+          <input placeholder="例: 京都府">
+        </div>
+        <div class="field">
+          <label>市区町村 <span class="vi">Quận/Huyện</span> <span class="ftag">addressCity</span></label>
+          <input placeholder="例: 京都市中京区">
+        </div>
+        <div class="field">
+          <label>町域・番地 <span class="vi">Đường/Số nhà</span> <span class="ftag">addressStreet</span></label>
+          <input placeholder="例: 烏丸通三条">
+        </div>
+        <div class="field">
+          <label>建物 <span class="vi">Tòa nhà</span> <span class="ftag">building</span></label>
+          <input placeholder="例: 夢ビル 4F">
+        </div>
+        <div class="field">
+          <label>電話 <span class="vi">SĐT</span> <span class="ftag">customerTel</span></label>
+          <input placeholder="例: 075-111-1111">
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span class="api-note">POST /company-admin/company/sub-companies</span>
+      <div class="btn-row">
+        <button class="btn" onclick="closeModal('mCreate')">キャンセル</button>
+        <button class="btn btn-primary" onclick="closeModal('mCreate')">追加する</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: 拠点削除 + succession (G6) ===================== -->
+<div class="modal-mask" id="mDelete">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-head">
+      <h3>🗑️ 拠点削除 <span class="vi">Xóa chi nhánh con</span></h3>
+      <button class="x" onclick="closeModal('mDelete')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="notice notice-warn"><span class="ic">⚠️</span><div>Chi nhánh này còn <b>cháu (con của con)</b>. Phải chọn 1 chi nhánh <b>kế vị</b> (successor) để nhận các cháu trước khi xóa. Bỏ trống &amp; còn cháu → <b>400 SUCCESSOR_REQUIRED</b>.</div></div>
+      <div class="field">
+        <label>後継拠点 <span class="vi">Chi nhánh kế vị</span> <span class="ftag">successorId</span> <span style="color:var(--red-500)">*</span></label>
+        <select>
+          <option value="">— 選択 —</option>
+          <option value="CU10002">CU10002 · 大阪支店</option>
+          <option value="CU10003">CU10003 · 神戸支店</option>
+        </select>
+        <span class="hint">Các cháu còn lại sẽ trỏ <code>parent_id</code> về chi nhánh kế vị. successor sai/ngoài scope → 400 INVALID_SUCCESSOR.</span>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span class="api-note">DELETE /company-admin/company/sub-companies/:id · body {successorId}</span>
+      <div class="btn-row">
+        <button class="btn" onclick="closeModal('mDelete')">キャンセル</button>
+        <button class="btn btn-danger" onclick="closeModal('mDelete')">削除する</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 拠点一覧 (E02)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+    <h4>Endpoints</h4>
+    <div class="ep"><span class="m get">GET</span> /company-admin/company/sub-companies <span class="guard">AdminCompanyGuard</span></div>
+    <div class="ep"><span class="m post">POST</span> /company-admin/company/sub-companies <span class="guard">G2 create</span></div>
+    <div class="ep"><span class="m get">GET</span> /company-admin/company/sub-companies/:id <span class="guard">G3 detail</span></div>
+    <div class="ep"><span class="m post">POST</span> /company-admin/company/sub-companies/:id/invert-role <span class="guard">G5</span></div>
+    <div class="ep"><span class="m delete">DELETE</span> /company-admin/company/sub-companies/:id <span class="guard">G6</span></div>
+
+    <h4>GET /…/sub-companies — query (BaseSearchRequest)</h4>
+    <table>
+      <tr><th>Param</th><th>Default</th><th>Ghi chú</th></tr>
+      <tr><td>page</td><td>1</td><td>BaseSearchRequest</td></tr>
+      <tr><td>limit</td><td>10</td><td></td></tr>
+      <tr><td>q</td><td>—</td><td>search code / name / address</td></tr>
+      <tr><td>status</td><td>—</td><td>1 仮 · 2 本 · 4 休止 · 5 解約</td></tr>
+      <tr><td>orderBy / order</td><td>createdAt / DESC</td><td>companyCode · name · createdAt</td></tr>
+    </table>
+
+    <h4>Response (data)</h4>
+    <pre>{
+  "items": [
+    {
+      "id": "51",
+      "companyCode": "CU10001",
+      "name": "京都支店",
+      "parentId": "50",                // != null ⇒ con
+      "addressPrefecture": "京都府",
+      "addressCity": "京都市中京区",
+      "customerTel": "075-111-1111",
+      "contactName": "田中一郎",       // từ companyAdmins (MAIN)
+      "status": 2                       // REGISTERED
+    }
+  ],
+  "total": 24, "page": 1, "limit": 10, "totalPages": 3
+}</pre>
+
+    <h4>G5 / G6 — Hierarchy rules</h4>
+    <table>
+      <tr><th>Action</th><th>Quy tắc</th></tr>
+      <tr><td>invert-role (G5)</td><td><code>POST /…/:id/invert-role</code> — đưa con trực tiếp lên làm Mẹ (đảo vai parent ↔ child). Sai chiều / không phải con trực tiếp → <code>400 INVALID_INVERSION</code>.</td></tr>
+      <tr><td>DELETE còn cháu (G6)</td><td>Bắt buộc <code>successorId</code> ∈ con trực tiếp khác → repoint cháu, soft-delete. Thiếu → <code>400 SUCCESSOR_REQUIRED</code>; sai → <code>400 INVALID_SUCCESSOR</code>.</td></tr>
+      <tr><td>Scope</td><td>Mọi :id phải thuộc subtree của company đăng nhập (theo <code>parent_id</code>). Ngoài scope → <code>403 COMPANY_OUT_OF_SCOPE</code>.</td></tr>
+    </table>
+
+    <h4>POST /…/sub-companies — body (CreateSubCompanyRequest)</h4>
+    <pre>{
+  "name": "京都支店",               // required
+  "nameKana": "キョウトシテン",
+  "companyCode": "CU10001",         // optional · tự sinh nếu trống
+  "addressPrefecture": "京都府",
+  "addressCity": "京都市中京区",
+  "addressStreet": "烏丸通三条",
+  "building": "夢ビル 4F",
+  "customerTel": "075-111-1111"
+  // parentId = company đăng nhập (server tự gán)
+}</pre>
+
+    <h4>Errors</h4>
+    <table>
+      <tr><th>HTTP</th><th>Code</th></tr>
+      <tr><td>400</td><td>SUCCESSOR_REQUIRED · INVALID_SUCCESSOR · INVALID_INVERSION</td></tr>
+      <tr><td>403</td><td>COMPANY_OUT_OF_SCOPE (ngoài subtree)</td></tr>
+      <tr><td>404</td><td>COMPANY_NOT_FOUND</td></tr>
+    </table>
+    <p class="muted" style="font-size:11.5px">Prefix <code>/company-admin</code> = RouterModule. 「拠点」là UI term; technically Company rows có <code>parent_id</code>.</p>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+</body>
+</html>

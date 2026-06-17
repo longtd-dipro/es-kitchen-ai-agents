@@ -16,6 +16,9 @@ theme:
 nav:
 - Home: index.md
 
+- API Doc:
+  - Overview: api-doc/index.md
+
 - Backend:
   - Es Kitchen API:
     - Overview:

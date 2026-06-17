@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESKitchen · Company–Contract Phase 2 — Mockup & API Guide</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESKitchen Mockups</div>
+  <span class="persona">Phase 2 · Company–Contract</span>
+  <div class="spacer"></div>
+  <span class="tb-link mono">REST · NestJS · PostgreSQL</span>
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <h1>Company – Contract Phase 2</h1>
+    <p>Bộ mockup + tài liệu API cho đội FE (E02 <b>web-company</b> &amp; E03 <b>web-admin</b>). Tất cả màn hình liên kết với nhau như một prototype tĩnh: bấm vào nút / dòng / tab để đi theo đúng luồng nghiệp vụ. Mỗi màn có nút <span class="mono">{ } API仕様</span> (góc phải dưới) mở panel đặc tả, và nút <span class="mono">🏷️ FE注釈</span> để bật/tắt nhãn tên field trực tiếp trên UI.</p>
+  </div>
+
+  <!-- ===== Lifecycle flow ===== -->
+  <div class="card">
+    <div class="card-head"><h3>1 · Vòng đời nghiệp vụ (Lifecycle)</h3></div>
+    <div class="card-body">
+      <div class="flow">
+        <div class="node">Khách vãng lai<small>Public web</small></div>
+        <div class="to">→</div>
+        <div class="node">Đăng ký dùng thử<small>POST /public/trial-requests</small></div>
+        <div class="to">→</div>
+        <div class="node">E03 duyệt trial<small>accept → tạo Company</small></div>
+        <div class="to">→</div>
+        <div class="node">Company <b>PROVISIONAL</b><small>仮登録 · read-only</small></div>
+        <div class="to">→</div>
+        <div class="node">E02 gửi chính thức<small>upgrade-request</small></div>
+        <div class="to">→</div>
+        <div class="node">E03 duyệt (rule ngày 15)<small>→ REGISTERED 本登録</small></div>
+      </div>
+      <div class="notice notice-approval" style="margin-top:14px">
+        <span class="ic">🛡️</span>
+        <div><b>Approval Pipeline (inline):</b> Sau khi REGISTERED, mọi thao tác <b>tạo/sửa/hủy HỢP ĐỒNG</b> do E02 thực hiện đều rơi vào <span class="chip chip-purple no-dot">PENDING</span> → chờ E03 duyệt mới có hiệu lực. Cờ <code>approval_status</code> + <code>pending_payload</code> nằm trực tiếp trên bảng <code>company_contracts</code> (không tách bảng). Sửa thông tin <i>công ty</i> (basic-info/contact) thì áp dụng ngay + ghi log.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== API conventions ===== -->
+  <div class="card">
+    <div class="card-head"><h3>2 · Convention API — bám sát Phase 1 (BẮT BUỘC)</h3></div>
+    <div class="card-body">
+      <div class="notice notice-warn">
+        <span class="ic">⚠️</span>
+        <div><b>Prefix route theo codebase thực tế</b> (qua <code>RouterModule.register()</code> trong <code>app.module.ts</code>, KHÔNG dùng <code>setGlobalPrefix</code>):
+        <br>· E03 System Admin → tất cả route bắt đầu <code>/admin/...</code> &nbsp; · E02 Company Admin → tất cả route bắt đầu <code>/company-admin/...</code> &nbsp; · Public → <code>/public/...</code></div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <h4 class="section-title">Response envelope</h4>
+          <pre class="mono" style="background:var(--gray-900);color:#cdd6f4;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto">{
+  "statusCode": "success",
+  "message": "Request successful",
+  "data": &lt;payload&gt;
+}
+// Tự bọc bởi TransformInterceptor.
+// Controller chỉ return data thô.</pre>
+        </div>
+        <div>
+          <h4 class="section-title">List / pagination</h4>
+          <pre class="mono" style="background:var(--gray-900);color:#cdd6f4;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto">// Query (BaseSearchRequest):
+?page=1&amp;limit=10&amp;q=&amp;order=DESC&amp;orderBy=createdAt
+
+// data:
+{ "items":[...], "total":100,
+  "page":1, "limit":10, "totalPages":10 }</pre>
+        </div>
+      </div>
+
+      <h4 class="section-title" style="margin-top:18px">Guards &amp; Enums</h4>
+      <table class="data" style="font-size:12.5px">
+        <thead><tr><th>Hạng mục</th><th>Giá trị</th></tr></thead>
+        <tbody>
+          <tr><td>Guard E03</td><td><code>AdminGuard</code> (admin-jwt) · payload <code>{id, sub, email, userName}</code></td></tr>
+          <tr><td>Guard E02</td><td><code>AdminCompanyGuard</code> (admin-company-jwt) · payload <code>{sub, companyCode, companyId}</code></td></tr>
+          <tr><td><code>CompanyStatus</code> (số)</td><td><span class="chip chip-orange no-dot">1 PROVISIONAL 仮登録</span> <span class="chip chip-blue no-dot">2 REGISTERED 本登録</span> <span class="chip chip-red no-dot">3 DELETED 削除済</span> <span class="chip chip-gray no-dot">4 SUSPENDED 休止中</span> <span class="chip chip-gray no-dot">5 CANCELLED 解約済</span></td></tr>
+          <tr><td><code>ContractStatus</code> (chuỗi)</td><td><span class="chip chip-green no-dot">ACTIVE 有効</span> <span class="chip chip-gray no-dot">EXPIRED 満了</span> <span class="chip chip-red no-dot">CANCELLED 解約</span> <span class="chip chip-blue no-dot">SCHEDULED 予定</span></td></tr>
+          <tr><td><code>approval_status</code> (mới)</td><td><span class="chip chip-green no-dot">APPROVED</span> <span class="chip chip-purple no-dot">PENDING</span> <span class="chip chip-red no-dot">REJECTED</span> — trục độc lập với ContractStatus</td></tr>
+          <tr><td>Data scope E02</td><td>Recursive subtree theo <code>companies.parent_id</code> — chỉ thấy chính mình + công ty con (đệ quy). Ngoài scope → <code>403 COMPANY_OUT_OF_SCOPE</code></td></tr>
+        </tbody>
+      </table>
+
+      <div class="notice notice-info" style="margin-top:16px">
+        <span class="ic">💡</span>
+        <div><b>Thuật ngữ:</b> UI gọi là “拠点 / chi nhánh / location”, nhưng kỹ thuật là <b>Company tự tham chiếu</b> qua <code>parent_id</code> (Mẹ = <code>parent_id NULL</code>). API dùng <code>sub-companies</code>. Phase 2 <b>tái sử dụng toàn bộ field hợp đồng Phase 1</b> (<code>UpdateCompanyContractRequest</code>) + thêm 4 master FK: <code>planMasterId · relayMasterId · outsourcedDelivererMasterId · carrierId</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Screen catalog ===== -->
+  <div class="card">
+    <div class="card-head"><h3>3 · Danh mục màn hình (bấm để mở)</h3></div>
+    <div class="card-body">
+
+      <h4 class="section-title"><span class="persona-tag pub">PUBLIC</span> Đăng ký dùng thử</h4>
+      <div class="grid-cards" style="margin-bottom:22px">
+        <a class="screen-card" href="company-sublocation/trial_registration_mockup.html">
+          <span class="sc-id">T1</span>
+          <span class="persona-tag pub">Public</span>
+          <span class="sc-title">Form đăng ký dùng thử</span>
+          <span class="sc-desc">Khách doanh nghiệp điền form → tạo trial_request chờ E03 duyệt.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m post">POST</span> /public/trial-requests</span></span>
+        </a>
+      </div>
+
+      <h4 class="section-title"><span class="persona-tag e03">E03</span> System Admin · web-admin</h4>
+      <div class="grid-cards" style="margin-bottom:22px">
+        <a class="screen-card" href="system-admin/list_location_mockup.html">
+          <span class="sc-id">C1 · C13</span>
+          <span class="persona-tag e03">E03</span>
+          <span class="sc-title">Quản lý công ty / chi nhánh</span>
+          <span class="sc-desc">Danh sách toàn bộ công ty + cây Mẹ–Con, import CSV, cấp account hàng loạt, xóa (kế vị).</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /admin/companies</span></span>
+        </a>
+      </div>
+
+      <h4 class="section-title"><span class="persona-tag e02">E02</span> Company Admin · web-company</h4>
+      <div class="grid-cards">
+        <a class="screen-card" href="company-sublocation/list_sub_location_mockup.html">
+          <span class="sc-id">G1</span>
+          <span class="persona-tag e02">E02</span>
+          <span class="sc-title">Danh sách chi nhánh con</span>
+          <span class="sc-desc">Công ty Mẹ xem/tạo/đổi vai/xóa các công ty con trong subtree.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /company-admin/company/sub-companies</span></span>
+        </a>
+        <a class="screen-card" href="company-sublocation/location_basic_infor_mockup.html">
+          <span class="sc-id">S2 · G3/G4</span>
+          <span class="persona-tag e02">E02</span>
+          <span class="sc-title">Thông tin cơ bản (基本情報)</span>
+          <span class="sc-desc">Xem/sửa basic-info của công ty mình hoặc chi nhánh con. Tab điều hướng sang các màn khác.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /company-admin/company/basic-info</span></span>
+        </a>
+        <a class="screen-card" href="company-sublocation/contact_mockup.html">
+          <span class="sc-id">S4 · S5</span>
+          <span class="persona-tag e02">E02</span>
+          <span class="sc-title">Người phụ trách (担当者)</span>
+          <span class="sc-desc">Danh sách liên hệ MAIN/BILLING/SUB + tài khoản đăng nhập.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /company-admin/company/contacts</span></span>
+        </a>
+        <a class="screen-card" href="company-sublocation/list_contract_of_location.html">
+          <span class="sc-id">F1</span>
+          <span class="persona-tag e02">E02</span>
+          <span class="sc-title">Danh sách hợp đồng (契約一覧)</span>
+          <span class="sc-desc">Hợp đồng của công ty / chi nhánh + trạng thái duyệt. Bấm dòng → chi tiết.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /company-admin/company/contracts</span></span>
+        </a>
+        <a class="screen-card" href="company-sublocation/contract_detail_mockup.html">
+          <span class="sc-id">F2 · F3 · F4</span>
+          <span class="persona-tag e02">E02</span>
+          <span class="sc-title">Chi tiết / Đăng ký hợp đồng</span>
+          <span class="sc-desc">Form 3 bước tạo/sửa hợp đồng → gửi duyệt PENDING. Mở popup chọn 業者/中継先.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m post">POST</span> /company-admin/company/contracts</span></span>
+        </a>
+        <a class="screen-card" href="company-sublocation/location_history_changes_mockup.html">
+          <span class="sc-id">S6</span>
+          <span class="persona-tag e02">E02</span>
+          <span class="sc-title">Lịch sử thay đổi (変更履歴)</span>
+          <span class="sc-desc">Audit log read-only của công ty / chi nhánh, BE tự sinh.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /company-admin/company/history</span></span>
+        </a>
+        <a class="screen-card" href="company-sublocation/selection_popup.html">
+          <span class="sc-id">M2 · M3</span>
+          <span class="persona-tag e02">E02</span>
+          <span class="sc-title">Popup chọn Master</span>
+          <span class="sc-desc">Tham chiếu standalone: popup chọn 委託配送業者 (deliverers) &amp; 中継先 (relays).</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /company-admin/company/masters/...</span></span>
+        </a>
+      </div>
+
+      <div class="legend">
+        <span><span class="sw" style="background:var(--green-500)"></span> Public</span>
+        <span><span class="sw" style="background:var(--company-500)"></span> E02 Company</span>
+        <span><span class="sw" style="background:var(--admin-500)"></span> E03 Admin</span>
+        <span><span class="sw" style="background:var(--purple-500)"></span> Cần E03 duyệt</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Nguồn: <code>API-DESIGN.md</code> (es-kitchen-api) + rà soát codebase Phase 1 (company/contract module, import CSV).
+    Mockup chỉ minh hoạ luồng &amp; hợp đồng API — không phải UI cuối. Cập nhật: 2026/06/17.
+  </div>
+
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>
