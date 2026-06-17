@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T1 · 無料トライアル申込 — Đăng ký dùng thử</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">Public</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="../index.html">← Mockup Index</a>
+</div>
+
+<div class="page">
+
+  <div class="breadcrumb">
+    <a href="../index.html">Home</a><span class="sep">›</span>
+    <b>無料トライアル申込</b> <span class="vi">(Đăng ký dùng thử)</span>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <div class="page-title"><span class="accent-bar"></span> 無料トライアル申込 <span class="vi">Đăng ký dùng thử</span></div>
+      <div class="page-sub">Form công khai cho doanh nghiệp đăng ký dùng thử ESSTATION — không cần đăng nhập.</div>
+    </div>
+  </div>
+
+  <!-- Public flow notice -->
+  <div class="notice notice-info">
+    <span class="ic">💡</span>
+    <div>Sau khi gửi, hệ thống tạo một <b>trial_request</b> với trạng thái <span class="chip chip-orange no-dot">PENDING</span>. <b>E03 (System Admin)</b> sẽ duyệt đơn và cấp tài khoản đăng nhập qua email tới địa chỉ người phụ trách. Đây là endpoint <b>công khai</b> (no guard).</div>
+  </div>
+
+  <!-- ========== 法人情報 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>① 法人情報 <span class="vi">Thông tin pháp nhân</span></h3></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>会社名 <span class="vi">Tên công ty</span> <span class="ftag">companyName</span> <span style="color:var(--red-500)">*</span></label>
+          <input placeholder="株式会社サンプル">
+          <span class="api-note">required · maxLength 100</span>
+        </div>
+        <div class="field">
+          <label>会社名カナ <span class="vi">Tên công ty (Kana)</span> <span class="ftag">companyNameKana</span></label>
+          <input placeholder="カブシキガイシャサンプル">
+          <span class="api-note">optional · katakana</span>
+        </div>
+        <div class="field">
+          <label>郵便番号 <span class="vi">Mã bưu điện</span> <span class="ftag">postalCode</span></label>
+          <input placeholder="123-4567"><span class="hint">Định dạng 000-0000</span>
+          <span class="api-note">optional · pattern <code>/^\d{3}-\d{4}$/</code></span>
+        </div>
+        <div class="field">
+          <label>都道府県 <span class="vi">Tỉnh / Thành phố</span> <span class="ftag">addressPrefecture</span></label>
+          <input placeholder="東京都">
+          <span class="api-note">optional</span>
+        </div>
+        <div class="field">
+          <label>市区町村 <span class="vi">Quận / Huyện</span> <span class="ftag">addressCity</span></label>
+          <input placeholder="渋谷区">
+          <span class="api-note">optional</span>
+        </div>
+        <div class="field">
+          <label>町域・番地 <span class="vi">Khu vực · Số nhà</span> <span class="ftag">addressStreet</span></label>
+          <input placeholder="代々木1-2-3">
+          <span class="api-note">optional</span>
+        </div>
+        <div class="field">
+          <label>建物 <span class="vi">Tòa nhà</span> <span class="ftag">addressBuilding</span></label>
+          <input placeholder="サンプルビル 5F">
+          <span class="api-note">optional</span>
+        </div>
+        <div class="field">
+          <label>従業員数 <span class="vi">Số nhân viên</span> <span class="ftag">employeeCount</span></label>
+          <input placeholder="50">
+          <span class="api-note">optional</span>
+        </div>
+        <div class="field">
+          <label>電話番号 <span class="vi">SĐT</span> <span class="ftag">tel</span></label>
+          <input placeholder="03-1234-5678">
+          <span class="api-note">optional</span>
+        </div>
+        <div class="field">
+          <label>FAX <span class="ftag">fax</span></label>
+          <input placeholder="03-1234-5679">
+          <span class="api-note">optional</span>
+        </div>
+        <div class="field">
+          <label>支払方法 <span class="vi">Phương thức thanh toán</span> <span class="ftag">paymentMethod</span></label>
+          <select>
+            <option value="">— 選択 —</option>
+            <option>クレジット決済</option>
+            <option>口座振替・お振込み</option>
+            <option>年額支払</option>
+          </select>
+          <span class="api-note">optional</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ご担当者 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>② ご担当者 <span class="vi">Người phụ trách</span></h3></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>ご担当者名 <span class="vi">Họ tên người phụ trách</span> <span class="ftag">contactName</span> <span style="color:var(--red-500)">*</span></label>
+          <input placeholder="山田太郎">
+          <span class="api-note">required · maxLength 100</span>
+        </div>
+        <div class="field">
+          <label>TEL <span class="vi">SĐT người phụ trách</span> <span class="ftag">contactTel</span></label>
+          <input placeholder="090-1234-5678">
+          <span class="api-note">optional</span>
+        </div>
+        <div class="field">
+          <label>メールアドレス <span class="vi">Email</span> <span class="ftag">contactEmail</span> <span style="color:var(--red-500)">*</span></label>
+          <input type="email" placeholder="yamada@example.co.jp">
+          <span class="api-note">required · @IsEmail()</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ご希望 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>③ ご希望 <span class="vi">Nguyện vọng</span></h3></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>ご希望プラン <span class="vi">Gói mong muốn</span> <span class="ftag">desiredPlan</span></label>
+          <select>
+            <option value="">— 選択 —</option>
+            <option>200プラン</option>
+            <option>300プラン</option>
+            <option>500プラン</option>
+          </select>
+          <span class="api-note">optional</span>
+        </div>
+        <div class="field">
+          <label>利用開始月 <span class="vi">Tháng bắt đầu</span> <span class="ftag">contractStartMonth</span></label>
+          <input placeholder="2026/07"><span class="hint">Định dạng YYYY/MM</span>
+          <span class="api-note">optional · format YYYY/MM</span>
+        </div>
+      </div>
+      <div class="field" style="margin-top:16px">
+        <label>備考 <span class="vi">Ghi chú</span> <span class="ftag">note</span></label>
+        <textarea rows="3" placeholder="ご質問・ご要望などをご記入ください"></textarea>
+        <span class="api-note">optional</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 同意 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>④ ご確認 <span class="vi">Xác nhận</span></h3></div>
+    <div class="card-body">
+      <label style="display:flex; gap:8px; align-items:flex-start; font-size:13.5px; font-weight:600; color:var(--gray-800)">
+        <input type="checkbox" style="margin-top:3px">
+        <span>利用規約に同意する <span class="vi">(Đồng ý với điều khoản sử dụng)</span> <span style="color:var(--red-500)">*</span>
+          <span class="ftag">termsAgreed</span></span>
+      </label>
+      <span class="api-note">required · phải = <code>true</code> · nếu false → 400 TERMS_MUST_BE_AGREED</span>
+    </div>
+  </div>
+
+  <!-- Footer action -->
+  <div class="toolbar" style="margin-top:18px; justify-content:flex-end">
+    <button class="btn btn-primary btn-lg">申し込む <span class="vi">Gửi đăng ký</span>
+      <span class="api-note">POST /public/trial-requests → 201 {id, status:PENDING}</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 無料トライアル申込 (Public)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+    <h4>Endpoint</h4>
+    <div class="ep"><span class="m post">POST</span> /public/trial-requests <span class="guard">No guard · Public</span></div>
+
+    <h4>Request body — CreateTrialRequest</h4>
+    <pre>{
+  // === 法人情報 ===
+  "companyName": "株式会社サンプル",        // required · maxLength 100
+  "companyNameKana": "カブシキガイシャサンプル", // optional · katakana
+  "postalCode": "123-4567",               // optional · /^\d{3}-\d{4}$/
+  "addressPrefecture": "東京都",           // optional
+  "addressCity": "渋谷区",                 // optional
+  "addressStreet": "代々木1-2-3",          // optional
+  "addressBuilding": "サンプルビル 5F",     // optional
+  "employeeCount": "50",                  // optional
+  "tel": "03-1234-5678",                  // optional
+  "fax": "03-1234-5679",                  // optional
+  "paymentMethod": "クレジット決済",        // optional
+
+  // === ご担当者 ===
+  "contactName": "山田太郎",               // required · maxLength 100
+  "contactTel": "090-1234-5678",          // optional
+  "contactEmail": "yamada@example.co.jp", // required · @IsEmail()
+
+  // === ご希望 ===
+  "desiredPlan": "300プラン",              // optional
+  "contractStartMonth": "2026/07",        // optional · format YYYY/MM
+  "note": "...",                          // optional
+
+  // === 同意 ===
+  "termsAgreed": true                     // required · phải = true
+}</pre>
+
+    <h4>Response — 201 Created</h4>
+    <pre>{
+  "id": "1234567890",   // trial_request id (bigint as string)
+  "status": "PENDING"   // trạng thái khởi tạo
+}</pre>
+
+    <h4>Flow</h4>
+    <table>
+      <tr><th>Bước</th><th>Kết quả</th></tr>
+      <tr><td>Public submit form</td><td>tạo <code>trial_request</code> · status = PENDING</td></tr>
+      <tr><td>E03 duyệt</td><td>cấp tài khoản (Cognito) + gửi email mật khẩu cho người phụ trách</td></tr>
+    </table>
+
+    <h4>Errors</h4>
+    <table>
+      <tr><th>HTTP</th><th>Code</th></tr>
+      <tr><td>400</td><td>TERMS_MUST_BE_AGREED (termsAgreed ≠ true)</td></tr>
+      <tr><td>400</td><td>validaton_error (thiếu field bắt buộc / sai format — <code>data</code> là array lỗi per-field)</td></tr>
+    </table>
+    <p class="muted" style="font-size:11.5px">Prefix <code>/public</code> = route công khai, không gắn guard. Required: companyName · contactName · contactEmail · termsAgreed.</p>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E02 · 契約登録/詳細 — Đăng ký / chi tiết hợp đồng</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="../index.html">← Mockup Index</a>
+  <div class="tb-user"><span class="avatar">夢</span> 夢の扉</div>
+</div>
+
+<div class="page">
+
+  <div class="breadcrumb">
+    <a href="../index.html">Home</a><span class="sep">›</span>
+    <a href="list_contract_of_location.html">契約一覧</a><span class="sep">›</span>
+    <b>契約登録</b> <span class="vi">(Đăng ký hợp đồng)</span>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <div class="page-title"><span class="accent-bar"></span> 契約登録 <span class="vi">Đăng ký hợp đồng</span></div>
+      <div class="page-sub">夢の扉 京都支店 (CU10001) — tạo hợp đồng mới gửi E03 duyệt.</div>
+    </div>
+  </div>
+
+  <!-- Approval pipeline banner -->
+  <div class="notice notice-approval">
+    <span class="ic">🛡️</span>
+    <div><b>Cơ chế duyệt:</b> Khi E02 bấm “登録” → hợp đồng tạo với <span class="chip chip-purple no-dot">approval_status = PENDING</span>, <code>pending_type=CREATE</code>, <code>status=SCHEDULED</code> (chưa hiệu lực). Hợp đồng chỉ <b>ACTIVE</b> sau khi E03 duyệt (áp dụng rule ngày-15). Sửa hợp đồng đang chạy → lưu vào <code>pending_payload</code>, cột live giữ nguyên.</div>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps">
+    <div class="step active"><span class="n">1</span> 情報入力 <span class="vi">Nhập thông tin</span></div>
+    <span class="arrow">→</span>
+    <div class="step"><span class="n">2</span> 確認 <span class="vi">Xác nhận</span></div>
+    <span class="arrow">→</span>
+    <div class="step"><span class="n">3</span> 完了 <span class="vi">Hoàn tất</span></div>
+  </div>
+  <div class="notice notice-info">
+    <span class="ic">💡</span>
+    <div>Bước 1→2→3 chỉ điều hướng FE, <b>không gọi API</b>. API chỉ gọi khi “下書き保存” (draft) hoặc “登録” ở bước cuối. Toàn bộ field tái dùng <code>UpdateCompanyContractRequest</code> (Phase 1) + 4 master FK mới.</div>
+  </div>
+
+  <!-- ========== 法人情報 (read-only) ========== -->
+  <div class="card">
+    <div class="card-head"><h3>① 法人情報 <span class="vi">Thông tin pháp nhân</span></h3>
+      <span class="chip chip-gray no-dot">読み取り専用 · pre-filled</span></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field"><label>拠点ID <span class="ftag ro">companyCode</span></label><input value="CU10001" readonly></div>
+        <div class="field"><label>拠点名 <span class="ftag ro">name</span></label><input value="夢の扉 京都支店" readonly></div>
+        <div class="field"><label>機種数 <span class="ftag ro">installedMachineCount</span></label><input value="3" readonly></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 契約 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>② 契約内容 <span class="vi">Nội dung hợp đồng</span></h3></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>プラン <span class="vi">Gói dịch vụ</span> <span class="ftag">planMasterId</span></label>
+          <select>
+            <option>200プラン (P200)</option>
+            <option>300プラン (P300)</option>
+            <option>500プラン (P500)</option>
+          </select>
+          <span class="api-note">Chọn từ master → set <b>planMasterId</b> (+ snapshot text <code>plan</code>). Dropdown: <b>GET /company-admin/company/masters/plans</b></span>
+        </div>
+        <div class="field"><label>メニュー区分 <span class="vi">Loại menu</span> <span class="ftag ro">menuType</span></label><input value="スタンダード" readonly><span class="api-note">suy ra từ plan master</span></div>
+        <div class="field"><label>サービス率 <span class="ftag ro">serviceRate</span></label><input value="10%" readonly></div>
+        <div class="field">
+          <label>契約開始期間 <span class="vi">Bắt đầu</span> <span class="ftag">contractStartPeriod</span> <span style="color:var(--red-500)">*</span></label>
+          <input value="2026/07" placeholder="YYYY/MM"><span class="hint">Định dạng YYYY/MM</span>
+        </div>
+        <div class="field"><label>契約終了期間 <span class="vi">Kết thúc</span> <span class="ftag">contractEndPeriod</span></label><input value="2027/06" placeholder="YYYY/MM"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 配送 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>③ 配送設定 <span class="vi">Cấu hình giao hàng</span></h3></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field"><label>配送区分 <span class="vi">Loại</span> <span class="ftag">deliveryType</span></label>
+          <select><option>ES配送</option><option>COOL便</option></select></div>
+        <div class="field"><label>配送優先度 <span class="vi">Ưu tiên</span> <span class="ftag">deliveryPriority</span></label>
+          <select><option>高</option><option>中</option><option>低</option></select></div>
+        <div class="field"><label>希望配送時間帯 <span class="ftag">preferredDeliveryTimeSlot</span></label>
+          <select><option>午前</option><option>午後</option><option>指定なし</option></select></div>
+
+        <div class="field">
+          <label>委託配送業者 <span class="vi">Đơn vị vận chuyển</span> <span class="ftag">outsourcedDelivererMasterId</span></label>
+          <div class="btn-row">
+            <input value="株式会社虹の橋" readonly style="flex:1">
+            <button class="btn" onclick="openModal('mDeliverer')">業者選択</button>
+          </div>
+          <span class="api-note">Popup → <b>GET /company-admin/company/masters/deliverers</b> · chọn → set outsourcedDelivererMasterId</span>
+        </div>
+        <div class="field">
+          <label>中継先 <span class="vi">Trạm trung chuyển</span> <span class="ftag">relayMasterId</span></label>
+          <div class="btn-row">
+            <input value="名古屋中継センター" readonly style="flex:1">
+            <button class="btn" onclick="openModal('mRelay')">中継先選択</button>
+          </div>
+          <span class="api-note">Popup → <b>GET /company-admin/company/masters/relays</b> · chọn → set relayMasterId</span>
+        </div>
+        <div class="field"><label>ピッキング倉庫 <span class="ftag">pickingWarehouse</span></label><input value="第一倉庫"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 住所 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>④ 納品先住所 <span class="vi">Địa chỉ giao hàng</span></h3>
+      <span class="chip chip-gray no-dot">chỉ 建物 sửa được</span></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field"><label>郵便番号 <span class="ftag ro">postalCode</span></label><input value="600-8001" readonly></div>
+        <div class="field"><label>都道府県 <span class="ftag ro">prefecture</span></label><input value="京都府" readonly></div>
+        <div class="field"><label>市区町村 <span class="ftag ro">city</span></label><input value="京都市中京区" readonly></div>
+        <div class="field"><label>町域・番地 <span class="ftag ro">street</span></label><input value="烏丸通三条" readonly></div>
+        <div class="field"><label>建物・部屋番号 <span class="vi">Tòa nhà</span> <span class="ftag">building</span></label><input value="夢ビル 4F" placeholder="có thể sửa"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 納品スケジュール ========== -->
+  <div class="card">
+    <div class="card-head"><h3>⑤ 納品スケジュール <span class="vi">Lịch giao hàng</span></h3></div>
+    <div class="card-body">
+      <div class="form-grid cols-3">
+        <div class="field"><label>納品にかかる日数 <span class="ftag">deliveryLeadTime</span></label><input value="2"></div>
+        <div class="field"><label>納品回数 <span class="ftag">deliveryCount</span></label><input value="2"></div>
+        <div class="field"><label>納品パターン <span class="ftag">deliveryPattern</span></label><input value="隔週"></div>
+        <div class="field"><label>納品週 <span class="ftag">deliveryWeek</span></label><input value="1,3" placeholder="vd 1,3"></div>
+        <div class="field"><label>納品曜日 <span class="ftag">deliveryDay</span></label><input value="火" placeholder="vd 火"></div>
+        <div class="field"><label>休配日 <span class="vi">Ngày nghỉ</span> <span class="ftag">unavailableDays</span></label><input value="土,日,祝日"></div>
+        <div class="field"><label>配送不可時の対応 <span class="ftag">actionOnUndeliverable</span></label>
+          <select><option>翌日配送</option><option>持ち帰り</option></select></div>
+      </div>
+      <div class="field" style="margin-top:14px"><label>配送備考 <span class="ftag">deliveryNote</span></label>
+        <textarea rows="2" placeholder="Ghi chú giao hàng"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Footer actions -->
+  <div class="toolbar" style="margin-top:18px">
+    <a class="btn" href="list_contract_of_location.html">← キャンセル</a>
+    <div class="spacer"></div>
+    <button class="btn">💾 下書き保存 <span class="vi">Lưu nháp</span>
+      <span class="api-note">POST /company-admin/company/contracts {is_draft:true}</span></button>
+    <button class="btn btn-primary btn-lg">確認へ進む → <span class="vi">Tiếp tục</span>
+      <span class="api-note">Bước 3 → POST /company-admin/company/contracts (PENDING)</span></button>
+  </div>
+
+</div>
+
+<!-- ===================== MODAL: 委託配送業者 (deliverers · M3) ===================== -->
+<div class="modal-mask" id="mDeliverer">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>業者選択 <span class="vi">Chọn đơn vị vận chuyển ủy thác</span></h3>
+      <button class="x" onclick="closeModal('mDeliverer')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="filter" style="margin-bottom:14px;box-shadow:none">
+        <div class="filter-grid">
+          <div class="field"><label>都道府県 <span class="ftag q">?prefecture=</span></label><select><option>すべて</option><option>愛知県</option></select></div>
+          <div class="field"><label>キーワード <span class="ftag q">?q=</span></label><input placeholder="業者名"></div>
+        </div>
+      </div>
+      <div class="table-wrap" style="box-shadow:none">
+        <table class="data">
+          <thead><tr>
+            <th style="width:40px">選択</th>
+            <th>業者名 <span class="api-note">name</span></th>
+            <th>担当エリア <span class="api-note">serviceArea</span></th>
+            <th>基本料金 <span class="api-note">baseFee</span></th>
+          </tr></thead>
+          <tbody>
+            <tr class="clickable"><td><input type="radio" name="dlv" checked></td><td><b>株式会社虹の橋</b></td><td>愛知・大阪</td><td>¥10,500~</td></tr>
+            <tr class="clickable"><td><input type="radio" name="dlv"></td><td>関西運輸サービス</td><td>関西全域</td><td>¥9,800~</td></tr>
+            <tr class="clickable"><td><input type="radio" name="dlv"></td><td>全国物流便</td><td>全国</td><td>¥12,000~</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span class="api-note">GET /company-admin/company/masters/deliverers → chọn id (single)</span>
+      <div class="btn-row">
+        <button class="btn" onclick="closeModal('mDeliverer')">キャンセル</button>
+        <button class="btn btn-primary" onclick="closeModal('mDeliverer')">追加する</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: 中継先 (relays · M2) ===================== -->
+<div class="modal-mask" id="mRelay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>中継先選択 <span class="vi">Chọn trạm trung chuyển</span></h3>
+      <button class="x" onclick="closeModal('mRelay')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="filter" style="margin-bottom:14px;box-shadow:none">
+        <div class="filter-grid">
+          <div class="field"><label>都道府県 <span class="ftag q">?prefecture=</span></label><select><option>すべて</option><option>愛知県</option></select></div>
+          <div class="field"><label>キーワード <span class="ftag q">?q=</span></label><input placeholder="中継先名"></div>
+        </div>
+      </div>
+      <div class="table-wrap" style="box-shadow:none">
+        <table class="data">
+          <thead><tr>
+            <th style="width:40px">選択</th>
+            <th>中継先名 <span class="api-note">relayName</span></th>
+            <th>住所 <span class="api-note">prefecture·city·street</span></th>
+            <th>TEL <span class="api-note">tel</span></th>
+          </tr></thead>
+          <tbody>
+            <tr class="clickable"><td><input type="radio" name="rly" checked></td><td><b>名古屋中継センター</b></td><td>愛知県名古屋市中村区</td><td>052-000-0000</td></tr>
+            <tr class="clickable"><td><input type="radio" name="rly"></td><td>大阪中継センター</td><td>大阪府大阪市西区</td><td>06-000-0000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span class="api-note">GET /company-admin/company/masters/relays → chọn id (single)</span>
+      <div class="btn-row">
+        <button class="btn" onclick="closeModal('mRelay')">キャンセル</button>
+        <button class="btn btn-primary" onclick="closeModal('mRelay')">追加する</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 契約登録/詳細 (E02)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+    <h4>Endpoints</h4>
+    <div class="ep"><span class="m get">GET</span> /company-admin/company/contracts/:id <span class="guard">AdminCompanyGuard</span></div>
+    <div class="ep"><span class="m post">POST</span> /company-admin/company/contracts <span class="guard">→ PENDING</span></div>
+    <div class="ep"><span class="m patch">PATCH</span> /company-admin/company/contracts/:id <span class="guard">→ pending_payload</span></div>
+    <div class="ep"><span class="m post">POST</span> /company-admin/company/upgrade-request <span class="guard">trial→chính thức</span></div>
+
+    <h4>Body — Create/Update (tái dùng Phase 1 + master FK)</h4>
+    <pre>{
+  "companyId": "51",            // optional · phải thuộc subtree
+  "planMasterId": "3",          // ★ master FK (ưu tiên)
+  "plan": "300プラン",          // snapshot text (legacy)
+  "menuType": "スタンダード",
+  "contractStartPeriod": "2026/07",   // YYYY/MM (required khi Create)
+  "contractEndPeriod": "2027/06",
+  "deliveryType": "ES配送",            // COOL便 | ES配送
+  "deliveryPriority": "高",            // 高 | 中 | 低
+  "preferredDeliveryTimeSlot": "午前",
+  "outsourcedDelivererMasterId": "7", // ★ master (reuse deliverers)
+  "relayMasterId": "2",               // ★ master
+  "carrierId": "1",                   // ★ carrier_integration_configs
+  "pickingWarehouse": "第一倉庫",
+  "deliveryLeadTime": "2", "deliveryCount": "2",
+  "deliveryPattern": "隔週", "deliveryWeek": "1,3", "deliveryDay": "火",
+  "unavailableDays": "土,日,祝日",
+  "actionOnUndeliverable": "翌日配送",
+  "deliveryNote": "...", "building": "夢ビル 4F"
+}</pre>
+
+    <h4>Approval flow</h4>
+    <table>
+      <tr><th>Hành động E02</th><th>Kết quả</th></tr>
+      <tr><td>POST (create)</td><td>row mới · approval=PENDING · pending_type=CREATE · status=SCHEDULED</td></tr>
+      <tr><td>PATCH (update)</td><td>cột live giữ nguyên · diff vào <code>pending_payload</code> · PENDING</td></tr>
+      <tr><td>E03 approve</td><td>apply + rule ngày-15: ≤15 → ACTIVE tháng này; ≥16 → SCHEDULED tháng sau</td></tr>
+    </table>
+
+    <h4>Response (data) — F2/F3</h4>
+    <pre>{
+  "id": "102",
+  "approvalStatus": "PENDING",
+  "pendingType": "CREATE",
+  "status": "SCHEDULED",
+  "plan": "300プラン", "contractStartPeriod": "2026/07",
+  ...
+}</pre>
+
+    <h4>Errors</h4>
+    <table>
+      <tr><th>HTTP</th><th>Code</th></tr>
+      <tr><td>400</td><td>MASTER_NOT_FOUND (master FK không tồn tại)</td></tr>
+      <tr><td>403</td><td>COMPANY_OUT_OF_SCOPE (companyId ngoài subtree)</td></tr>
+      <tr><td>409</td><td>ALREADY_PENDING (tùy chọn — OQ-5)</td></tr>
+    </table>
+    <p class="muted" style="font-size:11.5px">"1 hợp đồng ACTIVE / company" được enforce lúc E03 <b>approve</b>, không phải lúc tạo.</p>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+</body>
+</html>

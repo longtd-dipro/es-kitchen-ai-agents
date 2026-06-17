@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E02 · 担当者 — Người phụ trách (拠点/会社)</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="../index.html">← Mockup Index</a>
+  <div class="tb-user"><span class="avatar">夢</span> 夢の扉</div>
+</div>
+
+<div class="page">
+
+  <div class="breadcrumb">
+    <a href="../index.html">Home</a><span class="sep">›</span>
+    <a href="list_sub_location_mockup.html">拠点管理</a><span class="sep">›</span>
+    夢の扉 京都支店<span class="sep">›</span>
+    <b>担当者</b> <span class="vi">(Người phụ trách)</span>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <div class="page-title"><span class="accent-bar"></span> 担当者 <span class="vi">Người phụ trách</span></div>
+      <div class="page-sub">夢の扉 京都支店 (CU10001) — xem / sửa người phụ trách của công ty (hoặc công ty con) &amp; xem tài khoản đăng nhập.</div>
+    </div>
+    <button class="btn">✏️ 編集 <span class="vi">Chỉnh sửa</span></button>
+  </div>
+
+  <!-- ===== Tab bar (shared 4 sibling screens) ===== -->
+  <div class="tabs">
+    <a href="location_basic_infor_mockup.html">基本情報</a>
+    <a class="active" href="contact_mockup.html">担当者</a>
+    <a href="list_contract_of_location.html">契約一覧</a>
+    <a href="location_history_changes_mockup.html">変更履歴</a>
+  </div>
+
+  <!-- Notice: contacts áp dụng ngay, không qua duyệt -->
+  <div class="notice notice-info">
+    <span class="ic">💡</span>
+    <div>Sửa 担当者 áp dụng <b>NGAY</b> + ghi log (<b>KHÔNG</b> qua duyệt). Email của contact <b>MAIN</b> chính là <code>login_id</code> của tài khoản đăng nhập.</div>
+  </div>
+
+  <!-- ========== 担当者一覧 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>担当者一覧 <span class="vi">Danh sách người phụ trách</span></h3>
+      <span class="chip chip-gray no-dot">MAIN / BILLING / SUB</span></div>
+    <div class="card-body">
+      <div class="table-wrap" style="box-shadow:none">
+        <table class="data">
+          <thead>
+            <tr>
+              <th>種別 <span class="vi-b">Phân loại</span><span class="api-note">contactType (= role)</span></th>
+              <th>氏名 <span class="vi-b">Họ tên</span><span class="api-note">name</span></th>
+              <th>カナ <span class="vi-b">Furigana</span><span class="api-note">nameKana · nullable</span></th>
+              <th>電話 <span class="vi-b">SĐT</span><span class="api-note">tel</span></th>
+              <th>メール <span class="vi-b">Email</span><span class="api-note">email</span></th>
+              <th>状態 <span class="vi-b">Trạng thái</span><span class="api-note">status</span></th>
+              <th class="col-actions">操作 <span class="vi-b">Thao tác</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span class="chip chip-blue no-dot">MAIN</span>
+                <span class="ftag">contactType</span>
+                <div class="vi">Người phụ trách chính</div>
+              </td>
+              <td><b>加藤真由美</b></td>
+              <td>カトウ マユミ</td>
+              <td>075-111-1111</td>
+              <td>kato.mayumi@yumenotobira.co.jp</td>
+              <td><span class="chip chip-green">ACTIVE</span></td>
+              <td class="col-actions">
+                <button class="btn btn-sm">編集 <span class="vi">Sửa</span></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="chip chip-purple no-dot">BILLING</span>
+                <span class="ftag">contactType</span>
+                <div class="vi">Người nhận hóa đơn</div>
+              </td>
+              <td>経理担当</td>
+              <td>ケイリ タントウ</td>
+              <td>075-111-2222</td>
+              <td>keiri@yumenotobira.co.jp</td>
+              <td><span class="chip chip-green">ACTIVE</span></td>
+              <td class="col-actions">
+                <button class="btn btn-sm">編集 <span class="vi">Sửa</span></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="chip chip-gray no-dot">SUB</span>
+                <span class="ftag">contactType</span>
+                <div class="vi">Người phụ trách phụ</div>
+              </td>
+              <td>田中一郎</td>
+              <td>タナカ イチロウ</td>
+              <td>075-111-3333</td>
+              <td>tanaka.ichiro@yumenotobira.co.jp</td>
+              <td><span class="chip chip-green">ACTIVE</span></td>
+              <td class="col-actions">
+                <button class="btn btn-sm">編集 <span class="vi">Sửa</span></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="api-note" style="margin-top:10px">種別 (contactType / role): <b>MAIN</b> = nguồn của login_id · <b>BILLING</b> = người nhận hóa đơn · <b>SUB</b> = phụ trách phụ.</span>
+    </div>
+  </div>
+
+  <!-- ========== ログインアカウント (read-only) ========== -->
+  <div class="card">
+    <div class="card-head"><h3>ログインアカウント <span class="vi">Tài khoản đăng nhập</span></h3>
+      <span class="chip chip-gray no-dot">読み取り専用 · read-only</span></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>ログインID <span class="vi">ID đăng nhập</span> <span class="ftag ro">account.loginId</span></label>
+          <input value="kato.mayumi@yumenotobira.co.jp" readonly>
+          <span class="api-note">login_id lấy từ contact <b>MAIN</b> (email). Đổi email MAIN → login_id đổi theo.</span>
+        </div>
+        <div class="field">
+          <label>最終ログイン <span class="vi">Đăng nhập cuối</span> <span class="ftag ro">account.lastLoginAt</span></label>
+          <input value="2026/06/01 11:00:00" readonly>
+          <span class="api-note">ISO 8601 | null — <code>null</code> = chưa từng đăng nhập.</span>
+        </div>
+      </div>
+      <p class="muted" style="font-size:11.5px; margin-top:14px">
+        Cấp phát / phát hành lại tài khoản (gửi mật khẩu) là thao tác của <b>E03 System Admin</b> —
+        <code>POST /admin/companies/bulk-issue-accounts</code>. E02 <b>không</b> có nút phát hành tài khoản trên màn hình này.
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer actions -->
+  <div class="toolbar" style="margin-top:18px">
+    <div class="spacer"></div>
+    <button class="btn btn-primary btn-lg">💾 保存 <span class="vi">Lưu</span>
+      <span class="api-note">PATCH /company-admin/company/contacts</span></button>
+  </div>
+
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 担当者 (E02)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>Endpoints</h4>
+    <div class="ep"><span class="m get">GET</span> /company-admin/company/contacts <span class="guard">AdminCompanyGuard</span></div>
+    <div class="ep"><span class="m patch">PATCH</span> /company-admin/company/contacts <span class="guard">AdminCompanyGuard</span></div>
+    <p class="muted" style="font-size:11.5px">Account issuance (phát hành tài khoản + gửi mật khẩu) là thao tác <b>E03</b>: <code>POST /admin/companies/bulk-issue-accounts</code> — không thuộc màn hình E02 này.</p>
+
+    <h4>Response (data) — GET /company-admin/company/contacts</h4>
+    <pre>{
+  "contacts": [
+    {
+      "id": "201",
+      "contactType": "MAIN",        // enum · MAIN | BILLING | SUB
+      "name": "加藤真由美",          // 氏名
+      "nameKana": "カトウ マユミ",   // nullable · カナ
+      "tel": "075-111-1111",
+      "email": "kato.mayumi@yumenotobira.co.jp", // = login_id
+      "status": "ACTIVE",
+      "lastLoginAt": "2026-06-01T11:00:00.000Z"  // nullable
+    },
+    {
+      "id": "202",
+      "contactType": "BILLING",     // 請求担当
+      "name": "経理担当",
+      "nameKana": "ケイリ タントウ",
+      "tel": "075-111-2222",
+      "email": "keiri@yumenotobira.co.jp",
+      "status": "ACTIVE",
+      "lastLoginAt": null
+    },
+    {
+      "id": "203",
+      "contactType": "SUB",         // サブ担当
+      "name": "田中一郎",
+      "nameKana": "タナカ イチロウ",
+      "tel": "075-111-3333",
+      "email": "tanaka.ichiro@yumenotobira.co.jp",
+      "status": "ACTIVE",
+      "lastLoginAt": null
+    }
+  ],
+  "account": {
+    "loginId": "kato.mayumi@yumenotobira.co.jp", // = email của contact MAIN
+    "lastLoginAt": "2026-06-01T11:00:00.000Z"    // nullable
+  }
+}</pre>
+
+    <h4>Body — PATCH /company-admin/company/contacts</h4>
+    <pre>// UpdateCompanyContactRequest — gửi toàn bộ mảng contacts.
+// id có khi update row cũ; bỏ id = tạo mới.
+{
+  "contacts": [
+    {
+      "id": "201",                  // optional (có = update)
+      "contactType": "MAIN",        // enum · required
+      "name": "加藤真由美",          // required
+      "nameKana": "カトウ マユミ",   // nullable
+      "tel": "075-111-1111",        // required
+      "email": "kato.mayumi@yumenotobira.co.jp", // required · MAIN email = login_id
+      "status": "ACTIVE"
+    },
+    {
+      "id": "202",
+      "contactType": "BILLING",
+      "name": "経理担当",
+      "nameKana": "ケイリ タントウ",
+      "tel": "075-111-2222",
+      "email": "keiri@yumenotobira.co.jp",
+      "status": "ACTIVE"
+    },
+    {
+      "contactType": "SUB",         // không id → tạo mới
+      "name": "新サブ担当",
+      "nameKana": "シンサブタントウ",
+      "tel": "075-111-4444",
+      "email": "sub.new@yumenotobira.co.jp",
+      "status": "ACTIVE"
+    }
+  ]
+}
+// → áp dụng NGAY + ghi log (không qua duyệt). Response = same shape as GET.</pre>
+
+    <h4>contactType / role enum</h4>
+    <table>
+      <tr><th>Value</th><th>Hiển thị (JP)</th><th>Ý nghĩa</th><th>Chip</th></tr>
+      <tr><td><code>MAIN</code></td><td>メイン担当者</td><td>Người phụ trách chính · email = login_id</td><td><span class="chip chip-blue no-dot">MAIN</span></td></tr>
+      <tr><td><code>BILLING</code></td><td>請求担当者</td><td>Người nhận hóa đơn</td><td><span class="chip chip-purple no-dot">BILLING</span></td></tr>
+      <tr><td><code>SUB</code></td><td>サブ担当者</td><td>Người phụ trách phụ</td><td><span class="chip chip-gray no-dot">SUB</span></td></tr>
+    </table>
+
+    <h4>Errors</h4>
+    <table>
+      <tr><th>HTTP</th><th>Code</th></tr>
+      <tr><td>403</td><td>COMPANY_OUT_OF_SCOPE (công ty ngoài subtree của user)</td></tr>
+      <tr><td>409</td><td>EMAIL_ALREADY_IN_USE (email MAIN trùng account khác)</td></tr>
+      <tr><td>404</td><td>COMPANY_NOT_FOUND</td></tr>
+    </table>
+    <p class="muted" style="font-size:11.5px">Đổi email contact <b>MAIN</b> → đổi <code>login_id</code>; nếu email đã thuộc account khác → <code>409 EMAIL_ALREADY_IN_USE</code>.</p>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+</body>
+</html>
