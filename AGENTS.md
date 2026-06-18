@@ -18,6 +18,8 @@ Tất cả source code nằm trong thư mục **`es-kitchen-repository/`**.
 
 **Docs:** `es-kitchen-docs/docs/features/` — **single long-memory** chứa SPEC, DESIGN, PLAN, tasks, test-cases. Folder `docs/epics/` cũ đã bị bỏ — mọi feature đặt cùng path. Chi tiết → `.claude/context/doc-structure.md`.
 
+**E2E Testing:** `es-kitchen-testing/` — repo Playwright độc lập ở root (ngang hàng với `es-kitchen-repository/`). Chứa spec files, auth setup per role, execution reports. Hướng dẫn QC → `es-kitchen-testing/QC-GUIDE.md`.
+
 </ecosystem>
 
 ---
@@ -85,7 +87,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 - Khi sửa quy trình BA / Tech Lead / PM → **chỉ sửa file agent**, không sửa command (trừ khi đổi command name hoặc cách parse args).
 - User có thể trigger theo 2 cách: gõ slash command (`/create-spec login`) hoặc nói tự nhiên ("hãy là BA, làm SPEC cho login") — cả hai cùng load file agent.
 - **Handover hint:** Section "Bước tiếp theo" trong Output của mỗi agent dùng natural language (vd `"Hãy là Tech Lead Design, làm DESIGN.md từ SPEC: <path>"`) — user copy-paste làm prompt turn kế tiếp. Slash command tương ứng vẫn work song song.
-- **Handover chain:** chi tiết step-by-step ở bảng **BMAD Workflow** bên dưới. Sơ đồ trực quan ở `es-kitchen-docs/docs/index.md` (mermaid). Lưu ý: **Bước 2 gồm 3 agent chạy song song** — 2a Tech Lead Design (DESIGN.md) · 2b QC (test cases) · 2c Designer (Figma frames + URL điền vào SPEC.md ## Screens). **QC chạy 2 lần** — lần 1 sau SPEC (sinh TC), lần 2 sau dev xong (execute TC + bug report + regression).
+- **Handover chain:** chi tiết step-by-step ở bảng **BMAD Workflow** bên dưới. Sơ đồ trực quan ở `es-kitchen-docs/docs/index.md` (mermaid). Lưu ý: **Bước 2 gồm 3 agent chạy song song** — 2a Tech Lead Design (DESIGN.md) · 2b QC (test cases) · 2c Designer (Figma frames + URL điền vào SPEC.md ## Screens). **QC chạy 3 lần** — lần 1 sau SPEC (sinh TC manual), lần 2 sau dev xong (execute TC + bug report), lần 3 song song với 7a (chạy Playwright E2E tự động — `qc-automation-agent`).
 
 ### Sub-agents — `.claude/agents/`
 
@@ -101,8 +103,9 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | `qc-agent.md` | QC Manual Tester | **Sau SPEC, trước/trong khi test** — sinh TC (RBT/QUICK), regression, execution checklist, bug report, test data, exploratory charter | `/test/generate_*` (11 commands) |
 | `designer-agent.md` | UI Designer | **Sau SPEC** — tạo Figma screens, điền Figma URL vào SPEC.md ## Screens | `/create-ui-design` |
 | `qa-agent.md` | QA Engineer | **Sau khi dev xong task** — chạy test suite, verify coverage, validate AC, non-regression | `"Hãy là QA, verify task: <path/task-x-y.md>"` |
+| `qc-automation-agent.md` | QC Automation Tester | **Sau khi Dev deploy lên DEV** — đọc SPEC.md + Figma + source code, sinh Playwright `.spec.ts`, chạy E2E test, xuất execution report | `"Hãy là QC Automation, test feature: <feature-path>, Figma: <url>, app: <target-app>, website: <url>"` |
 
-> **QC vs QA:** `qc-agent` = manual tester chuẩn bị/thực thi TC (output là artifact `.md` cho QC team); `qa-agent` = post-dev verification (output là QA Report per task). Không trùng nhau.
+> **QC vs QA vs QC-Automation:** `qc-agent` = manual tester sinh/thực thi TC (artifact `.md`); `qa-agent` = post-dev verify unit test + coverage (QA Report per task); `qc-automation-agent` = E2E test tự động trên browser sau khi website chạy (`.spec.ts` + execution report). Ba agent bổ sung nhau, không thay thế.
 
 ### Slash Commands — `.claude/commands/`
 
@@ -164,6 +167,7 @@ Danh sách đầy đủ (skill → repo → khi nào dùng) → `.claude/skills/
 | 6 | QA verify per task | QA Report | `qa-agent` — trigger: `"Hãy là QA, verify task: <path>"` | Verify |
 | 7a | Sinh/chạy execution checklist | Test execution checklist + Bug reports | `qc-agent` — trigger: `/test/generate_test_execution_checklist` | Test |
 | 7b | (optional) `/test/generate_regression_suite` | Regression suite | `qc-agent` | Test |
+| 7c | `"Hãy là QC Automation, test feature: <feature-path>, Figma: <figma-url>, app: <target-app>, website: <url>"` (song song với 7a) | Playwright `.spec.ts` + `execution-report.md` | `qc-automation-agent` — **điều kiện:** website đang chạy trên DEV, SPEC.md + Figma URL có sẵn | Test |
 
 **Phase order:** Phase 1 (DB migration) → Phase 2 (API + output API Contract) → **copy API Contract vào FE task** → Phase 3 (FE + Mobile song song, mỗi task 3 sub-steps) → Phase 4 (Integration)
 

@@ -1,0 +1,20 @@
+{
+  "name": "es-kitchen-testing",
+  "version": "1.0.0",
+  "description": "E2E automation tests for ESKITCHEN using Playwright",
+  "scripts": {
+    "test": "playwright test",
+    "test:web-admin": "playwright test e2e/web-admin/ --project=chromium",
+    "test:web-company": "playwright test e2e/web-company/ --project=chromium",
+    "test:web-supplier": "playwright test e2e/web-supplier/ --project=chromium",
+    "test:web-outsource": "playwright test e2e/web-outsource/ --project=chromium",
+    "test:webapp-driver": "playwright test e2e/webapp-driver/ --project=chromium",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^25.9.3",
+    "dotenv": "^16.4.5"
+  }
+}

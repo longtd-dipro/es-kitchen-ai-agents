@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E02 · マスタ選択ポップアップ — Popup chọn master (業者・中継先)</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="../index.html">← Mockup Index</a>
+  <div class="tb-user"><span class="avatar">夢</span> 夢の扉</div>
+</div>
+
+<div class="page">
+
+  <div class="breadcrumb">
+    <a href="../index.html">Home</a><span class="sep">›</span>
+    <a href="contract_detail_mockup.html">契約登録</a><span class="sep">›</span>
+    <b>Popup マスタ選択</b> <span class="vi">(Popup chọn master)</span>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <div class="page-title"><span class="accent-bar"></span> マスタ選択ポップアップ <span class="vi">Popup chọn master</span></div>
+      <div class="page-sub">M2 / M3 — 業者選択 (deliverers) ＆ 中継先選択 (relays). Standalone demo của 2 popup dùng trong form hợp đồng.</div>
+    </div>
+  </div>
+
+  <!-- Page intro -->
+  <div class="card">
+    <div class="card-head"><h3>このページについて <span class="vi">Về trang này</span></h3>
+      <span class="chip chip-gray no-dot">standalone reference</span></div>
+    <div class="card-body">
+      <p style="margin:0 0 10px">
+        Hai popup dưới đây được mở từ <b>form đăng ký hợp đồng</b>
+        (<a href="contract_detail_mockup.html">contract_detail_mockup.html</a> → bước ③ 配送設定).
+        Chúng tài liệu hóa các API <b>master dropdown</b>.
+      </p>
+      <div class="notice notice-info" style="margin-bottom:0">
+        <span class="ic">💡</span>
+        <div>
+          Chọn 1 dòng + bấm <b>追加する</b> <b>KHÔNG gọi API</b> — chỉ set master FK vào state của form cha
+          (<code>outsourcedDelivererMasterId</code> / <code>relayMasterId</code>) rồi đóng popup.
+          Chỉ <b>việc fetch danh sách</b> mới gọi master GET endpoint.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trigger buttons -->
+  <div class="card">
+    <div class="card-head"><h3>ポップアップを開く <span class="vi">Mở popup</span></h3></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>委託配送業者 <span class="vi">Đơn vị vận chuyển ủy thác · M3</span></label>
+          <button class="btn btn-primary btn-lg" onclick="openModal('mDeliverer')">業者選択を開く</button>
+          <span class="api-note">GET /company-admin/company/masters/deliverers</span>
+        </div>
+        <div class="field">
+          <label>中継先 <span class="vi">Trạm trung chuyển · M2</span></label>
+          <button class="btn btn-primary btn-lg" onclick="openModal('mRelay')">中継先選択を開く</button>
+          <span class="api-note">GET /company-admin/company/masters/relays</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== MODAL: 委託配送業者 (deliverers · M3) ===================== -->
+<div class="modal-mask" id="mDeliverer">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>業者選択 <span class="vi">Chọn đơn vị vận chuyển ủy thác</span></h3>
+      <button class="x" onclick="closeModal('mDeliverer')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="filter" style="margin-bottom:14px;box-shadow:none">
+        <div class="filter-grid">
+          <div class="field"><label>都道府県 <span class="ftag q">?prefecture=</span></label><select><option>すべて</option><option>愛知県</option></select></div>
+          <div class="field"><label>キーワード <span class="ftag q">?q=</span></label><input placeholder="業者名"></div>
+        </div>
+      </div>
+      <div class="table-wrap" style="box-shadow:none">
+        <table class="data">
+          <thead><tr>
+            <th style="width:40px">選択</th>
+            <th>業者名 <span class="api-note">name</span></th>
+            <th>担当エリア <span class="api-note">serviceArea</span></th>
+            <th>基本料金 <span class="api-note">baseFee</span></th>
+          </tr></thead>
+          <tbody>
+            <tr class="clickable"><td><input type="radio" name="dlv" checked></td><td><b>株式会社虹の橋</b></td><td>愛知・大阪</td><td>¥10,500~</td></tr>
+            <tr class="clickable"><td><input type="radio" name="dlv"></td><td>関西運輸サービス</td><td>関西全域</td><td>¥9,800~</td></tr>
+            <tr class="clickable"><td><input type="radio" name="dlv"></td><td>全国物流便</td><td>全国</td><td>¥12,000~</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span class="api-note">GET /company-admin/company/masters/deliverers → chọn id (single)</span>
+      <div class="btn-row">
+        <button class="btn" onclick="closeModal('mDeliverer')">キャンセル</button>
+        <button class="btn btn-primary" onclick="closeModal('mDeliverer')">追加する</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: 中継先 (relays · M2) ===================== -->
+<div class="modal-mask" id="mRelay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>中継先選択 <span class="vi">Chọn trạm trung chuyển</span></h3>
+      <button class="x" onclick="closeModal('mRelay')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="filter" style="margin-bottom:14px;box-shadow:none">
+        <div class="filter-grid">
+          <div class="field"><label>都道府県 <span class="ftag q">?prefecture=</span></label><select><option>すべて</option><option>愛知県</option></select></div>
+          <div class="field"><label>キーワード <span class="ftag q">?q=</span></label><input placeholder="中継先名"></div>
+        </div>
+      </div>
+      <div class="table-wrap" style="box-shadow:none">
+        <table class="data">
+          <thead><tr>
+            <th style="width:40px">選択</th>
+            <th>中継先名 <span class="api-note">relayName</span></th>
+            <th>住所 <span class="api-note">prefecture·city·street</span></th>
+            <th>TEL <span class="api-note">tel</span></th>
+          </tr></thead>
+          <tbody>
+            <tr class="clickable"><td><input type="radio" name="rly" checked></td><td><b>名古屋中継センター</b></td><td>愛知県名古屋市中村区</td><td>052-000-0000</td></tr>
+            <tr class="clickable"><td><input type="radio" name="rly"></td><td>大阪中継センター</td><td>大阪府大阪市西区</td><td>06-000-0000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span class="api-note">GET /company-admin/company/masters/relays → chọn id (single)</span>
+      <div class="btn-row">
+        <button class="btn" onclick="closeModal('mRelay')">キャンセル</button>
+        <button class="btn btn-primary" onclick="closeModal('mRelay')">追加する</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — マスタ選択 (E02)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+    <h4>Endpoints</h4>
+    <div class="ep"><span class="m get">GET</span> /company-admin/company/masters/deliverers <span class="guard">AdminCompanyGuard</span></div>
+    <div class="ep"><span class="m get">GET</span> /company-admin/company/masters/relays <span class="guard">AdminCompanyGuard</span></div>
+    <p class="muted" style="font-size:11.5px">E03 tương đương dưới <code>/admin/masters/*</code> (cùng entity master). E02 chỉ thấy bản ghi <code>status=active</code>.</p>
+
+    <h4>Query (extends BaseSearchRequest)</h4>
+    <pre>{
+  "page": 1,          // number · optional · default 1
+  "limit": 10,        // number · optional · default 10
+  "q": "虹の橋",      // string · optional · keyword
+  "prefecture": "愛知県"   // string · optional · lọc theo 都道府県
+}</pre>
+
+    <h4>Response — deliverers (M3 · 委託配送業者)</h4>
+    <pre>{
+  "items": [
+    {
+      "id": "7",
+      "delivererCode": "DLV-007",
+      "name": "株式会社虹の橋",
+      "serviceArea": "愛知・大阪",
+      "baseFee": 10500,
+      "status": "active"
+    }
+  ],
+  "total": 42, "page": 1, "limit": 10
+}</pre>
+
+    <h4>Response — relays (M2 · 中継先)</h4>
+    <pre>{
+  "items": [
+    {
+      "id": "2",
+      "relayCode": "RLY-002",
+      "relayName": "名古屋中継センター",
+      "prefecture": "愛知県",
+      "city": "名古屋市中村区",
+      "street": "...",
+      "tel": "052-000-0000",
+      "status": "active"
+    }
+  ],
+  "total": 8, "page": 1, "limit": 10
+}</pre>
+
+    <h4>Interaction</h4>
+    <table>
+      <tr><th>Action</th><th>API?</th></tr>
+      <tr><td>Mở popup / đổi filter / phân trang</td><td>✅ GET masters/*</td></tr>
+      <tr><td>Chọn radio (single-select)</td><td>❌ FE state</td></tr>
+      <tr><td><b>追加する</b></td><td>❌ chỉ set 1 <code>id</code> vào field form cha (outsourcedDelivererMasterId / relayMasterId)</td></tr>
+    </table>
+
+    <h4>Note</h4>
+    <p class="muted" style="font-size:11.5px">
+      Single-select → trả về <b>1 id</b> set vào field hợp đồng. <b>追加する</b> = không gọi API (chỉ FE state).
+      Hai master còn lại cũng tồn tại nhưng là dropdown đơn giản:
+      <b>carriers</b> (M4 · <code>carrier_integration_configs</code>) và
+      <b>plans</b> (M1 · <code>plan_masters</code>).
+    </p>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+</body>
+</html>

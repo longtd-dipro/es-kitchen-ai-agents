@@ -176,6 +176,18 @@ describe('<ClassName>', () => {
 
 **Verify:** `npm run test -- <file>`
 
+## API Definition _(chỉ điền cho task Phase 2 — API endpoint; bỏ section này nếu task Phase 1)_
+
+> Điền sau khi implement xong. FE/Mobile sẽ copy bảng này vào task-3-x trước khi bắt đầu code.
+
+| Method | Endpoint | Request | Response |
+|---|---|---|---|
+| GET | `/api/<resource>` | `?page=1&limit=10` | `{ items: [], total }` |
+| POST | `/api/<resource>` | `{ field: type }` | `{ id, field }` |
+
+**Base URL:** `VITE_API_URL` (env var — không hard-code)
+**Auth:** Bearer JWT (trừ khi endpoint public)
+
 ## Non-Regression Table
 | Tính năng | File liên quan | Cách verify |
 |---|---|---|
@@ -191,6 +203,7 @@ describe('<ClassName>', () => {
 - [ ] Lint pass (`npm run lint`)
 - [ ] Unit Tests pass — coverage đạt target
 - [ ] Non-Regression verify đủ
+- [ ] **API Definition điền đủ** _(Phase 2 only)_ — FE/Mobile có thể bắt đầu task-3-x
 - [ ] Actual Hour cập nhật
 - [ ] Status → Request Review
 ```
@@ -228,16 +241,16 @@ describe('<ClassName>', () => {
 ## Context (đọc trước khi code)
 - SPEC.md: `<es-kitchen-docs/docs/features/<feature>/SPEC.md>`
 - DESIGN.md (FE): `<es-kitchen-docs/docs/features/<feature>/<fe-repo>/DESIGN.md>`
-- **BE task liên quan:** `<task-2-X.md>` ← đọc section **API Contract** để lấy endpoint
+- **BE task liên quan:** `<task-2-X.md>` ← đọc section **API Definition** để lấy endpoint
 - Screen Code: `<XX_FEAT_001>` _(lấy từ SPEC.md ## Screens)_
 - Figma URL: `<path_figma>` _(lấy từ cột Figma Link trong SPEC.md ## Screens)_
 - File liên quan:
   - `<path/to/existing-service>` — xem pattern service file hiện có
   - `<path/to/existing-hook>` — xem pattern useQuery hook hiện có
 
-## API Contract (copy từ BE task-2-X)
+## API Definition (copy từ BE task-2-X)
 
-> Copy từ section **API Contract** trong task BE tương ứng — không tự đoán endpoint.
+> Copy từ section **API Definition** trong task BE tương ứng — không tự đoán endpoint.
 
 | Method | Endpoint | Request | Response |
 |---|---|---|---|
@@ -253,7 +266,7 @@ describe('<ClassName>', () => {
 **File:** `src/services/<feature>Api.ts`
 
 ```typescript
-// Gọi đúng endpoint trong API Contract bên trên
+// Gọi đúng endpoint trong API Definition bên trên
 export const <feature>Api = {
   getList: (params: ListParams): Promise<ListResponse> =>
     apiClient.get('/api/<resource>', { params }),
@@ -318,7 +331,7 @@ const { mutate: create<Feature>, isPending } = useCreate<Feature>();
 
 - [ ] Chạy BE-localhost + FE-localhost kết nối nhau
 - [ ] Screen `<XX_FEAT_001>` load được data thật từ API (không mock)
-- [ ] Các nút bấm / form submit gọi đúng endpoint trong API Contract
+- [ ] Các nút bấm / form submit gọi đúng endpoint trong API Definition
 - [ ] Loading state hiển thị khi đang fetch
 - [ ] Error state hiển thị khi API lỗi
 
@@ -330,7 +343,7 @@ const { mutate: create<Feature>, isPending } = useCreate<Feature>();
 ## Không được làm
 - Không hard-code URL endpoint — luôn dùng `import.meta.env.VITE_API_URL`
 - Không mock data trong production code (chỉ mock trong test)
-- Không tự thay đổi API Contract — nếu BE endpoint sai thì báo BE fix trước
+- Không tự thay đổi API Definition — nếu BE endpoint sai thì báo BE fix trước
 - Không sửa file ngoài scope (entity, migration, BE service)
 
 ## Definition of Done

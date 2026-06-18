@@ -2,7 +2,7 @@
 
 Tài liệu kỹ thuật và nghiệp vụ cho dự án **ESKITCHEN Phase 2** — hệ thống quản lý bếp doanh nghiệp cho client Nhật Bản.
 
-## Hệ sinh thái — 7 repos
+## Hệ sinh thái — 8 repos
 
 | Repo | Epic | Vai trò | Stack |
 |---|---|---|---|
@@ -13,6 +13,7 @@ Tài liệu kỹ thuật và nghiệp vụ cho dự án **ESKITCHEN Phase 2** �
 | `es-kitchen-web-supplier` | E04 | Supplier Web — menu, nhận đơn | React 19 / Vite 7 / Redux Toolkit |
 | `es-kitchen-web-outsource-web-private` | E05 | Outsource / Internal Private Admin Web | React 19 / Vite 7 / Ant Design 6 |
 | `es-kitchen-webapp-driver` | E06 | Driver Web App | React 19 / Vite 7 / Ant Design |
+| `es-kitchen-testing` | — | E2E Testing — Playwright specs + execution reports (độc lập, root level) | Playwright / TypeScript |
 
 ## BMAD Workflow 
 
@@ -33,7 +34,9 @@ Mỗi role là một sub-agent có canonical workflow trong `.claude/agents/`.
 | 5b | **"Hãy là Frontend Developer, implement task: `<task-X-Y.md>`"** | Working code + đọc Figma context | `frontend-agent` |
 | 5c | **"Hãy là Mobile Developer, implement task: `<task-X-Y.md>`"** | Working code + đọc Figma context | `mobile-agent` |
 | 6 | **"Hãy là QA, verify task: `<task-X-Y.md>`"** | QA Report | `qa-agent` |
-| 7 | Execute manual TC + bug reports | Test execution checklist | `qc-agent` |
+| 7a | Execute manual TC + bug reports | Test execution checklist | `qc-agent` |
+| 7b _(optional)_ | **"Hãy là QC, sinh regression suite: `<feature>`"** | Regression suite | `qc-agent` |
+| 7c | **"Hãy là QC Automation, test feature: `<path>`, Figma: `<url>`, app: `<app>`, website: `<url>`"** _(song song với 7a)_ | Playwright `.spec.ts` + `execution-report.md` | `qc-automation-agent` |
 
 
 ## Sơ đồ pipeline — Từ yêu cầu đến deploy
@@ -93,7 +96,14 @@ flowchart TD
     TC -.->|"Validate AC"| QAagent
     ISSUES -.->|"update status<br/>Open → In Progress → Resolved"| QAagent
 
-    Report --> Deploy["🚀 Deploy STG → PROD"]
+    Report --> QCManual["🟪 qc-agent (7a)<br/><i>Execute manual TC</i>"]
+    Report --> QCAutoRun["🟪 qc-automation-agent (7c)<br/><i>Playwright E2E trên browser</i>"]
+
+    QCManual --> BugReports[("📊 Bug Reports<br/>Execution checklist")]
+    QCAutoRun --> E2EReport[("📊 execution-report.md<br/>.spec.ts files")]
+
+    BugReports --> Deploy["🚀 Deploy STG → PROD"]
+    E2EReport --> Deploy
 
     classDef agentBA fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
     classDef agentDev fill:#dcfce7,stroke:#15803d,color:#14532d;
@@ -104,9 +114,9 @@ flowchart TD
 
     class BA,TLD,TLT,PM,BL agentBA;
     class BE,FE,MOB agentDev;
-    class QC,QAagent agentQ;
+    class QC,QAagent,QCManual,QCAutoRun agentQ;
     class DES agentDesigner;
-    class SPEC,DESIGN,UISPEC,TASKS,PLAN,CODE,TC,Report,ISSUES artifact;
+    class SPEC,DESIGN,UISPEC,TASKS,PLAN,CODE,TC,Report,ISSUES,BugReports,E2EReport artifact;
     class Method,Branch,LOCK decision;
 ```
 
@@ -115,7 +125,7 @@ flowchart TD
 - 🟦 Planning agents (BA · Tech Lead Design · Tech Lead Tasks · PM) — đọc requirement, sinh docs
 - 🟨 Designer agent — tạo Figma screens + UI-SPEC.md (song song bước 2b)
 - 🟩 Dev agents (Backend · Frontend · Mobile) — implement task
-- 🟪 Quality agents (QC · QA) — sinh test cases · verify code
+- 🟪 Quality agents (QC · QA · QC-Automation) — sinh test cases · verify code · E2E test tự động
 - 🟡 Artifacts (`SPEC.md` · `DESIGN.md` · `UI-SPEC.md` · `tasks/*.md` · `PLAN.md` · code · test cases · QA Report)
 - 🟥 Decision points (cách trigger · phân nhánh · Contract Lock)
 
@@ -155,6 +165,8 @@ docs/
 │       └── <repo-name>/              ← per repo bị ảnh hưởng
 │           ├── DESIGN.md             ← Tech Lead Design
 │           └── tasks/task-X-Y.md     ← Tech Lead Tasks
-└── quality/                          ← Quality reports
+└── quality/                          ← Manual QC reports (TC execution, bug reports)
+
+# E2E test results (Playwright) → es-kitchen-testing/reports/<feature>/execution-report.md
 ```
 

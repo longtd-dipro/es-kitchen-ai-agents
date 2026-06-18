@@ -474,10 +474,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#he-sinh-thai-7-repos" class="md-nav__link">
+  <a href="#he-sinh-thai-8-repos" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hệ sinh thái — 7 repos
+        Hệ sinh thái — 8 repos
       
     </span>
   </a>
@@ -7294,10 +7294,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#he-sinh-thai-7-repos" class="md-nav__link">
+  <a href="#he-sinh-thai-8-repos" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hệ sinh thái — 7 repos
+        Hệ sinh thái — 8 repos
       
     </span>
   </a>
@@ -7356,7 +7356,7 @@
 
 <h1 id="eskitchen-documentation">ESKITCHEN Documentation</h1>
 <p>Tài liệu kỹ thuật và nghiệp vụ cho dự án <strong>ESKITCHEN Phase 2</strong> — hệ thống quản lý bếp doanh nghiệp cho client Nhật Bản.</p>
-<h2 id="he-sinh-thai-7-repos">Hệ sinh thái — 7 repos</h2>
+<h2 id="he-sinh-thai-8-repos">Hệ sinh thái — 8 repos</h2>
 <table>
 <thead>
 <tr>
@@ -7408,6 +7408,12 @@
 <td>E06</td>
 <td>Driver Web App</td>
 <td>React 19 / Vite 7 / Ant Design</td>
+</tr>
+<tr>
+<td><code>es-kitchen-testing</code></td>
+<td>—</td>
+<td>E2E Testing — Playwright specs + execution reports (độc lập, root level)</td>
+<td>Playwright / TypeScript</td>
 </tr>
 </tbody>
 </table>
@@ -7491,10 +7497,22 @@
 <td><code>qa-agent</code></td>
 </tr>
 <tr>
-<td>7</td>
+<td>7a</td>
 <td>Execute manual TC + bug reports</td>
 <td>Test execution checklist</td>
 <td><code>qc-agent</code></td>
+</tr>
+<tr>
+<td>7b <em>(optional)</em></td>
+<td><strong>"Hãy là QC, sinh regression suite: <code>&lt;feature&gt;</code>"</strong></td>
+<td>Regression suite</td>
+<td><code>qc-agent</code></td>
+</tr>
+<tr>
+<td>7c</td>
+<td><strong>"Hãy là QC Automation, test feature: <code>&lt;path&gt;</code>, Figma: <code>&lt;url&gt;</code>, app: <code>&lt;app&gt;</code>, website: <code>&lt;url&gt;</code>"</strong> <em>(song song với 7a)</em></td>
+<td>Playwright <code>.spec.ts</code> + <code>execution-report.md</code></td>
+<td><code>qc-automation-agent</code></td>
 </tr>
 </tbody>
 </table>
@@ -7553,7 +7571,14 @@
     TC -.-&gt;|"Validate AC"| QAagent
     ISSUES -.-&gt;|"update status&lt;br/&gt;Open → In Progress → Resolved"| QAagent
 
-    Report --&gt; Deploy["🚀 Deploy STG → PROD"]
+    Report --&gt; QCManual["🟪 qc-agent (7a)&lt;br/&gt;&lt;i&gt;Execute manual TC&lt;/i&gt;"]
+    Report --&gt; QCAutoRun["🟪 qc-automation-agent (7c)&lt;br/&gt;&lt;i&gt;Playwright E2E trên browser&lt;/i&gt;"]
+
+    QCManual --&gt; BugReports[("📊 Bug Reports&lt;br/&gt;Execution checklist")]
+    QCAutoRun --&gt; E2EReport[("📊 execution-report.md&lt;br/&gt;.spec.ts files")]
+
+    BugReports --&gt; Deploy["🚀 Deploy STG → PROD"]
+    E2EReport --&gt; Deploy
 
     classDef agentBA fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
     classDef agentDev fill:#dcfce7,stroke:#15803d,color:#14532d;
@@ -7564,16 +7589,16 @@
 
     class BA,TLD,TLT,PM,BL agentBA;
     class BE,FE,MOB agentDev;
-    class QC,QAagent agentQ;
+    class QC,QAagent,QCManual,QCAutoRun agentQ;
     class DES agentDesigner;
-    class SPEC,DESIGN,UISPEC,TASKS,PLAN,CODE,TC,Report,ISSUES artifact;
+    class SPEC,DESIGN,UISPEC,TASKS,PLAN,CODE,TC,Report,ISSUES,BugReports,E2EReport artifact;
     class Method,Branch,LOCK decision;</code></pre>
 <p><strong>Đọc sơ đồ:</strong></p>
 <ul>
 <li>🟦 Planning agents (BA · Tech Lead Design · Tech Lead Tasks · PM) — đọc requirement, sinh docs</li>
 <li>🟨 Designer agent — tạo Figma screens + UI-SPEC.md (song song bước 2b)</li>
 <li>🟩 Dev agents (Backend · Frontend · Mobile) — implement task</li>
-<li>🟪 Quality agents (QC · QA) — sinh test cases · verify code</li>
+<li>🟪 Quality agents (QC · QA · QC-Automation) — sinh test cases · verify code · E2E test tự động</li>
 <li>🟡 Artifacts (<code>SPEC.md</code> · <code>DESIGN.md</code> · <code>UI-SPEC.md</code> · <code>tasks/*.md</code> · <code>PLAN.md</code> · code · test cases · QA Report)</li>
 <li>🟥 Decision points (cách trigger · phân nhánh · Contract Lock)</li>
 </ul>
@@ -7609,7 +7634,9 @@
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│       └── &lt;repo-name&gt;/              ← per repo bị ảnh hưởng
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│           ├── DESIGN.md             ← Tech Lead Design
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│           └── tasks/task-X-Y.md     ← Tech Lead Tasks
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>└── quality/                          ← Quality reports
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>└── quality/                          ← Manual QC reports (TC execution, bug reports)
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a># E2E test results (Playwright) → es-kitchen-testing/reports/&lt;feature&gt;/execution-report.md
 </code></pre></div>
 
 
