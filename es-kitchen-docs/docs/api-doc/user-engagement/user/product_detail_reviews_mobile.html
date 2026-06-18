@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UE-3 · 商品詳細・レビュー (Product Detail & Reviews)</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body>
+
+<div class="device">
+  <div class="device-title"><b>UE-3 · Product detail → 詳細 / レビュー tabs</b><br>
+    <a href="../index.html">← Danh mục</a> &nbsp;·&nbsp; <a href="product_review_mobile_mockup.html">UE-4 Write Review →</a>
+  </div>
+
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="statusbar"><span>9:41</span><span class="r">📶 🔋</span></div>
+
+    <div class="screen active">
+      <div class="appbar">
+        <button class="icon-btn" onclick="location.href='allergy_filter_mobile.html'">‹</button>
+        <div class="title">商品詳細 <small>Chi tiết món</small></div>
+        <button class="icon-btn cart">🛒<span class="dot">4</span></button>
+      </div>
+
+      <div class="app-body">
+        <!-- hero -->
+        <div style="height:190px;background:var(--gray-50);display:grid;place-items:center;font-size:72px">🍛</div>
+
+        <!-- meta -->
+        <div class="m-card-pad" style="background:#fff">
+          <div style="font-size:16px;font-weight:700">シェフの作ったビーフカレー(甘口) <span class="ftag ro">name</span></div>
+          <div class="vi" style="margin-bottom:6px">Cà ri bò đầu bếp (vị ngọt dịu)</div>
+          <div class="prod-tags" style="margin-bottom:8px"><span class="chip chip-expiry">短賞味期限</span><span class="chip chip-new">NEW</span></div>
+          <div style="font-size:18px;font-weight:800;color:var(--red-600);margin-bottom:8px">100円 <span class="ftag ro">price</span></div>
+          <div style="font-size:12.5px;color:var(--gray-700);line-height:1.55">牛肉とじゃがいも・にんじん等の野菜を使用し、各種スパイスをブレンド。牛肉の旨みとコクが楽しめる少し甘めのカレーです…<span style="color:var(--blue-600);font-weight:700"> もっと見る</span> <span class="ftag ro">description</span></div>
+        </div>
+
+        <div class="mascot"><div class="av">👧</div><div class="tx">じゃーん！今月の新商品だよ。SOLのいち押し〜！<small>Tèn ten! Món mới tháng này, SOL tâm đắc nhất đó~</small></div></div>
+
+        <!-- tabs -->
+        <div class="m-tabs">
+          <div class="t" id="tab-detail" onclick="switchTab('detail')">詳細情報 <small>Chi tiết</small></div>
+          <div class="t active" id="tab-review" onclick="switchTab('review')">レビュー (100) <small>Đánh giá</small></div>
+        </div>
+
+        <!-- panel: detail -->
+        <div id="panel-detail" class="pad" style="display:none">
+          <div class="m-card"><div class="m-card-pad">
+            <div class="kv"><span class="k">カテゴリ</span><span class="v">惣菜 / カレー <span class="ftag ro">category</span></span></div>
+            <div class="kv"><span class="k">カロリー</span><span class="v">161 kcal / 100g <span class="ftag ro">energyValue</span></span></div>
+            <div class="kv"><span class="k">製造元</span><span class="v">ES Kitchen 株式会社</span></div>
+            <div class="kv"><span class="k">アレルギー</span><span class="v">乳・小麦 <span class="ftag ro">allergens[]</span></span></div>
+          </div></div>
+          <div class="api-note">Tab này dùng nguyên <b>GET /user/menu/products/:id</b> (ProductDetailResponse) — bao gồm <code>allergens[]</code> &amp; <code>allergensOptional[]</code> để hiển thị + đối chiếu dị ứng.</div>
+        </div>
+
+        <!-- panel: review -->
+        <div id="panel-review" class="pad">
+          <!-- aggregate header -->
+          <div class="m-card"><div class="m-card-pad" style="display:flex;align-items:center;gap:16px">
+            <div style="text-align:center">
+              <div style="font-size:30px;font-weight:800;color:var(--app-600)">4.6</div>
+              <div class="stars stars-sm"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span></div>
+              <div class="muted" style="font-size:11px">100件 <span class="ftag ro">ratingCount</span></div>
+            </div>
+            <div style="flex:1;font-size:11px;color:var(--gray-500)">
+              <div>★5 ▓▓▓▓▓▓▓▓ 72</div>
+              <div>★4 ▓▓▓ 19</div>
+              <div>★3 ▓ 6</div>
+              <div>★2 ▏2 &nbsp; ★1 ▏1</div>
+            </div>
+          </div></div>
+          <div class="muted" style="font-size:11.5px;margin:0 2px 8px">👥 同じ会社の社員のレビュー <span class="vi">— chỉ hiển thị đánh giá của nhân viên cùng công ty</span></div>
+
+          <div class="m-card"><div class="m-card-pad">
+            <div class="review">
+              <div class="top"><span class="who">タナカ さん <span class="ftag ro">review.nickname</span></span><span>2026/01/12 <span class="ftag ro">createdAt</span></span></div>
+              <div class="stars stars-sm"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span> <span class="ftag ro">rating</span></div>
+              <div class="txt">ご飯に合う！甘口で食べやすい。 <span class="ftag ro">comment</span></div>
+              <div class="choice-row"><span class="choice-chip on-good">美味しい</span><span class="choice-chip on-good">コスパが良い</span> <span class="ftag ro">tags[]</span></div>
+            </div>
+            <div class="review">
+              <div class="top"><span class="who">ヤマダ さん</span><span>2026/01/10</span></div>
+              <div class="stars stars-sm"><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span></div>
+              <div class="txt">ボリュームちょうど良い。また買います。</div>
+              <div class="choice-row"><span class="choice-chip on-good">ボリューム満点</span></div>
+            </div>
+            <div class="review">
+              <div class="top"><span class="who">サトウ さん</span><span>2026/01/09</span></div>
+              <div class="stars stars-sm"><span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+              <div class="txt">少し甘すぎたかも。</div>
+              <div class="choice-row"><span class="choice-chip on-bad">味が合わない</span></div>
+            </div>
+          </div></div>
+          <div style="text-align:center"><button class="btn btn-ghost btn-sm">もっと見る ▾ <span class="vi">Xem thêm (page+1)</span></button></div>
+          <div class="api-note">Danh sách = <b>GET /user/menu/products/:id/reviews</b> (paginated). BE chỉ trả review của user <b>cùng company</b> với người xem. Header tổng hợp dùng <code>avgRating</code> + <code>ratingCount</code> + <code>ratingBreakdown</code>.</div>
+        </div>
+      </div>
+
+      <!-- sticky cart -->
+      <div class="cta-bar">
+        <div class="total"><span class="q">合計 (4)</span><span class="p">400円</span></div>
+        <div class="grow"></div>
+        <button class="btn btn-primary btn-pill btn-lg" onclick="alert('カートへ → POST /user/cart/items')">カートへ ›</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== API SPEC DRAWER ===== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>UE-3 · API仕様 — Detail & Reviews</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>① Chi tiết món (tab 詳細)</h4>
+    <div class="ep"><span class="m get">GET</span> /user/menu/products/:id <span class="ep-tag reuse">REUSE P1</span><span class="guard">JwtAuthGuard</span></div>
+    <p class="muted" style="font-size:12px">ProductDetailResponse: <code>name, price, description, energyValue, productTags, isFavorite, cartQuantity, isInCurrentMenu, allergens[], allergensOptional[]</code> (+ nhiều field dinh dưỡng). Có sẵn <code>allergens[]</code> → dùng cho cả tab chi tiết &amp; đối chiếu dị ứng.</p>
+
+    <h4>② Đánh giá công khai (tab レビュー)</h4>
+    <div class="ep"><span class="m get">GET</span> /user/menu/products/:id/reviews <span class="ep-tag new">NEW</span><span class="guard">JwtAuthGuard</span></div>
+    <pre>// query: ?page=1&limit=10
+// data
+{
+  "avgRating": 4.6,
+  "ratingCount": 100,
+  "ratingBreakdown": { "5":72,"4":19,"3":6,"2":2,"1":1 },
+  "items": [
+    { "id":"88", "nickname":"タナカ",
+      "rating":5, "comment":"ご飯に合う！",
+      "tags":["美味しい","コスパが良い"],
+      "createdAt":"2026-01-12T03:00:00Z" }
+  ],
+  "total":100, "page":1, "limit":10, "totalPages":10
+}</pre>
+    <table>
+      <tr><th>field</th><th>type</th><th>note</th></tr>
+      <tr><td><code>nickname</code></td><td>string</td><td>tên rút gọn — không lộ email</td></tr>
+      <tr><td><code>rating</code></td><td>1–5</td><td>—</td></tr>
+      <tr><td><code>comment</code></td><td>string(≤100)</td><td>—</td></tr>
+      <tr><td><code>tags</code></td><td>string[]</td><td>chip lý do (xem UE-4)</td></tr>
+    </table>
+    <p class="muted" style="font-size:12px"><b>Scope:</b> service lọc <code>review.companyId = viewer.companyId</code> → chỉ thấy đánh giá nhân viên cùng công ty. Bảng <code>product_reviews</code> (xem UE-4).</p>
+
+    <h4>③ Thêm giỏ</h4>
+    <div class="ep"><span class="m post">POST</span> /user/cart/items <span class="ep-tag reuse">REUSE P1</span><span class="guard">JwtAuthGuard · @BlockGuest</span></div>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+<script>
+  function switchTab(name){
+    var d=name==='detail';
+    document.getElementById('tab-detail').classList.toggle('active',d);
+    document.getElementById('tab-review').classList.toggle('active',!d);
+    document.getElementById('panel-detail').style.display=d?'block':'none';
+    document.getElementById('panel-review').style.display=d?'none':'block';
+  }
+</script>
+</body>
+</html>
