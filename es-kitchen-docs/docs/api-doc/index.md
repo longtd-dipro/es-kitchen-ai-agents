@@ -27,5 +27,21 @@ Tập hợp các trang **mockup tương tác + tài liệu API** cho từng feat
 
 ---
 
+## User Engagement — Phase 2
+
+**Scope:** Tương tác người dùng trên App di động E01 — khai báo dị ứng, đánh giá sản phẩm, khảo sát, wishlist tháng sau.
+
+| Màn hình | Persona | Mô tả | Mở |
+|---|---|---|---|
+| **Index / Overview** | All | 6 nghiệp vụ, conventions API, danh mục màn hình | [Mở →](user-engagement/index.html){target=_blank} |
+| My Page · Allergen Settings | E01 | Khai báo dị ứng lần đầu (onboarding) + cài đặt trong profile | [Mở →](user-engagement/user/user_allergy_profile_mobile.html){target=_blank} |
+| Menu · Allergen Filter | E01 | Danh sách món + bottom-sheet lọc dị ứng (ẩn / cảnh báo) | [Mở →](user-engagement/user/allergy_filter_mobile.html){target=_blank} |
+| Product Detail · Reviews | E01 | Chi tiết món + tab đánh giá công khai cùng công ty | [Mở →](user-engagement/user/product_detail_reviews_mobile.html){target=_blank} |
+| Order History · Review & Feedback | E01 | Đơn COMPLETED → chấm sao từng món + chip lý do + ご意見 | [Mở →](user-engagement/user/product_review_mobile_mockup.html){target=_blank} |
+| Survey from Admin | E01 | Thông báo khảo sát từ Admin → form câu hỏi, khoá khi hết hạn | [Mở →](user-engagement/user/survey_notification_from_admin_mobile.html){target=_blank} |
+| Next-month Wishlist | E01 | Bình chọn thực đơn tháng sau ≤15 món, thang 3 bậc | [Mở →](user-engagement/user/next_month_menu_survey_wishlist_from_company.html){target=_blank} |
+
+---
+
 !!! note "Thêm feature mới"
     Để thêm trang API Doc cho feature mới, đặt HTML files vào `docs/api-doc/<feature-name>/` và cập nhật trang này + `mkdocs.yml`.

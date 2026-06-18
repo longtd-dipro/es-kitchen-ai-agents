@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UE-4 · 購入履歴 → レビュー・ご意見 (Order History → Review & Feedback)</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body>
+
+<div class="device">
+  <div class="device-title"><b>UE-4 · Order detail (COMPLETED) → Review form + ご意見</b><br>
+    <a href="../index.html">← Danh mục</a> &nbsp;·&nbsp; <a href="survey_notification_from_admin_mobile.html">UE-5 Survey →</a>
+  </div>
+
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="statusbar"><span>9:41</span><span class="r">📶 🔋</span></div>
+
+    <!-- ============ SCREEN: ORDER DETAIL ============ -->
+    <div id="s-history" class="screen active">
+      <div class="appbar">
+        <button class="icon-btn" onclick="location.href='user_allergy_profile_mobile.html'">‹</button>
+        <div class="title center">購入履歴詳細 <small>Chi tiết đơn hàng</small></div>
+        <span style="width:34px"></span>
+      </div>
+      <div class="app-body">
+        <div class="m-card"><div class="m-card-pad">
+          <div class="group-label bar" style="margin:0 0 8px">注文情報 <span class="vi">Thông tin đơn</span></div>
+          <div class="kv"><span class="k">注文日時 <span class="ftag ro">createdAt</span></span><span class="v">2026/01/18 12:10</span></div>
+          <div class="kv"><span class="k">注文番号 <span class="ftag ro">orderNumber</span></span><span class="v">023489237567</span></div>
+          <div class="kv"><span class="k">ステータス <span class="ftag ro">status</span></span><span class="v"><span class="chip chip-green">COMPLETED 完了</span></span></div>
+        </div></div>
+
+        <div class="m-card"><div class="m-card-pad">
+          <div class="group-label bar" style="margin:0 0 8px">商品リスト <span class="vi">orderDetails[]</span></div>
+          <div class="kv"><span class="k">1× 一度食べたらもうたま卵(醤油味) <span class="ftag ro">productName</span></span><span class="v">100円</span></div>
+          <div class="kv"><span class="k">1× シェフの作ったビーフカレー(甘口)</span><span class="v">100円</span></div>
+        </div></div>
+
+        <div class="m-card"><div class="m-card-pad">
+          <div class="group-label bar" style="margin:0 0 8px">支払い詳細 <span class="vi">payment</span></div>
+          <div class="kv"><span class="k">合計金額 (2点) <span class="ftag ro">total</span></span><span class="v" style="color:var(--red-600)">200円</span></div>
+          <div class="kv"><span class="k">支払い方法 <span class="ftag ro">paymentMethod.name</span></span><span class="v">💳 Merpay</span></div>
+          <div class="kv"><span class="k">決済状況 <span class="ftag ro">payment.status</span></span><span class="v"><span class="chip chip-green">支払済み</span></span></div>
+        </div></div>
+
+        <!-- review trigger (enabled only when COMPLETED) -->
+        <div style="margin:16px 14px;padding:14px;border:1.5px solid var(--app-400);background:var(--app-50);border-radius:var(--r-lg);display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;color:var(--app-700)" onclick="goScreen('s-review')">
+          <span>⭐️ レビュー・ご意見 <span class="vi" style="display:block;font-weight:400">Viết đánh giá &amp; góp ý cho đơn này</span></span>
+          <span>›</span>
+        </div>
+        <div class="api-note" style="margin:0 14px">Nút này <b>chỉ mở khi <code>order.status = COMPLETED</code></b> (chưa hoàn tất thì disable). FE biết món nào đã đánh giá qua cờ <code>reviewed</code> mỗi orderDetail.</div>
+      </div>
+    </div>
+
+    <!-- ============ SCREEN: REVIEW FORM ============ -->
+    <div id="s-review" class="screen">
+      <div class="appbar">
+        <button class="icon-btn" onclick="goScreen('s-history')">‹</button>
+        <div class="title center">レビュー・ご意見 <small>Đánh giá · Góp ý</small></div>
+        <span style="width:34px"></span>
+      </div>
+      <div class="app-body">
+
+        <!-- product 1 (low score → improvement tags) -->
+        <div class="m-card"><div class="m-card-pad">
+          <div style="font-weight:700;background:var(--gray-50);padding:8px 12px;border-radius:var(--r-md);margin-bottom:10px;font-size:13px">一度食べたらもうたま卵(醤油味) <span class="ftag">productId</span></div>
+          <div class="f-label">総合的な満足度 <small>Mức độ hài lòng</small> <span class="ftag">rating *</span></div>
+          <div class="stars" data-score="2"><span class="star on" onclick="setStars(this)">★</span><span class="star on" onclick="setStars(this)">★</span><span class="star" onclick="setStars(this)">★</span><span class="star" onclick="setStars(this)">★</span><span class="star" onclick="setStars(this)">★</span><span class="score">(2/5)</span></div>
+          <div class="f-label" style="margin-top:12px;color:var(--red-600)">改善できる点 (複数可) <small>Điểm cần cải thiện (chọn nhiều)</small> <span class="ftag">tags[]</span></div>
+          <div class="choice-row">
+            <span class="choice-chip on-bad" data-variant="bad" onclick="toggleChoice(this)">味が合わない</span>
+            <span class="choice-chip" data-variant="bad" onclick="toggleChoice(this)">価格が高い</span>
+            <span class="choice-chip" data-variant="bad" onclick="toggleChoice(this)">写真と違う</span>
+            <span class="choice-chip" data-variant="bad" onclick="toggleChoice(this)">期限が近い</span>
+            <span class="choice-chip on-bad" data-variant="bad" onclick="toggleChoice(this)">味が濃い</span>
+            <span class="choice-chip" data-variant="bad" onclick="toggleChoice(this)">量が少ない</span>
+          </div>
+          <div class="f-label" style="margin-top:12px">コメント <small>≤100 ký tự</small> <span class="ftag">comment</span></div>
+          <textarea class="f-input" rows="2" maxlength="100" data-counter="#c1" oninput="countChars(this)" placeholder="ひとことコメント (任意)"></textarea>
+          <div class="counter"><span id="c1">0</span> / 100</div>
+        </div></div>
+
+        <!-- product 2 (high score → positive tags) -->
+        <div class="m-card"><div class="m-card-pad">
+          <div style="font-weight:700;background:var(--gray-50);padding:8px 12px;border-radius:var(--r-md);margin-bottom:10px;font-size:13px">シェフの作ったビーフカレー(甘口)</div>
+          <div class="f-label">総合的な満足度 <span class="ftag">rating *</span></div>
+          <div class="stars" data-score="5"><span class="star on" onclick="setStars(this)">★</span><span class="star on" onclick="setStars(this)">★</span><span class="star on" onclick="setStars(this)">★</span><span class="star on" onclick="setStars(this)">★</span><span class="star on" onclick="setStars(this)">★</span><span class="score">(5/5)</span></div>
+          <div class="f-label" style="margin-top:12px;color:var(--green-600)">当てはまるもの (複数可) <small>Tiêu chí phù hợp</small></div>
+          <div class="choice-row">
+            <span class="choice-chip on-good" data-variant="good" onclick="toggleChoice(this)">美味しい</span>
+            <span class="choice-chip on-good" data-variant="good" onclick="toggleChoice(this)">コスパが良い</span>
+            <span class="choice-chip" data-variant="good" onclick="toggleChoice(this)">ボリューム満点</span>
+            <span class="choice-chip on-good" data-variant="good" onclick="toggleChoice(this)">ご飯に合う</span>
+            <span class="choice-chip" data-variant="good" onclick="toggleChoice(this)">健康に良い</span>
+          </div>
+          <div class="f-label" style="margin-top:12px">コメント <small>≤100 ký tự</small></div>
+          <textarea class="f-input" rows="2" maxlength="100" data-counter="#c2" oninput="countChars(this)" placeholder="ひとことコメント (任意)"></textarea>
+          <div class="counter"><span id="c2">0</span> / 100</div>
+        </div></div>
+
+        <!-- free feedback → /contact -->
+        <div class="m-card"><div class="m-card-pad">
+          <div class="f-label">上記以外のサービス・商品へのご意見 <small>Ý kiến khác ngoài món ăn (gửi tới Admin)</small> <span class="ftag q">→ /contact description</span></div>
+          <textarea class="f-input" rows="3" maxlength="100" data-counter="#c3" oninput="countChars(this)" placeholder="率直なご意見・ご要望を…"></textarea>
+          <div class="counter"><span id="c3">0</span> / 100</div>
+          <div class="api-note">2 nhóm gửi riêng: chấm sao món → <b>POST /user/orders/:id/reviews</b>; ô ご意見 (nếu nhập) → <b>POST /contact</b>.</div>
+        </div></div>
+
+        <div class="pad"><button class="btn btn-primary btn-block btn-lg btn-pill" onclick="openOverlay('dlg-done')">送信する <small>Gửi đánh giá</small></button></div>
+      </div>
+    </div>
+  <!-- success dialog -->
+<div class="overlay dialog-wrap" id="dlg-done">
+  <div class="dialog">
+    <div class="d-ic">🎉</div>
+    <div class="d-title ok">送信しました</div>
+    <div class="d-text">評価・ご意見を送信しました。ありがとうございました。
+      <small>Đã gửi đánh giá (POST …/reviews) + ý kiến (POST /contact). Cảm ơn bạn!</small>
+    </div>
+    <div class="d-actions"><button class="btn btn-primary btn-block" onclick="closeOverlay('dlg-done');goScreen('s-history')">OK</button></div>
+  </div>
+</div>
+
+  </div>
+</div>
+
+<!-- ===== API SPEC DRAWER ===== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>UE-4 · API仕様 — Review & Feedback</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>① Chi tiết đơn (xác định quyền đánh giá)</h4>
+    <div class="ep"><span class="m get">GET</span> /user/orders/:id <span class="ep-tag reuse">REUSE P1</span><span class="guard">JwtAuthGuard</span></div>
+    <p class="muted" style="font-size:12px">OrderResponse: <code>orderNumber, status, total, paymentMethod, orderDetails[{productId, productName, price, quantity}], payment</code>. Mở review khi <code>status=COMPLETED</code>. P2 thêm cờ <code>reviewed</code> mỗi orderDetail để ẩn món đã chấm.</p>
+
+    <h4>② Gửi đánh giá sản phẩm</h4>
+    <div class="ep"><span class="m post">POST</span> /user/orders/:orderId/reviews <span class="ep-tag new">NEW</span><span class="guard">JwtAuthGuard · @BlockGuest</span></div>
+    <pre>// body — mảng review theo từng món của đơn
+{ "reviews": [
+    { "productId":"12", "rating":2,
+      "comment":"味が濃い", "tags":["味が合わない","味が濃い"] },
+    { "productId":"34", "rating":5,
+      "comment":"", "tags":["美味しい","コスパが良い","ご飯に合う"] }
+] }
+// data → { "created": 2 }</pre>
+    <table>
+      <tr><th>field</th><th>rule</th></tr>
+      <tr><td><code>productId</code></td><td>phải thuộc orderDetails của đơn</td></tr>
+      <tr><td><code>rating</code></td><td>int 1–5, bắt buộc</td></tr>
+      <tr><td><code>comment</code></td><td>string ≤100, optional</td></tr>
+      <tr><td><code>tags</code></td><td>string[] (chip lý do), optional</td></tr>
+    </table>
+    <p class="muted" style="font-size:12px"><b>Rule:</b> order.status=COMPLETED &amp; order.user=current; unique <code>(order_id, product_id, user_id)</code> — mỗi đơn/món chấm 1 lần. Bảng mới:</p>
+    <pre>product_reviews (
+  id, product_id FK, user_id FK, company_id FK,
+  order_id FK, rating int, comment varchar(100),
+  tags simple-array, created_at )</pre>
+
+    <h4>③ Ý kiến tự do (ご意見)</h4>
+    <div class="ep"><span class="m post">POST</span> /contact <span class="ep-tag reuse">REUSE P1</span><span class="guard">OptionalJwtAuthGuard</span></div>
+    <pre>{ "email":"eskitchen@example.jp", "description":"ご意見…" }</pre>
+    <p class="muted" style="font-size:12px">Chỉ gọi khi ô ご意見 có nội dung. Admin (E03) đọc &amp; trả lời qua email.</p>
+
+    <div class="notice notice-out" style="margin-top:14px"><span class="ic">🖥️</span><div><b>Ngoài scope App:</b> cảnh báo low-rating (≥ngưỡng 1–2★/tuần) bắn alert cho E03 — chạy ở web-admin + cron BE, không có UI mobile.</div></div>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+</body>
+</html>

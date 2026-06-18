@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UE-2 · メニュー & アレルギーフィルター (Menu & Allergen Filter)</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body>
+
+<div class="device">
+  <div class="device-title"><b>UE-2 · Menu list → Allergen filter sheet</b><br>
+    <a href="../index.html">← Danh mục</a> &nbsp;·&nbsp; <a href="product_detail_reviews_mobile.html">UE-3 Product Detail →</a>
+  </div>
+
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="statusbar"><span>9:41</span><span class="r">📶 🔋</span></div>
+
+    <div class="screen active">
+      <!-- app bar with search + cart -->
+      <div class="appbar">
+        <button class="icon-btn">‹</button>
+        <div class="searchbar">🔍 何をお探しですか? <span class="ftag q">keyword</span></div>
+        <button class="icon-btn cart" onclick="location.href='product_detail_reviews_mobile.html'">🛒<span class="dot">2</span></button>
+      </div>
+
+      <!-- category tabs -->
+      <div style="display:flex;gap:8px;overflow-x:auto;padding:10px 12px;background:#fff;border-bottom:1px solid var(--gray-100)">
+        <span class="chip" style="background:var(--app-100);color:var(--app-700);white-space:nowrap;font-size:12px;padding:5px 13px">全て</span>
+        <span class="chip chip-gray" style="white-space:nowrap;font-size:12px;padding:5px 13px">魚類</span>
+        <span class="chip chip-gray" style="white-space:nowrap;font-size:12px;padding:5px 13px">惣菜</span>
+        <span class="chip chip-gray" style="white-space:nowrap;font-size:12px;padding:5px 13px">常温</span>
+        <span class="chip chip-gray" style="white-space:nowrap;font-size:12px;padding:5px 13px">ごはん</span>
+        <span class="chip chip-gray" style="white-space:nowrap;font-size:12px;padding:5px 13px">パン麦</span>
+      </div>
+      <div class="api-note" style="margin:8px 12px 0">Tabs = <b>MenuProductsResponse.categories[].name</b>; chọn tab → gọi lại list với <code>?category=惣菜</code>. <span class="ftag q">category</span></div>
+
+      <!-- filter trigger -->
+      <div style="margin:12px;padding:11px 14px;border:1.5px dashed var(--app-400);background:var(--app-50);border-radius:var(--r-lg);display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;font-size:13px;color:var(--app-700)" onclick="openOverlay('sheet-filter')">
+        <span>🥜 アレルギー成分でフィルター <span class="vi" style="display:block;font-weight:400">Lọc theo chất gây dị ứng</span></span>
+        <span class="chip" style="background:var(--app-400);color:#fff" data-allergen-count-global>1</span>
+      </div>
+
+      <div class="app-body">
+        <div class="pad" style="padding-top:4px">
+
+          <!-- product: in stock + recommend, allergen warning (mode=warn) -->
+          <div class="prod">
+            <div class="prod-img">🥚
+              <span class="prod-badge recommend">オススメ</span>
+              <span class="prod-fav" onclick="this.classList.toggle('on')">♥</span>
+            </div>
+            <div class="prod-info">
+              <div class="prod-name">いちど食べたらもうたま卵(醤油味) <span class="ftag ro">product.name</span></div>
+              <div class="prod-tags"><span class="chip chip-expiry">短賞味期限</span><span class="chip chip-new">NEW</span></div>
+              <div class="prod-meta">100円 <span class="cal">161kcal/100g</span></div>
+              <div class="prod-tags"><span class="chip chip-allergen">⚠️ 卵 を含む <span class="vi">chứa Trứng</span></span></div>
+            </div>
+          </div>
+
+          <!-- product: in stock, beef curry -->
+          <div class="prod">
+            <div class="prod-img">🍛<span class="prod-fav on" onclick="this.classList.toggle('on')">♥</span></div>
+            <div class="prod-info">
+              <div class="prod-name">シェフの作ったビーフカレー(甘口)</div>
+              <div class="prod-tags"><span class="chip chip-new">NEW</span></div>
+              <div class="prod-meta">100円 <span class="cal">161kcal/100g</span></div>
+            </div>
+          </div>
+
+          <!-- product: low stock -->
+          <div class="prod">
+            <div class="prod-img">🥗
+              <span class="prod-badge low">残りわずか</span>
+              <span class="prod-fav" onclick="this.classList.toggle('on')">♡</span>
+            </div>
+            <div class="prod-info">
+              <div class="prod-name">王道のポテトサラダ</div>
+              <div class="prod-meta">100円 <span class="cal">130kcal/100g</span></div>
+              <div class="prod-stock low">🔶 在庫わずか <span class="vi">Chỉ còn vài cái</span></div>
+            </div>
+          </div>
+
+          <!-- product: out of stock (this month) → locked -->
+          <div class="prod out">
+            <div class="prod-img">🥧<span class="prod-fav" onclick="this.classList.toggle('on')">♡</span></div>
+            <div class="prod-info">
+              <div class="prod-name">マドレーヌ</div>
+              <div class="prod-tags"><span class="chip chip-allergen">⚠️ 小麦 を含む</span></div>
+              <div class="prod-stock out">⏳ 次回の入荷をお待ちください <span class="vi">Hãy chờ lần sau</span></div>
+            </div>
+          </div>
+
+          <div class="api-note">Mỗi card = <b>MenuProductsResponse.products[]</b>. Badge tồn kho từ <b>stockState</b> (EXTEND): <code>IN_STOCK</code> / <code>LOW</code>(残りわずか) / <code>OUT_THIS_MONTH</code>(khoá nút) / <code>OUT_LAST_MONTH</code>(ẩn khỏi list). Nhãn ⚠️ chỉ hiện khi <code>allergenFilterMode=warn</code> và <code>allergenWarning=true</code>.</div>
+        </div>
+      </div>
+
+      <div class="bottom-tab">
+        <div class="tab"><span class="ic">📷</span>スキャン</div>
+        <div class="tab active"><span class="ic">🍴</span>メニュー</div>
+        <div class="tab"><span class="ic">🤍</span>お気に入り</div>
+        <div class="tab"><span class="ic">🔔</span>通知</div>
+        <div class="tab" onclick="location.href='user_allergy_profile_mobile.html'"><span class="ic">👤</span>マイページ</div>
+      </div>
+    </div>
+  <!-- ===== bottom sheet: allergen filter ===== -->
+<div class="overlay sheet-wrap" id="sheet-filter">
+  <div class="sheet" data-allergen-scope>
+    <div class="sheet-head">
+      <h3>アレルギー成分でフィルター <small>Chọn chất bạn bị dị ứng</small></h3>
+      <button class="lnk" onclick="clearAll()">すべてクリア</button>
+    </div>
+    <div class="sheet-body">
+      <div class="tip" style="margin:0 14px 12px"><span>👉</span><div>選んだ成分を含む商品を <b>非表示</b> または <b>警告表示</b>します。<small>Món chứa chất đã chọn sẽ bị ẩn hoặc gắn nhãn cảnh báo. Đang chọn: <b><span data-allergen-count>1</span></b>.</small></div></div>
+
+      <!-- mode toggle -->
+      <div style="display:flex;gap:8px;padding:0 14px 12px">
+        <button class="btn btn-block" id="mode-hide" onclick="setMode('hide')">🙈 非表示 <small>Ẩn món</small></button>
+        <button class="btn btn-primary btn-block" id="mode-warn" onclick="setMode('warn')">⚠️ 警告表示 <small>Cảnh báo</small></button>
+      </div>
+
+      <div class="group-label bar">特定原材料</div>
+      <div class="allergen-grid">
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">えび</span><span class="vsub">Tôm</span></span><span class="ck">✓</span></div>
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">かに</span><span class="vsub">Cua</span></span><span class="ck">✓</span></div>
+        <div class="allergen-chip on" onclick="toggleAllergen(this)"><span><span class="ja">卵</span><span class="vsub">Trứng</span></span><span class="ck">✓</span></div>
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">乳</span><span class="vsub">Sữa</span></span><span class="ck">✓</span></div>
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">小麦</span><span class="vsub">Lúa mì</span></span><span class="ck">✓</span></div>
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">そば</span><span class="vsub">Kiều mạch</span></span><span class="ck">✓</span></div>
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">くるみ</span><span class="vsub">Óc chó</span></span><span class="ck">✓</span></div>
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">落花生</span><span class="vsub">Đậu phộng</span></span><span class="ck">✓</span></div>
+      </div>
+      <div class="group-label bar">特定原材料に準ずるもの</div>
+      <div class="allergen-grid">
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">牛肉</span><span class="vsub">Bò</span></span><span class="ck">✓</span></div>
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">豚肉</span><span class="vsub">Heo</span></span><span class="ck">✓</span></div>
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">さば</span><span class="vsub">Cá thu</span></span><span class="ck">✓</span></div>
+        <div class="allergen-chip" onclick="toggleAllergen(this)"><span><span class="ja">大豆</span><span class="vsub">Đậu nành</span></span><span class="ck">✓</span></div>
+      </div>
+      <div style="height:10px"></div>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn btn-block" onclick="closeOverlay('sheet-filter')">キャンセル</button>
+      <button class="btn btn-primary btn-block" onclick="closeOverlay('sheet-filter');alert('フィルター適用 / Áp dụng → GET /user/menu/products?allergenFilterMode=warn')">選択 <small>Áp dụng</small></button>
+    </div>
+  </div>
+</div>
+
+  </div>
+</div>
+
+<!-- ===== API SPEC DRAWER ===== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>UE-2 · API仕様 — Menu & Allergen Filter</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>① Danh sách món + lọc dị ứng</h4>
+    <div class="ep"><span class="m get">GET</span> /user/menu/products <span class="ep-tag ext">EXTEND P1</span><span class="guard">JwtAuthGuard</span></div>
+    <pre>// query (Phase 1 + P2 thêm)
+?keyword=&category=惣菜
+&allergenFilterMode=warn   // P2: off | hide | warn</pre>
+    <table>
+      <tr><th>field (mỗi product)</th><th>type</th><th>note</th></tr>
+      <tr><td><code>id</code></td><td>string</td><td>—</td></tr>
+      <tr><td><code>name</code></td><td>string</td><td>—</td></tr>
+      <tr><td><code>images</code></td><td>string[]</td><td>—</td></tr>
+      <tr><td><code>energyValue/baseAmount/baseUnit</code></td><td>num/str</td><td>kcal hiển thị</td></tr>
+      <tr><td><code>productTags</code></td><td>enum[]</td><td>NEW · 短賞味期限</td></tr>
+      <tr><td><code>isFavorite</code></td><td>boolean</td><td>tim đỏ</td></tr>
+      <tr><td><code>sellingPrice</code></td><td>number</td><td><b>EXTEND</b> — từ <code>menu_products.selling_price</code> (list P1 chưa expose)</td></tr>
+      <tr><td><code>allergens</code></td><td>Allergen[]</td><td><b>EXTEND</b> — để FE đối chiếu</td></tr>
+      <tr><td><code>allergenWarning</code></td><td>boolean</td><td><b>EXTEND</b> — true nếu giao với allergen user (mode=warn)</td></tr>
+      <tr><td><code>stockState</code></td><td>enum</td><td><b>EXTEND</b> — IN_STOCK·LOW·OUT_THIS_MONTH·OUT_LAST_MONTH</td></tr>
+    </table>
+    <p class="muted" style="font-size:12px">Response cũng có <code>categories[]</code> (tabs) &amp; <code>activeYearMonths[]</code>. <code>mode=hide</code> → BE loại bỏ món trùng allergen; <code>OUT_LAST_MONTH</code> luôn bị ẩn (§5.2).</p>
+
+    <h4>② Master + lựa chọn của user (cho sheet)</h4>
+    <div class="ep"><span class="m get">GET</span> /user/allergens <span class="ep-tag reuse">REUSE P1</span><span class="guard">JwtAuthGuard</span></div>
+    <div class="ep"><span class="m get">GET</span> /user/allergens/me <span class="ep-tag new">NEW</span><span class="guard">JwtAuthGuard</span></div>
+    <p class="muted" style="font-size:12px">Sheet pre-check theo <code>allergenIds[]</code> đã lưu (xem UE-1). Đổi lựa chọn ở đây có thể chỉ là filter tạm thời của phiên (không bắt buộc <code>PUT</code>).</p>
+
+    <h4>③ Toggle yêu thích</h4>
+    <div class="ep"><span class="m post">POST</span> /user/favorites/:productId <span class="ep-tag reuse">REUSE P1</span><span class="guard">JwtAuthGuard · @BlockGuest</span></div>
+    <pre>// data → { "isFavorite": true, "favoriteCount": 124 }</pre>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+<script>
+  function clearAll(){
+    var g=document.getElementById('sheet-filter');
+    g.querySelectorAll('.allergen-chip.on').forEach(function(c){c.classList.remove('on');});
+    g.querySelectorAll('[data-allergen-count]').forEach(function(c){c.textContent='0';});
+    document.querySelectorAll('[data-allergen-count-global]').forEach(function(c){c.textContent='0';});
+  }
+  function setMode(m){
+    document.getElementById('mode-hide').className = 'btn btn-block' + (m==='hide'?' btn-primary':'');
+    document.getElementById('mode-warn').className = 'btn btn-block' + (m==='warn'?' btn-primary':'');
+  }
+</script>
+</body>
+</html>
