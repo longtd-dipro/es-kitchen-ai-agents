@@ -158,7 +158,7 @@ task-4-x (Integration test)
 
 **Sau khi BE xong task-2-x:**
 1. Copy bảng `## API Definition` từ BE output vào section tương ứng trong `task-3-x.md`
-2. FE/Mobile mới bắt đầu implement — không code FE trước khi có API Definition
+2. FE/Mobile task có gọi API → không bắt đầu implement trước khi có API Definition. FE task thuần UI (component, layout, không gọi API) không bị ràng buộc này.
 
 **Sau mỗi task:** Chạy Memory Update Gate (xem `AGENTS.md`).
 

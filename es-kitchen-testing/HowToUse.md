@@ -9,24 +9,31 @@
 
 ## Cách chạy test cho 1 feature
 
-### Bước 1 — Chuẩn bị 4 thông tin
+### Bước 1 — Chuẩn bị thông tin
 
-| # | Thông tin | Lấy ở đâu |
-|---|---|---|
-| 1 | **Feature path** | Đường dẫn folder feature trong `es-kitchen-docs/docs/features/` |
-| 2 | **Figma URL** | Mở SPEC.md → section `## Screens` → copy link Figma |
-| 3 | **App cần test** | `web-supplier` / `web-admin` / `web-company` / `web-outsource` / `webapp-driver` |
-| 4 | **URL website** | URL môi trường DEV đang chạy (hỏi Dev nếu chưa biết) |
+| # | Thông tin | Lấy ở đâu | Bắt buộc? |
+|---|---|---|---|
+| 1 | **Feature path** | Đường dẫn folder feature trong `es-kitchen-docs/docs/features/` | ✅ |
+| 2 | **Figma URL** | Mở SPEC.md → section `## Screens` → copy link Figma | ✅ |
+| 3 | **File TC** | Path đến file TC thủ công (hỏi QC Lead nếu có) — **giúp test chính xác hơn** | Tùy chọn |
+
+> URL website đọc tự động từ `.env.test`. App cần test agent sẽ tự xác nhận nếu chưa rõ.
 
 ### Bước 2 — Nhắn vào Claude Code
 
+**Không có file TC (agent tự suy từ SPEC):**
 ```
-Hãy là QC Automation, test feature: <feature-path>, Figma: <figma-url>, app: <target-app>, website: <url>
+Hãy là QC Automation, test feature: <feature-path>, Figma: <figma-url>
 ```
 
-**Ví dụ thực tế:**
+**Có file TC từ QC team (khuyến nghị — chính xác hơn, map 1:1 với TC thủ công):**
 ```
-Hãy là QC Automation, test feature: es-kitchen-docs/docs/features/supplier-ordering, Figma: https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=16479-123381, app: web-supplier, website: https://dev-sp.es-kitchen.co.jp
+Hãy là QC Automation, test feature: <feature-path>, Figma: <figma-url>, testcases: <tc-file-path>
+```
+
+**Ví dụ thực tế (có TC file):**
+```
+Hãy là QC Automation, test feature: es-kitchen-docs/docs/features/supplier-ordering, Figma: https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=16479-123381, testcases: es-kitchen-docs/docs/features/supplier-ordering/test-cases/tc_supplier_ordering.md
 ```
 
 ### Bước 3 — Chờ agent chạy
