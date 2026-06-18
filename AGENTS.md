@@ -103,7 +103,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | `qc-agent.md` | QC Manual Tester | **Sau SPEC, trước/trong khi test** — sinh TC (RBT/QUICK), regression, execution checklist, bug report, test data, exploratory charter | `/test/generate_*` (11 commands) |
 | `designer-agent.md` | UI Designer | **Sau SPEC** — tạo Figma screens, điền Figma URL vào SPEC.md ## Screens | `/create-ui-design` |
 | `qa-agent.md` | QA Engineer | **Sau khi dev xong task** — chạy test suite, verify coverage, validate AC, non-regression | `"Hãy là QA, verify task: <path/task-x-y.md>"` |
-| `qc-automation-agent.md` | QC Automation Tester | **Sau khi Dev deploy lên DEV** — đọc SPEC.md + Figma + source code, sinh Playwright `.spec.ts`, chạy E2E test, xuất execution report | `"Hãy là QC Automation, test feature: <feature-path>, Figma: <url>, app: <target-app>, website: <url>"` |
+| `qc-automation-agent.md` | QC Automation Tester | **Sau khi Dev deploy lên DEV** — đọc SPEC.md + Figma URL, sinh Playwright `.spec.ts`, chạy E2E test, xuất execution report | `"Hãy là QC Automation, test feature: <feature-path>, Figma: <url>"` (+ `testcases: <path>` nếu có TC file) |
 
 > **QC vs QA vs QC-Automation:** `qc-agent` = manual tester sinh/thực thi TC (artifact `.md`); `qa-agent` = post-dev verify unit test + coverage (QA Report per task); `qc-automation-agent` = E2E test tự động trên browser sau khi website chạy (`.spec.ts` + execution report). Ba agent bổ sung nhau, không thay thế.
 
@@ -167,7 +167,7 @@ Danh sách đầy đủ (skill → repo → khi nào dùng) → `.claude/skills/
 | 6 | QA verify per task | QA Report | `qa-agent` — trigger: `"Hãy là QA, verify task: <path>"` | Verify |
 | 7a | Sinh/chạy execution checklist | Test execution checklist + Bug reports | `qc-agent` — trigger: `/test/generate_test_execution_checklist` | Test |
 | 7b | (optional) `/test/generate_regression_suite` | Regression suite | `qc-agent` | Test |
-| 7c | `"Hãy là QC Automation, test feature: <feature-path>, Figma: <figma-url>, app: <target-app>, website: <url>"` (song song với 7a) | Playwright `.spec.ts` + `execution-report.md` | `qc-automation-agent` — **điều kiện:** website đang chạy trên DEV, SPEC.md + Figma URL có sẵn | Test |
+| 7c | `"Hãy là QC Automation, test feature: <feature-path>, Figma: <figma-url>"` (song song với 7a, thêm `testcases: <path>` nếu có TC file) | Playwright `.spec.ts` + `execution-report.md` | `qc-automation-agent` — **điều kiện:** website DEV đang chạy (URL tự đọc từ `.env.test`), SPEC.md + Figma URL có sẵn | Test |
 
 **Phase order:** Phase 1 (DB migration) → Phase 2 (API + output API Contract) → **copy API Contract vào FE task** → Phase 3 (FE + Mobile song song, mỗi task 3 sub-steps) → Phase 4 (Integration)
 

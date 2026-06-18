@@ -36,89 +36,197 @@ Mỗi role là một sub-agent có canonical workflow trong `.claude/agents/`.
 | 6 | **"Hãy là QA, verify task: `<task-X-Y.md>`"** | QA Report | `qa-agent` |
 | 7a | Execute manual TC + bug reports | Test execution checklist | `qc-agent` |
 | 7b _(optional)_ | **"Hãy là QC, sinh regression suite: `<feature>`"** | Regression suite | `qc-agent` |
-| 7c | **"Hãy là QC Automation, test feature: `<path>`, Figma: `<url>`, app: `<app>`, website: `<url>`"** _(song song với 7a)_ | Playwright `.spec.ts` + `execution-report.md` | `qc-automation-agent` |
+| 7c | **"Hãy là QC Automation, test feature: `<path>`, Figma: `<url>`"** _(song song với 7a — thêm `testcases: <path>` nếu có TC file)_ | Playwright `.spec.ts` + `execution-report.md` | `qc-automation-agent` |
 
 
 ## Sơ đồ pipeline — Từ yêu cầu đến deploy
+## Pipeline — Từ yêu cầu đến deploy
 
 ```mermaid
-flowchart TD
-    Start(["📥 Yêu cầu mới<br/>PDF · Figma · Backlog · Mô tả miệng"])
-    Start --> Trigger["🎯 User invoke agent đầu tiên"]
+flowchart TB
 
-    Trigger --> Method{Cách trigger}
-    Method -->|"Natural language"| NL["💬 'Hãy là BA, làm SPEC cho ...'"]
-    Method -->|"Slash command"| SC["⌨️ '/create-spec &lt;feature&gt;'"]
+    %% ===== STAGE 1 =====
 
-    NL --> BA
-    SC --> BA
-    BA["🟦 ba-agent<br/><i>canonical: .claude/agents/ba-agent.md</i>"]
-    BA -->|"hỏi 10 câu + viết doc"| SPEC[("📄 docs/features/&lt;feature&gt;/SPEC.md")]
+    subgraph S1["① INPUT & ANALYSIS"]
 
-    SPEC --> Branch{Phân nhánh song song}
+        INPUT["📥 Input
+        PDF · Figma · Backlog · Meeting"]
 
-    Branch -->|"2a: 'Hãy là Tech Lead Design ...'"| TLD["🟦 techlead-design-agent"]
-    Branch -->|"2b: 'Hãy là Designer ...'"| DES["🟨 designer-agent"]
-    Branch -->|"2c: 'Hãy là QC, sinh test cases ...'"| QC["🟪 qc-agent"]
+        TRIGGER{"Trigger"}
 
-    TLD -->|"tilth_deps blast radius"| DESIGN[("📄 DESIGN.md per repo")]
-    DES -->|"Figma MCP + token mapping"| UISPEC[("📄 UI-SPEC.md\nfigma/*.md")]
-    QC -->|"RBT 6 bước / QUICK"| TC[("📄 test-cases/tc_*.md")]
+        NL["💬 Natural Language"]
+        CMD["⌨️ Slash Command"]
 
-    DESIGN -->|"'Hãy là Tech Lead Tasks ...'"| TLT["🟦 techlead-tasks-agent"]
-    UISPEC -.->|"Component Inventory"| TLT
-    TLT -->|"phân rã Phase 1→4"| TASKS[("📄 tasks/task-X-Y.md")]
+        BA["🟦 BA Agent"]
 
-    TASKS -->|"'Hãy là PM ...'"| PM["🟦 pm-agent"]
-    PM -->|"timeline + estimate"| PLAN[("📄 PLAN.md")]
+        SPEC["📄 SPEC.md"]
 
-    PLAN -.->|"optional: '/create-backlog'<br/>hoặc 'Hãy là PM, sync ...'"| BL["🟦 pm-agent · Bước 4<br/>Sync to Backlog qua MCP"]
-    BL -->|"add_issue × N"| ISSUES[("📋 Backlog Issues<br/>ESKITCHEN-XXXX")]
+        INPUT --> TRIGGER
+        TRIGGER --> NL
+        TRIGGER --> CMD
 
-    PLAN --> LOCK{🔒 Contract Lock<br/>BE + FE + Mobile + PM confirm<br/>REST + WebSocket + Push payload}
-    ISSUES -.->|"team track issues"| LOCK
+        NL --> BA
+        CMD --> BA
 
-    LOCK -->|"Confirm xong → Phase 3"| Impl[Implementation song song]
+        BA --> SPEC
 
-    Impl --> BE["🟩 backend-agent<br/>Phase 1-2: DB + API"]
-    Impl --> FE["🟩 frontend-agent<br/>Phase 3: UI E02/E03/E04/E05/E06"]
-    Impl --> MOB["🟩 mobile-agent<br/>Phase 3: Flutter E01"]
+    end
 
-    BE --> CODE
-    UISPEC -.->|"đọc Figma context"| FE
-    UISPEC -.->|"đọc Figma context"| MOB
-    FE --> CODE
-    MOB --> CODE
-    CODE[("💻 Working code + Unit tests")]
+    %% ===== STAGE 2 =====
 
-    CODE -->|"'Hãy là QA, verify task ...'"| QAagent["🟪 qa-agent"]
-    QAagent --> Report[("📊 QA Report")]
-    TC -.->|"Validate AC"| QAagent
-    ISSUES -.->|"update status<br/>Open → In Progress → Resolved"| QAagent
+    subgraph S2["② DESIGN"]
 
-    Report --> QCManual["🟪 qc-agent (7a)<br/><i>Execute manual TC</i>"]
-    Report --> QCAutoRun["🟪 qc-automation-agent (7c)<br/><i>Playwright E2E trên browser</i>"]
+        TLD["🟦 Tech Lead Design"]
+        DES["🟨 Designer"]
+        QC["🟪 QC Agent"]
 
-    QCManual --> BugReports[("📊 Bug Reports<br/>Execution checklist")]
-    QCAutoRun --> E2EReport[("📊 execution-report.md<br/>.spec.ts files")]
+        DESIGN["📄 DESIGN.md"]
+        UISPEC["📄 UI-SPEC.md"]
+        TC["📄 Test Cases"]
 
-    BugReports --> Deploy["🚀 Deploy STG → PROD"]
-    E2EReport --> Deploy
+        SPEC --> TLD
+        SPEC --> DES
+        SPEC --> QC
 
-    classDef agentBA fill:#dbeafe,stroke:#1e40af,color:#1e3a8a;
-    classDef agentDev fill:#dcfce7,stroke:#15803d,color:#14532d;
-    classDef agentQ fill:#f3e8ff,stroke:#7c3aed,color:#581c87;
-    classDef agentDesigner fill:#fef9c3,stroke:#ca8a04,color:#78350f;
-    classDef artifact fill:#fef3c7,stroke:#a16207,color:#713f12;
-    classDef decision fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d;
+        TLD --> DESIGN
+        DES --> UISPEC
+        QC --> TC
 
-    class BA,TLD,TLT,PM,BL agentBA;
-    class BE,FE,MOB agentDev;
-    class QC,QAagent,QCManual,QCAutoRun agentQ;
-    class DES agentDesigner;
-    class SPEC,DESIGN,UISPEC,TASKS,PLAN,CODE,TC,Report,ISSUES,BugReports,E2EReport artifact;
-    class Method,Branch,LOCK decision;
+    end
+
+    %% ===== STAGE 3 =====
+
+    subgraph S3["③ PLANNING"]
+
+        TASK["🟦 Tech Lead Tasks"]
+
+        TASKDOC["📄 Tasks"]
+
+        PM["🟦 PM Agent"]
+
+        PLAN["📄 PLAN.md"]
+
+        BACKLOG["📋 Backlog"]
+
+        DESIGN --> TASK
+        UISPEC --> TASK
+
+        TASK --> TASKDOC
+
+        TASKDOC --> PM
+
+        PM --> PLAN
+        PM -. Sync .-> BACKLOG
+
+    end
+
+    %% ===== STAGE 4 =====
+
+    subgraph S4["④ CONTRACT LOCK"]
+
+        LOCK{"🔒 Contract Lock
+
+        BE + FE + Mobile + PM
+
+        API + WebSocket + Push"}
+
+    end
+
+    PLAN --> LOCK
+    BACKLOG -.-> LOCK
+
+    %% ===== STAGE 5 =====
+
+    subgraph S5["⑤ IMPLEMENTATION"]
+
+        BE["🟩 Backend Agent"]
+        FE["🟩 Frontend Agent"]
+        MOB["🟩 Mobile Agent"]
+
+        CODE["💻 Working Code
+        + Unit Tests"]
+
+        LOCK --> BE
+        LOCK --> FE
+        LOCK --> MOB
+
+        UISPEC -.-> FE
+        UISPEC -.-> MOB
+
+        BE --> CODE
+        FE --> CODE
+        MOB --> CODE
+
+    end
+
+    %% ===== STAGE 6 =====
+
+    subgraph S6["⑥ QA"]
+
+        QA["🟪 QA Agent"]
+
+        REPORT["📊 QA Report"]
+
+        CODE --> QA
+
+        TC -.-> QA
+        BACKLOG -.-> QA
+
+        QA --> REPORT
+
+    end
+
+    %% ===== STAGE 7 =====
+
+    subgraph S7["⑦ TESTING"]
+
+        MANUAL["🟪 Manual Testing"]
+
+        AUTO["🟪 Playwright E2E"]
+
+        BUG["📊 Bug Reports"]
+
+        E2E["📊 E2E Report"]
+
+        REPORT --> MANUAL
+        REPORT --> AUTO
+
+        MANUAL --> BUG
+        AUTO --> E2E
+
+    end
+
+    %% ===== STAGE 8 =====
+
+    subgraph S8["⑧ DEPLOY"]
+
+        DEPLOY["🚀 STG → PROD"]
+
+    end
+
+    BUG --> DEPLOY
+    E2E --> DEPLOY
+
+
+    %% ===== STYLE =====
+
+    classDef ba fill:#DBEAFE,stroke:#2563EB,color:#1E3A8A
+    classDef dev fill:#DCFCE7,stroke:#16A34A,color:#14532D
+    classDef qa fill:#F3E8FF,stroke:#9333EA,color:#581C87
+    classDef design fill:#FEF3C7,stroke:#D97706,color:#78350F
+    classDef artifact fill:#F9FAFB,stroke:#6B7280,color:#111827
+    classDef gate fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D
+
+    class BA,TLD,TASK,PM ba
+    class BE,FE,MOB dev
+    class QC,QA,MANUAL,AUTO qa
+    class DES design
+
+    class SPEC,DESIGN,UISPEC,TC,TASKDOC,PLAN,BACKLOG,CODE,REPORT,BUG,E2E artifact
+
+    class TRIGGER,LOCK gate
 ```
+
 
 **Đọc sơ đồ:**
 
@@ -129,13 +237,6 @@ flowchart TD
 - 🟡 Artifacts (`SPEC.md` · `DESIGN.md` · `UI-SPEC.md` · `tasks/*.md` · `PLAN.md` · code · test cases · QA Report)
 - 🟥 Decision points (cách trigger · phân nhánh · Contract Lock)
 
-**Tín hiệu chính trên sơ đồ:**
-
-- Có **2 cách trigger** ở đầu — natural language hoặc slash command, cả hai cùng load 1 file agent
-- **Phân nhánh sau SPEC**: 3 agent chạy song song — **2a** Tech Lead Design (kỹ thuật) · **2b** Designer (UI + Figma) · **2c** QC (test cases). Tech Lead Tasks bắt đầu khi cả DESIGN.md + UI-SPEC.md đã có
-- **Sync to Backlog** (mũi tên gạch chấm sau PLAN) là tùy chọn — gọi qua `/create-backlog` hoặc natural language. PM tạo N Backlog issues (1 per task) qua MCP để team track ngoài file `.md`
-- **Contract Lock** là gate bắt buộc trước Phase 3 (FE + Mobile song song)
-- QA validate AC bằng test cases do QC sinh; đồng thời cập nhật status issue trên Backlog (mũi tên gạch chấm)
 
 ---
 

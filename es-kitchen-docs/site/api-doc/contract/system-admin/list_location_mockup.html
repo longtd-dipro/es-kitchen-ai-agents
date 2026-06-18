@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E03 · 拠点管理 — Quản lý công ty / chi nhánh</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body class="theme-admin">
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E03 System Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="../index.html">← Mockup Index</a>
+  <div class="tb-user"><span class="avatar">西</span> にっしぐち</div>
+</div>
+
+<div class="page">
+
+  <div class="breadcrumb">
+    <a href="../index.html">Home</a><span class="sep">›</span>
+    拠点・契約管理<span class="sep">›</span>
+    <b>拠点管理</b> <span class="vi">(Quản lý chi nhánh)</span>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <div class="page-title"><span class="accent-bar"></span> 拠点管理 <span class="vi">Quản lý công ty / chi nhánh</span></div>
+      <div class="page-sub">Danh sách toàn bộ công ty &amp; cây Mẹ–Con của mọi pháp nhân trong hệ thống.</div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button class="btn" onclick="openModal('mImport')">📥 CSV取込 <span class="vi">Import</span>
+      <span class="api-note">→ <b>POST /admin/companies/import</b></span>
+    </button>
+    <button class="btn" onclick="openModal('mBulk')">🔑 アカウント一括発行 <span class="vi">Cấp account</span>
+      <span class="api-note">→ <b>POST /admin/companies/bulk-issue-accounts</b> · body {companyIds[]}</span>
+    </button>
+    <button class="btn">🏷️ QRコード出力 <span class="vi">QR</span>
+      <span class="api-note">→ <b>POST /admin/companies/export-qr</b> · body {companyIds[]} · trả file</span>
+    </button>
+    <div class="spacer"></div>
+    <button class="btn btn-primary">＋ 新規登録 <span class="vi">Tạo công ty</span>
+      <span class="api-note">画面遷移 → form tạo (POST /admin/companies)</span>
+    </button>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter">
+    <div class="filter-grid">
+      <div class="field">
+        <label>キーワード <span class="vi">ID / tên / địa chỉ / ID hợp đồng</span> <span class="ftag q">?q=</span></label>
+        <input type="text" placeholder="キーワードを入力">
+      </div>
+      <div class="field">
+        <label>ステータス <span class="vi">Trạng thái</span> <span class="ftag q">?status=</span></label>
+        <select>
+          <option value="">全て (Tất cả)</option>
+          <option value="1">仮登録 (PROVISIONAL)</option>
+          <option value="2">本登録 (REGISTERED)</option>
+          <option value="4">休止中 (SUSPENDED)</option>
+          <option value="5">解約済 (CANCELLED)</option>
+          <option value="3">削除済 (DELETED)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>並び順 <span class="vi">Sắp xếp</span> <span class="ftag q">?orderBy= &amp; ?order=</span></label>
+        <select>
+          <option value="createdAt">登録日 (createdAt)</option>
+          <option value="companyCode">拠点ID (companyCode)</option>
+          <option value="name">拠点名 (name)</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="btn">クリア <span class="vi">Xóa lọc</span></button>
+      <button class="btn btn-primary">🔍 検索 <span class="vi">Tìm</span></button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr>
+          <th style="width:38px"><input type="checkbox" title="Chọn tất cả"></th>
+          <th class="col-num">No</th>
+          <th>拠点ID <span class="vi-b">Mã</span><span class="api-note">companyCode</span></th>
+          <th>拠点名 <span class="vi-b">Tên</span><span class="api-note">name · parent_id=NULL ⇒ Mẹ</span></th>
+          <th>住所 / 担当者 <span class="vi-b">Địa chỉ / Người PT</span><span class="api-note">address* · contactName</span></th>
+          <th>電話番号 <span class="vi-b">SĐT</span><span class="api-note">contactTel</span></th>
+          <th>ステータス <span class="vi-b">Trạng thái</span><span class="api-note">status (số 1–5)</span></th>
+          <th class="col-actions">操作 <span class="vi-b">Thao tác</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Parent company group -->
+        <tr class="group-row">
+          <td><input type="checkbox"></td>
+          <td class="col-num">1</td>
+          <td><b>CU10000</b></td>
+          <td>🏢 株式会社夢の扉 <span class="chip chip-blue no-dot" style="margin-left:6px">親 Mẹ</span></td>
+          <td>京都府京都市下京区四条 / 加藤真由美</td>
+          <td>075-000-0000</td>
+          <td><span class="chip chip-blue">本登録</span></td>
+          <td class="col-actions">
+            <a class="btn btn-sm" href="../company-sublocation/location_basic_infor_mockup.html">詳細</a>
+            <button class="btn btn-sm btn-danger" onclick="openModal('mDelete')">削除</button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td class="col-num">└</td>
+          <td>CU10001</td>
+          <td style="padding-left:26px">🏠 夢の扉 京都支店 <span class="chip chip-gray no-dot" style="margin-left:6px">子 Con</span></td>
+          <td>京都府京都市中京区 / 田中一郎</td>
+          <td>075-111-1111</td>
+          <td><span class="chip chip-blue">本登録</span></td>
+          <td class="col-actions">
+            <a class="btn btn-sm" href="../company-sublocation/location_basic_infor_mockup.html">詳細</a>
+            <button class="btn btn-sm btn-danger" onclick="openModal('mDelete')">削除</button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td class="col-num">└</td>
+          <td>CU10002</td>
+          <td style="padding-left:26px">🏠 夢の扉 大阪支店 <span class="chip chip-gray no-dot" style="margin-left:6px">子 Con</span></td>
+          <td>大阪府大阪市北区 / 佐藤花子</td>
+          <td>06-222-2222</td>
+          <td><span class="chip chip-orange">仮登録</span></td>
+          <td class="col-actions">
+            <a class="btn btn-sm" href="../company-sublocation/location_basic_infor_mockup.html">詳細</a>
+            <button class="btn btn-sm btn-danger" onclick="openModal('mDelete')">削除</button>
+          </td>
+        </tr>
+        <!-- Another root company -->
+        <tr class="group-row">
+          <td><input type="checkbox"></td>
+          <td class="col-num">2</td>
+          <td><b>CU10010</b></td>
+          <td>🏢 株式会社未来食堂 <span class="chip chip-blue no-dot" style="margin-left:6px">親 Mẹ</span></td>
+          <td>東京都渋谷区神南 / 山田太郎</td>
+          <td>03-333-3333</td>
+          <td><span class="chip chip-blue">本登録</span></td>
+          <td class="col-actions">
+            <a class="btn btn-sm" href="../company-sublocation/location_basic_infor_mockup.html">詳細</a>
+            <button class="btn btn-sm btn-danger" onclick="openModal('mDelete')">削除</button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td class="col-num">3</td>
+          <td>CU10020</td>
+          <td>🏢 株式会社さくら商事</td>
+          <td>福岡県福岡市博多区 / 鈴木次郎</td>
+          <td>092-444-4444</td>
+          <td><span class="chip chip-red">削除済</span></td>
+          <td class="col-actions"><span class="muted">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pager -->
+  <div class="pager">
+    <div class="muted">100件中 1–10件 <span class="api-note">total:100 · page:1 · limit:10</span></div>
+    <div class="pages"><span class="active">1</span><span>2</span><span>3</span><span>…</span><span>10</span><span>›</span></div>
+    <div class="field" style="width:auto">
+      <select><option>10件/ページ</option><option>20件/ページ</option><option>50件/ページ</option></select>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== MODAL: Import CSV ===================== -->
+<div class="modal-mask" id="mImport">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-head">
+      <h3>📥 CSV取込 <span class="vi">Import công ty / hợp đồng</span></h3>
+      <button class="x" onclick="closeModal('mImport')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="notice notice-info"><span class="ic">ℹ️</span><div>Tái dùng cơ chế Phase 1: <code>FileInterceptor('file')</code>, ≤5MB, UTF-8/Shift_JIS. Phase 2 thêm bước resolve master (code→id).</div></div>
+      <div class="field">
+        <label>CSVファイル <span class="vi">field: file</span> <span class="ftag">multipart/form-data</span></label>
+        <input type="file" accept=".csv">
+        <span class="hint">Header bắt buộc: お客様ID, お客様名, 契約プランID</span>
+      </div>
+      <label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:13px">
+        <input type="checkbox"> strictMaster <span class="vi">— chặn import nếu master không khớp</span> <span class="ftag q">?strictMaster=</span>
+      </label>
+    </div>
+    <div class="modal-foot">
+      <span class="api-note">POST /admin/companies/import → {total, succeeded, failed, errorLines[]}</span>
+      <div class="btn-row">
+        <button class="btn" onclick="closeModal('mImport')">キャンセル</button>
+        <button class="btn btn-primary" onclick="closeModal('mImport')">取込実行</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: Bulk issue accounts ===================== -->
+<div class="modal-mask" id="mBulk">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-head">
+      <h3>🔑 アカウント一括発行</h3>
+      <button class="x" onclick="closeModal('mBulk')">×</button>
+    </div>
+    <div class="modal-body">
+      <p>Cấp tài khoản đăng nhập (Cognito) cho người phụ trách MAIN của các công ty đã chọn &amp; gửi email mật khẩu.</p>
+      <div class="notice notice-warn"><span class="ic">⚠️</span><div>Đã chọn <b>3</b> công ty. Gửi body <code>{ companyIds: ["...","...","..."] }</code>.</div></div>
+    </div>
+    <div class="modal-foot">
+      <span class="api-note">POST /admin/companies/bulk-issue-accounts</span>
+      <div class="btn-row">
+        <button class="btn" onclick="closeModal('mBulk')">キャンセル</button>
+        <button class="btn btn-primary" onclick="closeModal('mBulk')">発行する</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: Delete + succession ===================== -->
+<div class="modal-mask" id="mDelete">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-head">
+      <h3>🗑️ 拠点削除 <span class="vi">Xóa công ty</span></h3>
+      <button class="x" onclick="closeModal('mDelete')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="notice notice-warn"><span class="ic">⚠️</span><div>Công ty này còn <b>2 công ty con</b>. Phải chỉ định 1 công ty con <b>kế vị</b> lên làm Mẹ trước khi xóa (succession). Soft-delete: status → 3 DELETED.</div></div>
+      <div class="field">
+        <label>後継拠点 <span class="vi">Công ty con kế vị</span> <span class="ftag">successorId</span> <span style="color:var(--red-500)">*</span></label>
+        <select>
+          <option value="">— 選択 —</option>
+          <option value="51">CU10001 · 夢の扉 京都支店</option>
+          <option value="52">CU10002 · 夢の扉 大阪支店</option>
+        </select>
+        <span class="hint">Bỏ trống &amp; còn con → 400 SUCCESSOR_REQUIRED. Các con còn lại sẽ trỏ parent_id về công ty kế vị.</span>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span class="api-note">DELETE /admin/companies/:id · body {successorId}</span>
+      <div class="btn-row">
+        <button class="btn" onclick="closeModal('mDelete')">キャンセル</button>
+        <button class="btn btn-danger" onclick="closeModal('mDelete')">削除する</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 拠点管理 (E03)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+    <h4>Endpoints</h4>
+    <div class="ep"><span class="m get">GET</span> /admin/companies <span class="guard">AdminGuard</span></div>
+    <div class="ep"><span class="m get">GET</span> /admin/companies/:id/sub-companies <span class="guard">AdminGuard</span></div>
+    <div class="ep"><span class="m post">POST</span> /admin/companies/import <span class="guard">AdminGuard</span></div>
+    <div class="ep"><span class="m post">POST</span> /admin/companies/bulk-issue-accounts <span class="guard">AdminGuard</span></div>
+    <div class="ep"><span class="m post">POST</span> /admin/companies/export-qr <span class="guard">AdminGuard</span></div>
+    <div class="ep"><span class="m delete">DELETE</span> /admin/companies/:id <span class="guard">AdminGuard</span></div>
+
+    <h4>GET /admin/companies — query</h4>
+    <table>
+      <tr><th>Param</th><th>Default</th><th>Ghi chú</th></tr>
+      <tr><td>page</td><td>1</td><td>BaseSearchRequest</td></tr>
+      <tr><td>limit</td><td>10</td><td></td></tr>
+      <tr><td>q</td><td>—</td><td>search code/name/address</td></tr>
+      <tr><td>status</td><td>—</td><td>CompanyStatus 1–5</td></tr>
+      <tr><td>orderBy / order</td><td>createdAt / DESC</td><td></td></tr>
+    </table>
+
+    <h4>Response (data)</h4>
+    <pre>{
+  "items": [
+    {
+      "id": "50",
+      "companyCode": "CU10000",
+      "name": "株式会社夢の扉",
+      "nameKana": "ユメノトビラ",
+      "parentId": null,                // null = Mẹ
+      "addressPrefecture": "京都府",
+      "addressCity": "京都市下京区",
+      "addressStreet": "四条",
+      "customerTel": "075-000-0000",
+      "contactName": "加藤真由美",     // từ companyAdmins (MAIN)
+      "installedMachineCount": 3,
+      "status": 2                       // REGISTERED
+    }
+  ],
+  "total": 100, "page": 1, "limit": 10, "totalPages": 10
+}</pre>
+
+    <h4>Hierarchy & Delete (Phase 2)</h4>
+    <table>
+      <tr><th>Action</th><th>Quy tắc</th></tr>
+      <tr><td>sub-companies</td><td>Recursive CTE theo <code>parent_id</code>. Mẹ = <code>parentId NULL</code>.</td></tr>
+      <tr><td>DELETE còn con</td><td>Bắt buộc <code>successorId</code> ∈ con trực tiếp → repoint sibling, soft-delete Mẹ. Thiếu → <code>400 SUCCESSOR_REQUIRED</code>; sai → <code>400 INVALID_SUCCESSOR</code>.</td></tr>
+      <tr><td>invert-role (C16)</td><td><code>POST /admin/companies/:id/invert-role</code> — đưa con trực tiếp lên làm Mẹ.</td></tr>
+    </table>
+
+    <h4>Import CSV v2</h4>
+    <pre>POST /admin/companies/import      (multipart: file)
+?strictMaster=false  (default giai đoạn A)
+→ { total, succeeded, failed,
+    errorLines:[3,7], errorDetails:[{line,field,message}] }
+// Header bắt buộc: お客様ID, お客様名, 契約プランID
+// Phase 2: resolve プラン/中継先/委託配送業者 → *_master_id
+//          không khớp → RowError MASTER_NOT_FOUND</pre>
+
+    <h4>Errors</h4>
+    <table>
+      <tr><th>HTTP</th><th>Code</th></tr>
+      <tr><td>400</td><td>SUCCESSOR_REQUIRED · INVALID_SUCCESSOR · MASTER_NOT_FOUND</td></tr>
+      <tr><td>404</td><td>COMPANY_NOT_FOUND</td></tr>
+    </table>
+    <p class="muted" style="font-size:11.5px">Prefix <code>/admin</code> = RouterModule (app.module.ts), không phải setGlobalPrefix.</p>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+</body>
+</html>
