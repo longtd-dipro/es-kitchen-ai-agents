@@ -327,19 +327,44 @@ Khi điều kiện lọc không trả về đơn hàng nào, hệ thống hiển
 
 ## Screens
 
+> **Scan source code:** `es-kitchen-web-supplier` — cập nhật 2026-06-17 từ `src/routes/index.tsx`, `src/constants/route.ts`, `src/pages/**`, `src/constants/nav.ts`
+
+### Trạng thái implementation thực tế (E04 — es-kitchen-web-supplier)
+
+| Screen Code | Screen | Route | Dev Status | Ghi chú source |
+|---|---|---|---|---|
+| SW_SUPO_001 | Login | `/login` | **IMPLEMENTED** | `LoginPage.tsx` — field: `ログインID` (companyCode), `パスワード`, button `ログイン`, link `パスワードを忘れた方はこちら` |
+| SW_SUPO_002 | Forgot Password | `/forgot-password` | **IMPLEMENTED** | `ForgotPasswordPage.tsx` — field: `ログインID` (companyCode), `メールアドレス`, button `認証コードを送信` |
+| SW_SUPO_002b | Verify OTP | `/verify` | **IMPLEMENTED** | `VerifyPage.tsx` — OTP 4 digits, countdown 60s, button `確認`, link `再送信` |
+| SW_SUPO_003 | Reset Password | `/reset-password` | **IMPLEMENTED** | `ResetPasswordPage.tsx` — field: `新しいパスワード`, `パスワード（確認用）`, button `確認`, rule: 8~20字英数字 |
+| SW_SUPO_003b | Reset Success | `/reset-success` | **IMPLEMENTED** | `ResetSuccessPage.tsx` — text: `パスワードの再設定が完了し、ログインしました。`, button `ホーム画面へ` |
+| SW_SUPO_004 | Dashboard | `/dashboard` | **IMPLEMENTED (stub)** | `DashboardPage.tsx` — hiển thị `ダッシュボード`, `会社コード`, tên user. Sidebar chỉ có `ダッシュボード` trong NAV_ITEMS |
+| SW_SUPO_005 | TOP Screen (Announcement) | TBD | **NOT IMPLEMENTED** | Chưa có route, chưa có page. SPEC mô tả là màn hình chính nhưng hiện tại `/dashboard` là stub |
+| SW_SUPO_006 | Order List | TBD | **NOT IMPLEMENTED** | Chưa có route `/orders`. NAV_ITEMS chỉ có dashboard |
+| SW_SUPO_007 | Order Detail | TBD | **NOT IMPLEMENTED** | Chưa có route `/orders/:id` |
+| SW_SUPO_008 | Shipping Schedule Response | TBD | **NOT IMPLEMENTED** | Chưa có route |
+| SW_SUPO_009 | Shipping Report Form | TBD | **NOT IMPLEMENTED** | Chưa có modal/route |
+| SW_SUPO_010 | CSV Download | TBD | **NOT IMPLEMENTED** | Chưa có route |
+| SW_SUPO_011 | Change Password | TBD | **NOT IMPLEMENTED** | Chưa có route `/change-password`. ROUTE constant chưa có key này |
+
+### Screens table (Figma links)
+
 | Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn | Figma Link |
 |---|---|---|---|---|---|---|
 | AW_SUPO_001 | Supplier Management | E03 | E03 (es-kitchen-web-admin) | List | Xem danh sách, tìm kiếm, chỉnh sửa, xóa tài khoản Supplier | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75411&m=dev) |
-| SW_SUPO_001 | Login | E04 | E04 (es-kitchen-web-supplier) | Form | Đăng nhập bằng ID / Mật khẩu | [Figma](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=16479-124158&m=dev) |
-| SW_SUPO_002 | Forgot Password | E04 | E04 (es-kitchen-web-supplier) | Form | Nhập email để nhận link reset mật khẩu *inferred | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75640&m=dev) |
-| SW_SUPO_003 | Reset Password *inferred | E04 | E04 (es-kitchen-web-supplier) | Form | Đặt lại mật khẩu qua link email | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75658&m=dev) |
-| SW_SUPO_004 | TOP Screen (Announcement) | E04 | E04 (es-kitchen-web-supplier) | List | Màn hình chính: danh sách thông báo + dropdown chi tiết + tải file đính kèm | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75676&m=dev) |
-| SW_SUPO_005 | Order List | E04 | E04 (es-kitchen-web-supplier) | List | Danh sách đơn hàng phân tab theo trạng thái, lọc theo tháng/năm/ngày xuất/trạng thái | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19607-74826&m=dev) |
-| SW_SUPO_006 | Order Detail | E04 | E04 (es-kitchen-web-supplier) | Detail | Chi tiết đơn: Số đơn, ngày giao, hạn sử dụng, sản phẩm, số lượng, nơi giao hàng | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75905&m=dev) |
-| SW_SUPO_007 | Shipping Schedule Response | E04 | E04 (es-kitchen-web-supplier) | Form | Nhập ngày dự kiến xuất hàng và ghi chú phản hồi đơn (Mốc 4) *inferred | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75995&m=dev) |
-| SW_SUPO_008 | Shipping Report Form | E04 | E04 (es-kitchen-web-supplier) | Modal | Báo cáo xuất hàng thực tế (Modal trong Order Detail): ngày xuất, công ty vận chuyển, thanh toán, hạn sử dụng (Mốc 5) | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-76085&m=dev) |
-| SW_SUPO_009 | CSV Download | E04 | E04 (es-kitchen-web-supplier) | Form | Chọn điều kiện lọc (khoảng thời gian / sản phẩm) và tải CSV đơn hàng | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-76175&m=dev) |
-| SW_SUPO_010 | Change Password | E04 | E04 (es-kitchen-web-supplier) | Form | Đổi mật khẩu: nhập mật khẩu hiện tại và mật khẩu mới | TBD — reuse existing design |
+| SW_SUPO_001 | Login | E04 | E04 (es-kitchen-web-supplier) | Form | Đăng nhập bằng companyCode / Mật khẩu — **Route: `/login`** | [Figma](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=16479-124158&m=dev) |
+| SW_SUPO_002 | Forgot Password | E04 | E04 (es-kitchen-web-supplier) | Form | Nhập companyCode + email để nhận OTP — **Route: `/forgot-password`** | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75640&m=dev) |
+| SW_SUPO_002b | Verify OTP | E04 | E04 (es-kitchen-web-supplier) | Form | Nhập mã OTP 4 chữ số — **Route: `/verify`** | — |
+| SW_SUPO_003 | Reset Password | E04 | E04 (es-kitchen-web-supplier) | Form | Đặt lại mật khẩu mới — **Route: `/reset-password`** | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75658&m=dev) |
+| SW_SUPO_003b | Reset Success | E04 | E04 (es-kitchen-web-supplier) | Info | Xác nhận đặt lại thành công — **Route: `/reset-success`** | — |
+| SW_SUPO_004 | Dashboard (stub) | E04 | E04 (es-kitchen-web-supplier) | Info | Hiện tại chỉ hiển thị tên user + companyCode — **Route: `/dashboard`** | — |
+| SW_SUPO_005 | TOP Screen (Announcement) | E04 | E04 (es-kitchen-web-supplier) | List | Màn hình chính: danh sách thông báo + dropdown chi tiết + tải file đính kèm | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75676&m=dev) |
+| SW_SUPO_006 | Order List | E04 | E04 (es-kitchen-web-supplier) | List | Danh sách đơn hàng phân tab theo trạng thái, lọc theo tháng/năm/ngày xuất/trạng thái | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19607-74826&m=dev) |
+| SW_SUPO_007 | Order Detail | E04 | E04 (es-kitchen-web-supplier) | Detail | Chi tiết đơn: Số đơn, ngày giao, hạn sử dụng, sản phẩm, số lượng, nơi giao hàng | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75905&m=dev) |
+| SW_SUPO_008 | Shipping Schedule Response | E04 | E04 (es-kitchen-web-supplier) | Form | Nhập ngày dự kiến xuất hàng và ghi chú phản hồi đơn (Mốc 4) | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75995&m=dev) |
+| SW_SUPO_009 | Shipping Report Form | E04 | E04 (es-kitchen-web-supplier) | Modal | Báo cáo xuất hàng thực tế (Modal trong Order Detail): ngày xuất, công ty vận chuyển, thanh toán, hạn sử dụng (Mốc 5) | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-76085&m=dev) |
+| SW_SUPO_010 | CSV Download | E04 | E04 (es-kitchen-web-supplier) | Form | Chọn điều kiện lọc (khoảng thời gian / sản phẩm) và tải CSV đơn hàng | [Figma (high-fi)](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-76175&m=dev) |
+| SW_SUPO_011 | Change Password | E04 | E04 (es-kitchen-web-supplier) | Form | Đổi mật khẩu: nhập mật khẩu hiện tại và mật khẩu mới | TBD — reuse existing design |
 
 ---
 

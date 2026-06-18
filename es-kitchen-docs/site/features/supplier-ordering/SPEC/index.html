@@ -7031,6 +7031,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Screens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trang-thai-implementation-thuc-te-e04-es-kitchen-web-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trạng thái implementation thực tế (E04 — es-kitchen-web-supplier)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#screens-table-figma-links" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Screens table (Figma links)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -8293,6 +8321,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Screens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trang-thai-implementation-thuc-te-e04-es-kitchen-web-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trạng thái implementation thực tế (E04 — es-kitchen-web-supplier)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#screens-table-figma-links" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Screens table (Figma links)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -8945,6 +9001,115 @@
 </ul>
 <hr />
 <h2 id="screens">Screens</h2>
+<blockquote>
+<p><strong>Scan source code:</strong> <code>es-kitchen-web-supplier</code> — cập nhật 2026-06-17 từ <code>src/routes/index.tsx</code>, <code>src/constants/route.ts</code>, <code>src/pages/**</code>, <code>src/constants/nav.ts</code></p>
+</blockquote>
+<h3 id="trang-thai-implementation-thuc-te-e04-es-kitchen-web-supplier">Trạng thái implementation thực tế (E04 — es-kitchen-web-supplier)</h3>
+<table>
+<thead>
+<tr>
+<th>Screen Code</th>
+<th>Screen</th>
+<th>Route</th>
+<th>Dev Status</th>
+<th>Ghi chú source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SW_SUPO_001</td>
+<td>Login</td>
+<td><code>/login</code></td>
+<td><strong>IMPLEMENTED</strong></td>
+<td><code>LoginPage.tsx</code> — field: <code>ログインID</code> (companyCode), <code>パスワード</code>, button <code>ログイン</code>, link <code>パスワードを忘れた方はこちら</code></td>
+</tr>
+<tr>
+<td>SW_SUPO_002</td>
+<td>Forgot Password</td>
+<td><code>/forgot-password</code></td>
+<td><strong>IMPLEMENTED</strong></td>
+<td><code>ForgotPasswordPage.tsx</code> — field: <code>ログインID</code> (companyCode), <code>メールアドレス</code>, button <code>認証コードを送信</code></td>
+</tr>
+<tr>
+<td>SW_SUPO_002b</td>
+<td>Verify OTP</td>
+<td><code>/verify</code></td>
+<td><strong>IMPLEMENTED</strong></td>
+<td><code>VerifyPage.tsx</code> — OTP 4 digits, countdown 60s, button <code>確認</code>, link <code>再送信</code></td>
+</tr>
+<tr>
+<td>SW_SUPO_003</td>
+<td>Reset Password</td>
+<td><code>/reset-password</code></td>
+<td><strong>IMPLEMENTED</strong></td>
+<td><code>ResetPasswordPage.tsx</code> — field: <code>新しいパスワード</code>, <code>パスワード（確認用）</code>, button <code>確認</code>, rule: 8~20字英数字</td>
+</tr>
+<tr>
+<td>SW_SUPO_003b</td>
+<td>Reset Success</td>
+<td><code>/reset-success</code></td>
+<td><strong>IMPLEMENTED</strong></td>
+<td><code>ResetSuccessPage.tsx</code> — text: <code>パスワードの再設定が完了し、ログインしました。</code>, button <code>ホーム画面へ</code></td>
+</tr>
+<tr>
+<td>SW_SUPO_004</td>
+<td>Dashboard</td>
+<td><code>/dashboard</code></td>
+<td><strong>IMPLEMENTED (stub)</strong></td>
+<td><code>DashboardPage.tsx</code> — hiển thị <code>ダッシュボード</code>, <code>会社コード</code>, tên user. Sidebar chỉ có <code>ダッシュボード</code> trong NAV_ITEMS</td>
+</tr>
+<tr>
+<td>SW_SUPO_005</td>
+<td>TOP Screen (Announcement)</td>
+<td>TBD</td>
+<td><strong>NOT IMPLEMENTED</strong></td>
+<td>Chưa có route, chưa có page. SPEC mô tả là màn hình chính nhưng hiện tại <code>/dashboard</code> là stub</td>
+</tr>
+<tr>
+<td>SW_SUPO_006</td>
+<td>Order List</td>
+<td>TBD</td>
+<td><strong>NOT IMPLEMENTED</strong></td>
+<td>Chưa có route <code>/orders</code>. NAV_ITEMS chỉ có dashboard</td>
+</tr>
+<tr>
+<td>SW_SUPO_007</td>
+<td>Order Detail</td>
+<td>TBD</td>
+<td><strong>NOT IMPLEMENTED</strong></td>
+<td>Chưa có route <code>/orders/:id</code></td>
+</tr>
+<tr>
+<td>SW_SUPO_008</td>
+<td>Shipping Schedule Response</td>
+<td>TBD</td>
+<td><strong>NOT IMPLEMENTED</strong></td>
+<td>Chưa có route</td>
+</tr>
+<tr>
+<td>SW_SUPO_009</td>
+<td>Shipping Report Form</td>
+<td>TBD</td>
+<td><strong>NOT IMPLEMENTED</strong></td>
+<td>Chưa có modal/route</td>
+</tr>
+<tr>
+<td>SW_SUPO_010</td>
+<td>CSV Download</td>
+<td>TBD</td>
+<td><strong>NOT IMPLEMENTED</strong></td>
+<td>Chưa có route</td>
+</tr>
+<tr>
+<td>SW_SUPO_011</td>
+<td>Change Password</td>
+<td>TBD</td>
+<td><strong>NOT IMPLEMENTED</strong></td>
+<td>Chưa có route <code>/change-password</code>. ROUTE constant chưa có key này</td>
+</tr>
+</tbody>
+</table>
+<h3 id="screens-table-figma-links">Screens table (Figma links)</h3>
 <table>
 <thead>
 <tr>
@@ -8973,7 +9138,7 @@
 <td>E04</td>
 <td>E04 (es-kitchen-web-supplier)</td>
 <td>Form</td>
-<td>Đăng nhập bằng ID / Mật khẩu</td>
+<td>Đăng nhập bằng companyCode / Mật khẩu — <strong>Route: <code>/login</code></strong></td>
 <td><a href="https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=16479-124158&amp;m=dev">Figma</a></td>
 </tr>
 <tr>
@@ -8982,20 +9147,47 @@
 <td>E04</td>
 <td>E04 (es-kitchen-web-supplier)</td>
 <td>Form</td>
-<td>Nhập email để nhận link reset mật khẩu *inferred</td>
+<td>Nhập companyCode + email để nhận OTP — <strong>Route: <code>/forgot-password</code></strong></td>
 <td><a href="https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75640&amp;m=dev">Figma (high-fi)</a></td>
 </tr>
 <tr>
-<td>SW_SUPO_003</td>
-<td>Reset Password *inferred</td>
+<td>SW_SUPO_002b</td>
+<td>Verify OTP</td>
 <td>E04</td>
 <td>E04 (es-kitchen-web-supplier)</td>
 <td>Form</td>
-<td>Đặt lại mật khẩu qua link email</td>
+<td>Nhập mã OTP 4 chữ số — <strong>Route: <code>/verify</code></strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td>SW_SUPO_003</td>
+<td>Reset Password</td>
+<td>E04</td>
+<td>E04 (es-kitchen-web-supplier)</td>
+<td>Form</td>
+<td>Đặt lại mật khẩu mới — <strong>Route: <code>/reset-password</code></strong></td>
 <td><a href="https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75658&amp;m=dev">Figma (high-fi)</a></td>
 </tr>
 <tr>
+<td>SW_SUPO_003b</td>
+<td>Reset Success</td>
+<td>E04</td>
+<td>E04 (es-kitchen-web-supplier)</td>
+<td>Info</td>
+<td>Xác nhận đặt lại thành công — <strong>Route: <code>/reset-success</code></strong></td>
+<td>—</td>
+</tr>
+<tr>
 <td>SW_SUPO_004</td>
+<td>Dashboard (stub)</td>
+<td>E04</td>
+<td>E04 (es-kitchen-web-supplier)</td>
+<td>Info</td>
+<td>Hiện tại chỉ hiển thị tên user + companyCode — <strong>Route: <code>/dashboard</code></strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td>SW_SUPO_005</td>
 <td>TOP Screen (Announcement)</td>
 <td>E04</td>
 <td>E04 (es-kitchen-web-supplier)</td>
@@ -9004,7 +9196,7 @@
 <td><a href="https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75676&amp;m=dev">Figma (high-fi)</a></td>
 </tr>
 <tr>
-<td>SW_SUPO_005</td>
+<td>SW_SUPO_006</td>
 <td>Order List</td>
 <td>E04</td>
 <td>E04 (es-kitchen-web-supplier)</td>
@@ -9013,7 +9205,7 @@
 <td><a href="https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19607-74826&amp;m=dev">Figma (high-fi)</a></td>
 </tr>
 <tr>
-<td>SW_SUPO_006</td>
+<td>SW_SUPO_007</td>
 <td>Order Detail</td>
 <td>E04</td>
 <td>E04 (es-kitchen-web-supplier)</td>
@@ -9022,16 +9214,16 @@
 <td><a href="https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75905&amp;m=dev">Figma (high-fi)</a></td>
 </tr>
 <tr>
-<td>SW_SUPO_007</td>
+<td>SW_SUPO_008</td>
 <td>Shipping Schedule Response</td>
 <td>E04</td>
 <td>E04 (es-kitchen-web-supplier)</td>
 <td>Form</td>
-<td>Nhập ngày dự kiến xuất hàng và ghi chú phản hồi đơn (Mốc 4) *inferred</td>
+<td>Nhập ngày dự kiến xuất hàng và ghi chú phản hồi đơn (Mốc 4)</td>
 <td><a href="https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-75995&amp;m=dev">Figma (high-fi)</a></td>
 </tr>
 <tr>
-<td>SW_SUPO_008</td>
+<td>SW_SUPO_009</td>
 <td>Shipping Report Form</td>
 <td>E04</td>
 <td>E04 (es-kitchen-web-supplier)</td>
@@ -9040,7 +9232,7 @@
 <td><a href="https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-76085&amp;m=dev">Figma (high-fi)</a></td>
 </tr>
 <tr>
-<td>SW_SUPO_009</td>
+<td>SW_SUPO_010</td>
 <td>CSV Download</td>
 <td>E04</td>
 <td>E04 (es-kitchen-web-supplier)</td>
@@ -9049,7 +9241,7 @@
 <td><a href="https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=19619-76175&amp;m=dev">Figma (high-fi)</a></td>
 </tr>
 <tr>
-<td>SW_SUPO_010</td>
+<td>SW_SUPO_011</td>
 <td>Change Password</td>
 <td>E04</td>
 <td>E04 (es-kitchen-web-supplier)</td>

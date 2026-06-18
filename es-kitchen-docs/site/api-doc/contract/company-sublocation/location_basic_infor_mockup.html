@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E02 · 基本情報 — Thông tin cơ bản (拠点/会社)</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="../index.html">← Mockup Index</a>
+  <div class="tb-user"><span class="avatar">夢</span> 夢の扉</div>
+</div>
+
+<div class="page">
+
+  <div class="breadcrumb">
+    <a href="../index.html">Home</a><span class="sep">›</span>
+    <a href="list_sub_location_mockup.html">拠点管理</a><span class="sep">›</span>
+    夢の扉 京都支店<span class="sep">›</span>
+    <b>基本情報</b> <span class="vi">(Thông tin cơ bản)</span>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <div class="page-title"><span class="accent-bar"></span> 基本情報 <span class="vi">Thông tin cơ bản</span></div>
+      <div class="page-sub">夢の扉 京都支店 (CU10001) — xem / sửa thông tin cơ bản của công ty đang đăng nhập hoặc công ty con.</div>
+    </div>
+    <button class="btn">✏️ 編集 <span class="vi">Chỉnh sửa</span></button>
+  </div>
+
+  <!-- ===== Tab bar (shared 4 sibling screens) ===== -->
+  <div class="tabs">
+    <a class="active" href="location_basic_infor_mockup.html">基本情報</a>
+    <a href="contact_mockup.html">担当者</a>
+    <a href="list_contract_of_location.html">契約一覧</a>
+    <a href="location_history_changes_mockup.html">変更履歴</a>
+  </div>
+
+  <!-- Notice: basic-info áp dụng ngay, không qua duyệt -->
+  <div class="notice notice-info">
+    <span class="ic">💡</span>
+    <div>Sửa basic-info áp dụng <b>NGAY</b> + ghi log (<b>KHÔNG</b> qua duyệt). Chỉ thao tác <b>HỢP ĐỒNG</b> mới cần E03 duyệt.</div>
+  </div>
+
+  <!-- ========== 基本情報 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>基本情報 <span class="vi">Thông tin cơ bản</span></h3>
+      <span class="chip chip-blue no-dot">本登録</span></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field"><label>拠点ID <span class="vi">Mã</span> <span class="ftag ro">companyCode</span></label><input value="CU10001" readonly></div>
+        <div class="field"><label>拠点名 / 会社名 <span class="vi">Tên</span> <span class="ftag">name</span></label><input value="夢の扉 京都支店"></div>
+        <div class="field"><label>カナ <span class="vi">Tên Kana</span> <span class="ftag">nameKana</span></label><input value="ユメノトビラ キョウトシテン"></div>
+        <div class="field">
+          <label>ステータス <span class="vi">Trạng thái</span> <span class="ftag ro">status</span></label>
+          <input value="本登録 (REGISTERED)" readonly>
+          <span class="api-note">read-only — chip: <span class="chip chip-blue no-dot">本登録</span></span>
+        </div>
+        <div class="field"><label>部署 <span class="vi">Phòng ban</span> <span class="ftag">department</span></label><input value="営業部"></div>
+        <div class="field"><label>従業員数 <span class="vi">Số nhân viên</span> <span class="ftag">employeeCount</span></label><input value="100"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 住所 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>住所 <span class="vi">Địa chỉ</span></h3></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field"><label>郵便番号 <span class="vi">Mã bưu điện</span> <span class="ftag">customerPostalCode</span></label><input value="600-8001" placeholder="\d{3}-\d{4}"></div>
+        <div class="field"><label>都道府県 <span class="vi">Tỉnh/TP</span> <span class="ftag">addressPrefecture</span></label><input value="京都府"></div>
+        <div class="field"><label>市区町村 <span class="vi">Quận/Huyện</span> <span class="ftag">addressCity</span></label><input value="京都市中京区"></div>
+        <div class="field"><label>町域・番地 <span class="vi">Phường/Số nhà</span> <span class="ftag">addressStreet</span></label><input value="烏丸通三条"></div>
+        <div class="field"><label>建物・部屋番号 <span class="vi">Tòa nhà/Phòng</span> <span class="ftag">addressBuilding</span></label><input value="夢ビル 4F"></div>
+        <div class="field"><label>電話番号 <span class="vi">SĐT</span> <span class="ftag">customerTel</span></label><input value="075-111-1111"></div>
+        <div class="field"><label>FAX <span class="vi">Số FAX</span> <span class="ftag">fax</span></label><input value="075-111-1112"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== その他設定 ========== -->
+  <div class="card">
+    <div class="card-head"><h3>その他設定 <span class="vi">Cấu hình khác</span></h3></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field"><label>機種数 <span class="vi">Số máy lắp đặt</span> <span class="ftag">installedMachineCount</span></label><input value="3"></div>
+        <div class="field">
+          <label>現金決済可否 <span class="vi">Cho phép tiền mặt</span> <span class="ftag">isCashPaymentAllowed</span></label>
+          <select><option value="true">可 (Có thể)</option><option value="false">不可 (Không)</option></select>
+          <span class="api-note">boolean — <code>true</code> = 可 / <code>false</code> = 不可</span>
+        </div>
+        <div class="field">
+          <label>ゲスト決済可否 <span class="vi">Cho phép khách (guest)</span> <span class="ftag">isGuestPaymentAllowed</span></label>
+          <select><option value="true">可 (Có thể)</option><option value="false">不可 (Không)</option></select>
+          <span class="api-note">boolean — <code>true</code> = 可 / <code>false</code> = 不可</span>
+        </div>
+        <div class="field"><label>注文数制限 <span class="vi">Giới hạn số đơn</span> <span class="ftag">orderLimit</span></label><input value="10" placeholder="null = không giới hạn"></div>
+        <div class="field"><label>月間上限額 <span class="vi">Hạn mức tháng/người</span> <span class="ftag">userMonthlyLimit</span></label><input value="" placeholder="円 · null = không giới hạn"></div>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>お客様備考 <span class="vi">Ghi chú khách hàng</span> <span class="ftag">customerNote</span></label>
+        <textarea rows="3" placeholder="Ghi chú">お客様備考</textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer actions -->
+  <div class="toolbar" style="margin-top:18px">
+    <div class="spacer"></div>
+    <button class="btn btn-primary btn-lg">💾 保存 <span class="vi">Lưu</span>
+      <span class="api-note">PATCH /company-admin/company/basic-info</span></button>
+  </div>
+
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 基本情報 (E02)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>Endpoints — Self (công ty đang đăng nhập · S2/S3)</h4>
+    <div class="ep"><span class="m get">GET</span> /company-admin/company/basic-info <span class="guard">AdminCompanyGuard</span></div>
+    <div class="ep"><span class="m patch">PATCH</span> /company-admin/company/basic-info <span class="guard">AdminCompanyGuard</span></div>
+
+    <h4>Endpoints — Sub-company (công ty con · G3/G4)</h4>
+    <div class="ep"><span class="m get">GET</span> /company-admin/company/sub-companies/:id <span class="guard">AdminCompanyGuard</span></div>
+    <div class="ep"><span class="m patch">PATCH</span> /company-admin/company/sub-companies/:id/basic-info <span class="guard">AdminCompanyGuard</span></div>
+    <p class="muted" style="font-size:11.5px">Self &amp; sub-company dùng <b>cùng layout</b>. Sub khác ở chỗ <code>:id</code> trong path (phải thuộc subtree của công ty đang đăng nhập).</p>
+
+    <h4>Response (data) — GET</h4>
+    <pre>{
+  "id": "51",
+  "companyCode": "CU10001",          // ro · 拠点ID
+  "name": "夢の扉 京都支店",          // 拠点名 / 会社名
+  "nameKana": "ユメノトビラ キョウトシテン",
+  "status": 2,                        // ro · 1–5 (2 = REGISTERED 本登録)
+  "department": "営業部",
+  "employeeCount": 100,
+  "customerPostalCode": "600-8001",  // \d{3}-\d{4}
+  "addressPrefecture": "京都府",
+  "addressCity": "京都市中京区",
+  "addressStreet": "烏丸通三条",
+  "addressBuilding": "夢ビル 4F",     // nullable
+  "customerTel": "075-111-1111",
+  "fax": "075-111-1112",             // nullable
+  "installedMachineCount": 3,
+  "isCashPaymentAllowed": true,      // boolean · 現金決済可否
+  "isGuestPaymentAllowed": true,     // boolean · ゲスト決済可否
+  "orderLimit": 10,                  // nullable · null = không giới hạn
+  "userMonthlyLimit": null,          // nullable · 円 · null = không giới hạn
+  "customerNote": "お客様備考"        // nullable
+}</pre>
+
+    <h4>Body — PATCH (editable subset · partial)</h4>
+    <pre>// companyCode &amp; status KHÔNG sửa (read-only).
+// Chỉ gửi field cần thay đổi:
+{
+  "name": "新しい拠点名",
+  "nameKana": "アタラシイキョテンメイ",
+  "department": "総務部",
+  "employeeCount": 120,
+  "customerPostalCode": "600-8002",
+  "addressPrefecture": "京都府",
+  "addressCity": "京都市中京区",
+  "addressStreet": "烏丸通四条",
+  "addressBuilding": "夢ビル 5F",
+  "customerTel": "075-111-2222",
+  "fax": null,                       // null = xóa FAX
+  "installedMachineCount": 4,
+  "isCashPaymentAllowed": false,     // ★ boolean
+  "isGuestPaymentAllowed": true,     // ★ boolean
+  "orderLimit": 15,                  // number | null
+  "userMonthlyLimit": 50000,         // number | null
+  "customerNote": "更新されたメモ"
+}
+// → áp dụng NGAY + ghi log (không qua duyệt). Response = full company object (same shape as GET).</pre>
+
+    <h4>Note</h4>
+    <table>
+      <tr><th>Field</th><th>Ghi chú</th></tr>
+      <tr><td><code>isCashPaymentAllowed</code></td><td>boolean — <code>true</code> = 可 / <code>false</code> = 不可</td></tr>
+      <tr><td><code>isGuestPaymentAllowed</code></td><td>boolean — <code>true</code> = 可 / <code>false</code> = 不可</td></tr>
+      <tr><td><code>orderLimit</code> · <code>userMonthlyLimit</code></td><td><code>null</code> = không giới hạn</td></tr>
+      <tr><td><code>companyCode</code> · <code>status</code></td><td>read-only — không nhận trong PATCH body</td></tr>
+    </table>
+
+    <h4>Errors</h4>
+    <table>
+      <tr><th>HTTP</th><th>Code</th></tr>
+      <tr><td>403</td><td>COMPANY_OUT_OF_SCOPE (sub-company <code>:id</code> ngoài subtree)</td></tr>
+      <tr><td>404</td><td>COMPANY_NOT_FOUND (<code>:id</code> không tồn tại)</td></tr>
+    </table>
+    <p class="muted" style="font-size:11.5px">Sửa basic-info <b>không</b> tạo pending — chỉ thao tác hợp đồng mới đi qua luồng E03 approve.</p>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+</body>
+</html>

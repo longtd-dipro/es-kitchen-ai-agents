@@ -16,6 +16,14 @@
 | `/generate-api <module>` | Scaffold NestJS module | `backend-agent` |
 | `/create-component <Name> [admin\|company]` | Scaffold React component | `frontend-agent` |
 
+## QC Automation Testing
+
+| Command | Chức năng | Agent |
+|---|---|---|
+| `/qc-automation <feature-path> <figma-url> <target-app> <website-url>` | Sinh Playwright `.spec.ts` + chạy E2E test + xuất `execution-report.md` | `qc-automation-agent.md` |
+
+> Prefer trigger tự nhiên: **"Hãy là QC Automation, test feature: `<path>`, Figma: `<url>`, app: `<app>`, website: `<url>`"**
+
 ## QC Manual Testing (`/test/*`)
 
 > Canonical workflow: `qc-agent.md`

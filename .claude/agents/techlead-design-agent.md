@@ -103,12 +103,27 @@ es-kitchen-docs/docs/features/<feature-name>/<repo-name>/DESIGN.md
 - Key pattern: `<prefix>:<id>` (TTL: Xs)
 - Invalidation strategy
 
-## 3. API Contract
+## 3. API Definition
+> **Nguồn gốc cho CONTRACT LOCK và task-3-x FE/Mobile.** Điền đủ bảng này — FE/Mobile copy trực tiếp vào task của họ mà không cần đoán.
+
 ### Endpoint mới / thay đổi
-- Method + Path
-- Request DTO (fields, validation rules)
-- Response DTO
-- Error codes
+
+| Method | Endpoint | Auth | Request | Response | Error codes |
+|---|---|---|---|---|---|
+| GET | `/api/<resource>` | JWT | `?page=1&limit=10&<filter>` | `{ items: <DTO>[], total: number }` | 401, 403 |
+| POST | `/api/<resource>` | JWT | `{ field: type (required/optional) }` | `{ id, ...fields }` | 400, 409 |
+
+**Request DTO chi tiết** (validation rules):
+```
+<FieldName>: <type> — <required|optional>, <validation rule>
+```
+
+**Response DTO chi tiết** (tất cả fields FE cần render):
+```
+<FieldName>: <type> — <mô tả ngắn>
+```
+
+**Base URL:** `VITE_API_URL` env var — không hard-code trong FE
 
 ## 4. Service Layer
 - Method signatures mới/thay đổi

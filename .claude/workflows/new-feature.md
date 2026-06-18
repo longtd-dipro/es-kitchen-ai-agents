@@ -18,7 +18,7 @@ DESIGN.md per repo  ←── /create-design <SPEC.md>
       ▼ [techlead-tasks-agent]
 tasks/task-*.md  ←── /create-tasks <feature-folder/>
   Phase 1,2 → template Bước 6 (BE)
-  Phase 3   → template Bước 6b (FE/Mobile — có ## API Contract)
+  Phase 3   → template Bước 6b (FE/Mobile — có ## API Definition)
       │
       ▼ [pm-agent]
    PLAN.md  ←── /create-plan <feature-folder/>
@@ -27,9 +27,9 @@ tasks/task-*.md  ←── /create-tasks <feature-folder/>
       │
       ▼ [backend-agent]
   task-1-x (DB migration)
-  task-2-x (API endpoint) → output: API Contract table
+  task-2-x (API endpoint) → output: API Definition table
       │
-      ▼ copy API Contract vào task-3-x.md
+      ▼ copy API Definition vào task-3-x.md
       │
       ┌─────────────────┬──────────────────┐
       │                 │                  │
@@ -102,7 +102,7 @@ tilth_deps(path: "<file sẽ thay đổi>")
 
 **Output:** `tasks/task-X-Y.md` per repo
 
-> **Quan trọng:** Task Phase 3 (FE/Mobile) dùng template riêng (Bước 6b trong `techlead-tasks-agent.md`). Template này có sẵn section `## API Contract` chờ BE điền sau khi hoàn thành task-2-X.
+> **Quan trọng:** Task Phase 3 (FE/Mobile) dùng template riêng (Bước 6b trong `techlead-tasks-agent.md`). Template này có sẵn section `## API Definition` chờ BE điền sau khi hoàn thành task-2-X.
 
 ---
 
@@ -119,13 +119,18 @@ tilth_deps(path: "<file sẽ thay đổi>")
 
 ## CONTRACT LOCK ⚠️ (trước Phase 3)
 
+**Nguồn tham chiếu:** `DESIGN.md ## 3. API Definition` (per repo es-kitchen-api) — bảng này phải có trước khi sign-off.
+
 Phải confirm đầy đủ trước khi FE/Mobile bắt đầu implement:
 
-- [ ] REST API endpoints: method, path, request/response DTO, error codes
+- [ ] `DESIGN.md ## 3. API Definition` đã có bảng đủ cột: Method / Endpoint / Auth / Request / Response / Error codes
 - [ ] WebSocket events: tên event, payload schema (nếu có)
 - [ ] Push notification: payload format, trigger condition (nếu có)
+- [ ] FE/Mobile đã đọc và hiểu DESIGN.md — không có câu hỏi chưa giải đáp
 
 **Ai confirm:** Backend dev + Frontend dev + Mobile dev (nếu có) + PM
+
+> Nếu DESIGN.md chưa có `## 3. API Definition` → yêu cầu `techlead-design-agent` bổ sung trước khi lock.
 
 ---
 
@@ -142,9 +147,9 @@ Phải confirm đầy đủ trước khi FE/Mobile bắt đầu implement:
 task-1-x (BE — DB migration)
     ↓
 task-2-x (BE — API endpoint)
-    ↓ [BE output API Contract → copy vào task-3-x trước khi FE bắt đầu]
+    ↓ [BE output API Definition → copy vào task-3-x trước khi FE bắt đầu]
 task-3-x (FE + Mobile, song song):
-    Step 1 — Tạo service file  (gọi đúng endpoint trong API Contract)
+    Step 1 — Tạo service file  (gọi đúng endpoint trong API Definition)
     Step 2 — Tạo TanStack Query hooks
     Step 3 — Implement UI, wire hooks vào giao diện
     ↓ [Integration check: FE-localhost + BE-localhost = data thật trên màn hình]
@@ -152,8 +157,8 @@ task-4-x (Integration test)
 ```
 
 **Sau khi BE xong task-2-x:**
-1. Copy bảng `## API Contract` từ BE output vào section tương ứng trong `task-3-x.md`
-2. FE/Mobile mới bắt đầu implement — không code FE trước khi có API Contract
+1. Copy bảng `## API Definition` từ BE output vào section tương ứng trong `task-3-x.md`
+2. FE/Mobile task có gọi API → không bắt đầu implement trước khi có API Definition. FE task thuần UI (component, layout, không gọi API) không bị ràng buộc này.
 
 **Sau mỗi task:** Chạy Memory Update Gate (xem `AGENTS.md`).
 
