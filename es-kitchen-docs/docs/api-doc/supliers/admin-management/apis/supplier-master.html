@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>仕入先マスタ — API 配線ガイド (Admin)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#0062CC; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F8F9FA; color:#222; }
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;margin-left:6px;
+    background:var(--primary);color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none; }
+  .nb:hover{ transform:scale(1.18);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .form-input{ height:36px;border:1px solid #D1D5DB;border-radius:6px;padding:0 10px;font-size:14px;background:#fff; }
+  .status-pill{ display:inline-block;font-size:12px;font-weight:700;padding:3px 12px;border-radius:12px; }
+  .dt{ width:100%;border-collapse:collapse; }
+  .dt th{ background:#F3F4F6;color:#6B7280;font-size:12px;font-weight:700;text-align:left;padding:10px 12px;border-bottom:1px solid #E5E7EB;white-space:nowrap; }
+  .dt td{ padding:12px;font-size:13px;border-bottom:1px solid #E5E7EB;vertical-align:middle;white-space:nowrap; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:860px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#dbeafe; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-post{background:#bee3f8;color:#2a4365;} .m-put{background:#feebc8;color:#9c4221;} .m-del{background:#fed7d7;color:#9b2c2c;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+</style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Admin · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">仕入先マスタ — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số</b> bất kỳ → panel phải hiện <b>nguyên bảng tổng quan + API docs</b> (highlight dòng đã click). Contract: <code>SUPPLIER_DB_API_DESIGN.md › 2.2 / 2.3</code> · base <code>/admin/*</code> · permission <code>supplier_master.*</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (GET)</span>
+      <span><span class="nb act" style="cursor:default">n</span> action/ghi (POST/PUT/DELETE)</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP ===== -->
+  <div class="card p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-bold text-gray-900">仕入先マスタ</h2>
+      <div class="flex items-center gap-2">
+        <button class="px-3 py-2 rounded-lg border border-gray-300 bg-gray-100 text-gray-400 text-sm cursor-not-allowed" title="選択した仕入先のアカウントを発行"><i class="fa-solid fa-key mr-1"></i>アカウント発行 <span class="text-gray-400">(0)</span><span class="nb act" data-n="10">10</span></button>
+        <button class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm"><i class="fa-solid fa-upload mr-1"></i>CSV取込<span class="nb act" data-n="7">7</span></button>
+        <button class="px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 text-sm"><i class="fa-solid fa-download mr-1"></i>CSV出力<span class="nb act" data-n="8">8</span></button>
+        <button class="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium"><i class="fa-solid fa-plus mr-1"></i>新規登録<span class="nb act" data-n="9">9</span></button>
+      </div>
+    </div>
+
+    <!-- filter (2 hàng như mock) -->
+    <div class="rounded-xl border border-gray-200 p-4 mb-5">
+      <div class="flex flex-wrap items-center gap-3 mb-3">
+        <input class="form-input" placeholder="仕入先ID、仕入先名" style="min-width:240px" /><span class="nb" data-n="1">1</span>
+        <select class="form-input"><option>ステータス</option><option>本登録</option><option>未登録</option></select><span class="nb" data-n="2">2</span>
+        <button class="px-4 py-2 rounded-lg border text-gray-600 text-sm">クリア</button>
+        <button class="px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium">検索<span class="nb" data-n="6">6</span></button>
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <select class="form-input"><option>作れる商品</option><option>商品A</option></select><span class="nb" data-n="4">4</span>
+        <select class="form-input"><option>仕入れ先区分</option><option>区分1</option><option>区分2</option></select><span class="nb" data-n="3">3</span>
+        <button class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 text-sm"><i class="fa-solid fa-arrow-down-wide-short mr-1"></i>並べ替え</button><span class="nb" data-n="5">5</span>
+      </div>
+    </div>
+
+    <!-- table -->
+    <div class="overflow-x-auto">
+      <table class="dt">
+        <thead><tr>
+          <th><input type="checkbox" /><span class="nb act" data-n="19">19</span></th>
+          <th>No</th>
+          <th>仕入先ID<span class="nb" data-n="11">11</span></th>
+          <th>仕入先名<span class="nb" data-n="12">12</span></th>
+          <th>本社住所<span class="nb" data-n="13">13</span></th>
+          <th>担当者名<span class="nb" data-n="14">14</span></th>
+          <th>担当者の電話番号<span class="nb" data-n="15">15</span></th>
+          <th class="text-center">ステータス<span class="nb" data-n="16">16</span></th>
+          <th class="text-center">操作<span class="nb act" data-n="17">17</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td><input type="checkbox" /></td><td>1</td><td>SU00001</td><td>佐川急便 川崎新羽営業所</td><td>京都府 京都市下京区四条</td><td>加藤真由美</td><td>000-0000-0000</td>
+            <td class="text-center"><span class="status-pill bg-green-100 text-green-700">本登録</span></td>
+            <td class="text-center"><i class="fa-solid fa-pen text-blue-600 mr-2"></i><i class="fa-solid fa-trash text-red-500"></i><span class="nb act" data-n="18">18</span></td></tr>
+          <tr><td><input type="checkbox" /></td><td>2</td><td>SU00002</td><td>サンプル物流株式会社</td><td>東京都 千代田区千代田</td><td>担当 太郎</td><td>000-0000-0000</td>
+            <td class="text-center"><span class="status-pill bg-gray-100 text-gray-600">未登録</span></td>
+            <td class="text-center"><i class="fa-solid fa-pen text-blue-600 mr-2"></i><i class="fa-solid fa-trash text-red-500"></i></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- pagination -->
+    <div class="flex items-center justify-end gap-3 mt-4 text-sm text-gray-600">
+      <div class="flex items-center gap-1">
+        <span class="px-2 py-1 border rounded">1</span><span>…</span>
+        <span class="px-2 py-1 border rounded bg-purple-600 text-white">6</span><span>…</span>
+        <span class="px-2 py-1 border rounded">50</span>
+      </div>
+      <select class="form-input"><option>10件／ページ</option><option>20件／ページ</option><option>50件／ページ</option><option>100件／ページ</option></select><span class="nb" data-n="5">5</span>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm số để xem bảng ráp + API docs. <b>Cấp phát account</b> (10): nút <b>disabled tới khi tick ≥1</b> dòng (19), có đếm số đã chọn → bấm アカウント発行 → popup xác nhận → 発行する. Tạo/sửa NCC <b>KHÔNG</b> tự gửi mail — chỉ cấp phát mới gửi.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — 仕入先マスタ <span class="text-gray-400 font-normal text-sm">(§2.2 / 2.3)</span></b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:42px">No</th><th>UI element</th><th>API</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const P = e => '<code>'+e+'</code>';
+const GET_L = '<span class="method m-get">GET</span> '+P('/admin/supplier-masters');
+const W = {
+  1:{ui:'Ô tìm — 仕入先ID、仕入先名', api:GET_L, field:'query: <code>keyword</code>', tf:'1 ô gộp — LIKE theo mã HOẶC tên NCC. Gọi lại khi 検索.'},
+  2:{ui:'Bộ lọc — ステータス', api:GET_L, field:'query: <code>registrationStatus</code>', tf:'本登録→REGISTERED · 未登録→UNREGISTERED.'},
+  3:{ui:'Bộ lọc — 仕入れ先区分', api:GET_L, field:'query: <code>classification</code>', tf:'Enum phân loại NCC.'},
+  4:{ui:'Bộ lọc — 作れる商品', api:GET_L, field:'query: <code>producibleProductId</code>', tf:'Lọc NCC cung cấp được SP này.'},
+  5:{ui:'並べ替え (button) + 表示件数 (件/ページ)', api:GET_L, field:'query: <code>sort</code>, <code>order</code>, <code>page</code>, <code>limit</code>', tf:'並べ替え = chọn cột + chiều (asc/desc). 件／ページ = limit (10/20/50/100). meta.total để vẽ phân trang.'},
+  6:{ui:'Nút 検索 / クリア', api:GET_L, field:'(trigger)', tf:'検索 = gọi GET với filter 1–5. クリア = reset rồi gọi lại.'},
+  7:{ui:'Nút CSV取込 (Import)', api:'<span class="method m-post">POST</span> '+P('/admin/supplier-masters/import'), field:'multipart, field <code>file</code>', tf:'Match theo supplier_name → upsert. Response theo <code>ImportResult</code>: <b>succeeded/failed</b> + lỗi <b>từng dòng/cột</b> (errorDetails[{line,field,message}]). Cột CSV chưa chốt (Open D2-1). Xem API Docs ③.', act:1},
+  8:{ui:'Nút CSV出力 (Export)', api:'<span class="method m-get">GET</span> '+P('/admin/supplier-masters/export'), field:'query = cùng filter list', tf:'Xuất theo kết quả lọc hiện tại. text/csv (Shift_JIS — chờ xác nhận). Không bọc envelope.', act:1},
+  9:{ui:'Nút 新規登録', api:'(điều hướng)', field:'→ màn 仕入先情報登録', tf:'Mở form tạo mới (POST /admin/supplier-masters — xem guide supplier-register).', act:1},
+  10:{ui:'Nút アカウント発行 (0) — disabled tới khi chọn', api:'<span class="method m-post">POST</span> '+P('/admin/supplier-masters/accounts/issue'), field:'body <code>{ supplierMasterIds:[…] }</code>', tf:'Nút <b>disabled</b> khi chưa tick dòng nào; số "(n)" = số dòng đã tick (19). Bấm → popup xác nhận (dựng từ data list) → 発行する. Tạo login + set REGISTERED + gửi mail. 1 hoặc nhiều cùng endpoint. Xem API Docs ④.', act:1},
+  11:{ui:'Cột 仕入先ID', api:GET_L, field:'<code>items[].supplierCode</code>', tf:'Mã auto SU\\d+.'},
+  12:{ui:'Cột 仕入先名', api:GET_L, field:'<code>items[].supplierName</code>', tf:'Tên NCC.'},
+  13:{ui:'Cột 本社住所', api:GET_L, field:'<code>items[].headOfficeAddress</code>', tf:'Ghép địa chỉ type=HEAD_OFFICE (都道府県+市区町村+町域…).'},
+  14:{ui:'Cột 担当者名', api:GET_L, field:'<code>items[].contactName</code>', tf:'Contact REPRESENTATIVE.'},
+  15:{ui:'Cột 担当者の電話番号', api:GET_L, field:'<code>items[].contactTel</code>', tf:'Tel của contact REPRESENTATIVE.'},
+  16:{ui:'Cột ステータス (badge)', api:GET_L, field:'<code>items[].registrationStatus</code>', tf:'REGISTERED→本登録(xanh) · UNREGISTERED→未登録(xám).'},
+  17:{ui:'操作 — nút 編集', api:'<span class="method m-get">GET</span> '+P('/admin/supplier-masters/{id}')+' → <span class="method m-put">PUT</span>', field:'→ màn 仕入先情報編集', tf:'GET detail prefill → PUT lưu. id từ items[].id.', act:1},
+  18:{ui:'操作 — nút 削除', api:'<span class="method m-del">DELETE</span> '+P('/admin/supplier-masters/{id}'), field:'path <code>id</code>', tf:'Xóa mềm (set deleted_at). Nên có popup xác nhận. Response {id, deleted:true}.', act:1},
+  19:{ui:'Checkbox chọn dòng (header = chọn tất cả)', api:'(client)', field:'gom <code>items[].id</code>', tf:'Tập id đã tick → đưa vào body của アカウント発行 (10). Thuần FE, không gọi API khi tick.', act:1}
+};
+const DOCS = `
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1e40af;margin-bottom:14px">
+  <b>API chính:</b> <span class="method m-get">GET</span> <code>/admin/supplier-masters</code> — danh sách NCC (filter/sort/paging). Auth: Admin JWT + <code>supplier_master.read</code>.
+</div>
+
+<h4>① <span class="method m-get">GET</span> /admin/supplier-masters — Danh sách &nbsp;<span style="color:#16a34a">(API CHÍNH)</span></h4>
+<p style="font-weight:700;margin-top:8px">Query params</p>
+<table class="map"><thead><tr><th>Param</th><th>Kiểu</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>keyword</code></td><td>string</td><td>仕入先ID / 仕入先名 (LIKE) (số 1)</td></tr>
+<tr><td><code>registrationStatus</code></td><td>enum</td><td>REGISTERED / UNREGISTERED (số 2)</td></tr>
+<tr><td><code>classification</code></td><td>enum</td><td>仕入れ先区分 (số 3)</td></tr>
+<tr><td><code>producibleProductId</code></td><td>bigint</td><td>作れる商品 (số 4)</td></tr>
+<tr><td><code>page/limit/sort/order</code></td><td>—</td><td>並べ替え / 表示件数 (số 5)</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:12px">Response 200 (data)</p>
+<pre>{
+  "items": [
+    {
+      "id": 1,
+      "supplierCode": "SU00001",            // 仕入先ID (số 11)
+      "supplierName": "佐川急便 川崎新羽営業所", // 仕入先名 (số 12)
+      "headOfficeAddress": "京都府 京都市下京区四条", // 本社住所 (số 13)
+      "contactName": "加藤真由美",            // 担当者名 (số 14)
+      "contactTel": "000-0000-0000",         // 担当者の電話番号 (số 15)
+      "registrationStatus": "REGISTERED",    // ステータス (số 16)
+      "classification": "CLASS_1"
+    }
+  ],
+  "meta": { "total": 100, "page": 1, "limit": 10, "totalPages": 10 }
+}</pre>
+<p><code>headOfficeAddress</code> = ghép địa chỉ type HEAD_OFFICE; <code>contactName/contactTel</code> = contact REPRESENTATIVE.</p>
+
+<h4 style="margin-top:18px">② <span class="method m-del">DELETE</span> /admin/supplier-masters/{id} — Xóa mềm (số 18)</h4>
+<p><code>supplier_master.delete</code>. Set <code>deleted_at</code>, cascade child. Response <code>{ "id":1, "deleted":true }</code>.</p>
+
+<h4 style="margin-top:18px">③ CSV — Export (số 8) / Import (số 7)</h4>
+<p><b>Export</b> — <span class="method m-get">GET</span> <code>/admin/supplier-masters/export</code>: nhận cùng filter list, trả file <code>text/csv</code> (encoding chờ BA — Shift_JIS/UTF-8), không envelope.</p>
+<p><b>Import</b> — <span class="method m-post">POST</span> <code>/admin/supplier-masters/import</code>: multipart field <code>file</code>; match theo supplier_name → <b>upsert</b>. Dùng convention import chung (<code>commons/utiliz/import-csv</code>, <code>ImportResult</code>/<code>RowError</code>) — báo <b>thành công / thất bại / lỗi dòng nào / cột nào / nội dung lỗi</b>.</p>
+<p style="color:#475569">Đánh số: dòng 1 = header; dữ liệu từ <b>dòng 2</b>. Lỗi từng dòng vẫn HTTP 200 (trong <code>errorDetails</code>); chỉ file hỏng → 400 <code>INVALID_CSV_FORMAT</code>.</p>
+<pre>// Response import 200 — ImportResult
+{
+  "total": 100,            // tổng dòng dữ liệu
+  "succeeded": 98,         // thành công
+  "created": 80,           // (trong succeeded) tạo mới
+  "updated": 18,           // (trong succeeded) cập nhật
+  "failed": 2,             // thất bại
+  "errorLines": [12, 45],
+  "errorDetails": [
+    { "line": 12, "field": "仕入れ先区分", "message": "仕入れ先区分が不正です。" },
+    { "line": 45, "field": "メールアドレス", "message": "メールアドレスの形式が正しくありません。" }
+  ],
+  "title": "一部の行でエラーが発生しました",
+  "message": "・12行目\n・45行目"
+}</pre>
+<table class="map"><thead><tr><th>Field (RowError)</th><th>Ý nghĩa</th></tr></thead><tbody>
+<tr><td><code>line</code></td><td>Số dòng lỗi trong file (≥ 2).</td></tr>
+<tr><td><code>field</code></td><td>Tên cột bị lỗi.</td></tr>
+<tr><td><code>message</code></td><td>Nội dung lỗi (JP) để hiển thị.</td></tr>
+</tbody></table>
+<p>⏳ Bộ cột CSV cụ thể + encoding: Open Q. D2-1.</p>
+
+<h4 style="margin-top:18px">④ <span class="method m-post">POST</span> /admin/supplier-masters/accounts/issue — アカウント発行 (số 10)</h4>
+<p><code>supplier_account.issue</code>. <b>Cấp phát 1 hoặc nhiều</b> bằng mảng id (lấy từ checkbox số 19).</p>
+<pre>// Request
+{ "supplierMasterIds": [1, 2, 3] }</pre>
+<p><b>Hành vi mỗi id:</b> ① validate có email đại diện (thiếu → vào <code>failures</code> reason EMAIL_MISSING, không chặn batch) → ② tạo/cập nhật login <code>suppliers</code> (SP\\d+), set <code>login_user_id</code> → ③ set <code>registration_status=REGISTERED</code> → ④ gửi mail login (đã có account → reset password + gửi lại).</p>
+<pre>// Response 200 (cho popup 完了 / エラー)
+{ "issued": 2, "failed": 1,
+  "failures": [ { "supplierMasterId": 3, "email": "x@y.com", "reason": "MAIL_SEND_FAILED" } ] }</pre>
+<p><b>Popup flow:</b></p>
+<ul style="font-size:12.5px;color:#475569;list-style:disc;margin-left:18px">
+  <li><b>確認 popup</b> (<code>popup-confirm-send-account</code>): dựng từ data list đã chọn (FE đã có supplierName/email/registrationStatus) — <b>không cần</b> API preview. Cảnh báo "既存アカウントがある場合、パスワードがリセットされます" khi dòng chọn có REGISTERED.</li>
+  <li><b>完了 popup</b> (<code>popup-success-account-issue</code>): hiện <code>issued</code>.</li>
+  <li><b>エラー popup</b> (<code>popup-error-account-issue</code>): hiện <code>failed</code> + danh sách <code>failures[]</code> (email + reason).</li>
+</ul>
+<p style="color:#475569">Lỗi item (EMAIL_MISSING/MAIL_SEND_FAILED) nằm trong <code>failures</code> (vẫn HTTP 200). Mảng rỗng → 400 SUPPLIER_IDS_REQUIRED.</p>
+
+<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px 10px;font-size:12px;color:#166534;margin-top:14px">
+  ✅ Tạo/sửa NCC (新規登録/編集) <b>KHÔNG</b> cấp phát account & không gửi mail — record mới luôn UNREGISTERED. Việc gửi mail chỉ ở アカウント発行.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).map(Number).sort((a,b)=>a-b).forEach(n=>{
+  const d=W[n], cls=d.tbd?'tbd':(d.act?'act':'');
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function open(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function close(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=close; ov.onclick=close;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();open(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

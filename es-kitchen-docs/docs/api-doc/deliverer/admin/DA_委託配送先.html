@@ -1,0 +1,637 @@
+<!--
+============================================================
+SCREEN NAME: 委託配送先 (Delivery Partners List)
+============================================================
+FEATURES:
+- Fixed left sidebar with ES STATION branding (blue #0066DD)
+- Active sidebar item: 委託配送先 (blue highlight)
+- Navigation groups: TOP, 配送関連 (配送 schedule管理, 委託配送先, 出荷処理),
+  注文管理, パスワード変更, その他
+- Header with "お帰りなさい" greeting + user avatar
+- Action buttons: CSV取込 (outline), CSV出力 (outline), 新規登録 (solid blue)
+- Filter bar: 配送会社名 input + 運送区分 dropdown + ステータス dropdown
+  + クリア + 検索 buttons
+- Data table with 9 columns: №, 配送会社名, 住所, 担当者名, TEL,
+  FAX, 運送区分, ステータス, 操作
+- Status badges: 本登録 (blue), 仮登録 (orange), 休止 (gray)
+- Action icons: 編集 (pen, blue), 削除 (trash, red)
+- Delete confirmation modal
+- Pagination (showing page 6 of 10)
+- Mascot character at sidebar bottom
+============================================================
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>委託配送先 - ES STATION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#E6F0FA',
+                            100: '#CCE0F5',
+                            500: '#0066DD',
+                            600: '#005BB5',
+                            700: '#004C99',
+                            800: '#003D7A',
+                            900: '#002E5C',
+                        },
+                        accent: {
+                            500: '#FF9900',
+                            600: '#E08800',
+                        },
+                        gray: {
+                            50: '#F4F7FC',
+                            100: '#EDF2F7',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#4A5568',
+                            700: '#334155',
+                            800: '#1A202C',
+                            900: '#0F172A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            /* Sidebar navigation */
+            .nav-link        { @apply flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200; cursor: pointer; }
+            .nav-link--active { @apply bg-primary-500 text-white; }
+            .nav-link--idle  { @apply text-gray-600 hover:bg-gray-100; }
+            .nav-link--group { @apply text-gray-500 hover:text-gray-700; }
+
+            /* Table cells */
+            .col-head        { @apply px-5 py-3.5 text-xs font-semibold text-gray-600 uppercase tracking-wider; }
+            .data-cell       { @apply px-5 py-4 text-sm text-gray-800; }
+            .data-cell--muted { @apply text-gray-600; }
+            .action-cell     { @apply px-5 py-4 text-center; }
+
+            /* Status pill */
+            .status-pill     { @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium; }
+
+            /* Row action icons */
+            .row-action-edit  { @apply text-primary-500 hover:text-primary-700 transition-all duration-200 cursor-pointer; }
+
+            /* Search / filter */
+            .search-input {
+                @apply w-full h-10 pl-3 pr-10 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white;
+                @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+            }
+            .filter-select {
+                @apply w-full h-10 pl-3 pr-10 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white appearance-none;
+                @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+            }
+        }
+
+        /* Table row hover */
+        .table-row-hover:hover {
+            background-color: #F0F5FF;
+            transition: background-color 0.2s ease;
+        }
+
+        /* Status badge colors */
+        .badge-formal    { background-color: #E6F7FF; color: #0066DD; }
+        .badge-temp      { background-color: #FFF8E6; color: #CC7700; }
+        .badge-suspended { background-color: #F3F4F6; color: #6B7280; }
+
+        /* Pagination */
+        .page-btn {
+            min-width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+        .page-btn:hover:not(.active):not(:disabled) {
+            background-color: #EDF2F7;
+        }
+        .page-btn.active {
+            background-color: #0066DD;
+            color: #FFFFFF;
+            border: 1px solid #0066DD;
+        }
+
+        /* Sidebar group indicator */
+        .nav-group-label {
+            @apply px-4 pt-5 pb-2 text-xs font-bold text-gray-400 uppercase tracking-wider;
+        }
+        .nav-sub-link {
+            @apply flex items-center gap-3 px-4 py-2 pl-8 rounded-lg transition-all duration-200 cursor-pointer;
+            @apply text-primary-500;
+        }
+        .nav-sub-link--active {
+            @apply bg-primary-50 font-semibold;
+        }
+        .nav-sub-link:hover {
+            @apply bg-primary-50;
+        }
+
+        /* Action button outline */
+        .btn-outline {
+            @apply flex items-center gap-2 px-5 py-2.5 border border-primary-500 text-primary-500 rounded-lg text-sm font-medium;
+            @apply hover:bg-primary-50 transition-all duration-200;
+        }
+        /* Action button solid */
+        .btn-solid {
+            @apply flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white rounded-lg text-sm font-medium;
+            @apply hover:brightness-90 transition-all duration-200;
+        }
+
+        /* Search card shadow */
+        .filter-card {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* Link text */
+        .link-primary {
+            @apply text-primary-500 hover:underline cursor-pointer;
+        }
+
+        /* Scrollbar for table */
+        .table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile hamburger */
+        .sidebar-mobile {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-mobile.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 antialiased">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="sidebar" class="w-[240px] bg-white border-r border-gray-200 fixed h-full flex flex-col z-30 sidebar-mobile lg:translate-x-0">
+        <!-- Logo -->
+        <div class="px-5 py-5 border-b border-gray-100">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-bolt text-white text-sm"></i>
+                </div>
+                <span class="text-base font-bold text-gray-900 tracking-wide">ES STATION</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 px-3 py-4 overflow-y-auto">
+            <!-- TOP -->
+            <ul class="space-y-0.5 mb-2">
+                <li>
+                    <div class="nav-link nav-link--idle">
+                        <i class="far fa-home text-sm text-gray-400 w-5 text-center"></i>
+                        <span class="text-sm font-medium">TOP</span>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- 配送関連 -->
+            <div class="px-4 pt-4 pb-1">
+                <p class="nav-group-label !pt-0">配送関連</p>
+            </div>
+            <ul class="space-y-0.5">
+                <li>
+                    <div class="nav-sub-link nav-link--idle">
+                        <i class="far fa-calendar-alt text-sm text-gray-400 w-5 text-center"></i>
+                        <span class="text-sm">配送 schedule管理</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-sub-link nav-sub-link--active">
+                        <i class="fas fa-truck text-sm w-5 text-center"></i>
+                        <span class="text-sm font-semibold">委託配送先</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="nav-sub-link nav-link--idle">
+                        <i class="fas fa-shipping-fast text-sm text-gray-400 w-5 text-center"></i>
+                        <span class="text-sm">出荷処理</span>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- 注文管理 -->
+            <ul class="space-y-0.5 mt-2">
+                <li>
+                    <div class="nav-link nav-link--idle">
+                        <i class="fas fa-file-invoice text-sm text-gray-400 w-5 text-center"></i>
+                        <span class="text-sm font-medium">注文管理</span>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- 区切り線 -->
+            <div class="mx-3 my-4 border-t border-gray-200"></div>
+
+            <!-- パスワード変更 -->
+            <ul class="space-y-0.5">
+                <li>
+                    <div class="nav-link nav-link--idle">
+                        <i class="fas fa-key text-sm text-gray-400 w-5 text-center"></i>
+                        <span class="text-sm font-medium">パスワード変更</span>
+                    </div>
+                </li>
+                <!-- その他 -->
+                <li>
+                    <div class="nav-link nav-link--idle">
+                        <i class="fas fa-ellipsis-h text-sm text-gray-400 w-5 text-center"></i>
+                        <span class="text-sm font-medium">その他</span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Mascot -->
+        <div class="px-3 pb-3">
+            <div class="rounded-xl p-4 flex flex-col items-center" style="background: linear-gradient(180deg, #ffffff 0%, #fff9f0 100%);">
+                <svg viewBox="0 0 120 120" class="w-20 h-20 mb-2">
+                    <!-- Body -->
+                    <circle cx="60" cy="50" r="25" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+                    <!-- Eyes -->
+                    <circle cx="52" cy="45" r="3" fill="#334155"/>
+                    <circle cx="68" cy="45" r="3" fill="#334155"/>
+                    <!-- Smile -->
+                    <path d="M 52 55 Q 60 62 68 55" stroke="#334155" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <!-- Blush -->
+                    <ellipse cx="45" cy="55" rx="4" ry="2" fill="#FDA4AF" opacity="0.5"/>
+                    <ellipse cx="75" cy="55" rx="4" ry="2" fill="#FDA4AF" opacity="0.5"/>
+                    <!-- Body -->
+                    <ellipse cx="60" cy="90" rx="20" ry="15" fill="#FF9900"/>
+                    <!-- Arms -->
+                    <ellipse cx="38" cy="85" rx="8" ry="5" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+                    <ellipse cx="82" cy="85" rx="8" ry="5" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+                    <!-- Feet -->
+                    <ellipse cx="48" cy="108" rx="6" ry="4" fill="#FED7AA"/>
+                    <ellipse cx="72" cy="108" rx="6" ry="4" fill="#FED7AA"/>
+                    <!-- Phone -->
+                    <rect x="72" y="78" width="10" height="16" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+                </svg>
+                <p class="text-xs text-gray-500 text-center">ご不明な点は<br>お気軽にどうぞ</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Sidebar overlay (mobile) -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 z-20 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="flex-1 lg:ml-[240px] min-h-screen">
+
+        <!-- Top Header -->
+        <header class="bg-white border-b border-gray-200 px-8 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Left: Hamburger (mobile) + Greeting -->
+                <div class="flex items-center gap-3">
+                    <!-- Hamburger (mobile only) -->
+                    <button class="lg:hidden text-gray-600 hover:text-gray-900" onclick="toggleSidebar()">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-sun text-yellow-400 text-lg"></i>
+                        <span class="text-lg font-semibold text-gray-800">お帰りなさい にっしぐち様</span>
+                    </div>
+                </div>
+                <!-- Right: User Profile -->
+                <div class="flex items-center gap-3 pl-6 border-l border-gray-200">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold text-gray-800">にっしぐち</p>
+                        <p class="text-xs text-gray-500">Admin</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0">
+                        <span class="text-sm font-semibold text-white">に</span>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="p-8">
+
+            <!-- Breadcrumb + Page Title -->
+            <div class="mb-6">
+                <p class="text-sm text-gray-500 mb-1">配送関連</p>
+                <div class="flex items-center justify-between">
+                    <h1 class="text-2xl font-bold text-gray-800">委託配送先</h1>
+                    <!-- CTA Buttons -->
+                    <div class="flex items-center gap-3">
+                        <button class="btn-outline">
+                            <i class="fas fa-file-import text-sm"></i>
+                            CSV取込
+                        </button>
+                        <button class="btn-outline">
+                            <i class="fas fa-download text-sm"></i>
+                            CSV出力
+                        </button>
+                        <button class="btn-solid">
+                            <i class="fas fa-plus text-sm"></i>
+                            新規登録
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="bg-white rounded-xl filter-card border border-gray-100 p-5 mb-6">
+                <!-- Row 1: Filters + Buttons -->
+                <div class="flex flex-wrap items-end gap-4">
+                    <!-- 配送会社名 -->
+                    <div class="flex flex-col gap-1.5 min-w-[240px]">
+                        <label class="text-xs font-medium text-gray-500">配送会社名</label>
+                        <div class="relative">
+                            <input type="text" placeholder="株式会社夢の扉" class="search-input pr-10">
+                            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <i class="fas fa-search text-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 運送区分 -->
+                    <div class="flex flex-col gap-1.5 min-w-[180px]">
+                        <label class="text-xs font-medium text-gray-500">運送区分</label>
+                        <div class="relative">
+                            <select class="filter-select pr-10">
+                                <option>全て</option>
+                                <option>直送</option>
+                                <option>翌日便</option>
+                                <option>クール便</option>
+                                <option>委託配送</option>
+                            </select>
+                            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ステータス -->
+                    <div class="flex flex-col gap-1.5 min-w-[180px]">
+                        <label class="text-xs font-medium text-gray-500">ステータス</label>
+                        <div class="relative">
+                            <select class="filter-select pr-10">
+                                <option>全て</option>
+                                <option>本登録</option>
+                                <option>仮登録</option>
+                                <option>休止</option>
+                            </select>
+                            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex items-center gap-3 ml-auto">
+                        <button class="px-6 py-2.5 border border-gray-300 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+                            クリア
+                        </button>
+                        <button class="px-6 py-2.5 bg-primary-500 text-white rounded-lg text-sm font-medium hover:brightness-90 transition-all">
+                            検索
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Row 2: 並び替え -->
+                <div class="flex items-end gap-4 mt-4">
+                    <div class="flex flex-col gap-1.5 min-w-[200px]">
+                        <label class="text-xs font-medium text-gray-500">並び替え</label>
+                        <div class="relative">
+                            <select class="filter-select pr-10">
+                                <option>配送会社名（昇順）</option>
+                                <option>配送会社名（降順）</option>
+                                <option>更新日（新しい順）</option>
+                                <option>更新日（古い順）</option>
+                                <option>ステータス（本登録優先）</option>
+                            </select>
+                            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Table Card -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="table-scroll">
+                    <table class="w-full min-w-[1100px]">
+                        <!-- Table Header -->
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th class="col-head text-left">№</th>
+                                <th class="col-head text-left">配送会社名</th>
+                                <th class="col-head text-left">住所</th>
+                                <th class="col-head text-left">担当者名</th>
+                                <th class="col-head text-left">TEL</th>
+                                <th class="col-head text-left">FAX</th>
+                                <th class="col-head text-center">運送区分</th>
+                                <th class="col-head text-center">ステータス</th>
+                                <th class="col-head text-center">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+
+                            <!-- Row 1 -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="data-cell text-center text-gray-500 font-medium">1</td>
+                                <td class="data-cell">
+                                    <span class="link-primary font-medium">
+                                        株式会社夢の扉
+                                    </span>
+                                </td>
+                                <td class="data-cell data-cell--muted">〒100-0001 東京都千代田区千代田1-1</td>
+                                <td class="data-cell">山田 太郎</td>
+                                <td class="data-cell data-cell--muted">03-1234-5678</td>
+                                <td class="data-cell data-cell--muted">03-1234-5679</td>
+                                <td class="action-cell">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-600">委託配送</span>
+                                </td>
+                                <td class="action-cell">
+                                    <span class="status-pill badge-formal">本登録</span>
+                                </td>
+                                <td class="action-cell">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button class="row-action-edit" title="編集" onclick="editRow(1)">
+                                            <i class="fas fa-pen text-sm"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2 -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="data-cell text-center text-gray-500 font-medium">2</td>
+                                <td class="data-cell">
+                                    <span class="link-primary font-medium">鈴木運送株式会社</span>
+                                </td>
+                                <td class="data-cell data-cell--muted">〒231-0011 神奈川県横浜市中区太井町99</td>
+                                <td class="data-cell">鈴木 花子</td>
+                                <td class="data-cell data-cell--muted">045-234-5678</td>
+                                <td class="data-cell data-cell--muted">045-234-5679</td>
+                                <td class="action-cell">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-orange-50 text-orange-600">翌日便</span>
+                                </td>
+                                <td class="action-cell">
+                                    <span class="status-pill badge-formal">本登録</span>
+                                </td>
+                                <td class="action-cell">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button class="row-action-edit" title="編集" onclick="editRow(2)"><i class="fas fa-pen text-sm"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Row 3 -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="data-cell text-center text-gray-500 font-medium">3</td>
+                                <td class="data-cell">
+                                    <span class="link-primary font-medium">田中配送サービス</span>
+                                </td>
+                                <td class="data-cell data-cell--muted">〒460-0001 愛知県名古屋市中区丸の內3-5</td>
+                                <td class="data-cell">田中 一郎</td>
+                                <td class="data-cell data-cell--muted">052-345-6789</td>
+                                <td class="data-cell data-cell--muted">052-345-6780</td>
+                                <td class="action-cell">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-purple-50 text-purple-600">クール便</span>
+                                </td>
+                                <td class="action-cell">
+                                    <span class="status-pill badge-temp">仮登録</span>
+                                </td>
+                                <td class="action-cell">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button class="row-action-edit" title="編集" onclick="editRow(3)"><i class="fas fa-pen text-sm"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Row 4 -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="data-cell text-center text-gray-500 font-medium">4</td>
+                                <td class="data-cell">
+                                    <span class="link-primary font-medium">日本トランスポート株式会社</span>
+                                </td>
+                                <td class="data-cell data-cell--muted">〒530-0001 大阪府大阪市北区梅田2-10</td>
+                                <td class="data-cell">佐藤 健太</td>
+                                <td class="data-cell data-cell--muted">06-456-7890</td>
+                                <td class="data-cell data-cell--muted">06-456-7891</td>
+                                <td class="action-cell">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-green-50 text-green-600">直送</span>
+                                </td>
+                                <td class="action-cell">
+                                    <span class="status-pill badge-suspended">休止</span>
+                                </td>
+                                <td class="action-cell">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button class="row-action-edit" title="編集" onclick="editRow(4)"><i class="fas fa-pen text-sm"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Row 5 -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="data-cell text-center text-gray-500 font-medium">5</td>
+                                <td class="data-cell">
+                                    <span class="link-primary font-medium">九州ロジスティクス株式会社</span>
+                                </td>
+                                <td class="data-cell data-cell--muted">〒812-0011 福岡県福岡市博多区博多駅前4-3</td>
+                                <td class="data-cell">博多 太郎</td>
+                                <td class="data-cell data-cell--muted">092-567-8901</td>
+                                <td class="data-cell data-cell--muted">092-567-8902</td>
+                                <td class="action-cell">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-600">委託配送</span>
+                                </td>
+                                <td class="action-cell">
+                                    <span class="status-pill badge-formal">本登録</span>
+                                </td>
+                                <td class="action-cell">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button class="row-action-edit" title="編集" onclick="editRow(5)"><i class="fas fa-pen text-sm"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                    <!-- Left: Record count -->
+                    <div class="text-sm text-gray-600">
+                        全
+                        <span class="font-semibold text-gray-800">100</span>
+                        件
+                    </div>
+                    <!-- Right: Pagination -->
+                    <div class="flex items-center gap-1">
+                        <!-- Prev -->
+                        <button class="page-btn text-gray-400 hover:text-gray-600" title="前へ">
+                            <i class="fas fa-chevron-left text-xs"></i>
+                        </button>
+                        <button class="page-btn text-gray-500 hover:bg-gray-100">1</button>
+                        <button class="page-btn text-gray-500 hover:bg-gray-100">2</button>
+                        <button class="page-btn text-gray-500 hover:bg-gray-100">3</button>
+                        <button class="page-btn text-gray-500 hover:bg-gray-100">4</button>
+                        <button class="page-btn text-gray-500 hover:bg-gray-100">5</button>
+                        <!-- Ellipsis -->
+                        <span class="px-1 text-gray-400">…</span>
+                        <!-- Active page -->
+                        <button class="page-btn active">6</button>
+                        <!-- Rest -->
+                        <button class="page-btn text-gray-500 hover:bg-gray-100">7</button>
+                        <button class="page-btn text-gray-500 hover:bg-gray-100">8</button>
+                        <button class="page-btn text-gray-500 hover:bg-gray-100">9</button>
+                        <button class="page-btn text-gray-500 hover:bg-gray-100">10</button>
+                        <!-- Next -->
+                        <button class="page-btn text-gray-400 hover:text-gray-600" title="次へ">
+                            <i class="fas fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // Mobile sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('hidden');
+        }
+
+        function editRow(id) {
+            console.log('Edit supplier ID:', id);
+        }
+    </script>
+</body>
+</html>

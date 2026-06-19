@@ -1,0 +1,339 @@
+<!--
+============================================================
+SCREEN NAME: お知らせを確認する (Check Notifications)
+============================================================
+FEATURES:
+- Fixed left sidebar navigation with ES STATION branding
+- Notification dashboard with tab navigation (Tất cả, 重要, お知らせ)
+- Accordion-style notification cards with expand/collapse
+- Important notifications marked with red left border
+- Light purple primary color scheme (#6B46C1)
+- Mascot character at sidebar bottom
+============================================================
+REUSABLE CLASSES (see @layer components in <style>):
+- .nav-link / --active / --idle : sidebar menu links
+- .notif-toggle                 : accordion header row
+- .notif-link                   : in-card external link
+============================================================
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お知らせを確認する - ES STATION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#6B46C1',
+                            700: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        gray: {
+                            50: '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            /* Sidebar navigation links */
+            .nav-link        { @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-colors; }
+            .nav-link--active { @apply bg-primary-600 text-white; }
+            .nav-link--idle  { @apply text-gray-600 hover:bg-gray-50; }
+
+            /* Notification accordion */
+            .notif-toggle    { @apply w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors; }
+            .notif-link      { @apply inline-flex items-center gap-2 text-sm text-primary-600 hover:text-primary-700 hover:underline; }
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        .accordion-content.open {
+            max-height: 500px;
+        }
+
+        .mascot-container {
+            background: linear-gradient(180deg, #ffffff 0%, #fef3f2 100%);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-100 antialiased">
+    <div class="flex min-h-screen">
+        <!-- ============ SIDEBAR ============ -->
+        <aside class="w-[260px] bg-white border-r border-gray-200 fixed h-full flex flex-col z-20">
+            <!-- Logo -->
+            <div class="px-6 py-5">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-sm"></i>
+                    </div>
+                    <span class="text-lg font-bold text-gray-900 tracking-wide">ES STATION</span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="nav-link nav-link--active">
+                            <i class="fas fa-home text-sm"></i>
+                            <span class="text-sm font-medium">TOP</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link nav-link--idle">
+                            <i class="far fa-clipboard text-sm text-gray-400"></i>
+                            <span class="text-sm font-medium">受注一覧</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link nav-link--idle">
+                            <i class="far fa-key text-sm text-gray-400"></i>
+                            <span class="text-sm font-medium">パスワード変更</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link nav-link--idle">
+                            <i class="fas fa-ellipsis-h text-sm text-gray-400"></i>
+                            <span class="text-sm font-medium">その他</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Mascot -->
+            <div class="px-4 pb-6">
+                <div class="mascot-container rounded-xl p-4 flex flex-col items-center">
+                    <!-- Mascot SVG Illustration -->
+                    <svg viewBox="0 0 120 120" class="w-20 h-20 mb-2">
+                        <!-- Body -->
+                        <circle cx="60" cy="50" r="25" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+                        <!-- Eyes -->
+                        <circle cx="52" cy="45" r="3" fill="#334155"/>
+                        <circle cx="68" cy="45" r="3" fill="#334155"/>
+                        <!-- Smile -->
+                        <path d="M 52 55 Q 60 62 68 55" stroke="#334155" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <!-- Blush -->
+                        <ellipse cx="45" cy="55" rx="4" ry="2" fill="#FDA4AF" opacity="0.5"/>
+                        <ellipse cx="75" cy="55" rx="4" ry="2" fill="#FDA4AF" opacity="0.5"/>
+                        <!-- Body -->
+                        <ellipse cx="60" cy="90" rx="20" ry="15" fill="#6B46C1"/>
+                        <!-- Arms -->
+                        <ellipse cx="38" cy="85" rx="8" ry="5" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+                        <ellipse cx="82" cy="85" rx="8" ry="5" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+                        <!-- Feet -->
+                        <ellipse cx="48" cy="108" rx="6" ry="4" fill="#FED7AA"/>
+                        <ellipse cx="72" cy="108" rx="6" ry="4" fill="#FED7AA"/>
+                        <!-- Phone -->
+                        <rect x="72" y="78" width="10" height="16" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+                    </svg>
+                    <p class="text-xs text-gray-500 text-center">ご不明な点は<br>お気軽にどうぞ</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ============ MAIN CONTENT ============ -->
+        <main class="flex-1 ml-[260px] min-h-screen">
+            <!-- Top Header -->
+            <header class="bg-white border-b border-gray-200 px-8 py-4">
+                <div class="flex items-center justify-between">
+                    <!-- Greeting -->
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-sun text-yellow-400 text-lg"></i>
+                        <span class="text-lg font-semibold text-gray-800">お帰りなさい</span>
+                    </div>
+
+                    <!-- User Profile -->
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-3 pl-6 border-l border-gray-200">
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-gray-800">にっしぐち</p>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                                <span class="text-sm font-semibold text-primary-700">に</span>
+                            </div>
+                            <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="p-8">
+                <!-- Breadcrumb & Title -->
+                <div class="mb-6">
+                    <p class="text-sm text-gray-500 mb-1">TOP</p>
+                    <h1 class="text-2xl font-bold text-gray-900">お知らせを確認する</h1>
+                </div>
+
+                <!-- Notification Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                    <!-- Tabs -->
+                    <div class="flex border-b border-gray-200 px-6 pt-2">
+                        <button class="tab-btn px-4 py-3 text-sm font-medium text-primary-600 border-b-2 border-primary-600 relative -mb-px" data-tab="all">
+                            Tất cả
+                        </button>
+                        <button class="tab-btn px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700" data-tab="important">
+                            重要
+                        </button>
+                        <button class="tab-btn px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700" data-tab="news">
+                            お知らせ
+                        </button>
+                    </div>
+
+                    <!-- Notification List -->
+                    <div class="divide-y divide-gray-100">
+                        <!-- Notification Item 1 - Important -->
+                        <div class="notification-item border-l-4 border-red-500" data-type="important">
+                            <button class="accordion-toggle notif-toggle" onclick="toggleAccordion(this)">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm font-medium text-gray-800">
+                                        【2024/02/29】配送方法について
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors">
+                                        <i class="fas fa-chevron-down text-xs text-gray-400 accordion-icon transition-transform duration-200"></i>
+                                    </div>
+                                </div>
+                            </button>
+                            <div class="accordion-content bg-gray-50">
+                                <div class="px-6 py-4 text-sm text-gray-700 leading-relaxed">
+                                    <p>配送方法が変更になりました。<br>詳細は以下のリンクをご確認ください。</p>
+                                </div>
+                                <div class="px-6 pb-4">
+                                    <div class="border-t border-dashed border-gray-200 pt-3">
+                                        <div class="flex flex-wrap gap-4">
+                                            <a href="#" class="notif-link">
+                                                配送方法詳細を見る
+                                                <i class="fas fa-external-link-alt text-xs"></i>
+                                            </a>
+                                            <a href="#" class="notif-link">
+                                                よくある質問
+                                                <i class="fas fa-external-link-alt text-xs"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notification Item 2 - Normal -->
+                        <div class="notification-item border-l-4 border-gray-300" data-type="news">
+                            <button class="accordion-toggle notif-toggle" onclick="toggleAccordion(this)">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm font-medium text-gray-800">
+                                        【2024/02/29】システムが更新されました
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors">
+                                        <i class="fas fa-chevron-down text-xs text-gray-400 accordion-icon transition-transform duration-200"></i>
+                                    </div>
+                                </div>
+                            </button>
+                            <div class="accordion-content bg-gray-50">
+                                <div class="px-6 py-4 text-sm text-gray-700 leading-relaxed">
+                                    <p>システムメンテナンスが完了しました。<br>引き続きご利用いただけます。</p>
+                                </div>
+                                <div class="px-6 pb-4">
+                                    <div class="border-t border-dashed border-gray-200 pt-3">
+                                        <div class="flex flex-wrap gap-4">
+                                            <a href="#" class="notif-link">
+                                                更新履歴を見る
+                                                <i class="fas fa-external-link-alt text-xs"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('.accordion-icon');
+
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Close others (optional - for single accordion behavior)
+                document.querySelectorAll('.accordion-content.open').forEach(el => {
+                    el.classList.remove('open');
+                    el.previousElementSibling.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
+                });
+
+                content.classList.add('open');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Tab switching
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active tab
+                tabBtns.forEach(b => {
+                    b.classList.remove('text-primary-600', 'border-b-2', 'border-primary-600');
+                    b.classList.add('text-gray-500');
+                });
+                this.classList.remove('text-gray-500');
+                this.classList.add('text-primary-600', 'border-b-2', 'border-primary-600');
+
+                // Filter notifications
+                const tab = this.dataset.tab;
+                const items = document.querySelectorAll('.notification-item');
+
+                items.forEach(item => {
+                    if (tab === 'all') {
+                        item.style.display = 'block';
+                    } else {
+                        if (item.dataset.type === tab) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

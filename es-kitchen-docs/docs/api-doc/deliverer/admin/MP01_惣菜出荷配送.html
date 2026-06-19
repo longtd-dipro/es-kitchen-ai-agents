@@ -1,0 +1,160 @@
+<!--
+============================================================
+SCREEN NAME: MP01-Admin / 配送管理 / 【惣菜】出荷配送 (Sozai shipping/delivery - list)
+SOURCE: design/deliverer/admin/MP01-Admin/配送管理/【惣菜】出荷配送.png
+- Admin shell; 配送管理 group expanded → 【惣菜】出荷配送 active
+- Filter bar + dense list + status pill 完了 + edit/delete + pagination
+- 元画像が低解像度のため一部カラム見出しは MP02 詳細フォームから推定
+============================================================
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【惣菜】出荷配送 - ES STATION</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>
+  tailwind.config={theme:{extend:{
+    fontFamily:{sans:['Inter','Noto Sans JP','-apple-system','Segoe UI','sans-serif']},
+    colors:{primary:{50:'#E6F0FA',100:'#CCE0F5',500:'#0066DD',600:'#005BB5',700:'#004C99'}}
+  }}}
+</script>
+<style type="text/tailwindcss">
+  @layer components{
+    .nav-link{@apply flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-all;}
+    .nav-link--idle{@apply text-gray-600 hover:bg-gray-100;}
+    .nav-link--active{@apply bg-primary-500 text-white;}
+    .nav-sub{@apply flex items-center gap-3 pl-11 pr-4 py-2 rounded-lg cursor-pointer text-sm transition-all;}
+    .nav-sub--idle{@apply text-gray-600 hover:bg-gray-100;}
+    .col-head{@apply px-3 py-3 text-xs font-semibold text-gray-500 whitespace-nowrap;}
+    .data-cell{@apply px-3 py-3 text-[13px] text-gray-800 whitespace-nowrap;}
+    .filter-select{@apply w-full h-9 pl-3 pr-8 border border-gray-300 rounded-lg text-[13px] text-gray-700 bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-primary-500;}
+    .search-input{@apply w-full h-9 pl-3 pr-9 border border-gray-300 rounded-lg text-[13px] text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500;}
+  }
+  .table-row-hover:hover{background:#F0F5FF;}
+  .badge-done{background:#DCFCE7;color:#16A34A;}
+  .page-btn{min-width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:13px;font-weight:500;}
+  .page-btn:hover:not(.active){background:#EDF2F7;}
+  .page-btn.active{background:#0066DD;color:#fff;}
+</style>
+</head>
+<body class="font-sans bg-gray-50 antialiased">
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="w-[240px] bg-white border-r border-gray-200 fixed h-full flex flex-col z-30">
+  <div class="px-5 py-4 border-b border-gray-100 flex items-center gap-2.5">
+    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:radial-gradient(circle at 50% 40%,#fbbf24,#f97316)"><i class="fas fa-sun text-white text-sm"></i></div>
+    <span class="text-base font-extrabold tracking-wide"><span class="text-red-500">ES</span><span class="text-slate-800">STATION</span></span>
+  </div>
+  <nav class="flex-1 px-3 py-3 overflow-y-auto text-sm">
+    <div class="nav-link nav-link--idle"><i class="fas fa-gauge-high w-5 text-center text-gray-400"></i>ダッシュボード</div>
+    <div class="nav-link nav-link--idle justify-between"><span class="flex items-center gap-3"><i class="fas fa-bars w-5 text-center text-gray-400"></i>メニュー管理</span><i class="fas fa-chevron-down text-[10px] text-gray-400"></i></div>
+    <div class="nav-link nav-link--idle justify-between"><span class="flex items-center gap-3"><i class="fas fa-folder w-5 text-center text-gray-400"></i>マスタ管理</span><i class="fas fa-chevron-down text-[10px] text-gray-400"></i></div>
+    <div class="nav-link nav-link--idle"><i class="fas fa-building w-5 text-center text-gray-400"></i>法人・契約管理</div>
+    <div class="nav-link nav-link--idle justify-between"><span class="flex items-center gap-3"><i class="fas fa-user-gear w-5 text-center text-gray-400"></i>アカウント管理</span><i class="fas fa-chevron-down text-[10px] text-gray-400"></i></div>
+    <div class="nav-link nav-link--idle"><i class="fas fa-yen-sign w-5 text-center text-gray-400"></i>売上管理</div>
+    <!-- 配送管理 (expanded) -->
+    <div class="nav-link nav-link--active justify-between mt-0.5"><span class="flex items-center gap-3"><i class="fas fa-truck w-5 text-center"></i>配送管理</span><i class="fas fa-chevron-up text-[10px]"></i></div>
+    <div class="mt-0.5 space-y-0.5">
+      <div class="nav-sub nav-sub--idle">スケジュール</div>
+      <div class="nav-sub bg-primary-50 text-primary-600 font-semibold">【惣菜】出荷配送</div>
+      <div class="nav-sub nav-sub--idle">【RWJ】ピックアップ・出荷配送</div>
+    </div>
+  </nav>
+  <div class="px-4 pb-4"><div class="rounded-xl p-3 flex justify-center" style="background:linear-gradient(180deg,#fff,#fff9f0)">
+    <div class="w-20 h-24 rounded-lg flex items-end justify-center text-5xl" style="background:radial-gradient(circle at 50% 30%,#fde68a,#fbbf24 70%,#f59e0b)">🧑‍🍳</div></div></div>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<main class="ml-[240px] min-h-screen">
+  <header class="bg-white border-b border-gray-200 px-8 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-2 text-gray-800"><i class="fas fa-sun text-yellow-400 text-lg"></i><span class="font-semibold">お帰りなさい</span></div>
+    <div class="flex items-center gap-3 cursor-pointer">
+      <div class="w-9 h-9 rounded-full flex items-center justify-center text-lg border-2 border-amber-200" style="background:linear-gradient(135deg,#fcd34d,#f59e0b)">🦁</div>
+      <span class="font-semibold text-gray-800">にっしぐち</span><i class="fas fa-chevron-down text-xs text-gray-400"></i>
+    </div>
+  </header>
+
+  <div class="p-8">
+    <div class="flex items-start justify-between mb-5">
+      <div>
+        <p class="text-xs text-gray-500 mb-1">配送管理 ／ 【惣菜】出荷配送</p>
+        <h1 class="text-2xl font-bold text-gray-800">【惣菜】出荷配送</h1>
+      </div>
+      <button class="flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white rounded-lg text-sm font-medium hover:brightness-90"><i class="fas fa-plus text-sm"></i>新規登録</button>
+    </div>
+
+    <!-- Filter -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 mb-6">
+      <p class="text-sm font-semibold text-gray-700 mb-3">検索条件</p>
+      <div class="grid grid-cols-6 gap-3 items-end">
+        <div class="flex flex-col gap-1.5"><label class="text-xs text-gray-500">配送NO</label>
+          <div class="relative"><input class="search-input" placeholder="配送NO"><i class="fas fa-search text-xs text-gray-400 absolute right-3 top-1/2 -translate-y-1/2"></i></div></div>
+        <div class="flex flex-col gap-1.5"><label class="text-xs text-gray-500">配送日</label><select class="filter-select"><option>全て</option></select></div>
+        <div class="flex flex-col gap-1.5"><label class="text-xs text-gray-500">出荷予定日</label><select class="filter-select"><option>全て</option></select></div>
+        <div class="flex flex-col gap-1.5"><label class="text-xs text-gray-500">中継先</label><select class="filter-select"><option>全て</option></select></div>
+        <div class="flex flex-col gap-1.5"><label class="text-xs text-gray-500">配送先</label><select class="filter-select"><option>全て</option></select></div>
+        <div class="flex flex-col gap-1.5"><label class="text-xs text-gray-500">ステータス</label><select class="filter-select"><option>全て</option><option>完了</option></select></div>
+      </div>
+      <div class="flex items-center justify-end gap-3 mt-4">
+        <button class="px-6 py-2 border border-gray-300 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50">クリア</button>
+        <button class="px-6 py-2 bg-primary-500 text-white rounded-lg text-sm font-medium hover:brightness-90">検索</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[1200px]">
+          <thead><tr class="bg-gray-50 border-b border-gray-200 text-left">
+            <th class="col-head w-10">No</th><th class="col-head">配送NO</th><th class="col-head">配送日</th>
+            <th class="col-head">出荷予定日</th><th class="col-head">納品予定日</th><th class="col-head">中継先</th>
+            <th class="col-head">配送業者</th><th class="col-head">納品先名称</th><th class="col-head">納品先住所</th>
+            <th class="col-head text-center">ステータス</th><th class="col-head text-center">操作</th>
+          </tr></thead>
+          <tbody id="rows" class="divide-y divide-gray-200"></tbody>
+        </table>
+      </div>
+      <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+        <div class="text-sm text-gray-600">全 <span class="font-semibold text-gray-800">100</span> 件</div>
+        <div class="flex items-center gap-1">
+          <button class="page-btn text-gray-400"><i class="fas fa-chevron-left text-xs"></i></button>
+          <button class="page-btn text-gray-500">1</button><button class="page-btn text-gray-500">2</button>
+          <button class="page-btn text-gray-500">3</button><button class="page-btn active">4</button>
+          <button class="page-btn text-gray-500">5</button><button class="page-btn text-gray-500">6</button>
+          <span class="px-1 text-gray-400">…</span><button class="page-btn text-gray-500">10</button>
+          <button class="page-btn text-gray-400"><i class="fas fa-chevron-right text-xs"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const rows=document.getElementById('rows');
+  for(let i=1;i<=10;i++){
+    const no='D'+(20260603215+i);
+    rows.insertAdjacentHTML('beforeend',`
+      <tr class="table-row-hover transition-colors">
+        <td class="data-cell text-center text-gray-500">${i}</td>
+        <td class="data-cell"><span class="text-primary-500 hover:underline cursor-pointer">${no}</span></td>
+        <td class="data-cell">2026-06-07</td>
+        <td class="data-cell">2026-06-07</td>
+        <td class="data-cell">2026-06-07</td>
+        <td class="data-cell">ヤマト 運輸</td>
+        <td class="data-cell">COOL便</td>
+        <td class="data-cell">福市美前頗市頭園町</td>
+        <td class="data-cell text-gray-600">福市美前頗市頭園町</td>
+        <td class="data-cell text-center"><span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium badge-done">完了</span></td>
+        <td class="data-cell text-center"><div class="flex items-center justify-center gap-3">
+          <button class="text-primary-500 hover:text-primary-700"><i class="fas fa-pen text-xs"></i></button>
+          <button class="text-red-500 hover:text-red-600"><i class="far fa-trash-can text-xs"></i></button>
+        </div></td>
+      </tr>`);
+  }
+</script>
+</body>
+</html>

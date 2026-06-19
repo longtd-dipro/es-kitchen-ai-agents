@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<!--
+============================================================
+SCREEN NAME: 仕入先情報編集 HU00001 - 変更履歴 (Supplier Edit History)
+============================================================
+PURPOSE: View edit history of a supplier
+DATA STRUCTURE:
+- history[]: Array of history records
+- fields: changedAt, changedContent, changedBy
+============================================================
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>仕入先情報編集 HU00001 - 変更履歴 - ESSTATION</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root {
+    --color-primary: #0062CC;
+    --color-primary-hover: #004C9F;
+    --color-success: #16A34A;
+    --color-danger: #DC2626;
+    --text-primary: #111827;
+    --text-secondary: #4B5563;
+    --text-muted: #6B7280;
+    --bg-secondary: #F3F4F6;
+    --bg-white: #FFFFFF;
+    --border-color: #E5E7EB;
+    --border-radius: 4px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background: #F5F7FA;
+    color: #333333;
+  }
+
+  /* === Sidebar === */
+  .sidebar {
+    width: 260px;
+    background: var(--bg-white);
+    border-right: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 50;
+  }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #4B5563;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .menu-item:hover { background: #F3F4F6; }
+  .menu-parent.active {
+    background: var(--color-primary);
+    color: #ffffff;
+  }
+  .menu-child {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px 10px 52px;
+    color: #4B5563;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .menu-child:hover { background: #F3F4F6; }
+  .menu-child.active {
+    background: #E6F0FA;
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  /* === Mascot === */
+  .mascot-area {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 160px;
+  }
+
+  /* === Main Layout === */
+  .main-wrap {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+  .top-header {
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--border-color);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* === Buttons === */
+  .btn {
+    height: 36px;
+    border-radius: var(--border-radius);
+    padding: 0 18px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--color-primary);
+    color: #ffffff;
+    border: 1px solid var(--color-primary);
+  }
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-outline {
+    background: var(--bg-white);
+    color: #4B5563;
+    border: 1px solid #D1D5DB;
+  }
+  .btn-outline:hover { background: #F9FAFB; }
+
+  /* === Sub tabs === */
+  .sub-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+  }
+  .sub-tab {
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6B7280;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+  }
+  .sub-tab:hover { color: var(--color-primary); }
+  .sub-tab.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  /* === History Card === */
+  .history-card {
+    background: var(--bg-white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .table-responsive { overflow-x: auto; }
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .history-table thead th {
+    background: #F8F9FA;
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    padding: 14px 20px;
+    white-space: nowrap;
+  }
+  .history-table tbody td {
+    padding: 14px 20px;
+    font-size: 14px;
+    color: #333333;
+    border-bottom: 1px solid #EFEFEF;
+    vertical-align: middle;
+  }
+  .history-table tbody tr:hover { background: #F9FBFC; }
+  .history-table tbody tr:last-child td { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar">
+  <!-- Logo -->
+  <div class="flex items-center gap-2 px-5 py-5 border-b border-gray-100">
+    <i class="fa-solid fa-bowl-food text-red-500 text-2xl"></i>
+    <span class="font-bold text-red-500 text-lg tracking-wide">ESSTATION</span>
+  </div>
+
+  <!-- Menu -->
+  <nav class="py-2">
+    <!-- ダッシュボード -->
+    <div class="menu-item">
+      <i class="fa-solid fa-gauge-high menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>ダッシュボード</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- メニュー管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-list menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>メニュー管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- 在庫管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-box menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>在庫管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- 配送管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-truck menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>配送管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- マスタ管理 (Active - open) -->
+    <div class="menu-parent active menu-item">
+      <i class="fa-solid fa-folder menu-icon w-5 mr-3"></i>
+      <span>マスタ管理</span>
+      <i class="fa-solid fa-chevron-up menu-caret ml-auto text-xs"></i>
+    </div>
+
+    <!-- Sub menu (open) -->
+    <div class="bg-gray-50">
+      <div class="menu-child">プランマスタ</div>
+      <div class="menu-child">商品マスタ</div>
+      <div class="menu-child">資材マスタ</div>
+      <div class="menu-child">
+        配送関連
+        <i class="fa-solid fa-chevron-down ml-auto text-xs text-gray-400"></i>
+      </div>
+      <div class="menu-child active">仕入先マスタ</div>
+      <div class="menu-child">代理店・パートナー管理</div>
+      <div class="menu-child">
+        機種マスタ
+        <i class="fa-solid fa-chevron-down ml-auto text-xs text-gray-400"></i>
+      </div>
+    </div>
+
+    <!-- 法人・契約管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-building menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>法人・契約管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- アカウント管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-user-gear menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>アカウント管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- 売上管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-coins menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>売上管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+  </nav>
+
+  <!-- Mascot (decorative) -->
+  <div class="mascot-area">
+    <div class="w-full h-full flex items-center justify-center">
+      <div class="text-center">
+        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-b from-yellow-300 to-yellow-500 flex items-center justify-center shadow-md">
+          <i class="fa-solid fa-hat-chef text-4xl text-white"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ MAIN CONTENT ============ -->
+<div class="main-wrap">
+
+  <!-- Top header -->
+  <header class="top-header">
+    <div class="flex items-center gap-2 text-sm text-gray-500">
+      <i class="fa-solid fa-sun text-yellow-400"></i>
+      <span>お帰りなさい</span>
+    </div>
+    <div class="flex items-center gap-2 cursor-pointer">
+      <div class="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-white">
+        <i class="fa-solid fa-user text-sm"></i>
+      </div>
+      <span class="text-sm text-gray-700 font-medium">にっしぐち</span>
+      <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
+    </div>
+  </header>
+
+  <!-- Content body -->
+  <main class="p-8">
+
+    <!-- Breadcrumb -->
+    <div class="text-xs text-gray-500 mb-3">マスタ管理 / 仕入先マスタ / 仕入先情報編集</div>
+
+    <!-- Page title + Action buttons -->
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-[22px] font-bold text-gray-800">仕入先情報編集 <span class="text-blue-600">HU00001</span></h1>
+      <div class="flex items-center gap-3">
+        <button class="btn btn-outline">
+          キャンセル
+        </button>
+        <button class="btn btn-primary">
+          <i class="fa-solid fa-check mr-1"></i>
+          保存
+        </button>
+      </div>
+    </div>
+
+    <!-- Sub tabs -->
+    <div class="sub-tabs">
+      <div class="sub-tab">基本情報</div>
+      <div class="sub-tab active">変更履歴</div>
+    </div>
+
+    <!-- History table card -->
+    <div class="history-card">
+      <div class="table-responsive">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th class="col-datetime">変更日時</th>
+              <th class="col-content">変更内容</th>
+              <th class="col-changer">変更者</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026/2/01 11:00</td>
+              <td>食品 表示許可を更新</td>
+              <td>田中</td>
+            </tr>
+            <tr>
+              <td>2026/2/01 10:00</td>
+              <td>食品 表示許可を更新</td>
+              <td>田中</td>
+            </tr>
+            <tr>
+              <td>2026/1/28 14:30</td>
+              <td>食品 表示許可を更新</td>
+              <td>管理者</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

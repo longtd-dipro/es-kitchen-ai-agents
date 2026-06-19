@@ -1,0 +1,638 @@
+<!--
+============================================================
+SCREEN NAME: 委託配送先情報編集 (Delivery Partner Information Edit)
+============================================================
+FEATURES:
+- Fixed left sidebar (70px) with ES STATION branding
+- Header: 委託配送先情報編集 + Cancel/Save action buttons
+- Tab navigation: 基本情報 (Active), ES配送費, 変更履歴
+- Card: 基本情報 (grid form with 3 columns)
+  - Read-only: 委託配送ID
+  - Text inputs: カナ, 会社名, 郵便番号, 住所, TEL, FAX, 代表者名, 担当者名
+  - Selects: 運送区分, ステータス, 都道府県
+  - Datepicker: 契約開始日
+  - Textarea: 特記事項
+- Card: 対応エリア (multi-select tag input)
+  - Selected tags removable with X icon
+- Card: 担当者 (editable table with add/delete row)
+  - Columns: 担当者名, メールアドレス, TEL, 所属, 備考, 操作 (delete)
+  - "+ 行を追加" button below table
+- Validation error states with red border + error message
+- Responsive: table horizontal scroll below 1366px
+- Flex-wrap multi-select tags
+============================================================
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>委託配送先情報編集 - ES STATION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#E6F0FA',
+                            100: '#CCE0F5',
+                            500: '#0066DD',
+                            600: '#005BB5',
+                            700: '#004C99',
+                            800: '#003D7A',
+                            900: '#002E5C',
+                        },
+                        accent: {
+                            500: '#FF9900',
+                            600: '#E08800',
+                        },
+                        surface: {
+                            DEFAULT: '#FFFFFF',
+                            alt: '#F4F7FC',
+                        },
+                        text: {
+                            primary: '#333333',
+                            secondary: '#555555',
+                            muted: '#777777',
+                            disabled: '#BFBFBF',
+                        },
+                        border: {
+                            DEFAULT: '#D9D9D9',
+                            focus: '#40a9ff',
+                            error: '#FF4D4F',
+                        },
+                        gray: {
+                            50: '#F4F7FC',
+                            100: '#F0F0F0',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#4A5568',
+                            700: '#334155',
+                            800: '#1A202C',
+                            900: '#0F172A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Sidebar */
+        .sidebar { position: fixed; left: 0; top: 0; height: 100vh; width: 70px; background: #fff; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; align-items: center; padding: 16px 0; z-index: 50; }
+        .sidebar-logo { width: 36px; height: 36px; background: #0066DD; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 24px; }
+        .sidebar-nav { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 10px 0; font-size: 10px; color: #64748b; cursor: pointer; transition: .2s; }
+        .nav-item:hover { color: #0066DD; background: #f8fafc; }
+        .nav-item--active { color: #0066DD; background: #E6F0FA; }
+        .nav-item i { font-size: 16px; margin-bottom: 4px; }
+
+        /* Cards */
+        .card { background: #fff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 24px; }
+        .card-title { font-size: 15px; font-weight: 700; color: #333; margin-bottom: 20px; }
+
+        /* Form controls */
+        .form-label { display: block; font-size: 13px; font-weight: 500; color: #333; margin-bottom: 6px; }
+        .form-label--required::after { content: '*'; color: #FF4D4F; margin-left: 2px; }
+        .form-input { width: 100%; height: 38px; padding: 0 12px; background: #fff; border: 1px solid #D9D9D9; border-radius: 4px; font-size: 13px; color: #333; outline: none; transition: .2s; }
+        .form-input::placeholder { color: #777; }
+        .form-input:hover { border-color: #40a9ff; }
+        .form-input:focus { border-color: #0066DD; box-shadow: 0 0 0 2px rgba(0,102,221,0.2); }
+        .form-input--readonly { background: #F5F5F5; color: #BFBFBF; cursor: not-allowed; }
+        .form-input--readonly:hover { border-color: #D9D9D9; }
+        .form-input--readonly:focus { border-color: #D9D9D9; box-shadow: none; }
+        .form-select { width: 100%; height: 38px; padding: 0 36px 0 12px; background: #fff; border: 1px solid #D9D9D9; border-radius: 4px; font-size: 13px; color: #333; appearance: none; outline: none; transition: .2s; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23777178'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' /%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; }
+        .form-select:hover { border-color: #40a9ff; }
+        .form-select:focus { border-color: #0066DD; box-shadow: 0 0 0 2px rgba(0,102,221,0.2); }
+        .form-textarea { width: 100%; min-height: 80px; padding: 10px 12px; background: #fff; border: 1px solid #D9D9D9; border-radius: 4px; font-size: 13px; color: #333; outline: none; resize: vertical; transition: .2s; }
+        .form-textarea::placeholder { color: #777; }
+        .form-textarea:hover { border-color: #40a9ff; }
+        .form-textarea:focus { border-color: #0066DD; box-shadow: 0 0 0 2px rgba(0,102,221,0.2); }
+        .form-error { color: #FF4D4F; font-size: 12px; margin-top: 4px; }
+
+        /* Multi-select tag */
+        .tag-input-wrapper { width: 100%; min-height: 38px; padding: 6px 10px; background: #fff; border: 1px solid #D9D9D9; border-radius: 4px; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; transition: .2s; }
+        .tag-input-wrapper:hover { border-color: #40a9ff; }
+        .tag-input-wrapper:focus-within { border-color: #0066DD; box-shadow: 0 0 0 2px rgba(0,102,221,0.2); }
+        .tag { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: #F0F0F0; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 12px; color: #333; }
+        .tag-remove { color: #777; cursor: pointer; font-size: 10px; }
+        .tag-remove:hover { color: #FF4D4F; }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 0 16px; border-radius: 6px; font-size: 13px; font-weight: 500; border: 1px solid transparent; cursor: pointer; transition: .2s; }
+        .btn-primary { background: #0066DD; color: #fff; border-color: #0066DD; }
+        .btn-primary:hover { background: #005BB5; }
+        .btn-primary:active { background: #004C99; }
+        .btn-outline { background: #fff; color: #666; border-color: #ddd; }
+        .btn-outline:hover { border-color: #0066DD; color: #0066DD; }
+        .btn-ghost { background: transparent; color: #64748b; border-color: transparent; }
+        .btn-ghost:hover { color: #FF4D4F; background: #fef2f2; }
+
+        /* Table */
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600; color: #555; background: #f8fafc; border-bottom: 1px solid #e5e7eb; white-space: nowrap; }
+        .data-table td { padding: 12px 16px; font-size: 13px; color: #333; border-bottom: 1px solid #f3f4f6; }
+        .data-table tbody tr:hover td { background: rgba(0,0,0,0.02); }
+
+        /* Tabs */
+        .tab-item { padding: 12px 20px; font-size: 13px; font-weight: 500; color: #777; border-bottom: 2px solid transparent; cursor: pointer; transition: .2s; }
+        .tab-item:hover:not(.tab-item--active) { color: #333; }
+        .tab-item--active { color: #0066DD; border-bottom-color: #0066DD; font-weight: 700; }
+    </style>
+</head>
+<body class="font-sans bg-surface-alt text-text-primary antialiased">
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside class="sidebar">
+        <!-- [API-ACTION] Logo click → Navigate to dashboard -->
+        <div class="sidebar-logo">ES</div>
+
+        <nav class="sidebar-nav">
+            <!-- TOP -->
+            <div class="nav-item">
+                <i class="fa-solid fa-house"></i>
+                <span>TOP</span>
+            </div>
+
+            <!-- 配送関連 -->
+            <div class="px-2 mt-4 mb-1">
+                <div class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider text-center">配送関連</div>
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>配送予定<br>管理</span>
+            </div>
+            <!-- [API-ACTION] 委託配送先 click → Navigate to list -->
+            <div class="nav-item nav-item--active">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>委託配送先</span>
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-box"></i>
+                <span>出荷処理</span>
+            </div>
+
+            <!-- 注文管理 -->
+            <div class="px-2 mt-4 mb-1">
+                <div class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider text-center">注文管理</div>
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>注文管理</span>
+            </div>
+
+            <!-- パスワード変更 -->
+            <div class="px-2 mt-4 mb-1">
+                <div class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider text-center">アカウント</div>
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-key"></i>
+                <span>パスワード<br>変更</span>
+            </div>
+
+            <!-- その他 -->
+            <div class="px-2 mt-4 mb-1">
+                <div class="text-[9px] font-semibold text-gray-400 uppercase tracking-wider text-center">その他</div>
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-ellipsis"></i>
+                <span>その他</span>
+            </div>
+        </nav>
+
+        <!-- Mascot placeholder -->
+        <div class="mt-auto mb-2 w-10 h-10 rounded-full bg-accent-500/10 flex items-center justify-center text-accent-500">
+            <i class="fa-solid fa-robot text-lg"></i>
+        </div>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="ml-[70px] min-h-screen">
+
+        <!-- ========== TOP HEADER ========== -->
+        <header class="sticky top-0 z-40 bg-white border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 h-16">
+                <!-- Breadcrumb / Title -->
+                <div>
+                    <!-- [API-DATA] Page title placeholder -->
+                    <h1 class="text-[20px] font-bold text-text-primary">委託配送先情報編集</h1>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="flex items-center gap-3">
+                    <!-- [API-ACTION] Cancel → Navigate back to list -->
+                    <button class="btn btn-outline">キャンセル</button>
+                    <!-- [API-ACTION] Save → Submit form API -->
+                    <button class="btn btn-primary">
+                        <i class="fa-solid fa-check text-xs"></i>
+                        保存
+                    </button>
+                </div>
+            </div>
+
+            <!-- ========== TABS ========== -->
+            <div class="px-6 flex border-b border-gray-200">
+                <!-- [API-TAB] 基本情報 (Active) -->
+                <div class="tab-item tab-item--active">基本情報</div>
+                <!-- [API-TAB] ES配送費 → Click loads ES配送費 tab content -->
+                <div class="tab-item">ES配送費</div>
+                <!-- [API-TAB] 変更履歴 → Click loads 変更履歴 tab content -->
+                <div class="tab-item">変更履歴</div>
+            </div>
+        </header>
+
+        <!-- ========== FORM CONTENT ========== -->
+        <div class="p-6 space-y-5">
+
+            <!-- ========== CARD: 基本情報 ========== -->
+            <section class="card" aria-labelledby="card-basic-info">
+                <h2 id="card-basic-info" class="card-title">基本情報</h2>
+
+                <form id="form-basic-info" class="grid grid-cols-1 lg:grid-cols-3 gap-y-4 gap-x-5" novalidate>
+                    <!-- [API-DATA] 委託配送ID (read-only) -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">委託配送ID</label>
+                        <input type="text" class="form-input form-input--readonly" value="DE000001" readonly tabindex="-1" aria-readonly="true">
+                    </div>
+
+                    <!-- [API-DATA] カナ -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">カナ</label>
+                        <input type="text" class="form-input" placeholder="ヤマダハシリ" data-field="kana">
+                    </div>
+
+                    <!-- [API-DATA] 運送区分 -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">運送区分</label>
+                        <select class="form-select" data-field="transportType">
+                            <option value="">選択してください</option>
+                            <option value="1">宅配便</option>
+                            <option value="2">チャーター便</option>
+                            <option value="3">混載便</option>
+                        </select>
+                    </div>
+
+                    <!-- [API-DATA] ステータス -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">ステータス</label>
+                        <select class="form-select" data-field="status">
+                            <option value="">選択してください</option>
+                            <option value="ACTIVE" selected>本登録</option>
+                            <option value="PENDING">仮登録</option>
+                            <option value="SUSPENDED">休止</option>
+                        </select>
+                    </div>
+
+                    <!-- [API-DATA] 会社名 -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">会社名</label>
+                        <input type="text" class="form-input" placeholder="株式会社サンプル運送" data-field="companyName">
+                    </div>
+
+                    <!-- [API-DATA] 契約開始日 (datepicker) -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">契約開始日</label>
+                        <div class="relative">
+                            <input type="text" class="form-input pr-10" placeholder="2024/01/15" data-field="contractStartDate" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'">
+                            <i class="fa-regular fa-calendar absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+
+                    <!-- [API-DATA] 郵便番号 -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">郵便番号</label>
+                        <input type="text" class="form-input" placeholder="100-0001" data-field="postalCode">
+                    </div>
+
+                    <!-- [API-DATA] 都道府県 -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">都道府県</label>
+                        <select class="form-select" data-field="prefecture">
+                            <option value="">選択してください</option>
+                            <option value="13" selected>東京都</option>
+                            <option value="27">大阪府</option>
+                            <option value="40">福岡県</option>
+                        </select>
+                    </div>
+
+                    <!-- [API-DATA] 住所 -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">住所</label>
+                        <input type="text" class="form-input" placeholder="東京都千代田区丸の内1-1-1" data-field="address">
+                    </div>
+
+                    <!-- [API-DATA] TEL -->
+                    <div class="flex flex-col">
+                        <label class="form-label">TEL</label>
+                        <input type="tel" class="form-input" placeholder="03-1234-5678" data-field="tel">
+                    </div>
+
+                    <!-- [API-DATA] FAX -->
+                    <div class="flex flex-col">
+                        <label class="form-label">FAX</label>
+                        <input type="tel" class="form-input" placeholder="03-1234-5679" data-field="fax">
+                    </div>
+
+                    <!-- [API-DATA] 代表者名 -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">代表者名</label>
+                        <input type="text" class="form-input" placeholder="山田 太郎" data-field="representative">
+                    </div>
+
+                    <!-- [API-DATA] 担当者名 -->
+                    <div class="flex flex-col">
+                        <label class="form-label form-label--required">担当者名</label>
+                        <input type="text" class="form-input" placeholder="鈴木 一郎" data-field="contactName">
+                    </div>
+
+                    <!-- [API-DATA] 特記事項 (textarea) -->
+                    <div class="flex flex-col lg:col-span-3">
+                        <label class="form-label">特記事項</label>
+                        <textarea class="form-textarea" placeholder="配送に関する特記事項があれば入力してください" data-field="notes"></textarea>
+                    </div>
+                </form>
+            </section>
+
+            <!-- ========== CARD: 対応エリア ========== -->
+            <section class="card" aria-labelledby="card-service-area">
+                <h2 id="card-service-area" class="card-title">対応エリア</h2>
+
+                <!-- [API-DATA] Multi-select tag input for service areas -->
+                <div class="tag-input-wrapper" data-field="serviceAreas" id="service-area-input">
+                    <!-- Pre-selected tags (API-DATA) -->
+                    <span class="tag">
+                        東京都
+                        <i class="fa-solid fa-xmark tag-remove" data-action="remove-tag" data-value="東京都"></i>
+                    </span>
+                    <span class="tag">
+                        神奈川県
+                        <i class="fa-solid fa-xmark tag-remove" data-action="remove-tag" data-value="神奈川県"></i>
+                    </span>
+                    <span class="tag">
+                        埼玉県
+                        <i class="fa-solid fa-xmark tag-remove" data-action="remove-tag" data-value="埼玉県"></i>
+                    </span>
+
+                    <!-- Hidden input for form submission -->
+                    <input type="text" class="flex-1 min-w-[120px] border-none outline-none text-[13px] text-text-primary placeholder:text-text-muted bg-transparent" placeholder="エリアを選択または入力..." id="service-area-text">
+                </div>
+                <!-- [API-ACTION] Click tags area to open dropdown / add new tag -->
+            </section>
+
+            <!-- ========== CARD: 担当者 ========== -->
+            <section class="card" aria-labelledby="card-contacts">
+                <h2 id="card-contacts" class="card-title">担当者</h2>
+
+                <div class="overflow-x-auto -mx-2">
+                    <table class="data-table min-w-[800px]">
+                        <thead>
+                            <tr>
+                                <th class="min-w-[160px]">担当者名 <span class="text-status-error">*</span></th>
+                                <th class="min-w-[220px]">メールアドレス</th>
+                                <th class="min-w-[150px]">TEL</th>
+                                <th class="min-w-[140px]">所属</th>
+                                <th>備考</th>
+                                <th class="w-[60px] text-center">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contacts-table-body">
+                            <!-- Row 1 (API-DATA) -->
+                            <tr data-row-index="0">
+                                <td>
+                                    <input type="text" class="form-input" value="鈴木 一郎" data-field="contacts[0].name" data-row="0">
+                                </td>
+                                <td>
+                                    <input type="email" class="form-input" value="suzuki@example.com" data-field="contacts[0].email" data-row="0">
+                                </td>
+                                <td>
+                                    <input type="tel" class="form-input" value="03-1234-5678" data-field="contacts[0].tel" data-row="0">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-input" value="営業部" data-field="contacts[0].department" data-row="0">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-input" value="" placeholder="-" data-field="contacts[0].note" data-row="0">
+                                </td>
+                                <td class="text-center">
+                                    <!-- [API-ACTION] Delete contact row -->
+                                    <button class="btn btn-ghost px-2" data-action="delete-row" data-row="0" title="削除">
+                                        <i class="fa-solid fa-trash text-status-error"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2 (API-DATA) -->
+                            <tr data-row-index="1">
+                                <td>
+                                    <input type="text" class="form-input" value="田中美咲" data-field="contacts[1].name" data-row="1">
+                                </td>
+                                <td>
+                                    <input type="email" class="form-input" value="tanaka@example.com" data-field="contacts[1].email" data-row="1">
+                                </td>
+                                <td>
+                                    <input type="tel" class="form-input" value="090-1234-5678" data-field="contacts[1].tel" data-row="1">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-input" value="経理部" data-field="contacts[1].department" data-row="1">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-input" value="" placeholder="-" data-field="contacts[1].note" data-row="1">
+                                </td>
+                                <td class="text-center">
+                                    <!-- [API-ACTION] Delete contact row -->
+                                    <button class="btn btn-ghost px-2" data-action="delete-row" data-row="1" title="削除">
+                                        <i class="fa-solid fa-trash text-status-error"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- [API-ACTION] Add new contact row -->
+                <div class="mt-4">
+                    <button class="btn btn-outline" id="btn-add-contact" data-action="add-row">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                        行を追加
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        // ========== TAB SWITCHING ==========
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('tab-item--active'));
+                this.classList.add('tab-item--active');
+                // [API-ACTION] Load tab content via API based on active tab
+            });
+        });
+
+        // ========== MULTI-SELECT TAG INPUT ==========
+        const tagWrapper = document.getElementById('service-area-input');
+        const tagInput = document.getElementById('service-area-text');
+
+        // Allow pressing Enter or comma to add tag
+        tagInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                const val = this.value.trim().replace(/,+$/, '');
+                if (val) {
+                    addServiceAreaTag(val);
+                    this.value = '';
+                }
+            }
+        });
+
+        // Remove tag on click
+        tagWrapper.addEventListener('click', function(e) {
+            const removeBtn = e.target.closest('[data-action="remove-tag"]');
+            if (removeBtn) {
+                e.preventDefault();
+                const tag = removeBtn.closest('.tag');
+                const value = removeBtn.getAttribute('data-value');
+                tag.remove();
+                // [API-ACTION] Remove service area via API
+            }
+        });
+
+        function addServiceAreaTag(value) {
+            // Prevent duplicate
+            const existing = Array.from(tagWrapper.querySelectorAll('.tag')).map(t => t.getAttribute('data-value'));
+            if (existing.includes(value)) return;
+
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.setAttribute('data-value', value);
+            tag.innerHTML = `
+                ${escapeHtml(value)}
+                <i class="fa-solid fa-xmark tag-remove" data-action="remove-tag" data-value="${escapeHtml(value)}"></i>
+            `;
+            tagWrapper.insertBefore(tag, tagInput);
+            // [API-ACTION] Add service area via API
+        }
+
+        // ========== CONTACT TABLE ROW MANAGEMENT ==========
+        let contactRowCount = 2;
+
+        document.getElementById('btn-add-contact').addEventListener('click', function() {
+            const tbody = document.getElementById('contacts-table-body');
+            const row = document.createElement('tr');
+            row.setAttribute('data-row-index', contactRowCount);
+            row.innerHTML = `
+                <td>
+                    <input type="text" class="form-input" placeholder="山田 花子" data-field="contacts[${contactRowCount}].name" data-row="${contactRowCount}">
+                </td>
+                <td>
+                    <input type="email" class="form-input" placeholder="yamada@example.com" data-field="contacts[${contactRowCount}].email" data-row="${contactRowCount}">
+                </td>
+                <td>
+                    <input type="tel" class="form-input" placeholder="03-0000-0000" data-field="contacts[${contactRowCount}].tel" data-row="${contactRowCount}">
+                </td>
+                <td>
+                    <input type="text" class="form-input" placeholder="所属" data-field="contacts[${contactRowCount}].department" data-row="${contactRowCount}">
+                </td>
+                <td>
+                    <input type="text" class="form-input" placeholder="-" data-field="contacts[${contactRowCount}].note" data-row="${contactRowCount}">
+                </td>
+                <td class="text-center">
+                    <button class="btn btn-ghost px-2" data-action="delete-row" data-row="${contactRowCount}" title="削除">
+                        <i class="fa-solid fa-trash text-status-error"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+            contactRowCount++;
+            // [API-ACTION] Add new empty contact row via API
+        });
+
+        // Delegate delete row clicks
+        document.getElementById('contacts-table-body').addEventListener('click', function(e) {
+            const btn = e.target.closest('[data-action="delete-row"]');
+            if (btn) {
+                const row = btn.closest('tr');
+                const rowIndex = btn.getAttribute('data-row');
+                row.remove();
+                // Re-index remaining rows
+                reindexContactRows();
+                // [API-ACTION] Delete contact row ${rowIndex} via API
+            }
+        });
+
+        function reindexContactRows() {
+            const rows = document.querySelectorAll('#contacts-table-body tr');
+            rows.forEach((row, idx) => {
+                row.setAttribute('data-row-index', idx);
+                row.querySelectorAll('input').forEach(input => {
+                    const field = input.getAttribute('data-field');
+                    if (field) {
+                        const newField = field.replace(/contacts\[\d+\]/, `contacts[${idx}]`);
+                        input.setAttribute('data-field', newField);
+                        input.setAttribute('data-row', idx);
+                    }
+                });
+                const delBtn = row.querySelector('[data-action="delete-row"]');
+                if (delBtn) delBtn.setAttribute('data-row', idx);
+            });
+            contactRowCount = rows.length;
+        }
+
+        // ========== VALIDATION ERROR STATE (Demo) ==========
+        // [API-DATA] Example: if API returns validation error for a field
+        function showFieldError(inputElement, message) {
+            inputElement.classList.add('!border-status-error');
+            inputElement.classList.remove('border-border');
+            const wrapper = inputElement.closest('.flex.flex-col');
+            if (wrapper) {
+                const err = document.createElement('div');
+                err.className = 'form-error';
+                err.textContent = message;
+                err.setAttribute('data-error-for', inputElement.getAttribute('data-field'));
+                wrapper.appendChild(err);
+            }
+        }
+
+        function clearAllErrors() {
+            document.querySelectorAll('.form-input, .form-select, .form-textarea, .tag-input-wrapper').forEach(el => {
+                el.classList.remove('!border-status-error');
+                el.classList.add('border-border');
+            });
+            document.querySelectorAll('[data-error-for]').forEach(el => el.remove());
+        }
+
+        // ========== FORM SUBMIT (Demo) ==========
+        document.querySelector('.btn-primary').addEventListener('click', function() {
+            clearAllErrors();
+            // Example validation
+            const requiredFields = document.querySelectorAll('.form-label--required');
+            requiredFields.forEach(label => {
+                const input = label.nextElementSibling;
+                if (input && !input.value.trim()) {
+                    showFieldError(input, 'この項目は必須です');
+                }
+            });
+            // [API-ACTION] Submit form data via PATCH /api/deliverer-partners/{id}
+        });
+
+        // ========== UTILS ==========
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>配送状況 — API 配線ガイド (Deliverer)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#65a30d; --lime:#84cc16; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F3F4F6; color:#222; }
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;margin-left:6px;
+    background:#0062CC;color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none; }
+  .nb:hover{ transform:scale(1.18);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .form-input{ height:38px;border:1px solid #cbd5e0;border-radius:8px;padding:0 12px;font-size:13px;background:#fff; }
+  .dt{ width:100%;border-collapse:collapse;font-size:12.5px;white-space:nowrap; }
+  .dt th{ background:#fafafa;color:#6b7280;font-weight:600;padding:10px;border-bottom:1px solid #e5e7eb;text-align:left; }
+  .dt td{ padding:10px;border-bottom:1px solid #f1f5f9;color:#374151; }
+  .status-pill{ display:inline-block;padding:3px 12px;border-radius:14px;font-size:12px;font-weight:700; }
+  .lnk{ color:#2563eb;text-decoration:none; }
+  .fld{ height:38px;border:1px solid #e5e7eb;border-radius:8px;padding:0 12px;display:flex;align-items:center;background:#f9fafb;font-size:13px;color:#374151; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:820px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#ecfccb; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-patch{background:#e9d8fd;color:#553c9a;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+</style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Deliverer · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">配送状況 — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số</b> → bảng ráp + API docs. Contract: <code>API仕様詳細_配送関連.md › A2</code> · base <code>/deliverer/*</code>. Dữ liệu luôn scope <code>delivererId = me</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (GET)</span>
+      <span><span class="nb act" style="cursor:default">n</span> action/ghi</span>
+      <span><span class="nb tbd" style="cursor:default">n</span> còn chờ BA (TBD)</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP list (khớp OW_DLVR_001) ===== -->
+  <div class="card p-6 mb-6">
+    <div class="text-xs text-gray-500 mb-1">配送状況管理</div>
+    <h2 class="text-xl font-bold text-gray-900 mb-4">事前配送状況一覧</h2>
+    <div class="flex flex-wrap items-center gap-2 mb-4">
+      <input class="form-input" placeholder="配送NO" /><span class="nb" data-n="1">1</span>
+      <select class="form-input"><option>配送日</option></select><span class="nb" data-n="2">2</span>
+      <select class="form-input"><option>出荷予定日</option></select><span class="nb" data-n="3">3</span>
+      <select class="form-input"><option>中継先</option></select><span class="nb" data-n="4">4</span>
+      <select class="form-input"><option>配送状況</option></select><span class="nb" data-n="5">5</span>
+      <button class="px-4 h-9 rounded-lg border border-lime-600 text-lime-700 text-sm font-medium">クリア</button>
+      <button class="px-4 h-9 rounded-lg bg-lime-500 text-white text-sm font-medium">検索<span class="nb act" data-n="7">7</span></button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="dt">
+        <thead><tr>
+          <th>No</th><th>配送NO<span class="nb" data-n="8">8</span></th><th>配送日<span class="nb" data-n="9">9</span></th>
+          <th>出荷予定日<span class="nb" data-n="10">10</span></th><th>納品予定日<span class="nb" data-n="11">11</span></th>
+          <th>中継先<span class="nb" data-n="12">12</span></th><th>配送業者<span class="nb" data-n="13">13</span></th>
+          <th>納品先名称<span class="nb" data-n="14">14</span></th><th>納品先住所<span class="nb" data-n="15">15</span></th>
+          <th>ステータス<span class="nb" data-n="16">16</span></th><th>操作<span class="nb act" data-n="17">17</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td>1</td><td><a class="lnk">D000033215</a></td><td>2026-06-07</td><td>2026-06-07</td><td>2026-06-08</td><td>ヤマト 中継</td><td>COOL便</td><td>福市美前頗市頭園町</td><td>福市美前頗市頭園町</td><td><span class="status-pill bg-green-100 text-green-700">完了</span></td><td><i class="fa-regular fa-pen-to-square text-blue-600"></i></td></tr>
+          <tr><td>2</td><td><a class="lnk">D000033216</a></td><td>2026-06-07</td><td>2026-06-07</td><td>2026-06-08</td><td>ヤマト 中継</td><td>COOL便</td><td>福市美前頗市頭園町</td><td>福市美前頗市頭園町</td><td><span class="status-pill bg-green-100 text-green-700">完了</span></td><td><i class="fa-regular fa-pen-to-square text-blue-600"></i></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flex items-center justify-end gap-4 mt-4 text-sm text-gray-600">
+      <span>100件中 1-10件</span>
+      <div class="flex items-center gap-1"><span class="px-2 py-1 border rounded">1</span><span>…</span><span class="px-2 py-1 border rounded bg-lime-500 text-white">4</span><span>…</span><span class="px-2 py-1 border rounded">50</span></div>
+      <select class="form-input"><option>10件／ページ</option></select><span class="nb" data-n="18">18</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP detail / 紐付け (khớp OW_DLVR_002) ===== -->
+  <div class="card p-6">
+    <div class="flex items-center justify-between mb-4">
+      <div><div class="text-xs text-gray-500">配送状況管理</div><h2 class="text-xl font-bold text-gray-900">配送スタッフを紐付ける</h2></div>
+      <div class="flex gap-2"><button class="px-5 h-10 rounded-lg border border-gray-300 text-gray-600 text-sm font-medium">キャンセル</button>
+        <button class="px-5 h-10 rounded-lg bg-lime-500 text-white text-sm font-medium">保存<span class="nb act" data-n="20">20</span></button></div>
+    </div>
+    <div class="rounded-lg border border-gray-200 overflow-hidden">
+      <div class="bg-slate-50 border-l-4 border-lime-500 px-4 py-3 font-bold text-gray-800">配送スタッフ選択</div>
+      <div class="p-5 max-w-sm">
+        <label class="text-xs text-gray-500">配送スタッフ</label>
+        <select class="form-input w-full mt-1"><option>伊藤 健司</option></select><span class="nb" data-n="19">19</span>
+      </div>
+    </div>
+    <p class="text-xs text-gray-500 mt-3">納品先情報 / 中継先情報 / 荷物情報 / 報告情報 = read-only (lấy từ shipment detail). Thao tác ghi DUY NHẤT = gán 配送スタッフ.</p>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Mock khớp <code>OW_DLVR_001 / OW_DLVR_002</code>. Số <span class="text-green-600 font-bold">xanh lá</span> = action/ghi.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — 配送状況 <span class="text-gray-400 font-normal text-sm">(§A2)</span></b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:42px">No</th><th>UI element</th><th>API</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const P = e => '<code>'+e+'</code>';
+const LIST = '<span class="method m-get">GET</span> '+P('/deliverer/shipments');
+const DET  = '<span class="method m-get">GET</span> '+P('/deliverer/shipments/{id}');
+const DRV  = '<span class="method m-get">GET</span> '+P('/deliverer/shipments/{id}/assignable-drivers');
+const ASG  = '<span class="method m-patch">PATCH</span> '+P('/deliverer/shipments/{id}/assign-driver');
+const W = {
+  1:{ui:'Filter 配送NO', api:LIST, field:'query <code>shipmentNo</code>', tf:'Tìm theo mã (like).'},
+  2:{ui:'Filter 配送日', api:LIST, field:'query <code>deliveryDateFrom/To</code>', tf:'✅ Chốt: map <code>shipments.scheduled_delivery_date</code> (= 納品予定日). Param RIÊNG với 出荷予定日.'},
+  3:{ui:'Filter 出荷予定日', api:LIST, field:'query <code>scheduledSendDateFrom/To</code>', tf:'Ngày dự kiến xuất hàng (shipments.scheduled_send_date).'},
+  4:{ui:'Filter 中継先', api:LIST, field:'query <code>transitPointId</code>', tf:'FK relay_masters.'},
+  5:{ui:'Filter 配送状況 (ステータス)', api:LIST, field:'query <code>status</code>', tf:'enum ShipmentStatus.'},
+  7:{ui:'Nút 検索', api:LIST, field:'gọi lại với filter', tf:'Submit filter → reload list.', act:1},
+  8:{ui:'列 配送NO', api:LIST, field:'<code>items[].shipmentNo</code>', tf:'Link → mở detail.'},
+  9:{ui:'列 配送日', api:LIST, field:'<code>items[].deliveryDate</code>', tf:'—'},
+  10:{ui:'列 出荷予定日', api:LIST, field:'<code>items[].scheduledSendDate</code>', tf:'—'},
+  11:{ui:'列 納品予定日', api:LIST, field:'<code>items[].scheduledDeliveryDate</code>', tf:'⭐ field mới shipments.scheduled_delivery_date (G1).'},
+  12:{ui:'列 中継先', api:LIST, field:'<code>items[].transitPoint.name</code>', tf:'relay_masters.relay_name.'},
+  13:{ui:'列 配送業者', api:LIST, field:'<code>items[].carrierName</code>', tf:'snapshot carrier/区分.'},
+  14:{ui:'列 納品先名称', api:LIST, field:'<code>items[].company.name</code>', tf:'companies.name.'},
+  15:{ui:'列 納品先住所', api:LIST, field:'<code>items[].company.address</code>', tf:'ghép companies.address_*.'},
+  16:{ui:'列 ステータス', api:LIST, field:'<code>items[].status</code>', tf:'badge: COMPLETED=完了…'},
+  17:{ui:'操作 (mở detail)', api:DET, field:'path <code>id</code>', tf:'Mở OW_DLVR_002 (read-only + gán driver).', act:1},
+  18:{ui:'Phân trang', api:LIST, field:'query <code>page/limit</code>', tf:'envelope total/page/limit.'},
+  19:{ui:'Dropdown 配送スタッフ', api:DRV, field:'<code>[].{id,name}</code>', tf:'List driver của me (ACTIVE & APPROVED) cho ô chọn.'},
+  20:{ui:'Nút 保存 (gán driver)', api:ASG, field:'body <code>{ driverId }</code>', tf:'Thao tác ghi duy nhất. 404 nếu shipment/driver không thuộc me; 409 nếu đã COMPLETED.', act:1}
+};
+
+const DOCS = `
+<div style="background:#f7fee7;border:1px solid #d9f99d;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#3f6212;margin-bottom:14px">
+  <b>API màn:</b> <span class="method m-get">GET</span> <code>/deliverer/shipments</code> (list) · <code>/{id}</code> (detail) · <code>/{id}/assignable-drivers</code> · <span class="method m-patch">PATCH</span> <code>/{id}/assign-driver</code>. Auth: DelivererGuard, ép <code>delivererId=me</code>.
+</div>
+
+<h4>① <span class="method m-get">GET</span> /deliverer/shipments — list (OW_DLVR_001)</h4>
+<p><b>Nguồn:</b> <code>shipments</code> WHERE <code>deliverer_id=me</code> (+ join relay_masters, companies). Query: <code>shipmentNo</code>, <code>scheduledSendDateFrom/To</code> (出荷予定日), <code>deliveryDateFrom/To</code> (配送日 — param RIÊNG), <code>transitPointId</code>, <code>companyId</code>, <code>status</code>, page/limit.</p>
+<div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:8px 10px;font-size:12px;color:#065f46;margin:8px 0">
+  ✅ <b>Đã chốt:</b> ① <code>配送日</code> filter → <code>deliveryDateFrom/To</code> map <b>scheduled_delivery_date</b> (riêng với 出荷予定日). ② <code>cargo.trackingNos[]</code> = <b>array</b> (1 shipment N box). ③ shipment chưa có report → BE trả <code>report:null</code> (giữ field). ④ <code>completionImageUrls</code> = array (0–N). ⑤ 選択追加 đã <b>ẩn</b> (chưa thuộc phase).
+</div>
+<pre>{
+  "items":[{
+    "id":"5001","shipmentNo":"D000033215",
+    "deliveryDate":"2026-06-07","scheduledSendDate":"2026-06-07",
+    "scheduledDeliveryDate":"2026-06-08",                       // số 11 (field mới)
+    "transitPoint":{"id":"12","name":"ヤマト 中継"},
+    "carrierName":"COOL便",
+    "company":{"id":"880","name":"福市美前頗市頭園町","address":"広島県大竹町…"},
+    "status":"COMPLETED"
+  }],
+  "total":100,"page":1,"limit":10,"totalPages":10
+}</pre>
+
+<h4 style="margin-top:18px">② <span class="method m-get">GET</span> /deliverer/shipments/{id} — detail (OW_DLVR_002, read-only)</h4>
+<pre>{
+  "id":"5001","shipmentNo":"D000033215",
+  "consignee":{"name":"田中 太郎","address":"東京都渋谷区神南1-2-3","tel":"03-5678-9012","contactName":"佐藤 花子","scheduledDeliveryDate":"2026-11-20"},
+  "relayPoint":{"name":"鈴木 一郎","address":"神奈川県横浜市西区…","tel":"045-321-6789","contactName":"山田 美咲"},
+  "cargo":{"trackingNos":["YM-20261115-00847"],"carrierName":"ヤマト運輸株式会社","cargoName":"冷凍食品セット","scheduledSendDate":"2026-11-15","scheduledDeliveryDate":"2026-11-20","notes":"冷凍保管必要"},
+  "report":{"parkingFee":550,"receiptImageUrl":"…","reportImageUrls":["…"],"driverContact":"080-1234-5678（担当：伊藤 健司）"},
+  "assignedDriver":{"id":"301","name":"伊藤 健司"}
+}</pre>
+
+<h4 style="margin-top:18px">③ <span class="method m-get">GET</span> /deliverer/shipments/{id}/assignable-drivers (số 19)</h4>
+<pre>[ { "id":"301","name":"伊藤 健司" } ]   // drivers của me, ACTIVE & APPROVED</pre>
+
+<h4 style="margin-top:18px">④ <span class="method m-patch">PATCH</span> /deliverer/shipments/{id}/assign-driver (số 20)</h4>
+<pre>// Body
+{ "driverId": "301" }
+// Response 200 → shipment detail sau cập nhật
+// 404 nếu shipment/driver không thuộc me · 409 nếu shipment đã COMPLETED</pre>
+
+<h4 style="margin-top:18px">DB note (thiết kế)</h4>
+<p>⭐ Thêm <code>shipments.scheduled_delivery_date</code> (納品予定日, G1). 配送元 lấy từ master có cấu trúc (relay/supplier). FK <code>deliverer_id → deliverers</code> (đã gộp). 送り状No từ <code>shipment_cargo_boxes.tracking_no</code>. report từ <code>collection_reports</code> + <code>delivery_completion_reports</code>.</p>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).map(Number).sort((a,b)=>a-b).forEach(n=>{
+  const d=W[n], cls=d.tbd?'tbd':(d.act?'act':'');
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function open(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function close(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=close; ov.onclick=close;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();open(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

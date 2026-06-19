@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>注文詳細編集 — API 配線ガイド (Supplier)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#0062CC; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F8F9FA; color:#222; }
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;margin-left:6px;
+    background:var(--primary);color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none; }
+  .nb:hover{ transform:scale(1.18);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .form-input{ height:36px;border:1px solid #D1D5DB;border-radius:6px;padding:0 10px;font-size:14px;background:#fff; }
+  .status-pill{ display:inline-block;font-size:12px;font-weight:700;padding:3px 12px;border-radius:12px; }
+  .dt{ width:100%;border-collapse:collapse; }
+  .dt th{ background:#F3F4F6;color:#6B7280;font-size:12px;font-weight:700;text-align:left;padding:10px 8px;border-bottom:1px solid #E5E7EB;white-space:nowrap; }
+  .dt td{ padding:10px 8px;font-size:13px;border-bottom:1px solid #E5E7EB;vertical-align:middle;white-space:nowrap; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:820px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#dbeafe; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-post{background:#bee3f8;color:#2a4365;} .m-put{background:#feebc8;color:#9c4221;} .m-del{background:#fed7d7;color:#9b2c2c;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+</style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Supplier · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">注文詳細編集 — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số</b> bất kỳ → panel phải hiện <b>nguyên bảng tổng quan + API docs</b> (highlight dòng đã click). Contract: <code>SUPPLIER_DB_API_DESIGN.md › 3.3</code> · base <code>/supplier/*</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (GET)</span>
+      <span><span class="nb act" style="cursor:default">n</span> action/ghi (POST/PUT/DELETE)</span>
+      <span><span class="nb tbd" style="cursor:default">n</span> chưa có nguồn DB (TBD)</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP (khớp screenshot) ===== -->
+  <div class="card p-6">
+    <!-- header + top actions -->
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <div class="text-xs text-gray-500">注文管理 / 注文詳細編集</div>
+        <div class="flex items-center gap-2 mt-1">
+          <h2 class="text-xl font-bold text-gray-900">注文詳細編集</h2>
+          <span class="status-pill bg-gray-100 text-gray-600">未処理</span>
+          <span class="text-xs text-gray-400">注文番号<span class="nb" data-n="20">20</span> / 顧客名<span class="nb" data-n="21">21</span> (header)</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium">CSV取込 (Import)<span class="nb act" data-n="5">5</span></button>
+        <button class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium">仮発注<span class="nb act" data-n="6">6</span></button>
+        <button class="px-4 py-2 rounded-lg bg-purple-600 text-white font-medium">本発注<span class="nb act" data-n="7">7</span></button>
+      </div>
+    </div>
+
+    <!-- filter -->
+    <div class="rounded-xl border border-gray-200 p-4 mb-5">
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="relative"><input class="form-input pl-9" placeholder="商品名" /><i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i></div><span class="nb" data-n="1">1</span>
+        <input type="month" class="form-input" value="2025-10" /><span class="nb" data-n="2">2</span>
+        <select class="form-input"><option>ステータス</option><option>未処理</option><option>仮発注済</option><option>本発注済</option></select><span class="nb" data-n="3">3</span>
+        <button class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 text-sm">クリア</button>
+        <button class="px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium">検索<span class="nb" data-n="4">4</span></button>
+      </div>
+      <button class="mt-3 w-full py-2 rounded-lg border border-dashed border-purple-300 text-purple-600 text-sm font-medium"><i class="fa-solid fa-plus mr-1"></i>契約登録<span class="nb act" data-n="8">8</span></button>
+    </div>
+
+    <!-- lines table -->
+    <div class="overflow-x-auto">
+      <table class="dt">
+        <thead><tr>
+          <th><input type="checkbox" /></th>
+          <th>No</th>
+          <th>商品名<span class="nb" data-n="9">9</span></th>
+          <th>カテゴリ<span class="nb" data-n="10">10</span></th>
+          <th>仕入先<span class="nb" data-n="11">11</span></th>
+          <th class="text-center">論理必要数<span class="nb tbd" data-n="12">12</span></th>
+          <th class="text-center">在庫数<span class="nb tbd" data-n="13">13</span></th>
+          <th class="text-center">オーダー数<span class="nb" data-n="14">14</span></th>
+          <th class="text-center">仮発注<span class="nb" data-n="15">15</span></th>
+          <th class="text-center">本発注<span class="nb" data-n="16">16</span></th>
+          <th class="text-center">ステータス<span class="nb" data-n="17">17</span></th>
+          <th class="text-center">操作<span class="nb act" data-n="18">18</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td><input type="checkbox" /></td><td>1</td><td>さつまいも</td><td>野菜</td><td>ヤマダ株式会社</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center"><span class="status-pill bg-orange-100 text-orange-700">仮発注済</span></td>
+            <td class="text-center"><i class="fa-solid fa-pen text-blue-600 mr-2"></i><i class="fa-solid fa-trash text-red-500"></i><span class="nb act" data-n="19">19</span></td></tr>
+          <tr><td><input type="checkbox" /></td><td>2</td><td>さつまいも</td><td>野菜</td><td>ヤマダ株式会社</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center"><span class="status-pill bg-gray-100 text-gray-600">未処理</span></td>
+            <td class="text-center"><i class="fa-solid fa-pen text-blue-600 mr-2"></i><i class="fa-solid fa-trash text-red-500"></i></td></tr>
+          <tr><td><input type="checkbox" /></td><td>3</td><td>さつまいも</td><td>野菜</td><td>ヤマダ株式会社</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center">100</td><td class="text-center"><span class="status-pill bg-blue-100 text-blue-700">本発注済</span></td>
+            <td class="text-center"><i class="fa-solid fa-pen text-blue-600 mr-2"></i><i class="fa-solid fa-trash text-red-500"></i></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm số để xem bảng ráp + API docs. Số <span class="text-orange-600 font-bold">cam (12,13)</span> = 論理必要数 / 在庫数 chưa có nguồn DB (chờ BA). CSV (5) là <b>import</b> dù nhãn 出力.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — 注文詳細編集 <span class="text-gray-400 font-normal text-sm">(§3.3)</span></b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:42px">No</th><th>UI element</th><th>API</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const P = e => '<code>'+e+'</code>';
+const GET_D = '<span class="method m-get">GET</span> '+P('/supplier/orders/{id}');
+const W = {
+  1:{ui:'Ô tìm — 商品名', api:GET_D, field:'query: <code>productName</code>', tf:'Gõ tên SP để lọc dòng → query, gọi lại khi 検索.'},
+  2:{ui:'Bộ lọc — 月 (tháng)', api:GET_D, field:'query: <code>month</code>', tf:'yyyy-MM.'},
+  3:{ui:'Bộ lọc — ステータス (line_status)', api:GET_D, field:'query: <code>status</code>', tf:'UNPROCESSED/PROVISIONAL_ORDERED/OFFICIAL_ORDERED.'},
+  4:{ui:'Nút 検索', api:GET_D, field:'(trigger)', tf:'Gọi lại GET với filter 1–3.'},
+  5:{ui:'Nút CSV取込 (Import)', api:'<span class="method m-post">POST</span> '+P('/supplier/orders/{id}/import'), field:'multipart/form-data, field <code>file</code>', tf:'⚠️ Là nút <b>IMPORT</b> (dù nhãn 出力). Upload CSV → server trả <code>ImportResult</code> (thành công/thất bại + lỗi từng dòng/cột). Format file chưa chốt (chờ BA). Xem API Docs ④.', act:1},
+  6:{ui:'Nút 仮発注 (đặt tạm, hàng loạt)', api:'<span class="method m-post">POST</span> '+P('/supplier/orders/{id}/provisional-order'), field:'body <code>{ detailIds:[…] }</code>', tf:'Gom detailId các dòng TICK → set line_status=PROVISIONAL_ORDERED.', act:1},
+  7:{ui:'Nút 本発注 (đặt chính thức)', api:'<span class="method m-post">POST</span> '+P('/supplier/orders/{id}/official-order'), field:'body <code>{ detailIds:[…] }</code>', tf:'Set line_status=OFFICIAL_ORDERED cho dòng đã chọn.', act:1},
+  8:{ui:'Nút 契約登録', api:'(flow hợp đồng — ngoài scope)', field:'—', tf:'Điều hướng sang đăng ký hợp đồng. Chưa thiết kế chi tiết.', act:1},
+  9:{ui:'Cột 商品名', api:GET_D, field:'<code>lines[].productName</code>', tf:'Tên SP (snapshot).'},
+  10:{ui:'Cột カテゴリ', api:GET_D, field:'<code>lines[].category</code>', tf:'Danh mục.'},
+  11:{ui:'Cột 仕入先', api:GET_D, field:'<code>lines[].supplierName</code>', tf:'NCC dự kiến.'},
+  12:{ui:'Cột 論理必要数 (logical required)', api:GET_D, field:'<code>lines[].logicalRequiredQty</code>', tf:'Số lượng cần (lý thuyết). ⚠️ Chưa có nguồn DB (không có bảng forecast) — chờ BA.', tbd:1},
+  13:{ui:'Cột 在庫数 (stock)', api:GET_D, field:'<code>lines[].stockQty</code>', tf:'Tồn kho. ⚠️ Chưa có bảng inventory/stock — chờ BA.', tbd:1},
+  14:{ui:'Cột オーダー数 (order qty)', api:GET_D, field:'<code>lines[].orderQty</code>', tf:'Số lượng đặt = <code>supplier_order_details.quantity</code>.'},
+  15:{ui:'Cột 仮発注 (provisional qty)', api:GET_D+' / '+'<span class="method m-put">PUT</span> '+P('/supplier/order-details/{detailId}'), field:'<code>lines[].provisionalQty</code>', tf:'Số đặt tạm. DB design: supplier_order_details.provisional_quantity. Sửa qua PUT dòng (số 18).'},
+  16:{ui:'Cột 本発注 (official qty)', api:GET_D+' / PUT', field:'<code>lines[].officialQty</code>', tf:'Số đặt chính thức. DB design: supplier_order_details.official_quantity.'},
+  17:{ui:'Cột ステータス (badge)', api:GET_D, field:'<code>lines[].lineStatus</code>', tf:'UNPROCESSED→未処理(xám) · PROVISIONAL_ORDERED→仮発注済(cam) · OFFICIAL_ORDERED→本発注済(xanh). DB: supplier_order_details.line_status.'},
+  18:{ui:'操作 — nút 編集 (sửa dòng)', api:'<span class="method m-put">PUT</span> '+P('/supplier/order-details/{detailId}'), field:'path <code>detailId</code> + body', tf:'Sửa 1 dòng (số lượng 仮発注/本発注…). detailId từ lines[].detailId.', act:1},
+  19:{ui:'操作 — nút 削除 (xóa dòng)', api:'<span class="method m-del">DELETE</span> '+P('/supplier/order-details/{detailId}'), field:'path <code>detailId</code>', tf:'Xóa mềm 1 dòng (nên có popup xác nhận).', act:1},
+  20:{ui:'注文番号 (header)', api:GET_D, field:'<code>orderNo</code>', tf:'Mã đơn ở header.'},
+  21:{ui:'顧客名 (header)', api:GET_D, field:'<code>customerName</code>', tf:'Tên khách (= companies.name). *(Nếu màn chi tiết không hiển thị thì FE bỏ qua field này.)*'}
+};
+const DOCS = `
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1e40af;margin-bottom:14px">
+  <b>API chính:</b> <span class="method m-get">GET</span> <code>/supplier/orders/{id}</code> — chi tiết đơn + danh sách dòng SP. Auth: <code>Bearer {supplier token}</code>.
+</div>
+
+<h4>① <span class="method m-get">GET</span> /supplier/orders/{id} — Chi tiết + dòng &nbsp;<span style="color:#16a34a">(API CHÍNH)</span></h4>
+<p><b>Mục đích:</b> Nạp đầu đơn + danh sách dòng để render bảng + bộ lọc.</p>
+<p style="font-weight:700;margin-top:10px">Query params (lọc dòng)</p>
+<table class="map"><thead><tr><th>Param</th><th>Kiểu</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>productName</code></td><td>string</td><td>Tìm theo tên SP (số 1).</td></tr>
+<tr><td><code>status</code></td><td>enum</td><td>line_status: UNPROCESSED/PROVISIONAL_ORDERED/OFFICIAL_ORDERED (số 3).</td></tr>
+<tr><td><code>month</code></td><td>string</td><td>yyyy-MM (số 2).</td></tr>
+<tr><td><code>page</code>/<code>limit</code></td><td>number</td><td>Phân trang dòng.</td></tr>
+</tbody></table>
+
+<p style="font-weight:700;margin-top:12px">Response 200</p>
+<pre>{
+  "orderNo": "CO000000123",        // header (số 20)
+  "customerName": "サンプル株式会社", // header (số 21)
+  "status": "UNPROCESSED",          // trạng thái đơn
+  "lines": [
+    {
+      "detailId": 5001, "no": 1,
+      "productName": "さつまいも",     // 商品名 (số 9)
+      "category": "野菜",             // カテゴリ (số 10)
+      "supplierName": "ヤマダ株式会社", // 仕入先 (số 11)
+      "logicalRequiredQty": 100,     // 論理必要数 (số 12) ⚠️ TBD nguồn
+      "stockQty": 100,               // 在庫数 (số 13) ⚠️ TBD nguồn
+      "orderQty": 100,               // オーダー数 = quantity (số 14)
+      "provisionalQty": 100,         // 仮発注 (số 15)
+      "officialQty": 100,            // 本発注 (số 16)
+      "lineStatus": "PROVISIONAL_ORDERED" // ステータス (số 17)
+    }
+  ],
+  "page": 1, "limit": 10, "total": 100
+}</pre>
+
+<p style="font-weight:700;margin-top:12px">Bảng field dòng (lines[])</p>
+<table class="map"><thead><tr><th>Field</th><th>Cột</th><th>Nguồn / ghi chú</th></tr></thead><tbody>
+<tr><td><code>productName/category/supplierName</code></td><td>商品名/カテゴリ/仕入先</td><td>snapshot + join.</td></tr>
+<tr><td><code>logicalRequiredQty</code></td><td>論理必要数</td><td>⚠️ chưa có nguồn DB — chờ BA.</td></tr>
+<tr><td><code>stockQty</code></td><td>在庫数</td><td>⚠️ chưa có bảng stock — chờ BA.</td></tr>
+<tr><td><code>orderQty</code></td><td>オーダー数</td><td>= supplier_order_details.quantity.</td></tr>
+<tr><td><code>provisionalQty</code></td><td>仮発注</td><td>DB design: provisional_quantity (int).</td></tr>
+<tr><td><code>officialQty</code></td><td>本発注</td><td>DB design: official_quantity (int).</td></tr>
+<tr><td><code>lineStatus</code></td><td>ステータス</td><td>enum supplier_order_line_status_enum.</td></tr>
+</tbody></table>
+
+<h4 style="margin-top:20px">② <span class="method m-post">POST</span> /supplier/orders/{id}/provisional-order · official-order (số 6,7)</h4>
+<pre>{ "detailIds": [5001, 5002] }  →  { "updated": 2 }</pre>
+<p>Set line_status = PROVISIONAL_ORDERED / OFFICIAL_ORDERED cho các dòng đã tick.</p>
+
+<h4 style="margin-top:18px">③ Sửa / Xóa dòng (số 18,19)</h4>
+<p><span class="method m-put">PUT</span> <code>/supplier/order-details/{detailId}</code> (sửa qty/…) · <span class="method m-del">DELETE</span> <code>/supplier/order-details/{detailId}</code> (xóa mềm).</p>
+
+<h4 style="margin-top:18px">④ <span class="method m-post">POST</span> /supplier/orders/{id}/import — CSV取込 / Import (số 5)</h4>
+<p><b>⚠️ Là nút IMPORT</b> (dù nhãn 出力). <code>multipart/form-data</code> field <code>file</code>. Format chưa chốt (chờ BA). Convention import chung (<code>commons/utiliz/import-csv</code>).</p>
+<pre>// Response 200 — ImportResult
+{
+  "total": 10, "succeeded": 8, "failed": 2,
+  "errorLines": [3, 7],
+  "errorDetails": [
+    { "line": 3, "field": "本発注", "message": "数値で入力してください" },
+    { "line": 7, "field": "商品名", "message": "商品が見つかりません" }
+  ],
+  "title": "一部の行でエラーが発生しました", "message": "・3行目\\n・7行目"
+}</pre>
+<p><code>line</code>=dòng (1=header), <code>field</code>=cột lỗi, <code>message</code>=nội dung lỗi. Lỗi theo dòng nằm trong <code>errorDetails</code> (vẫn HTTP 200). Lỗi file hỏng → 400 <code>INVALID_CSV_FORMAT</code>.</p>
+
+<h4 style="margin-top:18px">Enum supplier_order_line_status_enum (DB design, chưa migration)</h4>
+<table class="map"><thead><tr><th>Giá trị</th><th>日本語</th><th>Badge</th></tr></thead><tbody>
+<tr><td><code>UNPROCESSED</code></td><td>未処理</td><td>Xám</td></tr>
+<tr><td><code>PROVISIONAL_ORDERED</code></td><td>仮発注済</td><td>Cam</td></tr>
+<tr><td><code>OFFICIAL_ORDERED</code></td><td>本発注済</td><td>Xanh</td></tr>
+</tbody></table>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:8px 10px;font-size:12px;color:#92400e;margin-top:14px">
+  ⚠️ <b>Còn mở (chờ BA):</b> nguồn DB cho <b>論理必要数 / 在庫数</b> (số 12,13 — không có bảng forecast/stock); format file CSV import. Xem <code>SUPPLIER_DB_API_DESIGN.md › PART 3 › Còn mở #C'</code>.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).map(Number).sort((a,b)=>a-b).forEach(n=>{
+  const d=W[n], cls=d.tbd?'tbd':(d.act?'act':'');
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function open(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function close(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=close; ov.onclick=close;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();open(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

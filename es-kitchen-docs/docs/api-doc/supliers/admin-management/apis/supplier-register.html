@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>仕入先情報登録 — API 配線ガイド (Admin)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#0062CC; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F8F9FA; color:#222; }
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;margin-left:6px;
+    background:var(--primary);color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none; }
+  .nb:hover{ transform:scale(1.18);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.req{ background:#dc2626; } .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .sec{ border:1px solid #E5E7EB;border-radius:10px;padding:16px;margin-bottom:16px; }
+  .sec h3{ font-size:14px;font-weight:800;color:#1f2937;margin-bottom:12px;display:flex;align-items:center;gap:6px; }
+  .lbl{ font-size:12px;font-weight:600;color:#6B7280;margin-bottom:4px;display:block; }
+  .req-tag{ font-size:10px;background:#fee2e2;color:#dc2626;border-radius:4px;padding:1px 5px;margin-left:4px; }
+  .form-input{ width:100%;height:34px;border:1px solid #D1D5DB;border-radius:6px;padding:0 10px;font-size:13px;background:#fff; }
+  .tbl{ width:100%;border-collapse:collapse; }
+  .tbl th{ background:#F3F4F6;color:#6B7280;font-size:11px;font-weight:700;text-align:left;padding:8px;border-bottom:1px solid #E5E7EB;white-space:nowrap; }
+  .tbl td{ padding:6px;border-bottom:1px solid #F1F5F9; }
+  .tbl input,.tbl select{ width:100%;height:30px;border:1px solid #D1D5DB;border-radius:5px;padding:0 6px;font-size:12px; }
+  .tab{ padding:8px 0;margin-right:24px;font-size:13px;font-weight:700;border-bottom:2px solid transparent;color:#64748b; }
+  .tab.on{ color:var(--primary);border-bottom-color:var(--primary); }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:880px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#dbeafe; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.req{ color:#dc2626; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-post{background:#bee3f8;color:#2a4365;} .m-put{background:#feebc8;color:#9c4221;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+</style>
+</head>
+<body>
+<div class="max-w-5xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Admin · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">仕入先情報登録 — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số</b> → panel phải hiện <b>bảng ráp + API docs</b>. Contract: <code>SUPPLIER_DB_API_DESIGN.md › 2.2.2 / 2.2.3 / 2.2.4</code> · base <code>/admin/*</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb req" style="cursor:default">n</span> required</span>
+      <span><span class="nb act" style="cursor:default">n</span> action</span>
+      <span><span class="nb tbd" style="cursor:default">n</span> cần BA chốt</span>
+      <span><span class="nb" style="cursor:default">n</span> optional</span>
+    </div>
+  </div>
+
+  <div class="card p-6">
+    <!-- header -->
+    <div class="flex items-start justify-between">
+      <div>
+        <div class="text-xs text-gray-500">マスタ管理 / 仕入先マスタ / 仕入先情報登録</div>
+        <h2 class="text-xl font-bold text-gray-900 mt-1">仕入先情報登録</h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 text-sm">キャンセル<span class="nb act" data-n="26">26</span></button>
+        <button class="px-5 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium">登録<span class="nb act" data-n="25">25</span></button>
+      </div>
+    </div>
+
+    <!-- sub tabs -->
+    <div class="flex items-center border-b border-gray-200 mt-5 mb-5">
+      <span class="tab on">基本情報</span>
+      <span class="tab">変更履歴<span class="nb act" data-n="27">27</span></span>
+    </div>
+
+    <!-- 基本情報 -->
+    <div class="sec">
+      <h3><i class="fa-solid fa-circle-info text-blue-500"></i> 基本情報</h3>
+      <div class="grid grid-cols-3 gap-x-6 gap-y-4">
+        <div><span class="lbl">ID <span class="text-gray-400">(auto)</span><span class="nb" data-n="1">1</span></span><input class="form-input bg-gray-100 text-gray-400" value="AUTO-00001" disabled /></div>
+        <div><span class="lbl">仕入先名<span class="req-tag">*</span><span class="nb req" data-n="2">2</span></span><input class="form-input" placeholder="仕入先名" /></div>
+        <div><span class="lbl">カナ<span class="nb" data-n="3">3</span></span><input class="form-input" placeholder="カナ" /></div>
+        <div><span class="lbl">ステータス<span class="req-tag">*</span><span class="nb tbd" data-n="4">4</span></span><select class="form-input"><option>ステータス</option><option>本登録</option><option>未登録</option></select></div>
+        <div><span class="lbl">作れる商品<span class="req-tag">* multi</span><span class="nb req" data-n="5">5</span></span><select class="form-input" multiple><option>商品A</option><option>商品B</option></select></div>
+        <div><span class="lbl">仕入れ先区分<span class="req-tag">*</span><span class="nb req" data-n="6">6</span></span><select class="form-input"><option>仕入れ先区分</option><option>区分1</option></select></div>
+        <div class="col-span-3"><span class="lbl">備考<span class="nb" data-n="7">7</span></span><input class="form-input" placeholder="備考" /></div>
+      </div>
+    </div>
+
+    <!-- 住所情報 -->
+    <div class="sec">
+      <h3><i class="fa-solid fa-location-dot text-blue-500"></i> 住所情報 <span class="text-xs font-normal text-gray-400">(bảng — addresses[])</span></h3>
+      <div class="overflow-x-auto">
+        <table class="tbl">
+          <thead><tr>
+            <th>区分<span class="req-tag">*</span><span class="nb req" data-n="8">8</span></th>
+            <th>郵便番号<span class="req-tag">*</span><span class="nb req" data-n="9">9</span></th>
+            <th>都道府県<span class="req-tag">*</span><span class="nb req" data-n="10">10</span></th>
+            <th>市区町村<span class="req-tag">*</span><span class="nb req" data-n="11">11</span></th>
+            <th>町域・番地<span class="req-tag">*</span><span class="nb req" data-n="12">12</span></th>
+            <th>建物・部屋番号<span class="nb" data-n="13">13</span></th>
+            <th>電話番号<span class="nb" data-n="14">14</span></th>
+            <th>Fax番号<span class="nb" data-n="15">15</span></th>
+            <th class="text-center">操作<span class="nb act" data-n="16">16</span></th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="inline-block text-xs bg-blue-50 text-blue-600 rounded px-2 py-1">本社 ✕ ＋</span></td>
+              <td><input value="123-4567" /></td><td><input value="東京都" /></td><td><input value="千代田区" /></td>
+              <td><input value="千代田1丁目1番1号" /></td><td><input value="○○マンション101号室" /></td>
+              <td><input placeholder="000-0000-0000" /></td><td><input placeholder="000-0000-0000" /></td>
+              <td class="text-center"><i class="fa-solid fa-trash text-red-500"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="mt-3 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 text-sm"><i class="fa-solid fa-plus mr-1"></i>行を追加<span class="nb act" data-n="17">17</span></button>
+    </div>
+
+    <!-- 担当者情報 -->
+    <div class="sec">
+      <h3><i class="fa-solid fa-user text-blue-500"></i> 担当者情報 <span class="text-xs font-normal text-gray-400">(bảng — contacts[])</span></h3>
+      <div class="overflow-x-auto">
+        <table class="tbl">
+          <thead><tr>
+            <th>区分<span class="req-tag">*</span><span class="nb req" data-n="18">18</span></th>
+            <th>担当者名<span class="req-tag">*</span><span class="nb req" data-n="19">19</span></th>
+            <th>フリガナ<span class="nb" data-n="20">20</span></th>
+            <th>メールアドレス<span class="req-tag">*</span><span class="nb req" data-n="21">21</span></th>
+            <th>電話番号<span class="nb" data-n="22">22</span></th>
+            <th class="text-center">操作<span class="nb act" data-n="23">23</span></th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><select><option>代表</option><option>営業</option></select></td>
+              <td><input value="担当 太郎" /></td><td><input value="タントウ タロウ" /></td>
+              <td><input value="sample3@gmail.com" /></td><td><input value="000-0000-0000" /></td>
+              <td class="text-center"><i class="fa-solid fa-trash text-red-500"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="mt-3 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-600 text-sm"><i class="fa-solid fa-plus mr-1"></i>行を追加<span class="nb act" data-n="24">24</span></button>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm số để xem mapping DTO. 🔴 = required (server validate). 🟠 (4) = ステータス cần BA chốt (mock cho chọn 本登録/未登録 ở màn tạo, nhưng §2.3 nói cấp account mới set REGISTERED + gửi mail). Lưu xong <b>KHÔNG</b> gửi mail.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — 仕入先情報登録 <span class="text-gray-400 font-normal text-sm">(§2.2.2/3/4)</span></b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → DTO field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:42px">No</th><th>UI field</th><th>DTO field</th><th>Validate / ghi chú</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const W = {
+  1:{ui:'ID (auto, disabled)', f:'<code>supplierCode</code> (response)', v:'Chỉ đọc — server auto-gen SU\\d+ khi tạo. KHÔNG gửi trong request.'},
+  2:{ui:'仕入先名', f:'<code>supplierName</code>', v:'<b>required</b>, max 255.', req:1},
+  3:{ui:'カナ', f:'<code>supplierNameKana</code>', v:'optional, max 255. (Là カナ của tên NCC — KHÁC フリガナ của 担当者.)'},
+  4:{ui:'ステータス (本登録/未登録)', f:'<code>registrationStatus</code>', v:'<b>required</b> trên mock (REGISTERED/UNREGISTERED). ⚠️ <b>Mâu thuẫn cần BA chốt</b>: §2.2.3 nói tạo mới luôn UNREGISTERED & việc set REGISTERED + gửi mail chỉ qua アカウント発行 (§2.3). Hỏi BA: field này độc lập với cấp account, hay phải ẩn/khóa ở màn tạo?', tbd:1},
+  5:{ui:'作れる商品 (multi)', f:'<code>producibleProductIds[]</code>', v:'<b>required</b>, min 1, mỗi id tồn tại.', req:1},
+  6:{ui:'仕入れ先区分', f:'<code>classification</code>', v:'<b>required</b>, ∈ enum. (Giá trị thật chờ BA — A4-1.)', req:1},
+  7:{ui:'備考', f:'<code>remarks</code>', v:'optional.'},
+  8:{ui:'住所 — 区分 (tags 本社/製造場所)', f:'<code>addresses[].addressTypes[]</code>', v:'<b>required</b>, min 1. 本社→HEAD_OFFICE · 製造場所→FACTORY. Multi-tag (1 địa chỉ nhiều type).', req:1},
+  9:{ui:'住所 — 郵便番号', f:'<code>addresses[].postalCode</code>', v:'<b>required</b>.', req:1},
+  10:{ui:'住所 — 都道府県', f:'<code>addresses[].prefecture</code>', v:'<b>required</b>.', req:1},
+  11:{ui:'住所 — 市区町村', f:'<code>addresses[].city</code>', v:'<b>required</b>.', req:1},
+  12:{ui:'住所 — 町域・番地', f:'<code>addresses[].street</code>', v:'<b>required</b>.', req:1},
+  13:{ui:'住所 — 建物・部屋番号', f:'<code>addresses[].building</code>', v:'optional.'},
+  14:{ui:'住所 — 電話番号', f:'<code>addresses[].tel</code>', v:'optional.'},
+  15:{ui:'住所 — Fax番号', f:'<code>addresses[].fax</code>', v:'optional.'},
+  16:{ui:'住所 — 操作 削除 (xóa dòng)', f:'remove <code>addresses[]</code>', v:'Xóa 1 phần tử mảng (client). PUT gửi mảng còn lại.', act:1},
+  17:{ui:'住所 — 行を追加', f:'push <code>addresses[]</code>', v:'Thêm 1 dòng địa chỉ (client).', act:1},
+  18:{ui:'担当者 — 区分 (代表/営業)', f:'<code>contacts[].contactType</code>', v:'<b>required</b>, ∈ enum. 代表→REPRESENTATIVE · 営業→SALES.', req:1},
+  19:{ui:'担当者 — 担当者名', f:'<code>contacts[].name</code>', v:'<b>required</b>.', req:1},
+  20:{ui:'担当者 — フリガナ', f:'<code>contacts[].nameKana</code>', v:'optional.'},
+  21:{ui:'担当者 — メールアドレス', f:'<code>contacts[].email</code>', v:'<b>required</b>, email format. Là địa chỉ nhận mail khi cấp account (§2.3).', req:1},
+  22:{ui:'担当者 — 電話番号', f:'<code>contacts[].tel</code>', v:'optional.'},
+  23:{ui:'担当者 — 操作 削除 (xóa dòng)', f:'remove <code>contacts[]</code>', v:'Xóa 1 phần tử mảng (client).', act:1},
+  24:{ui:'担当者 — 行を追加', f:'push <code>contacts[]</code>', v:'Thêm 1 dòng担当者 (client).', act:1},
+  25:{ui:'Nút 登録 (submit)', f:'<span class="method m-post">POST</span> /admin/supplier-masters (tạo) · <span class="method m-put">PUT</span> /admin/supplier-masters/{id} (sửa)', v:'Gửi toàn bộ DTO. PUT replace toàn bộ addresses/contacts/producibleProductIds. Sửa → ghi history log.', act:1},
+  26:{ui:'Nút キャンセル', f:'(điều hướng)', v:'Quay lại list (không gọi API).', act:1},
+  27:{ui:'Tab 変更履歴', f:'<span class="method m-get">GET</span> /admin/supplier-masters/{id}/history', v:'Chuyển sang tab lịch sử (§2.2.6 — xem guide supplier-edit-history). Chỉ có ở mode 編集.', act:1}
+};
+const DOCS = `
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1e40af;margin-bottom:14px">
+  <b>API chính:</b> <span class="method m-post">POST</span> <code>/admin/supplier-masters</code> (tạo) · <span class="method m-put">PUT</span> <code>/admin/supplier-masters/{id}</code> (sửa). Mode sửa nạp trước bằng <span class="method m-get">GET</span> <code>/admin/supplier-masters/{id}</code>. Auth: Admin JWT + <code>supplier_master.create/update</code>.
+</div>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:8px 10px;font-size:12px;color:#92400e;margin-bottom:14px">
+  ⚠️ <b>ステータス (số 4) — cần BA chốt:</b> mock cho admin chọn 本登録/未登録 ngay khi tạo, nhưng §2.2.3/§2.3 quy định tạo mới luôn UNREGISTERED và chỉ アカウント発行 mới set REGISTERED + gửi mail. → Hỏi BA: cho phép set REGISTERED thủ công ở màn tạo không (rủi ro: REGISTERED mà chưa có login account)?
+</div>
+
+<h4>① <span class="method m-get">GET</span> /admin/supplier-masters/{id} — prefill (mode 編集)</h4>
+<p>Nạp dữ liệu fill form. Response = object chi tiết (supplierCode + supplierNameKana + registrationStatus + addresses[]/contacts[]/producibleProducts[] + loginUserId).</p>
+
+<h4 style="margin-top:16px">② <span class="method m-post">POST</span> /admin/supplier-masters — Đăng ký mới (số 25) &nbsp;<span style="color:#16a34a">(API CHÍNH)</span></h4>
+<p>⚠️ KHÔNG cấp account, KHÔNG gửi mail (mục §2.3 mới làm việc đó).</p>
+<p style="font-weight:700;margin-top:8px">Request body</p>
+<pre>{
+  "supplierName": "サンプル物流株式会社",   // số 2 (required)
+  "supplierNameKana": "サンプルブツリュウ",  // số 3 (カナ)
+  "classification": "CLASS_1",            // số 6 (required)
+  "registrationStatus": "UNREGISTERED",   // số 4 (⚠️ xem cảnh báo trên)
+  "remarks": "備考テキスト",                // số 7
+  "producibleProductIds": [10, 11],       // số 5 (required, min 1)
+  "addresses": [                          // số 8–15 (required, min 1)
+    { "addressTypes": ["HEAD_OFFICE"], "postalCode": "123-4567", "prefecture": "東京都",
+      "city": "千代田区", "street": "千代田1丁目1番1号", "building": "○○マンション101号室",
+      "tel": "000-0000-0000", "fax": "000-0000-0000" }
+  ],
+  "contacts": [                           // số 18–22 (required, min 1)
+    { "contactType": "REPRESENTATIVE", "name": "担当 太郎", "nameKana": "タントウ タロウ",
+      "email": "sample3@gmail.com", "tel": "000-0000-0000" }
+  ]
+}</pre>
+<p><b>Response 200:</b> object chi tiết như GET detail (kèm <code>supplierCode</code> auto-gen SU\\d+, hiển thị ở ô ID số 1).</p>
+
+<h4 style="margin-top:16px">③ <span class="method m-put">PUT</span> /admin/supplier-masters/{id} — Cập nhật (số 25, mode 編集)</h4>
+<p>Body y như POST. <b>Replace toàn bộ</b> addresses / contacts / producibleProductIds theo mảng gửi lên. Side-effect: ghi <code>supplier_master_history_logs</code> → hiện ở tab 変更履歴 (số 27).</p>
+
+<h4 style="margin-top:16px">Bảng cột bảng con</h4>
+<table class="map"><thead><tr><th>UI (số)</th><th>DTO</th><th>Bắt buộc</th></tr></thead><tbody>
+<tr><td>住所 区分 (8)</td><td><code>addresses[].addressTypes[]</code></td><td>✓ (本社/製造場所)</td></tr>
+<tr><td>郵便番号/都道府県/市区町村/町域 (9–12)</td><td>postalCode/prefecture/city/street</td><td>✓</td></tr>
+<tr><td>建物/電話/Fax (13–15)</td><td>building/tel/fax</td><td>—</td></tr>
+<tr><td>担当者 区分 (18)</td><td><code>contacts[].contactType</code></td><td>✓ (代表/営業)</td></tr>
+<tr><td>担当者名/メール (19,21)</td><td>name/email</td><td>✓</td></tr>
+<tr><td>フリガナ/電話 (20,22)</td><td>nameKana/tel</td><td>—</td></tr>
+</tbody></table>
+
+<h4 style="margin-top:16px">Errors</h4>
+<table class="map"><thead><tr><th>Code</th><th>Khi nào</th></tr></thead><tbody>
+<tr><td><code>SUPPLIER_NAME_REQUIRED</code></td><td>Thiếu 仕入先名 (2)</td></tr>
+<tr><td><code>ADDRESS_REQUIRED</code></td><td>addresses rỗng (8–12)</td></tr>
+<tr><td><code>CONTACT_EMAIL_INVALID</code></td><td>Email sai format (21)</td></tr>
+<tr><td>409 <code>SUPPLIER_CODE_DUPLICATED</code></td><td>Trùng mã</td></tr>
+<tr><td>400 / 401 / 403 / 404 / 500</td><td>Validate / auth / not found / server</td></tr>
+</tbody></table>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).map(Number).sort((a,b)=>a-b).forEach(n=>{
+  const d=W[n], cls=d.tbd?'tbd':(d.req?'req':(d.act?'act':''));
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.f+'</td><td>'+(d.v||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function open(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function close(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=close; ov.onclick=close;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();open(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>
