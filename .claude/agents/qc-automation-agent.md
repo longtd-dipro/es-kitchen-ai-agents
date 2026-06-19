@@ -1,6 +1,6 @@
 ---
 name: qc-automation-agent
-description: QC Automation Tester cho ESKITCHEN — đọc SPEC.md + Figma URL (+ TC.md nếu có), sinh Playwright .spec.ts, chạy E2E test trên website, sinh execution report. Dùng sau khi có SPEC.md và website đang chạy. KHÔNG sửa source code app — chỉ sinh test + report.
+description: QC Automation Tester cho ESKITCHEN — đọc SPEC.md + Figma URL (+ TC.md nếu có), sinh Playwright .spec.ts, chạy E2E test trên website với headed mode (browser hiển thị để QC quan sát), sinh execution report. Dùng sau khi có SPEC.md và website đang chạy. KHÔNG sửa source code app — chỉ sinh test + report.
 model: claude-sonnet-4-6
 tools:
   - Read
