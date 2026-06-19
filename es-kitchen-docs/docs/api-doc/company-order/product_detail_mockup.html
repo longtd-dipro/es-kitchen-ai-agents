@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E02 · メニュー詳細 — Chi tiết sản phẩm (popup)</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+<style>
+  .fnum{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;
+    border-radius:9999px;background:var(--accent-500);color:#fff;font-size:10.5px;font-weight:700;margin-right:5px;
+    flex-shrink:0;font-family:"BIZ UDGothic",Consolas,monospace}
+  .fnum.ghost{background:var(--gray-400)}
+  .impl{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9999px;margin-left:6px}
+  .impl.done{background:var(--green-50);color:var(--green-600)}
+  .impl.todo{background:var(--purple-50);color:var(--purple-600)}
+  .impl.no{background:var(--red-50);color:var(--red-600)}
+  .detail-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:22px}
+  .pimg{width:100%;aspect-ratio:1/1;border-radius:var(--r-lg);background:var(--gray-100);display:grid;place-items:center;font-size:64px}
+  .nutri{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+  .nutri .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--gray-100);font-size:13px}
+  .nutri .row b{font-weight:600;color:var(--gray-600)}
+  .alg{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .alg .a{width:42px;height:42px;border-radius:50%;background:var(--gray-50);border:1px solid var(--gray-200);display:grid;place-items:center;font-size:11px;color:var(--gray-600)}
+  .fav{cursor:pointer;border:1px solid var(--gray-200);border-radius:var(--r-full);padding:5px 12px;font-size:12.5px;font-weight:600;color:var(--red-500);background:#fff;display:inline-flex;gap:6px;align-items:center}
+  .review{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--gray-100)}
+  .review .av{width:34px;height:34px;border-radius:50%;background:var(--gray-100);display:grid;place-items:center;flex-shrink:0}
+  .stars{color:#fac215;font-size:13px;letter-spacing:1px}
+  @media(max-width:760px){.detail-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="theme-admin">
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="product_list_mockup.html">← 商品一覧</a>
+</div>
+
+<div class="page">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span class="sep">›</span>
+    <a href="product_list_mockup.html">商品一覧</a><span class="sep">›</span>
+    <b>メニュー詳細</b> <span class="vi">(Chi tiết sản phẩm)</span>
+  </div>
+
+  <div class="notice notice-info">
+    <span class="ic">💡</span>
+    <div>Màn này là <b>popup</b> mở từ 商品一覧 (click 1 dòng). Dữ liệu lấy 1 lần qua <code>GET …/products/:id</code>. Field dinh dưỡng &amp; dị ứng <span class="impl done">✅ 実装済</span> (<code>ProductDetailResponse</code>); <b>商品レビュー</b> <span class="impl no">❌ 未実装</span>.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>メニュー詳細 <span class="vi">Chi tiết sản phẩm</span></h3>
+      <button class="fav"><span class="fnum">3</span>♡ お気に入り <span class="api-note">isFavorite · POST /user/favorites/:productId ✅</span></button>
+    </div>
+    <div class="card-body">
+      <div class="detail-grid">
+        <!-- LEFT -->
+        <div>
+          <div class="pimg">🍛</div>
+          <div class="api-note" style="margin-top:4px"><span class="fnum">1</span>images[] (carousel)</div>
+          <h2 style="margin:14px 0 2px;font-size:20px"><span class="fnum">2</span>エクステリアカラー</h2>
+          <div class="muted" style="font-size:12px">nameKana <span class="ftag ro">エクステリアカラー</span></div>
+          <div style="font-size:22px;font-weight:700;color:var(--accent-600);margin:10px 0">
+            <span class="fnum">5</span>¥500 <span class="vi" style="font-size:12px">（1食あたり）</span>
+            <span class="api-note">price · null → "-"</span>
+          </div>
+          <p style="font-size:13px;color:var(--gray-700)">
+            <span class="fnum">4</span>シェフの作ったビーフカレー（甘口カレー）
+            <span class="api-note">description</span>
+          </p>
+        </div>
+
+        <!-- RIGHT -->
+        <div>
+          <div class="section-title"><span class="ic">栄</span> 栄養成分情報 <span class="vi">(1食あたり)</span>
+            <span class="api-note" style="margin-left:auto">baseAmount + baseUnit · isEstimated(推定値)</span>
+          </div>
+          <div class="nutri">
+            <div class="row"><b><span class="fnum">6</span>エネルギー</b><span>228kcal</span></div>
+            <div class="row"><b><span class="fnum">9</span>脂質</b><span>13.00g</span></div>
+            <div class="row"><b><span class="fnum">7</span>たんぱく質</b><span>7.00g</span></div>
+            <div class="row"><b><span class="fnum">10</span>食物繊維</b><span>1.00g</span></div>
+            <div class="row"><b><span class="fnum">8</span>炭水化物</b><span>19.00g</span></div>
+            <div class="row"><b><span class="fnum">10</span>食塩相当量</b><span>2.00g</span></div>
+          </div>
+
+          <div class="section-title" style="margin-top:18px"><span class="ic">ア</span> アレルゲン情報</div>
+          <div style="font-size:12.5px;font-weight:600;color:var(--gray-600)"><span class="fnum">11</span>特定原材料 <span class="api-note">allergens[] · allergenType: specified</span></div>
+          <div class="alg">
+            <span class="a">小麦</span><span class="a">卵</span><span class="a">乳</span><span class="a">えび</span>
+          </div>
+          <div style="font-size:12.5px;font-weight:600;color:var(--gray-600);margin-top:10px"><span class="fnum">12</span>特定原材料に準ずるもの <span class="api-note">allergensOptional[] · quasi_specified</span></div>
+          <div class="alg">
+            <span class="a">牛肉</span><span class="a">大豆</span><span class="a">鶏肉</span><span class="a">豚肉</span>
+          </div>
+
+          <div class="section-title" style="margin-top:18px"><span class="ic">★</span> 商品レビュー <span class="vi">(12件)</span>
+            <span class="impl no">❌ 未実装</span>
+            <a href="#" style="margin-left:auto;font-size:12px">レビューをすべて見る ›</a>
+          </div>
+          <div class="api-note"><span class="fnum">13</span>reviews[] — chưa có controller/entity trong code (cần BE build).</div>
+          <div class="review">
+            <div class="av">👤</div>
+            <div><div class="stars">★★★★★</div><div style="font-size:12.5px">本社オフィス · 美味しかったです！リピートします。</div></div>
+          </div>
+          <div class="review">
+            <div class="av">👤</div>
+            <div><div class="stars">★★★★☆</div><div style="font-size:12.5px">さくら · ボリュームがあって満足でした。</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — メニュー詳細</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>実装状況</h4>
+    <table>
+      <tr><th>Phạm vi</th><th>Trạng thái</th></tr>
+      <tr><td>Detail dinh dưỡng + dị ứng + favorite</td><td><span class="impl done">✅ 実装済</span> — <code>ProductDetailResponse</code></td></tr>
+      <tr><td>Endpoint E02 <code>/company-admin/menu/products/:id</code></td><td><span class="impl todo">🟡 未実装</span> (ref ✅ <code>/user/menu/products/:id</code>)</td></tr>
+      <tr><td>商品レビュー (reviews)</td><td><span class="impl no">❌ 未実装</span> — chưa có model/endpoint</td></tr>
+    </table>
+
+    <h4>Endpoints</h4>
+    <div class="ep"><span class="m get">GET</span> /company-admin/menu/products/:id <span class="guard">AdminCompanyGuard 🟡</span></div>
+    <div class="ep"><span class="m get">GET</span> /user/menu/products/:id <span class="guard">JwtAuthGuard ✅ (ref)</span></div>
+    <div class="ep"><span class="m post">POST</span> /user/favorites/:productId <span class="guard">JwtAuthGuard ✅ toggle</span></div>
+
+    <h4>Response (data) <span class="vi">ProductDetailResponse — field thật</span></h4>
+    <pre>{
+  "id": "uuid", "productCode": "P-0001", "janCode": "49...",
+  "name": "エクステリアカラー",          // ②
+  "nameKana": "エクステリアカラー",
+  "description": "シェフの作った…",       // ④
+  "price": 500,                          // ⑤  null → "-"
+  "category": "cold",
+  // 栄養成分 (1食あたり)
+  "energy": "228kcal", "energyValue": 228, // ⑥
+  "baseAmount": 200, "baseUnit": "g", "isEstimated": true,
+  "protein": "7.00g",       // ⑦
+  "carbohydrate": "19.00g", // ⑧
+  "fat": "13.00g",          // ⑨
+  "saltEquivalent": "2.00g",// ⑩
+  "otherIngredients": "食物繊維 1.00g", // ⑩(食物繊維) 🟡
+  // アレルゲン
+  "allergens": [            // ⑪ 特定原材料
+    { "id":"..","name":"小麦","imageUrl":"..","allergenType":"specified" }
+  ],
+  "allergensOptional": [    // ⑫ 特定原材料に準ずるもの
+    { "id":"..","name":"牛肉","allergenType":"quasi_specified" }
+  ],
+  "images": ["https://.../1.jpg"], // ①
+  "isFavorite": false,      // ③
+  "isInCurrentMenu": true
+  // reviews: ❌ chưa có
+}</pre>
+
+    <h4>Field Map</h4>
+    <table>
+      <tr><th>№</th><th>UI</th><th>API field / action</th></tr>
+      <tr><td>1</td><td>商品画像</td><td><code>images[]</code></td></tr>
+      <tr><td>2</td><td>商品名</td><td><code>name</code> / <code>nameKana</code></td></tr>
+      <tr><td>3</td><td>お気に入り</td><td><code>isFavorite</code> · POST <code>/user/favorites/:productId</code> ✅</td></tr>
+      <tr><td>4</td><td>説明</td><td><code>description</code></td></tr>
+      <tr><td>5</td><td>価格</td><td><code>price</code> (1食あたり)</td></tr>
+      <tr><td>6</td><td>エネルギー</td><td><code>energyValue</code> / <code>energy</code></td></tr>
+      <tr><td>7</td><td>たんぱく質</td><td><code>protein</code></td></tr>
+      <tr><td>8</td><td>炭水化物</td><td><code>carbohydrate</code></td></tr>
+      <tr><td>9</td><td>脂質</td><td><code>fat</code></td></tr>
+      <tr><td>10</td><td>食塩 / 食物繊維</td><td><code>saltEquivalent</code> / <code>otherIngredients</code> 🟡</td></tr>
+      <tr><td>11</td><td>特定原材料</td><td><code>allergens[]</code></td></tr>
+      <tr><td>12</td><td>準ずるもの</td><td><code>allergensOptional[]</code></td></tr>
+      <tr><td>13</td><td>商品レビュー</td><td>reviews[] ❌ 未実装</td></tr>
+    </table>
+
+    <h4>Errors</h4>
+    <table>
+      <tr><th>HTTP</th><th>Code</th></tr>
+      <tr><td>404</td><td>PRODUCT_NOT_FOUND</td></tr>
+      <tr><td>403</td><td>GUEST_RESTRICTED (favorite cần đăng nhập)</td></tr>
+    </table>
+  </div>
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>

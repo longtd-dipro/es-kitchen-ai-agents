@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Company Order — Mockup & API Index</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+<style>
+  .impl{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9999px}
+  .impl.done{background:var(--green-50);color:var(--green-600)}
+  .impl.todo{background:var(--purple-50);color:var(--purple-600)}
+  .hero{background:linear-gradient(135deg,#7a3d00,#faa51d)}
+  .hero p{color:#ffeccb}
+</style>
+</head>
+<body class="theme-admin">
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="../index.html">← API Doc Index</a>
+</div>
+
+<div class="page">
+  <div class="hero">
+    <h1>Company Order — メニュー注文</h1>
+    <p>Mockup tương tác + đặc tả API cho luồng đặt đơn món ăn tháng của Company (E02): xem menu → chi tiết SP → tạo đơn nhập số lượng → xác nhận → (AI tự động phân bổ).</p>
+  </div>
+
+  <div class="notice notice-approval">
+    <span class="ic">🛠️</span>
+    <div><b>Lưu ý implementation:</b> phần lớn luồng <i>tạo đơn tháng</i> (注文作成) hiện <span class="impl todo">🟡 未実装</span> trong <code>es-kitchen-api</code> — endpoint <code>/company-admin/orders</code> thật chỉ READ đơn đã thanh toán. Field SP (<code>MenuProduct</code>) và detail dinh dưỡng/dị ứng (<code>ProductDetailResponse</code>) <span class="impl done">✅ 実装済</span>. Mỗi trang ghi rõ trạng thái từng endpoint.</div>
+  </div>
+
+  <h3 style="margin:18px 0 12px">Danh mục màn hình</h3>
+  <div class="grid-cards">
+    <a class="screen-card" href="product_list_mockup.html">
+      <span class="persona-tag e02">E02</span>
+      <span class="sc-id">CW_ORDER_001 / 001-1 / 003-4</span>
+      <span class="sc-title">商品一覧 — Danh sách SP</span>
+      <span class="sc-desc">List + grid, tab 温度帯, badge スペシャル区分, 基準数/最大数.</span>
+      <span class="sc-eps"><span class="impl todo">GET /company-admin/menu/products 🟡</span></span>
+    </a>
+    <a class="screen-card" href="product_detail_mockup.html">
+      <span class="persona-tag e02">E02</span>
+      <span class="sc-id">CW_ORDER_002</span>
+      <span class="sc-title">メニュー詳細 — Chi tiết SP (popup)</span>
+      <span class="sc-desc">栄養成分 · アレルゲン · レビュー · お気に入り.</span>
+      <span class="sc-eps"><span class="impl done">GET …/products/:id ✅</span></span>
+    </a>
+    <a class="screen-card" href="order_create_mockup.html">
+      <span class="persona-tag e02">E02</span>
+      <span class="sc-id">CW_ORDER_003 / 003-1 / 003-2</span>
+      <span class="sc-title">注文作成 — Tạo đơn nhập SL</span>
+      <span class="sc-desc">Header: 製品数量/最大アイテム数/合計金額; nhập quantity card+list.</span>
+      <span class="sc-eps"><span class="impl todo">POST/PUT /company-admin/orders 🟡</span></span>
+    </a>
+    <a class="screen-card" href="order_confirm_mockup.html">
+      <span class="persona-tag e02">E02</span>
+      <span class="sc-id">CW_ORDER_003-3</span>
+      <span class="sc-title">注文確認 — Xác nhận + CSV</span>
+      <span class="sc-desc">Review trước submit, export CSV.</span>
+      <span class="sc-eps"><span class="impl todo">POST …/submit · export 🟡</span></span>
+    </a>
+    <a class="screen-card" href="ai_allocation_mockup.html">
+      <span class="persona-tag e02">E02</span>
+      <span class="sc-id">CW_ORDER_004 / 004-1 / 004-2</span>
+      <span class="sc-title">AI自動配分 — Phân bổ AI</span>
+      <span class="sc-desc">4 mode + chat + preview. <b>OUT OF SCOPE (team AI riêng).</b></span>
+      <span class="sc-eps"><span class="impl todo">AI service — TBD 🟡</span></span>
+    </a>
+  </div>
+
+  <div class="footnote">ESKitchen · Menu &amp; Order — Company (E02) · Mockup &amp; API guide · cập nhật 2026-06-19</div>
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>

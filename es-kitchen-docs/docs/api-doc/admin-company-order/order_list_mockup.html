@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E03 · 注文管理 — Danh sách đơn món</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+<style>
+  .fnum{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;
+    border-radius:9999px;background:var(--accent-500);color:#fff;font-size:10.5px;font-weight:700;margin-right:5px;
+    flex-shrink:0;font-family:"BIZ UDGothic",Consolas,monospace}
+  .impl{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9999px;margin-left:6px}
+  .impl.done{background:var(--green-50);color:var(--green-600)}
+  .impl.todo{background:var(--purple-50);color:var(--purple-600)}
+  .impl.no{background:var(--red-50);color:var(--red-600)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E03 System Admin</span>
+  <span class="muted" style="font-size:13px">☀️ お帰りなさい</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="index.html">← Mockup Index</a>
+  <div class="tb-user"><span class="avatar">西</span> にっしぐち ▾</div>
+</div>
+
+<div class="page">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span class="sep">›</span>
+    メニュー管理 <span class="sep">›</span>
+    <b>注文管理</b> <span class="vi">(Quản lý đơn)</span>
+  </div>
+
+  <div class="page-head">
+    <div class="page-title"><span class="accent-bar"></span> 注文管理 <span class="vi">Đơn món của các công ty (E03 quản)</span></div>
+    <div class="btn-row">
+      <button class="btn btn-primary"><span class="fnum">1</span>⭱ CSV取込 <span class="api-note">import 🟡</span></button>
+      <button class="btn btn-primary"><span class="fnum">2</span>⭱ CSV出力 <span class="api-note">GET /admin/orders/export ✅</span></button>
+    </div>
+  </div>
+
+  <div class="notice notice-warn">
+    <span class="ic">⚠️</span>
+    <div><b>実装状況:</b> <code>GET /admin/orders</code> <span class="impl done">✅</span> đã có nhưng trả <b>đơn mua có payment</b> (status PENDING/PAID/REFUNDED…). Màn này là <b>đơn thủ tục/procurement</b> với tab 納期回答待ち/出荷待ち/出荷済み <span class="impl todo">🟡 chưa có status này trong code</span> — cần BE bổ sung trạng thái &amp; field shipping.</div>
+  </div>
+
+  <!-- Status tabs -->
+  <div class="tabs">
+    <button class="active"><span class="fnum">3</span>納期回答待ち <span class="vi">Chờ trả lời納期</span></button>
+    <button>出荷待ち <span class="vi">Chờ xuất</span></button>
+    <button>出荷済み <span class="vi">Đã xuất</span></button>
+  </div>
+  <div class="api-note" style="margin:-8px 0 14px">tab → <b>?status=</b> (PENDING_REPLY | WAITING_SHIPMENT | SHIPPED) 🟡 proposed enum</div>
+
+  <!-- Filter -->
+  <div class="filter">
+    <div class="filter-grid">
+      <div class="field">
+        <label><span class="fnum">4</span>顧客名 <span class="vi">施設名</span> <span class="ftag q">?q=</span></label>
+        <input type="text" placeholder="顧客名">
+      </div>
+      <div class="field">
+        <label><span class="fnum">5</span>配送月 <span class="ftag q">?deliveryMonth=</span></label>
+        <input type="text" value="2026年06月" readonly>
+      </div>
+      <div class="field">
+        <label><span class="fnum">6</span>自販機・什器タイプ <span class="ftag q">?equipmentType=</span></label>
+        <select><option>全て</option><option>自販機</option><option>什器</option></select>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="btn">クリア</button>
+      <button class="btn btn-primary">🔍 検索</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr>
+          <th class="col-num"><span class="fnum">7</span>No</th>
+          <th><span class="fnum">8</span>受注ID<span class="api-note">orderNumber (link → detail)</span></th>
+          <th><span class="fnum">9</span>顧客名 (施設名)<span class="api-note">company.name 🟡</span></th>
+          <th><span class="fnum">10</span>数量<span class="api-note">totalQuantity</span></th>
+          <th><span class="fnum">11</span>配送予定日<span class="api-note">deliveryScheduledDate 🟡</span></th>
+          <th><span class="fnum">12</span>配送月<span class="api-note">deliveryMonth 🟡</span></th>
+          <th><span class="fnum">13</span>注文日<span class="api-note">createdAt</span></th>
+          <th><span class="fnum">14</span>ステータス<span class="api-note">status 🟡</span></th>
+          <th class="col-actions"><span class="fnum">15</span>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="clickable" onclick="location.href='order_detail_mockup.html'">
+          <td class="col-num">1</td><td><b>ORD-202606-0012</b></td><td>さくら介護センター</td><td>130</td><td>--</td><td>2026/06</td><td>2026/06/01</td><td><span class="chip chip-blue">納期回答待ち</span></td>
+          <td class="col-actions"><a class="btn btn-sm" href="order_detail_mockup.html">✎</a> <a class="btn btn-sm btn-danger">🗑</a></td>
+        </tr>
+        <tr class="clickable" onclick="location.href='order_detail_mockup.html'">
+          <td class="col-num">2</td><td>ORD-202406-0123</td><td>もみじ福祉センター</td><td>130</td><td>--</td><td>2024/06</td><td>2024/06/18</td><td><span class="chip chip-green">納期回答済み</span></td>
+          <td class="col-actions"><a class="btn btn-sm">✎</a> <a class="btn btn-sm btn-danger">🗑</a></td>
+        </tr>
+        <tr class="clickable" onclick="location.href='order_detail_mockup.html'">
+          <td class="col-num">3</td><td>ORD-202406-0456</td><td>もみじ福祉センター</td><td>130</td><td>--</td><td>2024/06</td><td>2024/06/20</td><td><span class="chip chip-yellow">出荷待ち</span></td>
+          <td class="col-actions"><a class="btn btn-sm">✎</a> <a class="btn btn-sm btn-danger">🗑</a></td>
+        </tr>
+        <tr class="clickable" onclick="location.href='order_detail_mockup.html'">
+          <td class="col-num">4</td><td>ORD-202406-0789</td><td>もみじ福祉センター</td><td>130</td><td>--</td><td>2024/06</td><td>2024/06/22</td><td><span class="chip chip-green">出荷済み</span></td>
+          <td class="col-actions"><a class="btn btn-sm">✎</a> <a class="btn btn-sm btn-danger">🗑</a></td>
+        </tr>
+        <tr class="clickable" onclick="location.href='order_detail_mockup.html'">
+          <td class="col-num">5</td><td>ORD-202406-0345</td><td>もみじ福祉センター</td><td>130</td><td>--</td><td>2024/06</td><td>2024/06/25</td><td><span class="chip chip-blue">納期回答待ち</span></td>
+          <td class="col-actions"><a class="btn btn-sm">✎</a> <a class="btn btn-sm btn-danger">🗑</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pager">
+    <div class="muted"><span class="fnum">16</span>100件中 1–10件 <span class="api-note">total · page · limit</span></div>
+    <div class="pages"><span class="active">1</span><span>…</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>…</span><span>50</span><span>›</span></div>
+    <div class="field" style="width:auto"><select><option>10件/ページ</option><option>20件/ページ</option></select></div>
+  </div>
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 注文管理 (E03)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>実装状況</h4>
+    <table>
+      <tr><th>Phạm vi</th><th>Trạng thái</th></tr>
+      <tr><td><code>GET /admin/orders</code> · <code>/export</code> · <code>/summary</code> · <code>/:orderNumber</code></td><td><span class="impl done">✅ 実装済</span> (payment order)</td></tr>
+      <tr><td>Status tabs 納期回答/出荷 + field shipping</td><td><span class="impl no">❌ 未実装</span></td></tr>
+      <tr><td>顧客名/配送予定日/配送月 trên đơn procurement</td><td><span class="impl todo">🟡 設計</span> (DESIGN.md §5.3)</td></tr>
+    </table>
+
+    <h4>Endpoints</h4>
+    <div class="ep"><span class="m get">GET</span> /admin/orders <span class="guard">AdminGuard ✅</span></div>
+    <div class="ep"><span class="m get">GET</span> /admin/orders/export <span class="guard">CSV ✅</span></div>
+    <div class="ep"><span class="m get">GET</span> /admin/orders/summary <span class="guard">✅</span></div>
+    <div class="ep"><span class="m get">GET</span> /admin/orders/:orderNumber <span class="guard">detail ✅</span></div>
+
+    <h4>Query — GET /admin/orders</h4>
+    <table>
+      <tr><th>№</th><th>Param</th><th>Ghi chú</th></tr>
+      <tr><td>4</td><td>searchKey / q</td><td>顧客名 / order code / user code ✅</td></tr>
+      <tr><td>5</td><td>deliveryMonth</td><td>配送月 🟡 (code thật dùng paymentDateFrom/To)</td></tr>
+      <tr><td>6</td><td>equipmentType</td><td>自販機・什器 🟡</td></tr>
+      <tr><td>14</td><td>status</td><td>🟡 proposed: PENDING_REPLY | WAITING_SHIPMENT | SHIPPED · code thật: PaymentStatus (PAID/REFUNDED…)</td></tr>
+      <tr><td>—</td><td>companyCode[]</td><td>lọc theo company ✅</td></tr>
+      <tr><td>—</td><td>page / limit</td><td>1 / 10 ✅</td></tr>
+    </table>
+
+    <h4>Response (data) — field thật (Order)</h4>
+    <pre>{
+  "items": [
+    {
+      "orderNumber": "ORD-202606-0012", // ⑧ ✅
+      "company": { "companyCode": "..", "name": "さくら介護センター" }, // ⑨ ✅
+      "totalQuantity": 130,        // ⑩ ✅
+      "createdAt": "2026-06-01",   // ⑬ ✅
+      "status": "PENDING",         // OrderStatus ✅ (≠ tab Nhật)
+      "total": 130000,
+      // 🟡 đề xuất bổ sung cho procurement:
+      "deliveryScheduledDate": null, // ⑪ 🟡
+      "deliveryMonth": "2026/06"     // ⑫ 🟡
+    }
+  ],
+  "total": 100, "page": 1, "limit": 10
+}</pre>
+
+    <h4>OrderStatus enum (code thật)</h4>
+    <table>
+      <tr><th>Enum thật</th><th>Tab màn hình (đề xuất map)</th></tr>
+      <tr><td>PENDING</td><td>納期回答待ち 🟡</td></tr>
+      <tr><td>COMPLETED</td><td>出荷済み 🟡</td></tr>
+      <tr><td>CANCELLED · WAITING_REFUND · REFUNDED · REFUND_FAILED</td><td>(payment lifecycle — không có出荷待ち)</td></tr>
+    </table>
+    <p class="muted" style="font-size:11.5px">⚠️ Tab 納期回答待ち/出荷待ち/出荷済み là <b>workflow procurement</b> chưa tồn tại. Cần BE thêm enum trạng thái + field shipping (xem trang 注文詳細).</p>
+
+    <h4>Field Map</h4>
+    <table>
+      <tr><th>№</th><th>UI</th><th>API field / action</th></tr>
+      <tr><td>1</td><td>CSV取込</td><td>import 🟡</td></tr>
+      <tr><td>2</td><td>CSV出力</td><td>GET /admin/orders/export ✅</td></tr>
+      <tr><td>3</td><td>status tabs</td><td>query <code>status</code> 🟡</td></tr>
+      <tr><td>4</td><td>顧客名</td><td><code>q / searchKey</code></td></tr>
+      <tr><td>5</td><td>配送月</td><td><code>deliveryMonth</code> 🟡</td></tr>
+      <tr><td>6</td><td>什器タイプ</td><td><code>equipmentType</code> 🟡</td></tr>
+      <tr><td>7</td><td>No</td><td>row index</td></tr>
+      <tr><td>8</td><td>受注ID</td><td><code>orderNumber</code></td></tr>
+      <tr><td>9</td><td>顧客名</td><td><code>company.name</code></td></tr>
+      <tr><td>10</td><td>数量</td><td><code>totalQuantity</code></td></tr>
+      <tr><td>11</td><td>配送予定日</td><td><code>deliveryScheduledDate</code> 🟡</td></tr>
+      <tr><td>12</td><td>配送月</td><td><code>deliveryMonth</code> 🟡</td></tr>
+      <tr><td>13</td><td>注文日</td><td><code>createdAt</code></td></tr>
+      <tr><td>14</td><td>ステータス</td><td><code>status</code> 🟡</td></tr>
+      <tr><td>15</td><td>操作</td><td>編集 → detail · 削除</td></tr>
+      <tr><td>16</td><td>ページャ</td><td><code>total · page · limit</code></td></tr>
+    </table>
+  </div>
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>
