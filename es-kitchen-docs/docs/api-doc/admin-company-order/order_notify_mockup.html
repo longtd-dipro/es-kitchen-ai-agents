@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E03 · 通知送信 — Modal thông báo trạng thái đơn</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+<style>
+  .fnum{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;
+    border-radius:9999px;background:var(--accent-500);color:#fff;font-size:10.5px;font-weight:700;margin-right:5px;
+    flex-shrink:0;font-family:"BIZ UDGothic",Consolas,monospace}
+  .impl{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9999px;margin-left:6px}
+  .impl.done{background:var(--green-50);color:var(--green-600)}
+  .impl.todo{background:var(--purple-50);color:var(--purple-600)}
+  .impl.no{background:var(--red-50);color:var(--red-600)}
+  .modal-demo{border:1px solid var(--gray-200);border-radius:var(--r-xl);box-shadow:var(--sh-raise);background:#fff;margin-bottom:18px;overflow:hidden}
+  .modal-demo .h{padding:14px 18px;border-bottom:1px solid var(--gray-100);font-weight:700;font-size:15px}
+  .modal-demo .b{padding:16px 18px}
+  .modal-demo .lead{color:var(--company-600);font-weight:700;font-size:13.5px;margin-bottom:6px}
+  .modal-demo .desc{font-size:12.5px;color:var(--gray-600);margin-bottom:14px}
+  .chk{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px;font-size:12.5px}
+  .chk label{display:flex;gap:6px;align-items:center}
+  .modal-demo .f{padding:12px 18px;border-top:1px solid var(--gray-100);background:var(--gray-50);display:flex;justify-content:flex-end;gap:10px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E03 System Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="order_detail_mockup.html">← 注文詳細</a>
+</div>
+
+<div class="page">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span class="sep">›</span>
+    <a href="order_list_mockup.html">注文管理</a><span class="sep">›</span>
+    <b>通知送信</b> <span class="vi">(Thông báo)</span>
+  </div>
+
+  <div class="page-head">
+    <div class="page-title"><span class="accent-bar"></span> 通知送信 <span class="vi">3 modal — gắn với chuyển trạng thái đơn</span></div>
+  </div>
+
+  <div class="notice notice-warn">
+    <span class="ic">⚠️</span>
+    <div><b>実装状況:</b> chưa có endpoint gửi thông báo theo trạng thái đơn <span class="impl no">❌</span>. Code thật có <code>Notification</code> entity generic <span class="impl done">✅</span> (title/content/type/body JSONB có <code>orderId</code>) nhưng <b>chưa có</b> <code>NotificationType</code> cho đơn (chỉ MENU_PUBLISHED/SYSTEM_ANNOUNCEMENT/PAYMENT_REMINDER) và chưa có <code>order_notification_logs</code>. Endpoint dưới là 🟡 đề xuất (DESIGN.md §5.3 / §2.6).</div>
+  </div>
+
+  <!-- Modal 1: 納期回答通知 -->
+  <div class="modal-demo">
+    <div class="h">① 出荷予定日 回答通知 <span class="vi">Trả lời ngày xuất + thông báo</span></div>
+    <div class="b">
+      <div class="lead">[更新] 注文 ORD-202606-0012 の出荷予定日が確定しました</div>
+      <div class="desc">お客様・パートナー各位、注文番号 ORD-202606-0012 は 2026年6月15日 に出荷予定です。</div>
+      <div class="form-grid">
+        <div class="field"><label><span class="fnum">1</span>受注ID <span class="ftag ro">orderNumber</span></label><input value="ORD-202606-0012" readonly></div>
+        <div class="field"><label><span class="fnum">2</span>納品先 / 宛名 <span class="ftag">recipientName</span></label><input value="さくら介護センター" readonly></div>
+        <div class="field"><label><span class="fnum">3</span>出荷予定日 <span class="ftag">shippingDate</span></label><input value="2026/06/15" readonly></div>
+        <div class="field"><label><span class="fnum">4</span>備考・コメント <span class="ftag">note</span></label><input value="Hello" readonly></div>
+      </div>
+      <label style="font-size:12.5px;font-weight:600;display:block;margin-top:12px"><span class="fnum">5</span>配送方法 <span class="api-note">recipients[] (channel routing)</span></label>
+      <div class="chk">
+        <label><input type="checkbox" checked> 法人顧客 (Company)</label>
+        <label><input type="checkbox"> 仕入先 (Supplier)</label>
+        <label><input type="checkbox"> 委託配送 (Outsource)</label>
+        <label><input type="checkbox"> ドライバー (Driver)</label>
+      </div>
+    </div>
+    <div class="f"><button class="btn"><span class="fnum">6</span>キャンセル</button>
+      <button class="btn btn-primary"><span class="fnum">7</span>ステータス変更 &amp; 通知送信 <span class="api-note">POST …/notifications 🟡</span></button></div>
+  </div>
+
+  <!-- Modal 2: 出荷完了通知 -->
+  <div class="modal-demo">
+    <div class="h">② 出荷処理完了と通知送信の確認 <span class="vi">Hoàn tất xuất hàng + thông báo</span></div>
+    <div class="b">
+      <div class="lead">[配送通知] 注文 ORD-202606-0007 の配送を開始しました</div>
+      <div class="desc">2026年6月15日に正常に出荷されました。ヤマト運輸 によって配送中。追跡番号 YMT-4471-8820。ロット有効期限 2026年6月24日。</div>
+      <div class="form-grid">
+        <div class="field"><label><span class="fnum">8</span>受注ID</label><input value="ORD-202606-0012" readonly></div>
+        <div class="field"><label><span class="fnum">9</span>出荷日 <span class="ftag">shippedDate 🟡</span></label><input value="2026/06/15" readonly></div>
+        <div class="field"><label><span class="fnum">10</span>運送会社名 <span class="ftag">carrier 🟡</span></label><input value="ヤマト運輸（クール宅急便）" readonly></div>
+        <div class="field"><label><span class="fnum">11</span>送り状No <span class="ftag">trackingNo 🟡</span></label><input value="YMT-4471-8820" readonly></div>
+      </div>
+      <label style="font-size:12.5px;font-weight:600;display:block;margin-top:12px"><span class="fnum">12</span>配送方法</label>
+      <div class="chk">
+        <label><input type="checkbox" checked> 法人顧客</label>
+        <label><input type="checkbox" checked> 仕入先</label>
+        <label><input type="checkbox" checked> 委託配送</label>
+        <label><input type="checkbox"> ドライバー</label>
+      </div>
+    </div>
+    <div class="f"><button class="btn">キャンセル</button>
+      <button class="btn btn-primary"><span class="fnum">13</span>完了確認 &amp; 通知送信 <span class="api-note">POST …/ship + notifications 🟡</span></button></div>
+  </div>
+
+  <!-- Modal 3: 再通知 -->
+  <div class="modal-demo">
+    <div class="h">③ 注文を確認する <span class="vi">Xác nhận / gửi lại thông báo</span></div>
+    <div class="b">
+      <div class="lead">注文番号 ORD-202606-0012 の配送が正常に完了しました</div>
+    </div>
+    <div class="f"><button class="btn">キャンセル</button>
+      <button class="btn btn-primary"><span class="fnum">14</span>再通知 <span class="api-note">POST …/notifications?resend=true 🟡</span></button></div>
+  </div>
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 通知送信 (E03)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>実装状況</h4>
+    <table>
+      <tr><th>Phạm vi</th><th>Trạng thái</th></tr>
+      <tr><td>Notification entity generic (title/content/type/body)</td><td><span class="impl done">✅ 実装済</span></td></tr>
+      <tr><td>NotificationType cho đơn (order status)</td><td><span class="impl no">❌ chưa có</span> (chỉ MENU_PUBLISHED…)</td></tr>
+      <tr><td><code>order_notification_logs</code> (DESIGN §2.6)</td><td><span class="impl no">❌ 未実装</span></td></tr>
+      <tr><td>Endpoint gửi theo trạng thái đơn</td><td><span class="impl todo">🟡 đề xuất</span></td></tr>
+    </table>
+
+    <h4>Endpoint (đề xuất 🟡)</h4>
+    <div class="ep"><span class="m post">POST</span> /admin/orders/:id/notifications <span class="guard">AdminGuard 🟡</span></div>
+
+    <h4>Request body</h4>
+    <pre>{
+  "triggerStatus": "WAITING_SHIPMENT",  // ⑦ status sau khi gửi
+  "subject": "[更新] 出荷予定日が確定しました",
+  "body": "…",
+  "shippingDate": "2026-06-15",         // ③/⑨
+  "carrier": "ヤマト運輸（クール宅急便）", // ⑩ 🟡
+  "trackingNo": "YMT-4471-8820",        // ⑪ 🟡
+  "recipients": ["company"],            // ⑤/⑫ company|supplier|outsource|driver
+  "channels": ["email","push","in_app"],
+  "resend": false                       // ⑭ true = 再通知
+}</pre>
+
+    <h4>recipient_type (DESIGN §2.6)</h4>
+    <table>
+      <tr><th>Checkbox</th><th>recipient</th></tr>
+      <tr><td>法人顧客</td><td>company</td></tr>
+      <tr><td>仕入先</td><td>supplier</td></tr>
+      <tr><td>委託配送</td><td>outsource 🟡</td></tr>
+      <tr><td>ドライバー</td><td>driver</td></tr>
+    </table>
+
+    <h4>Field Map</h4>
+    <table>
+      <tr><th>№</th><th>UI</th><th>API field</th></tr>
+      <tr><td>1</td><td>受注ID</td><td><code>orderNumber</code></td></tr>
+      <tr><td>2</td><td>納品先/宛名</td><td><code>recipientName</code></td></tr>
+      <tr><td>3/9</td><td>出荷(予定)日</td><td><code>shippingDate</code></td></tr>
+      <tr><td>4</td><td>備考</td><td><code>note / body</code></td></tr>
+      <tr><td>5/12</td><td>配送方法</td><td><code>recipients[]</code></td></tr>
+      <tr><td>6</td><td>キャンセル</td><td>đóng modal</td></tr>
+      <tr><td>7</td><td>変更&通知</td><td>POST …/notifications + đổi status</td></tr>
+      <tr><td>10</td><td>運送会社名</td><td><code>carrier</code> 🟡</td></tr>
+      <tr><td>11</td><td>送り状No</td><td><code>trackingNo</code> 🟡</td></tr>
+      <tr><td>13</td><td>完了確認&通知</td><td>POST …/ship + notifications</td></tr>
+      <tr><td>14</td><td>再通知</td><td><code>resend=true</code></td></tr>
+    </table>
+  </div>
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>

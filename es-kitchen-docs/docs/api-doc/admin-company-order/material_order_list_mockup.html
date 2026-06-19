@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E03 · 資材・発注一覧 — Danh sách đơn NCC</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+<style>
+  .fnum{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;
+    border-radius:9999px;background:var(--accent-500);color:#fff;font-size:10.5px;font-weight:700;margin-right:5px;
+    flex-shrink:0;font-family:"BIZ UDGothic",Consolas,monospace}
+  .impl{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9999px;margin-left:6px}
+  .impl.done{background:var(--green-50);color:var(--green-600)}
+  .impl.todo{background:var(--purple-50);color:var(--purple-600)}
+  .impl.no{background:var(--red-50);color:var(--red-600)}
+  .oos{background:repeating-linear-gradient(45deg,#fbefff,#fbefff 12px,#ecd8ff 12px,#ecd8ff 24px);
+    border:2px dashed var(--purple-500);color:var(--purple-600);border-radius:var(--r-lg);padding:13px 16px;margin-bottom:16px;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E03 System Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="index.html">← Mockup Index</a>
+  <div class="tb-user"><span class="avatar">西</span> にっしぐち ▾</div>
+</div>
+
+<div class="page">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span class="sep">›</span>
+    メニュー管理 <span class="sep">›</span>
+    <b>注文管理 (資材・発注)</b>
+  </div>
+
+  <div class="page-head">
+    <div class="page-title"><span class="accent-bar"></span> 注文管理 <span class="vi">Đơn vật tư / 発注 NCC — provisional → final</span></div>
+    <div class="btn-row"><button class="btn btn-primary"><span class="fnum">1</span>⭱ CSV取込 <span class="api-note">🟡</span></button></div>
+  </div>
+
+  <div class="oos">🚧 Toàn bộ Material order &amp; Supplier order (発注) <span class="impl no">❌ chưa implement</span> — không có entity/controller/migration. Spec dưới đây dựa trên DESIGN.md §5.4 (Material) &amp; §5.5 (Supplier provisional/final).</div>
+
+  <!-- Status tabs -->
+  <div class="tabs">
+    <button class="active"><span class="fnum">2</span>仮 <span class="vi">provisional</span></button>
+    <button>確定 <span class="vi">final</span></button>
+    <button>配送待ち <span class="vi">chờ giao</span></button>
+    <button>入庫済み <span class="vi">đã nhập kho</span></button>
+  </div>
+  <div class="api-note" style="margin:-8px 0 14px">tab → <b>?type=</b> provisional|final + <b>?status=</b> (DESIGN §5.5) 🟡</div>
+
+  <!-- Filter -->
+  <div class="filter">
+    <div class="filter-grid">
+      <div class="field"><label><span class="fnum">3</span>顧客名 <span class="ftag q">?q=</span></label><input placeholder="顧客名"></div>
+      <div class="field"><label><span class="fnum">4</span>月 <span class="ftag q">?month=</span></label><input value="2026/06/20" readonly></div>
+      <div class="field"><label><span class="fnum">5</span>Lot ID <span class="ftag q">?lotId=</span></label><select><option>全て</option></select></div>
+      <div class="field"><label><span class="fnum">6</span>仕入先 <span class="ftag q">?supplierId=</span></label><select><option>全て</option></select></div>
+      <div class="field"><label><span class="fnum">7</span>資材分類 <span class="ftag q">?materialCategory=</span></label><select><option>全て</option></select></div>
+    </div>
+    <div class="filter-actions"><button class="btn">クリア</button><button class="btn btn-primary">🔍 検索</button></div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table class="data">
+      <thead><tr>
+        <th class="col-num"><span class="fnum">8</span>No</th>
+        <th><span class="fnum">9</span>受注ID<span class="api-note">supplierOrderCode (MAT-)</span></th>
+        <th><span class="fnum">10</span>仕入先<span class="api-note">supplier.name</span></th>
+        <th><span class="fnum">11</span>Lot ID<span class="api-note">lotId</span></th>
+        <th><span class="fnum">12</span>数量<span class="api-note">totalQuantity</span></th>
+        <th><span class="fnum">13</span>予定コスト<span class="api-note">totalAmount</span></th>
+        <th><span class="fnum">14</span>納品予定日<span class="api-note">requestedDeliveryDate</span></th>
+        <th><span class="fnum">15</span>ステータス<span class="api-note">type/status</span></th>
+        <th class="col-actions"><span class="fnum">16</span>操作</th>
+      </tr></thead>
+      <tbody>
+        <tr class="clickable" onclick="location.href='material_order_detail_mockup.html'">
+          <td class="col-num">1</td><td><b>MAT-202606-0012</b></td><td>○○食品</td><td>1</td><td>130</td><td>412,800 円</td><td>2026/06/20</td><td><span class="chip chip-gray">仮</span></td>
+          <td class="col-actions"><a class="btn btn-sm" href="material_order_detail_mockup.html">✎</a> <a class="btn btn-sm btn-danger">🗑</a></td></tr>
+        <tr class="clickable" onclick="location.href='material_order_detail_mockup.html'">
+          <td class="col-num">2</td><td>MAT-202406-0123</td><td>○○食品</td><td>2</td><td>130</td><td>412,800 円</td><td>2026/06/20</td><td><span class="chip chip-blue">確定</span></td>
+          <td class="col-actions"><a class="btn btn-sm">✎</a> <a class="btn btn-sm btn-danger">🗑</a></td></tr>
+        <tr class="clickable" onclick="location.href='material_order_detail_mockup.html'">
+          <td class="col-num">3</td><td>MAT-202406-0456</td><td>○○食品</td><td>3</td><td>130</td><td>412,800 円</td><td>2026/06/20</td><td><span class="chip chip-yellow">配送待ち</span></td>
+          <td class="col-actions"><a class="btn btn-sm">✎</a> <a class="btn btn-sm btn-danger">🗑</a></td></tr>
+        <tr class="clickable" onclick="location.href='material_order_detail_mockup.html'">
+          <td class="col-num">4</td><td>MAT-202406-0789</td><td>○○食品</td><td>4</td><td>130</td><td>412,800 円</td><td>2026/06/20</td><td><span class="chip chip-green">入庫済み</span></td>
+          <td class="col-actions"><a class="btn btn-sm">✎</a> <a class="btn btn-sm btn-danger">🗑</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pager">
+    <div class="muted"><span class="fnum">17</span>100件中 1–10件 <span class="api-note">total · page · limit</span></div>
+    <div class="pages"><span class="active">1</span><span>…</span><span>5</span><span>6</span><span>…</span><span>50</span><span>›</span></div>
+  </div>
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 資材・発注一覧 (E03)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>実装状況</h4>
+    <table>
+      <tr><th>Phạm vi</th><th>Trạng thái</th></tr>
+      <tr><td>Material order (entity/controller/migration)</td><td><span class="impl no">❌ 未実装</span></td></tr>
+      <tr><td>Supplier order — provisional/final (発注)</td><td><span class="impl no">❌ 未実装</span></td></tr>
+    </table>
+
+    <h4>Endpoints (đề xuất — DESIGN §5.5 🟡)</h4>
+    <div class="ep"><span class="m get">GET</span> /admin/supplier-orders <span class="guard">filter supplierId·type·status</span></div>
+    <div class="ep"><span class="m get">GET</span> /admin/supplier-orders/:id <span class="guard">detail + items</span></div>
+    <div class="ep"><span class="m post">POST</span> /admin/supplier-orders/provisional <span class="guard">tạo 仮</span></div>
+
+    <h4>Query</h4>
+    <table>
+      <tr><th>№</th><th>Param</th><th>Ghi chú</th></tr>
+      <tr><td>2</td><td>type</td><td>仮/確定 → provisional | final</td></tr>
+      <tr><td>2</td><td>status</td><td>draft|sent|confirmed|rejected|cancelled (+配送待ち/入庫済み 🟡)</td></tr>
+      <tr><td>3</td><td>q</td><td>顧客名</td></tr>
+      <tr><td>4</td><td>month</td><td>YYYY/MM</td></tr>
+      <tr><td>5</td><td>lotId</td><td>Lot ID</td></tr>
+      <tr><td>6</td><td>supplierId</td><td>仕入先</td></tr>
+      <tr><td>7</td><td>materialCategory</td><td>資材分類</td></tr>
+    </table>
+
+    <h4>Response (đề xuất)</h4>
+    <pre>{
+  "items": [
+    {
+      "id": "uuid",
+      "supplierOrderCode": "MAT-202606-0012", // ⑨
+      "supplier": { "id":"..", "name":"○○食品" }, // ⑩
+      "lotId": "1",                  // ⑪
+      "totalQuantity": 130,          // ⑫
+      "totalAmount": 412800,         // ⑬
+      "requestedDeliveryDate": "2026-06-20", // ⑭
+      "type": "provisional",         // ⑮ provisional|final
+      "status": "draft"              // ⑮
+    }
+  ],
+  "total": 100, "page": 1, "limit": 10
+}</pre>
+
+    <h4>Field Map</h4>
+    <table>
+      <tr><th>№</th><th>UI</th><th>API field</th></tr>
+      <tr><td>1</td><td>CSV取込</td><td>import 🟡</td></tr>
+      <tr><td>2</td><td>tabs</td><td><code>type</code> / <code>status</code></td></tr>
+      <tr><td>3–7</td><td>filter</td><td><code>q·month·lotId·supplierId·materialCategory</code></td></tr>
+      <tr><td>8</td><td>No</td><td>row index</td></tr>
+      <tr><td>9</td><td>受注ID</td><td><code>supplierOrderCode</code></td></tr>
+      <tr><td>10</td><td>仕入先</td><td><code>supplier.name</code></td></tr>
+      <tr><td>11</td><td>Lot ID</td><td><code>lotId</code></td></tr>
+      <tr><td>12</td><td>数量</td><td><code>totalQuantity</code></td></tr>
+      <tr><td>13</td><td>予定コスト</td><td><code>totalAmount</code></td></tr>
+      <tr><td>14</td><td>納品予定日</td><td><code>requestedDeliveryDate</code></td></tr>
+      <tr><td>15</td><td>ステータス</td><td><code>type / status</code></td></tr>
+      <tr><td>16</td><td>操作</td><td>編集 → detail · 削除</td></tr>
+      <tr><td>17</td><td>ページャ</td><td><code>total · page · limit</code></td></tr>
+    </table>
+  </div>
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>

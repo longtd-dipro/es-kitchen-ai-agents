@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E02 · 商品一覧 — Danh sách sản phẩm (Company Order)</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+<style>
+  /* Field numbering badge — luôn hiển thị (đánh số field map) */
+  .fnum{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;
+    padding:0 4px;border-radius:9999px;background:var(--accent-500);color:#fff;font-size:10.5px;
+    font-weight:700;margin-right:5px;flex-shrink:0;font-family:"BIZ UDGothic",Consolas,monospace}
+  .fnum.ghost{background:var(--gray-400)}
+  /* view-toggle */
+  .view-toggle{display:inline-flex;border:1px solid var(--gray-200);border-radius:var(--r-md);overflow:hidden}
+  .view-toggle button{border:none;background:#fff;padding:7px 11px;cursor:pointer;font-size:14px;color:var(--gray-500)}
+  .view-toggle button.active{background:var(--accent-50);color:var(--accent-600)}
+  /* impl-status badges */
+  .impl{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9999px;margin-left:6px;vertical-align:middle}
+  .impl.done{background:var(--green-50);color:var(--green-600)}
+  .impl.todo{background:var(--purple-50);color:var(--purple-600)}
+  .prod-thumb{width:38px;height:38px;border-radius:var(--r-sm);background:var(--gray-100);display:grid;place-items:center;font-size:16px}
+</style>
+</head>
+<body class="theme-admin">
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <span class="muted" style="font-size:13px">☀️ お帰りなさい</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="index.html">← Mockup Index</a>
+  <div class="tb-user"><span class="avatar">西</span> にっしぐち ▾</div>
+</div>
+
+<div class="page">
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span class="sep">›</span>
+    メニュー注文 <span class="sep">›</span>
+    <b>商品一覧</b> <span class="vi">(Danh sách sản phẩm)</span>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <div class="page-title"><span class="accent-bar"></span> 商品一覧 <span class="vi">Danh sách sản phẩm theo menu tháng</span></div>
+      <div class="page-sub">Sản phẩm trong <b>menu đã publish</b> của tháng được chọn — điểm bắt đầu luồng đặt đơn tháng của Company (E02).</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="location.href='order_create_mockup.html'">
+        <span class="fnum">1</span>＋ 注文を作成 <span class="vi">Tạo đơn</span>
+        <span class="api-note">→ <b>POST /company-admin/orders</b> (draft) · 🟡未実装</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Implementation-status notice -->
+  <div class="notice notice-approval">
+    <span class="ic">🛠️</span>
+    <div>
+      <b>実装状況 (trạng thái code thật):</b>
+      Field sản phẩm (基準注文数 <code>baseOrderQty</code>, 販売価格 <code>sellingPrice</code>, <code>productTags</code>, <code>category</code>) <b>đã có</b> trong entity <code>MenuProduct</code>.
+      Nhưng <b>chưa có endpoint E02</b> để list menu sản phẩm cho đặt đơn — endpoint <code>/company-admin/menu/products</code> là <span class="impl todo">🟡 設計/未実装</span>.
+      Endpoint <code>/company-admin/orders</code> hiện tại chỉ READ đơn đã thanh toán (khác concept đơn tháng).
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter">
+    <div class="filter-grid">
+      <div class="field">
+        <label><span class="fnum">2</span>キーワード <span class="vi">商品名・カテゴリ・栄養素</span> <span class="ftag q">?q=</span></label>
+        <input type="text" placeholder="商品名・カテゴリ・栄養素">
+      </div>
+      <div class="field">
+        <label><span class="fnum">3</span>注文月 <span class="vi">Tháng đặt</span> <span class="ftag q">?yearMonth=</span></label>
+        <input type="text" value="2026年06月" readonly>
+      </div>
+      <div class="field">
+        <label><span class="fnum">4</span>ステータス <span class="vi">Trạng thái publish</span> <span class="ftag q">?status=</span></label>
+        <select>
+          <option value="">全て (Tất cả)</option>
+          <option value="published">公開 — published</option>
+          <option value="unpublished">非公開 — unpublished</option>
+          <option value="auto_public">自動公開 — auto_public</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="btn">クリア <span class="vi">Xóa lọc</span></button>
+      <button class="btn btn-primary">🔍 検索 <span class="vi">Tìm</span></button>
+    </div>
+  </div>
+
+  <!-- Temperature-zone tabs + view toggle -->
+  <div class="toolbar">
+    <div class="tabs" style="margin-bottom:0;border-bottom:none">
+      <button class="active"><span class="fnum">5</span>冷蔵 <span class="vi">chilled</span></button>
+      <button>冷凍 <span class="vi">frozen</span></button>
+      <button>常温 <span class="vi">normal</span></button>
+    </div>
+    <span class="api-note" style="align-self:center">温度帯 → <b>?category=</b> (cold | frozen | normal)</span>
+    <div class="spacer"></div>
+    <div class="view-toggle" title="表示切替 (FE only)">
+      <button class="active">☰</button>
+      <button>▦</button>
+    </div>
+    <span class="fnum ghost">6</span>
+    <span class="api-note" style="align-self:center">表示切替 list/grid — FE state, không gọi API</span>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr>
+          <th class="col-num"><span class="fnum">7</span>No</th>
+          <th><span class="fnum">8</span>商品画像 <span class="vi-b">Ảnh</span><span class="api-note">images[0]</span></th>
+          <th><span class="fnum">9</span>商品名 <span class="vi-b">Tên SP</span><span class="api-note">productName · productId (link → detail)</span></th>
+          <th><span class="fnum">10</span>カテゴリー <span class="vi-b">Loại</span><span class="api-note">category</span></th>
+          <th><span class="fnum">11</span>仕入先 <span class="vi-b">NCC</span><span class="api-note">supplierName 🟡</span></th>
+          <th><span class="fnum">12</span>スペシャル区分 <span class="vi-b">Nhãn</span><span class="api-note">productTags[]</span></th>
+          <th><span class="fnum">13</span>設定 <span class="vi-b">基準数/最大数</span><span class="api-note">baseOrderQty / maxOrderQty 🟡</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="clickable" onclick="location.href='product_detail_mockup.html'">
+          <td class="col-num">1</td>
+          <td><div class="prod-thumb">🍱</div></td>
+          <td><b style="color:var(--accent-600)">豚の生姜焼き</b></td>
+          <td>惣菜</td>
+          <td>株式会社しいれ</td>
+          <td><span class="chip chip-green no-dot">おすすめ</span></td>
+          <td>基準数:15 ／ 最大数:30</td>
+        </tr>
+        <tr class="clickable" onclick="location.href='product_detail_mockup.html'">
+          <td class="col-num">2</td>
+          <td><div class="prod-thumb">🍗</div></td>
+          <td><b style="color:var(--accent-600)">鶏の唐揚げ</b></td>
+          <td>惣菜</td>
+          <td>株式会社しいれ</td>
+          <td><span class="chip chip-orange no-dot">短賞味期限</span></td>
+          <td>基準数:15 ／ 最大数:30</td>
+        </tr>
+        <tr class="clickable" onclick="location.href='product_detail_mockup.html'">
+          <td class="col-num">3</td>
+          <td><div class="prod-thumb">🍱</div></td>
+          <td><b style="color:var(--accent-600)">豚の生姜焼き</b></td>
+          <td>惣菜</td>
+          <td>株式会社しいれ</td>
+          <td><span class="chip chip-orange no-dot">短賞味期限</span></td>
+          <td>基準数:15 ／ 最大数:30</td>
+        </tr>
+        <tr class="clickable" onclick="location.href='product_detail_mockup.html'">
+          <td class="col-num">4</td>
+          <td><div class="prod-thumb">🍗</div></td>
+          <td><b style="color:var(--accent-600)">鶏の唐揚げ</b></td>
+          <td>惣菜</td>
+          <td>株式会社しいれ</td>
+          <td><span class="chip chip-green no-dot">おすすめ</span></td>
+          <td>基準数:15 ／ 最大数:30</td>
+        </tr>
+        <tr class="clickable" onclick="location.href='product_detail_mockup.html'">
+          <td class="col-num">5</td>
+          <td><div class="prod-thumb">🍗</div></td>
+          <td><b style="color:var(--accent-600)">鶏の唐揚げ</b></td>
+          <td>惣菜</td>
+          <td>株式会社しいれ</td>
+          <td><span class="chip chip-blue no-dot">NEW</span></td>
+          <td>基準数:15 ／ 最大数:30</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pager -->
+  <div class="pager">
+    <div class="muted"><span class="fnum">14</span>100件中 1–10件 <span class="api-note">total:100 · page:1 · limit:10</span></div>
+    <div class="pages"><span class="active">1</span><span>…</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>…</span><span>50</span><span>›</span></div>
+    <div class="field" style="width:auto">
+      <select><option>10件/ページ</option><option>20件/ページ</option><option>50件/ページ</option></select>
+    </div>
+  </div>
+
+  <!-- Display format note -->
+  <div class="notice notice-info">
+    <span class="ic">💡</span>
+    <div>Click 1 dòng (hoặc 商品名) → mở <b>メニュー詳細</b> (popup). Badge <code>productTags</code>: <code>おすすめ</code> green · <code>短賞味期限</code> orange · <code>NEW</code> blue. Giá trị <code>null</code> → "<b>-</b>".</div>
+  </div>
+
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 商品一覧 (E02)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>実装状況 <span class="vi">Implemented vs Proposed</span></h4>
+    <table>
+      <tr><th>Phạm vi</th><th>Trạng thái</th></tr>
+      <tr><td>Field SP (<code>baseOrderQty</code>, <code>sellingPrice</code>, <code>productTags</code>, <code>category</code>)</td><td><span class="impl done">✅ 実装済</span> — entity <code>MenuProduct</code></td></tr>
+      <tr><td>List SP cho E02 đặt đơn — <code>/company-admin/menu/products</code></td><td><span class="impl todo">🟡 未実装</span> — đề xuất</td></tr>
+      <tr><td>Reference E03: <code>GET /admin/menus/:id</code> · E01: <code>GET /user/menu/products</code></td><td><span class="impl done">✅ 実装済</span></td></tr>
+      <tr><td>仕入先 <code>supplierName</code> · 最大数 <code>maxOrderQty</code></td><td><span class="impl todo">🟡 source TBD</span> (supplier table / contract.max)</td></tr>
+    </table>
+
+    <h4>Endpoints (đề xuất E02)</h4>
+    <div class="ep"><span class="m get">GET</span> /company-admin/menu/products <span class="guard">AdminCompanyGuard 🟡</span></div>
+    <div class="ep"><span class="m get">GET</span> /company-admin/menu/products/:id <span class="guard">AdminCompanyGuard 🟡</span></div>
+    <p class="muted" style="font-size:11.5px">Tham chiếu code thật: <code>GET /user/menu/products</code> (E01, <code>JwtAuthGuard</code>) trả về cùng shape (current + previous month menu). E02 reuse logic + đổi prefix <code>/company-admin</code> + guard <code>AdminCompanyGuard</code>.</p>
+
+    <h4>Query — GET /company-admin/menu/products</h4>
+    <table>
+      <tr><th>№</th><th>Param</th><th>Default</th><th>Ghi chú</th></tr>
+      <tr><td>2</td><td>q</td><td>—</td><td>search 商品名 / カテゴリ / 栄養素</td></tr>
+      <tr><td>3</td><td>yearMonth</td><td>tháng hiện tại</td><td>YYYY-MM — menu của tháng nào</td></tr>
+      <tr><td>4</td><td>status</td><td>published</td><td>PublishStatus: published | unpublished | auto_public</td></tr>
+      <tr><td>5</td><td>category</td><td>—</td><td>温度帯 tab: cold | frozen | normal</td></tr>
+      <tr><td>—</td><td>page / limit</td><td>1 / 10</td><td>BaseSearchRequest (offset/limit)</td></tr>
+    </table>
+
+    <h4>Response (data) <span class="vi">field thật từ MenuProduct + ProductDetail</span></h4>
+    <pre>{
+  "items": [
+    {
+      "id": "uuid",                  // menu_products.id
+      "productId": "uuid",
+      "productName": "豚の生姜焼き",     // ⑨
+      "productCode": "P-0001",
+      "category": "cold",            // ⑩  cold|frozen|normal
+      "sellingPrice": 1000,          // 販売価格
+      "baseOrderQty": 15,            // ⑬ 基準数 (基準注文数)
+      "maxOrderQty": 30,             // ⑬ 最大数 🟡 (source TBD)
+      "productTags": ["おすすめ"],     // ⑫ NEW | 短賞味期限 | おすすめ
+      "isShortExpiry": false,
+      "supplierName": "株式会社しいれ", // ⑪ 🟡
+      "images": ["https://.../a.jpg"] // ⑧
+    }
+  ],
+  "total": 100, "page": 1, "limit": 10, "totalPages": 10
+}</pre>
+
+    <h4>Field Map <span class="vi">№ trên UI ↔ field API</span></h4>
+    <table>
+      <tr><th>№</th><th>UI</th><th>API field / action</th></tr>
+      <tr><td>1</td><td>注文を作成 btn</td><td>POST /company-admin/orders (draft) 🟡</td></tr>
+      <tr><td>2</td><td>キーワード</td><td>query <code>q</code></td></tr>
+      <tr><td>3</td><td>注文月</td><td>query <code>yearMonth</code></td></tr>
+      <tr><td>4</td><td>ステータス</td><td>query <code>status</code></td></tr>
+      <tr><td>5</td><td>温度帯 tab</td><td>query <code>category</code></td></tr>
+      <tr><td>6</td><td>表示切替</td><td>FE only — không API</td></tr>
+      <tr><td>7</td><td>No</td><td>row index (page·limit)</td></tr>
+      <tr><td>8</td><td>商品画像</td><td><code>images[0]</code></td></tr>
+      <tr><td>9</td><td>商品名</td><td><code>productName</code> + <code>productId</code></td></tr>
+      <tr><td>10</td><td>カテゴリー</td><td><code>category</code></td></tr>
+      <tr><td>11</td><td>仕入先</td><td><code>supplierName</code> 🟡</td></tr>
+      <tr><td>12</td><td>スペシャル区分</td><td><code>productTags[]</code></td></tr>
+      <tr><td>13</td><td>設定</td><td><code>baseOrderQty</code> / <code>maxOrderQty</code> 🟡</td></tr>
+      <tr><td>14</td><td>ページャ</td><td><code>total · page · limit</code></td></tr>
+    </table>
+
+    <h4>Enums</h4>
+    <table>
+      <tr><th>Field</th><th>Giá trị · chip</th></tr>
+      <tr><td><code>category</code> (温度帯)</td><td>cold 冷蔵 · frozen 冷凍 · normal 常温</td></tr>
+      <tr><td><code>productTags</code></td><td>おすすめ (green) · 短賞味期限 / SHORT_EXPIRY (orange) · NEW (blue)</td></tr>
+      <tr><td><code>publishStatus</code></td><td>published 公開 · unpublished 非公開 · auto_public 自動公開</td></tr>
+    </table>
+
+    <h4>Errors</h4>
+    <table>
+      <tr><th>HTTP</th><th>Code</th></tr>
+      <tr><td>401</td><td>UNAUTHORIZED (token E02 hết hạn)</td></tr>
+      <tr><td>404</td><td>MENU_NOT_FOUND (tháng chưa có menu published)</td></tr>
+    </table>
+    <p class="muted" style="font-size:11.5px">🟡 = đề xuất / chưa implement trong code thật (tính tới 2026-06). FE/Mobile cần xác nhận contract với BE trước khi ráp.</p>
+  </div>
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E02 · 注文作成 — Tạo đơn (Company Order)</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+<style>
+  .fnum{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;
+    border-radius:9999px;background:var(--accent-500);color:#fff;font-size:10.5px;font-weight:700;margin-right:5px;
+    flex-shrink:0;font-family:"BIZ UDGothic",Consolas,monospace}
+  .fnum.ghost{background:var(--gray-400)}
+  .impl{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9999px;margin-left:6px}
+  .impl.done{background:var(--green-50);color:var(--green-600)}
+  .impl.todo{background:var(--purple-50);color:var(--purple-600)}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:#fff;border:1px solid var(--gray-200);
+    border-radius:var(--r-lg);padding:14px 16px;margin-bottom:16px;box-shadow:var(--sh-raise)}
+  .kpi .k{display:flex;flex-direction:column;gap:3px}
+  .kpi .k label{font-size:12px;color:var(--gray-600);font-weight:600;display:flex;align-items:center}
+  .kpi .k .v{font-size:17px;font-weight:700}
+  .kpi .k .v small{font-size:12px;color:var(--gray-500);font-weight:400}
+  .kpi .k.over .v{color:var(--red-500)}
+  .pcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+  .pcard{border:1px solid var(--gray-200);border-radius:var(--r-lg);overflow:hidden;background:#fff;box-shadow:var(--sh-raise)}
+  .pcard .img{aspect-ratio:4/3;background:var(--gray-100);display:grid;place-items:center;font-size:40px;position:relative}
+  .pcard .badges{position:absolute;top:6px;left:6px;display:flex;gap:4px}
+  .pcard .body{padding:10px 12px}
+  .pcard .nm{font-size:13px;font-weight:600;margin-bottom:4px}
+  .pcard .pr{font-size:13px;color:var(--gray-700);margin-bottom:8px}
+  .stepper{display:flex;align-items:center;gap:6px}
+  .stepper button{width:28px;height:28px;border:1px solid var(--gray-200);border-radius:var(--r-md);background:#fff;cursor:pointer;font-size:15px}
+  .stepper input{width:48px;text-align:center;border:1px solid var(--gray-300);border-radius:var(--r-md);padding:5px}
+  @media(max-width:760px){.kpi{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body class="theme-admin">
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="product_list_mockup.html">← 商品一覧</a>
+</div>
+
+<div class="page">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span class="sep">›</span>
+    <a href="product_list_mockup.html">商品一覧</a><span class="sep">›</span>
+    <b>注文作成</b> <span class="vi">(Tạo đơn)</span>
+  </div>
+
+  <div class="page-head">
+    <div class="page-title"><span class="accent-bar"></span> 2026年06月 <span class="vi">Đơn tháng — draft</span></div>
+    <div class="btn-row">
+      <button class="btn"><span class="fnum">5</span>キャンセル</button>
+      <button class="btn btn-primary" onclick="location.href='order_confirm_mockup.html'"><span class="fnum">6</span>次へ → <span class="api-note">→ 注文確認</span></button>
+    </div>
+  </div>
+
+  <div class="notice notice-approval">
+    <span class="ic">🛠️</span>
+    <div><b>実装状況:</b> luồng tạo/sửa đơn tháng (<code>POST /company-admin/orders</code>, <code>PUT …/items</code>, <code>…/validate</code>) <span class="impl todo">🟡 未実装</span>. Field SP từ <code>MenuProduct</code> <span class="impl done">✅ 実装済</span>. KPI giới hạn lấy từ <code>contract</code> (max_item_count / welfare limit).</div>
+  </div>
+
+  <!-- KPI header -->
+  <div class="kpi">
+    <div class="k">
+      <label><span class="fnum">1</span>注文月</label>
+      <div class="v">2026年06月 <span class="api-note">yearMonth</span></div>
+    </div>
+    <div class="k over">
+      <label><span class="fnum">2</span>製品の数量 <span class="vi">SL món</span></label>
+      <div class="v">201 <small>/200食</small> <span class="chip chip-red no-dot" style="font-size:10px">Out of limit</span>
+        <span class="api-note">Σquantity / welfareLimit (contract)</span></div>
+    </div>
+    <div class="k">
+      <label><span class="fnum">3</span>最大アイテム数 <span class="vi">Số loại</span></label>
+      <div class="v">5 <small>/38食</small> <span class="api-note">distinctItems / contract.maxItemCount</span></div>
+    </div>
+    <div class="k">
+      <label><span class="fnum">4</span>合計金額 <span class="vi">Tổng tiền</span></label>
+      <div class="v">5000 <small>円</small> <span class="api-note">Σ(unitPrice·quantity)</span></div>
+    </div>
+  </div>
+
+  <!-- Bulk-allocation buttons -->
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="location.href='ai_allocation_mockup.html'"><span class="fnum">7</span>AIによる設定 <span class="vi">Phân bổ AI</span>
+      <span class="api-note">→ AI自動配分 modal 🟡</span></button>
+    <button class="btn"><span class="fnum">8</span>数のパッケージによる設定 <span class="vi">Theo gói SL</span>
+      <span class="api-note">auto-fill baseOrderQty theo contract package 🟡</span></button>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter">
+    <div class="filter-grid">
+      <div class="field">
+        <label><span class="fnum">9</span>キーワード <span class="ftag q">?q=</span></label>
+        <input type="text" placeholder="商品名・カテゴリ・栄養素">
+      </div>
+      <div class="field">
+        <label><span class="fnum">10</span>食べ物の種類 <span class="vi">温度帯</span> <span class="ftag q">?category=</span></label>
+        <select><option>全て</option><option>冷蔵</option><option>冷凍</option><option>常温</option></select>
+      </div>
+      <div class="field">
+        <label><span class="fnum">11</span>ステータス <span class="ftag q">?status=</span></label>
+        <select><option>全て</option><option>公開</option></select>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="btn">クリア</button>
+      <button class="btn btn-primary">🔍 検索</button>
+    </div>
+  </div>
+
+  <!-- Product cards with quantity stepper -->
+  <div class="pcards">
+    <div class="pcard">
+      <div class="img">🍱<div class="badges"><span class="chip chip-blue no-dot" style="font-size:9px">NEW</span><span class="chip chip-green no-dot" style="font-size:9px">おすすめ</span></div></div>
+      <div class="body">
+        <div class="nm"><span class="fnum">12</span>鶏の照り焼き弁当</div>
+        <div class="pr">1000 円 <span class="api-note">sellingPrice</span></div>
+        <div class="stepper"><button>−</button><input value="30"><button>＋</button>
+        </div>
+        <div class="api-note"><span class="fnum">13</span>quantity (per item)</div>
+      </div>
+    </div>
+    <div class="pcard">
+      <div class="img">🍗<div class="badges"><span class="chip chip-orange no-dot" style="font-size:9px">短賞味期限</span></div></div>
+      <div class="body"><div class="nm">鶏の唐揚げ</div><div class="pr">1000 円</div>
+        <div class="stepper"><button>−</button><input value="10"><button>＋</button></div></div>
+    </div>
+    <div class="pcard">
+      <div class="img">🍱<div class="badges"><span class="chip chip-green no-dot" style="font-size:9px">おすすめ</span></div></div>
+      <div class="body"><div class="nm">豚の生姜焼き</div><div class="pr">1000 円</div>
+        <div class="stepper"><button>−</button><input value="10"><button>＋</button></div></div>
+    </div>
+    <div class="pcard">
+      <div class="img">🍗<div class="badges"><span class="chip chip-blue no-dot" style="font-size:9px">NEW</span></div></div>
+      <div class="body"><div class="nm">鶏の唐揚げ</div><div class="pr">1000 円</div>
+        <div class="stepper"><button>−</button><input value="0"><button>＋</button></div></div>
+    </div>
+  </div>
+
+  <div class="pager" style="margin-top:14px">
+    <div class="muted"><span class="fnum">14</span>100件中 1–10件 <span class="api-note">total · page · limit</span></div>
+    <div class="pages"><span class="active">1</span><span>2</span><span>…</span><span>10</span><span>›</span></div>
+  </div>
+
+  <div class="notice notice-warn">
+    <span class="ic">⚠️</span>
+    <div>Khi <code>Σquantity &gt; welfareLimit</code> (vd 201/200) hoặc <code>distinctItems &gt; maxItemCount</code> → hiển thị cảnh báo đỏ, chặn <b>次へ</b>. Validate qua <code>GET …/validate</code> (dry-run) trước submit.</div>
+  </div>
+
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 注文作成 (E02)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>実装状況</h4>
+    <table>
+      <tr><th>Phạm vi</th><th>Trạng thái</th></tr>
+      <tr><td>Create / update / validate đơn tháng</td><td><span class="impl todo">🟡 未実装</span> (DESIGN.md §5.3)</td></tr>
+      <tr><td>Field SP (<code>MenuProduct</code>)</td><td><span class="impl done">✅ 実装済</span></td></tr>
+      <tr><td>Limit từ <code>contract</code> (maxItemCount / welfare)</td><td><span class="impl done">✅ entity có</span></td></tr>
+    </table>
+
+    <h4>Endpoints (đề xuất E02 🟡)</h4>
+    <div class="ep"><span class="m post">POST</span> /company-admin/orders <span class="guard">tạo draft</span></div>
+    <div class="ep"><span class="m put">PUT</span> /company-admin/orders/:id/items <span class="guard">replace items</span></div>
+    <div class="ep"><span class="m get">GET</span> /company-admin/orders/:id/validate <span class="guard">dry-run limit</span></div>
+
+    <h4>PUT …/items — body</h4>
+    <pre>{
+  "items": [
+    { "productId": "uuid", "menuItemId": "uuid", "quantity": 30 },  // ⑬
+    { "productId": "uuid", "menuItemId": "uuid", "quantity": 10 }
+  ]
+}
+// replace strategy — gửi toàn bộ items mỗi lần lưu (validate đơn chưa LOCKED)</pre>
+
+    <h4>GET …/validate — response (KPI)</h4>
+    <pre>{
+  "totalQuantity": 201,        // ② Σquantity
+  "welfareLimit": 200,         // ② contract welfare limit
+  "distinctItemCount": 5,      // ③
+  "maxItemCount": 38,          // ③ contract.maxItemCount
+  "totalAmount": 5000,         // ④
+  "isValid": false,
+  "violations": ["WELFARE_LIMIT_EXCEEDED"] // 201 > 200
+}</pre>
+
+    <h4>Field Map</h4>
+    <table>
+      <tr><th>№</th><th>UI</th><th>API field / action</th></tr>
+      <tr><td>1</td><td>注文月</td><td><code>yearMonth</code></td></tr>
+      <tr><td>2</td><td>製品の数量</td><td><code>totalQuantity</code> / <code>welfareLimit</code></td></tr>
+      <tr><td>3</td><td>最大アイテム数</td><td><code>distinctItemCount</code> / <code>maxItemCount</code></td></tr>
+      <tr><td>4</td><td>合計金額</td><td><code>totalAmount</code></td></tr>
+      <tr><td>5</td><td>キャンセル</td><td>discard draft / về 商品一覧</td></tr>
+      <tr><td>6</td><td>次へ</td><td>PUT …/items → 注文確認</td></tr>
+      <tr><td>7</td><td>AIによる設定</td><td>mở AI自動配分 modal 🟡</td></tr>
+      <tr><td>8</td><td>数のパッケージ設定</td><td>auto-fill baseOrderQty 🟡</td></tr>
+      <tr><td>9</td><td>キーワード</td><td>query <code>q</code></td></tr>
+      <tr><td>10</td><td>食べ物の種類</td><td>query <code>category</code></td></tr>
+      <tr><td>11</td><td>ステータス</td><td>query <code>status</code></td></tr>
+      <tr><td>12</td><td>商品名</td><td><code>productName</code></td></tr>
+      <tr><td>13</td><td>数量 stepper</td><td><code>quantity</code> (item)</td></tr>
+      <tr><td>14</td><td>ページャ</td><td><code>total · page · limit</code></td></tr>
+    </table>
+
+    <h4>Errors</h4>
+    <table>
+      <tr><th>HTTP</th><th>Code</th></tr>
+      <tr><td>409</td><td>ORDER_LOCKED (quá deadline_date)</td></tr>
+      <tr><td>422</td><td>WELFARE_LIMIT_EXCEEDED · MAX_ITEM_EXCEEDED</td></tr>
+    </table>
+  </div>
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>

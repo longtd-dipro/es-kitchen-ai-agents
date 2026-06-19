@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Order (E03) — Mockup & API Index</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+<style>
+  .impl{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9999px}
+  .impl.done{background:var(--green-50);color:var(--green-600)}
+  .impl.todo{background:var(--purple-50);color:var(--purple-600)}
+  .impl.no{background:var(--red-50);color:var(--red-600)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E03 System Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="../index.html">← API Doc Index</a>
+</div>
+
+<div class="page">
+  <div class="hero">
+    <h1>Admin Order — 注文管理 (E03)</h1>
+    <p>Mockup tương tác + đặc tả API cho System Admin quản lý đơn: đơn món (注文) — trả lời納期 / xuất hàng / thông báo — và đơn vật tư・発注 NCC (仮 → 確定 → 送信).</p>
+  </div>
+
+  <div class="notice notice-warn">
+    <span class="ic">⚠️</span>
+    <div><b>Cảnh báo implementation (quan trọng):</b> phần lớn luồng này <span class="impl no">❌ chưa implement</span> trong <code>es-kitchen-api</code>.
+      Code thật chỉ có <code>GET /admin/orders</code> + <code>POST …/:id/refund</code> <span class="impl done">✅</span> nhưng đó là <b>đơn mua có payment</b> (concept khác — không có status納期/出荷, không field shipping).
+      <b>Material order</b> và <b>Supplier order (発注)</b> chưa có entity/controller/migration. Mỗi trang ghi rõ trạng thái từng endpoint; phần 🟡 tham chiếu DESIGN.md §5.3/5.4/5.5 (đề xuất).</div>
+  </div>
+
+  <h3 style="margin:18px 0 12px">Danh mục màn hình</h3>
+  <div class="grid-cards">
+    <a class="screen-card" href="order_list_mockup.html">
+      <span class="persona-tag e03">E03</span>
+      <span class="sc-id">AW_ORDR_001</span>
+      <span class="sc-title">注文管理 — Danh sách đơn món</span>
+      <span class="sc-desc">Tab 納期回答待ち/出荷待ち/出荷済み, CSV取込/出力, filter 顧客・配送月.</span>
+      <span class="sc-eps"><span class="impl done">GET /admin/orders ✅</span><span class="impl todo">status tabs 🟡</span></span>
+    </a>
+    <a class="screen-card" href="order_detail_mockup.html">
+      <span class="persona-tag e03">E03</span>
+      <span class="sc-id">AW_ORDR_002 (+ edit)</span>
+      <span class="sc-title">注文詳細 — Chi tiết + Sửa</span>
+      <span class="sc-desc">Status stepper 3 bước, sửa 数量/納品先, 出荷情報 (送り状No…).</span>
+      <span class="sc-eps"><span class="impl todo">PUT /admin/orders/:id 🟡</span><span class="impl no">shipping fields ❌</span></span>
+    </a>
+    <a class="screen-card" href="order_notify_mockup.html">
+      <span class="persona-tag e03">E03</span>
+      <span class="sc-id">AW_ORDR_003 ×3</span>
+      <span class="sc-title">通知送信 — Modal thông báo</span>
+      <span class="sc-desc">納期回答 / 出荷完了 / 再通知 → Company・Supplier・Outsource・Driver.</span>
+      <span class="sc-eps"><span class="impl todo">POST …/notifications 🟡</span><span class="impl done">Notification entity ✅</span></span>
+    </a>
+    <a class="screen-card" href="material_order_list_mockup.html">
+      <span class="persona-tag e03">E03</span>
+      <span class="sc-id">AW_ORDR_004</span>
+      <span class="sc-title">資材・発注 — Danh sách đơn NCC</span>
+      <span class="sc-desc">Tab 仮/確定/配送待ち/入庫済み, Lot ID, 予定コスト.</span>
+      <span class="sc-eps"><span class="impl no">Material/Supplier order ❌ 未実装</span></span>
+    </a>
+    <a class="screen-card" href="material_order_detail_mockup.html">
+      <span class="persona-tag e03">E03</span>
+      <span class="sc-id">AW_ORDR_005 (+ 006)</span>
+      <span class="sc-title">発注詳細 — Provisional → Final</span>
+      <span class="sc-desc">資材内訳 (BOM), 本発注の確定, 発注書をNCCへ送信.</span>
+      <span class="sc-eps"><span class="impl no">Supplier order ❌ 未実装</span></span>
+    </a>
+  </div>
+
+  <div class="footnote">ESKitchen · Menu &amp; Order — System Admin (E03) · Mockup &amp; API guide · cập nhật 2026-06-19</div>
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>
