@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DA_LIST_00 Tab B — 未配送 (Undelivered)</title>
+    <link rel="stylesheet" href="../dashboard/style.css">
+    <style>
+        body { padding: 24px 0; }
+        .docs-section { margin-top: 24px; border-top: 2px solid #edf2f7; }
+        .page-note {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #92400e;
+            margin: 14px 16px;
+        }
+        .screen-label {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 6px;
+            z-index: 200;
+        }
+        .lang-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .lang-tab {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #cbd5e0;
+            background: #fff;
+            color: #4a5568;
+        }
+        .lang-tab.active {
+            background: #2b6cb0;
+            color: #fff;
+            border-color: #2b6cb0;
+        }
+        .lang-block { display: none; }
+        .lang-block.active { display: block; }
+        .vi-text { color: #b7791f; font-style: italic; }
+        .docs-footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: #a0aec0;
+            border-top: 1px solid #edf2f7;
+            margin-top: 20px;
+        }
+        .api-ref {
+            font-size: 11px;
+            color: #2b6cb0;
+            font-weight: bold;
+            margin: 4px 0;
+        }
+        .tab-bar {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin: 0 16px;
+            gap: 0;
+        }
+        .tab-item {
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #718096;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            text-align: center;
+            min-width: 70px;
+        }
+        .tab-item.active {
+            color: #2b6cb0;
+            border-bottom-color: #2b6cb0;
+        }
+        .tab-item .tab-count {
+            display: inline-block;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-left: 4px;
+        }
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            font-size: 12px;
+            color: #4a5568;
+        }
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #edf2f7;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        .filter-chip.active {
+            background: #ebf8ff;
+            color: #2b6cb0;
+            border: 1px solid #bee3f8;
+        }
+        .search-bar {
+            margin: 0 16px 10px 16px;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 8px 12px 8px 32px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 12px;
+            background: #fff;
+        }
+        .search-bar svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .date-range-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+    </style>
+</head>
+<body>
+
+<div style="max-width: 1100px; width: 100%; margin: 0 auto; padding: 0 16px;">
+
+    <!-- Page heading -->
+    <div style="margin-bottom: 20px;">
+        <div class="lang-tabs">
+            <span class="lang-tab active" onclick="switchLang(this, 'ja')">日本語</span>
+            <span class="lang-tab" onclick="switchLang(this, 'vi')">Tiếng Việt</span>
+        </div>
+
+        <div class="lang-block ja active">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_LIST_00 Tab B — ES配送便（ES Delivery）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · 配達一覧 · Tab B: ES配送便 · API spec + field mapping</p>
+        </div>
+        <div class="lang-block vi">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_LIST_00 Tab B — Giao ES（ES配送便）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · Danh sách giao hàng · Tab B: Giao ES · Spec API + mapping</p>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <span style="background:#2b6cb0; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px;">Mobile App</span>
+            <span style="background:#48bb78; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">Screen ID: DA_LIST_00</span>
+            <span style="background:#ecc94b; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">Tab B: ES配送便</span>
+        </div>
+    </div>
+
+    <!-- ===== MOCKUP + FIELD LEGEND GRID ===== -->
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; align-items:start;">
+
+        <!-- MOCKUP -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">MOCKUP — Tab B: ES配送便</h3>
+            <div class="phone-wrapper" style="min-height:750px;">
+                <div class="screen-label">DA_LIST_00</div>
+
+                <!-- Header -->
+                <div class="header-banner" style="padding-bottom:20px;">
+                    <div class="logo-area">
+                        <div class="brand-title">ES<span>STATION</span></div>
+                        <div class="notif-bell">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Range -->
+                <div class="date-range-bar">
+                    <span><span class="annotation-badge">(1)</span>配送一覧</span>
+                    <span style="font-size:12px; color:#718096; font-weight:normal;"><span class="annotation-badge">(2)</span>2026-6-12〜2026-6-19</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tab-bar">
+                    <div class="tab-item">倉庫受付</div>
+                    <div class="tab-item active"><span class="annotation-badge">(3)</span>ES配送便 <span class="tab-count">(4) 2</span></div>
+                    <div class="tab-item">COOL便</div>
+                </div>
+
+                <!-- Sub-filter -->
+                <div class="filter-bar">
+                    <span class="filter-chip active"><span class="annotation-badge">(5)</span>倉庫・中継</span>
+                </div>
+
+                <!-- Search -->
+                <div class="search-bar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="(6) 納品先拠点名・住所">
+                </div>
+
+                <!-- Delivery Cards -->
+                <div style="padding: 0 16px;">
+                    <!-- Card 1 -->
+                    <div class="delivery-card" style="border-left: 4px solid #ecc94b;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box" style="width:28px; height:28px; background:#ecc94b;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:12px;"><span class="annotation-badge">(7)</span>富士フィナンシャルアドバイザリー株式会社</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-undelivered"><span class="annotation-badge">(8)</span>未配送</span>
+                        </div>
+                        <div class="address-row">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div style="font-size:10px;"><span class="annotation-badge">(9)</span>2026-06-12</div>
+                        </div>
+                        <div class="address-row">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div style="font-size:10px;"><span class="annotation-badge">(10)</span>オージーフーズ倉庫</div>
+                        </div>
+                        <div class="address-row">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div style="font-size:10px;"><span class="annotation-badge">(11)</span>東京都渋谷区千駄ヶ谷5-32-7...</div>
+                        </div>
+                        <div class="meta-grid" style="font-size:11px; margin-top:6px;">
+                            <div class="meta-item"><span class="annotation-badge">(12)</span><span class="highlight-blue">2</span> 箱</div>
+                            <div class="meta-item"><span class="annotation-badge">(13)</span><span class="highlight-red">10</span> 品</div>
+                            <div class="meta-item"><span class="annotation-badge">(14)</span><span class="highlight-blue">30</span> 品</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="delivery-card" style="border-left: 4px solid #ecc94b;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box" style="width:28px; height:28px; background:#ecc94b;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:12px;">会社2</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-undelivered">未配送</span>
+                        </div>
+                        <div class="address-row">
+                            <div style="font-size:10px;">2026-06-12 (月) オージーフーズ...</div>
+                        </div>
+                        <div class="meta-grid" style="font-size:11px;">
+                            <div class="meta-item"><span class="highlight-blue">2</span> 箱</div>
+                            <div class="meta-item"><span class="highlight-red">10</span> 品</div>
+                            <div class="meta-item"><span class="highlight-blue">30</span> 品</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="delivery-card" style="border-left: 4px solid #fc8181;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box" style="width:28px; height:28px; background:#fc8181;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:12px;">会社3</div>
+                                </div>
+                            </div>
+                            <span class="badge" style="background:#fed7d7; color:#c53030; font-size:10px;">トラブル</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Nav -->
+                <div class="bottom-nav">
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        ホーム
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        マニュアル
+                    </a>
+                    <a href="#" class="nav-item active">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        配送一覧
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        トラブル
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        アカウント
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== FIELD LEGEND ===== -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">FIELD LEGEND</h3>
+
+            <div class="page-note">
+                <strong>API:</strong> Tab B data is populated via
+                <code>GET /driver/delivery-list?tab=ES_DELIVERY&startDate=...&endDate=...</code><br>
+                Shows ES配送便 shipments chưa xong (deliveryStatus IN UNDELIVERED, TROUBLE). Filter「ステータス」= deliveryStatus.<br>
+                Shows shipments with status「未配送」or「トラブル」(COOL便 + ES配送便).
+            </div>
+
+            <!-- Section 1: Header & Filters -->
+            <div class="docs-section" style="margin-top:0; padding:14px 16px;">
+                <div class="docs-title">① Header & Filter Controls（フィルター・ヘッダー）</div>
+                <table class="field-table">
+                    <thead>
+                        <tr><th>#</th><th>Field / Trường</th><th>Type / Kiểu</th><th>Source API / Nguồn</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="field-num">(1)</td>
+                            <td>
+                                <div>Page Title ("配送一覧")</div>
+                                <div class="vi-text">Tiêu đề trang</div>
+                            </td>
+                            <td>string</td>
+                            <td><strong>Static UI label</strong> — no API</td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(2)</td>
+                            <td>
+                                <div>Date Range Display</div>
+                                <div class="vi-text">Khoảng thời gian hiển thị</div>
+                            </td>
+                            <td>string</td>
+                            <td>
+                                <strong>FE Input (Query Params)</strong><br>
+                                <code>startDate</code>, <code>endDate</code><br>
+                                Default: today ~ today + 7 days
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(3)</td>
+                            <td>
+                                <div>Active Tab Name</div>
+                                <div class="vi-text">Tab đang chọn (ES配送便)</div>
+                            </td>
+                            <td>enum</td>
+                            <td>
+                                <strong>FE Input (Query Param)</strong><br>
+                                <code>tab=ES_DELIVERY</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(4)</td>
+                            <td>
+                                <div>Tab Count Badge</div>
+                                <div class="vi-text">Số lượng item trong tab</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>GET /driver/delivery-list</code><br>Field: <code>meta.totalCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(5)</td>
+                            <td>
+                                <div>Sub-filter: 倉庫・中継</div>
+                                <div class="vi-text">Bộ lọc: Kho nguồn (multi-select)</div>
+                            </td>
+                            <td>enum[]</td>
+                            <td>
+                                <strong>FE Input (Query Param)</strong><br>
+                                <code>sourceWarehouseIds=[id1,id2,...]</code><br>
+                                Empty = show all
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(6)</td>
+                            <td>
+                                <div>Search Keyword Input</div>
+                                <div class="vi-text">Ô tìm kiếm theo từ khoá</div>
+                            </td>
+                            <td>string</td>
+                            <td>
+                                <strong>FE Input (Query Param)</strong><br>
+                                <code>keyword=...</code><br>
+                                Searches: company name, destination address<br>
+                                Max: 255 chars
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 2: Delivery Card Fields -->
+            <div class="docs-section">
+                <div class="docs-title">② Delivery Card — 配送カード（API Response Items）</div>
+                <table class="field-table">
+                    <thead>
+                        <tr><th>#</th><th>Field / Trường</th><th>Type / Kiểu</th><th>Source API Response / Nguồn</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="field-num">(7)</td>
+                            <td>
+                                <div>Company / Destination Name</div>
+                                <div class="vi-text">Tên công ty / điểm giao</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>items[].companyName</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(8)</td>
+                            <td>
+                                <div>Delivery Status Badge</div>
+                                <div class="vi-text">Trạng thái giao hàng</div>
+                            </td>
+                            <td>enum</td>
+                            <td>
+                                <code>items[].deliveryStatus</code><br>
+                                Values:<br>
+                                <code>UNDELIVERED</code> → 未配送 (yellow)<br>
+                                <code>TROUBLE</code> → トラブル (red)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(9)</td>
+                            <td>
+                                <div>Delivery Date</div>
+                                <div class="vi-text">Ngày giao hàng</div>
+                            </td>
+                            <td>date</td>
+                            <td>
+                                <code>items[].deliveryDate</code><br>
+                                Format: <code>yyyy-MM-dd (曜日)</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(10)</td>
+                            <td>
+                                <div>Source Warehouse Name</div>
+                                <div class="vi-text">Tên kho nguồn</div>
+                            </td>
+                            <td>string</td>
+                            <td>
+                                <code>items[].sourceWarehouseName</code><br>
+                                <em>Which warehouse this shipment came from</em>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(11)</td>
+                            <td>
+                                <div>Destination Address</div>
+                                <div class="vi-text">Địa chỉ giao hàng</div>
+                            </td>
+                            <td>string</td>
+                            <td>
+                                <code>items[].destinationAddress</code><br>
+                                <em>Truncate with [...] if too long (2 lines max)</em>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(12)</td>
+                            <td>
+                                <div>Box Count (箱)</div>
+                                <div class="vi-text">Số thùng hàng</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>items[].boxCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(13)</td>
+                            <td>
+                                <div>Frozen Item Count (品) <em style="color:#e53e3e;">[red = 冷凍]</em></div>
+                                <div class="vi-text">Số món đông lạnh (icon: snowflake)</div>
+                            </td>
+                            <td>number</td>
+                            <td>
+                                <code>items[].frozenItemCount</code><br>
+                                <em>Hide if value = 0</em>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(14)</td>
+                            <td>
+                                <div>Chilled + Normal Count (品) <em style="color:#2b6cb0;">[blue = 冷蔵+常温]</em></div>
+                                <div class="vi-text">Số món mát + thường gộp (icon: fridge)</div>
+                            </td>
+                            <td>number</td>
+                            <td>
+                                <code>items[].chilledNormalItemCount</code><br>
+                                <em>Hide if value = 0</em>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 3: Behaviors -->
+            <div class="docs-section">
+                <div class="docs-title">③ Behaviors & Rules（動作仕様）</div>
+                <table class="field-table">
+                    <thead>
+                        <tr><th>Rule</th><th>Description (JP)</th><th>Mô tả (VN)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Data Condition</strong></td>
+                            <td>COOL便・ES配送便 status =「未配送」or「トラブル」</td>
+                            <td>Đơn COOL/ES có trạng thái "Chưa giao" hoặc "Sự cố"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Paging</strong></td>
+                            <td>Infinite scroll — load next page on scroll-to-bottom</td>
+                            <td>Cuộn đến cuối → tự động tải trang tiếp theo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sort Order</strong></td>
+                            <td>納品日 → ステータス → 拠点名</td>
+                            <td>Sắp xếp: Ngày giao → Trạng thái → Tên điểm</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Empty State</strong></td>
+                            <td>「配送予定データはありません。」</td>
+                            <td>「Không có dữ liệu giao hàng dự kiến.」</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Card Tap</strong></td>
+                            <td>タップで配送詳細画面へ遷移</td>
+                            <td>Nhấn vào card → chuyển đến màn hình chi tiết giao hàng</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Quantity Display</strong></td>
+                            <td>
+                                ピッキング完了: 実数表示<br>
+                                ピッキング未了: 「未確定」表示
+                            </td>
+                            <td>
+                                Đã picking: hiện số thực tế<br>
+                                Chưa picking: hiện「未確定」
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Edit Permission</strong></td>
+                            <td>
+                                ES配送（当日〜7日以内）: 編集可<br>
+                                ES配送（7日超過）: 読み取り専用<br>
+                                COOL便: 読み取り専用
+                            </td>
+                            <td>
+                                ES (trong 7 ngày): cho phép sửa<br>
+                                ES (quá 7 ngày): chỉ đọc<br>
+                                COOL: chỉ đọc
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 4: Navigation -->
+            <div class="docs-section">
+                <div class="docs-title">④ Navigation（画面遷移）</div>
+                <table class="field-table">
+                    <thead>
+                        <tr><th>Action</th><th>Destination</th><th>Notes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Card tap (ES配送)</td>
+                            <td>DA_DELIVERY_DETAIL (配送詳細)</td>
+                            <td>Pass <code>shipmentId</code></td>
+                        </tr>
+                        <tr>
+                            <td>Card tap (COOL便)</td>
+                            <td>DA_COOL_DETAIL (COOL配送詳細)</td>
+                            <td>Pass <code>coolShipmentId</code></td>
+                        </tr>
+                        <tr>
+                            <td>Tab「倉庫受付」tap</td>
+                            <td>DA_LIST_00 Tab A</td>
+                            <td>Same screen, switch tab</td>
+                        </tr>
+                        <tr>
+                            <td>Tab「COOL便」tap</td>
+                            <td>DA_LIST_00 Tab C</td>
+                            <td>Same screen, switch tab</td>
+                        </tr>
+                        <tr>
+                            <td>Calendar icon tap</td>
+                            <td>Date picker modal</td>
+                            <td>Select startDate / endDate → reload</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="docs-footer">
+    Screen: DA_LIST_00 Tab B &nbsp;|&nbsp; Module: Driver (配送ドライバー) &nbsp;|&nbsp; es-kitchen-api docs<br>
+    Related: <a href="DA_LIST_00_A.html">Tab A: 倉庫受付</a> &nbsp;|&nbsp; <a href="DA_LIST_00_C.html">Tab C: COOL便</a>
+</div>
+
+<script>
+function switchLang(el, lang) {
+    document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.lang-block').forEach(b => {
+        b.classList.remove('active');
+        if (b.classList.contains(lang)) b.classList.add('active');
+    });
+}
+</script>
+
+</body>
+</html>

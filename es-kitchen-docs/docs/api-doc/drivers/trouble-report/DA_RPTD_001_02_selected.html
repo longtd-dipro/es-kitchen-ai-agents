@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DA_RPTD_001-02 (selected)</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #e9ecf1; display: flex; justify-content: center; min-height: 100vh; padding: 20px; }
+.phone { width: 390px; min-height: 844px; background: #f4f6f9; border-radius: 22px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.15); display: flex; flex-direction: column; position: relative; }
+
+/* ① Header */
+.header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #fff; }
+.hbtn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid #e3e3e3; display: flex; align-items: center; justify-content: center; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.hbtn.ghost { border: none; box-shadow: none; }
+.hbtn svg { width: 22px; height: 22px; stroke: #333; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.htitle { font-size: 20px; font-weight: 700; color: #1a1a1a; }
+
+.content { flex: 1; overflow-y: auto; padding: 14px 16px 96px; }
+
+/* ② section + search */
+.sec-label { font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px; }
+.search-box { position: relative; margin-bottom: 12px; }
+.search-input { width: 100%; padding: 13px 44px 13px 16px; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 15px; background: #fff; }
+.search-input::placeholder { color: #b0b0b0; }
+.search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; }
+.search-icon svg { width: 22px; height: 22px; stroke: #999; fill: none; stroke-width: 2; }
+
+/* ③ note */
+.note { font-size: 12.5px; color: #8a8f96; line-height: 1.7; margin-bottom: 14px; }
+
+/* ④ card list */
+.rcard { background: #fff; border: 1px solid #ececec; border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+.rcard-head { display: flex; align-items: flex-start; gap: 10px; }
+.ricon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ricon svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 1.7; stroke-linejoin: round; stroke-linecap: round; }
+.ricon.blue { background: #1f6fe0; }
+.ricon.purple { background: #5b3cc4; }
+.ricon.orange { background: #f5921e; }
+.rname { flex: 1; font-size: 15.5px; font-weight: 700; color: #1a1a1a; line-height: 1.35; }
+.rbadge { font-size: 12px; font-weight: 700; padding: 4px 9px; border-radius: 7px; flex-shrink: 0; }
+.rbadge.undelivered { background: #fff; border: 1.4px solid #e3a93f; color: #d98e00; }
+.rbadge.unreceived { background: #f0f0f2; color: #8a8f96; }
+.rradio { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #c4c4c4; flex-shrink: 0; }
+.rradio.checked { border-color: #1f6fe0; display: flex; align-items: center; justify-content: center; }
+.rradio.checked::after { content: ''; width: 13px; height: 13px; border-radius: 50%; background: #1f6fe0; }
+.rmeta { margin-top: 10px; }
+.rmeta-row { display: flex; align-items: flex-start; gap: 6px; font-size: 13px; color: #666; margin-top: 5px; }
+.rmeta-row svg { width: 15px; height: 15px; stroke: #999; fill: none; stroke-width: 1.6; flex-shrink: 0; margin-top: 1px; }
+.rcounts { display: flex; gap: 16px; margin-top: 8px; }
+.rcount { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #555; }
+.rcount svg { width: 16px; height: 16px; stroke: #888; fill: none; stroke-width: 1.6; }
+.rcount b { color: #1f6fe0; }
+
+/* footer */
+.footer { position: absolute; bottom: 0; left: 0; right: 0; padding: 14px 16px 20px; background: #fff; box-shadow: 0 -2px 12px rgba(0,0,0,0.05); display: flex; gap: 12px; }
+.btn { flex: 1; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; }
+.btn-back { background: #fff; color: #333; border: 1.5px solid #e0e0e0; }
+.btn-next { background: #1a6dff; color: #fff; border: none; box-shadow: 0 4px 14px rgba(26,109,255,0.4); }
+.btn-next.disabled { background: #e0e0e0; box-shadow: none; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <!-- ① Header -->
+  <div class="header">
+    <div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+    <div class="htitle">トラブル報告</div>
+    <div class="hbtn ghost"></div>
+  </div>
+
+  <div class="content">
+    <!-- ② 配達一覧 + search -->
+    <div class="sec-label">配達一覧</div>
+    <div class="search-box">
+      <input class="search-input" placeholder="倉庫名・拠点名・送り状番号">
+      <span class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+    </div>
+
+    <!-- ③ note -->
+    <div class="note">
+      ※影響を受けた拠点を選択してください。<br>
+      ※複数の拠点でトラブルが発生している場合は、それぞれの拠点ごとに登録してください。<br>
+      ※未配送の注文のみ表示されます。
+    </div>
+
+    <!-- ④ list -->
+    <!-- card 1: ES配送 xanh, 未配送 -->
+    <div class="rcard">
+      <div class="rcard-head">
+        <div class="ricon blue"><svg viewBox="0 0 24 24"><circle cx="8" cy="6" r="2.3" fill="#fff" stroke="none"/><path d="M5.5 11c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5v4l-1.8 4-1.2-3-1.5 2.5z" fill="#fff" stroke="none"/><rect x="13" y="7" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/><rect x="13" y="11" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/><rect x="13" y="15" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/></svg></div>
+        <span class="rname">富士フィナンシャルアドバイザリー株式会社</span>
+        <span class="rbadge undelivered">未配送</span>
+        <span class="rradio checked"></span>
+      </div>
+      <div class="rmeta">
+        <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/></svg>オージーフーズ倉庫</div>
+        <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>神奈川県横浜市西区みなとみらい二丁目３番３号　クイーンズタワーＢ１０階</div>
+        <div class="rcounts">
+          <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>2</b> 箱</div>
+          <div class="rcount"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/></svg><b>10</b> 品</div>
+          <div class="rcount"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg><b>20</b> 品</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- card 2: COOL tím, 未配送 -->
+    <div class="rcard">
+      <div class="rcard-head">
+        <div class="ricon purple"><svg viewBox="0 0 24 24"><path d="M12 2.5l8 4.5v9l-8 4.5-8-4.5v-9l8-4.5z"/><path d="M4 7l8 4.5L20 7"/><path d="M12 11.5V21"/></svg></div>
+        <span class="rname">大和インターナショナルトレーディング株式会社</span>
+        <span class="rbadge undelivered">未配送</span>
+        <span class="rradio"></span>
+      </div>
+      <div class="rmeta">
+        <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/></svg>オージーフーズ倉庫</div>
+        <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都千代田区大手町一丁目２番３号　大手町グランドタワー１５階</div>
+        <div class="rcounts">
+          <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>2</b> 箱</div>
+          <div class="rcount"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/></svg><b>10</b> 品</div>
+          <div class="rcount"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg><b>20</b> 品</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- card 3: kho cam, 未受取 -->
+    <div class="rcard">
+      <div class="rcard-head">
+        <div class="ricon orange"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/><rect x="7" y="13" width="10" height="8"/></svg></div>
+        <span class="rname">オージーフーズ倉庫</span>
+        <span class="rbadge unreceived">未受取</span>
+        <span class="rradio"></span>
+      </div>
+      <div class="rmeta">
+        <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階</div>
+        <div class="rcounts">
+          <div class="rcount"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="10" height="18"/><line x1="18" y1="9" x2="18" y2="21"/><line x1="14" y1="21" x2="21" y2="21"/></svg><b>10</b> 社</div>
+          <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>50</b> 箱</div>
+          <div class="rcount"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/></svg><b>500</b> 品</div>
+          <div class="rcount"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg><b>500</b> 品</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- card 4: ES配送 xanh, 未配送 -->
+    <div class="rcard">
+      <div class="rcard-head">
+        <div class="ricon blue"><svg viewBox="0 0 24 24"><circle cx="8" cy="6" r="2.3" fill="#fff" stroke="none"/><path d="M5.5 11c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5v4l-1.8 4-1.2-3-1.5 2.5z" fill="#fff" stroke="none"/><rect x="13" y="7" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/><rect x="13" y="11" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/><rect x="13" y="15" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/></svg></div>
+        <span class="rname">富士フィナンシャルアドバイザリー株式会社</span>
+        <span class="rbadge undelivered">未配送</span>
+        <span class="rradio"></span>
+      </div>
+      <div class="rmeta">
+        <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/></svg>オージーフーズ倉庫</div>
+        <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>神奈川県横浜市西区みなとみらい二丁目３番３号　クイーンズタワーＢ１０階</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <button class="btn btn-back">戻る</button>
+    <button class="btn btn-next">次へ</button>
+  </div>
+</div>
+</body>
+</html>
