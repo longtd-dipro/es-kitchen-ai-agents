@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ES配送便 — API 配線ガイド (Driver)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#65a30d; --lime:#84cc16; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F3F4F6; color:#222; }
+  /* ===== deliverer-format badges + drawer ===== */
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;margin-left:4px;
+    background:#0062CC;color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none;white-space:nowrap; }
+  .nb:hover{ transform:scale(1.15);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.act:hover{ background:#0f7a32; }
+  .nb.st{ background:#64748b; } .nb.st:hover{ background:#475569; }
+  .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:860px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#ecfccb; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.st{ color:#64748b; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-post{background:#bee3f8;color:#2a4365;} .m-put{background:#feebc8;color:#9c4221;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .doc table{ width:100%;border-collapse:collapse;font-size:12px;margin:6px 0; }
+  .doc th,.doc td{ border:1px solid #E5E7EB;padding:6px 8px;text-align:left;vertical-align:top; } .doc th{ background:#F3F4F6; }
+  /* ===== phone mockup gallery (E06, Tailwind-based frames) ===== */
+  .gallery{ display:flex;gap:26px;overflow-x:auto;padding:10px 4px 22px; }
+  .mock{ flex:0 0 auto;text-align:center; }
+  .mock-cap{ font-size:13px;font-weight:800;color:#2d3748;margin-bottom:10px; }
+  .mock-cap .sid{ display:block;font-size:10px;color:#0066de;margin-top:2px; }
+  .frame{ zoom:.72; }
+</style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Driver (E06) · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">ES配送便（配送＋棚入れ）— hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số/badge</b> bất kỳ → panel phải hiện <b>bảng ráp + API docs</b> (highlight dòng đã click). Luồng chi tiết → wizard 5 bước → tổng kết. Contract: <code>apis/es-delivery.md</code> · base <code>/driver/*</code> · Auth <code>Bearer {Driver}</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (Res → UI)</span>
+      <span><span class="nb act" style="cursor:default">n</span> nhập/ghi/trigger (UI → Request)</span>
+      <span><span class="nb st" style="cursor:default">n</span> tĩnh, không API</span>
+    </div>
+    <div class="mt-2 flex gap-2 flex-wrap text-xs">
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_ESDL_000_0 / 0_1 / 0_2</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_ESDL_001 〜 005</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_ESDL_006（総括 + 駐車報告）</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP GALLERY (E06 phones, khớp DA_ESDL_000〜006) ===== -->
+  <div class="card p-4">
+  <div class="gallery">
+
+    <!-- ===== DETAIL · DA_ESDL_000_0 ===== -->
+    <div class="mock">
+      <div class="mock-cap">配送詳細（当日・編集可）<span class="sid">DA_ESDL_000_0</span></div>
+      <div class="frame">
+        <div class="w-full max-w-[430px] min-h-[760px] bg-[#f8fafc] shadow-2xl overflow-hidden flex flex-col relative rounded-[40px] border-4 border-gray-800 text-left">
+          <div class="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between z-10 shrink-0">
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500"><i class="fa-solid fa-chevron-left"></i></button>
+            <h1 class="text-lg font-black text-gray-800">ES配送便</h1>
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500"><i class="fa-regular fa-bell"></i></button>
+          </div>
+          <div class="flex-1 pb-4">
+            <div class="bg-[#eaf5ff] rounded-2xl p-4 mx-4 mt-4 border border-blue-100 shadow-sm">
+              <div class="flex items-start gap-3">
+                <div class="w-12 h-12 bg-[#3b82f6] rounded-xl flex items-center justify-center text-white text-xl shrink-0"><i class="fa-solid fa-boxes-packing"></i></div>
+                <div><h2 class="text-base font-black text-gray-800 leading-snug">大和インターナショナルトレーディング株式会社<span class="nb" data-n="D.1">D.1</span></h2></div>
+              </div>
+              <div class="flex items-center justify-between mt-4 pt-3 border-t border-blue-200">
+                <div class="flex items-center gap-1.5 text-gray-600 text-sm font-bold"><i class="fa-regular fa-calendar text-gray-400"></i><span>2026-06-12（月）<span class="nb" data-n="D.2">D.2</span></span></div>
+                <span class="text-[#eab308] border border-[#eab308] bg-white text-xs font-black px-2.5 py-0.5 rounded">未配送<span class="nb" data-n="D.3">D.3</span></span>
+              </div>
+            </div>
+            <div class="mx-4 mt-4 bg-gray-100 p-1 rounded-xl flex">
+              <button class="flex-1 py-2 text-xs font-black text-gray-700 bg-white rounded-lg shadow-sm">基本情報</button>
+              <button class="flex-1 py-2 text-xs font-bold text-gray-400">駐車報告</button>
+              <button class="flex-1 py-2 text-xs font-bold text-gray-300">陳列情報<span class="nb st" data-n="D.4">D.4</span></button>
+            </div>
+            <div class="mx-4 mt-6">
+              <h3 class="text-sm font-black text-gray-800 mb-2">納品先情報</h3>
+              <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm space-y-3">
+                <div class="grid grid-cols-[80px_1fr] gap-2 text-sm"><span class="text-gray-400 font-bold">納品先:</span><span class="text-gray-800 font-black leading-snug">大和インターナショナルトレーディング株式会社<span class="nb" data-n="D.5">D.5</span></span></div>
+                <div class="border-b border-gray-100"></div>
+                <div class="grid grid-cols-[80px_1fr] gap-2 text-sm"><span class="text-gray-400 font-bold">郵便番号:</span><span class="text-gray-800 font-bold">151-0051<span class="nb" data-n="D.6">D.6</span></span></div>
+                <div class="border-b border-gray-100"></div>
+                <div class="grid grid-cols-[80px_1fr] gap-2 text-sm"><span class="text-gray-400 font-bold">住所:</span><span class="text-gray-800 font-bold leading-relaxed">東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階<span class="nb" data-n="D.7">D.7</span></span></div>
+                <div class="border-b border-gray-100"></div>
+                <div class="grid grid-cols-[80px_1fr] gap-2 text-sm"><span class="text-gray-400 font-bold">担当者:</span><span class="text-gray-800 font-bold">田村花子様<span class="nb" data-n="D.8">D.8</span></span></div>
+                <div class="border-b border-gray-100"></div>
+                <div class="grid grid-cols-[80px_1fr] gap-2 text-sm"><span class="text-gray-400 font-bold">電話番号:</span><span class="text-gray-800 font-bold">019-1234-5678<span class="nb" data-n="D.9">D.9</span></span></div>
+                <div class="border-b border-gray-100"></div>
+                <div class="text-sm"><span class="text-gray-400 font-bold block mb-2">納品備考:<span class="nb" data-n="D.10">D.10</span></span>
+                  <div class="bg-[#eff6ff] border border-[#bfdbfe] rounded-xl p-3 flex gap-2.5 text-blue-900"><i class="fa-solid fa-circle-exclamation text-blue-500 mt-0.5 shrink-0"></i><p class="text-xs font-bold leading-relaxed">6階受取、冷蔵庫は4階にある。直接4階に行って電話し、総務の方に納品する旨を伝えること。</p></div>
+                </div>
+              </div>
+            </div>
+            <div class="mx-4 mt-6">
+              <h3 class="text-sm font-black text-gray-800 mb-2">荷物情報</h3>
+              <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="bg-[#e6f4fe] px-4 py-2.5 flex items-center gap-4 text-sm font-black text-[#0066de]">
+                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-box text-blue-500"></i>3 箱</span>
+                  <span class="flex items-center gap-1.5"><i class="fa-solid fa-box-open text-blue-500"></i>10 品</span>
+                  <span class="flex items-center gap-1.5"><i class="fa-regular fa-snowflake text-cyan-500"></i>20 品<span class="nb" data-n="D.11">D.11</span></span>
+                </div>
+                <div class="divide-y divide-gray-100 px-4">
+                  <div class="py-3 flex items-center gap-3 text-sm text-gray-700"><span class="font-bold text-gray-400 w-4">1</span><i class="fa-solid fa-box text-gray-400"></i><span class="font-mono font-bold">2107-6228-5031<span class="nb" data-n="D.12">D.12</span></span></div>
+                  <div class="py-3 flex items-center gap-3 text-sm text-gray-700"><span class="font-bold text-gray-400 w-4">2</span><i class="fa-solid fa-box text-gray-400"></i><span class="font-mono font-bold">2107-6228-5032</span></div>
+                  <div class="py-3 flex items-center gap-3 text-sm text-gray-700"><span class="font-bold text-gray-400 w-4">3</span><i class="fa-solid fa-box text-gray-400"></i><span class="font-mono font-bold">2107-6228-5033</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white border-t border-gray-100 p-4">
+            <button class="w-full bg-gradient-to-r from-[#0066de] to-[#0052cc] text-white font-black py-4 rounded-xl text-base">陳列を開始する<span class="nb act" data-n="D.13">D.13</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 1 · DA_ESDL_001 ===== -->
+    <div class="mock">
+      <div class="mock-cap">Step 1 · 陳列前（ảnh trước）<span class="sid">DA_ESDL_001</span></div>
+      <div class="frame">
+        <div class="w-full max-w-[430px] min-h-[760px] bg-white shadow-2xl overflow-hidden flex flex-col relative rounded-[40px] border-4 border-gray-800 text-left">
+          <div class="bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between shrink-0">
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500"><i class="fa-solid fa-chevron-left"></i></button>
+            <h1 class="text-lg font-black text-gray-800">陳列前</h1>
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600"><i class="fa-solid fa-bell"></i></button>
+          </div>
+          <div class="flex-1 pb-4 px-4 space-y-5">
+            <div class="bg-[#eaf5ff] rounded-2xl p-4 mt-4 border border-blue-100 shadow-sm flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 bg-[#3b82f6] rounded-xl flex items-center justify-center text-white text-lg shrink-0"><i class="fa-solid fa-people-carry-box"></i></div>
+                <div><h2 class="text-base font-black text-gray-800 leading-tight">株式会社TEST<span class="nb" data-n="S1.1">S1.1</span></h2><p class="text-xs text-gray-500 mt-1 flex items-center gap-1"><i class="fa-solid fa-location-dot text-gray-400"></i>東京都渋谷区1-2-3</p></div>
+              </div>
+              <div class="flex items-center gap-1.5 text-sm font-bold text-gray-700 shrink-0"><i class="fa-solid fa-box text-gray-400"></i><span><b class="text-[#0066de] text-base font-black">3</b> 箱</span></div>
+            </div>
+            <div class="relative flex items-center justify-between w-full px-2 pt-2">
+              <div class="absolute left-8 right-8 top-6 h-[1px] bg-gray-200 -z-10"></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-[#0066de] text-white flex items-center justify-center text-sm font-black">1</div><span class="text-xs font-black text-[#0066de] mt-2">陳列前</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border border-gray-200 text-gray-400 flex items-center justify-center text-sm font-bold">2</div><span class="text-xs font-bold text-gray-500 mt-2">在庫/廃棄</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border border-gray-200 text-gray-400 flex items-center justify-center text-sm font-bold">3</div><span class="text-xs font-bold text-gray-500 mt-2">陳列</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border border-gray-200 text-gray-400 flex items-center justify-center text-sm font-bold">4</div><span class="text-xs font-bold text-gray-500 mt-2">陳列後</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border border-gray-200 text-gray-400 flex items-center justify-center text-sm font-bold">5</div><span class="text-xs font-bold text-gray-500 mt-2">完了</span></div>
+              <span class="nb st" data-n="S1.2" style="position:absolute;right:0;top:-6px;">S1.2</span>
+            </div>
+            <div class="flex items-center bg-[#eaf5ff] border-l-4 border-[#0066de] py-2.5 px-3 rounded-r-md"><span class="text-sm font-black text-gray-800">陳列前</span></div>
+            <p class="text-xs font-bold text-gray-600 leading-relaxed">冷蔵庫・ボックス内の陳列前写真をアップロードしてください。<span class="nb st" data-n="S1.3">S1.3</span></p>
+            <div class="border border-gray-200 rounded-2xl p-4 bg-white shadow-sm">
+              <div class="grid grid-cols-3 gap-2.5">
+                <div class="relative aspect-square rounded-xl overflow-hidden border border-gray-100 bg-gray-100 flex items-center justify-center text-gray-300"><i class="fa-solid fa-image text-2xl"></i><button class="absolute top-1.5 right-1.5 w-5 h-5 bg-black/60 rounded-full flex items-center justify-center text-white text-[10px]"><i class="fa-solid fa-xmark"></i></button></div>
+                <div class="relative aspect-square rounded-xl overflow-hidden border border-gray-100 bg-gray-100 flex items-center justify-center text-gray-300"><i class="fa-solid fa-image text-2xl"></i></div>
+                <div class="relative aspect-square rounded-xl overflow-hidden border border-gray-100 bg-gray-100 flex items-center justify-center text-gray-300"><i class="fa-solid fa-image text-2xl"></i></div>
+                <span class="nb" data-n="S1.4" style="align-self:center;">S1.4</span>
+              </div>
+              <button class="w-full bg-[#3e4756] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-sm mt-4"><i class="fa-solid fa-arrow-up-from-bracket"></i>ファイル選択<span class="nb act" data-n="S1.5">S1.5</span></button>
+            </div>
+          </div>
+          <div class="bg-white border-t border-gray-100 p-4 flex gap-3">
+            <button class="flex-1 border border-gray-200 text-gray-700 font-black py-3.5 rounded-xl text-sm">戻る</button>
+            <button class="flex-1 bg-[#0066de] text-white font-black py-3.5 rounded-xl text-sm">続ける<span class="nb act" data-n="S1.6">S1.6</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 2 · DA_ESDL_002 ===== -->
+    <div class="mock">
+      <div class="mock-cap">Step 2 · 在庫/廃棄（kiểm kho + hủy）<span class="sid">DA_ESDL_002</span></div>
+      <div class="frame">
+        <div class="w-full max-w-[430px] min-h-[760px] bg-white shadow-2xl overflow-hidden flex flex-col relative rounded-[40px] border-4 border-gray-800 text-left">
+          <div class="bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between shrink-0">
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500"><i class="fa-solid fa-chevron-left"></i></button>
+            <h1 class="text-lg font-black text-gray-800">在庫/廃棄</h1>
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600"><i class="fa-solid fa-bell"></i></button>
+          </div>
+          <div class="flex-1 pb-4">
+            <div class="bg-[#eaf5ff] rounded-2xl p-4 mx-4 mt-4 border border-blue-100 shadow-sm flex items-center justify-between">
+              <div class="flex items-center gap-3"><div class="w-11 h-11 bg-[#3b82f6] rounded-xl flex items-center justify-center text-white text-lg shrink-0"><i class="fa-solid fa-people-carry-box"></i></div><div><h2 class="text-base font-black text-gray-800 leading-tight">株式会社TEST<span class="nb" data-n="S2.1">S2.1</span></h2><p class="text-xs text-gray-500 mt-1">東京都渋谷区1-2-3</p></div></div>
+              <div class="flex items-center gap-1.5 text-sm font-bold text-gray-700 shrink-0"><i class="fa-solid fa-box text-gray-400"></i><span><b class="text-[#0066de] text-base font-black">3</b> 箱</span></div>
+            </div>
+            <div class="flex items-center bg-[#eaf5ff] border-l-4 border-[#0066de] py-2.5 px-3 mx-4 mt-6 rounded-r-md"><span class="text-sm font-black text-gray-800">廃棄登録と実在庫の確認<span class="nb st" data-n="S2.2">S2.2</span></span></div>
+            <div class="mx-4 mt-3 text-xs font-bold text-gray-500 leading-relaxed space-y-1"><p>廃棄数を確認し、実在庫をチェックしてください。<span class="nb st" data-n="S2.3">S2.3</span></p></div>
+            <div class="mx-4 mt-4 flex gap-2">
+              <div class="relative flex-1"><input type="text" placeholder="名前またはコードで商品を検索" class="w-full bg-white border border-gray-300 rounded-xl pl-4 pr-10 py-3 text-sm font-bold"><i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i><span class="nb act" data-n="S2.4" style="position:absolute;left:6px;top:-9px;">S2.4</span></div>
+              <button class="w-12 h-12 bg-[#1e67d6] rounded-xl flex items-center justify-center text-white shrink-0 relative"><i class="fa-solid fa-barcode text-xl"></i><span class="nb act" data-n="S2.5" style="position:absolute;right:-4px;top:-9px;">S2.5</span></button>
+            </div>
+            <div class="mx-4 mt-4 flex justify-between items-center text-xs font-bold text-gray-500">
+              <span>※次回納品日 10月16日<span class="nb tbd" data-n="S2.6">S2.6</span></span>
+              <label class="flex items-center gap-1.5"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"><span>未確認のみ表示<span class="nb act" data-n="S2.7">S2.7</span></span></label>
+            </div>
+            <div class="mx-4 mt-4 bg-[#f8fafc] border-y border-gray-200 py-2 px-2 grid grid-cols-[40px_1fr_1.4fr_1.4fr] gap-2 items-center text-[11px] font-black text-gray-500">
+              <div class="text-center">確認<span class="nb tbd" data-n="S2.8">S2.8</span></div>
+              <div class="text-center">理論在庫<span class="nb" data-n="S2.9">S2.9</span></div>
+              <div class="text-center">廃棄数(△)<span class="nb act" data-n="S2.10">S2.10</span></div>
+              <div class="text-center">実在庫<span class="nb act" data-n="S2.11">S2.11</span></div>
+            </div>
+            <div class="mx-4 divide-y divide-gray-100">
+              <div class="py-3 grid grid-cols-[40px_1fr] gap-2 items-start">
+                <div class="flex justify-center pt-8"><input type="checkbox" class="w-5 h-5 rounded border-gray-300"></div>
+                <div><h4 class="text-xs font-black text-gray-800 mb-2">鶏もも肉の生姜焼き風<span class="nb" data-n="S2.12">S2.12</span></h4>
+                  <div class="grid grid-cols-[1fr_1.4fr_1.4fr] gap-2 items-center">
+                    <div class="bg-[#f1f5f9] border border-gray-200 rounded-lg py-1.5 text-center text-sm font-black text-gray-700">10</div>
+                    <div class="flex items-center justify-between border border-gray-200 rounded-lg p-0.5 bg-white"><button class="w-6 h-6 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-minus"></i></button><span class="text-sm font-black">5</span><button class="w-6 h-6 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-plus"></i></button></div>
+                    <div class="flex items-center justify-between border border-gray-200 rounded-lg p-0.5 bg-white"><button class="w-6 h-6 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-minus"></i></button><span class="text-sm font-black">5</span><button class="w-6 h-6 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-plus"></i></button></div>
+                  </div>
+                </div>
+              </div>
+              <div class="py-3 grid grid-cols-[40px_1fr] gap-2 items-start">
+                <div class="flex justify-center pt-8"><input type="checkbox" class="w-5 h-5 rounded border-gray-300"></div>
+                <div><h4 class="text-xs font-black text-gray-800 mb-2">鶏もも肉の生姜焼き風</h4>
+                  <div class="grid grid-cols-[1fr_1.4fr_1.4fr] gap-2 items-center">
+                    <div class="bg-[#f1f5f9] border border-gray-200 rounded-lg py-1.5 text-center text-sm font-black text-gray-700">10</div>
+                    <div class="flex items-center justify-between border border-gray-200 rounded-lg p-0.5 bg-white"><button class="w-6 h-6 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-minus"></i></button><span class="text-sm font-black">0</span><button class="w-6 h-6 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-plus"></i></button></div>
+                    <div class="flex items-center justify-between border border-gray-200 rounded-lg p-0.5 bg-white"><button class="w-6 h-6 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-minus"></i></button><span class="text-sm font-black">10</span><button class="w-6 h-6 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-plus"></i></button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white border-t border-gray-100 p-4 flex gap-3">
+            <button class="flex-1 border border-gray-200 text-gray-700 font-black py-3.5 rounded-xl text-sm">戻る</button>
+            <button class="flex-1 bg-[#cbd5e1] text-gray-600 font-black py-3.5 rounded-xl text-sm">確認<span class="nb act" data-n="S2.13">S2.13</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 3 · DA_ESDL_003 ===== -->
+    <div class="mock">
+      <div class="mock-cap">Step 3 · 検品・陳列（kiểm phẩm）<span class="sid">DA_ESDL_003</span></div>
+      <div class="frame">
+        <div class="w-full max-w-[430px] min-h-[760px] bg-white shadow-2xl overflow-hidden flex flex-col relative rounded-[40px] border-4 border-gray-800 text-left">
+          <div class="bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between shrink-0">
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500"><i class="fa-solid fa-chevron-left"></i></button>
+            <h1 class="text-lg font-black text-gray-800">陳列</h1>
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600"><i class="fa-solid fa-bell"></i></button>
+          </div>
+          <div class="flex-1 pb-4 px-4 space-y-4">
+            <div class="bg-[#eaf5ff] rounded-2xl p-4 mt-4 border border-blue-100 shadow-sm flex items-center justify-between">
+              <div class="flex items-center gap-3"><div class="w-11 h-11 bg-[#3b82f6] rounded-xl flex items-center justify-center text-white text-lg shrink-0"><i class="fa-solid fa-people-carry-box"></i></div><div><h2 class="text-base font-black text-gray-800 leading-tight">株式会社TEST<span class="nb" data-n="S3.1">S3.1</span></h2><p class="text-xs text-gray-500 mt-1">東京都渋谷区1-2-3</p></div></div>
+              <div class="flex items-center gap-1.5 text-sm font-bold text-gray-700 shrink-0"><i class="fa-solid fa-box text-gray-400"></i><span><b class="text-[#0066de] text-base font-black">3</b> 箱</span></div>
+            </div>
+            <div class="flex items-center bg-[#eaf5ff] border-l-4 border-[#0066de] py-2 px-3 rounded-r-md"><span class="text-sm font-black text-gray-800">検品・陳列<span class="nb st" data-n="S3.2">S3.2</span></span></div>
+            <div class="flex gap-2">
+              <div class="relative flex-1"><input type="text" placeholder="名前またはコードで商品を検索" class="w-full bg-white border border-gray-300 rounded-xl pl-4 pr-10 py-3 text-sm font-bold"><i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i><span class="nb act" data-n="S3.3" style="position:absolute;left:6px;top:-9px;">S3.3</span></div>
+              <button class="w-12 h-12 bg-[#1e67d6] rounded-xl flex items-center justify-center text-white shrink-0 relative"><i class="fa-solid fa-barcode text-xl"></i><span class="nb act" data-n="S3.4" style="position:absolute;right:-4px;top:-9px;">S3.4</span></button>
+            </div>
+            <div class="flex justify-end items-center text-xs font-bold text-gray-600"><label class="flex items-center gap-1.5"><input type="checkbox" class="w-4 h-4 rounded border-gray-300"><span>未確認のみ表示<span class="nb act" data-n="S3.5">S3.5</span></span></label></div>
+            <div class="border-b border-blue-100 pb-2 flex justify-between items-center text-[11px] font-black text-[#0066de] px-2"><div class="w-10 text-center">確認<span class="nb tbd" data-n="S3.6">S3.6</span></div><div class="flex-1 pl-2">商品数<span class="nb" data-n="S3.8">S3.8</span></div><div class="w-28 text-center">実際数<span class="nb act" data-n="S3.9">S3.9</span></div></div>
+            <div class="divide-y divide-gray-100">
+              <div class="py-3 flex items-center justify-between gap-2">
+                <div class="w-10 flex justify-center"><input type="checkbox" class="w-5 h-5 rounded border-gray-300"></div>
+                <div class="flex-1 pl-2"><h4 class="text-xs font-black text-gray-800 leading-snug">鶏もも肉の生姜焼き風<span class="nb" data-n="S3.7">S3.7</span></h4><p class="text-[10px] text-gray-400 font-bold mt-0.5">予定数：10個</p></div>
+                <div class="flex items-center gap-1 w-28 justify-end"><button class="w-7 h-7 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-minus"></i></button><input type="text" value="10" class="w-12 h-7 border border-gray-200 rounded text-center font-black text-xs"><button class="w-7 h-7 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-plus"></i></button></div>
+              </div>
+              <div class="py-3 flex items-center justify-between gap-2">
+                <div class="w-10 flex justify-center"><input type="checkbox" class="w-5 h-5 rounded border-gray-300"></div>
+                <div class="flex-1 pl-2"><h4 class="text-xs font-black text-gray-800 leading-snug">鶏もも肉の生姜焼き風</h4><p class="text-[10px] text-gray-400 font-bold mt-0.5">予定数：10個</p></div>
+                <div class="flex items-center gap-1 w-28 justify-end"><button class="w-7 h-7 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-minus"></i></button><input type="text" value="8" class="w-12 h-7 border border-gray-200 rounded text-center font-black text-xs"><button class="w-7 h-7 bg-[#0066de] text-white rounded text-xs"><i class="fa-solid fa-plus"></i></button></div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white border-t border-gray-100 p-4 flex gap-3">
+            <button class="flex-1 border border-gray-200 text-gray-700 font-black py-3.5 rounded-xl text-sm">戻る</button>
+            <button class="flex-1 bg-[#0066de] text-white font-black py-3.5 rounded-xl text-sm">確定<span class="nb act" data-n="S3.10">S3.10</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 4 · DA_ESDL_004 ===== -->
+    <div class="mock">
+      <div class="mock-cap">Step 4 · 陳列後（ảnh sau）<span class="sid">DA_ESDL_004</span></div>
+      <div class="frame">
+        <div class="w-full max-w-[430px] min-h-[760px] bg-white shadow-2xl overflow-hidden flex flex-col relative rounded-[40px] border-4 border-gray-800 text-left">
+          <div class="bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between shrink-0">
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500"><i class="fa-solid fa-chevron-left"></i></button>
+            <h1 class="text-lg font-black text-gray-800">陳列後</h1>
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600"><i class="fa-solid fa-bell"></i></button>
+          </div>
+          <div class="flex-1 pb-4 px-4 space-y-5">
+            <div class="bg-[#eaf5ff] rounded-2xl p-4 mt-4 border border-blue-100 shadow-sm flex items-center justify-between">
+              <div class="flex items-center gap-3"><div class="w-11 h-11 bg-[#3b82f6] rounded-xl flex items-center justify-center text-white text-lg shrink-0"><i class="fa-solid fa-people-carry-box"></i></div><div><h2 class="text-base font-black text-gray-800 leading-tight">株式会社TEST<span class="nb" data-n="S4.1">S4.1</span></h2><p class="text-xs text-gray-500 mt-1">東京都渋谷区1-2-3</p></div></div>
+              <div class="flex items-center gap-1.5 text-sm font-bold text-gray-700 shrink-0"><i class="fa-solid fa-box text-gray-400"></i><span><b class="text-[#0066de] text-base font-black">3</b> 箱</span></div>
+            </div>
+            <div class="relative flex items-center justify-between w-full px-2 pt-2">
+              <div class="absolute left-8 right-8 top-6 h-[1px] bg-gray-200 -z-10"></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border-2 border-[#0066de] text-[#0066de] flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div><span class="text-[11px] font-black text-[#0066de] mt-2">陳列前</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border-2 border-[#0066de] text-[#0066de] flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div><span class="text-[11px] font-black text-[#0066de] mt-2">在庫/廃棄</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border-2 border-[#0066de] text-[#0066de] flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div><span class="text-[11px] font-black text-[#0066de] mt-2">陳列</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-[#0066de] text-white flex items-center justify-center text-sm font-black">4</div><span class="text-[11px] font-black text-[#0066de] mt-2">陳列後</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border border-gray-200 text-gray-400 flex items-center justify-center text-sm font-bold">5</div><span class="text-[11px] font-bold text-gray-400 mt-2">完了</span></div>
+            </div>
+            <div class="flex items-center bg-[#eaf5ff] border-l-4 border-[#0066de] py-2.5 px-3 rounded-r-md"><span class="text-sm font-black text-gray-800">アップロード（陳列後）<span class="nb st" data-n="S4.2">S4.2</span></span></div>
+            <div class="border border-gray-200 rounded-2xl p-4 bg-white shadow-sm">
+              <div class="grid grid-cols-3 gap-2.5">
+                <div class="relative aspect-square rounded-xl overflow-hidden border border-gray-100 bg-gray-100 flex items-center justify-center text-gray-300"><i class="fa-solid fa-image text-2xl"></i><button class="absolute top-1.5 right-1.5 w-5 h-5 bg-black/60 rounded-full flex items-center justify-center text-white text-[10px]"><i class="fa-solid fa-xmark"></i></button></div>
+                <div class="relative aspect-square rounded-xl overflow-hidden border border-gray-100 bg-gray-100 flex items-center justify-center text-gray-300"><i class="fa-solid fa-image text-2xl"></i></div>
+                <span class="nb" data-n="S4.3" style="align-self:center;">S4.3</span>
+              </div>
+              <button class="w-full bg-[#3e4756] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-sm mt-4"><i class="fa-solid fa-arrow-up-from-bracket"></i>ファイル選択<span class="nb act" data-n="S4.4">S4.4</span></button>
+            </div>
+          </div>
+          <div class="bg-white border-t border-gray-100 p-4 flex gap-3">
+            <button class="flex-1 border border-gray-200 text-gray-700 font-black py-3.5 rounded-xl text-sm">戻る</button>
+            <button class="flex-1 bg-[#0066de] text-white font-black py-3.5 rounded-xl text-sm">続ける<span class="nb act" data-n="S4.5">S4.5</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STEP 5 · DA_ESDL_005 ===== -->
+    <div class="mock">
+      <div class="mock-cap">Step 5 · 集金登録（thu tiền）<span class="sid">DA_ESDL_005</span></div>
+      <div class="frame">
+        <div class="w-full max-w-[430px] min-h-[760px] bg-white shadow-2xl overflow-hidden flex flex-col relative rounded-[40px] border-4 border-gray-800 text-left">
+          <div class="bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between shrink-0">
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500"><i class="fa-solid fa-chevron-left"></i></button>
+            <h1 class="text-lg font-black text-gray-800">完了</h1>
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600"><i class="fa-solid fa-bell"></i></button>
+          </div>
+          <div class="flex-1 pb-4 px-4 space-y-5">
+            <div class="bg-[#eaf5ff] rounded-2xl p-4 mt-4 border border-blue-100 shadow-sm flex items-center justify-between">
+              <div class="flex items-center gap-3"><div class="w-11 h-11 bg-[#3b82f6] rounded-xl flex items-center justify-center text-white text-lg shrink-0"><i class="fa-solid fa-people-carry-box"></i></div><div><h2 class="text-base font-black text-gray-800 leading-tight">株式会社TEST<span class="nb" data-n="S5.1">S5.1</span></h2><p class="text-xs text-gray-500 mt-1">東京都渋谷区1-2-3</p></div></div>
+              <div class="flex items-center gap-1.5 text-sm font-bold text-gray-700 shrink-0"><i class="fa-solid fa-box text-gray-400"></i><span><b class="text-[#0066de] text-base font-black">3</b> 箱</span></div>
+            </div>
+            <div class="relative flex items-center justify-between w-full px-2 pt-2">
+              <div class="absolute left-8 right-8 top-6 h-[1px] bg-gray-200 -z-10"></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border-2 border-[#0066de] text-[#0066de] flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div><span class="text-[11px] font-black text-[#0066de] mt-2">陳列前</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border-2 border-[#0066de] text-[#0066de] flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div><span class="text-[11px] font-black text-[#0066de] mt-2">在庫/廃棄</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border-2 border-[#0066de] text-[#0066de] flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div><span class="text-[11px] font-black text-[#0066de] mt-2">陳列</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-white border-2 border-[#0066de] text-[#0066de] flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div><span class="text-[11px] font-black text-[#0066de] mt-2">陳列後</span></div>
+              <div class="flex flex-col items-center z-10"><div class="w-8 h-8 rounded-full bg-[#0066de] text-white flex items-center justify-center text-sm font-black">5</div><span class="text-[11px] font-black text-[#0066de] mt-2">集金登録</span></div>
+            </div>
+            <div><label class="block text-sm font-black text-gray-800 mb-2">集金予定額<span class="nb" data-n="S5.2">S5.2</span></label><div class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 flex items-center justify-end gap-2"><span class="text-base font-black text-gray-700">10,000</span><span class="text-sm font-bold text-gray-400">円</span></div></div>
+            <div><label class="block text-sm font-black text-gray-800 mb-2">実集金額<span class="nb act" data-n="S5.3">S5.3</span></label><div class="bg-white border border-gray-300 rounded-xl px-4 py-3.5 flex items-center justify-end gap-2"><input type="text" value="10,000" class="w-full text-right text-base font-black text-gray-800 bg-transparent"><span class="text-sm font-bold text-gray-400">円</span></div></div>
+          </div>
+          <div class="bg-white border-t border-gray-100 p-4"><button class="w-full bg-[#0066de] text-white font-black py-3.5 rounded-xl text-sm">完了<span class="nb act" data-n="S5.4">S5.4</span></button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SUMMARY + 駐車報告 · DA_ESDL_006 ===== -->
+    <div class="mock">
+      <div class="mock-cap">総括（完了）+ 駐車報告<span class="sid">DA_ESDL_006</span></div>
+      <div class="frame">
+        <div class="w-full max-w-[430px] min-h-[760px] bg-[#f8fafc] shadow-2xl overflow-hidden flex flex-col relative rounded-[40px] border-4 border-gray-800 text-left">
+          <div class="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shrink-0">
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500"><i class="fa-solid fa-chevron-left"></i></button>
+            <h1 class="text-lg font-black text-gray-800">ES配送便</h1>
+            <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500"><i class="fa-regular fa-bell"></i></button>
+          </div>
+          <div class="flex-1 pb-4">
+            <div class="bg-[#ecfdf3] border border-[#86efac] rounded-xl mx-4 mt-4 p-3 flex items-start gap-2.5 text-[#166534]"><i class="fa-solid fa-circle-check text-[#22c55e] mt-0.5"></i><p class="text-xs font-bold leading-relaxed">荷物の配送は完了しました。<br>2026-06-12 15:42<span class="nb" data-n="DS.1">DS.1</span></p></div>
+            <div class="mx-4 mt-4 bg-gray-100 p-1 rounded-xl flex">
+              <button class="flex-1 py-2 text-xs font-bold text-gray-400">基本情報</button>
+              <button class="flex-1 py-2 text-xs font-black text-gray-700 bg-white rounded-lg shadow-sm">駐車報告<span class="nb" data-n="DS.2">DS.2</span></button>
+              <button class="flex-1 py-2 text-xs font-bold text-gray-400">陳列情報<span class="nb" data-n="DS.3">DS.3</span></button>
+            </div>
+            <div class="mx-4 mt-6">
+              <h3 class="text-sm font-black text-gray-800 mb-2">陳列前写真</h3>
+              <div class="grid grid-cols-3 gap-2.5"><div class="aspect-square rounded-xl border border-gray-100 bg-gray-100 flex items-center justify-center text-gray-300"><i class="fa-solid fa-image text-2xl"></i></div><span class="nb" data-n="DS.4" style="align-self:center;">DS.4</span></div>
+            </div>
+            <div class="mx-4 mt-5">
+              <h3 class="text-sm font-black text-gray-800 mb-2">在庫/廃棄</h3>
+              <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 text-xs font-bold text-gray-700 flex justify-between"><span>廃棄合計</span><span class="text-[#0066de]">5 個<span class="nb" data-n="DS.5">DS.5</span></span></div>
+            </div>
+            <div class="mx-4 mt-5">
+              <h3 class="text-sm font-black text-gray-800 mb-2">検品・陳列</h3>
+              <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 text-xs font-bold text-gray-700 flex gap-3"><span class="text-[#22c55e]">一致 1</span><span class="text-[#f97316]">不足 1</span><span class="text-[#ef4444]">過剰 0</span><span class="nb" data-n="DS.6">DS.6</span></div>
+            </div>
+            <div class="mx-4 mt-5">
+              <h3 class="text-sm font-black text-gray-800 mb-2">集金</h3>
+              <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 text-xs font-bold text-gray-700 space-y-1"><div class="flex justify-between"><span>集金予定額</span><span>10,000 円</span></div><div class="flex justify-between"><span>実集金額</span><span class="text-[#0066de]">10,000 円<span class="nb" data-n="DS.7">DS.7</span></span></div></div>
+            </div>
+            <div class="mx-4 mt-5">
+              <h3 class="text-sm font-black text-gray-800 mb-2">駐車報告</h3>
+              <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 space-y-3">
+                <div class="flex justify-between items-center text-sm"><span class="text-gray-400 font-bold">駐車料金</span><span class="text-gray-800 font-black">500 円<span class="nb act" data-n="P.1">P.1</span></span></div>
+                <div class="border-b border-gray-100"></div>
+                <div><span class="text-gray-400 font-bold text-sm block mb-2">領収書写真<span class="nb act" data-n="P.2">P.2</span></span>
+                  <div class="grid grid-cols-3 gap-2.5"><div class="aspect-square rounded-xl border border-gray-100 bg-gray-100 flex items-center justify-center text-gray-300"><i class="fa-solid fa-receipt text-2xl"></i></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white border-t border-gray-100 p-4"><button class="w-full bg-[#0066de] text-white font-black py-3.5 rounded-xl text-sm">保存<span class="nb act" data-n="P.3">P.3</span></button></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /gallery -->
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm badge bất kỳ (D./S1.〜S5./DS./P.) để xem bảng ráp + tài liệu API. Mock khớp <code>DA_ESDL_000〜006</code>. Wizard 5 bước phục vụ bởi <code>GET /driver/deliveries/{id}</code> + 7 endpoint con. <code>deliveryId</code> = <code>shipment_companies.id</code>.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — ES配送便（5 bước）</b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:48px">No</th><th>UI element</th><th>API source</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const C = e => '<code>'+e+'</code>';
+const GET_D    = '<span class="method m-get">GET</span> '+C('/driver/deliveries/{id}');
+const PUT_PRE  = '<span class="method m-put">PUT</span> '+C('.../pre-display-photos');
+const GET_INV  = '<span class="method m-get">GET</span> '+C('.../inventory-check');
+const POST_INV = '<span class="method m-post">POST</span> '+C('.../inventory-check');
+const GET_DI   = '<span class="method m-get">GET</span> '+C('.../display-inspection');
+const POST_DI  = '<span class="method m-post">POST</span> '+C('.../display-inspection');
+const PUT_POST = '<span class="method m-put">PUT</span> '+C('.../post-display-photos');
+const POST_CMP = '<span class="method m-post">POST</span> '+C('.../complete');
+const GET_PK   = '<span class="method m-get">GET</span> '+C('.../parking-report');
+const PUT_PK   = '<span class="method m-put">PUT</span> '+C('.../parking-report');
+const FE = '<b>FE</b>';
+
+const W = {
+  // ===== DETAIL · DA_ESDL_000 (GET /driver/deliveries/{id}) =====
+  'D.1':{cls:'',ui:'納品先名 / Tên công ty',api:GET_D,field:C('companyName'),tf:'header card xanh'},
+  'D.2':{cls:'',ui:'配送日 / Ngày giao',api:GET_D,field:C('deliveryDate'),tf:'yyyy-MM-dd（曜日）'},
+  'D.3':{cls:'',ui:'ステータス / Trạng thái',api:GET_D,field:C('deliveryStatus'),tf:'enum → badge (未配送/配送完了/トラブル)'},
+  'D.4':{cls:'st',ui:'タブ 基本情報/駐車報告/陳列情報',api:'—',field:'Static UI',tf:'陳列情報 mở khóa khi '+C('completedAt != null')},
+  'D.5':{cls:'',ui:'納品先 / Công ty (納品先情報)',api:GET_D,field:C('destination.companyName'),tf:'—'},
+  'D.6':{cls:'',ui:'郵便番号 / Mã bưu chính',api:GET_D,field:C('destination.postalCode'),tf:'—'},
+  'D.7':{cls:'',ui:'住所 / Địa chỉ',api:GET_D,field:C('destination.address'),tf:'—'},
+  'D.8':{cls:'',ui:'担当者 / Người phụ trách',api:GET_D,field:C('destination.contactName'),tf:'—'},
+  'D.9':{cls:'',ui:'電話番号 / Điện thoại',api:GET_D,field:C('destination.phone'),tf:'dựng tel: link'},
+  'D.10':{cls:'',ui:'納品備考 / Ghi chú giao',api:GET_D,field:C('destination.notes'),tf:'hộp xanh ⚠'},
+  'D.11':{cls:'',ui:'荷物情報 箱/品 / Số kiện·món',api:GET_D,field:C('packages.expectedBoxCount')+'·'+C('chilledNormalItemCount')+'·'+C('frozenItemCount'),tf:'「N 箱 / N 品 / N 品(❄)」'},
+  'D.12':{cls:'',ui:'送り状NO / Mã vận đơn',api:GET_D,field:C('packages.boxes[].trackingNo'),tf:'list theo lineNo ASC'},
+  'D.13':{cls:'act',ui:'陳列を開始する / Bắt đầu lên kệ',api:'<b>trigger</b> → wizard',field:C('editMode')+' + '+C('currentStep'),tf:'hiện khi EDITABLE_TODAY; mở wizard tại currentStep (resume)'},
+
+  // ===== STEP 1 · DA_ESDL_001 (PUT pre-display-photos) =====
+  'S1.1':{cls:'',ui:'会社カード / Thẻ công ty',api:GET_D,field:C('companyName')+'·'+C('destination.address')+'·'+C('packages.expectedBoxCount'),tf:'—'},
+  'S1.2':{cls:'st',ui:'進捗バー 5 bước / Thanh tiến trình',api:'—',field:'Static UI',tf:'wizard state (FE)'},
+  'S1.3':{cls:'st',ui:'説明文 / Hướng dẫn',api:'—',field:'Static UI',tf:'—'},
+  'S1.4':{cls:'',ui:'写真グリッド / Lưới ảnh đã chọn',api:PUT_PRE,field:C('photoUrls[]'),tf:'thumbnails + ✕ xóa'},
+  'S1.5':{cls:'act',ui:'ファイル選択 / Chọn ảnh',api:FE+' input → '+C('POST /files/presigned-upload-urls'),tf:'upload S3 → fileUrl (TBD: AdminGuard, G8)',field:'presigned upload'},
+  'S1.6':{cls:'act',ui:'続ける / Tiếp tục',api:'<b>trigger</b> '+PUT_PRE,field:C('{ photoUrls }'),tf:'enabled ≥1 ảnh; lần đầu → STARTED_DELIVERY, ASSIGNED→IN_TRANSIT'},
+
+  // ===== STEP 2 · DA_ESDL_002 (GET/POST inventory-check) =====
+  'S2.1':{cls:'',ui:'会社カード / Thẻ công ty',api:GET_D,field:'company info',tf:'—'},
+  'S2.2':{cls:'st',ui:'タイトル 廃棄登録… / Tiêu đề',api:'—',field:'Static UI',tf:'—'},
+  'S2.3':{cls:'st',ui:'説明文 / Hướng dẫn',api:'—',field:'Static UI',tf:'—'},
+  'S2.4':{cls:'act',ui:'商品検索 / Tìm sản phẩm',api:FE+' input',field:'client-side filter',tf:'lọc trên '+C('items[]')+' đã tải, không request mới'},
+  'S2.5':{cls:'act',ui:'バーコードスキャン / Quét mã',api:FE+' input',field:'khớp '+C('boxes[].barcode'),tf:'định vị / tick dòng (client-side)'},
+  'S2.6':{cls:'tbd',ui:'次回納品日 / Ngày giao kế',api:GET_INV+' / '+GET_D,field:C('nextDeliveryDate'),tf:'<b>TBD nguồn</b> — ngoài 10 bảng (lookup chu kỳ giao)'},
+  'S2.7':{cls:'act',ui:'未確認のみ表示 / Chỉ chưa xác nhận',api:FE+' input',field:'client-side filter',tf:'gate bởi S2.8'},
+  'S2.8':{cls:'tbd',ui:'確認 checkbox / Tick xác nhận',api:FE+' input',field:'<b>TBD — no DB</b>',tf:'client-side; nếu cần lưu → thêm cột confirmed boolean'},
+  'S2.9':{cls:'',ui:'理論在庫 / Tồn lý thuyết',api:GET_INV,field:C('items[].logicalStock'),tf:'read-only (TBD nguồn seed stock master)'},
+  'S2.10':{cls:'act',ui:'廃棄数(△) / Số hủy',api:POST_INV,field:C('disposalItems[].quantity'),tf:'± input → disposal_report_items; server cộng disposalTotalQuantity'},
+  'S2.11':{cls:'act',ui:'実在庫(廃棄後) / Tồn thực',api:POST_INV,field:C('items[].actualStock'),tf:'± input; difference = actual − logical (server tính)'},
+  'S2.12':{cls:'',ui:'商品名 / Tên SP',api:GET_INV,field:C('items[].productName'),tf:'—'},
+  'S2.13':{cls:'act',ui:'確認 / Xác nhận',api:'<b>trigger</b> '+POST_INV,field:'upsert inventory_checks',tf:'tap; soft-validate actual ≈ logical − waste (FE)'},
+
+  // ===== STEP 3 · DA_ESDL_003 (GET/POST display-inspection) =====
+  'S3.1':{cls:'',ui:'会社カード / Thẻ công ty',api:GET_D,field:'company info',tf:'—'},
+  'S3.2':{cls:'st',ui:'タイトル 検品・陳列 / Tiêu đề',api:'—',field:'Static UI',tf:'—'},
+  'S3.3':{cls:'act',ui:'商品検索 / Tìm sản phẩm',api:FE+' input',field:'client-side filter',tf:'lọc trên dữ liệu đã tải'},
+  'S3.4':{cls:'act',ui:'バーコードスキャン / Quét mã',api:FE+' input',field:'khớp '+C('boxes[].barcode'),tf:'định vị dòng (client-side)'},
+  'S3.5':{cls:'act',ui:'未確認のみ表示 / Chỉ chưa xác nhận',api:FE+' input',field:'client-side filter',tf:'—'},
+  'S3.6':{cls:'tbd',ui:'確認 checkbox / Tick',api:FE+' input',field:'suy từ '+C('items[].inspectionStatus'),tf:'<b>TBD — no DB</b>, client-side'},
+  'S3.7':{cls:'',ui:'商品名 / Tên SP',api:GET_DI,field:C('items[].productName'),tf:'—'},
+  'S3.8':{cls:'',ui:'商品数 予定数 / Số dự kiến',api:GET_DI,field:C('items[].quantity'),tf:'「予定数：N個」'},
+  'S3.9':{cls:'act',ui:'実際数 / Số thực tế',api:POST_DI,field:C('items[].actualQuantity'),tf:'± input (gửi kèm shipmentDetailId)'},
+  'S3.10':{cls:'act',ui:'確定 / Xác nhận',api:'<b>trigger</b> '+POST_DI,field:C('items[]')+' = { shipmentDetailId, actualQuantity }',tf:'server suy inspectionStatus (MATCHED/SHORTAGE/EXCESS); box(ES)→CHECKED; popup chênh lệch = client-side'},
+
+  // ===== STEP 4 · DA_ESDL_004 (PUT post-display-photos) =====
+  'S4.1':{cls:'',ui:'会社カード / Thẻ công ty',api:GET_D,field:'company info',tf:'—'},
+  'S4.2':{cls:'st',ui:'タイトル アップロード（陳列後）/ Tiêu đề',api:'—',field:'Static UI',tf:'—'},
+  'S4.3':{cls:'',ui:'写真グリッド / Lưới ảnh',api:PUT_POST,field:C('photoUrls[]'),tf:'thumbnails + ✕; lưu post_display_photo_urls'},
+  'S4.4':{cls:'act',ui:'ファイル選択 / Chọn ảnh',api:FE+' input → upload module',field:'presigned → fileUrl',tf:'tap (TBD AdminGuard)'},
+  'S4.5':{cls:'act',ui:'続ける / Tiếp tục',api:'<b>trigger</b> '+PUT_POST,field:C('{ photoUrls }'),tf:'1–5 URL'},
+
+  // ===== STEP 5 · DA_ESDL_005 (POST complete) =====
+  'S5.1':{cls:'',ui:'会社カード / Thẻ công ty',api:GET_D,field:'company info',tf:'—'},
+  'S5.2':{cls:'',ui:'集金予定額 / Tiền dự kiến thu',api:GET_D,field:C('collection.expectedAmount'),tf:'read-only 「N 円」 (= shipments.expected_collection_amount), KHÔNG gửi request'},
+  'S5.3':{cls:'act',ui:'実集金額 / Tiền thực thu',api:POST_CMP,field:C('collectedAmount'),tf:'input 「円」 (0 nếu không thu)'},
+  'S5.4':{cls:'act',ui:'完了 / Hoàn thành',api:'<b>trigger</b> '+POST_CMP,field:C('{ collectedAmount, companyRepName?, remarks? }'),tf:'chặn nếu thiếu bước trước (400); → DELIVERED, completedAt; + COMPLETED history; difference server tính'},
+
+  // ===== SUMMARY · DA_ESDL_006 (GET embed khi completedAt != null) =====
+  'DS.1':{cls:'',ui:'完了バナー + 日時 / Banner hoàn thành',api:GET_D,field:C('completedAt'),tf:'hiện khi != null; 「荷物の配送は完了しました。」'},
+  'DS.2':{cls:'',ui:'タブ 駐車報告 / Tab đỗ xe',api:GET_PK,field:'parking-report',tf:'mở tab → GET parking-report'},
+  'DS.3':{cls:'',ui:'タブ 陳列情報 / Tab lên kệ',api:GET_D,field:'embed các bước',tf:'mở khóa khi completedAt != null'},
+  'DS.4':{cls:'',ui:'陳列前写真 / Ảnh trước',api:GET_D,field:C('preDisplayPhotos.photoUrls'),tf:'embed (completedAt != null)'},
+  'DS.5':{cls:'',ui:'廃棄合計 / Tổng hủy',api:GET_D,field:C('inventoryCheck.disposalTotalQuantity'),tf:'embed'},
+  'DS.6':{cls:'',ui:'検品結果 一致/不足/過剰',api:GET_D,field:C('displayInspection.items[].inspectionStatus'),tf:'embed; đếm MATCHED/SHORTAGE/EXCESS'},
+  'DS.7':{cls:'',ui:'集金 予定/実 / Thu tiền',api:GET_D,field:C('collection.expectedAmount')+'·'+C('collection.collectedAmount')+'·'+C('collection.difference'),tf:'embed'},
+
+  // ===== 駐車報告 · GET/PUT parking-report =====
+  'P.1':{cls:'act',ui:'駐車料金 / Phí đỗ xe',api:GET_PK+' / '+PUT_PK,field:C('parkingFee'),tf:'GET đổ value; PUT ghi (number | null)'},
+  'P.2':{cls:'act',ui:'領収書写真 / Ảnh biên lai',api:GET_PK+' / '+PUT_PK,field:C('receiptPhotoUrls[]'),tf:'1–5 URL S3 (upload trước)'},
+  'P.3':{cls:'act',ui:'保存 / Lưu',api:'<b>trigger</b> '+PUT_PK,field:C('{ parkingFee, receiptPhotoUrls }'),tf:'sửa được tới khi delivery bị khóa (LOCKED → 409)'}
+};
+
+const DOCS = `
+<div style="background:#f7fee7;border:1px solid #d9f99d;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#3f6212;margin-bottom:14px">
+  <b>Luồng:</b> chi tiết <span class="method m-get">GET</span> <code>/driver/deliveries/{id}</code> → wizard 5 bước (<code>currentStep</code> resume) → tổng kết embed. <code>deliveryId</code> = <code>shipment_companies.id</code> (1 lần giao cho 1 công ty). <code>shipmentType</code> luôn = <code>ES_DELIVERY</code> (có 棚入れ). Auth <code>Bearer {Driver}</code>.
+</div>
+
+<h4>① <span class="method m-get">GET</span> /driver/deliveries/{deliveryId} — chi tiết + resume</h4>
+<p><b>Mục đích:</b> header + 3 tab (基本情報/駐車報告/陳列情報), <code>destination</code>, <code>packages.boxes[]</code>, kèm <code>editMode</code> (nút 陳列を開始する), <code>currentStep</code>/<code>lastCompletedStep</code> (resume), <code>steps{}</code>. Khi <code>completedAt != null</code> → <b>embed</b> dữ liệu các bước cho tab tổng kết (<code>DA_ESDL_006</code>).</p>
+<pre>{ "deliveryId":2001,"shipmentNo":"D000033215","shipmentType":"ES_DELIVERY",
+  "companyName":"大和…株式会社","deliveryDate":"2026-06-12","deliveryStatus":"UNDELIVERED",
+  "editMode":"EDITABLE_TODAY","completedAt":null,
+  "destination":{ "companyName":"…","postalCode":"151-0051","address":"東京都渋谷区…",
+    "contactName":"田村花子様","phone":"019-1234-5678","notes":"6階受取…" },
+  "packages":{ "expectedBoxCount":3,"actualBoxCount":null,
+    "chilledNormalItemCount":10,"frozenItemCount":20,
+    "boxes":[ { "id":80011,"lineNo":1,"trackingNo":"2107-6228-5031","barcode":"2107622850311","boxNumber":"1","inspectionStatus":"PENDING" } ] },
+  "nextDeliveryDate":"2026-10-16","currentStep":"PRE_DISPLAY_PHOTOS","lastCompletedStep":null,
+  "steps":{ "preDisplayPhotos":{"submitted":false,"photoCount":0},"inventoryCheck":{"submitted":false},
+    "displayInspection":{"submitted":false},"postDisplayPhotos":{"submitted":false,"photoCount":0},"collection":{"submitted":false} } }
+// editMode: EDITABLE_TODAY (000_0) · READ_ONLY_FUTURE (000_1, ẩn nút) · COMPLETED_EDITABLE (000_2 banner) · LOCKED
+// embed khi completedAt != null: preDisplayPhotos / inventoryCheck / displayInspection / postDisplayPhotos / collection / parkingReport</pre>
+
+<h4 style="margin-top:18px">② <span class="method m-put">PUT</span> .../pre-display-photos — Step 1 陳列前</h4>
+<p>Lưu mảng URL ảnh chụp <b>trước</b> lên kệ (ảnh đã upload S3 trước). <code>PUT</code> = thay thế toàn bộ (idempotent). <b>Side-effect lần đầu:</b> ghi <code>STARTED_DELIVERY</code> + <code>shipments.status: ASSIGNED → IN_TRANSIT</code>.</p>
+<pre>// request
+{ "photoUrls":["https://s3…/cool/pre/2001-1.jpg"] }   // 1–5
+// response 200
+{ "deliveryId":2001,"photoUrls":["…"],"photoCount":1 }</pre>
+
+<h4 style="margin-top:18px">③ <span class="method m-get">GET</span>·<span class="method m-post">POST</span> .../inventory-check — Step 2 在庫/廃棄</h4>
+<p><b>GET</b> trả 理論在庫 (<code>logicalStock</code>), 廃棄数 (<code>wasteQuantity</code> = ∑ <code>disposal_report_items.quantity</code>, GET-only), 実在庫 (<code>actualStock</code>). <b>POST</b> = upsert <code>inventory_checks</code> (UNIQUE/delivery). <code>difference = actualStock − logicalStock</code> (server tính, KHÔNG nhận từ client). <code>disposalItems[]</code> → <code>disposal_report_items</code>; server cộng <code>disposalTotalQuantity</code>.</p>
+<pre>// GET 200
+{ "deliveryId":2001,"menuYearMonth":"2026-06","nextDeliveryDate":"2026-10-16","submittedAt":null,
+  "items":[ { "productId":501,"productName":"鶏もも肉…","unit":"個","logicalStock":10,"wasteQuantity":5,"actualStock":5 } ] }
+// POST request
+{ "menuYearMonth":"2026-06","remarks":null,
+  "items":[ { "productId":501,"productName":"鶏もも肉…","unit":"個","logicalStock":10,"actualStock":5 } ],
+  "disposalItems":[ { "productId":501,"productName":"鶏もも肉…","unit":"個","quantity":5 } ] }
+// POST 200
+{ "deliveryId":2001,"submittedAt":"2026-06-12T15:10:00+09:00","itemCount":2,"disposalTotalQuantity":5,"message":"在庫・廃棄を登録しました。" }</pre>
+<p><b>理論/廃棄/実在庫:</b> <code>logical_stock</code> và <code>actual_stock</code> là 2 cột độc lập của <code>inventory_check_items</code>; KHÔNG có cột <code>waste</code>. DB không ràng <code>actual = logical − waste</code> — FE soft-validate <code>実在庫(廃棄後) ≈ 理論在庫 − 廃棄数</code>.</p>
+
+<h4 style="margin-top:18px">④ <span class="method m-get">GET</span>·<span class="method m-post">POST</span> .../display-inspection — Step 3 検品・陳列</h4>
+<p><b>GET</b> trả 予定数 (<code>quantity</code>) vs 実際数 (<code>actualQuantity</code>) + <code>inspectionStatus</code>. <b>POST</b> lưu số thực tế đã lên kệ. Server <b>tự suy</b> <code>inspection_status</code> mỗi dòng + set <code>shipment_cargo_boxes.inspection_status = CHECKED</code> (ES — có 棚入れ).</p>
+<pre>// GET 200
+{ "deliveryId":2001,"submittedAt":null,
+  "items":[ { "shipmentDetailId":90011,"productId":501,"productName":"鶏もも肉…","unit":"個","quantity":10,"actualQuantity":10,"inspectionStatus":"NOT_INSPECTED" },
+            { "shipmentDetailId":90012,"productId":502,"productName":"鶏もも肉…","unit":"個","quantity":10,"actualQuantity":8,"inspectionStatus":"NOT_INSPECTED" } ] }
+// POST request
+{ "items":[ { "shipmentDetailId":90011,"actualQuantity":10 }, { "shipmentDetailId":90012,"actualQuantity":8 } ] }
+// POST 200
+{ "deliveryId":2001,"submittedAt":"2026-06-12T15:25:00+09:00","itemCount":2,
+  "summary":{ "matched":1,"shortage":1,"excess":0 },"message":"検品・陳列を登録しました。" }
+// inspection_status: actual==quantity→MATCHED · actual&lt;quantity→SHORTAGE · actual&gt;quantity→EXCESS</pre>
+
+<h4 style="margin-top:18px">⑤ <span class="method m-put">PUT</span> .../post-display-photos — Step 4 陳列後</h4>
+<p>Giống Step 1 nhưng lưu vào <code>delivery_completion_reports.post_display_photo_urls</code>.</p>
+<pre>// request  { "photoUrls":["https://s3…/cool/post/2001-1.jpg"] }
+// response 200  { "deliveryId":2001,"photoUrls":["…"],"photoCount":1 }</pre>
+
+<h4 style="margin-top:18px">⑥ <span class="method m-post">POST</span> .../complete — Step 5 集金登録 + hoàn tất</h4>
+<p>Lưu tiền thu (COD) + chốt delivery. Server snapshot <code>expected_amount</code> từ <code>shipments.expected_collection_amount</code>, tính <code>difference</code>, set <code>submitted_at = now()</code>. Mốc 「delivery này giao xong」 → <code>deliveryStatus = DELIVERED</code>. <code>expectedAmount</code> read-only (lấy từ GET, KHÔNG gửi).</p>
+<pre>// request  { "collectedAmount":10000,"companyRepName":"田村花子","remarks":null }
+// response 200
+{ "deliveryId":2001,"deliveryStatus":"DELIVERED","completedAt":"2026-06-12T15:42:00+09:00",
+  "collection":{ "expectedAmount":10000,"collectedAmount":10000,"difference":0 },
+  "shipmentCompleted":false,"message":"荷物の配送は完了しました。" }
+// shipmentCompleted=false: chuyến (shipments) còn công ty khác chưa giao → shipments.status chỉ COMPLETED khi tất cả xong</pre>
+
+<h4 style="margin-top:18px">⑦ <span class="method m-get">GET</span>·<span class="method m-put">PUT</span> .../parking-report — tab 駐車報告</h4>
+<p>Phí gửi xe + ảnh biên lai (<code>DA_ESDL_006-02</code> view / <code>-03</code> edit). Sửa được tới khi delivery bị khóa.</p>
+<pre>// PUT request  { "parkingFee":500,"receiptPhotoUrls":["https://s3…/cool/parking/2001-1.jpg"] }
+// response 200  { "deliveryId":2001,"parkingFee":500,"receiptPhotoUrls":["…"] }</pre>
+
+<h4 style="margin-top:18px">Enums</h4>
+<p style="font-weight:700">WizardStep (currentStep / lastCompletedStep — computed, resume)</p>
+<table><thead><tr><th>Value</th><th>Step / Màn</th><th>Submit endpoint</th></tr></thead><tbody>
+<tr><td><code>PRE_DISPLAY_PHOTOS</code></td><td>1 — 陳列前 / DA_ESDL_001</td><td><code>PUT .../pre-display-photos</code></td></tr>
+<tr><td><code>INVENTORY_CHECK</code></td><td>2 — 在庫/廃棄 / DA_ESDL_002</td><td><code>POST .../inventory-check</code></td></tr>
+<tr><td><code>DISPLAY_INSPECTION</code></td><td>3 — 検品・陳列 / DA_ESDL_003</td><td><code>POST .../display-inspection</code></td></tr>
+<tr><td><code>POST_DISPLAY_PHOTOS</code></td><td>4 — 陳列後 / DA_ESDL_004</td><td><code>PUT .../post-display-photos</code></td></tr>
+<tr><td><code>COLLECTION</code></td><td>5 — 集金 / DA_ESDL_005</td><td><code>POST .../complete</code></td></tr>
+<tr><td><code>COMPLETED</code></td><td>— / DA_ESDL_006</td><td>(completedAt != null)</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:8px">DeliveryEditMode (D.13 — computed)</p>
+<table><thead><tr><th>Value</th><th>日本語 / VN</th><th>FE</th></tr></thead><tbody>
+<tr><td><code>EDITABLE_TODAY</code></td><td>当日・編集可 / Hôm nay, sửa được</td><td>Hiện nút → wizard (000_0)</td></tr>
+<tr><td><code>READ_ONLY_FUTURE</code></td><td>未来・閲覧のみ / Tương lai, chỉ xem</td><td>Ẩn nút (000_1)</td></tr>
+<tr><td><code>COMPLETED_EDITABLE</code></td><td>完了・編集可 / Hoàn thành, còn sửa</td><td>Banner + sửa tới hạn khóa (000_2)</td></tr>
+<tr><td><code>LOCKED</code></td><td>締切・編集不可 / Đã khóa</td><td>Chỉ xem; ghi → 409</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:8px">BoxInspectionStatus (boxes[]) · ItemInspectionStatus (Step 3) · ShipmentHistoryStatus</p>
+<table><thead><tr><th>Enum</th><th>Value</th><th>日本語 / VN</th><th>Badge / Ghi khi</th></tr></thead><tbody>
+<tr><td>BoxInspectionStatus</td><td><code>PENDING</code> / <code>CHECKED</code></td><td>未検品 / 検品済</td><td>Gray / Green (CHECKED ở Step 3)</td></tr>
+<tr><td rowspan="4">ItemInspectionStatus</td><td><code>NOT_INSPECTED</code></td><td>未検品 / Chưa kiểm</td><td>Gray — chưa submit</td></tr>
+<tr><td><code>MATCHED</code></td><td>一致 / Khớp</td><td>Green — actual == quantity</td></tr>
+<tr><td><code>SHORTAGE</code></td><td>不足 / Thiếu</td><td>Orange — actual &lt; quantity</td></tr>
+<tr><td><code>EXCESS</code></td><td>過剰 / Thừa</td><td>Red — actual &gt; quantity</td></tr>
+<tr><td rowspan="3">ShipmentHistoryStatus</td><td><code>STARTED_DELIVERY</code></td><td>配送開始</td><td>Step 1 PUT lần đầu</td></tr>
+<tr><td><code>COMPLETED</code></td><td>配送完了</td><td>Step 5 POST complete</td></tr>
+<tr><td><code>ARRIVED</code> / <code>REDELIVERY</code> / <code>NOT_DELIVERED</code></td><td>到着 / 再配達 / 未配達</td><td>ARRIVED = <b>TBD</b> (chưa trigger trong wizard); còn lại ngoài luồng</td></tr>
+</tbody></table>
+
+<h4 style="margin-top:18px">Errors</h4>
+<p>Envelope: <code>statusCode</code> enum chuỗi (400→<code>error</code> · 401→<code>unauthorized</code> · 403→<code>forbidden</code> · 404→<code>not_found</code> · 409→<code>conflict</code>).</p>
+<table><thead><tr><th>HTTP</th><th>Điều kiện</th><th>Message (JP)</th></tr></thead><tbody>
+<tr><td>400</td><td><code>photoUrls</code> rỗng / &gt; 5 (Step 1/4)</td><td>写真を1枚以上アップロードしてください</td></tr>
+<tr><td>400</td><td>Step 2/3 <code>items</code> rỗng</td><td>商品が選択されていません</td></tr>
+<tr><td>400</td><td><code>complete</code> khi thiếu bước trước</td><td>前のステップが完了していません</td></tr>
+<tr><td>400</td><td><code>collectedAmount</code> &lt; 0</td><td>集金額が不正です</td></tr>
+<tr><td>403</td><td>không phải tài xế được phân công</td><td>この配送を操作する権限がありません</td></tr>
+<tr><td>404</td><td><code>deliveryId</code> không tồn tại</td><td>指定された配送が見つかりません</td></tr>
+<tr><td>409</td><td>đã hoàn thành &amp; quá hạn sửa (LOCKED)</td><td>この配送はすでに締め切られています</td></tr>
+</tbody></table>
+
+<h4 style="margin-top:18px">Status transitions</h4>
+<table><thead><tr><th>Bước</th><th>shipments.status</th><th>history</th><th>cargo_boxes</th></tr></thead><tbody>
+<tr><td>Step 1 PUT ảnh (lần đầu)</td><td><code>ASSIGNED → IN_TRANSIT</code></td><td>+ <code>STARTED_DELIVERY</code> (DRIVER_APP, GPS)</td><td>—</td></tr>
+<tr><td>Step 3 POST inspection</td><td>—</td><td>—</td><td>(ES) → <code>inspection_status = CHECKED</code></td></tr>
+<tr><td>Step 5 POST complete</td><td>→ <code>COMPLETED</code> <em>chỉ khi mọi công ty xong</em></td><td>+ <code>COMPLETED</code></td><td>→ <code>DELIVERED</code>, <code>delivered_at</code></td></tr>
+</tbody></table>
+<p><b>FE lưu ý:</b> <code>shipments.status</code> là cấp chuyến (nhiều công ty). Cờ 「đã giao」 1 công ty = <code>delivery_completion_reports.submitted_at != null</code> (<code>deliveryStatus = DELIVERED</code>). Đừng poll <code>shipments.status</code> cho 1 công ty. <code>shipment_status_histories</code> không có <code>shipment_company_id</code> → quy event về công ty dựa <code>note</code>/thời điểm.</p>
+
+<h4 style="margin-top:18px">Resume rules</h4>
+<p>Server tính <code>currentStep</code> + <code>lastCompletedStep</code> từ <code>steps{}.submitted</code> (FE chỉ đọc):</p>
+<p>1. Thứ tự cố định: PRE_DISPLAY_PHOTOS → INVENTORY_CHECK → DISPLAY_INSPECTION → POST_DISPLAY_PHOTOS → COLLECTION.<br>
+2. <code>currentStep</code> = bước đầu tiên <code>submitted=false</code>.<br>
+3. <code>lastCompletedStep</code> = bước cuối đã submit (null nếu chưa).<br>
+4. Cả 5 submit ⇔ <code>completedAt != null</code> → <code>currentStep=COMPLETED</code>, <code>lastCompletedStep=COLLECTION</code>.<br>
+5. FE: 陳列を開始する/続ける → mở wizard <b>tại currentStep</b> (vào lại nhảy thẳng, không về Step 1). COMPLETED → mở tab tổng kết DA_ESDL_006.</p>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:9px 12px;font-size:12px;color:#92400e;margin-top:12px">
+  ⚠️ <b>TBD / Schema gaps:</b>
+  (1) <code>確認</code> checkbox (S2.8/S3.6) — không có cột DB, client-side (nếu cần lưu → <code>confirmed boolean</code>). ·
+  (2) <code>次回納品日</code>/<code>nextDeliveryDate</code> (S2.6) — ngoài 10 bảng, lookup chu kỳ giao (<code>delivery_cycles</code>?). ·
+  (3) <code>logical_stock</code> seed (S2.9) — nguồn stock master ngoài phạm vi. ·
+  (4) <code>shipment_status_histories</code> thiếu <code>shipment_company_id</code>. ·
+  (5) <code>ARRIVED</code> — enum có nhưng chưa có trigger trong wizard. ·
+  (6) mốc khóa 7 ngày — neo ngày nào (<code>scheduled_send_date</code>/<code>actual_delivery_date</code>?) TBD. ·
+  (7) upload <code>/files/*</code> đang <code>AdminGuard</code> — cần mở cho Driver Cognito pool (G8). Chi tiết → <code>es-delivery.md</code>.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).forEach(n=>{
+  const d=W[n], cls=d.cls||'';
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function openDw(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function closeDw(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=closeDw; ov.onclick=closeDw;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDw(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openDw(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

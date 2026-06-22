@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DA_LIST_00 — Delivery List (配送一覧)</title>
+    <link rel="stylesheet" href="../dashboard/style.css">
+    <style>
+        body { padding: 24px 0; }
+        .docs-section { margin-top: 24px; border-top: 2px solid #edf2f7; }
+        .page-note {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #92400e;
+            margin: 14px 16px;
+        }
+        .screen-label {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 6px;
+            z-index: 200;
+        }
+        .lang-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .lang-tab {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #cbd5e0;
+            background: #fff;
+            color: #4a5568;
+        }
+        .lang-tab.active {
+            background: #2b6cb0;
+            color: #fff;
+            border-color: #2b6cb0;
+        }
+        .lang-block { display: none; }
+        .lang-block.active { display: block; }
+        .vi-text { color: #b7791f; font-style: italic; }
+        .docs-footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: #a0aec0;
+            border-top: 1px solid #edf2f7;
+            margin-top: 20px;
+        }
+        .api-ref {
+            font-size: 11px;
+            color: #2b6cb0;
+            font-weight: bold;
+            margin: 4px 0;
+        }
+        .tab-bar {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin: 0 16px;
+            gap: 0;
+        }
+        .tab-item {
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #718096;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            text-align: center;
+            min-width: 70px;
+        }
+        .tab-item.active {
+            color: #2b6cb0;
+            border-bottom-color: #2b6cb0;
+        }
+        .tab-item .tab-count {
+            display: inline-block;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-left: 4px;
+        }
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            font-size: 12px;
+            color: #4a5568;
+        }
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #edf2f7;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        .filter-chip.active {
+            background: #ebf8ff;
+            color: #2b6cb0;
+            border: 1px solid #bee3f8;
+        }
+        .search-bar {
+            margin: 0 16px 10px 16px;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 8px 12px 8px 32px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 12px;
+            background: #fff;
+        }
+        .search-bar svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .date-range-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+        .spec-table th, .spec-table td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .spec-table th {
+            background: #edf2f7;
+            font-weight: bold;
+            color: #1a202c;
+        }
+        .spec-table tr:nth-child(even) td {
+            background: #f7fafc;
+        }
+        .spec-table code {
+            background: #edf2f7;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+        .behavior-section {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .behavior-section h4 {
+            font-size: 13px;
+            color: #2d3748;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 6px;
+        }
+        .behavior-section ul {
+            font-size: 12px;
+            color: #4a5568;
+            padding-left: 18px;
+            line-height: 1.8;
+        }
+        .permission-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-top: 8px;
+        }
+        .permission-table th, .permission-table td {
+            border: 1px solid #e2e8f0;
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .permission-table th {
+            background: #fef3c7;
+            font-weight: bold;
+            color: #92400e;
+        }
+        .perm-readonly { color: #718096; }
+        .perm-editable { color: #276749; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 16px;">
+
+    <!-- Page heading -->
+    <div style="margin-bottom: 20px;">
+        <div class="lang-tabs">
+            <span class="lang-tab active" onclick="switchLang(this, 'ja')">日本語</span>
+            <span class="lang-tab" onclick="switchLang(this, 'vi')">Tiếng Việt</span>
+        </div>
+
+        <div class="lang-block ja active">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_LIST_00 — 配送一覧（Delivery List）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · 配送一覧画面 · 画面仕様書 + フィールドマッピング</p>
+        </div>
+        <div class="lang-block vi">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_LIST_00 — Danh sách vận chuyển（配送一覧）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · Màn hình danh sách giao hàng · Spec + mapping các trường dữ liệu</p>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <span style="background:#2b6cb0; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px;">Mobile App</span>
+            <span style="background:#48bb78; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">Screen ID: DA_LIST_00</span>
+            <span style="background:#805ad5; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">V1.0</span>
+        </div>
+    </div>
+
+    <!-- ===== SCREEN INFO TABLE ===== -->
+    <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:16px; margin-bottom:20px;">
+        <h3 style="font-size:14px; color:#2d3748; margin-bottom:12px;">Screen Info / 画面情報</h3>
+        <table class="spec-table">
+            <thead>
+                <tr><th>項目</th><th>内容</th><th>Mục</th><th>Nội dung</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>画面ID</td><td>DA_LIST_00</td>
+                    <td>Mã màn hình</td><td>DA_LIST_00</td>
+                </tr>
+                <tr>
+                    <td>画面名（日本語）</td><td>配送一覧</td>
+                    <td>Tên màn hình (tiếng Việt)</td><td>Danh sách vận chuyển</td>
+                </tr>
+                <tr>
+                    <td>遷移元</td><td>ナビゲーションバー「配送一覧」タップ</td>
+                    <td>Màn hình chuyển từ</td><td>Nhấn「配送一覧」trên thanh điều hướng</td>
+                </tr>
+                <tr>
+                    <td>バージョン</td><td>V1.0</td>
+                    <td>Phiên bản</td><td>V1.0</td>
+                </tr>
+                <tr>
+                    <td>アイコン凡例</td><td colspan="3">
+                        <strong>雪の結晶アイコン</strong> = 冷凍 (Đông lạnh) &nbsp;|&nbsp;
+                        <strong>冷蔵庫アイコン</strong> = 冷蔵・常温（合算）(Mát + Thường gộp)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ===== MOCKUP + FIELD LEGEND GRID ===== -->
+    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:16px; align-items:start; margin-bottom:30px;">
+
+        <!-- Mockup 1: 倉庫受付 Tab -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">TAB A: 倉庫受付</h3>
+            <div class="phone-wrapper" style="min-height:700px;">
+                <div class="screen-label">DA_LIST_00</div>
+
+                <!-- Header -->
+                <div class="header-banner" style="padding-bottom:20px;">
+                    <div class="logo-area">
+                        <div class="brand-title">ES<span>STATION</span></div>
+                        <div class="notif-bell">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-top: 8px;">
+                        <div style="background:#fff; border-radius:50%; width:36px; height:36px; display:flex; justify-content:center; align-items:center; border:2px solid #e67e22; margin-right:8px; overflow:hidden;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="#e67e22"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                        </div>
+                        <div class="driver-status-box" style="padding:6px 10px; margin-top:0;">
+                            <div class="welcome-text" style="font-size:11px;"><span>Mochiduki</span> さん、安全運転で...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Range -->
+                <div class="date-range-bar">
+                    <span>配送一覧</span>
+                    <span style="font-size:12px; color:#718096; font-weight:normal;">2026-6-12〜2026-6-19</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tab-bar">
+                    <div class="tab-item active">倉庫受付 <span class="tab-count">10</span></div>
+                    <div class="tab-item">ES配送便</div>
+                    <div class="tab-item">COOL便</div>
+                </div>
+
+                <!-- Sub-filter -->
+                <div class="filter-bar">
+                    <span class="filter-chip active">倉庫・中継</span>
+                    <span style="font-size:11px; color:#718096;">ステータス ▼</span>
+                </div>
+
+                <!-- Search -->
+                <div class="search-bar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="倉庫・中継先・納品先拠点名・住所">
+                </div>
+
+                <!-- Delivery Cards -->
+                <div style="padding: 0 16px;">
+                    <!-- Card 1 -->
+                    <div class="delivery-card" style="border-left: 4px solid #f6ad55;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box bg-orange" style="width:28px; height:28px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:13px;"><span class="annotation-badge">(1)</span>オージーフーズ倉庫</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-unreceived"><span class="annotation-badge">(2)</span>受取済</span>
+                        </div>
+                        <div class="address-row">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div style="font-size:10px;"><span class="annotation-badge">(3)</span>2026-06-12 (月)</div>
+                        </div>
+                        <div class="address-row">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div style="font-size:10px;"><span class="annotation-badge">(4)</span>東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階</div>
+                        </div>
+                        <div class="meta-grid" style="font-size:11px; margin-top:6px;">
+                            <div class="meta-item"><span class="annotation-badge">(5)</span><span class="highlight-blue">10</span> 社</div>
+                            <div class="meta-item"><span class="annotation-badge">(6)</span><span class="highlight-blue">50</span> 箱</div>
+                            <div class="meta-item"><span class="annotation-badge">(7)</span><span class="highlight-red">500</span> 品</div>
+                            <div class="meta-item"><span class="annotation-badge">(8)</span><span class="highlight-blue">500</span> 品</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="delivery-card" style="border-left: 4px solid #f6ad55;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box bg-orange" style="width:28px; height:28px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:13px;">オージーフーズ倉庫</div>
+                                </div>
+                            </div>
+                            <span class="badge" style="background:#fed7d7; color:#c53030; font-size:10px;">トラブル</span>
+                        </div>
+                        <div class="address-row">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div style="font-size:10px;">2026-06-12 (月)<br>東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階</div>
+                        </div>
+                        <div class="meta-grid" style="font-size:11px; margin-top:6px;">
+                            <div class="meta-item"><span class="highlight-blue">10</span> 社</div>
+                            <div class="meta-item"><span class="highlight-blue">50</span> 箱</div>
+                            <div class="meta-item"><span class="highlight-red">500</span> 品</div>
+                            <div class="meta-item"><span class="highlight-blue">500</span> 品</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Nav -->
+                <div class="bottom-nav">
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        ホーム
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        マニュアル
+                    </a>
+                    <a href="#" class="nav-item active">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        配送一覧
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        トラブル
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        アカウント
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mockup 2: ES配送便 Tab -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">TAB B: ES配送便</h3>
+            <div class="phone-wrapper" style="min-height:700px;">
+                <div class="screen-label">DA_LIST_00</div>
+                <div class="header-banner" style="padding-bottom:20px;">
+                    <div class="logo-area">
+                        <div class="brand-title">ES<span>STATION</span></div>
+                    </div>
+                </div>
+                <div class="date-range-bar">
+                    <span>配送一覧</span>
+                    <span style="font-size:12px; color:#718096; font-weight:normal;">2026-6-12〜2026-6-19</span>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab-item">倉庫受付</div>
+                    <div class="tab-item active">ES配送便 <span class="tab-count">2</span></div>
+                    <div class="tab-item">COOL便</div>
+                </div>
+                <div class="filter-bar">
+                    <span class="filter-chip active">倉庫・中継</span>
+                </div>
+                <div class="search-bar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="納品先拠点名・住所">
+                </div>
+                <div style="padding: 0 16px;">
+                    <div class="delivery-card" style="border-left: 4px solid #ecc94b;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box" style="width:28px; height:28px; background:#ecc94b;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:12px;">富士フィナンシャルアドバイザリー株式会社</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-undelivered">未配送</span>
+                        </div>
+                        <div class="address-row">
+                            <div style="font-size:10px;">2026-06-12 オージーフーズ倉庫<br>東京都渋谷区千駄ヶ谷…</div>
+                        </div>
+                        <div class="meta-grid" style="font-size:11px;">
+                            <div class="meta-item"><span class="highlight-blue">2</span> 箱</div>
+                            <div class="meta-item"><span class="highlight-blue">10</span> 品</div>
+                            <div class="meta-item"><span class="highlight-blue">30</span> 品</div>
+                        </div>
+                    </div>
+                    <div class="delivery-card" style="border-left: 4px solid #ecc94b;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box" style="width:28px; height:28px; background:#ecc94b;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:12px;">会社2</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-undelivered">未配送</span>
+                        </div>
+                        <div class="address-row">
+                            <div style="font-size:10px;">2026-06-12 (月) オージーフーズ...</div>
+                        </div>
+                        <div class="meta-grid" style="font-size:11px;">
+                            <div class="meta-item"><span class="highlight-blue">2</span> 箱</div>
+                            <div class="meta-item"><span class="highlight-blue">10</span> 品</div>
+                            <div class="meta-item"><span class="highlight-blue">30</span> 品</div>
+                        </div>
+                    </div>
+                    <div class="delivery-card" style="border-left: 4px solid #ecc94b;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box" style="width:28px; height:28px; background:#ecc94b;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:12px;">会社3</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-undelivered">未配送</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <a href="#" class="nav-item">ホーム</a>
+                    <a href="#" class="nav-item">マニュアル</a>
+                    <a href="#" class="nav-item active">配送一覧</a>
+                    <a href="#" class="nav-item">トラブル</a>
+                    <a href="#" class="nav-item">アカウント</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mockup 3: COOL便 Tab -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">TAB C: COOL便</h3>
+            <div class="phone-wrapper" style="min-height:700px;">
+                <div class="screen-label">DA_LIST_00</div>
+                <div class="header-banner" style="padding-bottom:20px;">
+                    <div class="logo-area">
+                        <div class="brand-title">ES<span>STATION</span></div>
+                    </div>
+                </div>
+                <div class="date-range-bar">
+                    <span>配送一覧</span>
+                    <span style="font-size:12px; color:#718096; font-weight:normal;">2026-6-12〜2026-6-19</span>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab-item">倉庫受付</div>
+                    <div class="tab-item">ES配送便</div>
+                    <div class="tab-item active">COOL便 <span class="tab-count">2</span></div>
+                </div>
+                <div class="filter-bar">
+                    <span class="filter-chip active">倉庫・中継</span>
+                </div>
+                <div class="search-bar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="納品先拠点名・住所">
+                </div>
+                <div style="padding: 0 16px;">
+                    <div class="delivery-card" style="border-left: 4px solid #48bb78;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box" style="width:28px; height:28px; background:#48bb78;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:12px;">大和インターナショナルトレーディング株式会社</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-undelivered" style="font-size:10px;">未配送</span>
+                        </div>
+                        <div class="address-row">
+                            <div style="font-size:10px;">2026-06-11<br>東京都渋谷区...</div>
+                        </div>
+                        <div class="meta-grid" style="font-size:11px;">
+                            <div class="meta-item"><span class="highlight-blue">1</span> 箱</div>
+                            <div class="meta-item"><span class="highlight-blue">20</span> 品</div>
+                        </div>
+                    </div>
+                    <div class="delivery-card" style="border-left: 4px solid #48bb78;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box" style="width:28px; height:28px; background:#48bb78;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:12px;">富士フィナンシャルアドバイザリー株式会社</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-undelivered" style="font-size:10px;">未配送</span>
+                        </div>
+                    </div>
+                    <div class="delivery-card" style="border-left: 4px solid #48bb78;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box" style="width:28px; height:28px; background:#48bb78;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title" style="font-size:12px;">大和インターナショナルトレーディング株式会社</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-undelivered" style="font-size:10px;">未配送</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <a href="#" class="nav-item">ホーム</a>
+                    <a href="#" class="nav-item">マニュアル</a>
+                    <a href="#" class="nav-item active">配送一覧</a>
+                    <a href="#" class="nav-item">トラブル</a>
+                    <a href="#" class="nav-item">アカウント</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =============================================== -->
+    <!-- ===== TABLE 1: FILTER / HEADER CONTROLS ===== -->
+    <!-- =============================================== -->
+    <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:20px; margin-bottom:24px;">
+        <div class="lang-block ja active">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">表1: 画面初期表示 / フィルター仕様</h2>
+            <p style="font-size:12px; color:#718096;">Filter controls, date range, tabs, and initial display rules</p>
+        </div>
+        <div class="lang-block vi">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">Bảng 1: Hiển thị ban đầu / Bộ lọc</h2>
+            <p style="font-size:12px; color:#718096;">Các control lọc, khoảng ngày, tab, và quy tắc hiển thị mặc định</p>
+        </div>
+
+        <!-- 1A: Date Range Filter -->
+        <h3 style="font-size:14px; color:#2d3748; margin:16px 0 8px 0;">【画面初期表示】Hiển thị ban đầu</h3>
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th style="width:40px;">No</th>
+                    <th>項目 (JP)</th>
+                    <th>Mục (VN)</th>
+                    <th>仕様 / Specification</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>期間デフォルト</td>
+                    <td>Khoảng thời gian mặc định</td>
+                    <td>当日〜当日+7日 <br><code>startDate</code> = today, <code>endDate</code> = today + 7 days</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>タブ初期値</td>
+                    <td>Tab mặc định</td>
+                    <td>「倉庫受付」tab selected</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>ソート順</td>
+                    <td>Thứ tự sắp xếp</td>
+                    <td>納品日 → ステータス → 拠点名<br>Ngày giao hàng → Trạng Thái → Tên điểm</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 1B: Tab Specification -->
+        <h3 style="font-size:14px; color:#2d3748; margin:20px 0 8px 0;">【タブ仕様】Tab Specification</h3>
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Tab</th>
+                    <th>Name (JP)</th>
+                    <th>Name (VN)</th>
+                    <th>データ条件 / Data Condition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>A</strong></td>
+                    <td>倉庫受付</td>
+                    <td>Nhận tại kho</td>
+                    <td>
+                        全ステータス: 未受取 / 受取済 / トラブル<br>
+                        <em class="vi-text">Tất cả trạng thái: Chưa nhận / Đã nhận / Sự cố</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>B</strong></td>
+                    <td>ES配送便</td>
+                    <td>Giao ES</td>
+                    <td>
+                        shipmentType = ES_DELIVERY & status =「未配送」or「トラブル」<br>
+                        <em class="vi-text">Đơn ES chưa xong (Chưa giao / Sự cố)</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>C</strong></td>
+                    <td>COOL便</td>
+                    <td>Giao COOL</td>
+                    <td>
+                        shipmentType = COOL & status =「未配送」or「トラブル」· banner 冷蔵<br>
+                        <em class="vi-text">Đơn COOL chưa xong; đã giao (配送完了) không hiển thị</em>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 1C: Filter within Tab A -->
+        <h3 style="font-size:14px; color:#2d3748; margin:20px 0 8px 0;">【倉庫受付タブ内フィルター】Sub-filter trong Tab A</h3>
+        <table class="spec-table">
+            <thead>
+                <tr><th>Filter</th><th>Options</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>倉庫・中継</td>
+                    <td>倉庫 / 中継</td>
+                    <td>
+                        倉庫 = warehouse pickup cards only<br>
+                        中継 = transit point cards only<br>
+                        <em class="vi-text">Lọc theo: Kho / Điểm trung chuyển</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ステータス</td>
+                    <td>未受取 / 受取済 / トラブル</td>
+                    <td>
+                        Filter by receipt status within tab A<br>
+                        <em class="vi-text">Lọc theo trạng thái nhận hàng</em>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- =============================================== -->
+    <!-- ===== TABLE 2: CARD FIELDS / EDIT PERMISSIONS ===== -->
+    <!-- =============================================== -->
+    <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:20px; margin-bottom:24px;">
+        <div class="lang-block ja active">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">表2: カード編集可否 / Card Edit Permissions</h2>
+            <p style="font-size:12px; color:#718096;">Quyền chỉnh sửa thẻ dựa theo loại dữ liệu và trạng thái</p>
+        </div>
+        <div class="lang-block vi">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">Bảng 2: Quyền chỉnh sửa thẻ</h2>
+            <p style="font-size:12px; color:#718096;">Card edit permissions by data type and status</p>
+        </div>
+
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th style="width:40px;">No</th>
+                    <th>日本データ (JP)</th>
+                    <th>Dữ liệu (VN)</th>
+                    <th>権限 / Permission</th>
+                    <th>備考 / Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>将来データ</td>
+                    <td>Dữ liệu tương lai</td>
+                    <td class="perm-readonly">→ Chỉ đọc - Ẩn nút hành động</td>
+                    <td>Read-only, hide action buttons<br><em class="vi-text">Chỉ đọc - Ẩn nút hành động</em></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>全ての（全tab）</td>
+                    <td>Số có tất cả tab</td>
+                    <td class="perm-readonly">→ Chỉ đọc - Ẩn nút hành động</td>
+                    <td>Read-only, hide action buttons<br><em class="vi-text">Chỉ đọc - Ẩn nút hành động</em></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>未受取・受取済</td>
+                    <td>Chưa nhận / Đã nhận</td>
+                    <td class="perm-editable">→ Có thể sửa (nút check / ✕ )</td>
+                    <td>Editable: check/✕ buttons visible<br><em class="vi-text">Có thể sửa (nút check / ✕ hiện)</em></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>ES配送：当日〜7日以内</td>
+                    <td>ES配送: trong vòng 7 ngày</td>
+                    <td class="perm-editable">→ Có thể sửa (nút「履歴を開始する」)</td>
+                    <td>Editable: show「履歴を開始する」button<br><em class="vi-text">Có thể sửa (nút "bắt đầu lịch sử giao hàng")</em></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>ES配送便：7日以上前</td>
+                    <td>ES配送便: quá 7 ngày</td>
+                    <td class="perm-readonly">→ Chỉ đọc</td>
+                    <td>Read-only<br><em class="vi-text">Chỉ đọc</em></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>COOL便</td>
+                    <td>Đơn COOL</td>
+                    <td class="perm-readonly">→ Chỉ đọc (nút check / ✕ hiện)</td>
+                    <td>Read-only: check/✕ visible but disabled<br><em class="vi-text">Chỉ đọc (nút check/✕ hiện nhưng disabled)</em></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>配送完了 (mọi loại)</td>
+                    <td>Đã giao xong</td>
+                    <td class="perm-readonly">→ Không hiển thị trong list</td>
+                    <td>Excluded from list<br><em class="vi-text">Đơn đã giao không xuất hiện trong danh sách</em></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- =============================================== -->
+    <!-- ===== TABLE 3: DISPLAY RULES / BEHAVIORS ===== -->
+    <!-- =============================================== -->
+    <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:20px; margin-bottom:24px;">
+        <div class="lang-block ja active">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">表3: 表示仕様 / Display Rules & Behaviors</h2>
+            <p style="font-size:12px; color:#718096;">Quy tắc hiển thị, phân trang, trạng thái rỗng</p>
+        </div>
+        <div class="lang-block vi">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">Bảng 3: Quy tắc hiển thị</h2>
+            <p style="font-size:12px; color:#718096;">Display rules, paging, empty state</p>
+        </div>
+
+        <!-- 3A: Quantity Display -->
+        <h3 style="font-size:14px; color:#2d3748; margin:16px 0 8px 0;">【荷物数表示】Hiển thị số lượng hàng</h3>
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>条件 / Condition</th>
+                    <th>日本語 (JP)</th>
+                    <th>Tiếng Việt (VN)</th>
+                    <th>表示 / Display</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>通常（注文個数）</td>
+                    <td>注文個数（平定）</td>
+                    <td>Số đặt hàng (平定)</td>
+                    <td>Show order count. <strong>0件は非表示</strong><br><em class="vi-text">Hiện số lượng. Ẩn nếu = 0</em></td>
+                </tr>
+                <tr>
+                    <td>出庫済（ピッキング完了後）</td>
+                    <td>出庫済（ピッキング完了後）</td>
+                    <td>Hôm nay + quá khứ (đã picking)</td>
+                    <td>Show picked quantity (thực tế)<br><em class="vi-text">Hiện số lượng đã pick thực tế</em></td>
+                </tr>
+                <tr>
+                    <td>当日・過去（ピッキング未了）</td>
+                    <td>当日・過去（ピッキング未完了）</td>
+                    <td>Hôm nay + quá khứ (chưa picking)</td>
+                    <td>Show <code>未確定</code><br><em class="vi-text">Hiện "未確定" (chưa xác định)</em></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 3B: Paging -->
+        <h3 style="font-size:14px; color:#2d3748; margin:20px 0 8px 0;">【ページング】Phân trang</h3>
+        <div class="behavior-section">
+            <h4>Auto-scroll paging / Cuộn đến cuối tự động tải trang tiếp theo</h4>
+            <ul>
+                <li><strong>JP:</strong> スクロール末尾到達で次ページを自動読込（もっと表示スタイル）</li>
+                <li><strong>VN:</strong> Cuộn đến cuối tự động tải trang tiếp theo (kiểu「もっと表示」)</li>
+                <li><strong>Implementation:</strong> Infinite scroll — load next page on scroll-to-bottom</li>
+            </ul>
+        </div>
+
+        <!-- 3C: Empty State -->
+        <h3 style="font-size:14px; color:#2d3748; margin:20px 0 8px 0;">【空状態】Trạng thái rỗng</h3>
+        <div class="behavior-section">
+            <h4>No data message</h4>
+            <ul>
+                <li><strong>JP:</strong>「配送予定データはありません。」</li>
+                <li><strong>VN:</strong>「Không có dữ liệu giao hàng dự kiến.」</li>
+            </ul>
+        </div>
+
+        <!-- 3D: Date Range Validation -->
+        <h3 style="font-size:14px; color:#2d3748; margin:20px 0 8px 0;">【日付バリデーション】Validation ngày tháng</h3>
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th>Rule</th>
+                    <th>Error Message (JP)</th>
+                    <th>Error Message (VN)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>startDate &gt; endDate</code></td>
+                    <td>終了日は開始日以降を選択してください</td>
+                    <td>Vui lòng chọn ngày kết thúc sau hoặc bằng ngày bắt đầu</td>
+                </tr>
+                <tr>
+                    <td><code>endDate - startDate &gt; 31 days</code></td>
+                    <td>1ヶ月以内の期間を選択してください</td>
+                    <td>Vui lòng chọn khoảng thời gian trong vòng 1 tháng</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- =============================================== -->
+    <!-- ===== FIELD MAPPING TABLE ===== -->
+    <!-- =============================================== -->
+    <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:20px; margin-bottom:24px;">
+        <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">Field Legend — カードフィールド一覧</h2>
+        <p style="font-size:12px; color:#718096; margin-bottom:16px;">Mapping annotation numbers on mockup to API response fields</p>
+
+        <div class="page-note">
+            <strong>API:</strong> All fields populated via
+            <code>GET /driver/delivery-list</code>. Annotation numbers correspond to fields in the API Response DTO.
+        </div>
+
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th style="width:35px;">#</th>
+                    <th>Field / Trường</th>
+                    <th>Type</th>
+                    <th>Source API / Nguồn</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="field-num">(1)</td>
+                    <td>
+                        <div>Warehouse/Transit Name</div>
+                        <div class="vi-text">Tên kho / điểm trung chuyển</div>
+                    </td>
+                    <td>string</td>
+                    <td><code>items[].warehouseName</code></td>
+                    <td>倉庫名 or 中継先名</td>
+                </tr>
+                <tr>
+                    <td class="field-num">(2)</td>
+                    <td>
+                        <div>Receipt Status Badge</div>
+                        <div class="vi-text">Trạng thái nhận hàng</div>
+                    </td>
+                    <td>enum</td>
+                    <td><code>items[].receiptStatus</code></td>
+                    <td>
+                        <code>UNRECEIVED</code> (未受取)<br>
+                        <code>RECEIVED</code> (受取済)<br>
+                        <code>TROUBLE</code> (トラブル)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-num">(3)</td>
+                    <td>
+                        <div>Delivery Date</div>
+                        <div class="vi-text">Ngày giao hàng</div>
+                    </td>
+                    <td>date</td>
+                    <td><code>items[].deliveryDate</code></td>
+                    <td>Format: yyyy-MM-dd (曜日)</td>
+                </tr>
+                <tr>
+                    <td class="field-num">(4)</td>
+                    <td>
+                        <div>Address</div>
+                        <div class="vi-text">Địa chỉ</div>
+                    </td>
+                    <td>string</td>
+                    <td><code>items[].address</code></td>
+                    <td>Full address of warehouse/transit</td>
+                </tr>
+                <tr>
+                    <td class="field-num">(5)</td>
+                    <td>
+                        <div>Company Count (社)</div>
+                        <div class="vi-text">Số công ty</div>
+                    </td>
+                    <td>number</td>
+                    <td><code>items[].companyCount</code></td>
+                    <td>Tab A only (warehouse card)</td>
+                </tr>
+                <tr>
+                    <td class="field-num">(6)</td>
+                    <td>
+                        <div>Box Count (箱)</div>
+                        <div class="vi-text">Số thùng hàng</div>
+                    </td>
+                    <td>number</td>
+                    <td><code>items[].boxCount</code></td>
+                    <td>Total boxes for this warehouse</td>
+                </tr>
+                <tr>
+                    <td class="field-num">(7)</td>
+                    <td>
+                        <div>Frozen Item Count (品) <em style="color:#e53e3e;">[red = 冷凍]</em></div>
+                        <div class="vi-text">Số món đông lạnh</div>
+                    </td>
+                    <td>number</td>
+                    <td><code>items[].frozenItemCount</code></td>
+                    <td>Icon: snowflake (雪の結晶)</td>
+                </tr>
+                <tr>
+                    <td class="field-num">(8)</td>
+                    <td>
+                        <div>Chilled+Normal Item Count (品) <em style="color:#2b6cb0;">[blue = 冷蔵+常温]</em></div>
+                        <div class="vi-text">Số món mát + thường (gộp)</div>
+                    </td>
+                    <td>number</td>
+                    <td><code>items[].chilledNormalItemCount</code></td>
+                    <td>Icon: refrigerator (冷蔵庫)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Tab B/C specific fields -->
+        <h3 style="font-size:13px; color:#2d3748; margin:20px 0 8px 0;">Additional fields for Tab B (ES配送便) / Tab C (COOL便)</h3>
+        <table class="spec-table">
+            <thead>
+                <tr>
+                    <th style="width:35px;">#</th>
+                    <th>Field / Trường</th>
+                    <th>Type</th>
+                    <th>Source API / Nguồn</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="field-num">(9)</td>
+                    <td>
+                        <div>Company/Destination Name</div>
+                        <div class="vi-text">Tên công ty / điểm giao</div>
+                    </td>
+                    <td>string</td>
+                    <td><code>items[].companyName</code></td>
+                    <td>納品先拠点名</td>
+                </tr>
+                <tr>
+                    <td class="field-num">(10)</td>
+                    <td>
+                        <div>Delivery Status</div>
+                        <div class="vi-text">Trạng thái giao hàng</div>
+                    </td>
+                    <td>enum</td>
+                    <td><code>items[].deliveryStatus</code></td>
+                    <td>
+                        <code>UNDELIVERED</code> (未配送)<br>
+                        <code>TROUBLE</code> (トラブル)<br>
+                        <em>(không có DELIVERED — đơn đã giao bị loại)</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="field-num">(11)</td>
+                    <td>
+                        <div>Source Warehouse Name</div>
+                        <div class="vi-text">Kho nguồn</div>
+                    </td>
+                    <td>string</td>
+                    <td><code>items[].sourceWarehouseName</code></td>
+                    <td>Which warehouse this shipment came from</td>
+                </tr>
+                <tr>
+                    <td class="field-num">(12)</td>
+                    <td>
+                        <div>Destination Address</div>
+                        <div class="vi-text">Địa chỉ giao</div>
+                    </td>
+                    <td>string</td>
+                    <td><code>items[].destinationAddress</code></td>
+                    <td>Full delivery address</td>
+                </tr>
+                <tr>
+                    <td class="field-num">(13)</td>
+                    <td>
+                        <div>Cargo Type Chip</div>
+                        <div class="vi-text">Chip loại hàng (冷蔵/冷凍)</div>
+                    </td>
+                    <td>enum</td>
+                    <td><code>items[].cargoType</code></td>
+                    <td><code>REFRIGERATED</code> ❄冷蔵 / <code>FROZEN</code> 冷凍 / <code>NORMAL</code> —</td>
+                </tr>
+                <tr>
+                    <td class="field-num">(14)</td>
+                    <td>
+                        <div>Contact Phone</div>
+                        <div class="vi-text">SĐT liên hệ</div>
+                    </td>
+                    <td>string | null</td>
+                    <td><code>items[].phone</code></td>
+                    <td>📞 → <code>tel:</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="docs-footer">
+        DA_LIST_00 — Screen Specification v1.0 — ES STATION Driver App<br>
+        Generated for development reference. See <a href="../dashboard/apis/index.html">API Documentation</a> for endpoint details.
+    </div>
+</div>
+
+<script>
+function switchLang(el, lang) {
+    document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.lang-block').forEach(b => {
+        b.classList.remove('active');
+        if (b.classList.contains(lang)) b.classList.add('active');
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>配送一覧 — API 配線ガイド (Driver)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#65a30d; --lime:#84cc16; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F3F4F6; color:#222; }
+  /* ===== deliverer-format badges + drawer ===== */
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;margin-left:4px;
+    background:#0062CC;color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none;white-space:nowrap; }
+  .nb:hover{ transform:scale(1.15);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.act:hover{ background:#0f7a32; }
+  .nb.st{ background:#64748b; } .nb.st:hover{ background:#475569; }
+  .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:860px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#ecfccb; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.st{ color:#64748b; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-post{background:#bee3f8;color:#2a4365;} .m-put{background:#feebc8;color:#9c4221;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .doc table{ width:100%;border-collapse:collapse;font-size:12px;margin:6px 0; }
+  .doc th,.doc td{ border:1px solid #E5E7EB;padding:6px 8px;text-align:left;vertical-align:top; } .doc th{ background:#F3F4F6; }
+  /* ===== phone mockup (E06) ===== */
+  .gallery{ display:flex;gap:26px;overflow-x:auto;padding:10px 4px 22px; }
+  .mock{ flex:0 0 auto;text-align:center; }
+  .mock-cap{ font-size:13px;font-weight:800;color:#2d3748;margin-bottom:10px; }
+  .mock-cap .sid{ display:block;font-size:10px;color:#0066de;margin-top:2px; }
+  .frame{ zoom:.82; }
+  .phone{ width:390px;min-height:760px;background:#f4f6f9;border-radius:30px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.18);display:flex;flex-direction:column;position:relative;border:4px solid #2d3748;text-align:left; }
+  .phone *{ margin:0;padding:0;box-sizing:border-box; }
+  .header{ display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#fff; }
+  .hbtn{ width:40px;height:40px;border-radius:50%;border:1px solid #e3e3e3;display:flex;align-items:center;justify-content:center;background:#fff; }
+  .hbtn.ghost{ border:none; } .hbtn svg{ width:20px;height:20px;stroke:#333;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+  .htitle{ font-size:19px;font-weight:700;color:#1a1a1a; }
+  .content{ flex:1;overflow-y:auto;padding:14px 16px 96px; }
+  .sec-label{ font-size:16px;font-weight:700;color:#1a1a1a;margin:18px 2px 12px; } .content>.sec-label:first-child{ margin-top:0; }
+  .search-box{ position:relative;margin-bottom:12px; }
+  .search-input{ width:100%;padding:13px 44px 13px 16px;border:1px solid #e0e0e0;border-radius:12px;font-size:15px;background:#fff; }
+  .search-input::placeholder{ color:#b0b0b0; }
+  .search-icon{ position:absolute;right:14px;top:50%;transform:translateY(-50%); } .search-icon svg{ width:22px;height:22px;stroke:#999;fill:none;stroke-width:2; }
+  .note{ font-size:12.5px;color:#8a8f96;line-height:1.7;margin-bottom:14px; }
+  .rcard{ background:#fff;border:1px solid #ececec;border-radius:12px;padding:14px;margin-bottom:12px; }
+  .rcard-head{ display:flex;align-items:flex-start;gap:10px; }
+  .ricon{ width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .ricon svg{ width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round; }
+  .ricon.blue{ background:#1f6fe0; } .ricon.purple{ background:#5b3cc4; } .ricon.orange{ background:#f5921e; }
+  .rname{ flex:1;font-size:15px;font-weight:700;color:#1a1a1a;line-height:1.35; }
+  .rbadge{ font-size:12px;font-weight:700;padding:4px 9px;border-radius:7px;flex-shrink:0; }
+  .rbadge.undelivered{ background:#fff;border:1.4px solid #e3a93f;color:#d98e00; } .rbadge.unreceived{ background:#f0f0f2;color:#8a8f96; }
+  .rbadge.received{ background:#e6f7ec;color:#2f9e54; } .rbadge.trouble{ background:#fdecec;color:#e53e3e; }
+  .rradio{ width:24px;height:24px;border-radius:50%;border:2px solid #c4c4c4;flex-shrink:0; }
+  .rradio.checked{ border-color:#1f6fe0;display:flex;align-items:center;justify-content:center; }
+  .rradio.checked::after{ content:'';width:13px;height:13px;border-radius:50%;background:#1f6fe0; }
+  .rmeta{ margin-top:10px; } .rmeta-row{ display:flex;align-items:flex-start;gap:6px;font-size:13px;color:#666;margin-top:5px; }
+  .rmeta-row svg{ width:15px;height:15px;stroke:#999;fill:none;stroke-width:1.6;flex-shrink:0;margin-top:1px; }
+  .rcounts{ display:flex;gap:14px;margin-top:8px;flex-wrap:wrap; } .rcount{ display:flex;align-items:center;gap:5px;font-size:13px;color:#555; }
+  .rcount svg{ width:16px;height:16px;stroke:#888;fill:none;stroke-width:1.6; } .rcount b{ color:#1f6fe0; }
+  .rcount.frozen b{ color:#e53e3e; } .rcount.chilled b{ color:#1f6fe0; }
+  .footer{ position:absolute;bottom:0;left:0;right:0;padding:14px 16px 20px;background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.05);display:flex;gap:12px; }
+  .btn{ flex:1;padding:15px;border-radius:12px;font-size:16px;font-weight:700; }
+  .btn-back{ background:#fff;color:#333;border:1.5px solid #e0e0e0; }
+  .btn-next,.btn-send.active{ background:#1a6dff;color:#fff;border:none;box-shadow:0 4px 14px rgba(26,109,255,.4); } .btn-send{ background:#cfd3da;color:#fff;border:none; }
+  /* ===== list tabs + filter (DA_LIST_00) ===== */
+  .ltabs{ display:flex;background:#fff;border-bottom:1px solid #ececec; }
+  .ltab{ flex:1;text-align:center;padding:12px 4px;font-size:13px;font-weight:700;color:#8a8f96;border-bottom:2.5px solid transparent;position:relative; }
+  .ltab.active{ color:#1f6fe0;border-bottom-color:#1f6fe0; }
+  .ltab .cnt{ display:inline-block;min-width:18px;height:18px;line-height:18px;padding:0 5px;border-radius:9px;background:#e9eef5;color:#5a6473;font-size:10.5px;margin-left:3px;vertical-align:middle; }
+  .ltab.active .cnt{ background:#1f6fe0;color:#fff; }
+  .daterow{ display:flex;align-items:center;gap:8px;padding:12px 16px 4px;font-size:13px;color:#444; }
+  .datebox{ flex:1;border:1px solid #e0e0e0;border-radius:9px;padding:9px 11px;font-size:13px;background:#fff;color:#333;display:flex;align-items:center;gap:6px; }
+  .datebox svg{ width:15px;height:15px;stroke:#888;fill:none;stroke-width:1.6; }
+  .filterbtn{ width:42px;height:40px;border:1px solid #e0e0e0;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .filterbtn svg{ width:18px;height:18px;stroke:#555;fill:none;stroke-width:1.8; }
+  .cool-banner{ background:#e7f3fb;border:1px solid #bcdcf0;border-radius:10px;padding:10px 12px;font-size:12.5px;color:#2c5282;margin-bottom:12px;display:flex;align-items:flex-start;gap:7px;line-height:1.6; }
+  .cool-banner svg{ width:17px;height:17px;stroke:#2c5282;fill:none;stroke-width:1.8;flex-shrink:0;margin-top:1px; }
+  .chip{ display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:7px;flex-shrink:0; }
+  .chip.cool{ background:#e7f3fb;color:#2c7fc2; } .chip.frozen{ background:#eef0fb;color:#5b3cc4; }
+  .rdate{ font-size:12.5px;color:#8a8f96;margin-top:2px; }
+</style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Driver (E06) · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">配送一覧 — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số/badge</b> bất kỳ → panel phải hiện <b>bảng ráp + API docs</b> (highlight dòng đã click). 1 endpoint <code>GET /driver/delivery-list</code> phục vụ cả 3 tab — tham số <code>tab</code> quyết định shape response. Contract: <code>apis/delivery-list.md</code> · base <code>/driver/*</code> · Auth <code>Bearer {Driver}</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (Res → UI)</span>
+      <span><span class="nb act" style="cursor:default">n</span> nhập/ghi/trigger (UI → Request)</span>
+      <span><span class="nb st" style="cursor:default">n</span> tĩnh, không API</span>
+    </div>
+    <div class="mt-2 flex gap-2 flex-wrap text-xs">
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_LIST_00</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_LIST_00_A · 倉庫受付</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_LIST_00_B · ES配送便</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_LIST_00_C · COOL便</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP GALLERY (E06 phones, khớp DA_LIST_00 A/B/C) ===== -->
+  <div class="card p-4">
+  <div class="gallery">
+
+    <!-- ===== TAB A · 倉庫受付 · DA_LIST_00_A ===== -->
+    <div class="mock">
+      <div class="mock-cap">Tab A 倉庫受付（Warehouse Receipt）<span class="sid">DA_LIST_00_A</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">配送一覧</div><div class="hbtn ghost"></div></div>
+        <div class="ltabs">
+          <div class="ltab active">倉庫受付<span class="cnt">2</span><span class="nb" data-n="A.1">A.1</span></div>
+          <div class="ltab">ES配送便<span class="cnt">2</span></div>
+          <div class="ltab">COOL便<span class="cnt">2</span></div>
+        </div>
+        <div class="daterow">
+          <span class="datebox"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>2026-06-12</span>
+          <span style="color:#999;">〜</span>
+          <span class="datebox"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>2026-06-19<span class="nb act" data-n="A.2">A.2</span></span>
+          <span class="filterbtn"><svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.5 10 19 14 21 14 12.5 22 3"/></svg></span><span class="nb act" data-n="A.3">A.3</span>
+        </div>
+        <div class="content">
+          <div class="search-box">
+            <input class="search-input" placeholder="倉庫・中継名">
+            <span class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+            <span class="nb act" data-n="A.4" style="position:absolute;left:6px;top:-9px;">A.4</span>
+          </div>
+          <div class="rcard">
+            <div class="rcard-head">
+              <div class="ricon orange"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/><rect x="7" y="13" width="10" height="8"/></svg><span class="nb" data-n="A.6" style="position:relative;top:-16px;">A.6</span></div>
+              <span class="rname">オージーフーズ倉庫<span class="nb" data-n="A.5">A.5</span></span>
+              <span class="rbadge received">受付済<span class="nb" data-n="A.7">A.7</span></span>
+            </div>
+            <div class="rmeta">
+              <div class="rdate">2026-06-12（金）<span class="nb" data-n="A.8">A.8</span></div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階<span class="nb" data-n="A.9">A.9</span></div>
+              <div class="rcounts">
+                <div class="rcount"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M16 21V11a4 4 0 0 0-8 0v10"/></svg><b>10</b> 社<span class="nb" data-n="A.10">A.10</span></div>
+                <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>50</b> 箱<span class="nb" data-n="A.11">A.11</span></div>
+                <div class="rcount frozen"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="4" y1="7" x2="20" y2="17"/><line x1="20" y1="7" x2="4" y2="17"/></svg><b>500</b> 品<span class="nb" data-n="A.12">A.12</span></div>
+                <div class="rcount chilled"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="6" y1="11" x2="18" y2="11"/></svg><b>500</b> 品<span class="nb" data-n="A.13">A.13</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="rcard">
+            <div class="rcard-head">
+              <div class="ricon blue"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div>
+              <span class="rname">ヤマト運輸営業所<span class="chip cool" style="margin-left:6px;">中継<span class="nb" data-n="A.6">A.6</span></span></span>
+              <span class="rbadge trouble">トラブル<span class="nb" data-n="A.7">A.7</span></span>
+            </div>
+            <div class="rmeta">
+              <div class="rdate">2026-06-12（金）</div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都新宿区1-5-10</div>
+              <div class="rcounts">
+                <div class="rcount"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M16 21V11a4 4 0 0 0-8 0v10"/></svg><b>10</b> 社</div>
+                <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>80</b> 箱</div>
+              </div>
+            </div>
+          </div>
+          <div class="note">配送予定データはありません。（空状態）<span class="nb st" data-n="A.14">A.14</span></div>
+        </div>
+        <div class="footer"><button class="btn btn-next">もっと読み込む<span class="nb act" data-n="A.15">A.15</span></button></div>
+      </div></div>
+    </div>
+
+    <!-- ===== TAB B · ES配送便 · DA_LIST_00_B ===== -->
+    <div class="mock">
+      <div class="mock-cap">Tab B ES配送便（ES Delivery）<span class="sid">DA_LIST_00_B</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">配送一覧</div><div class="hbtn ghost"></div></div>
+        <div class="ltabs">
+          <div class="ltab">倉庫受付<span class="cnt">2</span></div>
+          <div class="ltab active">ES配送便<span class="cnt">2</span><span class="nb" data-n="A.1">A.1</span></div>
+          <div class="ltab">COOL便<span class="cnt">2</span></div>
+        </div>
+        <div class="daterow">
+          <span class="datebox"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>2026-06-12</span>
+          <span style="color:#999;">〜</span>
+          <span class="datebox"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>2026-06-19</span>
+          <span class="filterbtn"><svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.5 10 19 14 21 14 12.5 22 3"/></svg></span><span class="nb act" data-n="B.1">B.1</span>
+        </div>
+        <div class="content">
+          <div class="search-box">
+            <input class="search-input" placeholder="会社名・住所・倉庫名">
+            <span class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+          </div>
+          <div class="rcard">
+            <div class="rcard-head">
+              <div class="ricon blue"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg><span class="nb" data-n="B.4" style="position:relative;top:-16px;">B.4</span></div>
+              <span class="rname">富士フィナンシャルアドバイザリー株式会社<span class="nb" data-n="B.2">B.2</span></span>
+              <span class="rbadge undelivered">未配送<span class="nb" data-n="B.5">B.5</span></span>
+            </div>
+            <div class="rmeta">
+              <div class="rdate">2026-06-12（金）<span class="nb" data-n="B.6">B.6</span></div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/></svg>オージーフーズ倉庫<span class="nb" data-n="B.7">B.7</span></div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都渋谷区千駄ヶ谷5-32-7…<span class="nb" data-n="B.8">B.8</span></div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.6 2.5a2 2 0 0 1-.5 1.9L8 9.1a16 16 0 0 0 6 6l1-1.2a2 2 0 0 1 1.9-.5l2.5.6a2 2 0 0 1 1.6 2z"/></svg>03-5555-0101<span class="nb" data-n="B.10">B.10</span></div>
+              <div class="rcounts">
+                <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>2</b> 箱<span class="nb" data-n="B.9">B.9</span></div>
+                <div class="rcount frozen"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="4" y1="7" x2="20" y2="17"/><line x1="20" y1="7" x2="4" y2="17"/></svg><b>10</b> 品<span class="nb" data-n="B.11">B.11</span></div>
+                <div class="rcount chilled"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="6" y1="11" x2="18" y2="11"/></svg><b>30</b> 品<span class="nb" data-n="B.12">B.12</span></div>
+              </div>
+            </div>
+            <div style="margin-top:12px;"><button class="btn btn-next" style="width:100%;padding:11px;font-size:14px;">履歴を開始する<span class="nb act" data-n="B.13">B.13</span></button></div>
+          </div>
+          <div class="rcard">
+            <div class="rcard-head">
+              <div class="ricon blue"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></div>
+              <span class="rname">会社3</span>
+              <span class="rbadge trouble">トラブル<span class="nb" data-n="B.5">B.5</span></span>
+            </div>
+            <div class="rmeta">
+              <div class="rdate">2026-06-12（金）</div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都新宿区…</div>
+              <div class="rcounts">
+                <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>3</b> 箱</div>
+              </div>
+            </div>
+          </div>
+          <div class="note">ステータス: 未配送 / トラブル のみ（配送完了は表示しない）<span class="nb st" data-n="B.14">B.14</span></div>
+        </div>
+        <div class="footer"><button class="btn btn-next">もっと読み込む<span class="nb act" data-n="B.15">B.15</span></button></div>
+      </div></div>
+    </div>
+
+    <!-- ===== TAB C · COOL便 · DA_LIST_00_C ===== -->
+    <div class="mock">
+      <div class="mock-cap">Tab C COOL便（COOL Delivery）<span class="sid">DA_LIST_00_C</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">配送一覧</div><div class="hbtn ghost"></div></div>
+        <div class="ltabs">
+          <div class="ltab">倉庫受付<span class="cnt">2</span></div>
+          <div class="ltab">ES配送便<span class="cnt">2</span></div>
+          <div class="ltab active">COOL便<span class="cnt">2</span><span class="nb" data-n="A.1">A.1</span></div>
+        </div>
+        <div class="daterow">
+          <span class="datebox"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>2026-06-17</span>
+          <span style="color:#999;">〜</span>
+          <span class="datebox"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>2026-06-24</span>
+          <span class="filterbtn"><svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.5 10 19 14 21 14 12.5 22 3"/></svg></span><span class="nb act" data-n="B.1">B.1</span>
+        </div>
+        <div class="content">
+          <div class="cool-banner"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="4" y1="7" x2="20" y2="17"/><line x1="20" y1="7" x2="4" y2="17"/></svg>冷蔵便です。温度管理に注意して配送してください。<span class="nb st" data-n="C.1">C.1</span></div>
+          <div class="search-box">
+            <input class="search-input" placeholder="会社名・住所・倉庫名">
+            <span class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+          </div>
+          <div class="rcard">
+            <div class="rcard-head">
+              <div class="ricon purple"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></div>
+              <span class="rname">フレッシュフード有限会社<span class="chip cool" style="margin-left:6px;"><svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#2c7fc2;fill:none;stroke-width:2;"><line x1="12" y1="2" x2="12" y2="22"/><line x1="4" y1="7" x2="20" y2="17"/><line x1="20" y1="7" x2="4" y2="17"/></svg>冷蔵<span class="nb" data-n="C.2">C.2</span></span></span>
+              <span class="rbadge trouble">トラブル<span class="nb" data-n="B.5">B.5</span></span>
+            </div>
+            <div class="rmeta">
+              <div class="rdate">2026-06-17（水）</div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/></svg>オージーフーズ倉庫</div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都世田谷区代沢4-5-6</div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.6 2.5a2 2 0 0 1-.5 1.9L8 9.1a16 16 0 0 0 6 6l1-1.2a2 2 0 0 1 1.9-.5l2.5.6a2 2 0 0 1 1.6 2z"/></svg>03-5555-0002<span class="nb" data-n="B.10">B.10</span></div>
+              <div class="rcounts">
+                <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>1</b> 箱<span class="nb" data-n="B.9">B.9</span></div>
+                <div class="rcount chilled"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="6" y1="11" x2="18" y2="11"/></svg><b>10</b> 品<span class="nb" data-n="B.12">B.12</span></div>
+              </div>
+            </div>
+            <div style="margin-top:12px;display:flex;gap:10px;">
+              <button class="btn btn-back" style="padding:11px;font-size:14px;" disabled>✓<span class="nb st" data-n="C.3">C.3</span></button>
+              <button class="btn btn-back" style="padding:11px;font-size:14px;" disabled>✕</button>
+            </div>
+          </div>
+          <div class="rcard">
+            <div class="rcard-head">
+              <div class="ricon purple"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></div>
+              <span class="rname">冷蔵デリバリー株式会社<span class="chip cool" style="margin-left:6px;">冷蔵</span></span>
+              <span class="rbadge undelivered">未配送<span class="nb" data-n="B.5">B.5</span></span>
+            </div>
+            <div class="rmeta">
+              <div class="rdate">2026-06-17（水）</div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都目黒区自由が丘3-4-5</div>
+              <div class="rcounts">
+                <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>1</b> 箱</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><button class="btn btn-next">もっと読み込む<span class="nb act" data-n="B.15">B.15</span></button></div>
+      </div></div>
+    </div>
+
+  </div><!-- /gallery -->
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm badge bất kỳ (A./B./C.) để xem bảng ráp + tài liệu API. 3 mock = 3 tab của <code>DA_LIST_00</code> · 1 endpoint <code>GET /driver/delivery-list</code>, tham số <code>tab</code> đổi shape: Tab A = <code>WarehouseReceiptItemDto</code>, Tab B/C = <code>DeliveryItemDto</code>.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — 配送一覧 (DA_LIST_00)</b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:48px">No</th><th>UI element</th><th>API source</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const C = e => '<code>'+e+'</code>';
+const GET = '<span class="method m-get">GET</span> '+C('/driver/delivery-list');
+const FE = '<b>FE</b>';
+
+const W = {
+  // ── Common (tabs / filter) — A.x dùng chung cho cả 3 mock ─────────
+  'A.1':{cls:'',ui:'タブ + 件数 / Tab + count',api:GET,field:C('tab')+' + '+C('tabCounts.{warehouseReceipt|esDelivery|cool}'),tf:'badge count mỗi tab; đổi tab → reload với '+C('tab')+' mới (reset cursor)'},
+  'A.2':{cls:'act',ui:'日付範囲 / Khoảng ngày',api:GET,field:'query '+C('startDate')+' / '+C('endDate'),tf:'yyyy-MM-dd; default today ~ today+7; span ≤ 31 ngày'},
+  'A.3':{cls:'act',ui:'フィルター / Nút filter',api:'<b>trigger</b> → filter sheet',field:'mở panel chọn ステータス / locationType',tf:'tap'},
+  'A.4':{cls:'act',ui:'検索 / Ô tìm (倉庫・中継名)',api:GET,field:'query '+C('keyword'),tf:'debounce → reload. Tab A: tên kho/trung chuyển/địa chỉ'},
+  'A.5':{cls:'',ui:'拠点名 / Tên điểm (Tab A)',api:GET,field:C('items[].locationName'),tf:'tên kho / trung chuyển'},
+  'A.6':{cls:'',ui:'種別アイコン / Icon loại (Tab A)',api:GET,field:C('items[].locationType'),tf:'WAREHOUSE→倉庫 (icon nhà kho) · TRANSIT→中継 (icon điểm trung chuyển)'},
+  'A.7':{cls:'',ui:'ステータス badge (Tab A)',api:GET,field:C('items[].receiptStatus'),tf:'UNRECEIVED→未受付 cam · RECEIVED→受付済 xanh · TROUBLE→トラブル đỏ · CANCELLED→中止 xám'},
+  'A.8':{cls:'',ui:'配達日 / Ngày',api:GET,field:C('items[].deliveryDate'),tf:'yyyy-MM-dd + thứ (（金）…)'},
+  'A.9':{cls:'',ui:'住所 / Địa chỉ (Tab A)',api:GET,field:C('items[].address'),tf:'—'},
+  'A.10':{cls:'',ui:'社数 / 「X 社」',api:GET,field:C('items[].companyCount'),tf:'ẩn counter khi = 0'},
+  'A.11':{cls:'',ui:'箱数 / 「X 箱」',api:GET,field:C('items[].boxCount'),tf:'ẩn khi = 0'},
+  'A.12':{cls:'',ui:'冷凍品数 / 「X 品」(đỏ, bông tuyết)',api:GET,field:C('items[].frozenItemCount'),tf:'đông lạnh; ẩn khi 0; chưa picking → 「未確定」'},
+  'A.13':{cls:'',ui:'冷蔵+常温品数 / 「X 品」(xanh, tủ lạnh)',api:GET,field:C('items[].chilledNormalItemCount'),tf:'mát+thường; ẩn khi 0; chưa picking → 「未確定」'},
+  'A.14':{cls:'st',ui:'空状態 / Empty state',api:'—',field:'Static UI',tf:'khi '+C('items=[]')+' → 「配送予定データはありません。」 (không API)'},
+  'A.15':{cls:'act',ui:'もっと読み込む / Load more (infinite scroll)',api:'<b>trigger</b> '+GET,field:'query '+C('cursor')+' = '+C('nextCursor'),tf:'gọi tiếp khi scroll bottom; dừng khi '+C('hasMore=false')},
+
+  // ── Tab A filters ──────────────────────────────────────────────
+  'B.1':{cls:'act',ui:'ステータス filter (Tab A: receiptStatus / Tab B·C: deliveryStatus)',api:GET,field:'query '+C('receiptStatus[]')+' (Tab A) · '+C('deliveryStatus[]')+' (Tab B/C) · '+C('locationType')+' (chỉ Tab A)',tf:'đa chọn. Tab A: UNRECEIVED/RECEIVED/TROUBLE/CANCELLED + WAREHOUSE/TRANSIT. Tab B/C: UNDELIVERED/TROUBLE (DELIVERED không hợp lệ)'},
+
+  // ── Tab B / C (DeliveryItemDto) ────────────────────────────────
+  'B.2':{cls:'',ui:'会社名 / Tiêu đề thẻ',api:GET,field:C('items[].companyName'),tf:'tên công ty / điểm giao'},
+  'B.4':{cls:'',ui:'種別アイコン / Icon loại chuyến',api:GET,field:C('items[].shipmentType'),tf:'ngầm định theo tab: ES_DELIVERY (Tab B) · COOL (Tab C)'},
+  'B.5':{cls:'',ui:'ステータス badge (Tab B/C)',api:GET,field:C('items[].deliveryStatus'),tf:'UNDELIVERED→未配送 vàng · TROUBLE→トラブル đỏ (không có DELIVERED)'},
+  'B.6':{cls:'',ui:'配達日 / Ngày',api:GET,field:C('items[].deliveryDate'),tf:'yyyy-MM-dd + thứ'},
+  'B.7':{cls:'',ui:'倉庫名 / Kho nguồn (icon xe)',api:GET,field:C('items[].sourceWarehouseName'),tf:'—'},
+  'B.8':{cls:'',ui:'住所 / Địa chỉ giao (📍)',api:GET,field:C('items[].destinationAddress'),tf:'—'},
+  'B.9':{cls:'',ui:'箱数 / 「X 箱」',api:GET,field:C('items[].boxCount'),tf:'ẩn khi 0'},
+  'B.10':{cls:'',ui:'電話 / SĐT liên hệ (📞)',api:GET,field:C('items[].phone'),tf:'nullable → dựng '+C('tel:')+' link; ẩn khi null'},
+  'B.11':{cls:'',ui:'冷凍品数 / 「X 品」(đông lạnh)',api:GET,field:C('items[].frozenItemCount'),tf:'ẩn khi 0'},
+  'B.12':{cls:'',ui:'冷蔵+常温品数 / 「X 品」(mát+thường)',api:GET,field:C('items[].chilledNormalItemCount'),tf:'ẩn khi 0'},
+  'B.13':{cls:'act',ui:'履歴を開始する (Tab B, trong 7 ngày)',api:'<b>trigger</b> nav',field:'sang màn giao hàng',tf:'chỉ Editable khi Tab B trong 7 ngày; quá 7 ngày / ngày tương lai → ẩn'},
+  'B.14':{cls:'st',ui:'注記 / Ghi chú trạng thái',api:'—',field:'Static UI',tf:'list chỉ chứa UNDELIVERED/TROUBLE — đơn DELIVERED bị loại (không API)'},
+  'B.15':{cls:'act',ui:'もっと読み込む / Load more',api:'<b>trigger</b> '+GET,field:'query '+C('cursor')+' = '+C('nextCursor'),tf:'infinite scroll; dừng khi '+C('hasMore=false')},
+
+  // ── Tab C extra (COOL) ─────────────────────────────────────────
+  'C.1':{cls:'st',ui:'冷蔵バナー / Banner COOL',api:'—',field:'Static UI',tf:'chỉ Tab C: 「冷蔵便です。温度管理に注意して配送してください。」 (không API)'},
+  'C.2':{cls:'',ui:'温度 chip / Chip 冷蔵·冷凍',api:GET,field:C('items[].cargoType'),tf:'REFRIGERATED→❄冷蔵 · FROZEN→冷凍 · NORMAL→— (không chip)'},
+  'C.3':{cls:'st',ui:'チェック/X ボタン (Tab C: disabled)',api:'—',field:'Static UI (read-only)',tf:'Tab C luôn read-only → nút check/X hiển thị nhưng disabled (không API)'}
+};
+
+const DOCS = `
+<div style="background:#f7fee7;border:1px solid #d9f99d;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#3f6212;margin-bottom:14px">
+  <b>1 API phục vụ cả 3 tab:</b> <span class="method m-get">GET</span> <code>/driver/delivery-list</code>. Tham số <code>tab</code> quyết định <b>shape response</b> + cách lọc. Tab A → <code>WarehouseReceiptItemDto</code>; Tab B &amp; C → <code>DeliveryItemDto</code>. Cursor pagination (infinite scroll). Auth <code>Bearer {Driver}</code>.
+</div>
+
+<h4>① <span class="method m-get">GET</span> /driver/delivery-list — list giao hàng theo tab</h4>
+<p><b>Mục đích:</b> trả về danh sách lọc theo <code>tab</code> + khoảng ngày + filter tùy chọn. Đơn <b>đã giao (<code>DELIVERED</code>) không xuất hiện</b> — list chỉ còn việc chưa xong.</p>
+<pre>GET /driver/delivery-list?tab=WAREHOUSE_RECEIPT&startDate=2026-06-12&endDate=2026-06-19
+Authorization: Bearer {accessToken}
+Accept-Language: ja | vi</pre>
+
+<p style="font-weight:700;margin-top:10px">Query parameters</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>BB</th><th>Default</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>tab</code></td><td>enum</td><td>—</td><td><code>WAREHOUSE_RECEIPT</code></td><td>Tab cần lấy: <code>WAREHOUSE_RECEIPT</code> (A) / <code>ES_DELIVERY</code> (B) / <code>COOL</code> (C)</td></tr>
+<tr><td><code>startDate</code></td><td>string ISO</td><td>—</td><td>today</td><td>Đầu khoảng ngày, <code>yyyy-MM-dd</code></td></tr>
+<tr><td><code>endDate</code></td><td>string ISO</td><td>—</td><td>today + 7</td><td>Cuối khoảng ngày, <code>yyyy-MM-dd</code>. Span tối đa <b>31 ngày</b></td></tr>
+<tr><td><code>keyword</code></td><td>string</td><td>—</td><td>—</td><td>Tìm tự do (ô「倉庫・中継名」). Tab A: tên kho/trung chuyển/địa chỉ. Tab B/C: tên cty/địa chỉ giao/tên kho nguồn</td></tr>
+<tr><td><code>receiptStatus</code></td><td>enum[]</td><td>—</td><td>— (all)</td><td><b>Chỉ Tab A</b> (filter「ステータス」, đa chọn): <code>UNRECEIVED</code> | <code>RECEIVED</code> | <code>TROUBLE</code> | <code>CANCELLED</code></td></tr>
+<tr><td><code>locationType</code></td><td>enum</td><td>—</td><td>— (all)</td><td><b>Chỉ Tab A</b>: <code>WAREHOUSE</code> (倉庫) | <code>TRANSIT</code> (中継)</td></tr>
+<tr><td><code>deliveryStatus</code></td><td>enum[]</td><td>—</td><td>— (all)</td><td><b>Chỉ Tab B/C</b> (filter「ステータス」, đa chọn): <code>UNDELIVERED</code> | <code>TROUBLE</code>. Không có <code>DELIVERED</code></td></tr>
+<tr><td><code>cursor</code></td><td>string</td><td>—</td><td>—</td><td>Cursor trang kế (lấy từ <code>nextCursor</code> của response trước)</td></tr>
+<tr><td><code>limit</code></td><td>number</td><td>—</td><td>20</td><td>Số item mỗi trang. Tối đa 50</td></tr>
+</tbody></table>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:9px 12px;font-size:12px;color:#92400e;margin-top:10px">
+  ⚠️ <b>Validation:</b> <code>startDate</code> ≤ <code>endDate</code> · <code>endDate − startDate</code> ≤ 31 ngày · <code>receiptStatus</code>/<code>locationType</code> bị bỏ qua khi <code>tab ≠ WAREHOUSE_RECEIPT</code> · <code>deliveryStatus</code> bị bỏ qua khi <code>tab = WAREHOUSE_RECEIPT</code>, giá trị <code>DELIVERED</code> không hợp lệ.
+</div>
+
+<h4 style="margin-top:18px">Response — Tab A 倉庫受付 (<code>WarehouseReceiptItemDto</code>)</h4>
+<p><code>GET /driver/delivery-list?tab=WAREHOUSE_RECEIPT</code> — thẻ điểm nhận (kho / trung chuyển), gom theo location.</p>
+<pre>{
+  "tab": "WAREHOUSE_RECEIPT",
+  "tabCounts": { "warehouseReceipt": 2, "esDelivery": 2, "cool": 2 },
+  "dateRange": { "startDate": "2026-06-12", "endDate": "2026-06-19" },
+  "items": [
+    {
+      "id": 1001,
+      "locationType": "WAREHOUSE",
+      "locationName": "オージーフーズ倉庫",
+      "receiptStatus": "RECEIVED",
+      "deliveryDate": "2026-06-12",
+      "address": "東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階",
+      "companyCount": 10,
+      "boxCount": 50,
+      "frozenItemCount": 500,
+      "chilledNormalItemCount": 500
+    },
+    {
+      "id": 1002,
+      "locationType": "TRANSIT",
+      "locationName": "ヤマト運輸営業所",
+      "receiptStatus": "TROUBLE",
+      "deliveryDate": "2026-06-12",
+      "address": "東京都新宿区1-5-10",
+      "companyCount": 10,
+      "boxCount": 80,
+      "frozenItemCount": 500,
+      "chilledNormalItemCount": 500
+    }
+  ],
+  "nextCursor": "eyJpZCI6MTAwMn0=",
+  "hasMore": true
+}</pre>
+
+<h4 style="margin-top:18px">Response — Tab B ES配送便 &amp; Tab C COOL便 (<code>DeliveryItemDto</code>)</h4>
+<p>Tab B <code>?tab=ES_DELIVERY</code> (<code>shipmentType = ES_DELIVERY</code>) và Tab C <code>?tab=COOL</code> (<code>shipmentType = COOL</code>) <b>cùng shape</b>. Cả hai lọc <code>deliveryStatus IN (UNDELIVERED, TROUBLE)</code>.</p>
+<pre>// Tab B
+{
+  "tab": "ES_DELIVERY",
+  "tabCounts": { "warehouseReceipt": 2, "esDelivery": 2, "cool": 2 },
+  "dateRange": { "startDate": "2026-06-12", "endDate": "2026-06-19" },
+  "items": [
+    {
+      "id": 2001,
+      "shipmentType": "ES_DELIVERY",
+      "cargoType": "NORMAL",
+      "companyName": "富士フィナンシャルアドバイザリー株式会社",
+      "deliveryStatus": "UNDELIVERED",
+      "deliveryDate": "2026-06-12",
+      "sourceWarehouseName": "オージーフーズ倉庫",
+      "destinationAddress": "東京都渋谷区千駄ヶ谷5-32-7...",
+      "phone": "03-5555-0101",
+      "boxCount": 2,
+      "frozenItemCount": 10,
+      "chilledNormalItemCount": 30
+    }
+  ],
+  "nextCursor": null,
+  "hasMore": false
+}
+
+// Tab C (cùng shape, shipmentType=COOL, có cargoType=REFRIGERATED/FROZEN)
+{
+  "tab": "COOL",
+  "tabCounts": { "warehouseReceipt": 2, "esDelivery": 2, "cool": 2 },
+  "dateRange": { "startDate": "2026-06-12", "endDate": "2026-06-19" },
+  "items": [
+    {
+      "id": 3001,
+      "shipmentType": "COOL",
+      "cargoType": "REFRIGERATED",
+      "companyName": "フレッシュフード有限会社",
+      "deliveryStatus": "TROUBLE",
+      "deliveryDate": "2026-06-17",
+      "sourceWarehouseName": "オージーフーズ倉庫",
+      "destinationAddress": "東京都世田谷区代沢4-5-6",
+      "phone": "03-5555-0002",
+      "boxCount": 1,
+      "frozenItemCount": 0,
+      "chilledNormalItemCount": 10
+    }
+  ],
+  "nextCursor": null,
+  "hasMore": false
+}</pre>
+
+<h4 style="margin-top:18px">Response DTOs</h4>
+<pre>export class DeliveryListResponse {
+  tab: 'WAREHOUSE_RECEIPT' | 'ES_DELIVERY' | 'COOL';
+  tabCounts: TabCountsDto;       // { warehouseReceipt, esDelivery, cool }
+  dateRange: DateRangeDto;       // { startDate, endDate } yyyy-MM-dd
+  items: WarehouseReceiptItemDto[] | DeliveryItemDto[];
+  nextCursor: string | null;
+  hasMore: boolean;
+}
+
+export class WarehouseReceiptItemDto {   // Tab A
+  id: number;
+  locationType: 'WAREHOUSE' | 'TRANSIT';
+  locationName: string;
+  receiptStatus: 'UNRECEIVED' | 'RECEIVED' | 'TROUBLE' | 'CANCELLED';
+  deliveryDate: string;            // yyyy-MM-dd
+  address: string;
+  companyCount: number;            // X 社
+  boxCount: number;                // X 箱
+  frozenItemCount: number;         // X 品 (đỏ / bông tuyết)
+  chilledNormalItemCount: number;  // X 品 (xanh / tủ lạnh)
+}
+
+export class DeliveryItemDto {           // Tab B & C
+  id: number;
+  shipmentType: 'ES_DELIVERY' | 'COOL';
+  cargoType: 'REFRIGERATED' | 'FROZEN' | 'NORMAL';
+  companyName: string;
+  deliveryStatus: 'UNDELIVERED' | 'TROUBLE';  // không có DELIVERED
+  deliveryDate: string;
+  sourceWarehouseName: string;
+  destinationAddress: string;
+  phone: string | null;            // → tel:
+  boxCount: number;
+  frozenItemCount: number;
+  chilledNormalItemCount: number;
+}</pre>
+
+<h4 style="margin-top:18px">Điều kiện dữ liệu mỗi tab</h4>
+<table><thead><tr><th>Tab</th><th>Data condition</th></tr></thead><tbody>
+<tr><td><b>A</b> 倉庫受付</td><td>Tất cả receipt status: <code>UNRECEIVED</code> / <code>RECEIVED</code> / <code>TROUBLE</code> / <code>CANCELLED</code> (filter qua <code>receiptStatus</code>)</td></tr>
+<tr><td><b>B</b> ES配送便</td><td><code>shipmentType = ES_DELIVERY</code> &amp; <code>deliveryStatus IN (UNDELIVERED, TROUBLE)</code></td></tr>
+<tr><td><b>C</b> COOL便</td><td><code>shipmentType = COOL</code> &amp; <code>deliveryStatus IN (UNDELIVERED, TROUBLE)</code> + banner 冷蔵 (Static UI)</td></tr>
+</tbody></table>
+<p>Đơn <code>DELIVERED</code> (配送完了) <b>không xuất hiện</b> ở bất kỳ tab nào.</p>
+
+<h4 style="margin-top:18px">Sort order</h4>
+<table><thead><tr><th>Ưu tiên</th><th>Field</th><th>Hướng</th></tr></thead><tbody>
+<tr><td>1</td><td><code>deliveryDate</code></td><td>ASC (gần nhất trước)</td></tr>
+<tr><td>2</td><td>status priority</td><td><code>TROUBLE</code> &gt; <code>UNRECEIVED</code>/<code>UNDELIVERED</code> &gt; <code>RECEIVED</code></td></tr>
+<tr><td>3</td><td><code>locationName</code> / <code>companyName</code></td><td>ASC</td></tr>
+</tbody></table>
+
+<h4 style="margin-top:18px">Errors</h4>
+<p>Envelope backend thật: <code>statusCode</code> là enum chuỗi (400→<code>error</code>, 401→<code>unauthorized</code>), kèm <code>message</code>/<code>title</code>/<code>errorCode</code>/<code>data:null</code>.</p>
+<pre>{ "statusCode": "error", "message": "終了日は開始日以降を選択してください",
+  "title": "Bad Request", "errorCode": null, "data": null }</pre>
+<table><thead><tr><th>Điều kiện</th><th>Message (JP)</th><th>Message (VN)</th></tr></thead><tbody>
+<tr><td><code>startDate &gt; endDate</code></td><td>終了日は開始日以降を選択してください</td><td>Vui lòng chọn ngày kết thúc sau hoặc bằng ngày bắt đầu</td></tr>
+<tr><td><code>endDate − startDate &gt; 31 ngày</code></td><td>1ヶ月以内の期間を選択してください</td><td>Vui lòng chọn khoảng thời gian trong vòng 1 tháng</td></tr>
+<tr><td><code>tab</code> không hợp lệ</td><td>無効なタブパラメータ</td><td>Tham số tab không hợp lệ</td></tr>
+<tr><td>Sai định dạng ngày</td><td>日付形式が不正です (yyyy-MM-dd)</td><td>Định dạng ngày không đúng (yyyy-MM-dd)</td></tr>
+</tbody></table>
+
+<h4 style="margin-top:18px">Enums</h4>
+<p style="font-weight:700;margin-top:6px">DeliveryListTab</p>
+<table><thead><tr><th>Value</th><th>日本語</th><th>Tiếng Việt</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>WAREHOUSE_RECEIPT</code></td><td>倉庫受付</td><td>Nhận tại kho</td><td>Tab A — thẻ điểm nhận</td></tr>
+<tr><td><code>ES_DELIVERY</code></td><td>ES配送便</td><td>Giao ES</td><td>Tab B — thẻ giao loại ES</td></tr>
+<tr><td><code>COOL</code></td><td>COOL便</td><td>Giao COOL</td><td>Tab C — thẻ giao loại COOL (冷蔵/冷凍)</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:8px">ReceiptStatus (Tab A)</p>
+<table><thead><tr><th>Value</th><th>日本語</th><th>Badge</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>UNRECEIVED</code></td><td>未受付</td><td>Orange</td><td>Chưa nhận từ kho</td></tr>
+<tr><td><code>RECEIVED</code></td><td>受付済</td><td>Green</td><td>Đã nhận</td></tr>
+<tr><td><code>TROUBLE</code></td><td>トラブル</td><td>Red</td><td>Có sự cố khi nhận</td></tr>
+<tr><td><code>CANCELLED</code></td><td>中止</td><td>Gray</td><td>Hủy nhận</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:8px">DeliveryStatus (Tab B/C)</p>
+<table><thead><tr><th>Value</th><th>日本語</th><th>Badge</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>UNDELIVERED</code></td><td>未配送</td><td>Yellow</td><td>Chưa giao</td></tr>
+<tr><td><code>TROUBLE</code></td><td>トラブル</td><td>Red</td><td>Sự cố khi giao</td></tr>
+</tbody></table>
+<p style="font-size:12px;color:#5a6473;"><code>DELIVERED</code> (配送完了) không dùng trong list này — đơn đã giao bị loại khỏi danh sách.</p>
+<p style="font-weight:700;margin-top:8px">CargoType (chip Tab B/C)</p>
+<table><thead><tr><th>Value</th><th>日本語</th><th>Chip</th></tr></thead><tbody>
+<tr><td><code>REFRIGERATED</code></td><td>冷蔵</td><td>❄冷蔵 (mát)</td></tr>
+<tr><td><code>FROZEN</code></td><td>冷凍</td><td>冷凍 (đông lạnh)</td></tr>
+<tr><td><code>NORMAL</code></td><td>常温</td><td>— (không chip)</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:8px">LocationType (Tab A)</p>
+<table><thead><tr><th>Value</th><th>日本語</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>WAREHOUSE</code></td><td>倉庫</td><td>Nhận trực tiếp tại kho</td></tr>
+<tr><td><code>TRANSIT</code></td><td>中継</td><td>Nhận tại điểm trung chuyển</td></tr>
+</tbody></table>
+
+<div style="background:#ebf8ff;border:1px solid #bee3f8;border-radius:8px;padding:9px 12px;font-size:12px;color:#2c5282;margin-top:12px">
+  ℹ️ <b>Empty state:</b> khi <code>items = []</code> → JP「配送予定データはありません。」 / VN「Không có dữ liệu giao hàng dự kiến.」 · <b>Pagination:</b> initial load không <code>cursor</code> → scroll bottom gọi với <code>cursor = nextCursor</code> → dừng khi <code>hasMore = false</code> · đổi tab/filter → reset cursor + reload.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).forEach(n=>{
+  const d=W[n], cls=d.cls||'';
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function openDw(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function closeDw(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=closeDw; ov.onclick=closeDw;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDw(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openDw(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

@@ -48,6 +48,28 @@ Tập hợp các trang **mockup tương tác + tài liệu API** cho từng feat
 
 ---
 
+## Driver App — Tài xế giao hàng (E06)
+
+**Scope:** App tài xế (`/driver`) — nhận hàng tại kho, giao ES配送便 (giao + lên kệ, wizard 5 bước) / COOL便 (giao one-shot), báo cáo sự cố. Auth qua Driver Cognito pool, cursor pagination.
+
+| Màn hình | Persona | Mô tả | Mở |
+|---|---|---|---|
+| **Index / Overview** | All | Scope, conventions, endpoint catalog, **state lifecycle**, NFR, Error catalog, danh mục màn hình | [Mở →](drivers/README.md){target=_blank} |
+| ホーム / スケジュール | E06 | Trang chủ tài xế + lịch giao (DA_HOME_001) | [Mở →](drivers/dashboard/DA_HOME_001.html){target=_blank} |
+| 配送一覧 | E06 | List 3 tab 倉庫受取 / 未配送 / 配送完了 (DA_LIST_00) | [Mở →](drivers/delivery-list/DA_LIST_00.html){target=_blank} |
+| 荷物受取 | E06 | Nhận hàng tại kho — tick từng kiện + 完了 (DA_RECV_001) | [Mở →](drivers/warehouse/DA_RECV_001.html){target=_blank} |
+| ES配送便 | E06 | Wizard giao + lên kệ, kiểm phẩm 5 bước (DA_ESDL_001) | [Mở →](drivers/es-delivery/step1/DA_ESDL_001.html){target=_blank} |
+| COOL便 | E06 | Giao one-shot, tick đủ kiện → 完了 (DA_COOL_001) | [Mở →](drivers/cool-driver/DA_COOL_001_01_default.html){target=_blank} |
+| トラブル報告 | E06 | Chọn điểm giao/nhận → form báo sự cố (DA_RPTD_001/002) | [Mở →](drivers/trouble-report/DA_RPTD_001_02_selected.html){target=_blank} |
+
+> Tài liệu thiết kế (.md): [README (index)](drivers/README.md){target=_blank} · [API設計](drivers/API設計_ドライバーアプリ.md){target=_blank} · [DB変更提案](drivers/DB変更提案_ドライバーアプリ.md){target=_blank} · [Endpoint Index + enums](drivers/apis/README.md){target=_blank}
+>
+> Contract per màn: [dashboard](drivers/apis/dashboard.md){target=_blank} · [delivery-list](drivers/apis/delivery-list.md){target=_blank} · [warehouse-receipt](drivers/apis/warehouse-receipt.md){target=_blank} · [es-delivery](drivers/apis/es-delivery.md){target=_blank} · [cool-delivery-completion](drivers/apis/cool-delivery-completion.md){target=_blank} · [trouble-report](drivers/apis/trouble-report.md){target=_blank}
+>
+> Hướng dẫn ráp API tương tác (click số → field/endpoint): [ホーム](drivers/dashboard/apis/index.html){target=_blank} · [配送一覧](drivers/delivery-list/apis/index.html){target=_blank} · [荷物受取](drivers/warehouse/apis/index.html){target=_blank} · [ES配送便](drivers/es-delivery/apis/index.html){target=_blank} · [COOL便](drivers/cool-driver/apis/index.html){target=_blank} · [トラブル報告](drivers/trouble-report/apis/index.html){target=_blank}
+
+---
+
 ## 仕入先 — Supplier (E04)
 
 **Scope:** Admin quản lý 仕入先マスタ (`/admin/supplier-masters`) + Supplier self-service (`/supplier`). Mỗi màn gắn cờ trạng thái **LIVE / TBD / OUT / EXISTING**.

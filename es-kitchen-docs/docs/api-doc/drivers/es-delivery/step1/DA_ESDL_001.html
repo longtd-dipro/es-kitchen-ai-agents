@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DA_ESDL_001 — 陳列前 (Step 1)</title>
+    <link rel="stylesheet" href="../../dashboard/style.css">
+    <style>
+        body { padding: 24px 0; }
+        .docs-section { margin-top: 24px; border-top: 2px solid #edf2f7; }
+        .page-note {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #92400e;
+            margin: 14px 0;
+        }
+        .api-note {
+            background: #ebf8ff;
+            border: 1px solid #bee3f8;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #2c5282;
+            margin: 14px 0;
+        }
+        .screen-label {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 6px;
+            z-index: 200;
+        }
+        .lang-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+        .lang-tab {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #cbd5e0;
+            background: #fff;
+            color: #4a5568;
+        }
+        .lang-tab.active { background: #2b6cb0; color: #fff; border-color: #2b6cb0; }
+        .lang-block { display: none; }
+        .lang-block.active { display: block; }
+        .vi-text { color: #b7791f; font-style: italic; }
+        .docs-footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: #a0aec0;
+            border-top: 1px solid #edf2f7;
+            margin-top: 20px;
+        }
+        .spec-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 12px; }
+        .spec-table th, .spec-table td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .spec-table th { background: #edf2f7; font-weight: bold; color: #1a202c; }
+        .spec-table tr:nth-child(even) td { background: #f7fafc; }
+        .spec-table code { background: #edf2f7; padding: 2px 5px; border-radius: 3px; font-size: 11px; }
+        .anno {
+            display: inline-block;
+            background: #e53e3e;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+        .anno-req {
+            display: inline-block;
+            background: #2a4365;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+        .anno-fe {
+            display: inline-block;
+            background: #a0aec0;
+            color: #fff;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 1px 5px;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+        .field-num { color: #e53e3e; font-weight: bold; white-space: nowrap; }
+        .req-num { color: #2a4365; font-weight: bold; white-space: nowrap; }
+        .phone-wrapper { display:flex; justify-content:center; }
+        .phone-frame {
+            width: 100%;
+            max-width: 430px;
+            background: #fff;
+            border-radius: 28px;
+            border: 4px solid #1f2937;
+            overflow: hidden;
+            min-height: 760px;
+            box-shadow: 0 20px 60px rgba(15,23,42,0.18);
+        }
+    </style>
+</head>
+<body>
+<div style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 16px;">
+
+    <div style="margin-bottom: 20px;">
+        <div class="lang-tabs">
+            <span class="lang-tab active" onclick="switchLang(this, 'ja')">日本語</span>
+            <span class="lang-tab" onclick="switchLang(this, 'vi')">Tiếng Việt</span>
+        </div>
+        <div class="lang-block ja active">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_ESDL_001 — 陳列前（Step 1）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · 配送前の陳列前写真をアップロードする画面</p>
+        </div>
+        <div class="lang-block vi">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_ESDL_001 — 陳列前（Step 1）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · Màn hình upload ảnh trước khi ra kho / trước khi bắt đầu giao ES Delivery</p>
+        </div>
+        <div style="margin-top: 10px;">
+            <span style="background:#2b6cb0; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px;">Mobile App</span>
+            <span style="background:#48bb78; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">Screen ID: DA_ESDL_001</span>
+            <span style="background:#805ad5; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">V1.0</span>
+        </div>
+    </div>
+
+    <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:16px; margin-bottom:20px;">
+        <h3 style="font-size:14px; color:#2d3748; margin-bottom:12px;">Screen Info / 画面情報</h3>
+        <table class="spec-table">
+            <thead><tr><th>項目</th><th>内容</th><th>Mục</th><th>Nội dung</th></tr></thead>
+            <tbody>
+                <tr><td>画面ID</td><td>DA_ESDL_001-01 / DA_ESDL_001-02</td><td>Mã màn hình</td><td>DA_ESDL_001-01 / DA_ESDL_001-02</td></tr>
+                <tr><td>画面名（日本語）</td><td>陳列前</td><td>Tên màn hình (tiếng Việt)</td><td>Trước khi trưng bày / ra kho</td></tr>
+                <tr><td>遷移元</td><td>配送一覧（ES配送明細）</td><td>Màn hình chuyển từ</td><td>Màn hình chi tiết ES Delivery / list shipment</td></tr>
+                <tr><td>目的</td><td>ES配送の配送開始前に、冷蔵庫・ボックス内の陳列前写真をアップロードする</td><td>Mục đích</td><td>Upload ảnh trước khi bắt đầu giao ES Delivery</td></tr>
+                <tr><td>対応フロー</td><td>ES Delivery Step 1</td><td>Luồng liên quan</td><td>ES Delivery bước 1</td></tr>
+            </tbody>
+        </table>
+        <div class="api-note">
+            <strong>凡例 / Chú thích số:</strong>
+            <span class="anno">1</span> = field thuộc <strong>Response DTO</strong> &nbsp;
+            <span class="anno-req">R1</span> = field thuộc <strong>Request DTO</strong> &nbsp;
+            <span class="anno-fe">FE</span> = control <strong>chỉ phía client</strong>, không gọi API.
+        </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; align-items:start; margin-bottom:30px;">
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">DA_ESDL_001-01 · Default（未アップロード）</h3>
+            <div class="phone-wrapper">
+                <div class="phone-frame">
+                    <div class="screen-label">DA_ESDL_001-01</div>
+                    <div style="padding:16px;">
+                        <div style="display:flex; align-items:center; gap:10px; border-bottom:1px solid #f1f5f9; padding-bottom:10px; margin-bottom:10px;">
+                            <div style="width:32px; height:32px; border-radius:50%; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; color:#4a5568;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            </div>
+                            <div style="font-size:14px; font-weight:bold; color:#1f2937;">陳列前</div>
+                            <div style="margin-left:auto; width:32px; height:32px; border-radius:50%; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; color:#4a5568;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                            </div>
+                        </div>
+
+                        <div style="background:#eef6ff; border-left:4px solid #2b6cb0; padding:10px 12px; border-radius:0 10px 10px 0; margin-bottom:10px;">
+                            <div style="font-size:13px; font-weight:bold; color:#1f2937;">株式会社TEST</div>
+                            <div style="font-size:11px; color:#6b7280; margin-top:4px; display:flex; align-items:center; gap:6px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                東京都渋谷区1-2-3
+                            </div>
+                        </div>
+
+                        <div style="font-size:12px; color:#4b5563; margin-bottom:6px;">
+                            冷蔵庫・ボックス内の陳列前写真をアップロードしてください。
+                        </div>
+
+                        <div style="border:1px dashed #d1d5db; border-radius:16px; padding:18px; text-align:center; color:#9ca3af;">
+                            <div style="font-size:12px; font-weight:bold;">写真はまだありません</div>
+                            <div style="margin-top:10px; font-size:12px; font-weight:bold; color:#374151; background:#f3f4f6; display:inline-block; padding:8px 14px; border-radius:10px;">
+                                ファイル選択
+                            </div>
+                        </div>
+
+                        <div style="margin-top:10px; font-size:10px; color:#6b7280; line-height:1.6;">
+                            ご不明な点は弊社代表番号で、緊急連絡先の「050-5784-2777」までお願いします。
+                        </div>
+                    </div>
+
+                    <div style="position:absolute; bottom:0; left:0; right:0; padding:12px; display:flex; gap:10px; background:#fff; border-top:1px solid #f3f4f6;">
+                        <div style="flex:1; text-align:center; padding:10px; border:1px solid #e5e7eb; border-radius:12px; font-size:12px; font-weight:bold; color:#374151;">戻る</div>
+                        <div style="flex:1; text-align:center; padding:10px; border-radius:12px; font-size:12px; font-weight:bold; color:#cbd5e1; background:#f3f4f6;">続ける</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">DA_ESDL_001-02 · Upload 完了</h3>
+            <div class="phone-wrapper">
+                <div class="phone-frame">
+                    <div class="screen-label">DA_ESDL_001-02</div>
+                    <div style="padding:16px;">
+                        <div style="display:flex; align-items:center; gap:10px; border-bottom:1px solid #f1f5f9; padding-bottom:10px; margin-bottom:10px;">
+                            <div style="width:32px; height:32px; border-radius:50%; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; color:#4a5568;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            </div>
+                            <div style="font-size:14px; font-weight:bold; color:#1f2937;">陳列前</div>
+                            <div style="margin-left:auto; width:32px; height:32px; border-radius:50%; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; color:#4a5568;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                            </div>
+                        </div>
+
+                        <div style="background:#eef6ff; border-left:4px solid #2b6cb0; padding:10px 12px; border-radius:0 10px 10px 0; margin-bottom:10px;">
+                            <div style="font-size:13px; font-weight:bold; color:#1f2937;">株式会社TEST</div>
+                            <div style="font-size:11px; color:#6b7280; margin-top:4px; display:flex; align-items:center; gap:6px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                東京都渋谷区1-2-3
+                            </div>
+                        </div>
+
+                        <div style="font-size:12px; color:#4b5563; margin-bottom:8px;">
+                            冷蔵庫・ボックス内の陳列前写真をアップロードしてください。
+                        </div>
+
+                        <div style="border:1px solid #e5e7eb; border-radius:14px; padding:10px; background:#fff;">
+                            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
+                                <div style="position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; border:1px solid #e5e7eb; background:#f9fafb;">
+                                    <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10px; color:#9ca3af;">Photo 1</div>
+                                    <div style="position:absolute; top:6px; right:6px; width:18px; height:18px; border-radius:50%; background:rgba(0,0,0,0.55); color:#fff; display:flex; align-items:center; justify-content:center; font-size:10px;">✕</div>
+                                </div>
+                                <div style="position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; border:1px solid #e5e7eb; background:#f9fafb;">
+                                    <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10px; color:#9ca3af;">Photo 2</div>
+                                    <div style="position:absolute; top:6px; right:6px; width:18px; height:18px; border-radius:50%; background:rgba(0,0,0,0.55); color:#fff; display:flex; align-items:center; justify-content:center; font-size:10px;">✕</div>
+                                </div>
+                                <div style="position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden; border:1px solid #e5e7eb; background:#f9fafb;">
+                                    <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10px; color:#9ca3af;">Photo 3</div>
+                                    <div style="position:absolute; top:6px; right:6px; width:18px; height:18px; border-radius:50%; background:rgba(0,0,0,0.55); color:#fff; display:flex; align-items:center; justify-content:center; font-size:10px;">✕</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:10px; font-size:10px; color:#6b7280; line-height:1.6;">
+                            ご不明な点は弊社代表番号で、緊急連絡先の「050-5784-2777」までお願いします。
+                        </div>
+                    </div>
+
+                    <div style="position:absolute; bottom:0; left:0; right:0; padding:12px; display:flex; gap:10px; background:#fff; border-top:1px solid #f3f4f6;">
+                        <div style="flex:1; text-align:center; padding:10px; border:1px solid #e5e7eb; border-radius:12px; font-size:12px; font-weight:bold; color:#374151;">戻る</div>
+                        <div style="flex:1; text-align:center; padding:10px; border-radius:12px; font-size:12px; font-weight:bold; color:#fff; background:#2563eb;">続ける</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="docs-section" style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:20px; margin-bottom:24px;">
+        <div class="lang-block ja active">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">表A: レスポンスDTO 組み立て / Response DTO mapping</h2>
+            <p style="font-size:12px; color:#718096;">注釈番号 ⇒ Step 1 で使用する明示フィールド</p>
+        </div>
+        <div class="lang-block vi">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">Bảng A: Ráp Response DTO (Step 1)</h2>
+            <p style="font-size:12px; color:#718096;">Số chú thích ⇒ field dùng cho màn Step 1</p>
+        </div>
+
+        <div class="api-note">
+            <strong>Note:</strong> この画面は現時点では主に前処理・アップロード画面のため、必須レスポンスフィールドは最小で良い。
+            必要に応じて <code>shipmentId</code>, <code>companyId</code>, <code>shipmentType</code>, <code>deliveryDate</code> などを表示/送信に利用する。
+        </div>
+
+        <table class="spec-table">
+            <thead>
+                <tr><th style="width:35px;">#</th><th>項目 (JP)</th><th>Trường (VN)</th><th>Type</th><th>用途 / Response field</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="field-num">1</td><td>配送単位ID</td><td>ID shipment</td><td>number</td><td><code>shipmentId</code> — 親配送を識別</td></tr>
+                <tr><td class="field-num">2</td><td>納品先ID</td><td>ID công ty/điểm giao</td><td>number</td><td><code>companyId</code> — Step 1 の対象先</td></tr>
+                <tr><td class="field-num">3</td><td>配送種別</td><td>Loại chuyến</td><td>enum</td><td><code>shipmentType</code> — <code>ES_DELIVERY</code> / <code>COOL</code></td></tr>
+                <tr><td class="field-num">4</td><td>配送日</td><td>Ngày giao</td><td>date</td><td><code>deliveryDate</code> (yyyy-MM-dd)</td></tr>
+                <tr><td class="field-num">5</td><td>納品先名</td><td>Tên điểm giao</td><td>string</td><td><code>companyName</code> — カード見出し</td></tr>
+                <tr><td class="field-num">6</td><td>納品先住所</td><td>Địa chỉ điểm giao</td><td>string</td><td><code>destinationAddress</code></td></tr>
+                <tr><td class="field-num">7</td><td>受取担当者名</td><td>Tên người nhận</td><td>string</td><td><code>contact.name</code></td></tr>
+                <tr><td class="field-num">8</td><td>受取担当者TEL</td><td>SĐT người nhận</td><td>string</td><td><code>contact.phone</code></td></tr>
+                <tr><td class="field-num">9</td><td>注意文言</td><td>Thông báo lưu ý</td><td>array</td><td><code>notices[]</code> — type + text を表示</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="docs-section" style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:20px; margin-bottom:24px;">
+        <div class="lang-block ja active">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">表B: リクエストDTO 組み立て / Request DTO mapping</h2>
+            <p style="font-size:12px; color:#718096;">操作 ⇒ アップロード完了時の送信データ</p>
+        </div>
+        <div class="lang-block vi">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">Bảng B: Ráp Request DTO (Step 1 upload)</h2>
+            <p style="font-size:12px; color:#718096;">Thao tác ⇒ dữ liệu gửi khi upload ảnh xong</p>
+        </div>
+
+        <table class="spec-table">
+            <thead>
+                <tr><th style="width:40px;">#</th><th>UI / 操作</th><th>Hành động</th><th>Request field (ráp DTO)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="req-num">R0</td><td>「ファイル選択」ボタン</td><td>Mở chọn ảnh từ thiết bị</td><td><code>files: File[]</code> / multipart</td></tr>
+                <tr><td class="req-num">R1</td><td>各写真の ✕ ボタン</td><td>Xóa ảnh đã chọn trước khi upload</td><td><code>selectedPhotoUrls</code> から除外</td></tr>
+                <tr><td class="req-num">R2</td><td>「続ける」ボタン</td><td>Upload 完了後に Step 2 へ遷移</td><td><code>shipmentId</code>, <code>companyId</code>, <code>beforeStockPhotoUrls</code></td></tr>
+            </tbody>
+        </table>
+
+        <h3 style="font-size:13px; color:#2d3748; margin:16px 0 6px 0;">Request body ví dụ（multipart）</h3>
+        <pre>POST /driver/shipments/{shipmentId}/companies/{companyId}/step1/photos
+
+FormData:
+- files: File[]
+- beforeStockPhotoUrls?: string[]</pre>
+
+        <div class="page-note">
+            FE は upload 成功後に <code>beforeStockPhotoUrls</code> を保持し、Step 2/3 の送信や表示に再利用する。
+            必須は「最低1枚」など要件があるなら validation 側で制御する。
+        </div>
+    </div>
+
+    <div class="docs-section" style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:20px; margin-bottom:24px;">
+        <div class="lang-block ja active">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">表C: 画面挙動 / FE-only コントロール</h2>
+        </div>
+        <div class="lang-block vi">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">Bảng C: Hành vi màn hình / Control chỉ-FE</h2>
+        </div>
+        <table class="spec-table">
+            <thead><tr><th style="width:50px;">Mark</th><th>項目 (JP)</th><th>Mô tả (VN)</th></tr></thead>
+            <tbody>
+                <tr><td><span class="anno-fe">FE</span></td><td>写真グリッドのローカルプレビュー</td><td>Upload 前の client-side preview。API には影響なし。</td></tr>
+                <tr><td><span class="anno-fe">FE</span></td><td>「続ける」ボタンの有効/無効</td><td>写真が0枚なら disabled、1枚以上で enabled。</td></tr>
+                <tr><td><span class="anno-fe">FE</span></td><td>戻るボタン</td><td>変更破棄の confirm は FE 側で実装。</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="docs-footer">
+        DA_ESDL_001 — Step 1 陳列前 Screen Specification v1.0 — ES Kitchen Driver App<br>
+        Visual render: design/giaohang/step1/DA_ESDL_001-01(default).html · DA_ESDL_001-02(upload image done).html
+    </div>
+</div>
+
+<script>
+function switchLang(el, lang) {
+    document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.lang-block').forEach(b => {
+        b.classList.remove('active');
+        if (b.classList.contains(lang)) b.classList.add('active');
+    });
+}
+</script>
+</body>
+</html>

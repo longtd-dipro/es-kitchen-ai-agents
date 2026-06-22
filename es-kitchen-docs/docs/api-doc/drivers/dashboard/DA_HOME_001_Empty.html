@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DA_HOME_001 - Empty State（配送予定なし）</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { padding: 24px 0; }
+        .docs-section { margin-top: 24px; border-top: 2px solid #edf2f7; }
+        .screen-label {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 6px;
+            z-index: 200;
+        }
+        .lang-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .lang-tab {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #cbd5e0;
+            background: #fff;
+            color: #4a5568;
+        }
+        .lang-tab.active {
+            background: #2b6cb0;
+            color: #fff;
+            border-color: #2b6cb0;
+        }
+        .lang-block { display: none; }
+        .lang-block.active { display: block; }
+        .vi-text { color: #b7791f; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div style="max-width: 1100px; width: 100%; margin: 0 auto; padding: 0 16px;">
+    <div style="margin-bottom: 20px;">
+        <div class="lang-tabs">
+            <span class="lang-tab active" onclick="switchLang(this, 'ja')">日本語</span>
+            <span class="lang-tab" onclick="switchLang(this, 'vi')">Tiếng Việt</span>
+        </div>
+
+        <div class="lang-block ja active">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_HOME_001 — Empty State（配送予定なし）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · No schedule screen（配送予定が存在しない場合）・API spec + field mapping</p>
+        </div>
+        <div class="lang-block vi">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_HOME_001 — Trạng thái rỗng（配送予定なし）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · Màn hình khi chưa có lịch giao hàng · Spec API + mapping các trường dữ liệu</p>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <span style="background:#2b6cb0; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px;">Mobile App</span>
+            <span style="background:#48bb78; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">Screen ID: DA_HOME_001_Empty</span>
+        </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; align-items:start;">
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">MOCKUP</h3>
+            <div class="phone-wrapper">
+                <div class="screen-label">DA_HOME_001_Empty</div>
+
+                <div class="header-banner">
+                    <div class="logo-area">
+                        <div class="brand-title">ES<span>STATION</span></div>
+                        <div class="notif-bell">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="schedule-container">
+                    <div class="section-title">配送予定一覧</div>
+
+                    <div class="date-header">■本日（2026-6-1）</div>
+                    <div class="no-data-msg"><span class="annotation-badge">(1)</span>配送予定データはありません。</div>
+
+                    <div class="date-header">■明日（2026-6-2）</div>
+                    <div class="no-data-msg"><span class="annotation-badge">(2)</span>配送予定データはありません。</div>
+
+                    <div class="date-header">■明後日（2026-6-3）</div>
+                    <div class="no-data-msg"><span class="annotation-badge">(3)</span>配送予定データはありません。</div>
+
+                    <!-- Mascot area -->
+                    <div class="mascot-zone">
+                        <div class="sol-bubble">
+                            <div class="sol-text"><span class="annotation-badge">(4)</span>お疲れさまです！<br>今のところ配送予定はありません。予定が入りましたら表示されます。</div>
+                        </div>
+                        <div class="sol-avatar">
+                            <svg viewBox="0 0 100 120" width="100%" height="100%">
+                                <circle cx="50" cy="75" r="32" fill="#fbd38d"/>
+                                <path d="M20 50 Q 50 15 80 50 Q 95 70 80 90 Q 50 110 20 90 Z" fill="#ecc94b"/>
+                                <circle cx="50" cy="70" r="26" fill="#fffdf5"/>
+                                <circle cx="40" cy="68" r="3.5" fill="#2d3748"/>
+                                <path d="M 56 68 Q 62 64 64 70" stroke="#2d3748" stroke-width="2.5" fill="none"/>
+                                <path d="M 44 82 Q 50 88 56 82" stroke="#e53e3e" stroke-width="2" fill="none"/>
+                                <polygon points="50,15 45,30 55,30" fill="#f6ad55"/>
+                                <polygon points="25,32 37,40 43,30" fill="#f6ad55"/>
+                                <polygon points="75,32 63,40 57,30" fill="#f6ad55"/>
+                                <path d="M 15 95 Q 12 75 22 78 L 22 95 Z" fill="#fbd38d" stroke="#d69e2e" stroke-width="1"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <a href="#" class="nav-item active">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        ホーム
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        マニュアル
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        配送一覧
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        トラブル
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        アカウント
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- FIELD LEGEND -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">FIELD LEGEND</h3>
+
+            <div class="docs-section" style="margin-top:0; padding:14px 16px;">
+                <div class="docs-title">Empty State Rules（空状態ルール）/ Quy tắc trạng thái rỗng</div>
+                <p class="docs-subtitle">空状態は画面の静的文言ではなく、<code>GET /driver/schedules</code> の条件によって表示される。</p>
+                <p class="docs-subtitle vi-text">Trạng thái rỗng không dùng cố định văn bản, mà được hiển thị theo điều kiện từ API <code>GET /driver/schedules</code>.</p>
+                <table class="field-table">
+                    <thead>
+                        <tr><th>#</th><th>Field / Trường</th><th>Type / Kiểu</th><th>Source API Response / Nguồn API</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="field-num">(1)</td>
+                            <td>
+                                <div>今日の空状態メッセージ / Today empty message</div>
+                                <div class="vi-text">Thông báo trạng thái rỗng của hôm nay</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>GET /driver/schedules</code><br>Field: <code>schedules[0].emptyMessage</code><br>Show when <code>schedules[0].items.length === 0</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(2)</td>
+                            <td>
+                                <div>明日の空状態メッセージ / Tomorrow empty message</div>
+                                <div class="vi-text">Thông báo trạng thái rỗng của ngày mai</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>schedules[1].emptyMessage</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(3)</td>
+                            <td>
+                                <div>明後日の空状態メッセージ / Day after tomorrow empty message</div>
+                                <div class="vi-text">Thông báo trạng thái rỗng của ngày kia</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>schedules[2].emptyMessage</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(4)</td>
+                            <td>
+                                <div>SOL-chan 吹き出しメッセージ / Mascot copy</div>
+                                <div class="vi-text">Nội dung lời thoại của mascot SOL-chan</div>
+                            </td>
+                            <td>string</td>
+                            <td><strong>Static UI — no API</strong><br>Lời thoại mascot cố định ở FE (không có endpoint riêng).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="docs-footer">
+    Screen: DA_HOME_001_Empty &nbsp;|&nbsp; Module: Driver (配送ドライバー) &nbsp;|&nbsp; Phase 2 &nbsp;|&nbsp; es-kitchen-api docs
+</div>
+
+</body>
+</html>
