@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>仕入先情報編集 — 変更履歴 — API 配線ガイド (Admin)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#0062CC; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F8F9FA; color:#222; }
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;margin-left:6px;
+    background:var(--primary);color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none; }
+  .nb:hover{ transform:scale(1.18);background:#004C9F; }
+  .nb.act{ background:#16a34a; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .dt{ width:100%;border-collapse:collapse; }
+  .dt th{ background:#F3F4F6;color:#6B7280;font-size:12px;font-weight:700;text-align:left;padding:10px 12px;border-bottom:1px solid #E5E7EB;white-space:nowrap; }
+  .dt td{ padding:12px;font-size:13px;border-bottom:1px solid #E5E7EB;vertical-align:middle; }
+  .tab{ padding:8px 0;margin-right:24px;font-size:13px;font-weight:700;border-bottom:2px solid transparent;color:#64748b;cursor:pointer; }
+  .tab.on{ color:var(--primary);border-bottom-color:var(--primary); }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:780px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#dbeafe; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-put{background:#feebc8;color:#9c4221;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+</style>
+</head>
+<body>
+<div class="max-w-4xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Admin · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">仕入先情報編集 — tab 変更履歴 — hướng dẫn ráp API</h1>
+    <p class="text-sm text-gray-600 mt-1">Đây là <b>tab 変更履歴 trong màn 仕入先情報編集</b> (KHÔNG phải màn độc lập). Click <b>số</b> → panel phải hiện bảng ráp + API docs. Contract: <code>SUPPLIER_DB_API_DESIGN.md › 2.2.6</code> (+ 2.2.2/2.2.4 cho tab 基本情報) · base <code>/admin/*</code> · perm <code>supplier_master.read</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (GET)</span>
+      <span><span class="nb act" style="cursor:default">n</span> action / điều hướng</span>
+    </div>
+  </div>
+
+  <div class="card p-6">
+    <!-- header giống màn edit -->
+    <div class="flex items-start justify-between">
+      <div>
+        <div class="text-xs text-gray-500">マスタ管理 / 仕入先マスタ / 仕入先情報編集</div>
+        <h2 class="text-xl font-bold text-gray-900 mt-1">仕入先情報編集 <span class="text-blue-600">HU00001</span></h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 text-sm">キャンセル<span class="nb act" data-n="7">7</span></button>
+        <button class="px-5 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium"><i class="fa-solid fa-check mr-1"></i>保存<span class="nb act" data-n="6">6</span></button>
+      </div>
+    </div>
+
+    <!-- sub tabs -->
+    <div class="flex items-center border-b border-gray-200 mt-5 mb-5">
+      <span class="tab">基本情報<span class="nb act" data-n="4">4</span></span>
+      <span class="tab on">変更履歴<span class="nb" data-n="5">5</span></span>
+    </div>
+
+    <!-- history table -->
+    <div class="overflow-x-auto">
+      <table class="dt">
+        <thead><tr>
+          <th>変更日時<span class="nb" data-n="1">1</span></th>
+          <th>変更内容<span class="nb" data-n="2">2</span></th>
+          <th>変更者<span class="nb" data-n="3">3</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="text-gray-500">2026/2/01 11:00</td><td>食品 表示許可を更新</td><td>田中</td></tr>
+          <tr><td class="text-gray-500">2026/2/01 10:00</td><td>食品 表示許可を更新</td><td>田中</td></tr>
+          <tr><td class="text-gray-500">2026/1/28 14:30</td><td>食品 表示許可を更新</td><td>管理者</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Tab 変更履歴 chỉ <b>đọc</b> (GET history). Nút 保存 (6) thuộc form 基本情報 (PUT). Log sinh tự động khi 保存 sửa NCC (HistoryLoggerHelper). Mock không render phân trang — API §2.2.6 vẫn hỗ trợ <code>page/limit</code> nếu cần.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — 変更履歴 <span class="text-gray-400 font-normal text-sm">(§2.2.6)</span></b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:42px">No</th><th>UI element</th><th>API</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const P = e => '<code>'+e+'</code>';
+const GET_H = '<span class="method m-get">GET</span> '+P('/admin/supplier-masters/{id}/history');
+const W = {
+  1:{ui:'Cột 変更日時', api:GET_H, field:'<code>items[].changedAt</code>', tf:'ISO datetime (+09:00). Sort created_at DESC (mới nhất trên cùng).'},
+  2:{ui:'Cột 変更内容', api:GET_H, field:'<code>items[].content</code>', tf:'Mô tả thay đổi (diff field do HistoryLoggerHelper.getChanges sinh khi 保存/PUT).'},
+  3:{ui:'Cột 変更者', api:GET_H, field:'<code>items[].changedBy</code>', tf:'Tên admin thực hiện (changed_by, lấy từ JWT lúc PUT).'},
+  4:{ui:'Tab 基本情報', api:'<span class="method m-get">GET</span> '+P('/admin/supplier-masters/{id}'), field:'→ form chỉnh sửa', tf:'Chuyển sang tab thông tin cơ bản (nạp GET detail → sửa → 保存/PUT). Xem guide supplier-register.', act:1},
+  5:{ui:'Tab 変更履歴 (đang mở)', api:GET_H, field:'(API CHÍNH của tab này)', tf:'Tab hiện tại — gọi GET history khi mở.'},
+  6:{ui:'Nút 保存 (lưu)', api:'<span class="method m-put">PUT</span> '+P('/admin/supplier-masters/{id}'), field:'lưu form 基本情報', tf:'Thuộc tab 基本情報. Lưu xong sinh 1 bản ghi history → hiện ở bảng này.', act:1},
+  7:{ui:'Nút キャンセル', api:'(điều hướng)', field:'→ về list', tf:'Không gọi API.', act:1}
+};
+const DOCS = `
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1e40af;margin-bottom:14px">
+  <b>API của tab này:</b> <span class="method m-get">GET</span> <code>/admin/supplier-masters/{id}/history</code> — lịch sử thay đổi của NCC đang mở. Auth: Admin JWT + <code>supplier_master.read</code>. <b>Read-only</b> (log do 保存/PUT sinh tự động).
+</div>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:8px 10px;font-size:12px;color:#92400e;margin-bottom:14px">
+  ℹ️ Màn này = <b>tab 変更履歴 của 仕入先情報編集</b>. Tab 基本情報 (số 4) dùng GET detail (§2.2.2) + PUT (§2.2.4) — xem guide <code>supplier-register</code>. Nút 保存 (số 6) là action của tab 基本情報.
+</div>
+
+<h4>① <span class="method m-get">GET</span> /admin/supplier-masters/{id}/history &nbsp;<span style="color:#16a34a">(API CHÍNH tab)</span></h4>
+<p><b>Path:</b> <code>id</code> = supplier master id (đơn vị đang mở, vd HU00001/SU00001).</p>
+<p><b>Query:</b> <code>page</code>, <code>limit</code> (default 10). Sort <code>created_at DESC</code>. <i>(Mock không render phân trang — nhưng API hỗ trợ.)</i></p>
+<p style="font-weight:700;margin-top:8px">Response 200</p>
+<pre>{
+  "items": [
+    {
+      "id": 5,
+      "changedAt": "2026-02-01T11:00:00+09:00", // 変更日時 (số 1)
+      "content": "食品 表示許可を更新",            // 変更内容 (số 2)
+      "changedBy": "田中"                        // 変更者 (số 3)
+    }
+  ],
+  "meta": { "total": 3, "page": 1, "limit": 10, "totalPages": 1 }
+}</pre>
+<p style="font-weight:700;margin-top:10px">Bảng field</p>
+<table class="map"><thead><tr><th>Field</th><th>Cột</th><th>Nguồn</th></tr></thead><tbody>
+<tr><td><code>changedAt</code></td><td>変更日時</td><td>supplier_master_history_logs.created_at</td></tr>
+<tr><td><code>content</code></td><td>変更内容</td><td>.content (diff field → text)</td></tr>
+<tr><td><code>changedBy</code></td><td>変更者</td><td>.changed_by (tên admin từ JWT)</td></tr>
+</tbody></table>
+<p><b>Errors:</b> 401, 403, 404 (id không tồn tại), 500.</p>
+
+<h4 style="margin-top:18px">② Tab 基本情報 + 保存 (số 4, 6)</h4>
+<p><span class="method m-get">GET</span> <code>/admin/supplier-masters/{id}</code> (nạp form) · <span class="method m-put">PUT</span> <code>/admin/supplier-masters/{id}</code> (保存). PUT sinh bản ghi vào <code>supplier_master_history_logs</code> (DB §1.5) → xuất hiện ở bảng tab 変更履歴.</p>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).map(Number).sort((a,b)=>a-b).forEach(n=>{
+  const d=W[n], cls=d.act?'act':'';
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function open(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function close(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=close; ov.onclick=close;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();open(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>お知らせ — API 配線ガイド (Supplier)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#0062CC; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F8F9FA; color:#222; }
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;margin-left:6px;
+    background:var(--primary);color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none; }
+  .nb:hover{ transform:scale(1.18);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .tab-btn{ padding:8px 16px;font-size:13px;font-weight:700;border-radius:999px;cursor:pointer;border:1px solid #cbd5e0;background:#fff;color:#475569; }
+  .tab-btn.active{ background:#0062CC;color:#fff;border-color:#0062CC; }
+  .noti{ border:1px solid #E5E7EB;border-radius:10px;padding:14px 16px;background:#fff; }
+  .noti.important{ border-left:4px solid #DC2626; }
+  .noti.news{ border-left:4px solid #94a3b8; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:820px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#dbeafe; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-patch{background:#e9d8fd;color:#553c9a;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+</style>
+</head>
+<body>
+<div class="max-w-4xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Supplier · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">お知らせ — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số</b> bất kỳ → panel phải hiện <b>nguyên bảng tổng quan + API docs</b> (highlight dòng đã click). Contract: <code>SUPPLIER_DB_API_DESIGN.md › 3.1</code> · base <code>/supplier/*</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (GET)</span>
+      <span><span class="nb act" style="cursor:default">n</span> action/ghi (PATCH)</span>
+      <span><span class="nb tbd" style="cursor:default">n</span> cách phân loại chờ BA (TBD)</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP ===== -->
+  <div class="card p-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">お知らせを確認する</h2>
+
+    <!-- tabs -->
+    <div class="flex items-center gap-2 mb-5">
+      <span class="tab-btn active">すべて</span>
+      <span class="tab-btn">重要</span>
+      <span class="tab-btn">お知らせ</span>
+      <span class="nb" data-n="1">1</span>
+      <span class="ml-auto text-xs text-gray-500">未読 <b class="text-blue-600">3</b><span class="nb" data-n="7">7</span></span>
+    </div>
+
+    <!-- notifications -->
+    <div class="space-y-3">
+      <div class="noti important">
+        <div class="flex items-center justify-between">
+          <div class="font-semibold text-gray-900">【2024/02/29<span class="nb" data-n="3">3</span>】配送方法について<span class="nb" data-n="2">2</span>
+            <span class="ml-2 text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded">重要<span class="nb" data-n="4">4</span></span>
+          </div>
+          <i class="fa-solid fa-chevron-down text-gray-400"></i><span class="nb act" data-n="6">6</span>
+        </div>
+        <div class="mt-2 text-sm text-gray-600">配送方法が変更になりました。詳細は以下のリンクをご確認ください。<span class="nb" data-n="5">5</span></div>
+        <div class="mt-2 flex gap-4 text-sm text-blue-600">
+          <a class="underline">配送方法詳細を見る <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
+          <a class="underline">よくある質問</a>
+        </div>
+      </div>
+      <div class="noti news">
+        <div class="flex items-center justify-between">
+          <div class="font-semibold text-gray-900">【2024/02/29】システムが更新されました</div>
+          <i class="fa-solid fa-chevron-down text-gray-400"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm số bất kỳ để xem bảng ráp + tài liệu API. Số <span class="text-orange-600 font-bold">cam (4)</span> = cách phân loại 重要/お知らせ chờ BA chốt.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — お知らせ <span class="text-gray-400 font-normal text-sm">(§3.1)</span></b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:42px">No</th><th>UI element</th><th>API</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const P = e => '<code>'+e+'</code>';
+const GET_N = '<span class="method m-get">GET</span> '+P('/supplier/notifications');
+const W = {
+  1:{ui:'Tabs すべて / 重要 / お知らせ', api:GET_N, field:'query: <code>tab=ALL|IMPORTANT|NEWS</code>', tf:'Đổi tab → gọi lại API với <code>tab</code> tương ứng. Mặc định ALL.'},
+  2:{ui:'タイトル (tiêu đề thông báo)', api:GET_N, field:'<code>items[].title</code>', tf:'Tiêu đề mỗi thông báo.'},
+  3:{ui:'日付 (ngày, trong tiêu đề)', api:GET_N, field:'<code>items[].createdAt</code>', tf:'Ngày tạo thông báo, hiển thị 【yyyy/MM/dd】.'},
+  4:{ui:'Nhãn/viền 重要 (quan trọng)', api:GET_N, field:'<code>items[].isImportant</code> (hoặc <code>type</code>)', tf:'true → viền trái đỏ + nhãn 重要. ⚠️ Cách phân loại 重要 vs お知らせ (dùng notifications.type hay cờ is_important) chờ BA chốt.', tbd:1},
+  5:{ui:'本文 (nội dung)', api:GET_N, field:'<code>items[].content</code>', tf:'Nội dung khi mở rộng accordion.'},
+  6:{ui:'Mở accordion / đánh dấu đã đọc', api:'<span class="method m-patch">PATCH</span> '+P('/supplier/notifications/{id}/read'), field:'path <code>id</code>', tf:'Khi user mở/đọc 1 thông báo → gọi PATCH để set is_read=true. Trả về { id, isRead:true }.', act:1},
+  7:{ui:'未読数 (số chưa đọc)', api:GET_N, field:'<code>unreadCount</code>', tf:'Tổng thông báo chưa đọc của supplier — hiển thị badge.'}
+};
+const W_links = {ui:'リンク (links trong thông báo)', api:GET_N, field:'<code>items[].links[].{label,url}</code>', tf:'Lấy từ notifications.body (jsonb). Render thành link click được.'};
+W[8] = W_links; // gán số 8 cho links nếu cần (không có badge riêng — xem trong bảng)
+
+const DOCS = `
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1e40af;margin-bottom:14px">
+  <b>API chính của màn:</b> <span class="method m-get">GET</span> <code>/supplier/notifications</code> — danh sách thông báo theo tab. Auth: <code>Bearer {supplier token}</code>.
+</div>
+
+<h4>① <span class="method m-get">GET</span> /supplier/notifications — Danh sách thông báo &nbsp;<span style="color:#16a34a">(API CHÍNH)</span></h4>
+<p><b>Mục đích:</b> Lấy danh sách thông báo của supplier theo tab (Tất cả / 重要 / お知らせ), kèm số chưa đọc.</p>
+<p><b>Nguồn DB:</b> tái dùng bảng <code>user_notifications</code> (entity đã có <code>recipient_type</code>/<code>recipient_id</code>), lọc <code>recipient_type='SUPPLIER'</code> & <code>recipient_id = supplier đang đăng nhập</code>. Nội dung từ <code>notifications</code> (title/content/type/body).</p>
+
+<p style="font-weight:700;margin-top:10px">Query params</p>
+<table class="map"><thead><tr><th>Param</th><th>Kiểu</th><th>BB</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>tab</code></td><td>enum</td><td>—</td><td><code>ALL</code> | <code>IMPORTANT</code> | <code>NEWS</code> (mặc định ALL). (số 1)</td></tr>
+<tr><td><code>cursor</code></td><td>string</td><td>—</td><td>Trang kế (lấy từ <code>nextCursor</code>).</td></tr>
+<tr><td><code>limit</code></td><td>number</td><td>—</td><td>Số item/trang (≤ 50).</td></tr>
+</tbody></table>
+
+<p style="font-weight:700;margin-top:12px">Response 200</p>
+<pre>{
+  "items": [
+    {
+      "id": 9001,
+      "title": "【2024/02/29】配送方法について",  // (số 2,3)
+      "content": "配送方法が変更になりました。…",   // (số 5)
+      "type": "IMPORTANT",                          // phân loại
+      "isImportant": true,                          // viền đỏ + nhãn 重要 (số 4)
+      "isRead": false,
+      "createdAt": "2024-02-29T09:00:00+09:00",
+      "links": [ { "label": "配送方法詳細を見る", "url": "https://…" } ]  // (số 8)
+    }
+  ],
+  "unreadCount": 3,        // số chưa đọc (số 7)
+  "nextCursor": null, "hasMore": false
+}</pre>
+
+<p style="font-weight:700;margin-top:12px">Bảng field response</p>
+<table class="map"><thead><tr><th>Field</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>items[].id</code></td><td>ID thông báo — dùng cho PATCH read.</td></tr>
+<tr><td><code>items[].title / content</code></td><td>Tiêu đề / nội dung (số 2, 5).</td></tr>
+<tr><td><code>items[].type / isImportant</code></td><td>Phân loại 重要 vs お知らせ (số 4).</td></tr>
+<tr><td><code>items[].isRead</code></td><td>Đã đọc hay chưa.</td></tr>
+<tr><td><code>items[].createdAt</code></td><td>Ngày (số 3).</td></tr>
+<tr><td><code>items[].links[]</code></td><td>Liên kết trong thông báo (từ notifications.body jsonb) (số 8).</td></tr>
+<tr><td><code>unreadCount</code></td><td>Số chưa đọc (số 7).</td></tr>
+<tr><td><code>nextCursor / hasMore</code></td><td>Phân trang cursor (infinite scroll).</td></tr>
+</tbody></table>
+
+<h4 style="margin-top:20px">② <span class="method m-patch">PATCH</span> /supplier/notifications/{id}/read — đánh dấu đã đọc (số 6)</h4>
+<p>Gọi khi user mở/đọc 1 thông báo. Set <code>is_read=true</code>, <code>read_at=now()</code>.</p>
+<pre>// Response 200
+{ "id": 9001, "isRead": true }</pre>
+
+<h4 style="margin-top:18px">DB note (thiết kế, chưa migration)</h4>
+<p>Tái dùng <code>user_notifications</code> (entity thật đã có <code>recipient_type/recipient_id/email*/read_at</code> — db.dbml cần đồng bộ). Enum <code>NotificationRecipientType</code> cần value <b><code>SUPPLIER</code></b>.</p>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:8px 10px;font-size:12px;color:#92400e;margin-top:14px">
+  ⚠️ <b>Còn mở (chờ BA):</b> cách phân loại <b>重要 vs お知らせ</b> (số 4) — dùng <code>notifications.type</code> (giá trị IMPORTANT/NEWS) hay thêm cờ <code>is_important</code>? Xem <code>SUPPLIER_DB_API_DESIGN.md › PART 3 › Còn mở</code>.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).map(Number).sort((a,b)=>a-b).forEach(n=>{
+  const d=W[n], cls=d.tbd?'tbd':(d.act?'act':'');
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function open(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function close(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=close; ov.onclick=close;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();open(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

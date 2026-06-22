@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<!--
+============================================================
+SCREEN NAME: 仕入先情報登録 (Supplier Register)
+============================================================
+PURPOSE: Register new supplier
+DATA STRUCTURE:
+- supplier: { supplierId, supplierName, supplierKana, status, productType, supplierType, addresses[], contacts[] }
+============================================================
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>仕入先情報登録 - ESSTATION</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root {
+    --color-primary: #0062CC;
+    --color-primary-hover: #004C9F;
+    --color-success: #16A34A;
+    --color-danger: #DC2626;
+    --text-primary: #111827;
+    --text-secondary: #4B5563;
+    --text-muted: #6B7280;
+    --bg-secondary: #F3F4F6;
+    --bg-white: #FFFFFF;
+    --border-color: #E5E7EB;
+    --border-radius: 4px;
+    --border-radius-lg: 8px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background: #F5F7FA;
+    color: #333333;
+  }
+
+  /* === Sidebar === */
+  .sidebar {
+    width: 260px;
+    background: var(--bg-white);
+    border-right: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 50;
+  }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #4B5563;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .menu-item:hover { background: #F3F4F6; }
+  .menu-parent.active {
+    background: var(--color-primary);
+    color: #ffffff;
+  }
+  .menu-child {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px 10px 52px;
+    color: #4B5563;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .menu-child:hover { background: #F3F4F6; }
+  .menu-child.active {
+    background: #E6F0FA;
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  /* === Main === */
+  .main-wrap {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+  .top-header {
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--border-color);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* === Buttons === */
+  .btn {
+    height: 36px;
+    border-radius: var(--border-radius);
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--color-primary);
+    color: #ffffff;
+    border: 1px solid var(--color-primary);
+  }
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-outline {
+    background: var(--bg-white);
+    color: #4B5563;
+    border: 1px solid #D1D5DB;
+  }
+  .btn-outline:hover { background: #F3F4F6; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+  }
+  .btn-ghost:hover { background: #E6F0FA; }
+
+  /* === Form === */
+  .form-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .form-label__required {
+    color: var(--color-danger);
+    font-weight: 700;
+  }
+  .input-field, .select-field, .textarea-field {
+    height: 38px;
+    border: 1px solid #D9D9D9;
+    border-radius: var(--border-radius);
+    background: var(--bg-white);
+    font-size: 14px;
+    color: #333333;
+    padding: 0 12px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-field:focus, .select-field:focus, .textarea-field:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(0,98,204,0.08);
+  }
+  .input-field:disabled, .select-field:disabled {
+    background: #F3F4F6;
+    color: #6B7280;
+  }
+  .input-field--error {
+    border-color: var(--color-danger) !important;
+    box-shadow: 0 0 0 2px rgba(220,38,38,0.08);
+  }
+  .textarea-field {
+    height: auto;
+    min-height: 80px;
+    padding: 10px 12px;
+    resize: vertical;
+  }
+  .field-error {
+    color: var(--color-danger);
+    font-size: 12px;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: "\f078";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+    font-size: 11px;
+    pointer-events: none;
+  }
+  .select-wrap .select-field {
+    appearance: none;
+    padding-right: 32px;
+  }
+
+  /* === Card === */
+  .section-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 20px 24px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-toggle {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    color: #4B5563;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .section-toggle:hover { background: #F3F4F6; }
+
+  /* === Tag === */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: var(--border-radius);
+    border: 1px solid #D9D9D9;
+    background: var(--bg-white);
+    font-size: 13px;
+    color: #333333;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tag:hover { background: #F3F4F6; }
+  .tag__remove {
+    font-size: 11px;
+    color: #9CA3AF;
+  }
+
+  /* === Table === */
+  .table-container { overflow-x: auto; }
+  .table-data {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-white);
+    min-width: 1200px;
+  }
+  .table-data__header th {
+    background: #F9FAFB;
+    color: #4B5563;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+  }
+  .table-data__body td {
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #333333;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+    background: var(--bg-white);
+  }
+  .table-data__body tr:last-child td { border-bottom: none; }
+  .table-input {
+    width: 100%;
+    height: 36px;
+    border: 1px solid #D9D9D9;
+    border-radius: var(--border-radius);
+    background: var(--bg-white);
+    padding: 0 10px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .table-input:focus { border-color: var(--color-primary); }
+  .table-select {
+    width: 100%;
+    height: 36px;
+    border: 1px solid #D9D9D9;
+    border-radius: var(--border-radius);
+    background: var(--bg-white);
+    padding: 0 28px 0 10px;
+    font-size: 14px;
+    outline: none;
+    appearance: none;
+    transition: border-color 0.2s;
+  }
+  .table-select:focus { border-color: var(--color-primary); }
+</style>
+</head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar">
+  <div class="flex items-center gap-2 px-5 py-5 border-b border-gray-100">
+    <i class="fa-solid fa-bowl-food text-red-500 text-2xl"></i>
+    <span class="font-bold text-red-500 text-lg tracking-wide">ESSTATION</span>
+  </div>
+
+  <nav class="py-2">
+    <div class="menu-item">
+      <i class="fa-solid fa-gauge-high menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>ダッシュボード</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+    <div class="menu-item">
+      <i class="fa-solid fa-list menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>メニュー管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+    <div class="menu-parent active menu-item">
+      <i class="fa-solid fa-folder menu-icon w-5 mr-3"></i>
+      <span>マスタ管理</span>
+      <i class="fa-solid fa-chevron-up menu-caret ml-auto text-xs"></i>
+    </div>
+    <div class="bg-gray-50">
+      <div class="menu-child">プランマスタ</div>
+      <div class="menu-child">商品マスタ</div>
+      <div class="menu-child">資材マスタ</div>
+      <div class="menu-child">
+        配送関連
+        <i class="fa-solid fa-chevron-down ml-auto text-xs text-gray-400"></i>
+      </div>
+      <div class="menu-child active">仕入先マスタ</div>
+      <div class="menu-child">代理店・パートナー管理</div>
+      <div class="menu-child">
+        機種マスタ
+        <i class="fa-solid fa-chevron-down ml-auto text-xs text-gray-400"></i>
+      </div>
+    </div>
+    <div class="menu-item">
+      <i class="fa-solid fa-building menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>法人・契約管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+    <div class="menu-item">
+      <i class="fa-solid fa-user-gear menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>アカウント管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+    <div class="menu-item">
+      <i class="fa-solid fa-coins menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>売上管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+    <div class="menu-item">
+      <i class="fa-solid fa-truck menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>配送管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+  </nav>
+
+  <div class="mascot-area">
+    <div class="w-full h-full flex items-center justify-center">
+      <div class="text-center">
+        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-b from-yellow-300 to-yellow-500 flex items-center justify-center shadow-md">
+          <i class="fa-solid fa-hat-chef text-4xl text-white"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ MAIN CONTENT ============ -->
+<div class="main-wrap">
+
+  <!-- Top header -->
+  <header class="top-header" data-header="main">
+    <div class="flex items-center gap-2 text-sm text-gray-500">
+      <i class="fa-solid fa-sun text-yellow-400"></i>
+      <span>お帰りなさい</span>
+    </div>
+    <div class="flex items-center gap-2 cursor-pointer">
+      <div class="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-white">
+        <i class="fa-solid fa-user text-sm"></i>
+      </div>
+      <span class="text-sm text-gray-700" data-field="userName">にっしぐち</span>
+      <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="p-8" data-page="supplier-register">
+    <div class="flex items-start justify-between gap-4 flex-wrap" data-section="page-header">
+      <div>
+        <div class="text-xs text-gray-500 mb-1" data-breadcrumb>マスタ管理 / 仕入先マスタ / 仕入先情報登録</div>
+        <h1 class="text-[22px] font-bold text-gray-900 leading-tight" data-title>仕入先情報登録</h1>
+      </div>
+      <div class="flex items-center gap-3" data-actions="toolbar">
+        <button class="btn btn-outline" data-action="cancel">キャンセル</button>
+        <button class="btn btn-primary" data-action="submit" id="btnSubmit">登録</button>
+      </div>
+    </div>
+
+    <!-- Sub tabs -->
+    <div class="mt-6 flex items-center gap-6 border-b border-gray-200" data-section="sub-tabs">
+      <button class="pb-3 text-sm font-semibold text-[#0062CC] border-b-2 border-[#0062CC]" data-tab="basic" data-tab-active>基本情報</button>
+      <button class="pb-3 text-sm font-semibold text-gray-500 hover:text-gray-700" data-tab="history">変更履歴</button>
+    </div>
+
+    <!-- Form -->
+    <form class="mt-5 flex flex-col gap-5" data-form="supplier-register" id="supplierForm">
+      
+      <!-- Basic info section -->
+      <section class="section-card" data-section="basic-info">
+        <div class="section-header">
+          <div class="section-title">
+            <i class="fa-solid fa-chevron-up text-gray-500 text-xs"></i>
+            基本情報
+          </div>
+          <div class="section-toggle">
+            <i class="fa-solid fa-chevron-up"></i>
+          </div>
+        </div>
+        <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-5">
+          
+          <!-- ID (Auto-generated, readonly) -->
+          <div class="field-group">
+            <label class="form-label">
+              <span class="form-label__text">ID</span>
+            </label>
+            <input 
+              type="text" 
+              class="input-field" 
+              data-field="supplierId"
+              data-type="text"
+              value="AUTO-00001" 
+              disabled 
+            />
+          </div>
+          
+          <!-- Supplier Name (Required) -->
+          <div class="field-group">
+            <label class="form-label">
+              <span class="form-label__text">仕入先名</span>
+              <span class="form-label__required">*</span>
+            </label>
+            <input 
+              type="text" 
+              class="input-field" 
+              data-field="supplierName"
+              data-type="text"
+              placeholder="仕入先名"
+              required
+            />
+            <div class="field-error hidden" data-error="supplierName">仕入先名を入力してください。</div>
+          </div>
+          
+          <!-- Kana Name -->
+          <div class="field-group">
+            <label class="form-label">
+              <span class="form-label__text">カナ</span>
+            </label>
+            <input 
+              type="text" 
+              class="input-field" 
+              data-field="supplierKana"
+              data-type="text"
+              placeholder="カナ" 
+            />
+          </div>
+          
+          <!-- Status (Required) -->
+          <div class="field-group">
+            <label class="form-label">
+              <span class="form-label__text">ステータス</span>
+              <span class="form-label__required">*</span>
+            </label>
+            <div class="select-wrap">
+              <select 
+                class="select-field" 
+                data-field="status"
+                data-type="select"
+                required
+              >
+                <option value="" disabled selected>ステータス</option>
+                <option value="registered">本登録</option>
+                <option value="unregistered">未登録</option>
+              </select>
+            </div>
+            <div class="field-error hidden" data-error="status">ステータスを選択してください。</div>
+          </div>
+          
+          <!-- Product Type (Required) -->
+          <div class="field-group">
+            <label class="form-label">
+              <span class="form-label__text">作れる商品</span>
+              <span class="form-label__required">*</span>
+            </label>
+            <div class="select-wrap">
+              <select 
+                id="producibleProductSelect"
+                class="select-field" 
+                data-field="producibleProductIds"
+                data-type="select-multiple"
+                required
+                multiple
+              >
+                <option value="10">商品A</option>
+                <option value="11">商品B</option>
+              </select>
+            </div>
+            <div class="field-error hidden" data-error="producibleProductIds">作れる商品を選択してください。</div>
+          </div>
+          
+          <!-- Supplier Type (Required) -->
+          <div class="field-group">
+            <label class="form-label">
+              <span class="form-label__text">仕入れ先区分</span>
+              <span class="form-label__required">*</span>
+            </label>
+            <div class="select-wrap">
+              <select 
+                class="select-field" 
+                data-field="supplierType"
+                data-type="select"
+                required
+              >
+                <option value="" disabled selected>仕入れ先区分</option>
+                <option value="type1">区分1</option>
+                <option value="type2">区分2</option>
+              </select>
+            </div>
+            <div class="field-error hidden" data-error="supplierType">仕入れ先区分を選択してください。</div>
+          </div>
+          
+          <!-- Notes (Full width) -->
+          <div class="md:col-span-3 field-group">
+            <label class="form-label">
+              <span class="form-label__text">備考</span>
+            </label>
+            <input 
+              type="text" 
+              class="input-field" 
+              data-field="notes"
+              data-type="text"
+              placeholder="備考" 
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- Address section -->
+      <section class="section-card" data-section="address">
+        <div class="section-header">
+          <div class="section-title">
+            <i class="fa-solid fa-chevron-up text-gray-500 text-xs"></i>
+            住所
+          </div>
+          <div class="section-toggle">
+            <i class="fa-solid fa-chevron-up"></i>
+          </div>
+        </div>
+        <div class="mt-5">
+          <div class="table-container">
+            <table class="table-data" id="addressTable">
+              <thead class="table-data__header">
+                <tr>
+                  <th style="width: 220px;">
+                    <span class="text-red-600 font-bold">*</span> 区分
+                  </th>
+                  <th style="width: 150px;">
+                    <span class="text-red-600 font-bold">*</span> 郵便番号
+                  </th>
+                  <th style="width: 150px;">
+                    <span class="text-red-600 font-bold">*</span> 都道府県
+                  </th>
+                  <th style="width: 170px;">
+                    <span class="text-red-600 font-bold">*</span> 市区町村
+                  </th>
+                  <th>
+                    <span class="text-red-600 font-bold">*</span> 町域・番地
+                  </th>
+                  <th>建物・部屋番号</th>
+                  <th style="width: 160px;">電話番号</th>
+                  <th style="width: 160px;">Fax番号</th>
+                  <th style="width: 90px;" class="text-center">操作</th>
+                </tr>
+              </thead>
+              <tbody class="table-data__body" data-list="addresses" id="addressTableBody">
+                <tr data-row-id="1">
+                  <td data-col="addressType">
+                    <div class="flex flex-wrap gap-2">
+                      <span class="tag">
+                        本社 
+                        <span class="tag__remove"><i class="fa-solid fa-xmark"></i></span>
+                      </span>
+                      <span class="tag">
+                        製造場所 
+                        <span class="tag__remove"><i class="fa-solid fa-xmark"></i></span>
+                      </span>
+                      <span class="tag">
+                        その他 
+                        <span class="tag__remove"><i class="fa-solid fa-xmark"></i></span>
+                      </span>
+                    </div>
+                  </td>
+                  <td data-col="postalCode">
+                    <input type="text" class="table-input" data-field="postalCode" data-type="text" placeholder="123-4567" value="123-4567" />
+                  </td>
+                  <td data-col="prefecture">
+                    <input type="text" class="table-input" data-field="prefecture" data-type="text" placeholder="東京都" value="東京都" />
+                  </td>
+                  <td data-col="city">
+                    <input type="text" class="table-input" data-field="city" data-type="text" placeholder="千代田区" value="千代田区" />
+                  </td>
+                  <td data-col="address">
+                    <input type="text" class="table-input" data-field="address" data-type="text" placeholder="千代田1丁目1番1号" value="千代田1丁目1番1号" />
+                  </td>
+                  <td data-col="building">
+                    <input type="text" class="table-input" data-field="building" data-type="text" placeholder="○○マンション101号室" value="○○マンション101号室" />
+                  </td>
+                  <td data-col="phone">
+                    <input type="text" class="table-input" data-field="phone" data-type="tel" placeholder="000-0000-0000" />
+                  </td>
+                  <td data-col="fax">
+                    <input type="text" class="table-input" data-field="fax" data-type="tel" placeholder="000-0000-0000" />
+                  </td>
+                  <td class="text-center" data-col="actions">
+                    <button class="text-red-600 hover:text-red-700 text-sm px-1" data-action="delete-row" title="削除">
+                      <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-4">
+            <button type="button" class="btn btn-ghost" data-action="add-row" data-target="addressTableBody">行を追加</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact person section -->
+      <section class="section-card" data-section="contact">
+        <div class="section-header">
+          <div class="section-title">
+            <i class="fa-solid fa-chevron-up text-gray-500 text-xs"></i>
+            担当者
+          </div>
+          <div class="section-toggle">
+            <i class="fa-solid fa-chevron-up"></i>
+          </div>
+        </div>
+        <div class="mt-5">
+          <div class="table-container">
+            <table class="table-data" id="contactTable">
+              <thead class="table-data__header">
+                <tr>
+                  <th style="width: 150px;">
+                    <span class="text-red-600 font-bold">*</span> 区分
+                  </th>
+                  <th style="width: 160px;">
+                    <span class="text-red-600 font-bold">*</span> 担当者名
+                  </th>
+                  <th style="width: 160px;">フリガナ</th>
+                  <th>
+                    <span class="text-red-600 font-bold">*</span> メールアドレス
+                  </th>
+                  <th style="width: 170px;">TEL</th>
+                  <th style="width: 90px;" class="text-center">操作</th>
+                </tr>
+              </thead>
+              <tbody class="table-data__body" data-list="contacts" id="contactTableBody">
+                <tr data-row-id="1">
+                  <td data-col="contactType">
+                    <div class="select-wrap">
+                      <select class="table-select" data-field="contactType" data-type="select">
+                        <option value="" disabled selected>区分</option>
+                        <option value="representative">代表</option>
+                        <option value="sales">営業</option>
+                        <option value="other">その他</option>
+                      </select>
+                    </div>
+                  </td>
+                  <td data-col="contactName">
+                    <input type="text" class="table-input" data-field="contactName" data-type="text" placeholder="担当 太郎" value="担当 太郎" />
+                  </td>
+                  <td data-col="contactNameKana">
+                    <input type="text" class="table-input" data-field="contactNameKana" data-type="text" placeholder="タントウ タロウ" value="タントウ タロウ" />
+                  </td>
+                  <td data-col="email">
+                    <input type="email" class="table-input" data-field="email" data-type="email" placeholder="sample3@gmail.com" value="sample3@gmail.com" />
+                  </td>
+                  <td data-col="phone">
+                    <input type="text" class="table-input" data-field="phone" data-type="tel" placeholder="000-0000-0000" value="000-0000-0000" />
+                  </td>
+                  <td class="text-center" data-col="actions">
+                    <button class="text-red-600 hover:text-red-700 text-sm px-1" data-action="delete-row" title="削除">
+                      <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-4">
+            <button type="button" class="btn btn-ghost" data-action="add-row" data-target="contactTableBody">行を追加</button>
+          </div>
+        </div>
+      </section>
+    </form>
+  </main>
+</div>
+
+<script>
+  // Get all form data
+  function getFormData() {
+    const form = document.getElementById('supplierForm');
+    const data = {};
+    
+    // Get basic fields
+    form.querySelectorAll('[data-field]').forEach(field => {
+      const fieldName = field.dataset.field;
+      const fieldType = field.dataset.type;
+      
+      if (fieldType === 'select-multiple') {
+      const values = Array.from(field.selectedOptions).map(opt => Number(opt.value));
+      data[fieldName] = values;
+    } else if (fieldType === 'select') {
+      data[fieldName] = field.value;
+    } else {
+      data[fieldName] = field.value;
+    }
+    });
+    
+    // Get address table
+    const addresses = [];
+    document.querySelectorAll('#addressTableBody tr').forEach(row => {
+      const address = {};
+      row.querySelectorAll('[data-field]').forEach(field => {
+        address[field.dataset.field] = field.value;
+      });
+      addresses.push(address);
+    });
+    data.addresses = addresses;
+    
+    // Get contact table
+    const contacts = [];
+    document.querySelectorAll('#contactTableBody tr').forEach(row => {
+      const contact = {};
+      row.querySelectorAll('[data-field]').forEach(field => {
+        contact[field.dataset.field] = field.value;
+      });
+      contacts.push(contact);
+    });
+    data.contacts = contacts;
+    
+    return data;
+  }
+
+  // Add row to table
+  document.querySelectorAll('[data-action="add-row"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.target;
+      const tableBody = document.getElementById(targetId);
+      const rowCount = tableBody.rows.length + 1;
+      
+      const tr = document.createElement('tr');
+      tr.dataset.rowId = rowCount;
+      
+      if (targetId === 'addressTableBody') {
+        tr.innerHTML = `
+          <td data-col="addressType">
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">区分 <span class="tag__remove"><i class="fa-solid fa-xmark"></i></span></span>
+              <button class="text-[#0062CC] text-xs font-semibold" data-action="add-tag">+ 追加</button>
+            </div>
+          </td>
+          <td data-col="postalCode"><input type="text" class="table-input" data-field="postalCode" data-type="text" placeholder="123-4567" /></td>
+          <td data-col="prefecture"><input type="text" class="table-input" data-field="prefecture" data-type="text" placeholder="都道府県" /></td>
+          <td data-col="city"><input type="text" class="table-input" data-field="city" data-type="text" placeholder="市区町村" /></td>
+          <td data-col="address"><input type="text" class="table-input" data-field="address" data-type="text" placeholder="町域・番地" /></td>
+          <td data-col="building"><input type="text" class="table-input" data-field="building" data-type="text" placeholder="建物・部屋番号" /></td>
+          <td data-col="phone"><input type="text" class="table-input" data-field="phone" data-type="tel" placeholder="000-0000-0000" /></td>
+          <td data-col="fax"><input type="text" class="table-input" data-field="fax" data-type="tel" placeholder="000-0000-0000" /></td>
+          <td class="text-center" data-col="actions"><button class="text-red-600 hover:text-red-700 text-sm px-1" data-action="delete-row"><i class="fa-regular fa-trash-can"></i></button></td>
+        `;
+      } else if (targetId === 'contactTableBody') {
+        tr.innerHTML = `
+          <td data-col="contactType">
+            <div class="select-wrap">
+              <select class="table-select" data-field="contactType" data-type="select">
+                <option value="" disabled selected>区分</option>
+                <option value="representative">代表</option>
+                <option value="sales">営業</option>
+                <option value="other">その他</option>
+              </select>
+            </div>
+          </td>
+          <td data-col="contactName"><input type="text" class="table-input" data-field="contactName" data-type="text" placeholder="担当 太郎" /></td>
+          <td data-col="contactNameKana"><input type="text" class="table-input" data-field="contactNameKana" data-type="text" placeholder="フリガナ" /></td>
+          <td data-col="email"><input type="email" class="table-input" data-field="email" data-type="email" placeholder="email@example.com" /></td>
+          <td data-col="phone"><input type="text" class="table-input" data-field="phone" data-type="tel" placeholder="000-0000-0000" /></td>
+          <td class="text-center" data-col="actions"><button class="text-red-600 hover:text-red-700 text-sm px-1" data-action="delete-row"><i class="fa-regular fa-trash-can"></i></button></td>
+        `;
+      }
+      
+      tableBody.appendChild(tr);
+    });
+  });
+
+  // Submit form
+  document.getElementById('btnSubmit').addEventListener('click', () => {
+    const data = getFormData();
+    console.log('Form Data:', JSON.stringify(data, null, 2));
+    alert('登録完了（デモ）\n' + JSON.stringify(data, null, 2));
+  });
+</script>
+
+</body>
+</html>

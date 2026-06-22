@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>配送スタッフ マスタ — API 配線ガイド (Admin)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#0066DD; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F4F7FC; color:#222; }
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;margin-left:6px;
+    background:var(--primary);color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none; }
+  .nb:hover{ transform:scale(1.18);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .form-input{ height:38px;border:1px solid #cbd5e0;border-radius:8px;padding:0 12px;font-size:13px;background:#fff;width:100%; }
+  .dt{ width:100%;border-collapse:collapse;font-size:13px; }
+  .dt th{ background:#fafafa;color:#6b7280;font-weight:600;padding:11px 10px;border-bottom:1px solid #e5e7eb;text-align:left; }
+  .dt td{ padding:12px 10px;border-bottom:1px solid #f1f5f9;color:#374151; }
+  .fld{ height:40px;border:1px solid #e5e7eb;border-radius:8px;padding:0 12px;display:flex;align-items:center;background:#f9fafb;font-size:14px;color:#374151; }
+  .sec-head{ background:#F4F7FC;border-left:3px solid var(--primary);padding:12px 16px;font-weight:700; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:820px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#dbeafe; }
+  .map .num{ font-weight:800;color:var(--primary);text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-post{background:#bee3f8;color:#2c5282;} .m-patch{background:#e9d8fd;color:#553c9a;} .m-del{background:#fed7d7;color:#9b2c2c;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+</style>
+</head>
+<body>
+<div class="max-w-5xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Admin · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">配送スタッフ マスタ — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số</b> → bảng ráp + API docs. Contract: <code>API仕様詳細_配送関連.md › B1</code> · base <code>/admin/*</code> (AdminGuard + RBAC).</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (GET)</span>
+      <span><span class="nb act" style="cursor:default">n</span> action/ghi</span>
+      <span><span class="nb tbd" style="cursor:default">n</span> còn chờ BA (TBD)</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP list (MD01) ===== -->
+  <div class="card p-6 mb-6">
+    <div class="flex items-start justify-between mb-4">
+      <div><div class="text-xs text-gray-500">マスタ管理 ／ 配送関連 ／ 配送スタッフ</div><h2 class="text-xl font-bold text-gray-900">配送スタッフ</h2></div>
+      <button class="px-4 h-9 rounded-lg bg-blue-600 text-white text-sm font-medium">新規追加<span class="nb act" data-n="1">1</span></button>
+    </div>
+    <div class="flex flex-wrap items-center gap-2 mb-4">
+      <input class="form-input max-w-[260px]" placeholder="委託配送先名、配送スタッフ名" /><span class="nb" data-n="2">2</span>
+      <select class="form-input max-w-[150px]"><option>スタッフ区分</option></select><span class="nb" data-n="3">3</span>
+      <select class="form-input max-w-[150px]"><option>ステータス</option></select><span class="nb" data-n="4">4</span>
+      <button class="px-4 h-9 rounded-lg border border-gray-300 text-gray-600 text-sm font-medium">クリア</button>
+      <button class="px-4 h-9 rounded-lg bg-blue-600 text-white text-sm font-medium">検索<span class="nb act" data-n="5">5</span></button>
+      <select class="form-input max-w-[150px]"><option>並び替え</option></select><span class="nb" data-n="6">6</span>
+    </div>
+    <table class="dt">
+      <thead><tr><th>No</th><th>ID<span class="nb" data-n="7">7</span></th><th>配送スタッフ名<span class="nb" data-n="8">8</span></th>
+        <th>委託配送先名<span class="nb" data-n="9">9</span></th><th>区分<span class="nb" data-n="10">10</span></th>
+        <th>電話番号<span class="nb" data-n="11">11</span></th><th>ステータス<span class="nb" data-n="12">12</span></th><th>操作</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>DR00001</td><td>山岡 美幸</td><td>株式会社 三輝</td><td>個人</td><td>050-1245-1245</td><td><span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-600">本登録</span></td>
+          <td><i class="fa-regular fa-pen-to-square text-blue-600 mr-2"></i><span class="nb act" data-n="13">13</span><i class="fa-regular fa-trash-can text-red-500"></i></td></tr>
+        <tr><td>2</td><td>DR00002</td><td>山岡 美幸</td><td>株式会社 三輝</td><td>個人</td><td>050-1245-1245</td><td><span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-600">本登録</span></td>
+          <td><i class="fa-regular fa-pen-to-square text-blue-600 mr-2"></i><i class="fa-regular fa-trash-can text-red-500"></i></td></tr>
+      </tbody>
+    </table>
+    <div class="flex items-center justify-end gap-4 mt-4 text-sm text-gray-600"><span>全 100 件</span><span class="nb" data-n="14">14</span></div>
+  </div>
+
+  <!-- ===== MOCKUP detail (MD02) ===== -->
+  <div class="card p-6">
+    <div class="flex items-center justify-between mb-3">
+      <div><div class="text-xs text-gray-500">マスタ管理 ／ 配送関連 ／ 配送スタッフ</div><h2 class="text-xl font-bold text-gray-900">配送スタッフ</h2></div>
+      <div class="flex gap-2"><button class="px-5 h-10 rounded-lg border border-red-500 text-red-500 text-sm font-medium">削除<span class="nb act" data-n="17">17</span></button>
+        <button class="px-5 h-10 rounded-lg bg-blue-600 text-white text-sm font-medium">編集<span class="nb act" data-n="18">18</span></button></div>
+    </div>
+    <div class="flex gap-6 border-b border-gray-200 mb-4">
+      <span class="py-2 text-sm font-semibold text-blue-600 border-b-2 border-blue-600">基本情報<span class="nb" data-n="15">15</span></span>
+      <span class="py-2 text-sm font-medium text-gray-500">変更履歴<span class="nb" data-n="16">16</span></span>
+    </div>
+    <div class="rounded-lg border border-gray-200 overflow-hidden mb-4">
+      <div class="sec-head">基本情報</div>
+      <div class="p-5 grid grid-cols-3 gap-5">
+        <div><div class="text-xs text-gray-500 mb-1">ID</div><div class="fld">DR00001</div></div>
+        <div><div class="text-xs text-gray-500 mb-1">配送スタッフ名</div><div class="fld">山岡 美幸</div></div>
+        <div><div class="text-xs text-gray-500 mb-1">カナ</div><div class="fld">ヤマオカ ミユキ</div></div>
+        <div><div class="text-xs text-gray-500 mb-1">委託配送先名</div><div class="fld"><span class="text-blue-600">株式会社 三輝</span></div><span class="nb" data-n="19">19</span></div>
+        <div><div class="text-xs text-gray-500 mb-1">ステータス</div><div class="fld">本登録</div></div>
+        <div><div class="text-xs text-gray-500 mb-1">電話番号</div><div class="fld">050-1245-1245</div></div>
+        <div class="col-span-3"><div class="text-xs text-gray-500 mb-1">免許証</div><div class="w-44 h-28 rounded-lg border-2 border-dashed border-blue-400 bg-slate-800 flex items-center justify-center text-slate-300 text-3xl"><i class="fa-regular fa-id-card"></i></div><span class="nb" data-n="20">20</span></div>
+      </div>
+    </div>
+    <div class="rounded-lg border border-gray-200 overflow-hidden">
+      <div class="sec-head">担当者</div>
+      <div class="p-5 grid grid-cols-3 gap-5 items-end">
+        <div><div class="text-xs text-gray-500 mb-1">メールアドレス</div><div class="fld">sample@email.com</div></div>
+        <div><div class="text-xs text-gray-500 mb-1">ステータス</div><div class="fld">有効</div></div>
+        <div><div class="text-xs text-gray-500 mb-1">最終ログイン日時</div><div class="fld">2026年6月1日 11:00:00</div></div>
+        <div class="col-span-3"><button class="px-4 h-9 rounded-lg border border-blue-500 text-blue-500 text-sm font-medium">パスワード送信<span class="nb act" data-n="22">22</span></button><span class="nb" data-n="21">21</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Mock khớp <code>MD01 / MD02</code>. 新規追加<span class="nb act" data-n="23">23</span> = POST tạo (admin chọn được 委託配送先).</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — 配送スタッフ マスタ <span class="text-gray-400 font-normal text-sm">(§B1)</span></b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:42px">No</th><th>UI element</th><th>API</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const P = e => '<code>'+e+'</code>';
+const LIST='<span class="method m-get">GET</span> '+P('/admin/drivers');
+const DET ='<span class="method m-get">GET</span> '+P('/admin/drivers/{id}');
+const HIS ='<span class="method m-get">GET</span> '+P('/admin/drivers/{id}/history');
+const CRE ='<span class="method m-post">POST</span> '+P('/admin/drivers');
+const UPD ='<span class="method m-patch">PATCH</span> '+P('/admin/drivers/{id}');
+const DEL ='<span class="method m-del">DELETE</span> '+P('/admin/drivers/{id}');
+const PWD ='<span class="method m-post">POST</span> '+P('/admin/drivers/{id}/send-password');
+const W = {
+  1:{ui:'Nút 新規追加', api:'(điều hướng)', field:'mở form create', tf:'Sang màn tạo (POST §23).', act:1},
+  2:{ui:'Filter keyword', api:LIST, field:'query <code>q</code>', tf:'委託配送先名 / 配送スタッフ名.'},
+  3:{ui:'Filter スタッフ区分', api:LIST, field:'query <code>type</code>', tf:'DriverType.'},
+  4:{ui:'Filter ステータス', api:LIST, field:'query <code>approvalStatus</code> / <code>status</code>', tf:'承認 hoặc account status.'},
+  5:{ui:'Nút 検索', api:LIST, field:'reload', tf:'Submit filter.', act:1},
+  6:{ui:'並び替え', api:LIST, field:'query <code>orderBy/order</code>', tf:'Sắp xếp.'},
+  7:{ui:'列 ID', api:LIST, field:'<code>items[].driverCode</code>', tf:'—'},
+  8:{ui:'列 配送スタッフ名', api:LIST, field:'<code>items[].driverName</code>', tf:'—'},
+  9:{ui:'列 委託配送先名', api:LIST, field:'<code>items[].deliverer.name</code>', tf:'join deliverers.'},
+  10:{ui:'列 区分', api:LIST, field:'<code>items[].type</code>', tf:'—'},
+  11:{ui:'列 電話番号', api:LIST, field:'<code>items[].phone</code>', tf:'—'},
+  12:{ui:'列 ステータス (本登録)', api:LIST, field:'<code>items[].approvalStatus</code>', tf:'APPROVED=本登録.'},
+  13:{ui:'操作 編集', api:DET, field:'path <code>id</code>', tf:'Mở MD02.', act:1},
+  14:{ui:'Phân trang', api:LIST, field:'query page/limit', tf:'envelope.'},
+  15:{ui:'Tab 基本情報', api:DET, field:'GET detail', tf:'Khối 基本情報 + 担当者.'},
+  16:{ui:'Tab 変更履歴', api:HIS, field:'GET history (page/limit)', tf:'⭐ bảng mới driver_history_logs (G9).'},
+  17:{ui:'Nút 削除', api:DEL, field:'path <code>id</code>', tf:'State-machine: phải ở account.status=INACTIVE mới xoá. FE: nếu đang ACTIVE → PATCH {status:INACTIVE} (qua nút 編集) rồi mới DELETE. DELETE = soft delete + remove Cognito. 409 nếu còn ACTIVE.', act:1},
+  18:{ui:'Nút 編集', api:UPD, field:'body partial', tf:'Vào chế độ sửa → PATCH.', act:1},
+  19:{ui:'委託配送先名 (link/select)', api:DET+' / '+CRE, field:'<code>deliverer.{id,name}</code> / body <code>delivererId</code>', tf:'Admin chọn được (≠ portal auto).'},
+  20:{ui:'免許証', api:DET, field:'<code>licenseImageUrl</code>', tf:'Ảnh bằng lái (S3).'},
+  21:{ui:'担当者 (email/status/last login)', api:DET, field:'<code>account.{email,status,lastLoginAt}</code>', tf:'—'},
+  22:{ui:'Nút パスワード送信', api:PWD, field:'path <code>id</code>', tf:'Gửi/cấp lại mật khẩu.', act:1},
+  23:{ui:'Create (アカウント作成)', api:CRE, field:'body + <code>delivererId</code> bắt buộc', tf:'Tạo driver + account.', act:1}
+};
+
+const DOCS = `
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1e40af;margin-bottom:14px">
+  <b>API màn:</b> CRUD <code>/admin/drivers</code> + <code>/{id}/history</code> + <code>/{id}/send-password</code>. AdminGuard + RBAC (<code>driver.*</code>).
+</div>
+
+<h4>① <span class="method m-get">GET</span> /admin/drivers — list (MD01)</h4>
+<p>Query: q, delivererId?, type?, approvalStatus?, status?, orderBy/order, page/limit.</p>
+<pre>{ "items":[{ "id":"301","driverCode":"DR00001","driverName":"山岡 美幸",
+  "deliverer":{"id":"5","name":"株式会社 三輝"},"type":"INDIVIDUAL","phone":"050-1245-1245","approvalStatus":"APPROVED" }],
+  "total":100,"page":1,"limit":10,"totalPages":10 }</pre>
+
+<h4 style="margin-top:18px">② <span class="method m-get">GET</span> /admin/drivers/{id} — detail (MD02, tab 基本情報)</h4>
+<pre>{ "id":"301","driverCode":"DR00001","driverName":"山岡 美幸","nameKana":"ヤマオカ ミユキ",
+  "deliverer":{"id":"5","name":"株式会社 三輝"},"approvalStatus":"APPROVED","phone":"050-1245-1245","licenseImageUrl":"…",
+  "account":{ "email":"sample@email.com","status":"ACTIVE","lastLoginAt":"2026-06-01T11:00:00Z" },
+  "createdBy":"admin:1","updatedAt":"…" }</pre>
+
+<h4 style="margin-top:18px">③ <span class="method m-get">GET</span> /admin/drivers/{id}/history — tab 変更履歴 (số 16)</h4>
+<p>⭐ Cần bảng mới <code>driver_history_logs</code> (G9).</p>
+<pre>{ "items":[{ "id":"9001","field":"approvalStatus","oldValue":"PENDING","newValue":"APPROVED","changedBy":"admin:1","changedAt":"2026-06-01T10:00:00Z" }],
+  "total":12,"page":1,"limit":20,"totalPages":1 }</pre>
+
+<h4 style="margin-top:18px">④ POST / PATCH / DELETE / send-password</h4>
+<p>POST: như portal create + <b><code>delivererId</code> required</b> (admin chọn 委託配送先). PATCH partial. send-password gửi mail.</p>
+<p><b>Luồng xoá (state-machine):</b> account.status <code>ACTIVE → INACTIVE → (DELETE) deleted</code>. Vô hiệu hoá = <code>PATCH /admin/drivers/{id} { "status":"INACTIVE" }</code>; sau đó <code>DELETE</code> mới hợp lệ (đang ACTIVE → 409). Map nhãn: <code>有効=ACTIVE</code>, <code>無効=INACTIVE</code>.</p>
+<pre>// sort: orderBy ∈ { createdAt, driverName, driverCode, approvalStatus }; order ∈ { ASC, DESC }</pre>
+
+<h4 style="margin-top:18px">DB note (thiết kế)</h4>
+<p><code>drivers</code> field doc3 (deliverer_id FK deliverers, name_kana, phone, type, approval_status, delivery_area, delivery_location, license_image_url). ⭐ <code>driver_history_logs</code> (G9). RBAC keys: <code>driver.view/create/update/delete/view_history</code>.</p>
+<div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:8px 10px;font-size:12px;color:#065f46;margin-top:10px">
+  ✅ <b>Đã chốt (xác nhận từ code):</b> Luồng xoá <code>ACTIVE → PATCH{accountStatus:INACTIVE} → DELETE</code>. <code>admin-driver.service.ts:268</code> chặn xoá khi còn ACTIVE (i18n <code>admin.driver.cannot_delete_active</code>). FE: <b>disable nút 削除 khi 有効(ACTIVE)</b> + tooltip "先に無効化". Map nhãn 有効=ACTIVE / 無効=INACTIVE; sort <code>orderBy∈{createdAt,driverName,driverCode,approvalStatus}, order∈{ASC,DESC}</code>.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).map(Number).sort((a,b)=>a-b).forEach(n=>{
+  const d=W[n], cls=d.tbd?'tbd':(d.act?'act':'');
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function open(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function close(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=close; ov.onclick=close;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();open(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

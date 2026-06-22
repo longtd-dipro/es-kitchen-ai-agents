@@ -1,0 +1,619 @@
+<!--
+============================================================
+SCREEN NAME: 出荷処理 (Shipping Processing)
+============================================================
+FEATURES:
+- Fixed left sidebar with ES STATION branding
+- Active sidebar item: 注文管理 (purple #6B46C1)
+- Top bar with greeting and user info
+- Breadcrumb: 受注一覧 / 出荷処理
+- Page title with action buttons: 戻る, Cancel, 保存
+- Product info card (light purple background)
+- Required quantity accordion with date grid table
+- Inventory info accordion with 3 summary cards
+- Order info accordion with form inputs and validation
+- Supplier response banner (green)
+- Mascot character at sidebar bottom
+============================================================
+REUSABLE CLASSES (see @layer components in <style>):
+- .nav-link / --active / --idle : sidebar menu links
+- .field-label                  : form field label
+- .qty-th / .qty-td / .qty-td-name : required-quantity grid cells
+============================================================
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出荷処理 - ES STATION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            500: '#8b5cf6',
+                            600: '#6B46C1',
+                            700: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        gray: {
+                            50: '#F7FAFC',
+                            100: '#EDF2F7',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#4A5568',
+                            700: '#334155',
+                            800: '#1A202C',
+                            900: '#0F172A',
+                        },
+                        success: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        },
+                        danger: {
+                            500: '#ef4444',
+                            600: '#dc2626',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            /* Sidebar navigation links */
+            .nav-link        { @apply flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors; }
+            .nav-link--active { @apply bg-primary-600 text-white shadow-sm; }
+            .nav-link--idle  { @apply text-gray-700 hover:bg-primary-50 hover:text-primary-700; }
+
+            /* Form field label */
+            .field-label     { @apply block text-sm font-medium text-gray-700 mb-1.5; }
+
+            /* Required-quantity grid */
+            .qty-th          { @apply py-3 px-3 text-center text-gray-600 font-medium bg-gray-50; }
+            .qty-td          { @apply py-3 px-3 text-center text-gray-700; }
+            .qty-td-name     { @apply py-3 px-3 text-gray-900 font-medium; }
+        }
+
+        .mascot-container {
+            background: linear-gradient(180deg, #ffffff 0%, #fef3f2 100%);
+        }
+
+        .date-input-wrapper {
+            position: relative;
+        }
+        .date-input-wrapper input[type="date"] {
+            padding-right: 2.5rem;
+        }
+        .date-input-wrapper .calendar-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6B46C1;
+            pointer-events: none;
+        }
+
+        .highlight-cell {
+            background-color: #f3e8ff;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 2000px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 14px;
+            color: #333333;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.12);
+        }
+        .form-input:disabled {
+            background-color: #f5f5f5;
+            color: #8c8c8c;
+            cursor: not-allowed;
+        }
+        .form-input::placeholder {
+            color: #bfbfbf;
+        }
+
+        .form-select {
+            width: 100%;
+            height: 40px;
+            padding: 0 36px 0 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 14px;
+            color: #333333;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%238c8c8c'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+        .form-select:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.12);
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 90px;
+            padding: 10px 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.5;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+        .form-textarea:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.12);
+        }
+        .form-textarea::placeholder {
+            color: #bfbfbf;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 antialiased">
+    <div class="flex min-h-screen">
+        <!-- ============ SIDEBAR ============ -->
+        <aside class="w-64 bg-gray-50 border-r border-gray-200 flex flex-col fixed h-full z-20">
+            <!-- Logo -->
+            <div class="h-16 flex items-center px-6 border-b border-gray-200">
+                <span class="text-xl font-bold text-primary-600 tracking-wide">ESSTATION</span>
+            </div>
+
+            <!-- Menu -->
+            <nav class="flex-1 px-4 py-6 space-y-1">
+                <a href="#" class="nav-link nav-link--idle">
+                    <i class="fa-solid fa-house w-5 text-center"></i>
+                    <span class="font-medium">TOP</span>
+                </a>
+                <a href="#" class="nav-link nav-link--idle">
+                    <i class="fa-solid fa-clipboard-list w-5 text-center"></i>
+                    <span class="font-medium">受注一覧</span>
+                </a>
+                <a href="#" class="nav-link nav-link--idle">
+                    <i class="fa-solid fa-key w-5 text-center"></i>
+                    <span class="font-medium">パスワード変更</span>
+                </a>
+                <a href="#" class="nav-link nav-link--idle">
+                    <i class="fa-solid fa-ellipsis w-5 text-center"></i>
+                    <span class="font-medium">その他</span>
+                </a>
+                <a href="#" class="nav-link nav-link--active">
+                    <i class="fa-solid fa-cart-shopping w-5 text-center"></i>
+                    <span class="font-medium">注文管理</span>
+                </a>
+            </nav>
+
+            <!-- Mascot -->
+            <div class="mascot-container p-4 border-t border-gray-200">
+                <div class="rounded-xl bg-white border border-dashed border-primary-200 p-3 flex items-center justify-center">
+                    <img
+                        src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=160&h=160&fit=crop"
+                        alt="mascot"
+                        class="w-16 h-16 rounded-full object-cover opacity-80"
+                    />
+                </div>
+                <p class="text-center text-xs text-gray-500 mt-2">ES Assistant</p>
+            </div>
+        </aside>
+
+        <!-- ============ MAIN CONTENT ============ -->
+        <main class="flex-1 ml-64 min-h-screen">
+            <!-- Top Bar -->
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 sticky top-0 z-10">
+                <div class="flex items-center gap-2 text-gray-600">
+                    <span class="font-medium">お帰りなさい</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-yellow-400 flex items-center justify-center text-white font-semibold shadow-sm">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <span class="font-medium text-gray-800">にっしぐち</span>
+                </div>
+            </header>
+
+            <div class="p-8">
+                <!-- Breadcrumb & Title -->
+                <div class="mb-6">
+                    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                        <a href="#" class="hover:text-primary-600">受注一覧</a>
+                        <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+                        <span class="text-gray-800">出荷処理</span>
+                    </nav>
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-2xl font-bold text-gray-900">出荷処理</h1>
+                        <div class="flex items-center gap-3">
+                            <button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+                                戻る
+                            </button>
+                            <button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-danger-500 bg-white text-danger-600 font-medium hover:bg-red-50 transition-colors">
+                                この発注をキャンセルする
+                            </button>
+                            <button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-600 text-white font-medium shadow-sm hover:bg-primary-700 transition-colors">
+                                保存
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Card 1: Product Info -->
+                    <section class="bg-primary-50 border border-primary-100 rounded-xl p-5">
+                        <div class="flex items-center gap-2 mb-4 text-primary-700">
+                            <i class="fa-solid fa-box"></i>
+                            <h2 class="font-semibold">商品名 (10002)</h2>
+                        </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-600 w-32 shrink-0">メニュー年月</span>
+                                    <span class="font-semibold text-gray-900">2024/12</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-600 w-32 shrink-0">カテゴリ</span>
+                                    <span class="font-semibold text-gray-900">Rau củ</span>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-600 w-40 shrink-0">発注明細No</span>
+                                    <span class="font-semibold text-gray-900">P000000293</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-600 w-40 shrink-0">備考</span>
+                                    <span class="font-semibold text-danger-600">Hàng dễ hư hỏng</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card 2: Required Quantity -->
+                    <section class="bg-white border border-gray-200 rounded-xl shadow-sm">
+                        <button class="accordion-toggle w-full flex items-center justify-between px-5 py-4 text-left" data-target="accordion-quantity">
+                            <span class="font-semibold text-gray-900">必要数</span>
+                            <i class="fa-solid fa-chevron-up text-gray-500 transition-transform"></i>
+                        </button>
+                        <div id="accordion-quantity" class="accordion-content open">
+                            <!-- Filter Bar -->
+                            <div class="px-5 pb-4">
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <select class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none">
+                                        <option>倉庫</option>
+                                        <option>南日本運輸倉庫</option>
+                                        <option>テスト倉庫</option>
+                                    </select>
+                                    <div class="date-input-wrapper">
+                                        <input type="date" value="2024-12-01" class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none" />
+                                        <span class="calendar-icon"><i class="fa-regular fa-calendar"></i></span>
+                                    </div>
+                                    <div class="date-input-wrapper">
+                                        <input type="date" value="2024-12-14" class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-primary-500 focus:outline-none" />
+                                        <span class="calendar-icon"><i class="fa-regular fa-calendar"></i></span>
+                                    </div>
+                                    <button class="px-4 py-2 rounded-lg border border-primary-600 text-primary-600 text-sm font-medium hover:bg-primary-50 transition-colors">
+                                        クリア
+                                    </button>
+                                    <button class="px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium shadow-sm hover:bg-primary-700 transition-colors">
+                                        検索
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Table -->
+                            <div class="px-5 pb-5 overflow-x-auto">
+                                <table class="w-full border-collapse text-sm">
+                                    <thead>
+                                        <tr class="border-b border-gray-200">
+                                            <th class="qty-th text-left rounded-tl-lg">倉庫</th>
+                                            <th class="qty-th">1</th>
+                                            <th class="qty-th">2</th>
+                                            <th class="qty-th">3</th>
+                                            <th class="qty-th">4</th>
+                                            <th class="qty-th">5</th>
+                                            <th class="qty-th">6</th>
+                                            <th class="qty-th">7</th>
+                                            <th class="qty-th">8</th>
+                                            <th class="qty-th">9</th>
+                                            <th class="qty-th">10</th>
+                                            <th class="qty-th">11</th>
+                                            <th class="qty-th">12</th>
+                                            <th class="qty-th">13</th>
+                                            <th class="qty-th">14</th>
+                                            <th class="qty-th">基準数計</th>
+                                            <th class="qty-th">予測数</th>
+                                            <th class="qty-th">選択必要数</th>
+                                            <th class="qty-th rounded-tr-lg">合計</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-gray-100">
+                                            <td class="qty-td-name">南日本運輸倉庫株式会社</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td highlight-cell">10</td>
+                                            <td class="qty-td highlight-cell">20</td>
+                                            <td class="qty-td highlight-cell">30</td>
+                                            <td class="qty-td highlight-cell">40</td>
+                                            <td class="qty-td highlight-cell">50</td>
+                                            <td class="qty-td highlight-cell">60</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td font-semibold">210</td>
+                                            <td class="qty-td">180</td>
+                                            <td class="qty-td text-primary-600 font-semibold">30</td>
+                                            <td class="qty-td text-gray-900 font-semibold">240</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-100">
+                                            <td class="qty-td-name">テスト倉庫</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td font-semibold">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td text-primary-600 font-semibold">-</td>
+                                            <td class="qty-td text-gray-900 font-semibold">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="qty-td-name">(倉庫なし)</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td font-semibold">-</td>
+                                            <td class="qty-td">-</td>
+                                            <td class="qty-td text-primary-600 font-semibold">-</td>
+                                            <td class="qty-td text-gray-900 font-semibold">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card 3: Inventory Info -->
+                    <section class="bg-white border border-gray-200 rounded-xl shadow-sm">
+                        <button class="accordion-toggle w-full flex items-center justify-between px-5 py-4 text-left" data-target="accordion-inventory">
+                            <span class="font-semibold text-gray-900">在庫情報</span>
+                            <i class="fa-solid fa-chevron-up text-gray-500 transition-transform"></i>
+                        </button>
+                        <div id="accordion-inventory" class="accordion-content open">
+                            <div class="px-5 pb-5">
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                        <div class="text-sm text-gray-600 mb-1">南日本運輸倉庫</div>
+                                        <div class="text-2xl font-bold text-gray-900">43,356</div>
+                                    </div>
+                                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                        <div class="text-sm text-gray-600 mb-1">テスト倉庫</div>
+                                        <div class="text-2xl font-bold text-gray-900">12,460</div>
+                                    </div>
+                                    <div class="border border-primary-200 rounded-lg p-4 bg-primary-50">
+                                        <div class="text-sm text-primary-700 mb-1">計 (Tổng cộng)</div>
+                                        <div class="text-2xl font-bold text-primary-700">12,460</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card 4: Order Info -->
+                    <section class="bg-white border border-gray-200 rounded-xl shadow-sm">
+                        <button class="accordion-toggle w-full flex items-center justify-between px-5 py-4 text-left" data-target="accordion-order">
+                            <div class="flex items-center gap-3">
+                                <span class="font-semibold text-gray-900">発注情報</span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                    仮発注済
+                                </span>
+                            </div>
+                            <i class="fa-solid fa-chevron-up text-gray-500 transition-transform"></i>
+                        </button>
+                        <div id="accordion-order" class="accordion-content open">
+                            <form class="px-5 pb-6 space-y-4" onsubmit="event.preventDefault();">
+                                <div class="grid grid-cols-3 gap-5">
+                                    <div>
+                                        <label class="field-label">
+                                            仕入先 <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" value="回鍋肉" class="form-input" />
+                                    </div>
+                                    <div>
+                                        <label class="field-label">
+                                            納入倉庫 <span class="text-red-500">*</span>
+                                        </label>
+                                        <select class="form-select">
+                                            <option>肉類</option>
+                                            <option>南日本運輸倉庫</option>
+                                            <option>テスト倉庫</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="field-label">ロット</label>
+                                        <input type="text" value="50個から" disabled class="form-input" />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="field-label">仕入備考</label>
+                                    <div class="relative">
+                                        <textarea rows="4" maxlength="100" class="form-textarea" oninput="updateCharCount(this)">Bảo quản mát tiêu chuẩn Nhật Bản</textarea>
+                                        <div class="absolute bottom-2 right-3 text-xs text-gray-500">
+                                            <span class="char-count">25</span>/100
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-4 gap-5">
+                                    <div>
+                                        <label class="field-label">
+                                            仮発注数 <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="number" value="1234" class="form-input" />
+                                    </div>
+                                    <div>
+                                        <label class="field-label">
+                                            希望納期 <span class="text-red-500">*</span>
+                                        </label>
+                                        <div class="date-input-wrapper">
+                                            <input type="date" value="2025-04-12" class="form-input" />
+                                            <span class="calendar-icon"><i class="fa-regular fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="field-label">
+                                            本発注 <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="number" value="1444" class="form-input" />
+                                    </div>
+                                    <div>
+                                        <label class="field-label">希望賞味期限</label>
+                                        <div class="date-input-wrapper">
+                                            <input type="date" value="2025-04-12" class="form-input" />
+                                            <span class="calendar-icon"><i class="fa-regular fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="field-label">仕入備考</label>
+                                    <div class="relative">
+                                        <textarea rows="4" maxlength="100" placeholder="仕入備考" class="form-textarea" oninput="updateCharCount(this)"></textarea>
+                                        <div class="absolute bottom-2 right-3 text-xs text-gray-500">
+                                            <span class="char-count">0</span>/100
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+
+                    <!-- Card 5: Supplier Response -->
+                    <section class="bg-success-50 border border-success-100 rounded-xl px-5 py-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <h3 class="font-semibold text-success-700">仕入先回答</h3>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                    納期回答済み
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-6 text-sm">
+                                <div class="flex items-center gap-2 text-gray-700">
+                                    <span class="font-medium">株式会社やまぶん Sales Team</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-gray-700">
+                                    <span class="text-gray-500">出荷予定日</span>
+                                    <span class="font-semibold text-gray-900">2024/12/01</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function updateCharCount(textarea) {
+            const count = textarea.value.length;
+            const counter = textarea.parentElement.querySelector('.char-count');
+            if (counter) {
+                counter.textContent = count;
+            }
+        }
+
+        document.querySelectorAll('.accordion-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                const content = document.getElementById(targetId);
+                const icon = button.querySelector('.fa-chevron-up, .fa-chevron-down');
+
+                if (content.classList.contains('open')) {
+                    content.classList.remove('open');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                } else {
+                    content.classList.add('open');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

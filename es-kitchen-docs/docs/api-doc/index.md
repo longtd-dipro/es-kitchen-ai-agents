@@ -27,6 +27,49 @@ Tập hợp các trang **mockup tương tác + tài liệu API** cho từng feat
 
 ---
 
+## 配送関連 — Deliverer / Shipment
+
+**Scope:** Portal Deliverer (委託配送先 tự phục vụ, `/deliverer`) + Admin (配送スタッフマスタ + 出荷配送, `/admin`). お知らせ · 配送状況 · 集金額 · 配送スタッフ · 出荷配送.
+
+| Màn hình | Persona | Mô tả | Mở |
+|---|---|---|---|
+| **Index / Overview** | All | Scope, conventions, Master Enums, Error catalog, DB-change gate, danh mục màn hình | [Mở →](deliverer/index.html){target=_blank} |
+| お知らせ | Portal | List tab すべて/重要/お知らせ + detail (auto isRead) | [Mở →](deliverer/OW_ANNO_001.html){target=_blank} |
+| 配送状況 | Portal | List + detail read-only; thao tác ghi duy nhất = assign-driver | [Mở →](deliverer/OW_DLVR_001.html){target=_blank} |
+| 集金額 | Portal | List → summary (cards) + CSV (UTF-8+BOM) + レポート Excel | [Mở →](deliverer/OW_CLCT_001.html){target=_blank} |
+| 配送スタッフ | Portal | List → detail → tạo account (driverCode sinh seq = login) | [Mở →](deliverer/OW_STAF_001.html){target=_blank} |
+| 配送スタッフマスタ | Admin | List + detail (tab 基本情報 / 変更履歴) | [Mở →](deliverer/admin/MD01_配送スタッフマスタ.html){target=_blank} |
+| 【惣菜】出荷配送 | Admin | List + detail 7 khối; `shipmentNo` server sinh seq | [Mở →](deliverer/admin/MP01_惣菜出荷配送.html){target=_blank} |
+| 委託配送先 | Admin | List + edit + phát hành account. ⚠️ Tab **ES配送費** + **変更履歴** chưa có API/DB spec — xem `API設計 › D` | [Mở →](deliverer/admin/DA_委託配送先.html){target=_blank} |
+
+> Tài liệu thiết kế (.md): [API設計](deliverer/API設計_配送関連.md){target=_blank} · [API仕様詳細](deliverer/API仕様詳細_配送関連.md){target=_blank} · [DB変更提案](deliverer/DB変更提案_配送関連.md){target=_blank}
+>
+> Hướng dẫn ráp API tương tác (click số → bảng map UI→field + API docs): [お知らせ](deliverer/apis/お知らせ.html){target=_blank} · [配送状況](deliverer/apis/配送状況.html){target=_blank} · [集金額](deliverer/apis/集金額.html){target=_blank} · [配送スタッフ](deliverer/apis/配送スタッフ.html){target=_blank} · [出荷配送 (Admin)](deliverer/apis/admin/出荷配送.html){target=_blank} · [配送スタッフマスタ (Admin)](deliverer/apis/admin/配送スタッフマスタ.html){target=_blank}
+
+---
+
+## 仕入先 — Supplier (E04)
+
+**Scope:** Admin quản lý 仕入先マスタ (`/admin/supplier-masters`) + Supplier self-service (`/supplier`). Mỗi màn gắn cờ trạng thái **LIVE / TBD / OUT / EXISTING**.
+
+| Màn hình | Persona | Trạng thái | Mở |
+|---|---|---|---|
+| **Index / Overview** | All | Read-order, conventions, Master Enums, Error catalog, Open Questions, danh mục | [Mở →](supliers/index.html){target=_blank} |
+| 仕入先マスタ List + Detail | Admin | 🟢 LIVE | [Mở →](supliers/admin-management/supplier-master.html){target=_blank} |
+| 登録 / 編集 | Admin | 🟢 LIVE | [Mở →](supliers/admin-management/supplier-register.html){target=_blank} |
+| 変更履歴 | Admin | 🟢 LIVE | [Mở →](supliers/admin-management/supplier-edit-history.html){target=_blank} |
+| 注文管理 | Supplier | 🟡 TBD (chờ #B') | [Mở →](supliers/apis/注文管理.html){target=_blank} |
+| 注文詳細編集 | Supplier | 🟡 TBD (chờ #C') | [Mở →](supliers/apis/注文詳細編集.html){target=_blank} |
+| 出荷処理 | Supplier | ⚪ OUT OF SCOPE | [Mở →](supliers/DA_出荷処理.html){target=_blank} |
+
+> ⚠️ Bản mockup cũ `DA_注文管理.html` / `DA_注文詳細編集.html` **đã lỗi thời** (cột sai) — link ở trên đã trỏ sang bản interactive mới nhất trong `apis/` (theo `SUPPLIER_DB_API_DESIGN.md` §3.2/§3.3).
+>
+> Tài liệu thiết kế (.md): [SUPPLIER_API_CONTRACT](supliers/SUPPLIER_API_CONTRACT.md){target=_blank} · [SUPPLIER_DB_API_DESIGN](supliers/SUPPLIER_DB_API_DESIGN.md){target=_blank}
+>
+> Hướng dẫn ráp API tương tác: [お知らせ](supliers/apis/お知らせ.html){target=_blank} · [注文管理](supliers/apis/注文管理.html){target=_blank} · [注文詳細編集](supliers/apis/注文詳細編集.html){target=_blank} · [仕入先マスタ](supliers/admin-management/apis/supplier-master.html){target=_blank} · [登録/編集](supliers/admin-management/apis/supplier-register.html){target=_blank} · [変更履歴](supliers/admin-management/apis/supplier-edit-history.html){target=_blank}
+
+---
+
 ## User Engagement — Phase 2
 
 **Scope:** Tương tác người dùng trên App di động E01 — khai báo dị ứng, đánh giá sản phẩm, khảo sát, wishlist tháng sau.

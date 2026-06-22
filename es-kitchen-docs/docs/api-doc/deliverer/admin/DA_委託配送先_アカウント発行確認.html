@@ -1,0 +1,166 @@
+<!--
+============================================================
+SCREEN NAME: アカウント発行のメール送信の確認 (Deliverer account issuance confirm modal)
+============================================================
+Confirmation popup before sending account-issuance email to a 委託配送先 (deliverer).
+LAYOUT:
+- Dimmed overlay backdrop
+- Modal:
+  - Header: title "アカウント発行のメール送信の確認" + close (X)
+  - Body message: "アカウント情報をメールで送信します。実行してよろしいですか？"
+  - Warning note: "※既存アカウントがある場合、パスワードがリセットされ、再ログインが必要になります。"
+  - Target table: No / ID / 委託配送先名 (link) / 担当者名 / ステータス (badge) / メールアドレス
+  - Footer actions: キャンセル / 発行する
+============================================================
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アカウント発行のメール送信の確認 - ES STATION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'Noto Sans JP', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'] },
+                    colors: { primary: { 500:'#2563EB', 600:'#1D4ED8', 700:'#1E40AF' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #eef1f6; }
+
+        /* ===== Overlay + modal ===== */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.45); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 100; }
+        .modal { width: 100%; max-width: 760px; background: #fff; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); overflow: hidden; }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; border-bottom: 1px solid #eef1f5; }
+        .modal-title { font-size: 22px; font-weight: 700; color: #1e293b; }
+        .modal-close { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #475569; background: none; border: none; cursor: pointer; border-radius: 6px; transition: .2s; }
+        .modal-close:hover { background: #f1f5f9; color: #1e293b; }
+        .modal-body { padding: 24px 28px; }
+        .modal-footer { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 8px 28px 28px; }
+
+        /* ===== Text ===== */
+        .modal-message { font-size: 16px; line-height: 1.7; color: #334155; }
+        .modal-note { font-size: 15px; line-height: 1.7; color: #475569; margin-top: 18px; }
+
+        /* ===== Target table ===== */
+        .target-table { width: 100%; border-collapse: collapse; margin-top: 22px; }
+        .target-table th { padding: 14px 12px; text-align: left; font-size: 14px; font-weight: 600; color: #475569; background: #f8fafc; border-bottom: 1px solid #e5e7eb; white-space: nowrap; }
+        .target-table td { padding: 18px 12px; font-size: 15px; color: #334155; border-bottom: 1px solid #f1f5f9; }
+        .target-table th:first-child, .target-table td:first-child { padding-left: 4px; }
+        .partner-link { color: #2563EB; text-decoration: underline; cursor: pointer; }
+        .partner-link:hover { color: #1D4ED8; }
+        .status-badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 9999px; font-size: 13px; font-weight: 500; background: #DBEAFE; color: #1E40AF; }
+
+        /* ===== Buttons ===== */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 52px; min-width: 150px; padding: 0 28px; border-radius: 8px; font-size: 17px; font-weight: 600; border: 1px solid transparent; cursor: pointer; transition: .2s; }
+        .btn-primary { background: #2563EB; color: #fff; border-color: #2563EB; }
+        .btn-primary:hover { background: #1D4ED8; }
+        .btn-outline { background: #fff; color: #2563EB; border-color: #93c5fd; }
+        .btn-outline:hover { background: #eff6ff; }
+    </style>
+</head>
+<body class="font-sans text-slate-800 antialiased">
+
+    <!-- ==================== MODAL OVERLAY ==================== -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+            <!-- ========== HEADER ========== -->
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">アカウント発行のメール送信の確認</h2>
+                <!-- [API-ACTION] Close modal (no send) -->
+                <button class="modal-close" id="btn-close" aria-label="閉じる">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- ========== BODY ========== -->
+            <div class="modal-body">
+                <p class="modal-message">
+                    アカウント情報をメールで送信します。<br>
+                    実行してよろしいですか？
+                </p>
+
+                <!-- Warning note about existing accounts -->
+                <p class="modal-note">
+                    ※既存アカウントがある場合、パスワードがリセットされ、再ログインが必要になります。
+                </p>
+
+                <!-- ===== TARGET LIST ===== -->
+                <div class="overflow-x-auto">
+                    <table class="target-table min-w-[640px]">
+                        <thead>
+                            <tr>
+                                <th class="w-[48px]">No</th>
+                                <th class="w-[120px]">ID</th>
+                                <th class="min-w-[180px]">委託配送先名</th>
+                                <th class="min-w-[120px]">担当者名</th>
+                                <th class="min-w-[110px]">ステータス</th>
+                                <th class="min-w-[200px]">メールアドレス</th>
+                            </tr>
+                        </thead>
+                        <!-- [API-DATA] Selected deliverers to issue accounts for -->
+                        <tbody id="target-table-body">
+                            <!-- Row template (API-DATA) -->
+                            <tr>
+                                <td class="target-no">1</td>
+                                <td class="target-id">DE000001</td>
+                                <td>
+                                    <!-- [API-ACTION] Open deliverer detail -->
+                                    <a class="partner-link target-name">株式会社虹の橋</a>
+                                </td>
+                                <td class="target-contact">阿妻圭祐</td>
+                                <td>
+                                    <!-- [API-DATA] Account status -->
+                                    <span class="status-badge">本登録</span>
+                                </td>
+                                <td class="target-email">sample@email.com</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ========== FOOTER ========== -->
+            <div class="modal-footer">
+                <!-- [API-ACTION] Cancel → close modal -->
+                <button class="btn btn-outline" id="btn-cancel">キャンセル</button>
+                <!-- [API-ACTION] Issue → POST send account-issuance email -->
+                <button class="btn btn-primary" id="btn-issue">発行する</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        function closeModal() {
+            // [API-ACTION] Dismiss modal without sending
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+
+        document.getElementById('btn-close').addEventListener('click', closeModal);
+        document.getElementById('btn-cancel').addEventListener('click', closeModal);
+
+        // Close when clicking the dimmed backdrop
+        document.getElementById('modal-overlay').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('btn-issue').addEventListener('click', function () {
+            // [API-ACTION] POST /admin/delivery-partners/issue-account
+            // body: { ids: [...selected DE ids] } → sends credentials email,
+            // resets password for existing accounts.
+        });
+    </script>
+</body>
+</html>

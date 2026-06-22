@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESKitchen · 配送関連 (Deliverer / Shipment) — Mockup & API Guide</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+</head>
+<body class="theme-admin">
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESKitchen Mockups</div>
+  <span class="persona">配送関連 · Deliverer &amp; Shipment</span>
+  <div class="spacer"></div>
+  <span class="tb-link mono">REST · NestJS · PostgreSQL</span>
+</div>
+
+<div class="page">
+
+  <div class="hero" style="background:linear-gradient(135deg,#782a0f,#f4860c)">
+    <h1>配送関連 — Deliverer / Shipment</h1>
+    <p>Bộ mockup + tài liệu API cho 2 phân hệ: <b>Portal Deliverer</b> (委託配送先 tự phục vụ — prefix <span class="mono">/deliverer</span>) và <b>Admin</b> (System Admin quản lý 配送スタッフマスタ + 出荷配送 — prefix <span class="mono">/admin</span>). Trang này là điểm vào: bấm <b>màn hình</b> để xem mockup, bấm <b>API ガイド</b> để xem interactive guide (click số → ráp field ↔ API), hoặc đọc <b>tài liệu thiết kế</b> (.md) để biết DTO/validation/quyết định DB.</p>
+  </div>
+
+  <!-- ===== Scope & architecture ===== -->
+  <div class="card">
+    <div class="card-head"><h3>1 · Phạm vi &amp; quyết định kiến trúc đã chốt</h3></div>
+    <div class="card-body">
+      <div class="flow">
+        <div class="node">Portal Deliverer<small>/deliverer · DelivererGuard</small></div>
+        <div class="to">＋</div>
+        <div class="node">Admin<small>/admin · AdminGuard + RBAC</small></div>
+        <div class="to">→</div>
+        <div class="node">お知らせ / 配送状況<small>集金額 / 配送スタッフ / 出荷配送</small></div>
+      </div>
+      <div class="notice notice-approval" style="margin-top:14px">
+        <span class="ic">🛡️</span>
+        <div><b>Scope guard (BẮT BUỘC):</b> Portal Deliverer <b>ép <code>deliverer_id = me.id</code></b> trên mọi query; mọi <code>:id</code> phải thuộc về mình, không thì <code>404</code>. Admin không giới hạn scope nhưng qua RBAC permission keys (<code>shipment.*</code>, <code>driver.*</code>).</div>
+      </div>
+      <table class="data" style="font-size:12.5px;margin-top:6px">
+        <thead><tr><th>Quyết định</th><th>Nội dung</th></tr></thead>
+        <tbody>
+          <tr><td><b>D1</b> · Gộp bảng</td><td><code>deliverers</code> (login) và <code>deliverer_masters</code> (nghiệp vụ) là <b>MỘT bảng</b> → bỏ <code>deliverer_masters</code>; mọi <code>deliverer_id</code> trỏ <code>deliverers.id</code>.</td></tr>
+          <tr><td><b>D2</b> · Notification</td><td>Targeting <b>polymorphic</b>: <code>recipient_type</code> + <code>recipient_id</code> trên <code>user_notifications</code>.</td></tr>
+          <tr><td>Login</td><td><b>Deliverer/Driver đăng nhập bằng CODE</b> (<code>driverCode</code>/<code>delivererCode</code>, sinh seq). Trong form: <code>ユーザID</code>=code (read-only khi xem), <code>メールアドレス</code>=email liên hệ (≠ login).</td></tr>
+          <tr><td>Quản lý 配送スタッフ</td><td>Cả <b>Admin</b> lẫn <b>Portal Deliverer</b> đều quản lý driver.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== API conventions ===== -->
+  <div class="card">
+    <div class="card-head"><h3>2 · Convention API (BẮT BUỘC)</h3></div>
+    <div class="card-body">
+      <div class="notice notice-warn">
+        <span class="ic">⚠️</span>
+        <div><b>Prefix route:</b> Portal → <code>/deliverer/...</code> (<code>DelivererGuard</code>) &nbsp;·&nbsp; Admin → <code>/admin/...</code> (<code>AdminGuard</code> + RBAC). DTO camelCase + class-validator; enum đặt tại <code>src/commons/enums</code>.</div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <h4 class="section-title">Response envelope</h4>
+          <pre class="mono" style="background:var(--gray-900);color:#cdd6f4;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto">// wrap qua ApiUnifiedResponse
+{ "statusCode":"success",
+  "message":"...",
+  "data": &lt;payload&gt; }</pre>
+        </div>
+        <div>
+          <h4 class="section-title">List / pagination</h4>
+          <pre class="mono" style="background:var(--gray-900);color:#cdd6f4;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto">// Query (BaseSearchRequest):
+?page=1&amp;limit=10&amp;q=&amp;order=DESC&amp;orderBy=createdAt
+// MẶC ĐỊNH: order=DESC · orderBy=createdAt
+// data:
+{ "items":[...], "total":100,
+  "page":1, "limit":10, "totalPages":10 }</pre>
+        </div>
+      </div>
+
+      <h4 class="section-title" style="margin-top:18px">Guards &amp; Errors</h4>
+      <table class="data" style="font-size:12.5px">
+        <thead><tr><th>Hạng mục</th><th>Giá trị</th></tr></thead>
+        <tbody>
+          <tr><td>Guard Portal</td><td><code>DelivererGuard</code> — ép <code>deliverer_id = me.id</code> trên mọi truy vấn &amp; <code>:id</code></td></tr>
+          <tr><td>Guard Admin</td><td><code>AdminGuard</code> (admin-jwt) + RBAC permission keys</td></tr>
+          <tr><td>RBAC keys (admin)</td><td><code>shipment.view/create/update/delete/assign_driver</code> · <code>driver.view/create/update/delete/view_history</code></td></tr>
+          <tr><td>HTTP errors</td><td><span class="chip chip-yellow no-dot">400 validation</span> <span class="chip chip-gray no-dot">401</span> <span class="chip chip-red no-dot">403 sai scope</span> <span class="chip chip-orange no-dot">404 không thuộc về mình</span> <span class="chip chip-purple no-dot">409 xung đột trạng thái</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Master enum catalog ===== -->
+  <div class="card">
+    <div class="card-head"><h3>3 · Master Enums (tập trung — <code>src/commons/enums</code>)</h3></div>
+    <div class="card-body">
+      <table class="data" style="font-size:12.5px">
+        <thead><tr><th>Enum</th><th>Values</th><th>UI / Ghi chú</th></tr></thead>
+        <tbody>
+          <tr><td><code>DriverType</code></td><td><span class="chip chip-blue no-dot">INDIVIDUAL</span> <span class="chip chip-gray no-dot">CORPORATE</span></td><td>区分 · default INDIVIDUAL</td></tr>
+          <tr><td><code>DriverApprovalStatus</code></td><td><span class="chip chip-green no-dot">APPROVED 本登録</span> <span class="chip chip-orange no-dot">PENDING 仮登録</span> <span class="chip chip-red no-dot">REJECTED 却下</span></td><td>ステータス · create default PENDING</td></tr>
+          <tr><td>Account status</td><td><span class="chip chip-green no-dot">ACTIVE 有効</span> <span class="chip chip-gray no-dot">INACTIVE 無効</span></td><td>Phải INACTIVE trước khi xoá → FE disable nút 削除 khi 有効</td></tr>
+          <tr><td><code>NotificationCategory</code></td><td><span class="chip chip-red no-dot">IMPORTANT 重要</span> <span class="chip chip-blue no-dot">INFO お知らせ</span></td><td>Tab お知らせ · trống = すべて</td></tr>
+          <tr><td><code>NotificationRecipientType</code></td><td><code>USER · DELIVERER · DRIVER · COMPANY_ADMIN · SUPPLIER</code></td><td>Polymorphic targeting (D2)</td></tr>
+          <tr><td><code>ShipmentTimeSlot</code> <span class="chip chip-yellow no-dot">value chờ BA</span></td><td><code>MORNING 午前 · AFTERNOON 午後 · EVENING 夜間 · ANYTIME 指定なし</code></td><td>時間帯 (G2) · "予約中" có là value? → Open Q</td></tr>
+          <tr><td><code>DeliveryMode</code></td><td><code>INTERNAL_DRIVER · THIRD_PARTY_CARRIER</code> (…theo db.dbml)</td><td>INTERNAL→<code>driverId</code>; THIRD_PARTY→<code>carrierId</code> required</td></tr>
+          <tr><td><code>ShipmentStatus</code> / <code>ShipmentCargoType</code> / <code>ShipmentDeliveryType</code></td><td>theo <code>database/db.dbml §ENUMS</code></td><td>vd status COMPLETED · cargoType REFRIGERATED(クール便)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Error catalog ===== -->
+  <div class="card">
+    <div class="card-head"><h3>4 · Error catalog (HTTP → ý nghĩa)</h3></div>
+    <div class="card-body">
+      <table class="data" style="font-size:12.5px">
+        <thead><tr><th>HTTP</th><th>Khi nào</th><th>FE xử lý</th></tr></thead>
+        <tbody>
+          <tr><td><span class="chip chip-yellow no-dot">400</span></td><td>Validation DTO fail (class-validator)</td><td>Hiển thị field error từ <code>message</code></td></tr>
+          <tr><td><span class="chip chip-gray no-dot">401</span></td><td>Chưa/đã hết hạn đăng nhập</td><td>Redirect login</td></tr>
+          <tr><td><span class="chip chip-red no-dot">403</span></td><td>Sai scope (Portal truy cập ngoài <code>deliverer_id=me</code>) hoặc thiếu RBAC permission (Admin)</td><td>Toast "権限がありません"</td></tr>
+          <tr><td><span class="chip chip-orange no-dot">404</span></td><td>Resource (<code>:id</code>) không tồn tại <b>hoặc không thuộc về mình</b> (Portal)</td><td>Màn "không tìm thấy"</td></tr>
+          <tr><td><span class="chip chip-purple no-dot">409</span></td><td>Xung đột trạng thái — vd <code>assign-driver</code> khi shipment đã <code>COMPLETED</code></td><td>Toast + reload trạng thái mới</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== DB change status ===== -->
+  <div class="card">
+    <div class="card-head"><h3>5 · Trạng thái thay đổi DB (gate trước khi code)</h3></div>
+    <div class="card-body">
+      <div class="notice notice-success"><span class="ic">✅</span><div><b>Đã chốt (migration được):</b> G1 <code>scheduled_delivery_date</code> · G2 <code>delivery_time_slot</code> enum (type chốt, value chờ BA) · G3 <code>notifications.category</code> · G4 polymorphic recipient · G5 <code>body.links[]</code> · G6 配送元 FK relay/supplier master · G8 <code>company_orders.order_no</code> · G9 bảng <code>driver_history_logs</code> · seq <code>shipment_no_seq</code> (<code>D\d+</code>).</div></div>
+      <div class="notice notice-warn" style="margin-bottom:0"><span class="ic">❓</span><div><b>CÒN MỞ — cần BA chốt (không chặn schema, nhưng chặn 1 số field UI):</b><br>· <b>G7</b> — 納品先 担当者名 / 営業所コード lấy từ đâu (<code>company_admins.name</code> MAIN vs thêm cột <code>companies.contact_name</code>; office_code chỉ relay có).<br>· <b>ShipmentTimeSlot</b> — danh sách value enum chính xác (有 "予約中"?).<br>· Prefix mã sau gộp deliverers — giữ <code>DV</code> hay đổi <code>DE</code>.</div></div>
+    </div>
+  </div>
+
+  <!-- ===== Screen catalog ===== -->
+  <div class="card">
+    <div class="card-head"><h3>6 · Danh mục màn hình (bấm để mở mockup)</h3></div>
+    <div class="card-body">
+
+      <h4 class="section-title"><span class="persona-tag e02">PORTAL</span> Deliverer · <span class="mono">/deliverer</span></h4>
+      <div class="grid-cards" style="margin-bottom:22px">
+        <div class="screen-card">
+          <span class="sc-id">OW_ANNO_001 · 002</span>
+          <span class="persona-tag e02">Portal</span>
+          <a class="sc-title" href="OW_ANNO_001.html">お知らせ (Thông báo)</a>
+          <span class="sc-desc">List tab すべて/重要/お知らせ + detail (auto set isRead). <a href="OW_ANNO_002.html">→ detail</a></span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /deliverer/notifications</span></span>
+        </div>
+        <div class="screen-card">
+          <span class="sc-id">OW_DLVR_001 · 002</span>
+          <span class="persona-tag e02">Portal</span>
+          <a class="sc-title" href="OW_DLVR_001.html">配送状況 (Tình trạng giao)</a>
+          <span class="sc-desc">List + detail read-only (納品先/中継先/荷物/報告). Thao tác ghi DUY NHẤT = assign-driver. <a href="OW_DLVR_002.html">→ detail</a></span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /deliverer/shipments</span><span class="api-chip"><span class="m patch">PATCH</span> /assign-driver</span></span>
+        </div>
+        <div class="screen-card">
+          <span class="sc-id">OW_CLCT_001 · 002</span>
+          <span class="persona-tag e02">Portal</span>
+          <a class="sc-title" href="OW_CLCT_001.html">集金額 (Tiền thu hộ)</a>
+          <span class="sc-desc">List 一覧 → summary 集計 (cards + list) + CSV (UTF-8+BOM) + レポート Excel. <a href="OW_CLCT_002.html">→ summary</a></span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /deliverer/collection-reports</span></span>
+        </div>
+        <div class="screen-card">
+          <span class="sc-id">OW_STAF_001 · 003 · 004</span>
+          <span class="persona-tag e02">Portal</span>
+          <a class="sc-title" href="OW_STAF_001.html">配送スタッフ (Tài xế)</a>
+          <span class="sc-desc">List → detail (基本情報+担当者) → tạo account (driverCode sinh seq = login). <a href="OW_STAF_003.html">→ detail</a> · <a href="OW_STAF_004.html">→ tạo</a></span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /deliverer/drivers</span><span class="api-chip"><span class="m post">POST</span> /deliverer/drivers</span></span>
+        </div>
+      </div>
+
+      <h4 class="section-title"><span class="persona-tag e03">ADMIN</span> System Admin · <span class="mono">/admin</span></h4>
+      <div class="grid-cards">
+        <div class="screen-card">
+          <span class="sc-id">MD01 · MD02</span>
+          <span class="persona-tag e03">Admin</span>
+          <a class="sc-title" href="admin/MD01_配送スタッフマスタ.html">配送スタッフマスタ</a>
+          <span class="sc-desc">List + detail (tab 基本情報 / 変更履歴 từ <code>driver_history_logs</code>). <a href="admin/MD02_配送スタッフ詳細.html">→ detail</a></span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /admin/drivers</span></span>
+        </div>
+        <div class="screen-card">
+          <span class="sc-id">MP01 · MP02</span>
+          <span class="persona-tag e03">Admin</span>
+          <a class="sc-title" href="admin/MP01_惣菜出荷配送.html">【惣菜】出荷配送</a>
+          <span class="sc-desc">List + detail 7 khối (法人/オーダー/配送/配送元/納品先/荷主/配送状況). <code>shipmentNo</code> server sinh seq. <a href="admin/MP02_惣菜出荷配送詳細.html">→ detail</a></span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /admin/shipments</span><span class="api-chip"><span class="m post">POST</span> /admin/shipments</span></span>
+        </div>
+        <div class="screen-card">
+          <span class="sc-id">DA · 委託配送先</span>
+          <span class="persona-tag e03">Admin</span>
+          <a class="sc-title" href="admin/DA_委託配送先.html">委託配送先 (Deliverer master)</a>
+          <span class="sc-desc">Quản lý 委託配送先 + edit + phát hành account. <a href="admin/DA_委託配送先_edit.html">→ edit</a> · <a href="admin/DA_委託配送先_アカウント発行確認.html">→ phát hành</a></span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /admin/deliverers</span></span>
+        </div>
+        <div class="screen-card">
+          <span class="sc-id">AW_CONS_009 · 010</span>
+          <span class="persona-tag e03">Admin</span>
+          <a class="sc-title" href="admin/AW_CONS_009_配送関連.html">契約 — 配送関連</a>
+          <span class="sc-desc">Phần 配送関連 trong màn hợp đồng (chọn 委託配送業者/中継先). <a href="admin/AW_CONS_010_配送関連.html">→ AW_CONS_010</a></span>
+          <span class="sc-eps"><span class="api-chip">contract · 配送</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== API guides + design docs ===== -->
+  <div class="card">
+    <div class="card-head"><h3>7 · API ガイド (interactive) &amp; tài liệu thiết kế</h3></div>
+    <div class="card-body">
+      <h4 class="section-title">Interactive API guide (click số → ráp field ↔ API)</h4>
+      <div class="grid-cards" style="margin-bottom:20px">
+        <a class="screen-card" href="apis/お知らせ.html"><span class="persona-tag e02">Portal</span><span class="sc-title">お知らせ API</span></a>
+        <a class="screen-card" href="apis/配送状況.html"><span class="persona-tag e02">Portal</span><span class="sc-title">配送状況 API</span></a>
+        <a class="screen-card" href="apis/集金額.html"><span class="persona-tag e02">Portal</span><span class="sc-title">集金額 API</span></a>
+        <a class="screen-card" href="apis/配送スタッフ.html"><span class="persona-tag e02">Portal</span><span class="sc-title">配送スタッフ API</span></a>
+        <a class="screen-card" href="apis/admin/出荷配送.html"><span class="persona-tag e03">Admin</span><span class="sc-title">出荷配送 API</span></a>
+        <a class="screen-card" href="apis/admin/配送スタッフマスタ.html"><span class="persona-tag e03">Admin</span><span class="sc-title">配送スタッフマスタ API</span></a>
+      </div>
+      <h4 class="section-title">Tài liệu thiết kế (.md — nguồn chính cho DTO/validation/DB)</h4>
+      <div class="legend" style="gap:18px">
+        <span>📐 <a href="API設計_配送関連.md">API設計_配送関連.md</a> — danh sách endpoint theo màn</span>
+        <span>📋 <a href="API仕様詳細_配送関連.md">API仕様詳細_配送関連.md</a> — DTO / validation / response</span>
+        <span>🗄️ <a href="DB変更提案_配送関連.md">DB変更提案_配送関連.md</a> — DB adequacy + Gap G1–G9 + decision log</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend" style="margin-top:18px">
+    <span><span class="sw" style="background:var(--company-500)"></span> Portal Deliverer (/deliverer)</span>
+    <span><span class="sw" style="background:var(--admin-500)"></span> Admin (/admin)</span>
+    <span><span class="sw" style="background:var(--yellow-500)"></span> Còn chờ BA chốt</span>
+  </div>
+
+  <div class="footnote">
+    Nguồn: <code>API設計_配送関連.md</code> · <code>API仕様詳細_配送関連.md</code> · <code>DB変更提案_配送関連.md</code> (es-kitchen-api) + mockup <code>design/deliverer/**</code>.
+    Mockup minh hoạ luồng &amp; hợp đồng API — không phải UI cuối. Cập nhật: 2026/06/19.
+  </div>
+
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>
