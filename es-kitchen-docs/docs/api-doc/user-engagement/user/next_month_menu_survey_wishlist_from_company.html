@@ -261,6 +261,8 @@
           ><span class="guard">JwtAuthGuard</span>
         </div>
         <pre>
+// Request: KHÔNG param (lấy campaign OPEN của company user)
+// Response
 {
   "id":"9", "title":"来月食べたいメニュー",
   "targetYearMonth":"2026-02",
@@ -288,11 +290,14 @@
           ><span class="guard">JwtAuthGuard · @BlockGuest</span>
         </div>
         <pre>
+// Request body
 { "votes": [
     { "productId":"34", "score":2 },
     { "productId":"56", "score":3 }
 ] }
-// score ∈ {1,2,3} · 1=気になる 2=好き 3=大好き</pre
+// score ∈ {1,2,3} · 1=気になる 2=好き 3=大好き
+// Response
+{ "saved": 2 }</pre
         >
         <table>
           <tr>

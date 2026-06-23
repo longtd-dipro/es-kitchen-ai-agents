@@ -77,9 +77,6 @@
             <span class="choice-chip on-bad" data-variant="bad" onclick="toggleChoice(this)">味が濃い</span>
             <span class="choice-chip" data-variant="bad" onclick="toggleChoice(this)">量が少ない</span>
           </div>
-          <div class="f-label" style="margin-top:12px">コメント <small>≤100 ký tự</small> <span class="ftag">comment</span></div>
-          <textarea class="f-input" rows="2" maxlength="100" data-counter="#c1" oninput="countChars(this)" placeholder="ひとことコメント (任意)"></textarea>
-          <div class="counter"><span id="c1">0</span> / 100</div>
         </div></div>
 
         <!-- product 2 (high score → positive tags) -->
@@ -95,17 +92,14 @@
             <span class="choice-chip on-good" data-variant="good" onclick="toggleChoice(this)">ご飯に合う</span>
             <span class="choice-chip" data-variant="good" onclick="toggleChoice(this)">健康に良い</span>
           </div>
-          <div class="f-label" style="margin-top:12px">コメント <small>≤100 ký tự</small></div>
-          <textarea class="f-input" rows="2" maxlength="100" data-counter="#c2" oninput="countChars(this)" placeholder="ひとことコメント (任意)"></textarea>
-          <div class="counter"><span id="c2">0</span> / 100</div>
         </div></div>
 
-        <!-- free feedback → /contact -->
+        <!-- service feedback (ご意見) → /contact -->
         <div class="m-card"><div class="m-card-pad">
-          <div class="f-label">上記以外のサービス・商品へのご意見 <small>Ý kiến khác ngoài món ăn (gửi tới Admin)</small> <span class="ftag q">→ /contact description</span></div>
-          <textarea class="f-input" rows="3" maxlength="100" data-counter="#c3" oninput="countChars(this)" placeholder="率直なご意見・ご要望を…"></textarea>
-          <div class="counter"><span id="c3">0</span> / 100</div>
-          <div class="api-note">2 nhóm gửi riêng: chấm sao món → <b>POST /user/orders/:id/reviews</b>; ô ご意見 (nếu nhập) → <b>POST /contact</b>.</div>
+          <div class="f-label">サービスへのご意見・ご要望 <small>Đánh giá dịch vụ ESKITCHEN: ý kiến / yêu cầu / khiếu nại</small> <span class="ftag q">→ /contact description</span></div>
+          <textarea class="f-input" rows="3" data-counter="#c3" oninput="countChars(this)" placeholder="率直なご意見・ご要望をお聞かせください…"></textarea>
+          <div class="counter"><span id="c3">0</span> 文字</div>
+          <div class="api-note"><b>Đánh giá món = sao + tags (KHÔNG có ô bình luận).</b> 2 lời gọi riêng khi bấm Gửi: chấm sao+tags từng món → <b>POST /user/orders/:id/reviews</b>; ô ご意見 (đánh giá dịch vụ, nếu nhập) → <b>POST /contact</b>.</div>
         </div></div>
 
         <div class="pad"><button class="btn btn-primary btn-block btn-lg btn-pill" onclick="openOverlay('dlg-done')">送信する <small>Gửi đánh giá</small></button></div>
@@ -133,37 +127,52 @@
 
     <h4>① Chi tiết đơn (xác định quyền đánh giá)</h4>
     <div class="ep"><span class="m get">GET</span> /user/orders/:id <span class="ep-tag reuse">REUSE P1</span><span class="guard">JwtAuthGuard</span></div>
-    <p class="muted" style="font-size:12px">OrderResponse: <code>orderNumber, status, total, paymentMethod, orderDetails[{productId, productName, price, quantity}], payment</code>. Mở review khi <code>status=COMPLETED</code>. P2 thêm cờ <code>reviewed</code> mỗi orderDetail để ẩn món đã chấm.</p>
+    <pre>// Request: Path param :id · KHÔNG body
+// Response (OrderResponse — rút gọn)
+{ "id":"88","orderNumber":"023489237567",
+  "status":"COMPLETED","subtotal":200,"total":200,
+  "paymentMethod":{ "id":"2","code":"merpay","name":"Merpay" },
+  "orderDetails":[ { "id":"1","productId":"12",
+    "productName":"…","price":100,"quantity":1,
+    "subtotal":100,"reviewed":false } ],   // reviewed = P2
+  "payment":{ "status":"PAID","amount":200,"paidAt":"…" },
+  "createdAt":"2026-01-18T03:10:00Z" }</pre>
+    <p class="muted" style="font-size:12px">Mở review khi <code>status=COMPLETED</code>. P2 thêm cờ <code>reviewed</code> mỗi orderDetail để ẩn món đã chấm.</p>
 
     <h4>② Gửi đánh giá sản phẩm</h4>
     <div class="ep"><span class="m post">POST</span> /user/orders/:orderId/reviews <span class="ep-tag new">NEW</span><span class="guard">JwtAuthGuard · @BlockGuest</span></div>
     <pre>// body — mảng review theo từng món của đơn
+// CHỈ rating + tags (KHÔNG có comment)
 { "reviews": [
     { "productId":"12", "rating":2,
-      "comment":"味が濃い", "tags":["味が合わない","味が濃い"] },
+      "tags":["味が合わない","味が濃い"] },
     { "productId":"34", "rating":5,
-      "comment":"", "tags":["美味しい","コスパが良い","ご飯に合う"] }
+      "tags":["美味しい","コスパが良い","ご飯に合う"] }
 ] }
 // data → { "created": 2 }</pre>
     <table>
       <tr><th>field</th><th>rule</th></tr>
       <tr><td><code>productId</code></td><td>phải thuộc orderDetails của đơn</td></tr>
       <tr><td><code>rating</code></td><td>int 1–5, bắt buộc</td></tr>
-      <tr><td><code>comment</code></td><td>string ≤100, optional</td></tr>
       <tr><td><code>tags</code></td><td>string[] (chip lý do), optional</td></tr>
     </table>
     <p class="muted" style="font-size:12px"><b>Rule:</b> order.status=COMPLETED &amp; order.user=current; unique <code>(order_id, product_id, user_id)</code> — mỗi đơn/món chấm 1 lần. Bảng mới:</p>
     <pre>product_reviews (
   id, product_id FK, user_id FK, company_id FK,
-  order_id FK, rating int, comment varchar(100),
-  tags simple-array, created_at )</pre>
+  order_id FK, rating int,
+  tags simple-array, created_at )
+// KHÔNG có cột comment — bình luận đi qua /contact</pre>
 
-    <h4>③ Ý kiến tự do (ご意見)</h4>
+    <h4>③ Feedback dịch vụ (ご意見 = bình luận)</h4>
     <div class="ep"><span class="m post">POST</span> /contact <span class="ep-tag reuse">REUSE P1</span><span class="guard">OptionalJwtAuthGuard</span></div>
-    <pre>{ "email":"eskitchen@example.jp", "description":"ご意見…" }</pre>
-    <p class="muted" style="font-size:12px">Chỉ gọi khi ô ご意見 có nội dung. Admin (E03) đọc &amp; trả lời qua email.</p>
+    <pre>// Request body
+{ "email":"eskitchen@example.jp",  // bắt buộc, hợp lệ
+  "description":"ご意見…" }          // bắt buộc
+// Response (envelope.data = string)
+"Your request has been sent successfully."</pre>
+    <p class="muted" style="font-size:12px"><b>Phần "bình luận" của nghiệp vụ = feedback dịch vụ</b> (ý kiến/yêu cầu/khiếu nại), KHÔNG gắn vào review món. Chỉ gọi khi ô ご意見 có nội dung. Admin (E03) đọc &amp; trả lời qua email.</p>
 
-    <div class="notice notice-out" style="margin-top:14px"><span class="ic">🖥️</span><div><b>Ngoài scope App:</b> cảnh báo low-rating (≥ngưỡng 1–2★/tuần) bắn alert cho E03 — chạy ở web-admin + cron BE, không có UI mobile.</div></div>
+    <div class="notice notice-out" style="margin-top:14px"><span class="ic">🖥️</span><div><b>Ngoài scope App (E03 web-admin):</b> trang xem <b>danh sách đánh giá / phản hồi / khiếu nại</b> để Admin trả lời qua email; cảnh báo low-rating (≥ngưỡng 1–2★/tuần) + cron BE. Không có UI mobile.</div></div>
   </div>
 </div>
 

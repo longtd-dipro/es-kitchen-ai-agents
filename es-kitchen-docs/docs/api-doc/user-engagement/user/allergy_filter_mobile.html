@@ -142,7 +142,7 @@
     </div>
     <div class="sheet-foot">
       <button class="btn btn-block" onclick="closeOverlay('sheet-filter')">キャンセル</button>
-      <button class="btn btn-primary btn-block" onclick="closeOverlay('sheet-filter');alert('フィルター適用 / Áp dụng → GET /user/menu/products?allergenFilterMode=warn')">選択 <small>Áp dụng</small></button>
+      <button class="btn btn-primary btn-block" onclick="closeOverlay('sheet-filter');alert('フィルター適用 / Áp dụng → GET /user/menu/products?allergenIds=3&allergenFilterMode=warn')">選択 <small>Áp dụng</small></button>
     </div>
   </div>
 </div>
@@ -157,8 +157,9 @@
 
     <h4>① Danh sách món + lọc dị ứng</h4>
     <div class="ep"><span class="m get">GET</span> /user/menu/products <span class="ep-tag ext">EXTEND P1</span><span class="guard">JwtAuthGuard</span></div>
-    <pre>// query (Phase 1 + P2 thêm)
-?keyword=&category=惣菜
+    <pre>// query (Phase 1 + P2 thêm) — sheet lọc = PARAMS, KHÔNG endpoint mới
+?keyword=&category=惣菜       // Phase 1 đã có
+&allergenIds=3,5            // P2: id chất chọn ở sheet
 &allergenFilterMode=warn   // P2: off | hide | warn</pre>
     <table>
       <tr><th>field (mỗi product)</th><th>type</th><th>note</th></tr>
@@ -173,16 +174,26 @@
       <tr><td><code>allergenWarning</code></td><td>boolean</td><td><b>EXTEND</b> — true nếu giao với allergen user (mode=warn)</td></tr>
       <tr><td><code>stockState</code></td><td>enum</td><td><b>EXTEND</b> — IN_STOCK·LOW·OUT_THIS_MONTH·OUT_LAST_MONTH</td></tr>
     </table>
-    <p class="muted" style="font-size:12px">Response cũng có <code>categories[]</code> (tabs) &amp; <code>activeYearMonths[]</code>. <code>mode=hide</code> → BE loại bỏ món trùng allergen; <code>OUT_LAST_MONTH</code> luôn bị ẩn (§5.2).</p>
+    <p class="muted" style="font-size:12px"><b>Bộ lọc dị ứng = 2 query param thêm vào API list Phase 1</b> (KHÔNG có endpoint filter riêng): <code>allergenIds</code> (id chất chọn ở sheet) + <code>allergenFilterMode</code>. Response cũng có <code>categories[]</code> (tabs) &amp; <code>activeYearMonths[]</code>. <code>mode=hide</code> → BE loại bỏ món trùng; <code>mode=warn</code> → trả <code>allergenWarning=true</code> để gắn nhãn; <code>OUT_LAST_MONTH</code> luôn bị ẩn (§5.2).</p>
 
     <h4>② Master + lựa chọn của user (cho sheet)</h4>
     <div class="ep"><span class="m get">GET</span> /user/allergens <span class="ep-tag reuse">REUSE P1</span><span class="guard">JwtAuthGuard</span></div>
+    <pre>// Request: KHÔNG param
+// Response: AllergenResponse[]
+[ { "id":"3","name":"卵","imageUrl":null,
+    "sort":6,"allergenType":"specified" } ]</pre>
     <div class="ep"><span class="m get">GET</span> /user/allergens/me <span class="ep-tag new">NEW</span><span class="guard">JwtAuthGuard</span></div>
-    <p class="muted" style="font-size:12px">Sheet pre-check theo <code>allergenIds[]</code> đã lưu (xem UE-1). Đổi lựa chọn ở đây có thể chỉ là filter tạm thời của phiên (không bắt buộc <code>PUT</code>).</p>
+    <pre>// Request: KHÔNG param
+// Response
+{ "allergenIds":["3"],
+  "allergens":[ { "id":"3","name":"卵","allergenType":"specified" } ] }</pre>
+    <p class="muted" style="font-size:12px">Sheet pre-check theo <code>allergenIds[]</code> đã lưu (xem UE-1). Đổi lựa chọn ở sheet = filter tạm của phiên → truyền <code>allergenIds</code> vào API list (mục ①), không bắt buộc <code>PUT</code>.</p>
 
     <h4>③ Toggle yêu thích</h4>
     <div class="ep"><span class="m post">POST</span> /user/favorites/:productId <span class="ep-tag reuse">REUSE P1</span><span class="guard">JwtAuthGuard · @BlockGuest</span></div>
-    <pre>// data → { "isFavorite": true, "favoriteCount": 124 }</pre>
+    <pre>// Request: Path param :productId · KHÔNG body
+// Response (ToggleFavoriteResponse)
+{ "isFavorite": true, "favoriteCount": 124 }</pre>
   </div>
 </div>
 

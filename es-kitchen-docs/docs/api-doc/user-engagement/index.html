@@ -109,7 +109,7 @@
           <tr>
             <td>Onboarding + khai báo dị ứng · đổi cài đặt ở Profile</td>
             <td><a href="user/user_allergy_profile_mobile.html">My Page · Allergen Settings</a></td>
-            <td><code>GET/PUT /user/allergens/me</code> · <code>GET/POST /user/preferences/tutorial</code></td>
+            <td><code>GET/PUT /user/allergens/me</code> · <code>POST /contact</code> (tutorial: client-side, no API)</td>
             <td><span class="ep-tag new">NEW</span></td>
           </tr>
           <tr>
@@ -125,7 +125,7 @@
             <td><span class="ep-tag new">NEW</span></td>
           </tr>
           <tr>
-            <td>Chấm sao 1–5 + bình luận sau khi mua · gửi ご意見</td>
+            <td>Chấm sao 1–5 + tags sau khi mua (COMPLETED) · bình luận = góp ý dịch vụ</td>
             <td><a href="user/product_review_mobile_mockup.html">Order History · Review &amp; Feedback</a></td>
             <td><code>POST /user/orders/:id/reviews</code> · <code>POST /contact</code></td>
             <td><span class="ep-tag new">NEW</span> <span class="ep-tag reuse">REUSE</span></td>
@@ -168,7 +168,7 @@
         <a class="screen-card" href="user/product_review_mobile_mockup.html">
           <span class="sc-id">UE-4</span><span class="persona-tag e01">E01</span>
           <span class="sc-title">Order History · Review &amp; Feedback</span>
-          <span class="sc-desc">Chi tiết đơn COMPLETED → form chấm sao từng món + chip lý do + ご意見 (≤100).</span>
+          <span class="sc-desc">Chi tiết đơn COMPLETED → chấm sao + tags từng món; ô bình luận = góp ý dịch vụ (→ /contact).</span>
           <span class="sc-eps"><span class="api-chip"><span class="m post">POST</span> /user/orders/:id/reviews</span></span>
         </a>
         <a class="screen-card" href="user/survey_notification_from_admin_mobile.html">
@@ -192,7 +192,7 @@
     <div class="card-head"><h3>4 · Phạm vi — trong / ngoài App di động</h3></div>
     <div class="card-body">
       <div class="notice notice-new"><span class="ic">📱</span><div><b>Trong mockup (E01 App):</b> khai báo dị ứng · lọc dị ứng menu · xem &amp; gửi đánh giá sau mua · gửi feedback · trả lời khảo sát Admin · bình chọn wishlist tháng sau.</div></div>
-      <div class="notice notice-out"><span class="ic">🖥️</span><div><b>Ngoài mockup (E03/E02 Web — chỉ tham chiếu):</b> tạo &amp; phân phối khảo sát + biểu đồ tổng hợp (E03) · cảnh báo low-rating tự động cho Supplier (E03) · phát động chiến dịch wishlist + xem tổng điểm để chốt order sỉ (E02) · admin soạn &amp; gửi email reply cho feedback (E03) · thuật toán xếp hạng &amp; đồng bộ tồn kho (Backend). Các phần này sẽ có mockup/API riêng ở web-admin / web-company.</div></div>
+      <div class="notice notice-out"><span class="ic">🖥️</span><div><b>Ngoài mockup (E03/E02 Web — chỉ tham chiếu):</b> tạo &amp; phân phối khảo sát + biểu đồ tổng hợp (E03) · cảnh báo low-rating tự động cho Supplier (E03) · <b>trang xem danh sách đánh giá / phản hồi / khiếu nại + soạn email reply</b> (E03) · phát động chiến dịch wishlist + xem tổng điểm để chốt order sỉ (E02) · thuật toán xếp hạng &amp; đồng bộ tồn kho (Backend). Các phần này sẽ có mockup/API riêng ở web-admin / web-company.</div></div>
       <div class="legend">
         <span><span class="sw" style="background:var(--app-400)"></span> E01 User App</span>
         <span><span class="sw" style="background:var(--orange-500)"></span> E02 Company (ngoài scope)</span>
