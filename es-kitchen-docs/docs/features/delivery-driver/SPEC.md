@@ -6,7 +6,7 @@
 
 ## Mô tả nghiệp vụ
 
-App Tài xế (Driver App) là ứng dụng web dành cho nhân viên giao hàng (E06). Tài xế sử dụng app để xem danh sách đơn giao trong ngày, cập nhật trạng thái từng điểm giao, kiểm đếm hàng hóa và vật tư, chụp ảnh báo cáo trước/sau khi trưng bày sản phẩm, thu thập chữ ký xác nhận giao hàng hoàn tất, và báo cáo sự cố/trễ hàng theo thời gian thực.
+App Tài xế (Driver App) là ứng dụng web dành cho nhân viên giao hàng (E06). Tài xế sử dụng app để xem danh sách đơn giao trong ngày, cập nhật trạng thái từng điểm giao, kiểm đếm hàng hóa và vật tư, chụp ảnh báo cáo trước/sau khi trưng bày sản phẩm, và báo cáo sự cố/trễ hàng theo thời gian thực. App **yêu cầu kết nối mạng liên tục** — không hỗ trợ offline mode.
 
 Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 
@@ -18,7 +18,7 @@ Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 |---|---|---|
 | **E06 — Driver** | Tài xế giao hàng | Đã đăng nhập Driver App; được phân công đơn giao trong ngày |
 | **E03 — System Admin** | Tiếp nhận cảnh báo sự cố từ Driver | Đang online trên hệ thống ES Station |
-| **E05 — Outsource Admin** | Quản lý tài xế, xem báo cáo | Xem SPEC riêng: `delivery-outsource-partner` |
+| **E05 — Carrier Admin** | Quản lý tài xế, xem báo cáo | Xem SPEC riêng: `delivery-partner` |
 
 **Phạm vi SPEC này:** Chỉ bao gồm E06 (Driver App). Luồng E05 và E03 phía backend xử lý cảnh báo là dependency, không mô tả chi tiết ở đây.
 
@@ -77,12 +77,7 @@ Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 1. Sau khi trưng bày xong, tài xế upload ảnh kết quả: toàn bộ tủ lạnh, máy bán hàng tự động, đồ thường, vật tư, đĩa/khay.
 2. Cho phép upload nhiều ảnh.
 
-**Bước 4 — Ký xác nhận:**
-1. Hệ thống hiển thị nội dung báo cáo hoàn thành giao hàng.
-2. Đại diện công ty nhận hàng ký xác nhận trên màn hình.
-3. Tài xế ký xác nhận.
-
-**Bước 5 — Ghi chú:**
+**Bước 4 — Ghi chú:**
 1. Tài xế nhập ghi chú tự do: sự cố, vấn đề cần chú ý (không bắt buộc).
 2. Tài xế nhấn hoàn tất → trạng thái đơn chuyển thành "Hoàn tất".
 
@@ -112,28 +107,30 @@ Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 ### AF-01: Quên mật khẩu
 
 - Tài xế nhấn "Forgot password?" tại màn hình đăng nhập.
-- Hệ thống cấp lại mật khẩu (phương thức cụ thể tùy thiết kế).
-- **TODO (BA):** Mật khẩu được reset qua email hay SMS OTP? Ai có quyền cấp lại — tự phục vụ hay phải qua admin?
+- Hệ thống gửi link đặt lại mật khẩu qua **email đã đăng ký**.
+- Tài xế tự phục vụ — không cần thông qua admin.
 
-### AF-02: Tài xế đặt cờ Chưa giao / Giao lại
+### AF-02: Giao hàng không thành công (Trouble)
 
-- Trong màn hình Delivery Status Management, tài xế có thể thiết lập cờ "Chưa giao" hoặc "Giao lại" cho một điểm giao.
-- **TODO (BA):** Khi đặt cờ "Giao lại", đơn có tự động tạo lịch giao mới hay admin xử lý thủ công? Trạng thái đơn thay đổi như thế nào trên ES Station?
+- Nếu đơn hàng không giao được trong ngày giao dự kiến, tài xế cập nhật trạng thái → trạng thái đơn chuyển thành **"Trouble"**.
+- **Admin (E03) hoặc công ty vận chuyển (E05 Carrier)** chịu trách nhiệm xử lý và điều phối giao lại — không tự động tạo lịch mới.
 
 ### AF-03: Số lượng hàng thừa/thiếu khi kiểm đếm
 
 - Hệ thống hiển thị cảnh báo ngay trong màn hình kiểm đếm.
-- Tài xế ghi nhận sự lệch, có thể kết hợp báo cáo qua HP-07.
-- **TODO (BA):** Khi thừa/thiếu được ghi nhận, hệ thống có tự động notify E03 hay chỉ lưu log?
+- Tài xế ghi nhận sự lệch và có thể kết hợp báo cáo qua HP-07.
+- **Dual notification:** Tài xế (E06) liên lạc trực tiếp cho E03, đồng thời **hệ thống cũng gửi notify E03** về tình trạng chênh lệch hàng hóa.
 
 ### AF-04: Không có đại diện công ty để ký
 
-- Tài xế không thể thu thập chữ ký của đại diện công ty (không có người).
-- **TODO (BA):** Trường hợp này xử lý như thế nào — bỏ qua chữ ký đại diện và chỉ tài xế ký? Hay cần lý do bắt buộc?
+- Luồng ký xác nhận của đại diện công ty đã được **bỏ hoàn toàn** khỏi quy trình.
+- Tài xế hoàn tất báo cáo chỉ bằng ảnh upload và ghi chú tự do — không cần bất kỳ chữ ký nào.
 
 ### AF-05: Mất kết nối mạng trong khi giao
 
-- **TODO (BA):** Driver App có yêu cầu offline mode không? GPS log và ảnh có được cache locally khi mất mạng rồi sync lại sau không?
+- App **yêu cầu kết nối mạng** để hoạt động — không hỗ trợ offline mode.
+- Khi mất mạng: app hiển thị thông báo lỗi, tài xế chờ có mạng trở lại rồi tiếp tục.
+- GPS và ảnh **không cache** locally, **không sync** sau khi có mạng lại.
 
 ### AF-06: Manual Display
 
@@ -147,7 +144,7 @@ Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 ### AC-01: Đăng nhập & Xác thực
 - [ ] Tài xế đăng nhập thành công bằng ID + mật khẩu đúng → vào Home.
 - [ ] Đăng nhập sai thông tin → hiển thị thông báo lỗi, không vào được app.
-- [ ] Chức năng quên mật khẩu cho phép tài xế khôi phục quyền truy cập.
+- [ ] Tính năng quên mật khẩu gửi link đặt lại qua email đã đăng ký — tài xế tự phục vụ, không cần admin can thiệp.
 - [ ] Đăng xuất thành công → phiên bị hủy, quay về màn hình login.
 
 ### AC-02: Home & Navigation
@@ -162,7 +159,7 @@ Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 ### AC-04: Cập nhật trạng thái
 - [ ] Ba trạng thái hoạt động đúng thứ tự: "Bắt đầu giao" → "Đã đến" → "Hoàn tất".
 - [ ] Mỗi trạng thái được ghi nhận kèm timestamp và tọa độ GPS.
-- [ ] Tài xế có thể thiết lập cờ "Chưa giao" hoặc "Giao lại".
+- [ ] Khi giao hàng không thành công trong ngày dự kiến, tài xế cập nhật trạng thái "Trouble"; Admin/Carrier xử lý giao lại thủ công.
 
 ### AC-05: Thông tin chi tiết điểm giao
 - [ ] Ghi chú đặc thù của doanh nghiệp hiển thị đúng theo từng điểm giao (nội dung khác nhau tùy công ty).
@@ -179,7 +176,7 @@ Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 - [ ] Popup hướng dẫn trưng bày dạng slide hiển thị đúng trước bước upload ảnh (không cần thoát màn hình).
 - [ ] Upload được nhiều ảnh ở cả hai giai đoạn: trước và sau trưng bày.
 - [ ] Tài xế xóa được ảnh đã đính kèm trước khi submit.
-- [ ] Màn hình ký hiển thị nội dung báo cáo hoàn thành; thu được chữ ký đại diện công ty và chữ ký tài xế.
+- [ ] Không có bước ký xác nhận — tài xế hoàn tất báo cáo chỉ bằng ảnh upload và ghi chú tự do.
 - [ ] Ghi chú tự do không bắt buộc.
 - [ ] Sau khi submit báo cáo hoàn thành, trạng thái đơn cập nhật thành "Hoàn tất".
 
@@ -208,10 +205,10 @@ Toàn bộ domain này thuộc **Phase 2** (không có story Phase 1).
 | DA_DRVR_002 | Home Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Dashboard | Hiển thị thông báo mới nhất; phím tắt đến Delivery List, Báo cáo sự cố, Hỗ trợ |
 | DA_DRVR_003 | Delivery List Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | List | Danh sách điểm giao trong ngày của tài xế; lọc theo ngày/tháng/năm |
 | DA_DRVR_004 | Delivery Details Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Detail | Chi tiết điểm giao: ghi chú doanh nghiệp, vận đơn, danh sách đồ ăn + vật tư; cập nhật trạng thái (Bắt đầu → Đã đến → Hoàn tất) |
-| DA_DRVR_005 | Delivery Status Management Screen * inferred | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Thiết lập cờ "Chưa giao" hoặc "Giao lại" cho điểm giao |
+| DA_DRVR_005 | Delivery Status Management Screen * inferred | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Cập nhật trạng thái giao hàng, bao gồm cập nhật "Trouble" khi không giao được trong ngày dự kiến |
 | DA_DRVR_006 | Delivery Inspection Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Kiểm đếm hàng hóa (product inspection) và vật tư dụng cụ (material inspection); cảnh báo thừa/thiếu |
 | DA_DRVR_007 | Report Completion — Pre/Post Photo Upload Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Wizard | Upload ảnh trước và sau khi trưng bày sản phẩm; xem popup hướng dẫn trưng bày dạng slide |
-| DA_DRVR_008 | Signature Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Hiển thị nội dung báo cáo hoàn thành; thu chữ ký đại diện công ty và chữ ký tài xế; nhập ghi chú tự do |
+| DA_DRVR_008 | Completion Report Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Nhập ghi chú tự do và hoàn tất báo cáo giao hàng (không có bước ký xác nhận) |
 | DA_DRVR_009 | Incident / Delay Report Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Form | Báo cáo trễ hàng (chọn lý do) hoặc sự cố (hàng hỏng/thiếu + mô tả); gửi thông báo real-time đến E03 |
 | DA_DRVR_010 | Manual Display Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Detail | Xem tài liệu hướng dẫn theo danh mục: Quy trình, Chuẩn bị, Lấy đồ, Cách chụp ảnh, Trưng bày |
 | DA_DRVR_011 | Inquiry / Support Screen | E06 — Driver | E06 (es-kitchen-webapp-driver) | Chat | HubSpot Widget chatbot nhúng; xử lý FAQ tự động và hỗ trợ real-time |

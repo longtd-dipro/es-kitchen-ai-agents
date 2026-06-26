@@ -3,6 +3,7 @@
 > Backlog ID: ESKITCHEN-1246 (Marketing/Referral) · ESKITCHEN-1247 (Agency)
 > Business Flow: `BF_[MARKETING] Giới thiệu Công ty (Referral)` · `BF_[ĐẠI LÝ] Quản lý Đại lý`
 > FigJam: https://www.figma.com/board/iCeNUokzaWdL9KhdBqp49b/ES-Kitchen---Figjam?node-id=7102-93062
+> Cập nhật: 2026-06-25 (Business Flow v2 + Q&A response v1)
 
 ---
 
@@ -27,7 +28,7 @@ Ngoài ra, System Admin quản lý **Free Campaign / Sample Campaign** (chiến 
 
 > Phạm vi: **Cross-repo** (E02 + E03 + `es-kitchen-api`) — cần Contract Lock trước Phase 3.
 
-> **TODO (BA):** E01 (User Mobile) có flow Referral riêng không (ví dụ: nhân viên giới thiệu bằng app)? Domain index note "User Mobile" là target nhưng `marketing.md` không có story nào cho E01. Xác nhận với client trước khi đóng SPEC.
+> **E01 (User Mobile) không có flow Referral riêng.** Đã xác nhận với client: chỉ E02 gửi referral và E03 quản lý (Q&A MKT-01).
 
 ---
 
@@ -89,7 +90,7 @@ Ngoài ra, System Admin quản lý **Free Campaign / Sample Campaign** (chiến 
 - Hiển thị empty state với hướng dẫn cách giới thiệu và thông tin ưu đãi.
 
 ### A2. Company Admin gửi referral cho công ty đã là khách hàng
-- **TODO (BA):** Hệ thống có chặn không? Hay chỉ warn? Xác nhận với client.
+- **Chặn cứng (hard block)** — hệ thống không cho phép gửi referral nếu công ty đó đã là khách hàng. Hiển thị thông báo lỗi rõ ràng. (Q&A MKT-02)
 
 ### B1. System Admin chỉnh sửa Plan sau khi đã duyệt
 - Không cho phép — trường Plan bị khóa (read-only) sau khi duyệt.
@@ -99,29 +100,30 @@ Ngoài ra, System Admin quản lý **Free Campaign / Sample Campaign** (chiến 
 
 ### C1. HubSpot không phản hồi khi tự động lấy dữ liệu chiến dịch
 - Hệ thống tiếp tục hoạt động độc lập; hiển thị cảnh báo đồng bộ thất bại.
-- **TODO (BA):** Sync HubSpot là 1 chiều hay 2 chiều? Trigger theo lịch (cron) hay theo event? Xác nhận với client/tech.
+- **TODO (BA):** Sync HubSpot là 1 chiều hay 2 chiều? Trigger theo lịch (cron) hay theo event? Chưa có câu trả lời từ client (Q&A MKT-03 open).
 
 ### C2. Delete chiến dịch đã có giao hàng thực tế
-- **TODO (BA):** Có được phép xóa không? Hay chỉ cancel/archive? Xác nhận với client.
+- Nếu **chưa có giao hàng**: cho phép xóa bình thường.
+- Nếu **đã có giao hàng**: **chặn xóa**, hiển thị thông báo lỗi. (Q&A MKT-04)
 
 ### D1. Plan hoa hồng thay đổi sau khi đại lý đã có referral active
-- Plan mới áp dụng từ thời điểm thay đổi; các kỳ trước giữ nguyên Plan cũ.
-- **TODO (BA):** Xác nhận rule này với client — có hồi tố không?
+- **Plan mới áp dụng từ thời điểm thay đổi trở đi; các kỳ trước giữ nguyên Plan cũ.** Không có hồi tố. (Q&A MKT-05)
 
 ### D2. Referral Process — 4 Plan hoa hồng
 Quy tắc trả hoa hồng áp dụng theo Plan được chọn cho đại lý/người giới thiệu:
 
 | Plan | Mô tả |
 |---|---|
-| A | Thưởng 1 lần (one-time bonus) |
-| B | Thưởng đại lý (agency bonus — cấu trúc cụ thể TBD) |
+| A | **Phí shot — trả 1 lần** (one-time fee). Số tiền cụ thể chưa xác định. |
+| B | **Phí shot — trả 1 lần** (one-time fee). Số tiền cụ thể chưa xác định. |
 | C | 10% duy trì 36 tháng |
 | D | 7% vô thời hạn |
 
-> **TODO (BA):** Tỷ lệ % trong Plan A và B là bao nhiêu? Tính % trên giá trị hợp đồng hay doanh thu thực tế? Xác nhận với client.
+> (Q&A MKT-06) Plan A và B là phí shot (one-time). Số tiền cụ thể chưa được xác nhận — cần update khi có thông tin từ client.
 
-### D3. Đại lý bị đặt trạng thái "Đã hủy"
-- Ngừng tính hoa hồng mới từ thời điểm hủy; các referral đang active của đại lý này xử lý thế nào? **TODO (BA):** Xác nhận rule.
+### D3. Đại lý bị đặt trạng thái "Đã hủy" / xóa đại lý
+- Nếu đại lý đang có referral active: hiển thị **warning** trước khi hủy/xóa.
+- Ngừng tính hoa hồng mới từ thời điểm hủy. (Q&A MKT-07)
 
 ---
 
@@ -145,23 +147,25 @@ Quy tắc trả hoa hồng áp dụng theo Plan được chọn cho đại lý/n
 
 ### AC-MARKETING-04: System Admin — Free Campaign / Sample Management
 - [ ] Có thể tạo mới chiến dịch dùng thử với thông tin giao hàng, không yêu cầu Master Pháp nhân
-- [ ] Có thể edit và delete chiến dịch (ràng buộc xóa xác nhận theo **TODO C2**)
+- [ ] Có thể edit chiến dịch
+- [ ] Xóa chiến dịch: cho phép nếu chưa có giao hàng; **chặn** nếu đã có giao hàng (hiển thị lỗi)
 - [ ] Danh sách Campaign History hiển thị đầy đủ lịch sử các đợt
 - [ ] Success Rate được tính và hiển thị (số chuyển đổi / tổng dùng thử)
-- [ ] Tự động đồng bộ dữ liệu từ HubSpot (chi tiết trigger theo **TODO C1**)
+- [ ] Tự động đồng bộ dữ liệu từ HubSpot (chi tiết trigger theo **TODO C1** — chưa xác nhận)
 
 ### AC-MARKETING-05: System Admin — Agency Management
 - [ ] Có thể tạo, xem, chỉnh sửa thông tin đại lý
 - [ ] Đại lý có thể chuyển trạng thái: Đang chạy / Đã hủy
 - [ ] Agency Detail hiển thị đúng 4 section: Basic Info, Contract/Compensation, Performance Summary, Referral History, Payment History
 
-  > Lưu ý: domain mô tả 5 tab nhưng tên section là "4 tab" — **TODO (BA):** Xác nhận số lượng tab thực tế với Designer/Client.
+  > ⚠️ Số lượng tab chính xác trong Agency Detail: **chưa chốt** (Q&A MKT-08). Tạm thời giữ 5 section như hiện tại cho đến khi có xác nhận.
 
 ### AC-MARKETING-06: Referral Plan — Tính hoa hồng đúng theo Plan A/B/C/D
 - [ ] Plan C: tính 10% trong 36 tháng kể từ ngày ký hợp đồng
 - [ ] Plan D: tính 7% vô thời hạn kể từ ngày ký hợp đồng
-- [ ] Plan A/B: theo rule xác nhận (**TODO D2**)
+- [ ] Plan A/B: phí shot — trả 1 lần. Số tiền cụ thể TBD khi client xác nhận.
 - [ ] Sau khi thanh toán, Payment History cập nhật trạng thái `Đã chuyển` và ghi ngày chuyển
+- [ ] Thay đổi plan hoa hồng áp dụng từ thời điểm thay đổi; không hồi tố kỳ đã qua
 
 ### AC-MARKETING-07: Performance Summary đại lý
 - [ ] Hiển thị: tổng số KH giới thiệu (lũy kế), số KH đang active, tổng hoa hồng đã trả, số tiền chưa trả
@@ -173,8 +177,8 @@ Quy tắc trả hoa hồng áp dụng theo Plan được chọn cho đại lý/n
 
 - Tự động chuyển khoản ngân hàng (hoa hồng được ghi nhận và đánh dấu `Đã chuyển` thủ công bởi Admin — không tích hợp banking API trong Phase 2)
 - Giao diện đại lý tự đăng nhập xem hoa hồng (không có actor E04/E05 cho Agency trong domain này)
-- E01 (User Mobile) referral flow — chờ xác nhận **TODO** ở mục Actors
-- Tích hợp hai chiều HubSpot ngoài sync chiến dịch dùng thử — chờ xác nhận **TODO C1**
+- E01 (User Mobile) referral flow — **không có** (đã xác nhận Q&A MKT-01).
+- Tích hợp hai chiều HubSpot ngoài sync chiến dịch dùng thử — chờ xác nhận (TODO C1 còn mở)
 
 ---
 

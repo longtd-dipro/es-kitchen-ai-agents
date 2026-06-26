@@ -13,13 +13,15 @@
 
 Quản lý toàn bộ vòng đời hợp đồng giữa ES Kitchen và doanh nghiệp khách hàng (Pháp nhân / Company), bao gồm:
 
-1. Doanh nghiệp đăng ký dùng thử (Trial) → System Admin phê duyệt → cấp tài khoản
+1. Doanh nghiệp đăng ký dùng thử (Trial) → System Admin phê duyệt → cấp tài khoản Trial với PLAN nhỏ nhất (50 món/tháng)
 2. Doanh nghiệp chuyển đổi từ Trial sang hợp đồng chính thức (Plan Contract)
 3. System Admin quản lý danh mục gói dịch vụ (Plan), đăng ký / sửa / ẩn gói
-4. Company Admin quản lý các cơ sở (Location) trực thuộc pháp nhân: thêm, sửa, theo dõi lịch sử
+4. Company Admin quản lý các cơ sở / chi nhánh (Location) trực thuộc pháp nhân: thêm, sửa, theo dõi lịch sử. **Mỗi chi nhánh = 1 hợp đồng riêng** → phải được System Admin phê duyệt.
 5. System Admin nhóm cơ sở vào cấu trúc cây Pháp nhân (Company Grouping)
 6. Company Admin và System Admin xem / thay đổi gói hợp đồng, lịch giao hàng, thiết bị tủ lạnh
 7. Company Admin gửi yêu cầu hủy hoặc đổi gói hợp đồng
+8. **Hợp đồng tháng tự động**: hệ thống tự tạo 1 hợp đồng con/tháng cho từng Company dựa trên hợp đồng gốc (chứa ngày giao hàng dự kiến, thông tin thuê equipment, PLAN đang áp dụng)
+9. **Tài khoản HQ** (user_company gốc) xem được toàn bộ hợp đồng và đơn hàng của tất cả chi nhánh
 
 Domain này là điểm khởi đầu của toàn bộ nghiệp vụ vận hành: khi hợp đồng được kích hoạt, các domain khác (Menu & Order, Giao hàng, Thanh toán) mới có thể hoạt động.
 
@@ -146,27 +148,31 @@ Domain này là điểm khởi đầu của toàn bộ nghiệp vụ vận hành
 - Tháng bắt đầu hợp đồng: định dạng YYYY/MM, chỉ nhập tháng — không nhập ngày cụ thể.
 
 ### AF-03: Ngày không nhận hàng
-- Nếu chọn "受け取れない曜日がある": hiển thị checkbox 月〜金 (thứ 2 đến thứ 6), không bao gồm thứ 7 và Chủ nhật.
-- Nếu chọn "お任せ": hệ thống tự sắp xếp, ngoại trừ kỳ nghỉ dài (golden week, năm mới...).
-- **TODO (BA):** Định nghĩa "kỳ nghỉ dài" do hệ thống quy định hay do admin cấu hình?
+- Khi đăng ký hợp đồng, Company Admin thiết lập **ngày cố định không giao hàng** trong form (ngày lễ quốc gia, ngày nghỉ nội bộ định kỳ của công ty): hiển thị checkbox 月〜金 (thứ 2 đến thứ 6), không bao gồm thứ 7 và Chủ nhật.
+- Tùy chọn "お任せ" (để hệ thống tự sắp xếp) đã bị **bỏ** — không còn trong phạm vi.
 
-### AF-04: Đăng ký ngày loại trừ giao hàng (bảo trì tòa nhà)
-- Company Admin đăng ký ngày cúp điện / kiểm tra tòa nhà → hệ thống loại ngày đó khỏi lịch giao hàng tự động.
-- **TODO (BA):** Khoảng thời gian tối thiểu báo trước là bao lâu? Có giới hạn số ngày loại trừ mỗi tháng không?
+### AF-04: Đăng ký ngày loại trừ giao hàng (sự cố đột xuất)
+- Với các trường hợp **đặc biệt không định kỳ** (mất điện, bảo trì tòa nhà bất ngờ...) → Company Admin dùng **form liên lạc riêng** để thông báo trực tiếp với ES Kitchen — không xử lý trong luồng hợp đồng thông thường.
+- Việc đăng ký ngày không giao **cố định** (ngày lễ, ngày nghỉ nội bộ) được thực hiện ngay khi đăng ký hợp đồng (xem AF-03).
 
 ### AF-05: Ẩn/Hiện gói Plan
 - System Admin có thể bật/ẩn (Show/Hide) từng gói dịch vụ.
-- Gói đang ẩn không hiển thị trong dropdown chọn gói của Company Admin.
-- **TODO (BA):** Gói đã ẩn nhưng đang có hợp đồng active → xử lý thế nào? Cho phép tồn tại hay cần cảnh báo?
+- Plan đã ẩn → **không hiển thị trên màn hình Company Admin** → KH không thể chọn Plan đó khi đăng ký hợp đồng mới.
+- Các hợp đồng đang active với Plan đã ẩn **không bị ảnh hưởng** — tiếp tục hoạt động bình thường.
 
 ### AF-06: Xóa Location hoặc Plan Contract
 - Xóa Location: cần xác nhận — kiểm tra xem Location có hợp đồng đang active không.
 - Xóa Plan Contract: cần xác nhận — kiểm tra hợp đồng có ảnh hưởng đến lịch giao hàng đang chạy không.
-- **TODO (BA):** Quy tắc xóa mềm (soft delete) hay xóa cứng? Domain Giao hàng cần biết để giữ lịch sử.
+- Quy tắc xóa: **soft delete** (ẩn, giữ lịch sử) — không hard delete.
 
 ### AF-07: Yêu cầu hủy / đổi gói từ Company Admin
 - Khi Company Admin gửi yêu cầu hủy hoặc đổi gói → System Admin nhận thông báo để xử lý.
-- **TODO (BA):** Có SLA xử lý yêu cầu này không (ví dụ: xử lý trong 3 ngày làm việc)? Có cần email xác nhận tự động gửi về Company Admin không?
+- **Không có SLA** cố định — thời gian xử lý tùy tình huống thực tế.
+- **Không cần email xác nhận tự động** gửi về Company Admin.
+
+### AF-07b: Hiệu lực thay đổi PLAN
+- Gửi request **trước ngày 1** hàng tháng → áp dụng ngay tháng hiện tại (nếu System Admin duyệt kịp).
+- Gửi request **sau ngày chốt** hoặc System Admin duyệt trễ → áp dụng từ tháng kế tiếp.
 
 ### AF-08: Lịch sử thay đổi người phụ trách
 - Hệ thống ghi nhận mỗi lần người phụ trách tại cơ sở thay đổi (ai thay đổi, thời điểm, giá trị cũ → mới).
@@ -174,11 +180,12 @@ Domain này là điểm khởi đầu của toàn bộ nghiệp vụ vận hành
 ### AF-09: Cơ sở có nhiều thiết bị
 - Một Location có thể gắn nhiều ID thiết bị (tủ lạnh/máy bán hàng).
 - Company Admin xem danh sách ID thiết bị → chỉ xem, không thêm/xóa thiết bị.
-- **TODO (BA):** Ai quản lý lifecycle thiết bị (thêm/xóa/thay)? System Admin hay quy trình ngoài hệ thống?
+- **System Admin** quản lý lifecycle thiết bị: thêm mới, xóa, thay thế thiết bị.
 
 ### AF-10: CSV Export hợp đồng Plan
 - System Admin tải CSV danh sách hợp đồng Plan.
-- **TODO (BA):** Encoding CSV là UTF-8 hay Shift-JIS (tiêu chuẩn Nhật)? Fields nào cần export?
+- **Encoding**: hỗ trợ cả **UTF-8** và **Shift-JIS** (tải xuống theo lựa chọn).
+- **Fields xuất**: tất cả các fields hiển thị trong màn hình Detail hợp đồng Plan (AW_CONT_009).
 
 ---
 
@@ -256,7 +263,6 @@ Domain này là điểm khởi đầu của toàn bộ nghiệp vụ vận hành
 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng | Plan liên kết loại Menu; Order chỉ tạo được khi có hợp đồng active |
 | [THANH TOÁN] Thanh toán & Hoàn tiền | Phương thức thanh toán, phí hàng tháng, phí khởi tạo được khai báo trong hợp đồng |
 | [TỒN KHO & THIẾT BỊ] | ID thiết bị gắn với Location trong hợp đồng |
-| [TASK MANAGEMENT] | Hợp đồng mới / thay đổi → trigger tạo Task tự động cho nhân viên vận hành |
 
 ---
 
@@ -264,14 +270,7 @@ Domain này là điểm khởi đầu của toàn bộ nghiệp vụ vận hành
 
 | # | Vị trí | Câu hỏi |
 |---|---|---|
-| 1 | AF-03 | "Kỳ nghỉ dài" trong tùy chọn お任せ — do hệ thống cố định hay admin cấu hình từng năm? |
-| 2 | AF-04 | Khoảng thời gian tối thiểu báo trước khi đăng ký ngày loại trừ giao hàng? Giới hạn số ngày/tháng? |
-| 3 | AF-05 | Plan đang ẩn nhưng vẫn có hợp đồng active → hiển thị cảnh báo hay cho phép tồn tại song song? |
-| 4 | AF-06 | Xóa Location/Plan Contract: soft delete (ẩn, giữ lịch sử) hay hard delete? |
-| 5 | AF-07 | SLA xử lý yêu cầu hủy/đổi gói? Có email xác nhận tự động gửi về Company Admin không? |
-| 6 | AF-09 | Ai quản lý lifecycle thiết bị (thêm/xóa/thay thế)? System Admin hay quy trình ngoài hệ thống? |
-| 7 | AF-10 | Encoding file CSV export: UTF-8 hay Shift-JIS? Fields nào cần xuất? |
-| 8 | HP-03 | Sau khi System Admin phê duyệt Trial → hệ thống gửi thông tin tài khoản qua email hay phương thức khác? |
+| 1 | HP-03 | Sau khi System Admin phê duyệt Trial → hệ thống gửi thông tin tài khoản qua email hay phương thức khác? |
 
 ---
 

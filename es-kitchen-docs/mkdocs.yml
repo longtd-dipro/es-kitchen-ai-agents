@@ -190,8 +190,6 @@ nav:
     - Specification: features/survey-management/SPEC.md
   - System Other (Settings & Common):
     - Specification: features/system-other/SPEC.md
-  - Task Management:
-    - Specification: features/task-management/SPEC.md
   - User Binding:
     - Specification: features/user-binding/SPEC.md
   - User Engagement:

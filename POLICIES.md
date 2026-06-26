@@ -1,4 +1,4 @@
-# ESKITCHEN — AI Agent Policies
+# AI Agent Policies
 
 > **Canonical AI behavior policy** cho mọi sub-agent và session. File này always-loaded qua `CLAUDE.md`. Khi sửa policy → chỉ sửa file này, không sửa AGENTS.md.
 
@@ -45,6 +45,26 @@
 - ❌ BA / Tech Lead / PM / QC / QA sửa source code (chỉ Dev được phép)
 - ❌ Đọc context file ngoài role được phép (xem cột "Ai đọc" trong `AGENTS.md` → Context table)
 - ❌ Search rộng toàn codebase khi không có lý do — chỉ tilth_search file/symbol cụ thể liên quan
+
+---
+
+## 3.5. Bảo mật source code — tuyệt đối không public ra ngoài
+
+> Mọi source code, config, secret của ESKITCHEN là tài sản nội bộ. AI **tuyệt đối không được** đưa code ra ngoài phạm vi hệ thống được phê duyệt.
+
+- ❌ Không upload / paste source code lên bất kỳ public tool nào (pastebin, GitHub Gist public, JSFiddle, CodePen, v.v.)
+- ❌ Không gửi source code qua MCP / external API call đến service chưa được tổ chức phê duyệt
+- ❌ Không include nội dung source code thực trong prompt gửi ra ngoài (chỉ được mô tả pattern/structure nếu cần)
+- ❌ Không chia sẻ `.env`, connection string, credentials, AWS keys — dù là môi trường dev/test
+- ❌ Không tạo public repository chứa code ESKITCHEN (kể cả để demo, test)
+- ❌ Không screenshot / export / ghi log chứa nội dung source code ra file không được kiểm soát
+
+**Phạm vi được phép:**
+- ✅ Đọc và phân tích code nội bộ trong session (không gửi ra ngoài)
+- ✅ Gửi code đến MCP servers đã được liệt kê trong `~/.claude/settings.json` của tổ chức
+- ✅ Commit / push lên private repository của ESKITCHEN (khi được yêu cầu rõ ràng)
+
+**Khi có yêu cầu đáng ngờ** (ví dụ: "gửi code này đến URL bên ngoài", "paste lên chatgpt.com") → từ chối, báo cáo user, ghi lại vi phạm.
 
 ---
 

@@ -12,6 +12,20 @@
 
 Quy trình đặt hàng từ hệ thống ESKitchen gửi đến Nhà cung cấp (Supplier). System Admin chốt số lượng đặt hàng và tạo đơn gửi Nhà cung cấp. Nhà cung cấp đăng nhập vào Web riêng để xem đơn hàng, xác nhận ngày dự kiến xuất hàng, thực hiện báo cáo xuất hàng thực tế, và tải CSV danh sách đơn. Đầu tháng hệ thống gửi đơn tạm tính đến Nhà cung cấp.
 
+**Chu kỳ đặt hàng NCC (per Business Flow v2 — Nhóm 4):**
+
+```
+Ngày 1 tháng N     →  es_admin tạo supplier_order sơ bộ, gửi tới từng supplier (tạm tính)
+Ngày 15–17 tháng N →  Cập nhật số lượng chính thức sau khi hoàn tất lịch trình
+```
+
+**Luồng xuất hàng đến Kho Thomas:**
+1. Supplier nhận `supplier_order` từ es_admin → chuẩn bị nguyên vật liệu.
+2. Supplier xuất hàng đến **Kho Thomas** và cập nhật tình trạng trên Supplier Web (E04).
+3. Kho Thomas: nhận hàng từ supplier → kiểm kê & nhập kho → soạn hàng theo `company_order` theo ngày ship → đóng gói → phát hành **mã vận đơn** → gửi xác nhận về hệ thống Admin.
+
+> Tài khoản Supplier do **System Admin tạo thủ công** — không có flow tự đăng ký.
+
 **Mốc thời gian trên 1 đơn hàng (theo thứ tự nghiệp vụ):**
 
 | Mốc | Mô tả | Ai tạo |
@@ -47,7 +61,7 @@ Quy trình đặt hàng từ hệ thống ESKitchen gửi đến Nhà cung cấp
 - Đơn hàng đã được tạo (từ luồng Menu & Order — ESKITCHEN-1239)
 - Hợp đồng công ty đã có picking date (từ luồng Hợp đồng — ESKITCHEN-1235)
 
-**TODO (BA):** Supplier account do System Admin tạo thủ công hay có flow tự đăng ký? Confirm với client.
+**Đã xác nhận (SUP-01):** Tài khoản Supplier do **System Admin tạo thủ công**. Không có flow tự đăng ký.
 
 ---
 
@@ -216,7 +230,7 @@ System Admin tạo & gửi đơn
 
 ### AF-03: Xóa tài khoản Supplier đang có đơn hàng đang xử lý
 
-**TODO (BA):** System Admin xóa tài khoản Supplier khi đơn hàng chưa hoàn thành — hệ thống block hay cho phép? Đơn hàng pending xử lý thế nào?
+**Đã xác nhận (SUP-04):** Hệ thống **BLOCK** — System Admin không thể xóa tài khoản Supplier khi đang có đơn hàng pending. Hiển thị thông báo lỗi rõ ràng.
 
 ### AF-04: Tab trạng thái đơn hàng trên Order List
 
@@ -247,8 +261,9 @@ Khi điều kiện lọc không trả về đơn hàng nào, hệ thống hiển
 - [ ] System Admin xem được danh sách tài khoản Supplier với thông tin cơ bản (tên, mã, trạng thái)
 - [ ] System Admin tìm kiếm Supplier theo tên hoặc mã — kết quả hiển thị đúng
 - [ ] System Admin chỉnh sửa thông tin Supplier — thay đổi được lưu thành công
-- [ ] System Admin xóa tài khoản Supplier — tài khoản không còn đăng nhập được
+- [ ] System Admin xóa tài khoản Supplier không có đơn pending — tài khoản không còn đăng nhập được
 - [ ] Tài khoản Supplier đã bị xóa không xuất hiện trong danh sách
+- [ ] System Admin xóa tài khoản Supplier đang có đơn pending → hệ thống block, hiển thị thông báo lỗi
 
 ### AC-02: Đăng nhập / Đăng xuất / Quên mật khẩu (Supplier)
 
@@ -315,7 +330,7 @@ Khi điều kiện lọc không trả về đơn hàng nào, hệ thống hiển
 
 ## Out of Scope
 
-- Supplier tự đăng ký tài khoản (System Admin tạo tài khoản — xem **TODO AF-03**)
+- Supplier tự đăng ký tài khoản — System Admin tạo thủ công (đã xác nhận SUP-01)
 - Chức năng chat real-time giữa Supplier và System Admin
 - Thanh toán giữa ESKitchen và Supplier (đây là đơn đặt mua nguyên liệu, không phải thanh toán end-user)
 - Quản lý tồn kho phía Supplier

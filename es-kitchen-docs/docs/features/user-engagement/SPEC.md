@@ -3,12 +3,15 @@
 > Backlog ID: ESKITCHEN-1245
 > Domain: BF_[USER ENGAGEMENT] Tương tác & Khảo sát
 > Phase: Phase 2
+> Cập nhật: 2026-06-25 (Business Flow v2 + Q&A response v1)
 
 ---
 
 ## Mô tả nghiệp vụ
 
-Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E01) tương tác sâu hơn với hệ thống sau khi mua hàng: đánh giá sản phẩm, đăng ký thông tin dị ứng, tham gia khảo sát do vận hành tạo, gửi feedback, và nhận gợi ý món ăn cá nhân hóa. Phía System Admin (E03) tạo và quản lý các chiến dịch khảo sát, xem kết quả tổng hợp tự động. Company Admin (E02) đánh giá tài xế sau giao hàng.
+Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E01) tương tác sâu hơn với hệ thống: đánh giá sản phẩm, đăng ký thông tin dị ứng, tham gia khảo sát, và nhận gợi ý món ăn. Phía System Admin (E03) tạo và quản lý các chiến dịch khảo sát, xem kết quả tổng hợp. Company Admin (E02) xem kết quả Wish Survey của nhân viên.
+
+> ~~Feedback Form (ST-08)~~ và ~~Driver Rating (ST-09)~~ đã được **bỏ khỏi scope** theo xác nhận Q&A v1.
 
 ---
 
@@ -17,7 +20,7 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 | Actor | Repo liên quan | Điều kiện tiên quyết |
 |---|---|---|
 | E01 — End User (Mobile App) | `es-kitchen-payment-app` | Đã đăng nhập · Đã liên kết công ty (User Binding) |
-| E02 — Company Admin (Web) | `es-kitchen-web-company` | Đã đăng nhập · Đơn hàng đã hoàn tất giao hàng |
+| E02 — Company Admin (Web) | `es-kitchen-web-company` | Đã đăng nhập · Xem kết quả Wish Survey của nhân viên mình |
 | E03 — System Admin (Web) | `es-kitchen-web-admin` | Đã đăng nhập với quyền vận hành |
 | BE | `es-kitchen-api` | — |
 
@@ -46,7 +49,7 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 - Sau khi skip hoặc hoàn thành, không hiển thị lại trong các lần đăng nhập tiếp theo.
 - Nội dung slide do vận hành cấu hình (không hard-code).
 
-**TODO (BA):** Nội dung 3–5 slide do ai cấu hình — System Admin hay hard-code trong app? Có cần xem lại tutorial thủ công từ Settings không?
+> ⚠️ **CR (Change Request — chưa chốt với KH):** Nội dung 3–5 slide do ai cấu hình và tính năng "Xem lại tutorial thủ công từ Settings" chưa được xác nhận. Giữ nguyên scope hiện tại cho đến khi có quyết định.
 
 ---
 
@@ -67,10 +70,9 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 **Acceptance Criteria:**
 - User có thể chọn nhiều chất gây dị ứng cùng lúc.
 - Thiết lập được lưu vào tài khoản (không phải local device).
-- Menu phản ánh ngay lập tức khi thiết lập thay đổi.
+- Trên màn hình **Search**: ẩn hoàn toàn sản phẩm chứa chất dị ứng đã chọn.
+- Trên màn hình **Cart** (khi thêm sản phẩm từ My Page): hiển thị **cảnh báo** khi thêm sản phẩm dị ứng vào giỏ.
 - Có thể xóa toàn bộ thiết lập dị ứng (reset).
-
-**TODO (BA):** Hành vi mặc định khi món chứa chất gây dị ứng là ẩn hay cảnh báo hay highlight — cần xác nhận với client.
 
 ---
 
@@ -110,9 +112,9 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 - Mỗi user chỉ được đánh giá 1 lần / 1 sản phẩm / 1 đơn hàng.
 - Bình luận tối đa 100 ký tự.
 - Rating trung bình hiển thị trên trang sản phẩm.
-- System Admin nhận cảnh báo tự động khi điểm trung bình sản phẩm dưới ngưỡng quy định.
+- System Admin nhận **notification nội bộ** khi điểm trung bình sản phẩm dưới ngưỡng quy định.
 
-**TODO (BA):** Ngưỡng điểm kích hoạt cảnh báo là bao nhiêu? Cảnh báo gửi qua email hay notification nội bộ?
+> ⚠️ Ngưỡng điểm kích hoạt cảnh báo: **chưa quyết định** — cần xác nhận với client trước khi implement.
 
 ---
 
@@ -132,8 +134,7 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 - Gợi ý phản ánh lịch sử mua trong 30 ngày gần nhất (hoặc theo cấu hình).
 - Nếu user chưa có lịch sử → fallback về danh sách phổ biến.
 - Bảng xếp hạng phổ biến refresh theo chu kỳ (ngày/tuần).
-
-**TODO (BA):** Logic gợi ý dùng rule-based hay ML? Nếu rule-based, tiêu chí xếp hạng "tương tự" là gì (category, supplier, giá...)?
+- Logic gợi ý: **đang gộp + Top Ranking** (không dùng ML model riêng). Tiêu chí cụ thể sẽ được xác nhận khi thiết kế kỹ thuật.
 
 ---
 
@@ -172,67 +173,34 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 
 ### ST-07: Khảo sát dành cho doanh nghiệp — Sản phẩm mong muốn (Wish Survey)
 
-**Actor:** E01
-**Mô tả:** Hiển thị danh sách thực đơn tháng sau. User chọn sản phẩm yêu thích và đăng ký thành sản phẩm mong muốn (wish list). Đây là loại khảo sát đặc biệt về nhu cầu thực đơn.
+**Actor:** E01 (bình chọn) · E02 (xem kết quả)
+**Mô tả:** **Loại survey riêng** (không dùng template ST-06). Hiển thị danh sách thực đơn tháng sau. User chọn sản phẩm yêu thích. Company Admin (E02) xem kết quả tổng hợp của nhân viên mình. Kết quả là input trực tiếp cho AI Mode 4 — tự động map thành số lượng trong `company_order`.
 
 **Happy Path:**
 1. Hệ thống công bố danh sách thực đơn dự kiến tháng sau.
 2. User vào màn hình "Sản phẩm mong muốn".
 3. User xem danh sách và chọn các sản phẩm yêu thích.
 4. User submit danh sách mong muốn.
-5. Hệ thống ghi nhận và tổng hợp dữ liệu phía admin.
+5. Hệ thống ghi nhận và tổng hợp dữ liệu.
 
 **Acceptance Criteria:**
 - User thấy danh sách thực đơn tháng sau (chỉ khi đã được công bố).
 - User có thể chọn nhiều sản phẩm.
 - User có thể thay đổi lựa chọn trước deadline.
-- Kết quả tổng hợp phải xem được ở admin (E03).
-
-**TODO (BA):** Wish Survey là loại survey riêng hay là 1 template trong ST-06? Ai (E03 hay E02) xem kết quả tổng hợp?
-
----
-
-### ST-08: Gửi ý kiến và yêu cầu đóng góp (Feedback Form)
-
-**Actor:** E01
-**Mô tả:** User gửi feedback (ý kiến, yêu cầu, khiếu nại, đề xuất cải tiến) đến quản trị viên qua biểu mẫu trong app. Admin có thể phản hồi qua email.
-
-**Happy Path:**
-1. User vào Settings → Gửi ý kiến.
-2. User chọn loại feedback (ý kiến / yêu cầu / khiếu nại / đề xuất).
-3. User điền nội dung (text field, giới hạn ký tự cần xác nhận).
-4. User submit.
-5. Hệ thống ghi nhận và gửi email thông báo đến admin.
-6. Admin phản hồi qua email đến user.
-
-**Acceptance Criteria:**
-- Form có trường loại feedback (dropdown hoặc radio).
-- Form có trường nội dung tự do.
-- Sau khi submit, user nhận xác nhận đã gửi thành công.
-- Admin (E03) nhận được feedback qua dashboard hoặc email.
-- Admin có thể phản hồi qua email đến user.
-
-**TODO (BA):** Feedback gửi đến E03 hay E02 hay cả hai? Có lưu lịch sử feedback trong app không?
+- **E02 (Company Admin)** xem kết quả tổng hợp của nhân viên mình — không phải E03.
+- Kết quả là input cho AI Mode 4 (auto-fill số lượng company_order theo bình chọn).
 
 ---
 
-### ST-09: Đánh giá tài xế (Driver Rating)
+### ~~ST-08: Gửi ý kiến và yêu cầu đóng góp (Feedback Form)~~ — **ĐÃ BỎ**
 
-**Actor:** E02 — Company Admin
-**Mô tả:** Company Admin đánh giá sao và bình luận cho tài xế sau khi giao hàng hoàn tất.
+> Tính năng này đã được xác nhận **bỏ khỏi scope** (Q&A UEN-06). Không implement.
 
-**Happy Path:**
-1. Đơn giao hàng chuyển sang trạng thái hoàn tất.
-2. Company Admin vào danh sách đơn hàng → chọn đơn vừa giao xong.
-3. Nhấn "Đánh giá tài xế" → form hiện ra (sao 1–5 + bình luận).
-4. Submit → lưu đánh giá liên kết với tài xế và đơn hàng.
+---
 
-**Acceptance Criteria:**
-- Chỉ đánh giá được sau khi đơn hàng ở trạng thái hoàn tất.
-- Mỗi đơn hàng chỉ được đánh giá tài xế 1 lần.
-- Đánh giá lưu vào hồ sơ tài xế, xem được từ E03.
+### ~~ST-09: Đánh giá tài xế (Driver Rating)~~ — **ĐÃ BỎ**
 
-**TODO (BA):** E03 có màn hình xem lịch sử đánh giá tài xế không? Tài xế (E06) có thể xem điểm đánh giá của mình không?
+> Tính năng này đã được xác nhận **bỏ khỏi scope** (Q&A UEN-07). Không implement.
 
 ---
 
@@ -272,10 +240,8 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 **Acceptance Criteria:**
 - Kết quả tổng hợp tự động sau mỗi phản hồi mới (hoặc batch sau deadline).
 - Hiển thị biểu đồ phù hợp với loại câu hỏi (pie chart, bar chart, ...).
-- Có thể export kết quả (CSV hoặc PDF).
-- Dữ liệu cá nhân được ẩn danh khi hiển thị tổng hợp (nếu yêu cầu).
-
-**TODO (BA):** Phản hồi có ẩn danh hay hiển thị tên user? Có export PDF không hay chỉ CSV?
+- Có thể export kết quả (CSV — không có PDF).
+- Kết quả hiển thị **ID user** (không ẩn danh hoàn toàn, không hiển thị tên).
 
 ---
 
@@ -288,7 +254,7 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 | Khảo sát hết deadline khi user đang điền | Hiển thị thông báo "Đã hết hạn", không submit được |
 | User chưa mua hàng cố xem đánh giá sản phẩm | Cho xem (read-only), không cho đánh giá |
 | User không có lịch sử mua, xem gợi ý | Fallback về danh sách phổ biến toàn hệ thống |
-| Tutorial đã xem nhưng user muốn xem lại | **TODO (BA):** Có cần nút "Xem lại hướng dẫn" trong Settings không? |
+| Tutorial đã xem nhưng user muốn xem lại | ⚠️ **CR (chưa chốt với KH)** — chưa xác nhận có nút "Xem lại hướng dẫn" trong Settings. |
 | Dị ứng đã thiết lập nhưng supplier không cung cấp thông tin thành phần | Không hiển thị cảnh báo — hiển thị "Thông tin thành phần chưa đầy đủ" |
 
 ---
@@ -300,6 +266,7 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 3. Dữ liệu đánh giá và phản hồi khảo sát được lưu server-side (không phụ thuộc device).
 4. Tất cả form có validation phía client trước khi submit.
 5. E03 có thể xem kết quả đánh giá sản phẩm (aggregated rating) trên admin dashboard.
+6. E02 (Company Admin) xem được kết quả Wish Survey của nhân viên mình.
 
 ---
 
@@ -307,8 +274,10 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 
 - Hệ thống Điểm (Point) và Tem thưởng (Stamp) — đề cập trong business flow index nhưng **không có story cụ thể** trong domain file. Cần tạo SPEC riêng.
 - Trực quan hóa dữ liệu sức khỏe (Health Data Visualization) — đề cập trong domain nhưng chỉ liên kết với ST-02/ST-03, không có story độc lập. Cần làm rõ scope với client.
-- Recommendation engine ML-based — nếu dùng rule-based thì trong scope; nếu cần ML model thì Out of Scope Phase 2.
-- Tài xế (E06) xem điểm đánh giá cá nhân — chưa có story, cần xác nhận.
+- Recommendation engine ML-based — logic sẽ là **đang gộp + Top Ranking** (không dùng ML model riêng).
+- Feedback Form (ST-08) — **ĐÃ BỎ** (Q&A UEN-06).
+- Driver Rating (ST-09) — **ĐÃ BỎ** (Q&A UEN-07).
+- Tài xế (E06) xem điểm đánh giá cá nhân — **ĐÃ BỎ** theo ST-09.
 - Moderating / ẩn bình luận không phù hợp — chưa có yêu cầu.
 
 ---
@@ -320,7 +289,6 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 | Domain User Binding (ESKITCHEN-1244) | User phải liên kết công ty trước khi dùng tính năng engagement |
 | Domain Menu & Order (ESKITCHEN-1239) | Đánh giá sản phẩm cần đơn hàng hoàn tất |
 | Firebase Push Notification | Gửi lời mời đánh giá và thông báo khảo sát (E01) |
-| Domain Giao hàng (ESKITCHEN-1236) | Đánh giá tài xế (E02) cần trạng thái giao hàng hoàn tất |
 | Domain Marketing (ESKITCHEN-1246) | Có thể tích hợp điểm thưởng khi đánh giá — cần confirm |
 
 ---
@@ -338,14 +306,15 @@ Domain User Engagement bao gồm các tính năng giúp người dùng cuối (E
 | UA_ENGM_007 | Survey List (E01) | E01 | E01 (es-kitchen-payment-app) | List | Danh sách khảo sát đang mở dành cho user, có thể mở để trả lời |
 | UA_ENGM_008 | Survey Answer Form | E01 | E01 (es-kitchen-payment-app) | Form | Form trả lời khảo sát từng câu hỏi, có deadline countdown |
 | UA_ENGM_009 | Wish Survey — Desired Products | E01 | E01 (es-kitchen-payment-app) | Card-list | Danh sách thực đơn tháng sau để user chọn sản phẩm mong muốn |
-| UA_ENGM_010 | Feedback Form | E01 | E01 (es-kitchen-payment-app) | Form | Form gửi ý kiến / yêu cầu / khiếu nại / đề xuất đến admin |
-| CW_ENGM_001 | Order List — Driver Rating Action | E02 | E02 (es-kitchen-web-company) | List | Danh sách đơn hàng hoàn tất, có nút "Đánh giá tài xế" trên từng đơn |
-| CW_ENGM_002 | Driver Rating Form | E02 | E02 (es-kitchen-web-company) | Modal | Form đánh giá sao (1–5) và bình luận cho tài xế sau giao hàng hoàn tất |
+| ~~UA_ENGM_010~~ | ~~Feedback Form~~ | ~~E01~~ | — | — | **ĐÃ BỎ** (Q&A UEN-06) |
+| ~~CW_ENGM_001~~ | ~~Order List — Driver Rating Action~~ | ~~E02~~ | — | — | **ĐÃ BỎ** (Q&A UEN-07) |
+| ~~CW_ENGM_002~~ | ~~Driver Rating Form~~ | ~~E02~~ | — | — | **ĐÃ BỎ** (Q&A UEN-07) |
+| CW_ENGM_003 | Wish Survey Results (Company) * inferred | E02 | E02 (es-kitchen-web-company) | Report | Kết quả tổng hợp Wish Survey của nhân viên trong công ty |
 | AW_ENGM_001 | Survey Creation | E03 | E03 (es-kitchen-web-admin) | Form | Form tạo khảo sát mới: chọn template, cấu hình thời gian, chọn doanh nghiệp nhận |
 | AW_ENGM_002 | Survey Distribution History | E03 | E03 (es-kitchen-web-admin) | List | Danh sách chiến dịch khảo sát đã tạo, filter theo trạng thái/thời gian |
 | AW_ENGM_003 | Survey Results — Visualization | E03 | E03 (es-kitchen-web-admin) | Report | Biểu đồ tổng hợp kết quả khảo sát theo từng chiến dịch (pie chart, bar chart, export) |
 | AW_ENGM_004 | Product Rating Dashboard (E03) *inferred | E03 | E03 (es-kitchen-web-admin) | Dashboard | Tổng hợp điểm đánh giá sản phẩm, cảnh báo khi điểm trung bình dưới ngưỡng |
-| AW_ENGM_005 | Feedback Inbox (E03) *inferred | E03 | E03 (es-kitchen-web-admin) | List | Danh sách feedback nhận từ E01, có thể phản hồi qua email |
+| ~~AW_ENGM_005~~ | ~~Feedback Inbox (E03)~~ | ~~E03~~ | — | — | **ĐÃ BỎ** (Q&A UEN-06) |
 
 ---
 

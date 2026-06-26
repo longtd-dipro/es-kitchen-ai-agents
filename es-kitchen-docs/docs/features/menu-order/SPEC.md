@@ -17,6 +17,17 @@ Quy trình quản lý thực đơn và đặt hàng tháng của hệ thống ES
 
 Feature này có **phụ thuộc trực tiếp** vào domain Hợp đồng (contract phải active mới cho phép E02 đặt hàng) và domain Thanh toán (E01 thanh toán sau khi chọn món).
 
+### Chu kỳ đặt hàng tháng
+
+```
+Ngày 1 tháng N     →  Menu tháng N+1 tự phát hành; company_order draft tự động tạo cho từng company
+Ngày 1–15 tháng N  →  E02 xem menu, chỉnh sửa số lượng, đặt đơn (deadline chốt: ngày 15)
+Ngày 15 tháng N    →  Chốt company_order — deadline toàn hệ thống (cấu hình toàn cục, không gia hạn)
+Ngày 15–17 tháng N →  E03 tổng hợp tất cả company_order → cập nhật supplier_order chính thức
+```
+
+> Menu tháng **duy nhất và chung** cho toàn bộ Company. Thời điểm hiển thị: đang tháng N → Company thấy menu tháng N+1.
+
 ---
 
 ## Actors & Preconditions
@@ -134,13 +145,16 @@ Feature này có **phụ thuộc trực tiếp** vào domain Hợp đồng (cont
 - **7 ngày trước deadline**: hệ thống tự động gửi email + hiển thị cảnh báo trên giao diện E02.
 - **3 ngày trước deadline**: gửi cảnh báo lần hai.
 - **Sau deadline**: giao diện đặt hàng của E02 chuyển sang chế độ read-only (không cho sửa).
-- **TODO (BA):** Deadline chốt đơn được cấu hình ở đâu — trong hợp đồng hay cấu hình toàn hệ thống? E03 có thể gia hạn deadline không?
+- Deadline chốt đơn là **cấu hình toàn hệ thống** — không cấu hình riêng theo hợp đồng.
+- E03 **không được phép gia hạn** deadline. Tuy nhiên, E03 được phép **tạo order thủ công** sau deadline cho các trường hợp ngoại lệ (đăng ký muộn, hợp đồng trial, v.v.).
 
-### AF-2: Vượt ngân sách phúc lợi
+### AF-2: Vượt hạn mức PLAN
 
-- Hệ thống hiển thị **cảnh báo real-time** khi số lượng món vượt giới hạn phúc lợi công ty tài trợ (ví dụ: 82/38 món → cảnh báo).
-- E02 vẫn có thể tiếp tục đặt nếu muốn (cảnh báo là informational, không block)?
-- **TODO (BA):** Xác nhận — cảnh báo vượt ngân sách có block submit hay chỉ hiển thị warning?
+- Khái niệm "vượt ngân sách phúc lợi" không tồn tại — phúc lợi được xử lý ở tầng User Binding.
+- Về **order vượt Plan** (vượt số món tối đa theo gói hợp đồng):
+  - Mỗi Company có toggle **Cho phép order vượt Plan** (ON/OFF). **Default: OFF**.
+  - Nếu **OFF**: hệ thống **block** không cho đặt vượt hạn mức.
+  - Nếu **ON**: hệ thống hiển thị **warning yêu cầu xác nhận** trước khi cho phép tiếp tục đặt vượt.
 
 ### AF-3: CSV Upload lỗi
 
@@ -158,7 +172,8 @@ Feature này có **phụ thuộc trực tiếp** vào domain Hợp đồng (cont
 
 ### AF-6: Gói hợp đồng thay đổi giữa chu kỳ
 
-- **TODO (BA):** Nếu gói hợp đồng của công ty thay đổi giữa tháng (sau khi đã chốt đơn), hệ thống xử lý như thế nào? Giữ nguyên đơn cũ hay tính lại?
+- Thay đổi gói **trước ngày 15**: áp dụng vào hợp đồng tháng hiện tại.
+- Thay đổi gói **từ ngày 15 trở đi**: áp dụng cho hợp đồng tháng sau.
 
 ### AF-7: User E01 không thuộc công ty có hợp đồng
 
@@ -178,7 +193,7 @@ Feature này có **phụ thuộc trực tiếp** vào domain Hợp đồng (cont
 - [ ] E03 có thể thêm sản phẩm từ Master Product vào menu tháng thông qua popup có search.
 - [ ] Tab "Popular Products" trong popup hiển thị sản phẩm phổ biến.
 - [ ] E03 kéo thả để thay đổi thứ tự hiển thị sản phẩm trên menu.
-- [ ] E03 tải lên PDF menu; file >X MB được tự động nén trước khi lưu. **TODO (BA):** Ngưỡng dung lượng PDF là bao nhiêu?
+- [ ] E03 tải lên PDF menu; giới hạn **10 MB** — file vượt ngưỡng được tự động nén trước khi lưu.
 - [ ] Menu tháng hiển thị đúng cho E02 sau khi publish.
 
 ### AC-02: Sao chép Menu (E03)
@@ -201,9 +216,9 @@ Feature này có **phụ thuộc trực tiếp** vào domain Hợp đồng (cont
 - [ ] E02 chuyển đổi giữa Card view và Matrix list view.
 - [ ] Tổng số lượng và tổng tiền cập nhật real-time khi E02 thay đổi số lượng.
 - [ ] Hệ thống hiển thị số lượng món còn cần chọn để đủ gói hợp đồng.
-- [ ] Cảnh báo real-time khi số lượng vượt ngân sách phúc lợi.
+- [ ] Khi số lượng vượt hạn mức PLAN: nếu toggle OFF → block submit; nếu toggle ON → hiển thị warning yêu cầu xác nhận trước khi tiếp tục.
 - [ ] E02 submit đơn trước deadline → đơn được lưu thành công.
-- [ ] Sau deadline → giao diện chỉnh sửa bị khóa.
+- [ ] Sau deadline → giao diện chỉnh sửa bị khóa (E03 vẫn có thể tạo order thủ công cho ngoại lệ).
 
 ### AC-05: Đặt hàng CSV (E02)
 
@@ -219,7 +234,7 @@ Feature này có **phụ thuộc trực tiếp** vào domain Hợp đồng (cont
 - [ ] Mode 4: Hệ thống tạo đơn dựa trên kết quả khảo sát nhân viên.
 - [ ] Mode 6: Chatbot nhận yêu cầu dạng chat và trả về giỏ hàng đề xuất.
 - [ ] Sau khi AI generate, E02 có thể chỉnh sửa trước khi submit.
-- [ ] **TODO (BA):** Tính năng AI PRO có phân quyền theo gói hợp đồng (chỉ gói cao cấp mới có) hay tất cả E02 đều dùng được?
+- [ ] Tính năng AI PRO khả dụng cho **tất cả E02** — không phân biệt gói hợp đồng.
 
 ### AC-07: Đặt hàng Vật tư (E02)
 

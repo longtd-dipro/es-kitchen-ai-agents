@@ -10,11 +10,11 @@
 
 Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành ESKITCHEN, bao gồm:
 
-1. **Thiết bị** — Tủ lạnh, tủ đông, máy bán hàng, lò vi sóng: đăng ký serial, tạo mã QR, quản lý phí cài đặt / phí tháng / tiền phạt, xử lý yêu cầu nâng cấp/đổi thiết bị.
-2. **Vật tư** (Material Master) — Đũa, thìa, khay...: định nghĩa bộ tiêu chuẩn (bộ 50, bộ 100...) và số lượng phân bổ theo kích cỡ tủ.
+1. **Thiết bị (Equipment)** — Tủ lạnh, tủ đông, máy hâm nóng: đăng ký serial, tạo mã QR, quản lý phí cài đặt / phí tháng / tiền phạt, xử lý yêu cầu nâng cấp/đổi thiết bị từ E02. Thiết bị gắn với hợp đồng — E02 chọn thuê khi ký hợp đồng.
+2. **Vật tư (Material)** — Bát, đũa, muỗng, nĩa, giấy: định nghĩa bộ tiêu chuẩn và số lượng phân bổ theo kích cỡ tủ. Vật tư được đặt qua `company_order_material` (không đi theo luồng lịch trình giao hàng).
 3. **Tồn kho vật tư** — Quản lý nhập/xuất/tồn thực tế của món ăn chế biến sẵn, vật tư và hàng mẫu.
-4. **Nhập hàng (Arrival)** — Theo dõi lịch dự kiến nhập hàng, xác nhận thủ công, đối chiếu với phản hồi nhà cung cấp.
-5. **Tích hợp Thomas** — Đồng bộ hai chiều với hệ thống kho Thomas qua CSV (xuất lệnh, nhập kết quả thực tế).
+4. **Nhập hàng (Arrival)** — Xác nhận thủ công lô hàng nhập kho, đối chiếu với phản hồi nhà cung cấp.
+5. **Tích hợp Thomas** — Đồng bộ hai chiều với hệ thống kho Thomas qua CSV (xuất lệnh, nhập kết quả thực tế). Ngoài ra, E03 có thể thêm số lô hàng trên `company_order` qua **CSV import** hoặc **API sync** trực tiếp với kho Thomas.
 
 ---
 
@@ -22,15 +22,14 @@ Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành 
 
 | Actor | Role | Phạm vi |
 |---|---|---|
-| **E03 — System Admin** | Toàn quyền CRUD thiết bị, vật tư, tồn kho; thực hiện import/export CSV Thomas | Primary actor — mọi story trong domain này |
+| **E03 — System Admin** | Toàn quyền CRUD thiết bị, vật tư, tồn kho; thực hiện import/export CSV Thomas | Primary actor — mọi màn hình trong domain này |
+| **E02 — Company Admin** | Gửi yêu cầu bổ sung/cắt giảm thiết bị → E03 phê duyệt | Chỉ gửi request, **không có quyền xem/thao tác** trực tiếp trên bất kỳ màn hình inventory nào (đã xác nhận) |
 
-> **Phạm vi: Single-actor (E03 only)** — không có E01/E02/E04/E06 trong domain này.
-> Contract Lock trước Phase 3: **không bắt buộc** (single-actor).
+> **Confirmed:** E02 Company Admin **không có quyền xem/thao tác** trên các màn hình module này. Nếu E02 muốn bổ sung hoặc cắt giảm số lượng thiết bị → gửi yêu cầu cho E03 để được phê duyệt. Chi tiết flow phê duyệt chưa được định nghĩa.
 
 **Preconditions chung:**
 - E03 đã đăng nhập và có quyền truy cập module Inventory & Equipment.
 - Master data nhà cung cấp và sản phẩm đã tồn tại trong hệ thống (dependency: domain [ĐẶT HÀNG NCC]).
-- **TODO (BA):** Company Admin (E02) có quyền xem/thao tác bất kỳ màn hình nào trong module này không? Business Flow Index ghi "Target: System Admin, Company Admin" nhưng tất cả 19 stories đều EPIC = E03 (SystemAdmin). Cần xác nhận phạm vi E02.
 
 ---
 
@@ -56,7 +55,14 @@ Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành 
 2. Hệ thống hiển thị chi tiết: sê-ri, kích thước, trạng thái hoạt động, lịch sử phí.
 3. E03 chỉnh sửa thông số (sê-ri, kích thước, trạng thái hoạt động) và lưu.
 
-**TODO (BA):** Tính năng "quản lý yêu cầu nâng cấp/đổi thiết bị" (từ mô tả Equipment Management) hoạt động thế nào? Yêu cầu đến từ E02 Company Admin hay E03 tự tạo? Flow phê duyệt có không?
+#### A4. Xử lý yêu cầu nâng cấp/đổi thiết bị từ E02
+
+1. E02 gửi yêu cầu bổ sung hoặc cắt giảm số lượng thiết bị.
+2. E03 nhận yêu cầu và xem xét.
+3. E03 phê duyệt (hoặc từ chối).
+4. Nếu phê duyệt → E03 cập nhật thiết bị trong hệ thống tương ứng.
+
+> **Note:** Chi tiết flow phê duyệt (màn hình, notification, SLA) chưa được định nghĩa — cần làm rõ trước Design phase.
 
 ---
 
@@ -114,7 +120,7 @@ Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành 
 1. E03 chọn lô hàng đã xác nhận.
 2. Hệ thống hiển thị chi tiết lô hàng, cho phép đối chiếu với phản hồi từ nhà cung cấp và dữ liệu đặt hàng gốc.
 
-**TODO (BA):** Dữ liệu "hàng dự kiến nhập kho" được tạo ra từ đâu? Từ đơn đặt hàng nhà cung cấp (domain [ĐẶT HÀNG NCC]) hay từ import CSV Thomas? Cần xác nhận luồng upstream để xác định dependency chính xác.
+> **Xác nhận:** Không cần tự động tổng hợp hàng dự kiến nhập kho từ upstream (đơn NCC hoặc CSV Thomas). E03 xác nhận nhập hàng thủ công khi hàng thực tế đến.
 
 ---
 
@@ -145,7 +151,7 @@ Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành 
 2. E03 upload file CSV.
 3. Hệ thống parse và ghi nhận thành tích nhập hàng thực tế vào tồn kho.
 
-**TODO (BA):** Định dạng CSV Thomas (cột, encoding, delimiter) đã được Thomas cung cấp spec chưa? Cần Thomas API/CSV spec trước khi Design phase.
+> **Note:** Spec định dạng CSV Thomas chưa được xác nhận. Cần Thomas cung cấp trước Design phase.
 
 ---
 
@@ -156,9 +162,9 @@ Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành 
 | Đăng ký thiết bị trùng sê-ri | E03 nhập sê-ri đã tồn tại trong hệ thống | Hệ thống báo lỗi, không cho phép lưu trùng |
 | Xóa vật tư đang được phân bổ vào tủ/hợp đồng | E03 xóa vật tư còn đang được tham chiếu | Cảnh báo dependency, block xóa hoặc yêu cầu xác nhận |
 | Import CSV Thomas sai định dạng | File CSV không đúng cấu trúc Thomas | Hệ thống báo lỗi rõ ràng, không cập nhật dữ liệu một phần |
-| Import CSV Thomas có dòng lỗi xen kẽ dòng hợp lệ | File có một số dòng sai | **TODO (BA):** Xử lý all-or-nothing hay skip dòng lỗi và tiếp tục? |
-| Tồn kho tính ra âm | Xuất nhiều hơn tồn thực tế | **TODO (BA):** Hệ thống cảnh báo hay block? |
-| Nhập hàng thủ công cho lô không có trong danh sách dự kiến | E03 muốn xác nhận lô hàng ngoài kế hoạch | **TODO (BA):** Có cho phép tạo mới ad-hoc hay chỉ confirm từ danh sách dự kiến? |
+| Import CSV Thomas có dòng lỗi xen kẽ dòng hợp lệ | File có một số dòng sai | Hiển thị lỗi rõ ràng; không cập nhật dữ liệu một phần (all-or-nothing) |
+| Tồn kho tính ra âm | Xuất nhiều hơn tồn thực tế | **Block** — không cho phép tồn kho xuống âm (đã xác nhận) |
+| Nhập hàng thủ công cho lô không có trong danh sách dự kiến | E03 muốn xác nhận lô hàng ngoài kế hoạch | **Không hỗ trợ** — chỉ confirm từ danh sách dự kiến, không tạo mới ad-hoc (đã xác nhận) |
 | Tìm kiếm lịch sử tồn kho không có kết quả | Không có dữ liệu theo điều kiện lọc | Hiển thị empty state rõ ràng |
 
 ---
@@ -186,7 +192,7 @@ Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành 
 
 ### Module D — Arrival
 
-- [ ] **D-AC-01:** Danh sách hàng dự kiến hiển thị đúng cho ngày hiện tại và tháng hiện tại, tự động cập nhật.
+- [ ] **D-AC-01:** Danh sách hàng nhập kho hiển thị đúng; E03 có thể tìm kiếm và lọc theo Tháng/Năm, kho bảo quản, trạng thái.
 - [ ] **D-AC-02:** Lọc lịch sử theo Tháng/Năm, kho bảo quản, trạng thái → kết quả đúng.
 - [ ] **D-AC-03:** Xác nhận nhập hàng thủ công + nhập hạn sử dụng → trạng thái lô hàng cập nhật thành "Đã nhập".
 - [ ] **D-AC-04:** Chi tiết lô hàng hiển thị đủ thông tin để đối chiếu với phản hồi nhà cung cấp và đơn đặt hàng gốc.
@@ -225,11 +231,13 @@ Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành 
 
 ## Out of Scope
 
-- Giao diện E02 Company Admin (xem lại TODO: cần xác nhận trước Design phase).
+- **E02 Company Admin** không có màn hình trong module này — chỉ gửi request thiết bị cho E03 (qua kênh ngoài hệ thống hoặc form riêng, chưa định nghĩa).
 - Tích hợp Thomas theo thời gian thực (real-time API) — chỉ hỗ trợ CSV batch.
 - Quản lý phí hợp đồng thiết bị (Contract billing) — thuộc domain [HỢP ĐỒNG].
 - Quản lý driver phân bổ vật tư khi giao hàng — thuộc domain [GIAO HÀNG].
-- Báo cáo / Dashboard tổng hợp tồn kho — chưa có trong 19 stories, cần xác nhận với client nếu cần.
+- Tự động tổng hợp hàng dự kiến nhập kho từ đơn NCC upstream — không cần (đã xác nhận).
+- Nhập tay lô hàng ad-hoc ngoài kế hoạch — không cần (đã xác nhận).
+- Báo cáo / Dashboard tổng hợp tồn kho — chưa có trong 19 stories.
 - Yamato / Sagawa integration — không liên quan domain này.
 
 ---
@@ -238,7 +246,7 @@ Hệ thống quản lý toàn bộ tài sản vật lý phục vụ vận hành 
 
 | Dependency | Loại | Ghi chú |
 |---|---|---|
-| Domain [ĐẶT HÀNG NCC] | Upstream data | Đơn đặt hàng NCC là nguồn tạo "hàng dự kiến nhập kho" trong Module D |
+| Domain [ĐẶT HÀNG NCC] | Reference | Thông tin nhà cung cấp dùng để đối chiếu trong Module D (không tạo hàng dự kiến tự động) |
 | Domain [HỢP ĐỒNG] | Reference | Thiết bị được gán cho Company theo hợp đồng — liên quan phí thiết bị |
 | Thomas CSV spec | External | Cần spec định dạng CSV từ Thomas trước khi Design phase E |
 | Product Master | Prerequisite | Module E3 (Product Master Output) yêu cầu Product data đã có trong hệ thống |
