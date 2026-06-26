@@ -203,6 +203,13 @@ nav:
 - Quality:
   - Phase 1 Quality: quality/phase1_quality.md
 
+validation:
+  links:
+    not_found: info
+    unrecognized_links: info
+    anchors: info
+    absolute_links: warn
+
 plugins:
   - search
 
