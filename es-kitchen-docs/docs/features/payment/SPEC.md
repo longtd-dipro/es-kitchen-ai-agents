@@ -8,10 +8,11 @@
 
 Hệ thống thanh toán của ESKITCHEN bao gồm hai luồng chính:
 
-1. **Thanh toán tại điểm mua (Point-of-Purchase Payment):** End User (E01) thanh toán món ăn trực tiếp trên Mobile App thông qua các phương thức Rakuten Pay, Alipay, WeChat Pay — tất cả đều được xử lý qua **elepay SDK** của công ty ELESTYLE.
-2. **Quản lý hóa đơn hàng tháng (Monthly Invoice Management):** System Admin (E03) phát hành hóa đơn theo hợp đồng mỗi tháng; Company Admin (E02) nhận thông báo và tải PDF hóa đơn.
+1. **Thanh toán tại điểm mua (Point-of-Purchase Payment):** End User (E01) thanh toán món ăn trực tiếp trên Mobile App thông qua các phương thức Alipay, WeChat Pay — tất cả đều được xử lý qua **elepay SDK** của công ty ELESTYLE. Người nhận mặc định là `es_admin`.
+2. **Quản lý hóa đơn hàng tháng (Monthly Invoice Management):** Cuối tháng hệ thống tự động phát hành Invoice cho từng Company. Company thanh toán **ngoài hệ thống** (qua bên thứ ba hoặc chuyển khoản trực tiếp). Hệ thống chỉ xuất đúng Invoice — không xử lý thanh toán B2B trong app.
+3. **Hoàn tiền (Refund):** ~~Đã được xây dựng trong Phase 1~~ theo luồng 2 bước: E01 gửi yêu cầu hoàn tiền trên app → E03 phê duyệt và xử lý trên màn hình quản trị → thực thi qua Refund API của elepay.
 
-**TODO (BA):** Domain source đề cập "User yêu cầu hoàn tiền trong 30 phút" (từ business-flow-index) nhưng không có story cụ thể trong `thanh-toan.md`. Cần xác nhận: hoàn tiền (refund) có nằm trong scope Phase 2 không? Nếu có, actor nào xử lý refund (E01 tự yêu cầu trên app, hay E03 xử lý thủ công)?
+> **Lưu ý:** Thanh toán tiền mặt tại điểm bán (bỏ tiền vào két tủ lạnh) được thu bởi tài xế (E06) và quản lý trong domain **Thu tiền & Hàng hủy** — không xử lý trong app.
 
 ---
 
@@ -45,16 +46,17 @@ Hệ thống thanh toán của ESKITCHEN bao gồm hai luồng chính:
 7. Server cập nhật trạng thái order sang `PAID`, ghi nhận payment record.
 8. App hiển thị màn hình xác nhận thanh toán thành công (receipt).
 
-### Luồng 2 — E03 phát hành hóa đơn hàng tháng
+### Luồng 2 — Phát hành hóa đơn hàng tháng (tự động & E03)
 
-1. E03 vào màn hình "Invoices by Contract" — xem danh sách hợp đồng cần phát hành hóa đơn tháng này.
-2. E03 chọn contract, xem preview nội dung hóa đơn (Invoice Preview).
-3. Hệ thống tự điền nội dung hóa đơn (tổng đơn hàng tháng theo contract).
-4. E03 xác nhận phát hành → hệ thống:
+1. Cuối tháng hệ thống tự động phát hành Invoice cho từng Company có contract active.
+2. Nếu contract không có order trong tháng → **bỏ qua** (không phát hành invoice trống).
+3. E03 vào màn hình "Invoices by Contract" — xem danh sách hợp đồng cần phát hành hóa đơn tháng này.
+4. E03 chọn contract, xem preview nội dung hóa đơn (Invoice Preview) — nội dung được auto-fill từ dữ liệu đơn hàng tháng. **Không thể chỉnh sửa thủ công.**
+5. E03 xác nhận phát hành → hệ thống:
    - Tạo invoice record, generate PDF.
-   - Tự động assign Task cho bộ phận Kế toán (Task Management).
    - Gửi thông báo (chuông hệ thống + email) đến Company Admin (E02) tương ứng.
-5. E02 nhận thông báo → vào màn hình "List of Invoices" → xem danh sách hóa đơn → tải PDF.
+6. E02 nhận thông báo → vào màn hình "List of Invoices" → xem danh sách hóa đơn → tải PDF.
+7. Company thanh toán **ngoài hệ thống** — hệ thống không theo dõi trạng thái thanh toán B2B.
 
 ---
 
@@ -65,18 +67,18 @@ Hệ thống thanh toán của ESKITCHEN bao gồm hai luồng chính:
 | Case | Mô tả | Xử lý kỳ vọng |
 |---|---|---|
 | **ALT-1** | elepay trả về lỗi (thẻ từ chối, hết hạn, insufficient funds) | Hiển thị thông báo lỗi rõ ràng; cho phép E01 thử lại hoặc chọn phương thức khác; order giữ nguyên trạng thái chờ thanh toán |
-| **ALT-2** | Timeout — elepay không phản hồi trong thời gian quy định | **TODO (BA):** Xác nhận timeout threshold và hành động: hủy intent hay retry? |
+| **ALT-2** | Timeout — elepay không phản hồi trong thời gian quy định | **Threshold: 6 tiếng** (kể cả khi đang chờ thanh toán hay elepay lỗi không phản hồi). Sau 6 tiếng → **hủy intent** tự động. |
 | **ALT-3** | E01 thoát app giữa chừng khi đang trong elepay SDK | Order vẫn ở trạng thái chờ thanh toán; khi mở lại app hiển thị đúng trạng thái |
 | **ALT-4** | Callback elepay bị delay / duplicate | Server phải idempotent: không ghi nhận double payment cho cùng charge token |
-| **ALT-5** | Company có trợ giá (subsidy) — tổng tiền E01 thanh toán = giá món − trợ giá | **TODO (BA):** Luồng tính trợ giá: trừ trực tiếp trên invoice elepay hay xử lý nội bộ? |
+| **ALT-5** | Company có trợ giá (subsidy) — tổng tiền E01 thanh toán = giá món − trợ giá | **Trợ giá xử lý nội bộ** — không trừ trực tiếp trên invoice elepay. Company đối soát và thanh toán phần trợ giá vào cuối tháng. |
 | **ALT-6** | E01 chưa liên kết company (chưa User Binding) | Không cho phép đặt hàng (handled ở domain Menu & Order); payment screen không accessible |
 
 ### Luồng 2 — Invoice
 
 | Case | Mô tả | Xử lý kỳ vọng |
 |---|---|---|
-| **ALT-7** | Contract không có order nào trong tháng | **TODO (BA):** Có phát hành invoice trống không, hay skip? |
-| **ALT-8** | E03 muốn chỉnh sửa nội dung hóa đơn trước khi phát hành | **TODO (BA):** Hóa đơn có chỉnh sửa thủ công được không? Hay chỉ auto-fill? |
+| **ALT-7** | Contract không có order nào trong tháng | **Skip** — không phát hành invoice trống. |
+| **ALT-8** | E03 muốn chỉnh sửa nội dung hóa đơn trước khi phát hành | **Không cho phép** — Invoice chỉ auto-fill từ dữ liệu đơn hàng, không chỉnh sửa thủ công. |
 | **ALT-9** | E02 không nhận được notification | E02 vẫn có thể vào màn hình invoice để xem/tải thủ công |
 | **ALT-10** | PDF generation thất bại | Hiển thị lỗi cho E03; retry manual; không gửi notification cho E02 khi chưa có PDF |
 
@@ -118,8 +120,9 @@ Hệ thống thanh toán của ESKITCHEN bao gồm hai luồng chính:
 
 ### AC-INV-03: Phát hành hóa đơn (E03)
 - E03 xem danh sách contract cần phát hành hóa đơn trong tháng
-- E03 xem Invoice Preview trước khi confirm phát hành
-- Sau khi confirm: hệ thống tạo invoice record + PDF + gửi thông báo E02 + assign Task Kế toán
+- E03 xem Invoice Preview trước khi confirm phát hành (nội dung auto-fill, không chỉnh sửa thủ công)
+- Sau khi confirm: hệ thống tạo invoice record + PDF + gửi thông báo E02
+- Contract không có order trong tháng: **bỏ qua** (không phát hành)
 - E03 không thể phát hành hóa đơn trùng cho cùng contract cùng tháng
 
 ### AC-INV-04: Invoice Preview (E03)
@@ -130,9 +133,11 @@ Hệ thống thanh toán của ESKITCHEN bao gồm hai luồng chính:
 
 ## Out of Scope
 
-- Thanh toán bằng tiền mặt (cash) — không áp dụng trong hệ thống
+- Thanh toán bằng tiền mặt (cash) tại điểm bán — thu bởi tài xế, quản lý trong domain **Thu tiền & Hàng hủy**
 - Stripe, PayPal, VNPay hoặc bất kỳ payment gateway nào khác ngoài elepay
-- Hoàn tiền (Refund) — **TODO (BA):** cần xác nhận scope (xem mô tả nghiệp vụ)
+- Hoàn tiền (Refund) — **đã xây dựng trong Phase 1** (E01 yêu cầu → E03 phê duyệt → elepay Refund API)
+- Theo dõi trạng thái thanh toán B2B (Company → es_admin) — Company thanh toán ngoài hệ thống
+- Chỉnh sửa thủ công nội dung hóa đơn — Invoice chỉ auto-fill
 - Quản lý thông tin thẻ / lưu card token phía hệ thống (do elepay SDK quản lý)
 - Xuất hóa đơn cho Supplier (E04) — nằm trong domain Đặt hàng NCC
 - Tích hợp kế toán bên thứ ba (ERP, SAP)

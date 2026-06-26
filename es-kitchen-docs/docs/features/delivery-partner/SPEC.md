@@ -29,9 +29,9 @@ Hệ thống này là cầu nối giữa **ES Kitchen (System Admin / E03)** và
 - E05 đã có tài khoản hợp lệ (ID / mật khẩu) do E03 cấp.
 - Dữ liệu đơn hàng được ủy thác đã tồn tại phía API (do luồng [GIAO HÀNG] Lịch trình & Điều phối tạo ra).
 
-**TODO (BA):** Tài khoản E05 được E03 cấp thủ công hay có flow tự động đăng ký? Cần confirm để xác định dependency với feature quản lý tài khoản outsource của E03.
+**[Confirmed]:** Tài khoản E05 do **E03 (System Admin) cấp thủ công** — không có flow tự đăng ký.
 
-**TODO (BA):** Portal này có phân role nội bộ không (ví dụ: admin của đối tác vs nhân viên thường)? Hiện tại SPEC giả định 1 role duy nhất cho mỗi tài khoản đối tác.
+**[Confirmed]:** Portal có phân role nội bộ: **1 main admin** và **nhiều sub admin** trong cùng tài khoản đối tác.
 
 ---
 
@@ -139,7 +139,7 @@ Hệ thống này là cầu nối giữa **ES Kitchen (System Admin / E03)** và
 ## Alternative Flows & Edge Cases
 
 ### Auth
-- **Sai mật khẩu nhiều lần:** Hiển thị thông báo lỗi rõ ràng. **TODO (BA):** Có khóa tài khoản sau N lần sai không? Nếu có, cần flow mở khóa bởi E03.
+- **Sai mật khẩu nhiều lần:** Hiển thị thông báo lỗi rõ ràng. **Không có lockout** — tài khoản không bị khóa dù nhập sai nhiều lần.
 - **Link quên mật khẩu hết hạn:** Hiển thị thông báo, cho phép yêu cầu lại.
 - **Session hết hạn:** Tự redirect về trang đăng nhập, bảo toàn URL trước đó để redirect sau khi login lại.
 
@@ -155,13 +155,13 @@ Hệ thống này là cầu nối giữa **ES Kitchen (System Admin / E03)** và
 
 ### Delivery Staff
 - **Tải ảnh giấy phép sai định dạng / quá kích thước:** Hiển thị lỗi validation trước khi submit.
-- **Xóa nhân viên đang được phân công cho đơn chưa hoàn tất:** **TODO (BA):** Có cần block xóa hay cho xóa rồi cảnh báo? Cần business rule rõ ràng.
+- **Xóa nhân viên đang được phân công cho đơn chưa hoàn tất:** **Block xóa** — hiển thị error message: _"Không thể xóa nhân viên đang phân công đơn"_.
 - **Tìm kiếm không có kết quả:** Hiển thị empty state.
 
 ### Change Password
 - **Mật khẩu mới không khớp xác nhận:** Hiển thị lỗi inline, không submit.
 - **Mật khẩu hiện tại sai:** Hiển thị lỗi, không cập nhật.
-- **TODO (BA):** Có rule về độ phức tạp mật khẩu (độ dài tối thiểu, ký tự đặc biệt) không?
+- **Password complexity [Confirmed]:** Mật khẩu phải bao gồm cả chữ cái và số, tối thiểu **8 ký tự**.
 
 ---
 
@@ -199,13 +199,15 @@ Hệ thống này là cầu nối giữa **ES Kitchen (System Admin / E03)** và
 - [ ] AC5.3: Đăng ký nhân viên mới với đầy đủ thông tin và ảnh giấy phép → lưu thành công → xuất hiện trong danh sách.
 - [ ] AC5.4: Ảnh giấy phép không đúng định dạng / quá kích thước → hiển thị lỗi validation, không lưu.
 - [ ] AC5.5: Chỉnh sửa thông tin nhân viên → lưu thành công → dữ liệu cập nhật đúng.
-- [ ] AC5.6: Xóa nhân viên → xác nhận → nhân viên không còn xuất hiện trong danh sách thường (vẫn tìm được khi check "đã xóa").
+- [ ] AC5.6: Xóa nhân viên đang phân công đơn → hệ thống **block và hiển thị error** "Không thể xóa nhân viên đang phân công đơn".
+- [ ] AC5.6b: Xóa nhân viên không còn phân công đơn → xác nhận → nhân viên không còn trong danh sách thường (vẫn tìm được khi check "đã xóa").
 - [ ] AC5.7: Nhân viên đã xóa không xuất hiện trong dropdown phân công đơn hàng.
 
 ### F06 — Change Password
 - [ ] AC6.1: Thay đổi mật khẩu thành công → đăng nhập được bằng mật khẩu mới.
 - [ ] AC6.2: Nhập mật khẩu hiện tại sai → hiển thị lỗi, không cập nhật.
 - [ ] AC6.3: Mật khẩu mới và xác nhận không khớp → hiển thị lỗi inline, không submit.
+- [ ] AC6.4: Mật khẩu không đáp ứng yêu cầu (dưới 8 ký tự hoặc không có cả chữ lẫn số) → hiển thị lỗi validation, không submit.
 
 ---
 
@@ -226,7 +228,7 @@ Hệ thống này là cầu nối giữa **ES Kitchen (System Admin / E03)** và
 - Tạo/cấp tài khoản E05 (do E03 thực hiện, không có UI trên portal này).
 - Xem báo cáo doanh thu hay thông tin kinh doanh của ES Kitchen.
 - Đối tác không có quyền tạo/sửa đơn hàng — chỉ xem và phân công.
-- Push notification real-time (chưa xác nhận có yêu cầu — **TODO (BA):** Có cần thông báo đẩy khi có đơn mới không?).
+- Push notification: **không có push notification khi có đơn mới** (đã xác nhận không cần).
 
 ---
 

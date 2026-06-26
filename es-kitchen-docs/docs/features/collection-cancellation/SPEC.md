@@ -31,7 +31,7 @@ Tài xế xem lại toàn bộ báo cáo cuối ca trước khi xác nhận gử
 
 **Phạm vi repo:** Cross-repo (3 repos FE + 1 BE) — cần Contract Lock trước Phase 3.
 
-**TODO (BA):** Driver App (E06) là React Web App (không phải native) — xác nhận luồng nhập liệu có dùng camera upload cho biên lai đỗ xe không, hay chỉ chọn file từ gallery?
+> **Xác nhận:** E06 là React Web App — upload biên lai đỗ xe hỗ trợ **cả camera lẫn file picker từ gallery**.
 
 ---
 
@@ -107,14 +107,14 @@ Tài xế xem lại toàn bộ báo cáo cuối ca trước khi xác nhận gử
 
 - Tài xế nhập số tiền thực tế khác với số tiền dự kiến.
 - Hệ thống hiển thị cảnh báo rõ ràng kèm số tiền chênh lệch (dương/âm).
-- Tài xế vẫn có thể xác nhận và tiếp tục — không bị block.
-- **TODO (BA):** Chênh lệch có cần tài xế nhập lý do không? Có cần gửi alert tới Outsource Admin hoặc System Admin real-time không?
+- Tài xế vẫn có thể xác nhận và tiếp tục — **không bị block, không cần nhập lý do bắt buộc**.
+- Hệ thống **tự động gửi real-time alert** tới Outsource Admin (E05) và System Admin (E03) khi có chênh lệch.
 
 ### AF-2: Không có hàng hủy trong ca
 
 - Tài xế không nhập dữ liệu hàng hủy (bỏ qua màn hình hoặc nhập số lượng = 0).
 - Hệ thống vẫn cho phép submit báo cáo cuối ca.
-- **TODO (BA):** Disposal Report có phải là bắt buộc điền hay optional per ca giao hàng?
+- **Disposal Report là optional** per ca giao hàng — không bắt buộc điền.
 
 ### AF-3: Không có phí đỗ xe
 
@@ -132,7 +132,7 @@ Tài xế xem lại toàn bộ báo cáo cuối ca trước khi xác nhận gử
 - System Admin xóa một báo cáo hàng hủy.
 - Hệ thống yêu cầu xác nhận trước khi xóa.
 - Dữ liệu liên quan (số tiền, trạng thái thanh toán) bị xóa theo.
-- **TODO (BA):** Có cho phép xóa báo cáo đã ở trạng thái "Đã thanh toán" không? Có cần audit log không?
+- **Không cần audit log** khi xóa — kể cả báo cáo ở trạng thái "Đã thanh toán".
 
 ### AF-6: Trạng thái "Chưa nhập hàng hủy" (E03)
 
@@ -141,8 +141,8 @@ Tài xế xem lại toàn bộ báo cáo cuối ca trước khi xác nhận gử
 
 ### AF-7: Sản phẩm nhiệt độ thường — nhập từng lô
 
-- Khi báo cáo hàng hủy loại "nhiệt độ thường", tài xế phải nhập hạn sử dụng + số lượng cho từng lô riêng biệt.
-- **TODO (BA):** Một ca giao có thể có nhiều lô cùng mặt hàng nhưng hết hạn khác ngày không? Giao diện có hỗ trợ thêm nhiều dòng không?
+- Khi báo cáo hàng hủy loại "nhiệt độ thường", tài xế nhập hạn sử dụng + số lượng cho lô.
+- **Không cần** hỗ trợ nhiều dòng cho cùng mặt hàng với HSD khác nhau — một dòng duy nhất per mặt hàng là đủ.
 
 ---
 
@@ -164,7 +164,7 @@ Tài xế xem lại toàn bộ báo cáo cuối ca trước khi xác nhận gử
 
 ### AC-3: Tài xế nhập phí đỗ xe (HP-3)
 
-- [ ] Tài xế có thể upload ảnh biên lai (định dạng: JPG/PNG, tối đa TODO MB).
+- [ ] Tài xế có thể upload ảnh biên lai bằng **camera** hoặc **file picker từ gallery** (định dạng: JPG/PNG).
 - [ ] Nhập số tiền phí đỗ xe.
 - [ ] Cả hai trường (ảnh + số tiền) không bắt buộc — có thể bỏ qua.
 
@@ -172,8 +172,8 @@ Tài xế xem lại toàn bộ báo cáo cuối ca trước khi xác nhận gử
 
 - [ ] Màn hình Final Confirmation hiển thị đầy đủ: thu tiền, hàng hủy, phí đỗ xe.
 - [ ] Nút "Edit" hoạt động đúng — quay về màn hình tương ứng.
-- [ ] Sau khi nhấn "Confirm and Submit", dữ liệu được gửi lên server và không thể sửa lại từ phía tài xế.
-- [ ] **TODO (BA):** Sau khi submit, có cho phép tài xế xem lại lịch sử báo cáo đã gửi không?
+- [ ] Sau khi nhấn "Confirm and Submit", dữ liệu được gửi lên server.
+- [ ] Tài xế có thể **xem lại và sửa** báo cáo trong vòng **7 ngày** kể từ ngày hoàn thành đơn hàng.
 
 ### AC-5: System Admin — Collection Management (HP-5)
 
@@ -208,8 +208,9 @@ Tài xế xem lại toàn bộ báo cáo cuối ca trước khi xác nhận gử
 - Tích hợp thanh toán điện tử cho khoản thu tiền mặt (thuộc domain `[THANH TOÁN]`).
 - Hoàn tiền hàng hủy cho người dùng cuối (E01) — nếu có, thuộc domain `[THANH TOÁN]`.
 - Quản lý lộ trình tài xế (thuộc domain `[GIAO HÀNG] App Tài xế`).
-- Push notification / real-time alert khi tài xế submit báo cáo — **TODO (BA):** xác nhận có cần push notification tới System Admin hoặc Outsource Admin không?
-- Export CSV dữ liệu thu tiền / hàng hủy — **TODO (BA):** có yêu cầu export không?
+- **Push notification** khi tài xế submit báo cáo — **không cần** (đã xác nhận).
+- **Export CSV** dữ liệu thu tiền / hàng hủy — **không cần** (đã xác nhận).
+- Audit log khi xóa báo cáo hàng hủy — **không cần** (đã xác nhận).
 
 ---
 

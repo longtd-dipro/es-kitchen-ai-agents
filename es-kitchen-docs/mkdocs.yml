@@ -176,12 +176,20 @@ nav:
     - Web Supplier Design: features/supplier-authentication/es-kitchen-web-supplier/DESIGN.md
   - Supplier Ordering:
     - Specification: features/supplier-ordering/SPEC.md
+  - Supplier Profile:
+    - Specification: features/supplier-profile/SPEC.md
+    - Plan: features/supplier-profile/PLAN.md
+    - API Design: features/supplier-profile/es-kitchen-api/DESIGN.md
+    - Web Supplier Design: features/supplier-profile/es-kitchen-web-supplier/DESIGN.md
+    - API Tasks:
+      - Task 2-1: features/supplier-profile/es-kitchen-api/tasks/task-2-1.md
+      - Task 4-1: features/supplier-profile/es-kitchen-api/tasks/task-4-1.md
+    - Web Supplier Tasks:
+      - Task 3-1: features/supplier-profile/es-kitchen-web-supplier/tasks/task-3-1.md
   - Survey Management:
     - Specification: features/survey-management/SPEC.md
   - System Other (Settings & Common):
     - Specification: features/system-other/SPEC.md
-  - Task Management:
-    - Specification: features/task-management/SPEC.md
   - User Binding:
     - Specification: features/user-binding/SPEC.md
   - User Engagement:

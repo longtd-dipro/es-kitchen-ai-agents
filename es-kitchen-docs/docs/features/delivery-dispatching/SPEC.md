@@ -11,6 +11,20 @@
 
 Hệ thống quản lý toàn bộ vòng đời lịch giao hàng: từ thiết lập chu kỳ picking, điều phối đối tác vận chuyển, quản lý tài xế, đến tích hợp kho bãi (Thomas) và hãng vận chuyển (Yamato YBM). Company Admin xem lịch dự kiến hoặc gửi yêu cầu đổi ngày đột xuất. System Admin điều phối toàn bộ từ phân chia chu kỳ, phân công tài xế, đến theo dõi trạng thái giao hàng thực tế.
 
+**Luồng tổng quát (Business Flow v2):**
+```
+es_admin hoàn tất lịch trình
+  → Xuất lịch trình gửi Kho Thomas (CSV)
+  → Kho Thomas đóng gói theo từng company_order theo ngày
+  → Kho phát hành mã vận đơn (tracking code)
+  → Gửi lại hệ thống Admin: cập nhật mã vận đơn + xác nhận "sẵn sàng vận chuyển"
+  → Carrier đến kho lấy hàng → Carrier assign driver → Driver thực hiện giao
+```
+
+**Phân chia lô hàng:** 1 `company_order` có thể chia thành **nhiều lô ship** tùy theo PLAN (ví dụ PLAN giao 2 ngày → `company_order_1` + `company_order_2`), mỗi lô hiển thị riêng trên lịch.
+
+**Lưu ý:** `company_order_material` (vật tư: bát, đũa, muỗng…) **không đi theo luồng lịch trình này** — es_admin tự liên hệ nhà cung cấp vật tư để giao trực tiếp.
+
 ---
 
 ## Actors & Preconditions
@@ -110,8 +124,9 @@ Hệ thống quản lý toàn bộ vòng đời lịch giao hàng: từ thiết 
 3. Admin lọc theo Gói (Plan), Khách hàng, Ưu tiên giao
 
 **5.2 Tự động lấy ngày nghỉ lễ Nhật (Auto Retrieve Japan Public Holidays)**
-1. Hệ thống tự động tính toán và đánh dấu các ngày lễ Nhật trên lịch
+1. Hệ thống tự động tính toán và đánh dấu các ngày lễ Nhật trên lịch — hiển thị **màu đỏ** để tránh xếp giao hàng vào ngày đó
 2. Các ngày lễ được block mặc định — không tạo lịch picking vào ngày này
+3. System Admin cũng có thể bổ sung ngày lễ thủ công vào danh sách (sự kiện đặc biệt không có trong lịch cố định)
 
 **5.3 Đăng ký thủ công ngày không picking (Manually Register Picking Unavailable Days)**
 1. Admin chọn ngày trên lịch và đánh dấu là "Không picking"
@@ -161,10 +176,13 @@ Hệ thống quản lý toàn bộ vòng đời lịch giao hàng: từ thiết 
 **7.1 Xuất chỉ thị giao hàng cho Thomas (Shipping Instructions for Thomas)**
 1. System Admin chọn các bản ghi xuất hàng cần gửi
 2. Hệ thống tạo file CSV đúng format Thomas và cho phép download/gửi
+3. Kho Thomas nhận → kiểm kê → soạn hàng theo từng `company_order` theo ngày → đóng gói
 
-**7.2 Import kết quả từ Thomas (Thomas Integration - Shipping Record)**
-1. Admin tải lên file CSV báo cáo thực tế từ Thomas
-2. Hệ thống validate, import và cập nhật trạng thái giao hàng tương ứng
+**7.2 Import kết quả từ Thomas — Mã vận đơn (Thomas Integration - Shipping Record)**
+1. Kho Thomas phát hành mã vận đơn (tracking code) sau khi đóng gói xong
+2. Admin nhận xác nhận từ Thomas: cập nhật mã vận đơn + trạng thái "sẵn sàng vận chuyển"
+3. Admin tải lên file CSV báo cáo từ Thomas hoặc nhận qua API
+4. Hệ thống validate, import và cập nhật trạng thái giao hàng + mã vận đơn tương ứng
 
 ---
 
@@ -370,11 +388,12 @@ Hệ thống quản lý toàn bộ vòng đời lịch giao hàng: từ thiết 
 
 - Tính toán cước vận chuyển, thanh toán với đối tác vận chuyển
 - Sagawa API (domain này chỉ scope Yamato YBM — Sagawa thuộc feature khác nếu có)
-- Giao diện Driver App (E06) — chi tiết UX Driver xem SPEC riêng `delivery-driver-app`
-- Giao diện Outsource Admin (E05) — xem SPEC riêng `delivery-outsource-web`
+- Giao diện Driver App (E06) — chi tiết UX Driver xem SPEC riêng `delivery-driver`
+- Giao diện Carrier/Outsource Admin (E05) — xem SPEC riêng `delivery-partner`
 - Real-time tracking map cho Company Admin hoặc End User (E01)
 - Quản lý tồn kho — thuộc domain `[TỒN KHO & THIẾT BỊ]`
 - Thu tiền mặt và hàng hủy chi tiết — thuộc domain `[THU TIỀN & HÀNG HỦY]`
+- `company_order_material` (vật tư: bát, đũa, muỗng…) — **không đi theo luồng lịch trình này**; es_admin tự liên hệ nhà cung cấp riêng để giao trực tiếp
 - Story "List of Recommended Delivery Companies" (Priority 4) — **TODO (BA):** Xác nhận có trong Phase 2 scope không
 
 ---
