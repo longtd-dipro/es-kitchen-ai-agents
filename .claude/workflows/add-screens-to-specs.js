@@ -30,7 +30,6 @@ const SPEC_FILES = [
   'es-kitchen-docs/docs/features/supplier-ordering/SPEC.md',
   'es-kitchen-docs/docs/features/survey-management/SPEC.md',
   'es-kitchen-docs/docs/features/system-other/SPEC.md',
-  'es-kitchen-docs/docs/features/task-management/SPEC.md',
   'es-kitchen-docs/docs/features/user-binding/SPEC.md',
   'es-kitchen-docs/docs/features/user-engagement/SPEC.md',
   'es-kitchen-docs/docs/features/version-management/SPEC.md',
