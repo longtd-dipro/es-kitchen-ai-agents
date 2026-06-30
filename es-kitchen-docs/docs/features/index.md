@@ -24,7 +24,6 @@
 | Payment (Thanh toán) | Thanh toán elepay/Alipay/WeChat Pay, hóa đơn hàng tháng, trợ giá, refund. | [http://wiki.es-kitchen.co.jp/features/payment/SPEC/](http://wiki.es-kitchen.co.jp/features/payment/SPEC/) |
 | Supplier Ordering (Đặt hàng NCC) | Tạo đơn đặt hàng nhà cung cấp, NCC (E04) phản hồi ngày xuất, đơn tạm tính đầu tháng. | [http://wiki.es-kitchen.co.jp/features/supplier-ordering/SPEC/](http://wiki.es-kitchen.co.jp/features/supplier-ordering/SPEC/) |
 | System Other (Cài đặt & Common) | Notification, maintenance mode, version management, dashboard, HubSpot sync, email/push trigger. | [http://wiki.es-kitchen.co.jp/features/system-other/SPEC/](http://wiki.es-kitchen.co.jp/features/system-other/SPEC/) |
-| Task Management | Quản lý task nội bộ System Admin, Kanban, auto-create theo trigger, Slack notification. | [http://wiki.es-kitchen.co.jp/features/task-management/SPEC/](http://wiki.es-kitchen.co.jp/features/task-management/SPEC/) |
 | User Binding | End User (E01) quét QR liên kết tài khoản với công ty, giới hạn mua/ngày, trợ giá. | [http://wiki.es-kitchen.co.jp/features/user-binding/SPEC/](http://wiki.es-kitchen.co.jp/features/user-binding/SPEC/) |
 | User Engagement | Tutorial, lọc allergen, rating sản phẩm/tài xế, survey, feedback form, recommendation. | [http://wiki.es-kitchen.co.jp/features/user-engagement/SPEC/](http://wiki.es-kitchen.co.jp/features/user-engagement/SPEC/) |
 

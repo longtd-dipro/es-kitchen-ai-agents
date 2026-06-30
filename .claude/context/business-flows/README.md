@@ -65,7 +65,6 @@ Mỗi file là 1 nghiệp vụ trong `domains/` — header table: `PHASE · ID �
 
 | Domain | File | Target (actors) | Backlog | Liên quan repos |
 |---|---|---|---|---|
-| Task Management — Quản lý công việc (Nội bộ) | [`domains/task-management.md`](./domains/task-management.md) | System Admin & các phòng ban | ESKITCHEN-1248 | `es-kitchen-api` · E03 |
 | System & Other — Cấu hình & Tích hợp | [`domains/system-other.md`](./domains/system-other.md) | System Admin | ESKITCHEN-1249 | `es-kitchen-api` · E03 (Hubspot, Thomas, Yamato/Sagawa) |
 
 ---
