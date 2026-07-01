@@ -5,15 +5,19 @@
 
 ---
 
-## Kiến trúc 3 module
+## Kiến trúc module
 
 | Module | Prefix | Guard | Client |
 |---|---|---|---|
 | `admin` | `/admin/...` | `AdminGuard` (JWT admin) | `es-kitchen-web-admin` (E03) |
-| `admin-company` | `/admin-company/...` | `AdminCompanyGuard` (JWT company admin) | `es-kitchen-web-company` (E02) |
-| `user` | `user/...` hoặc `/auth/user/...` | `JwtAuthGuard` (JWT user) | `es-kitchen-payment-app` (E01) |
+| `admin-company` | `/company-admin/...` | `AdminCompanyGuard` (JWT company admin) | `es-kitchen-web-company` (E02) |
+| `user` | `/...` hoặc `/auth/user/...` | `JwtAuthGuard` (JWT user) | `es-kitchen-payment-app` (E01) |
+| `supplier` | `/supplier/...` | `SupplierGuard` (JWT supplier) | `es-kitchen-web-supplier` (E04) |
+| `driver` | `/driver/...` | `DriverGuard` (JWT driver) | `es-kitchen-webapp-driver` (E06) |
+| `deliverer` | `/deliverer/...` | `DelivererGuard` (JWT deliverer) | `es-kitchen-web-outsource-web-private` (E05) |
+| `ai-pro` | `/ai-pro/...` | `AiProApiKeyGuard` (`x-api-key` header) | Internal AI integration |
 
-> ⚠️ `admin` và `admin-company` dùng prefix khác nhau hoàn toàn — không copy endpoint giữa hai module.
+> ⚠️ Prefix của `admin-company` là `/company-admin/...` (không phải `/admin-company/...`). Xác nhận trong `app.module.ts` `RouterModule.register`.
 
 ---
 
@@ -37,7 +41,7 @@
 | POST | `/admin/companies` | Tạo company mới |
 | POST | `/admin/companies/bulk-issue-accounts` | Phát hành tài khoản hàng loạt |
 | POST | `/admin/companies/export-qr` | Export QR code cho company |
-| GET | `/admin/companies/import` | (CSV import flow — xem bên dưới) |
+| GET | `/admin/companies/import` | (CSV import flow) |
 | POST | `/admin/companies/import` | Import company từ CSV |
 | GET | `/admin/companies/:id/basic-info` | Thông tin cơ bản company |
 | PATCH | `/admin/companies/:id/basic-info` | Cập nhật thông tin cơ bản |
@@ -65,12 +69,14 @@
 | Method | Path | Mô tả |
 |---|---|---|
 | GET | `/admin/accounts/me` | Profile admin đang đăng nhập |
-| GET | `/admin/accounts` | Danh sách operation accounts |
-| POST | `/admin/accounts` | Tạo operation account mới |
-| GET | `/admin/accounts/:id` | Chi tiết account |
-| PATCH | `/admin/accounts/:id` | Cập nhật account |
-| DELETE | `/admin/accounts/:id` | Xóa account (soft delete) |
-| GET | `/admin/accounts/:userId/purchase-history` | Lịch sử mua hàng của user |
+| GET | `/admin/accounts/me/permissions` | Danh sách permissions của admin hiện tại (flatPermissions + groups) |
+| GET | `/admin/accounts` | Danh sách accounts (phân trang, filter theo tab ADMIN/COMPANY/USER) |
+| POST | `/admin/accounts` | Tạo admin account mới (Cognito + email gửi credentials) |
+| GET | `/admin/accounts/:id` | Chi tiết account (cần query param `?tab=`) |
+| PATCH | `/admin/accounts/:id` | Cập nhật admin account (sync Cognito) |
+| PATCH | `/admin/accounts/user/:id` | Cập nhật user account (sync Cognito) |
+| DELETE | `/admin/accounts/:id` | Xóa account soft delete (cần `?tab=`) |
+| GET | `/admin/accounts/user/:userId/purchase-history` | Lịch sử mua hàng của user |
 
 ### Products `/admin/products`
 
@@ -92,6 +98,28 @@
 | GET | `/admin/orders/:orderNumber` | Chi tiết đơn hàng |
 | POST | `/admin/orders/:id/refund` | Hoàn tiền đơn hàng |
 
+### Company Monthly Orders `/admin/company-orders`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| POST | `/admin/company-orders/generate` | Trigger thủ công sinh đơn tháng cho mọi company ACTIVE (idempotent) |
+| GET | `/admin/company-orders` | Danh sách đơn tháng của các company (phân trang, filter) |
+| GET | `/admin/company-orders/export-csv` | Export danh sách đơn tháng theo filter (CSV) |
+| GET | `/admin/company-orders/:id` | Chi tiết đơn tháng + danh sách món |
+| PUT | `/admin/company-orders/:id/items` | Admin chỉnh số lượng từng món theo từng lần giao |
+| PATCH | `/admin/company-orders/:id/status` | Admin cập nhật trạng thái đơn tháng |
+| POST | `/admin/company-orders/:id/memo` | Admin cập nhật memo/notes nội bộ cho đơn tháng |
+
+### Materials & Material Orders
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/materials` | Danh sách nguyên liệu (master) |
+| GET | `/admin/material-orders` | Danh sách material orders (phân trang, filter) |
+| GET | `/admin/material-orders/:id` | Chi tiết material order |
+| PUT | `/admin/material-orders/:id` | Admin cập nhật items của material order |
+| PATCH | `/admin/material-orders/:id/status` | Admin cập nhật trạng thái material order |
+
 ### Sales Analytics `/admin/sales-analytics`
 
 | Method | Path | Mô tả |
@@ -109,6 +137,13 @@
 | GET | `/admin/dashboard/favorites-vs-sales` | So sánh yêu thích vs doanh thu |
 | GET | `/admin/dashboard/sales-by-payment-method` | Doanh thu theo phương thức thanh toán |
 
+### Reports `/admin/reports`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/reports/usage` | Báo cáo sử dụng menu theo tháng |
+| GET | `/admin/reports/product-ranking` | Xếp hạng sản phẩm theo đơn đặt |
+
 ### Notifications `/admin/notifications`
 
 | Method | Path | Mô tả |
@@ -120,10 +155,10 @@
 
 | Method | Path | Mô tả |
 |---|---|---|
-| GET | `/admin/categories` | Danh sách categories |
+| GET | `/admin/categories` | Danh sách categories (sorted theo sortBy) |
 | POST | `/admin/categories` | Tạo category |
 | PATCH | `/admin/categories/:id` | Cập nhật category |
-| DELETE | `/admin/categories/:id` | Xóa category |
+| DELETE | `/admin/categories/:id` | Xóa category (không xóa được "全て") |
 
 ### Payment Methods `/admin/payment-methods`
 
@@ -150,50 +185,190 @@
 | GET | `/admin/favorites-ranking` | Ranking sản phẩm theo lượt yêu thích (phân trang) |
 | GET | `/admin/favorites-ranking/export` | Export CSV ranking (toàn bộ, không phân trang) |
 
+### App Versions `/admin/app-versions`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/app-versions` | Danh sách app versions (phân trang, filter) |
+| POST | `/admin/app-versions` | Tạo app version mới |
+| PATCH | `/admin/app-versions/:id` | Cập nhật app version |
+| DELETE | `/admin/app-versions/:id` | Xóa app version (soft delete) |
+
+### Roles `/admin/roles`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/roles` | Danh sách roles (phân trang) |
+| GET | `/admin/roles/:id` | Chi tiết role kèm permissions |
+| POST | `/admin/roles` | Tạo role mới (có thể gắn permissions inline) |
+| PATCH | `/admin/roles/:id` | Cập nhật role (có thể thay permissions inline) |
+| DELETE | `/admin/roles/:id` | Xóa role |
+| PUT | `/admin/roles/:id/permissions` | Gán permissions vào role (thay toàn bộ) |
+
+### Permissions `/admin/permissions`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/permissions/matrix` | Permission matrix nhóm theo business domain (dùng để render UI) |
+
+### IP Whitelist `/admin/ip-whitelists`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/ip-whitelists` | Danh sách IPs trong whitelist |
+| POST | `/admin/ip-whitelists` | Thêm IP mới vào whitelist |
+| DELETE | `/admin/ip-whitelists/:id` | Xóa IP khỏi whitelist |
+
+### Maintain Settings `/admin/maintain-settings`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/maintain-settings` | Lấy cấu hình maintain cho tất cả platforms |
+| GET | `/admin/maintain-settings/history` | Lịch sử thay đổi cấu hình maintain (phân trang) |
+| PATCH | `/admin/maintain-settings/toggle` | Bật/tắt maintain mode cho platform |
+| PATCH | `/admin/maintain-settings/edit` | Sửa title/content popup maintain |
+
+### Order Deadline Configs `/admin/order-deadline-configs`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/order-deadline-configs` | Danh sách toàn bộ cấu hình deadline đặt hàng |
+| POST | `/admin/order-deadline-configs` | Tạo cấu hình deadline mới |
+| GET | `/admin/order-deadline-configs/effective` | Lấy deadline hiệu lực cho tháng/năm cụ thể |
+
+### Supplier Master `/admin/supplier-masters`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/supplier-masters` | Danh sách supplier masters (phân trang, filter) |
+| GET | `/admin/supplier-masters/export` | Export CSV danh sách suppliers (16 cột, UTF-8 BOM) |
+| POST | `/admin/supplier-masters` | Tạo supplier master mới (status UNREGISTERED) |
+| GET | `/admin/supplier-masters/:id` | Chi tiết supplier master |
+| PUT | `/admin/supplier-masters/:id` | Cập nhật supplier master (thay toàn bộ addresses/contacts/products) |
+| GET | `/admin/supplier-masters/:id/history` | Lịch sử thay đổi supplier master |
+| DELETE | `/admin/supplier-masters/:id` | Xóa supplier master (soft delete, chặn 409 nếu có supplier_orders) |
+| POST | `/admin/supplier-masters/accounts/issue` | Phát hành (hoặc reset) tài khoản Cognito cho nhiều suppliers |
+
+### Supplier Accounts — Deprecated `/admin/accounts/suppliers`
+
+> ⚠️ DEPRECATED — sẽ bỏ sau 1 sprint. Dùng `/admin/supplier-masters` thay thế.
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/accounts/suppliers` | [DEPRECATED] Danh sách supplier accounts |
+| GET | `/admin/accounts/suppliers/:id` | [DEPRECATED] Chi tiết supplier account |
+| POST | `/admin/accounts/suppliers` | [DEPRECATED] Tạo supplier account |
+| PATCH | `/admin/accounts/suppliers/:id` | [DEPRECATED] Cập nhật supplier account |
+| DELETE | `/admin/accounts/suppliers/:id` | [DEPRECATED] Xóa supplier account |
+
+### Drivers `/admin/drivers`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/drivers` | Danh sách driver accounts (phân trang, filter) |
+| GET | `/admin/drivers/:id` | Chi tiết driver account |
+| POST | `/admin/drivers` | Tạo driver account (Cognito + email credentials) |
+| PATCH | `/admin/drivers/:id` | Cập nhật driver account (sync Cognito) |
+| DELETE | `/admin/drivers/:id` | Xóa driver account (soft delete, Cognito revoked) |
+
+### Deliverers `/admin/deliverers`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/admin/deliverers` | Danh sách deliverer accounts (phân trang, filter) |
+| GET | `/admin/deliverers/:id` | Chi tiết deliverer account |
+| POST | `/admin/deliverers` | Tạo deliverer account mới |
+| PATCH | `/admin/deliverers/:id` | Cập nhật deliverer account |
+| DELETE | `/admin/deliverers/:id` | Xóa deliverer account (soft delete) |
+
+### File Upload `/admin/files`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| POST | `/admin/files/presigned-upload-url` | Tạo presigned PUT URL cho client upload trực tiếp lên S3 |
+| POST | `/admin/files/presigned-upload-urls` | Tạo nhiều presigned PUT URLs cùng lúc (tối đa 10 files) |
+
 ---
 
 ## Module: Admin-Company (E02 — Company Admin)
 
-### Auth `/admin-company/auth`
+> Prefix thực tế: `/company-admin/...` (xác nhận trong `app.module.ts`).
+
+### Auth `/company-admin/auth`
 
 | Method | Path | Mô tả |
 |---|---|---|
-| POST | `/admin-company/auth/login` | Login company admin |
-| POST | `/admin-company/auth/forgot-password/request` | Gửi OTP reset password |
-| POST | `/admin-company/auth/forgot-password/verify-otp` | Xác thực OTP |
-| POST | `/admin-company/auth/forgot-password/confirm` | Đặt lại mật khẩu |
+| POST | `/company-admin/auth/login` | Login company admin |
+| POST | `/company-admin/auth/forgot-password/request` | Gửi OTP reset password |
+| POST | `/company-admin/auth/forgot-password/verify-otp` | Xác thực OTP |
+| POST | `/company-admin/auth/forgot-password/confirm` | Đặt lại mật khẩu |
 
-### Users `/admin-company/users`
-
-| Method | Path | Mô tả |
-|---|---|---|
-| GET | `/admin-company/users/linked` | Danh sách users đã link với company |
-| GET | `/admin-company/users/linked/:userCode` | Chi tiết user theo userCode |
-| DELETE | `/admin-company/users/linked/:userCode` | Unlink user khỏi company |
-| POST | `/admin-company/users/linked/:userCode/restrict` | Hạn chế user |
-| POST | `/admin-company/users/linked/:userCode/unrestrict` | Gỡ hạn chế user |
-| GET | `/admin-company/users/linked/:userCode/purchase-history` | Lịch sử mua hàng của user |
-
-### Orders `/admin-company/orders`
+### Users `/company-admin/users`
 
 | Method | Path | Mô tả |
 |---|---|---|
-| GET | `/admin-company/orders` | Danh sách đơn hàng của company |
-| GET | `/admin-company/orders/export` | Export CSV đơn hàng |
-| GET | `/admin-company/orders/summary` | Tổng hợp doanh thu |
-| GET | `/admin-company/orders/:orderNumber` | Chi tiết đơn hàng |
+| GET | `/company-admin/users/linked` | Danh sách users đã link với company |
+| GET | `/company-admin/users/linked/:userCode` | Chi tiết user theo userCode |
+| DELETE | `/company-admin/users/linked/:userCode` | Unlink user khỏi company |
+| POST | `/company-admin/users/linked/:userCode/restrict` | Hạn chế user |
+| POST | `/company-admin/users/linked/:userCode/unrestrict` | Gỡ hạn chế user |
+| GET | `/company-admin/users/linked/:userCode/purchase-history` | Lịch sử mua hàng của user |
 
-### Company `/admin-company/company`
-
-| Method | Path | Mô tả |
-|---|---|---|
-| GET | `/admin-company/company/me` | Thông tin company đang quản lý |
-
-### Payment Methods `/admin-company/payment-methods`
+### Orders `/company-admin/orders`
 
 | Method | Path | Mô tả |
 |---|---|---|
-| GET | `/admin-company/payment-methods` | Danh sách phương thức thanh toán |
+| GET | `/company-admin/orders` | Danh sách đơn hàng lẻ (E01) của company |
+| GET | `/company-admin/orders/export` | Export CSV đơn hàng lẻ |
+| GET | `/company-admin/orders/summary` | Tổng hợp doanh thu |
+| GET | `/company-admin/orders/:orderNumber` | Chi tiết đơn hàng lẻ |
+
+### Company Monthly Orders `/company-admin/company-orders`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/company-admin/company-orders` | Danh sách đơn tháng của company (phân trang, filter) |
+| POST | `/company-admin/company-orders` | Tạo đơn tháng mới |
+| GET | `/company-admin/company-orders/:id` | Chi tiết đơn tháng + items |
+| PUT | `/company-admin/company-orders/:id/items` | Cập nhật số lượng items |
+| POST | `/company-admin/company-orders/:id/submit` | Submit đơn tháng |
+| POST | `/company-admin/company-orders/:id/import-csv` | Import items từ CSV (multipart/form-data, max 10MB) |
+
+### Materials `/company-admin/materials` & `/company-admin/material-orders`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/company-admin/materials` | Danh sách nguyên liệu (master) |
+| GET | `/company-admin/material-orders` | Danh sách material orders của company |
+| POST | `/company-admin/material-orders` | Tạo hoặc thay thế material order cho tháng |
+| GET | `/company-admin/material-orders/:id` | Chi tiết material order |
+| PUT | `/company-admin/material-orders/:id` | Cập nhật items của material order |
+| POST | `/company-admin/material-orders/:id/submit` | Submit material order |
+
+### Monthly Menus `/company-admin/monthly-menus`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/company-admin/monthly-menus/current` | Menu hiện tại và tháng kế tiếp (theo query tháng/năm) |
+
+### Reports `/company-admin/reports`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/company-admin/reports/usage` | Báo cáo sử dụng menu theo tháng (scoped by company) |
+| GET | `/company-admin/reports/product-ranking` | Xếp hạng sản phẩm theo đơn đặt (scoped by company) |
+
+### Company `/company-admin/company`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/company-admin/company/me` | Thông tin company đang quản lý |
+
+### Payment Methods `/company-admin/payment-methods`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/company-admin/payment-methods` | Danh sách phương thức thanh toán |
 
 ---
 
@@ -321,6 +496,13 @@
 |---|---|---|
 | GET | `/app/version` | Kiểm tra phiên bản app (force/recommended update) |
 
+### Public Endpoints — không cần auth
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/public/download` | 302 redirect đến App Store / Play Store theo `User-Agent` header |
+| GET | `/public/maintain/status` | Kiểm tra trạng thái maintain cho mobile splash screen (`?platform=`) |
+
 ### Contact `/contact` — Optional auth
 
 | Method | Path | Guard | Mô tả |
@@ -344,13 +526,112 @@
 
 ---
 
+## Module: Supplier (E04 — Supplier Web)
+
+### Auth `/supplier/auth`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| POST | `/supplier/auth/login` | Login supplier |
+| POST | `/supplier/auth/refresh` | Refresh access token bằng refresh token |
+| POST | `/supplier/auth/logout` | Logout (cần Bearer token) |
+| POST | `/supplier/auth/forgot-password/request` | Gửi OTP reset password |
+| POST | `/supplier/auth/forgot-password/verify-otp` | Xác thực OTP |
+| POST | `/supplier/auth/forgot-password/reset-password` | Đặt lại mật khẩu (trả về JWT mới) |
+
+### Account `/supplier/account`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/supplier/account/me` | Profile supplier đang đăng nhập |
+| POST | `/supplier/account/change-password` | Đổi mật khẩu supplier |
+
+### Orders `/supplier/orders`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/supplier/orders` | Danh sách supplier orders (phân trang, filter theo tháng/loại menu/status) |
+| GET | `/supplier/orders/:id/export` | Export 1 supplier order ra CSV (UTF-8 BOM, 14 cột) |
+| POST | `/supplier/orders/:id/provisional-order` | Đánh dấu các dòng detail là 仮発注 |
+| POST | `/supplier/orders/:id/official-order` | Đánh dấu các dòng detail là 本発注 |
+| GET | `/supplier/orders/:id` | Chi tiết supplier order + danh sách lines (phân trang, filter) |
+
+### Order Details `/supplier/order-details`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| PUT | `/supplier/order-details/:detailId` | Cập nhật 1 dòng detail (provisional/official qty, stock, expiry) |
+| DELETE | `/supplier/order-details/:detailId` | Soft delete 1 dòng detail |
+
+### Notifications `/supplier/notifications`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/supplier/notifications` | Danh sách notifications (cursor pagination, filter theo tab ALL/IMPORTANT/NEWS) |
+| PATCH | `/supplier/notifications/:id/read` | Đánh dấu 1 notification đã đọc |
+
+---
+
+## Module: Driver (E06 — Driver Web App)
+
+### Auth `/driver/auth`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| POST | `/driver/auth/login` | Login driver |
+| POST | `/driver/auth/refresh` | Refresh access token |
+| POST | `/driver/auth/logout` | Logout (cần Bearer token) |
+| POST | `/driver/auth/forgot-password/request` | Gửi OTP reset password |
+| POST | `/driver/auth/forgot-password/verify-otp` | Xác thực OTP |
+| POST | `/driver/auth/forgot-password/reset-password` | Đặt lại mật khẩu (trả về JWT mới) |
+
+### Account `/driver/account`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/driver/account/me` | Profile driver đang đăng nhập |
+| POST | `/driver/account/change-password` | Đổi mật khẩu driver |
+
+---
+
+## Module: Deliverer (E05 — Outsource/Internal Web)
+
+### Auth `/deliverer/auth`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| POST | `/deliverer/auth/login` | Login deliverer |
+| POST | `/deliverer/auth/refresh` | Refresh access token |
+| POST | `/deliverer/auth/logout` | Logout (cần Bearer token) |
+| POST | `/deliverer/auth/forgot-password/request` | Gửi OTP reset password |
+| POST | `/deliverer/auth/forgot-password/verify-otp` | Xác thực OTP |
+| POST | `/deliverer/auth/forgot-password/reset-password` | Đặt lại mật khẩu (trả về JWT mới) |
+
+### Account `/deliverer/account`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/deliverer/account/me` | Profile deliverer đang đăng nhập |
+| POST | `/deliverer/account/change-password` | Đổi mật khẩu deliverer |
+
+---
+
+## Module: AI-Pro (Internal Integration)
+
+| Method | Path | Guard | Mô tả |
+|---|---|---|---|
+| GET | `/ai-pro/dataset` | `AiProApiKeyGuard` (`x-api-key` header) | Lấy dataset menu recommendation. `?format=csv` → zip file; mặc định → JSON |
+
+---
+
 ## Quy tắc đặt endpoint
 
 - Admin endpoints: `GET /admin/<resource>s` → list, `GET /admin/<resource>s/:id` → detail
-- Không dùng `/admin/...` cho Company Admin — phải dùng `/admin-company/...`
-- User endpoints: prefix `user/` cho tất cả authenticated user routes
-- Auth routes nằm ngoài prefix module: `/auth/user/...`
+- Company Admin prefix: `/company-admin/...` (không phải `/admin-company/...`)
+- Supplier/Driver/Deliverer: prefix riêng, guard riêng, không dùng chung với admin
+- User endpoints: prefix không có module (mount trực tiếp ở root `""`) — ví dụ `/user/me`, `/auth/user/login`
 - Webhook routes không expose trong Swagger (`@ApiExcludeEndpoint()`)
+- Public routes (không auth): dùng `@Public()` decorator
 
 ---
 

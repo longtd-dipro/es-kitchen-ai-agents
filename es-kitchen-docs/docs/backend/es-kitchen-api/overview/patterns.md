@@ -30,32 +30,47 @@ export class AdminModule {}
 ## Controller Pattern
 
 ```typescript
-@Controller('admin/orders')
-@UseGuards(JwtAuthGuard)                    // Guard ở controller level
+// RouterModule.register trong app.module.ts đặt prefix thực tế
+// @Controller() chỉ đặt sub-path (không lặp lại prefix module)
+@Controller('orders')
+@UseGuards(AdminGuard)                      // Guard ở controller level
+@ApiTags('Admin / Orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get()
+  @ApiUnifiedResponse(OrderResponse, true)  // true = paginated (xem pattern bên dưới)
   async getOrders(@Query() query: GetOrdersRequest) {
     return this.orderService.getOrders(query);
   }
 
   @Get(':id')
+  @ApiUnifiedResponse(OrderResponse)
   async getOrderDetail(@Param('id') id: string) {
     return this.orderService.getOrderDetail(id);
   }
 
   @Post()
+  @ApiUnifiedResponse(OrderResponse)
   async createOrder(@Body() body: CreateOrderRequest) {
     return this.orderService.createOrder(body);
   }
 }
 ```
 
-**URL prefix theo module:**
-- E03 System Admin: `/admin/...`
-- E02 Company Admin: `/admin-company/...`
-- E01 User: `/user/...`
+**URL prefix thực tế (xác nhận từ RouterModule.register trong app.module.ts):**
+
+| Module | path trong RouterModule | Ví dụ URL thực tế |
+|---|---|---|
+| AdminModule | `'admin'` | `/admin/orders` |
+| AdminCompanyModule | `'company-admin'` | `/company-admin/company-orders` |
+| UserModule | `''` (rỗng) | `/auth/...`, `/products/...` (không có prefix) |
+| SupplierModule | `'supplier'` | `/supplier/orders` |
+| DriverModule | `'driver'` | `/driver/auth/login` |
+| DelivererModule | `'deliverer'` | `/deliverer/auth/login` |
+| AiProModule | `'ai-pro'` | `/ai-pro/dataset` |
+
+> ⚠️ Company Admin prefix là `/company-admin/...` — không phải `/admin-company/...`.
 
 ---
 
@@ -107,19 +122,19 @@ qb.orderBy(field, 'DESC');
 ```typescript
 @Entity('orders')
 export class Order {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  id: string;                               // bigint → TypeScript string (TypeORM returns as string)
 
-  @Column({ name: 'company_id' })   // ← snake_case trong DB
-  companyId: string;                  // ← camelCase trong TypeScript
+  @Column({ name: 'company_id', type: 'bigint' })
+  companyId: string;
 
-  @Column({ name: 'total_amount', type: 'decimal', precision: 10, scale: 2 })
+  @Column({ name: 'total_amount', type: 'decimal', precision: 12, scale: 2 })
   totalAmount: number;
 
-  @Column({ name: 'status', type: 'enum', enum: OrderStatus })
-  status: OrderStatus;
+  @Column({ name: 'status', type: 'enum', enum: OrderStatus, enumName: 'order_status_enum' })
+  status: OrderStatus;                      // enumName bắt buộc để tránh conflict TypeORM
 
-  @ManyToOne(() => Company)
+  @ManyToOne(() => Company, { eager: false })  // eager: false — tránh N+1
   @JoinColumn({ name: 'company_id' })
   company: Company;
 
@@ -130,16 +145,17 @@ export class Order {
   updatedAt: Date;
 
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz', nullable: true })
-  deletedAt?: Date;
+  deletedAt?: Date;                         // Soft delete — không DELETE cứng
 }
 ```
 
 **Conventions:**
-- PK: UUID (`@PrimaryGeneratedColumn('uuid')`)
+- PK: `bigint` (TypeScript nhận về `string`) — `@PrimaryGeneratedColumn('increment', { type: 'bigint' })`
 - Column name: phải explicit `{ name: 'snake_case' }` — TypeORM không tự convert
 - Timestamps: `timestamptz` — không dùng `timestamp`
-- Soft delete: `@DeleteDateColumn` với `deletedAt` — không `DELETE` cứng
-- Enum: dùng TypeScript enum + `type: 'enum'`
+- Soft delete: `@DeleteDateColumn` với `deletedAt` — không DELETE cứng
+- Enum: dùng TypeScript enum + `type: 'enum'` + `enumName` explicit để tránh conflict
+- Relation: `eager: false` bắt buộc để tránh N+1 — join khi cần qua QueryBuilder
 
 ---
 
@@ -173,6 +189,8 @@ export class GetOrdersRequest {
 
 ## Guard Pattern
 
+Mỗi module có strategy riêng với tên unique để không conflict khi nhiều module cùng register Passport.
+
 ```typescript
 // modules/admin/guards/admin.guard.ts
 @Injectable()
@@ -185,12 +203,104 @@ export class AdminStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
   }
 
   async validate(payload: JwtPayload) {
-    return payload;  // attach to request.user
+    return payload;   // gắn vào request.user
   }
 }
 ```
 
-Mỗi module có strategy riêng với tên unique (`'admin-jwt'`, `'admin-company-jwt'`, `'user-jwt'`) để không conflict.
+**Guard theo module:**
+
+| Module | Guard class | Strategy name | Lấy token từ |
+|---|---|---|---|
+| AdminModule | `AdminGuard` | `'admin-jwt'` | Bearer header |
+| AdminCompanyModule | `AdminCompanyGuard` | `'admin-company-jwt'` | Bearer header |
+| UserModule | `JwtAuthGuard` | `'user-jwt'` | Bearer header |
+| SupplierModule | `SupplierGuard` | `'supplier-jwt'` | Bearer header |
+| DriverModule | `DriverGuard` | `'driver-jwt'` | Bearer header |
+| DelivererModule | `DelivererGuard` | `'deliverer-jwt'` | Bearer header |
+| AiProModule | `AiProApiKeyGuard` | — | `x-api-key` header (không phải JWT) |
+
+---
+
+## @ApiUnifiedResponse Pattern (Swagger)
+
+Tất cả controller mới dùng decorator `@ApiUnifiedResponse` thay vì `@ApiResponse` thô để đồng bộ response envelope.
+
+```typescript
+// commons/framework/decorators/ApiUnifiedResponse.ts
+export const ApiUnifiedResponse = (model?: Type, isPagination?: boolean) =>
+  applyDecorators(
+    ApiExtraModels(BaseApiResponse, model),
+    ApiOkResponse({
+      schema: {
+        allOf: [
+          { $ref: getSchemaPath(BaseApiResponse) },
+          {
+            properties: {
+              data: isPagination
+                ? { type: 'object', properties: {
+                    items: { type: 'array', items: { $ref: getSchemaPath(model) } },
+                    total: { type: 'number' },
+                  } }
+                : { $ref: getSchemaPath(model) },
+            },
+          },
+        ],
+      },
+    }),
+  );
+```
+
+**Cách dùng trong controller:**
+
+```typescript
+// Single response (không phân trang)
+@Get(':id')
+@ApiUnifiedResponse(OrderResponse)
+async getOrder() {}
+
+// Paginated list
+@Get()
+@ApiUnifiedResponse(OrderResponse, true)
+async getOrders() {}
+
+// Không có data trả về (chỉ success envelope)
+@Delete(':id')
+@ApiUnifiedResponse()
+async deleteOrder() {}
+```
+
+**Response envelope `BaseApiResponse`:**
+```json
+{
+  "statusCode": 200,
+  "message": "Success",
+  "data": { ... }         // single object hoặc { items: [...], total: N }
+}
+```
+
+---
+
+## Multi-module Auth Pattern
+
+Supplier, Driver, và Deliverer đều implement auth flow giống hệt nhau. Mỗi module có controller và service độc lập, nhưng cấu trúc endpoint và logic flow là đồng nhất.
+
+```
+POST /<module>/auth/login              → cấp access_token + refresh_token
+POST /<module>/auth/refresh            → refresh access_token (dùng refresh_token trong body)
+POST /<module>/auth/logout             → invalidate refresh_token
+POST /<module>/auth/forgot-password/request-otp   → gửi OTP qua email
+POST /<module>/auth/forgot-password/verify-otp    → verify OTP, trả về reset_token
+POST /<module>/auth/forgot-password/reset-password → đổi password bằng reset_token
+```
+
+Ví dụ cho SupplierModule (`/supplier/auth/...`), DriverModule (`/driver/auth/...`), DelivererModule (`/deliverer/auth/...`).
+
+**Nguyên tắc:**
+- `request-otp` và `verify-otp` và `reset-password` là public — không cần guard
+- `logout` cần guard (phải login trước)
+- `hashed_refresh_token` lưu bcrypt hash trong DB, `@Exclude()` khỏi response
+- OTP lưu trong bảng `otps` dùng chung
 
 ---
 
@@ -202,7 +312,7 @@ export class AddPaymentMethod1234567890 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       CREATE TABLE payment_methods (
-        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        id BIGSERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         created_at TIMESTAMPTZ DEFAULT NOW(),
         deleted_at TIMESTAMPTZ
