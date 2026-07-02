@@ -53,6 +53,7 @@ nav:
   - Es Kitchen Payment App (E01):
     - Overview:
       - Structure: mobile/es-kitchen-payment-app/overview/structure.md
+      - Patterns: mobile/es-kitchen-payment-app/overview/patterns.md
 
 - Features:
   - DOCUMENT OVERVIEW: features/index.md
