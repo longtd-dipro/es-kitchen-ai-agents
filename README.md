@@ -9,15 +9,17 @@ Hệ thống AI Agent của ESKITCHEN được tổ chức trong thư mục `.cl
 
 ```
 .claude/
-├── agents/        ← Sub-agents chuyên biệt (load khi spawn) · 9 files
-├── commands/      ← Slash commands · BMAD core (8) + /test/* (11)
+├── agents/        ← Sub-agents chuyên biệt (load khi spawn)
+├── commands/      ← Slash commands (chi tiết: .claude/commands/README.md)
 ├── skills/        ← Knowledge packs chuyên sâu (load khi invoke)
 ├── rules/         ← Constraints & conventions (AUTO-LOAD mọi session)
 ├── context/       ← Project background knowledge (load on-demand)
-└── workflows/     ← Operational runbooks (load on-demand)
+└── workflows/     ← Workflow scripts + operational runbooks (load on-demand)
 ```
 
 Source code: `es-kitchen-repository/` (7 repos). Docs: `es-kitchen-docs/docs/features/` (single long-memory).
+
+> Danh sách đầy đủ command / skill / workflow script → `.claude/commands/README.md`. README này chỉ giữ phần overview + cách chạy nhanh.
 
 ---
 
@@ -32,7 +34,7 @@ Source code: `es-kitchen-repository/` (7 repos). Docs: `es-kitchen-docs/docs/fea
 | `.claude/commands/*.md` | Khi gọi `/command` | Claude Code khi user gõ slash command |
 | `.claude/skills/` | Khi invoke skill | Agent chủ động invoke |
 | `.claude/context/*.md` | On-demand | Agent chủ động `tilth_read` |
-| `.claude/workflows/*.md` | On-demand | Agent chủ động `tilth_read` |
+| `.claude/workflows/*` | On-demand | Agent chủ động, hoặc Workflow tool khi gọi theo `name` |
 
 **Token tối ưu:** Chỉ `POLICIES.md` + `AGENTS.md` + `rules/` always-loaded (~350 dòng total). Chi tiết per-role chỉ load khi cần.
 
@@ -52,69 +54,15 @@ Mỗi agent có tool set giới hạn đúng vai trò. Không dùng agent sai ro
 | `frontend-agent.md` | React Developer | Read, Edit, Write, tilth_* | Implement/review component, hook, store (**E02 + E03 + E04 + E05 + E06**) |
 | `mobile-agent.md` | Flutter Developer | Read, Edit, Write, tilth_* | Implement/review screen, Socket.IO, payment (E01) |
 | `qc-agent.md` | QC Manual Tester | Read, Write, tilth_* | **Sau SPEC** — sinh TC (RBT/QUICK), regression, execution checklist, bug report |
+| `designer-agent.md` | UI Designer | Read, Write, Edit, Figma tools | **Sau SPEC** — tạo Figma screens, điền URL vào SPEC.md ## Screens |
 | `qa-agent.md` | QA Engineer | Read, Bash, tilth_* | **Sau khi dev xong task** — chạy test, validate AC, non-regression |
+| `qc-automation-agent.md` | QC Automation Tester | Read, Write, Edit, Bash, Figma tools | **Sau khi deploy DEV** — sinh Playwright, chạy E2E headed mode |
 
-> **QC vs QA:** `qc-agent` = manual tester (output `.md` cho QC team); `qa-agent` = post-dev verification (output QA Report per task). Không trùng nhau.
-
----
-
-## 4. Slash Commands — `.claude/commands/`
-
-### BMAD core (8 commands)
-
-| Command | Loại | Canonical agent | Output |
-|---|---|---|---|
-| `/create-spec <feature>` | thin entry | `ba-agent.md` | `SPEC.md` |
-| `/create-design <SPEC.md>` | thin entry | `techlead-design-agent.md` | `DESIGN.md` per repo |
-| `/create-tasks <feature/>` | thin entry | `techlead-tasks-agent.md` | `task-*.md` |
-| `/create-plan <feature/>` | thin entry | `pm-agent.md` | `PLAN.md` |
-| `/create-backlog <feature/>` | thin entry | `pm-agent.md` (Bước 4) | Backlog issues qua MCP |
-| `/review-code [path]` | standalone | repo-specific | Review report |
-| `/generate-api <module>` | standalone | `backend-agent` + `nestjs-best-practices` | NestJS scaffold |
-| `/create-component <Name>` | standalone | `frontend-agent` + `react-expert` | React scaffold |
-
-### QC manual testing (`/test/*`) — canonical: `qc-agent.md`
-
-| Command | Chức năng |
-|---|---|
-| `/test/generate_manual_testcases_rbt` | Sinh TC theo FULL RBT 6 bước |
-| `/test/generate_testcases_from_requirements` | Sinh TC QUICK mode |
-| `/test/update_testcases_from_requirements` | Delta-update TC khi SPEC đổi |
-| `/test/generate_cross_module_test_plan` | Ma trận tổ hợp Pairwise đa module |
-| `/test/generate_regression_suite` | Chọn TC chạy lại sau code change |
-| `/test/generate_test_execution_checklist` | Checklist ưu tiên trước release |
-| `/test/generate_exploratory_charter` | Structured exploratory testing |
-| `/test/generate_qc_onboarding_report` | Coverage map cho QC mới |
-| `/test/generate_test_data` | Test data positive/negative/boundary/edge |
-| `/test/generate_bug_report` | Chuẩn hóa bug report cho Backlog |
-| `/test/export_to_drive` | Export bảng markdown → Google Sheet |
-
-> **thin entry** = command chỉ load agent canonical, không chứa workflow. **standalone** = command có workflow riêng. Khi sửa workflow BA/Tech Lead/PM/QC → chỉ sửa file agent.
+> **QC vs QA vs QC-Automation:** `qc-agent` = manual tester (output `.md` cho QC team); `qa-agent` = post-dev verification (output QA Report per task); `qc-automation-agent` = E2E tự động trên browser. Không trùng nhau.
 
 ---
 
-## 5. Skills — `.claude/skills/`
-
-Knowledge packs chuyên sâu. Agents invoke khi cần expertise cụ thể.
-
-| Skill | Áp dụng | Dùng khi |
-|---|---|---|
-| `nestjs-best-practices/` | `es-kitchen-api` | Viết/review NestJS, DI, module structure |
-| `postgresql/` | `es-kitchen-api` | Schema, migration, query optimization, index |
-| `redis-development/` | `es-kitchen-api` | Redis cache pattern, TTL, key naming |
-| `react-expert/` | All FE repos (E02–E06) | React 19 hooks, component design |
-| `frontend-review/` | All FE repos (E02–E06) | Code review React 19 / TanStack v5 / RTK v2 / AntD v6 |
-| `flutter-review/` | `es-kitchen-payment-app` | Code review Flutter E01 |
-| `business-analyst/` | — | Discovery, SPEC template, interview framework |
-| `technical-writing/` | Tất cả | Viết/cập nhật SPEC/DESIGN/PLAN |
-| `solution-architect/` | — | Kiến trúc cross-cutting, integration |
-| `rbt_manual_testing/` | — | Sinh manual TC (QUICK + FULL RBT 6 bước) — master skill `qc-agent` |
-| `requirements_analyzer/` | — | Phân tích requirements (Drive/Docs/Figma/Backlog) — extract AC, ambiguity |
-| `bug_reporter/` | — | Chuẩn hóa bug report — severity/priority/repro steps |
-
----
-
-## 6. Rules — `.claude/rules/`
+## 4. Rules — `.claude/rules/`
 
 Auto-load mọi session. Đây là những ràng buộc cứng không được vi phạm.
 
@@ -130,7 +78,7 @@ Auto-load mọi session. Đây là những ràng buộc cứng không được v
 
 ---
 
-## 7. Context — `.claude/context/`
+## 5. Context — `.claude/context/`
 
 Background knowledge. Agents đọc on-demand theo role.
 
@@ -146,20 +94,37 @@ Background knowledge. Agents đọc on-demand theo role.
 
 ---
 
-## 8. Workflows — `.claude/workflows/`
+## 6. Muốn chạy full-flow? Dùng `/create-feature`
 
-Operational runbooks — quy trình từng bước. Đọc khi yêu cầu cụ thể.
+Nếu chỉ muốn **1 lệnh chạy hết toàn bộ pipeline** để ra sản phẩm hoàn chỉnh (SPEC → DESIGN → tasks → code đã qua QA/QC), không cần biết trình tự 11 agent bên trên — dùng:
 
-| File | Nội dung | Ai dùng |
-|---|---|---|
-| `new-feature.md` | BMAD pipeline end-to-end từ requirement đến deploy | Reference cho tất cả roles |
-| `bug-fix.md` | Quy trình điều tra root cause → fix → QA verify | `backend-agent`, `frontend-agent`, `mobile-agent` |
-| `db-connect-dev.md` | Kết nối PostgreSQL DEV qua DBeaver | `backend-agent` |
-| `db-connect-staging.md` | Kết nối PostgreSQL Staging qua AWS SSM tunnel | `backend-agent` |
+```
+Bước 1   /create-feature <feature> <mô tả>
+         → BA → Design (Tech Lead/QC/Designer song song) → Tech Lead Tasks
+         → dừng lại, in ra toàn bộ file đã tạo (SPEC.md, DESIGN.md, test-cases, Figma, tasks/*.md)
+
+Bước 2   Tự review lại các file trên (gate bắt buộc — không tự động chạy tiếp)
+
+Bước 3   /create-feature <feature> build
+         → Dev (Backend trước → Frontend/Mobile song song) → QA verify → QC (checklist + E2E automation song song)
+         → báo cáo kết quả cuối
+```
+
+**Ví dụ:**
+```
+/create-feature user-login Chức năng đăng nhập bằng email và social login (Google, Apple)
+... (review SPEC/DESIGN/tasks) ...
+/create-feature user-login build
+```
+
+Ghi chú:
+- Không có PM trong flow này (không sinh PLAN.md/backlog) — nếu cần, chạy riêng `/create-plan` hoặc `/create-backlog` sau Bước 1.
+- Xem tiến trình khi đang chạy: gõ `/workflows`, hoặc hỏi trực tiếp Claude.
+- Muốn kiểm soát từng bước riêng lẻ (chỉ tạo lại SPEC, chỉ re-run QA...) → xem mục 8 bên dưới hoặc `.claude/commands/README.md`.
 
 ---
 
-## 9. BMAD Pipeline
+## 7. BMAD Pipeline (chi tiết từng bước — khi cần kiểm soát thủ công)
 
 Luồng chuẩn từ yêu cầu đến production. Sơ đồ trực quan đầy đủ (mermaid) ở `es-kitchen-docs/docs/index.md`.
 
@@ -176,7 +141,7 @@ DESIGN.md per repo               test-cases/tc_*.md
       ▼ [techlead-tasks-agent] /create-tasks
 tasks/task-*.md
       │
-      ▼ [pm-agent] /create-plan
+      ▼ [pm-agent] /create-plan (optional)
    PLAN.md
       │
       ├ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ▼ optional /create-backlog
@@ -212,9 +177,9 @@ BMAD document : https://docs.bmad-method.org/vi-vn/reference/workflow-map/
 
 ---
 
-## 10. 2 cách trigger agent
+## 8. trigger agent riêng lẻ
 
-Mọi agent đều có thể trigger theo 2 cách:
+Mọi agent đều có thể trigger theo 2 cách (dùng khi không cần full-flow của `/create-feature`, chỉ cần 1 bước cụ thể):
 
 ### Natural language (recommended cho discovery / iterative work)
 
@@ -225,19 +190,9 @@ Mọi agent đều có thể trigger theo 2 cách:
 "Hãy là QA, verify task: <task-X-Y.md>"
 ```
 
-### Slash command (recommended cho repeated task)
-
-```
-/create-spec import-csv
-/create-design <path/SPEC.md>
-/test/generate_manual_testcases_rbt
-```
-
-Cả 2 cùng load chung file agent canonical. Agent output (section "Bước tiếp theo") luôn dùng natural language để user copy-paste làm prompt turn kế tiếp.
-
 ---
 
-## 11. AI Policy
+## 9. AI Policy
 
 > **Canonical policy → `./POLICIES.md`** (always-loaded). Đọc file đó để biết:
 >
