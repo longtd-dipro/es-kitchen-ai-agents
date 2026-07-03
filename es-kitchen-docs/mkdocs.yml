@@ -67,7 +67,7 @@ nav:
     - API Design: features/admin-role-permission/es-kitchen-api/DESIGN.md
     - Web Admin Design: features/admin-role-permission/es-kitchen-web-admin/DESIGN.md
     - Test Cases: features/admin-role-permission/test-cases/tc_role_permission.md
-  - Agency Management:
+  - Agency Management (Đại lý):
     - Specification: features/agency-management/SPEC.md
   - AI Recommendation Engine:
     - Specification: features/ai-recommendation/SPEC.md
@@ -148,7 +148,7 @@ nav:
     - API Design: features/maintain-management/es-kitchen-api/DESIGN.md
     - Mobile Design: features/maintain-management/es-kitchen-payment-app/DESIGN.md
     - Web Admin Design: features/maintain-management/es-kitchen-web-admin/DESIGN.md
-  - Marketing:
+  - Marketing (Referral & Free Campaign):
     - Specification: features/marketing/SPEC.md
   - Menu & Order:
     - Specification: features/menu-order/SPEC.md

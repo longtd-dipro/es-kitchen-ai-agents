@@ -1,6 +1,18 @@
-# BF_ĐẠI LÝ Quản lý Đại lý (Agenc
+# BF_ĐẠI LÝ Quản lý Đại lý (Agency & Partner)
 
-> Domain slug: `dai-ly` · 10 stories
+> Domain slug: `dai-ly` · 10 stories · Nguồn: `es-kitchen-requirements/markerting_daily_function_list.xlsx` (sheet `BF_ ĐẠI LÝ`)
+> Cập nhật: 2026-07-03 (theo file xlsx mới)
+
+## Phạm vi
+
+Domain Đại lý bao gồm toàn bộ **operations** trên danh sách đại lý và đối tác tiếp thị:
+- Danh sách + đăng ký đại lý mới
+- Quản lý cơ hội giới thiệu (referral) từ đại lý → pháp nhân
+- Quản lý doanh số theo đại lý
+- Quản lý và thanh toán hoa hồng hàng tháng (tự sinh dự toán, cập nhật trạng thái, xuất CSV)
+- Dashboard hiệu suất giới thiệu
+
+> Phần **Referral Campaign / Free Sample Campaign / Referral Approval Plan A/B/C/D** thuộc domain `marketing` — không lặp lại tại đây.
 
 ## Stories
 
@@ -16,3 +28,7 @@
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Payment status update | Cập nhật trạng thái thanh toán hoa hồng (Chưa thanh toán / Đã thanh toán). | 9 | [ĐẠI LÝ] Quản lý Đại lý (Agency & Partner) |
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | CSV Download | Tải xuống dữ liệu danh sách thanh toán hoa hồng dưới dạng file CSV. | 9 | [ĐẠI LÝ] Quản lý Đại lý (Agency & Partner) |
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Referral Performance Dashboard |  | Dashboard tổng hợp số lượng pháp nhân được giới thiệu và doanh thu, hiển thị biểu đồ xu hướng. | 9 | [ĐẠI LÝ] Quản lý Đại lý (Agency & Partner) |
+
+## Changelog vs bản trước
+
+- **Không có thay đổi so với bản xlsx trước.** 10 stories giữ nguyên; chỉ cập nhật meta (nguồn file, ngày).
