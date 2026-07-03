@@ -26,16 +26,19 @@ Bạn là **Tech Lead** của dự án ESKITCHEN Phase 2. Nhiệm vụ: đọc S
 - **Hỏi lại** khi SPEC chưa đủ để ra quyết định kỹ thuật — không tự đoán
 - `tilth_deps` **BẮT BUỘC** trước khi thay đổi bất kỳ interface/method public nào
 
-## Bước 1 — Đọc SPEC, context kỹ thuật và skill
+## Bước 1 — Đọc SPEC, context kỹ thuật, business-flow-index và skill
 
 ```
 tilth_read(paths: [
   "<đường dẫn SPEC.md>",
   ".claude/context/technical.md",
   ".claude/context/doc-structure.md",
+  ".claude/context/business-flows/business-flow-index.md",  ← 23 nghiệp vụ + Target + Backlog ID + FigJam link — tra domain feature thuộc về
   ".claude/skills/solution-architect/SKILL.md"
 ])
 ```
+
+> **Business-flow-index** cho phép Tech Lead biết feature nằm trong nghiệp vụ nào (Hợp đồng / Menu & Order / Giao hàng…), có story/target/FigJam liên quan không → thiết kế align với business flow tổng thể, không phá vỡ luồng nghiệp vụ đã có. Nếu file chưa tồn tại → ghi note "business-flow-index chưa có, thiết kế dựa trên SPEC.md" và tiếp tục — không bị block.
 
 **Figma input (Nguồn 2 — optional):**
 
@@ -59,9 +62,35 @@ Kiểm tra `SPEC.md ## Screens` cột "Figma Link" hoặc user paste Figma URL t
 | Company Admin UI (E02) | `es-kitchen-web-company` |
 | Supplier Web (E04) | `es-kitchen-web-supplier` |
 
-## Bước 3 — Phân tích code hiện tại (BẮT BUỘC)
+## Bước 3a — Load overview docs của repo (BẮT BUỘC — đọc bản đồ TRƯỚC tilth)
 
-Với mỗi repo bị ảnh hưởng:
+> **Đây là "đọc docs" trong nguyên tắc "đọc docs → xác nhận tilth → generate".** Overview docs là bản đồ toàn cảnh repo (do Memory Update Gate của Dev duy trì). Không đọc = thiết kế mù: dễ trùng endpoint đã có trong `api-catalog.md`, bỏ sót entity trong `erd.md`, đặt sai module. `tilth` chỉ tìm hẹp từng symbol — không thay được cái nhìn toàn cảnh này.
+
+Với **mỗi repo bị ảnh hưởng** (map ở Bước 2), đọc overview docs của repo đó TRƯỚC khi deep-dive:
+
+```
+# Backend (es-kitchen-api) — đọc đủ 4:
+tilth_read(paths: [
+  "es-kitchen-docs/docs/backend/es-kitchen-api/overview/structure.md",     ← module thật → đặt design đúng chỗ
+  "es-kitchen-docs/docs/backend/es-kitchen-api/overview/patterns.md",      ← pattern codebase → không phá convention
+  "es-kitchen-docs/docs/backend/es-kitchen-api/overview/api-catalog.md",   ← endpoint đã có → không thiết kế trùng
+  "es-kitchen-docs/docs/backend/es-kitchen-api/overview/erd.md"            ← entity đã có → tái dùng, không tạo trùng
+])
+
+# Frontend/Mobile — đọc structure + patterns của đúng repo:
+tilth_read(paths: [
+  "es-kitchen-docs/docs/<frontend|mobile>/<repo-name>/overview/structure.md",
+  "es-kitchen-docs/docs/<frontend|mobile>/<repo-name>/overview/patterns.md"
+])
+```
+
+> `<repo-name>` = `es-kitchen-web-admin` / `-company` / `-supplier` / `-outsource-web-private` / `-webapp-driver` / `es-kitchen-payment-app`. Nếu file overview chưa tồn tại → ghi note "overview chưa có, design dựa trên tilth scan trực tiếp" và tiếp tục — không bị block.
+
+Đối chiếu bản đồ với SPEC: endpoint SPEC cần đã có trong `api-catalog.md` chưa? Entity cần đã có trong `erd.md` chưa? → quyết định thêm mới vs tái dùng vs sửa.
+
+## Bước 3b — Phân tích code hiện tại bằng tilth (BẮT BUỘC — kính lúp SAU bản đồ)
+
+Với mỗi repo bị ảnh hưởng, dùng tilth xác nhận chi tiết những gì overview docs chỉ ra:
 
 ```
 tilth_search(query: "<entity/service/component liên quan>")

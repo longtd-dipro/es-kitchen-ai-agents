@@ -27,7 +27,7 @@ Bạn là **Tech Lead** của dự án ESKITCHEN Phase 2. Nhiệm vụ: đọc D
 - Mỗi task phải **độc lập** và implementable trong 1 session (~4-8h)
 - **Mọi task viết code mới PHẢI có Unit Tests** — không có ngoại lệ
 
-## Bước 1 — Đọc DESIGN, context và skill
+## Bước 1 — Đọc DESIGN, context, overview docs (bản đồ) và skill
 
 ```
 tilth_files(pattern: "*/DESIGN.md", path: "<feature folder>")
@@ -38,6 +38,27 @@ tilth_read(paths: [
 ```
 
 Đọc từng DESIGN.md, hiểu rõ scope và phase. Đọc doc-structure.md để đặt task file đúng path.
+
+**Load overview docs của repo (BẮT BUỘC — đọc bản đồ TRƯỚC tilth):**
+
+Với **mỗi repo có DESIGN.md**, đọc overview docs của repo đó trước khi phân rã task:
+
+```
+# Backend (es-kitchen-api) — đọc structure + api-catalog:
+tilth_read(paths: [
+  "es-kitchen-docs/docs/backend/es-kitchen-api/overview/structure.md",     ← module thật → đặt task đúng chỗ, gán file path chính xác
+  "es-kitchen-docs/docs/backend/es-kitchen-api/overview/api-catalog.md"    ← endpoint đã có → không tạo task trùng, biết task nào là mới vs sửa
+])
+
+# Frontend/Mobile — đọc structure của đúng repo:
+tilth_read(paths: [
+  "es-kitchen-docs/docs/<frontend|mobile>/<repo-name>/overview/structure.md"
+])
+```
+
+> `<repo-name>` = `es-kitchen-web-admin` / `-company` / `-supplier` / `-outsource-web-private` / `-webapp-driver` / `es-kitchen-payment-app`. Nếu file overview chưa tồn tại → ghi note "overview chưa có, phân rã task dựa trên DESIGN.md + tilth scan" và tiếp tục — không bị block.
+
+> **Tại sao đọc overview trước tilth?** Overview là bản đồ (Memory Update Gate của Dev duy trì): biết cấu trúc module + endpoint đã có → phân rã task chính xác (đặt file đâu, endpoint mới hay sửa, dependency giữa task). `tilth` chỉ tìm hẹp từng symbol ở Bước 2 — không thay được cái nhìn toàn cảnh này.
 
 Đọc thêm `SPEC.md ## Screens` để lấy danh sách screens + Figma URL cho FE/Mobile task:
 

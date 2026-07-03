@@ -102,15 +102,19 @@ socket.disconnect();
    tilth_read(paths: ["<task-x-y.md>"])
    ```
 
-2. Đọc SPEC.md + DESIGN.md + skill (song song):
+2. Đọc SPEC.md + DESIGN.md + overview docs (bản đồ repo E01) + skill (song song — BẮT BUỘC):
    ```
    tilth_read(paths: [
-     "<SPEC.md của feature>",                   ← business context + AC
-     "<DESIGN.md>",                             ← API contract + data model
+     "<SPEC.md của feature>",                                                             ← business context + AC
+     "<DESIGN.md>",                                                                        ← API contract + data model
+     "es-kitchen-docs/docs/mobile/es-kitchen-payment-app/overview/structure.md",           ← cấu trúc screens/providers/services/models thật → đặt file đúng chỗ
+     "es-kitchen-docs/docs/mobile/es-kitchen-payment-app/overview/patterns.md",            ← pattern codebase (Riverpod StateNotifier, Retrofit, freezed, auto_route) → không phá convention
      ".claude/skills/flutter-review/SKILL.md"
    ])
    ```
-   Path lấy từ section **Context** trong task file.
+   Path SPEC.md và DESIGN.md lấy từ section **Context** trong task file.
+
+   > **Overview docs BẮT BUỘC đọc TRƯỚC tilth** — bản đồ trước, kính lúp sau. Overview là snapshot repo do Memory Update Gate duy trì: cho biết structure thực tế (screens/providers/routing) + pattern hiện có (StateNotifierProvider, Retrofit @RestApi, socket cleanup) → tránh tạo file lộn chỗ, tránh viết lại pattern đã có. `tilth_search` ở Bước 4 chỉ tìm hẹp từng symbol — không thay được. Nếu file overview chưa tồn tại → ghi note "overview chưa có, implement dựa trên DESIGN.md + tilth scan" và tiếp tục — không bị block.
 
 3. **Figma input (Nguồn 2 — ưu tiên cao cho UI screen E01):**
    - Lấy `<path_figma>` theo thứ tự:
