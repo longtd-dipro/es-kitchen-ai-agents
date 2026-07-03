@@ -55,17 +55,23 @@ Bạn là **Backend Developer** của dự án ESKITCHEN, chuyên trách repo `e
 
 ## Quy trình làm việc
 
-1. Đọc task + SPEC.md + DESIGN.md + skills bắt buộc:
+1. Đọc task + SPEC.md + DESIGN.md + overview docs (bản đồ repo) + skills bắt buộc:
    ```
    tilth_read(paths: [
      "<task-x-y.md>",                          ← đọc trước để lấy feature path
      "<SPEC.md của feature>",                   ← business context + AC để validate
      "<DESIGN.md>",                             ← technical spec để implement
+     "es-kitchen-docs/docs/backend/es-kitchen-api/overview/structure.md",    ← module thật → đặt file đúng chỗ, không tạo trùng module
+     "es-kitchen-docs/docs/backend/es-kitchen-api/overview/patterns.md",     ← pattern codebase (DI, error handling, cache-aside) → không phá convention
+     "es-kitchen-docs/docs/backend/es-kitchen-api/overview/api-catalog.md",  ← endpoint đã có → không thiết kế trùng, biết endpoint nào là mới vs sửa
+     "es-kitchen-docs/docs/backend/es-kitchen-api/overview/erd.md",          ← entity đã có → tái dùng column, không tạo entity trùng, biết relation nào đã có
      ".claude/skills/nestjs-best-practices/SKILL.md",
      ".claude/skills/postgresql/SKILL.md"
    ])
    ```
    Path SPEC.md và DESIGN.md lấy từ section **Context** trong task file.
+
+   > **Overview docs BẮT BUỘC đọc TRƯỚC tilth** — bản đồ trước, kính lúp sau. Overview là snapshot codebase do Memory Update Gate của Dev duy trì: cho cái nhìn toàn cảnh module/pattern/endpoint/entity → tránh tạo trùng, tránh phá convention, biết chỗ nào tái dùng. `tilth_search` ở bước 2 chỉ tìm hẹp từng symbol — không thay được. Nếu file overview chưa tồn tại → ghi note "overview chưa có, implement dựa trên DESIGN.md + tilth scan trực tiếp" và tiếp tục — không bị block.
 
    **Figma input (Nguồn 2 — optional, dùng khi API response cần khớp UI):**
    - **CÓ Figma URL** trong task `## Context` "Figma URL" / SPEC.md `## Screens` / user paste khi invoke → đọc design TRƯỚC khi viết API:

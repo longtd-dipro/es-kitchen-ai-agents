@@ -7,8 +7,7 @@
 **Tổng số câu hỏi còn mở:** 30  
 **Cập nhật:** 2026-06-26 — đã xóa các câu đã được trả lời trong Qna_response_v1.xlsx
 
-> **Đã clear hoàn toàn:** Contract Management · Delivery Partner · Delivery Driver · Menu & Order · Payment · Collection & Cancellation · Inventory & Equipment · User Binding  
-> **Đã bỏ khỏi dự án:** Task Management
+> **Đã clear hoàn toàn:** Contract Management · Delivery Partner · Delivery Driver · Menu & Order · Payment · Collection & Cancellation · Inventory & Equipment · User Binding
 
 ---
 

@@ -75,7 +75,7 @@ Mỗi file là 1 nghiệp vụ trong `domains/` — header table: `PHASE · ID �
 |---|---|
 | `es-kitchen-payment-app` (E01) | menu-order · thanh-toan · user-binding · user-engagement · marketing |
 | `es-kitchen-web-company` (E02) | hop-dong · menu-order · giao-hang-dieu-phoi · thanh-toan · ton-kho-thiet-bi · user-binding · marketing |
-| `es-kitchen-web-admin` (E03) | hop-dong · menu-order · giao-hang-dieu-phoi · dat-hang-ncc · thanh-toan · thu-tien-huy · ton-kho-thiet-bi · user-engagement · marketing · dai-ly · task-management · system-other |
+| `es-kitchen-web-admin` (E03) | hop-dong · menu-order · giao-hang-dieu-phoi · dat-hang-ncc · thanh-toan · thu-tien-huy · ton-kho-thiet-bi · user-engagement · marketing · dai-ly · system-other |
 | `es-kitchen-web-supplier` (E04) | dat-hang-ncc |
 | `es-kitchen-web-outsource-web-private` (E05) | hop-dong · giao-hang-doi-tac · thu-tien-huy |
 | `es-kitchen-webapp-driver` (E06) | giao-hang-tai-xe · thu-tien-huy |

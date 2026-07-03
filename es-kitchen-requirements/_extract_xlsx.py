@@ -38,7 +38,6 @@ BF_SLUG = {
     'BF_USER ENGAGEMENT Tương tác & ': 'user-engagement',
     'BF_MARKETING Giới thiệu Công ty': 'marketing',
     'BF_ĐẠI LÝ Quản lý Đại lý (Agenc': 'dai-ly',
-    'BF_TASK MANAGEMENT Quản lý công': 'task-management',
     'BF_SYSTEM & OTHER Cấu hình Hệ t': 'system-other',
 }
 
