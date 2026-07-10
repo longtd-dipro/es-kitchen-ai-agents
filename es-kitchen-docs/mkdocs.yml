@@ -148,8 +148,6 @@ nav:
     - API Design: features/maintain-management/es-kitchen-api/DESIGN.md
     - Mobile Design: features/maintain-management/es-kitchen-payment-app/DESIGN.md
     - Web Admin Design: features/maintain-management/es-kitchen-web-admin/DESIGN.md
-  - Marketing (Referral & Free Campaign):
-    - Specification: features/marketing/SPEC.md
   - Menu & Order:
     - Specification: features/menu-order/SPEC.md
   - Notification Management:

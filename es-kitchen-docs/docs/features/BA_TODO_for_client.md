@@ -62,18 +62,7 @@ SPEC: `delivery-dispatching/SPEC.md`
 
 ---
 
-## 4. MARKETING
-
-SPEC: `marketing/SPEC.md`
-
-| ID | Section | Câu hỏi | Trả lời của khách hàng |
-|---|---|---|---|
-| MKT-03 | HubSpot sync | 1 chiều hay 2 chiều? Trigger cron hay event? Tần suất? | |
-| MKT-08 | Số tab UI | Domain mô tả 5 tab nhưng section là "4 tab" — xác nhận với Designer/Client. | |
-
----
-
-## 5. SYSTEM OTHER (System Settings & Common)
+## 4. SYSTEM OTHER (System Settings & Common)
 
 SPEC: `system-other/SPEC.md`
 
