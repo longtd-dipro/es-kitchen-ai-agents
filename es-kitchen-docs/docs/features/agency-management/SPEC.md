@@ -5,9 +5,9 @@
 > Target Actor: **E03 — System Admin**
 > Phase: Phase 2
 > Cross-repo: Single-actor (E03 + API) — Contract Lock **không bắt buộc** trước Phase 3
-> Cập nhật: 2026-07-03 — theo `es-kitchen-requirements/markerting_daily_function_list.xlsx` (sheet `BF_ ĐẠI LÝ` + Agency Detail block trong sheet `BF_ MARKETING`)
+> Cập nhật: 2026-07-03 — theo `es-kitchen-requirements/markerting_daily_function_list.xlsx` (sheet `BF_ ĐẠI LÝ`)
 > Domain nguồn: `.claude/context/business-flows/domains/dai-ly.md`
-> **Split note:** Phần **Referral Campaign, Free Campaign, Referral Approval** đã tách sang [Marketing SPEC](../marketing/SPEC.md).
+> **Note:** Chức năng Marketing (Referral Campaign, Free Campaign, Referral Approval) đã bị loại khỏi scope hệ thống.
 
 ---
 
@@ -21,8 +21,6 @@ Hệ thống cho phép System Admin quản lý toàn bộ vòng đời của đ�
 4. **Fee payment** — tự động tạo dự toán hoa hồng hàng tháng, cập nhật trạng thái thanh toán, xuất CSV.
 5. **Performance dashboard** — biểu đồ xu hướng số pháp nhân được giới thiệu và doanh thu.
 6. **Agency Detail (5 tabs)** — drill-down cho từng đại lý: Basic Info, Contract & Compensation, Performance Summary, Referral History, Payment History.
-
-> Việc **phê duyệt referral từ Company Admin**, **4 Plan hoa hồng A/B/C/D** (rule chung), **Free Sample Campaign** thuộc SPEC Marketing — không lặp lại tại đây.
 
 ---
 
@@ -39,7 +37,7 @@ Hệ thống cho phép System Admin quản lý toàn bộ vòng đời của đ�
 **Dependencies với domain khác:**
 - **[HỢP ĐỒNG] Quản lý Hợp đồng** — pháp nhân (công ty) được giới thiệu cần tồn tại trong hệ thống contract.
 - **[MENU & ORDER] Quản lý Thực đơn & Đặt hàng** — dữ liệu doanh thu theo đại lý bắt nguồn từ đơn hàng thực tế.
-- **[MARKETING]** — 4 Plan hoa hồng A/B/C/D được định nghĩa ở Marketing SPEC; Agency SPEC chỉ áp dụng khi tính fee.
+- **[HỢP ĐỒNG / THANH TOÁN]** — 4 Plan hoa hồng A/B/C/D (A, B, C, D) được cấu hình trong Agency SPEC; tính fee áp dụng tại thời điểm tạo agency.
 
 ---
 
@@ -114,7 +112,7 @@ Từ Story 1, System Admin chọn 1 đại lý và vào màn hình chi tiết g�
 - ID Hệ thống, Tên Công ty, Trạng thái (Đang chạy / Đã hủy), thông tin người liên hệ.
 
 **10b. Contract and Compensation Settings tab**
-- Chọn Gói trả hoa hồng cho Đại lý: A / B / C / D (rule chi tiết ở Marketing SPEC).
+- Chọn Gói trả hoa hồng cho Đại lý: A / B / C / D.
 - Thông tin tài khoản ngân hàng chuyển khoản.
 - Khai báo thuế.
 - Ghi chú nội bộ.
@@ -180,7 +178,7 @@ Từ Story 1, System Admin chọn 1 đại lý và vào màn hình chi tiết g�
 
 ### AF-08: Đại lý bị đặt trạng thái "Đã hủy" nhưng còn referral active
 - Hiển thị **warning** trước khi hủy.
-- Ngừng tính hoa hồng mới từ thời điểm hủy (không hồi tố kỳ đã qua) — theo rule Marketing Q&A MKT-07.
+- Ngừng tính hoa hồng mới từ thời điểm hủy (không hồi tố kỳ đã qua).
 
 ### AF-09: Plan hoa hồng thay đổi giữa chừng
 - Áp dụng Plan mới từ thời điểm thay đổi trở đi; các kỳ trước giữ nguyên Plan cũ. Không hồi tố (Q&A MKT-05).
@@ -253,9 +251,8 @@ Từ Story 1, System Admin chọn 1 đại lý và vào màn hình chi tiết g�
 
 ## Out of Scope
 
-- **Phê duyệt Referral từ Company Admin (E02)** — thuộc [Marketing SPEC](../marketing/SPEC.md).
-- **Free Sample Campaign / HubSpot sync** — thuộc [Marketing SPEC](../marketing/SPEC.md).
-- **Rule chi tiết 4 Plan hoa hồng (A/B/C/D)** — định nghĩa ở [Marketing SPEC](../marketing/SPEC.md); Agency SPEC chỉ áp dụng khi tính fee.
+- **Free Sample Campaign / HubSpot sync** — đã loại khỏi scope (chức năng Marketing bị remove).
+- **Phê duyệt Referral từ Company Admin (E02)** — đã loại khỏi scope (chức năng Marketing bị remove).
 - **E01 Mobile App** — Đại lý không có giao diện trên mobile app.
 - **E02 Company Admin** — Company Admin không quản lý đại lý; đại lý là khái niệm nội bộ của System Admin.
 - **E04 Supplier / E06 Driver** — Không liên quan.

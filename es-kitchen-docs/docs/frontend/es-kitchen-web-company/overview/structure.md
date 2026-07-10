@@ -145,5 +145,4 @@ Các pages đang có trong repo:
 Các pages **chưa có** (sẽ thêm trong Phase 2):
 - Menu management (Company Admin tạo menu)
 - Contract management (xem hợp đồng)
-- Marketing / Referral bonus
 - Company profile settings
