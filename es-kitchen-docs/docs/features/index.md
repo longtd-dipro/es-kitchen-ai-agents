@@ -3,29 +3,28 @@
 > Trang tổng hợp toàn bộ SPEC.md trong `/features`.
 > Mỗi dòng = 1 Feature → 1 SPEC.md tương ứng.
 
-**Tổng:** 15 Business Flows + 12 Features khác = 27 SPEC.md
-**Last updated:** 2026-06-05
+**Tổng:** 13 Business Flows + 12 Features khác = 25 SPEC.md
+**Last updated:** 2026-07-14
 
 ---
 
 ## 1. Business Flow
 
-| Business Flow | Mô tả ngắn gọn | URL |
-|---|---|---|
-| Agency Management (Đại lý) | Quản lý đại lý giới thiệu, tính hoa hồng, theo dõi referral & trạng thái thanh toán. | [http://wiki.es-kitchen.co.jp/features/agency-management/SPEC/](http://wiki.es-kitchen.co.jp/features/agency-management/SPEC/) |
-| Collection & Cancellation (Thu tiền & Hủy) | Tài xế (E06) thu tiền mặt, báo cáo hàng hủy, biên lai đỗ xe; admin đối soát chênh lệch. | [http://wiki.es-kitchen.co.jp/features/collection-cancellation/SPEC/](http://wiki.es-kitchen.co.jp/features/collection-cancellation/SPEC/) |
-| Contract Management (Hợp đồng) | Đăng ký dùng thử, hợp đồng chính thức, plan, location, yêu cầu thay đổi/hủy. | [http://wiki.es-kitchen.co.jp/features/contract-management/SPEC/](http://wiki.es-kitchen.co.jp/features/contract-management/SPEC/) |
-| Delivery Dispatching (Giao hàng — Điều phối) | Sắp lịch picking/delivery, tích hợp Yamato API + Thomas CSV, duyệt yêu cầu đổi ngày. | [http://wiki.es-kitchen.co.jp/features/delivery-dispatching/SPEC/](http://wiki.es-kitchen.co.jp/features/delivery-dispatching/SPEC/) |
-| Delivery Driver (Giao hàng — Tài xế) | Tài xế (E06) nhận đơn, GPS log, ký nhận, xử lý giao lại, đếm hàng. | [http://wiki.es-kitchen.co.jp/features/delivery-driver/SPEC/](http://wiki.es-kitchen.co.jp/features/delivery-driver/SPEC/) |
-| Delivery Partner (Giao hàng — Đối tác E05) | Portal đối tác vận chuyển: quản lý nhân viên, nhận đơn từ ES Station, phản hồi lịch. | [http://wiki.es-kitchen.co.jp/features/delivery-partner/SPEC/](http://wiki.es-kitchen.co.jp/features/delivery-partner/SPEC/) |
-| Inventory & Equipment (Tồn kho & Thiết bị) | Quản lý thiết bị bếp, vật tư, tồn kho, nhập hàng dự kiến, import CSV Thomas. | [http://wiki.es-kitchen.co.jp/features/inventory-equipment/SPEC/](http://wiki.es-kitchen.co.jp/features/inventory-equipment/SPEC/) |
-| Marketing | Chiến dịch marketing, đồng bộ HubSpot, commission plan A/B, hủy đại lý. | [http://wiki.es-kitchen.co.jp/features/marketing/SPEC/](http://wiki.es-kitchen.co.jp/features/marketing/SPEC/) |
-| Menu & Order | Quản lý menu (PDF + AI PRO recommendation), End User đặt món, chốt đơn theo deadline. | [http://wiki.es-kitchen.co.jp/features/menu-order/SPEC/](http://wiki.es-kitchen.co.jp/features/menu-order/SPEC/) |
-| Payment (Thanh toán) | Thanh toán elepay/Alipay/WeChat Pay, hóa đơn hàng tháng, trợ giá, refund. | [http://wiki.es-kitchen.co.jp/features/payment/SPEC/](http://wiki.es-kitchen.co.jp/features/payment/SPEC/) |
-| Supplier Ordering (Đặt hàng NCC) | Tạo đơn đặt hàng nhà cung cấp, NCC (E04) phản hồi ngày xuất, đơn tạm tính đầu tháng. | [http://wiki.es-kitchen.co.jp/features/supplier-ordering/SPEC/](http://wiki.es-kitchen.co.jp/features/supplier-ordering/SPEC/) |
-| System Other (Cài đặt & Common) | Notification, maintenance mode, version management, dashboard, HubSpot sync, email/push trigger. | [http://wiki.es-kitchen.co.jp/features/system-other/SPEC/](http://wiki.es-kitchen.co.jp/features/system-other/SPEC/) |
-| User Binding | End User (E01) quét QR liên kết tài khoản với công ty, giới hạn mua/ngày, trợ giá. | [http://wiki.es-kitchen.co.jp/features/user-binding/SPEC/](http://wiki.es-kitchen.co.jp/features/user-binding/SPEC/) |
-| User Engagement | Tutorial, lọc allergen, rating sản phẩm/tài xế, survey, feedback form, recommendation. | [http://wiki.es-kitchen.co.jp/features/user-engagement/SPEC/](http://wiki.es-kitchen.co.jp/features/user-engagement/SPEC/) |
+| BF# | Business Flow | Mô tả ngắn gọn | URL |
+|---|---|---|---|
+| BF01 | Contract Management (Hợp đồng) | Đăng ký dùng thử, hợp đồng chính thức, plan, location, yêu cầu thay đổi/hủy. | [SPEC](http://wiki.es-kitchen.co.jp/features/contract-management/SPEC/) |
+| BF02 | Menu & Order (Thực đơn & Đặt hàng) | Quản lý menu (PDF + AI PRO recommendation), End User đặt món, chốt đơn theo deadline. | [SPEC](http://wiki.es-kitchen.co.jp/features/menu-order/SPEC/) |
+| BF03 | Delivery Dispatching (Giao hàng — Điều phối) | Sắp lịch picking/delivery, tích hợp Yamato API + Thomas CSV, duyệt yêu cầu đổi ngày. | [SPEC](http://wiki.es-kitchen.co.jp/features/delivery-dispatching/SPEC/) |
+| BF04 | Supplier Ordering (Đặt hàng NCC) | Tạo đơn đặt hàng nhà cung cấp, NCC (E04) phản hồi ngày xuất, đơn tạm tính đầu tháng. | [SPEC](http://wiki.es-kitchen.co.jp/features/supplier-ordering/SPEC/) |
+| BF05 | Delivery Partner (Giao hàng — Đối tác E05) | Portal đối tác vận chuyển: quản lý nhân viên, nhận đơn từ ES Station, phản hồi lịch. | [SPEC](http://wiki.es-kitchen.co.jp/features/delivery-partner/SPEC/) |
+| BF06 | Delivery Driver (Giao hàng — Tài xế E06) | Tài xế (E06) nhận đơn, GPS log, ký nhận, xử lý giao lại, đếm hàng. | [SPEC](http://wiki.es-kitchen.co.jp/features/delivery-driver/SPEC/) |
+| BF07 | Payment (Thanh toán) | Thanh toán elepay, hóa đơn hàng tháng, tích hợp Bill One, refund. | [SPEC](http://wiki.es-kitchen.co.jp/features/payment/SPEC/) |
+| BF08 | Collection & Cancellation (Thu tiền & Hủy) | Tài xế (E06) thu tiền mặt, báo cáo hàng hủy, biên lai đỗ xe; admin đối soát chênh lệch. | [SPEC](http://wiki.es-kitchen.co.jp/features/collection-cancellation/SPEC/) |
+| BF09 | Inventory & Equipment (Tồn kho & Thiết bị) | Quản lý thiết bị bếp, vật tư, tồn kho, nhập hàng dự kiến, import CSV Thomas. | [SPEC](http://wiki.es-kitchen.co.jp/features/inventory-equipment/SPEC/) |
+| BF10 | User Binding (Liên kết Nhân viên) | End User (E01) quét QR liên kết tài khoản với công ty, giới hạn mua/ngày, trợ giá. | [SPEC](http://wiki.es-kitchen.co.jp/features/user-binding/SPEC/) |
+| BF11 | User Engagement (Tương tác & Khảo sát) | Tutorial, lọc allergen, rating sản phẩm/tài xế, survey, recommendation. | [SPEC](http://wiki.es-kitchen.co.jp/features/user-engagement/SPEC/) |
+| BF12 | Agency Management (Đại lý) | Quản lý đại lý giới thiệu, tính hoa hồng, theo dõi referral & trạng thái thanh toán. | [SPEC](http://wiki.es-kitchen.co.jp/features/agency-management/SPEC/) |
+| BF13 | System Other (Cài đặt & Common) | Notification, maintenance mode, version management, dashboard, HubSpot sync, email/push trigger. | [SPEC](http://wiki.es-kitchen.co.jp/features/system-other/SPEC/) |
 
 ---
 

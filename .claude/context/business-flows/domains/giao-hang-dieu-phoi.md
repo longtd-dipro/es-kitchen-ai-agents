@@ -1,6 +1,6 @@
-# BF_GIAO HÀNG Lịch trình & Điều 
+# BF_GIAO HÀNG Lịch trình & Điều phối
 
-> Domain slug: `giao-hang-dieu-phoi` · 31 stories
+> Domain slug: `giao-hang-dieu-phoi` · 31 stories (Phase 1) + **12 thêm mới / 4 xóa** (Phase 2)
 
 ## Stories
 
@@ -37,3 +37,34 @@
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Info sharing with contracted delivery companies |  | Tự động đồng bộ và chia sẻ trạng thái giao hàng cho các công ty Giao hàng ủy thác. | 3 | [GIAO HÀNG] Lịch trình & Điều phối |
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Drivers and information collaboration | Đồng bộ dữ liệu 2 chiều với App Tài xế (Ảnh chụp báo cáo trưng bày tủ lạnh, dữ liệu thu tiền, dữ liệu hàng hủy). | 3 | [GIAO HÀNG] Lịch trình & Điều phối |
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 | Response from new warehouse and delivery company |  |  | Cấu hình Master Data và kết nối API để mở rộng cho các đối tác Kho bãi / Vận chuyển mới phát sinh. | 3 | [GIAO HÀNG] Lịch trình & Điều phối |
+---
+
+## Phase 2 Scope Changes (2026-07)
+
+> Nguồn: `management/specification/Business_flow_scope_change.xlsx` · BF03
+
+### Thêm mới (12 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Chi tiết |
+| --- | --- | --- | --- | --- | --- |
+| E03 | (NEW) | QL YC vận chuyển | DS YC vận chuyển | | Admin xem DS yêu cầu/báo giá giao hàng; search/filter theo tình trạng, ngày, pháp nhân, chi nhánh |
+| E03 | (NEW) | QL YC vận chuyển | Chi tiết YC vận chuyển | Chi tiết YC vận chuyển | Admin đăng ký/xác nhận/edit địa chỉ giao, ngày muốn giao, thông tin hàng, điều kiện |
+| E03 | (NEW) | QL YC vận chuyển | Chi tiết YC vận chuyển | YC báo giá bên VC: notify + email | Chọn bên VC ủy thác candidate + gửi YC báo giá; gửi cùng lúc cho nhiều bên |
+| E03 | (NEW) | QL YC vận chuyển | Chi tiết YC vận chuyển | QL tình trạng trả lời | Xác nhận tình trạng trả lời: chưa trả lời/đang xác nhận/chấp nhận/không chấp nhận |
+| E03 | (NEW) | QL YC vận chuyển | Chi tiết YC vận chuyển | So sánh báo giá | So sánh DS: khả năng xử lý, phí giao, báo giá, ghi chú, thời gian trả lời → chọn bên tối ưu |
+| E03 | (NEW) | QL YC vận chuyển | Chọn tuyến giao hàng | Chọn điểm trung chuyển | Chọn điểm trung chuyển + bên VC ủy thác cho từng đơn giao; set tuyến |
+| E03 | (NEW) | QL YC vận chuyển | Chốt bên vận chuyển | | Dựa trên kết quả so sánh báo giá → chốt bên VC sẽ dùng |
+| E03 | AW_INTERGRATION_002 | QL điểm trung chuyển | DS điểm trung chuyển | Nhập / Xuất CSV | Xuất/nhập CSV hàng loạt thông tin điểm trung chuyển |
+| E03 | AW_INTERGRATION_002 | QL vận chuyển ủy thác | DS bên vận chuyển | Nhập / Xuất CSV | Xuất/nhập CSV hàng loạt thông tin bên VC ủy thác |
+| E03 | (NEW) | QL vận chuyển ủy thác | DS bên vận chuyển | Cấp TK hàng loạt | Phát hành TK hàng loạt cho nhiều bên VC; auto sinh password + gửi mail invitation |
+| E03 | (NEW) | QL vận chuyển ủy thác | CRUD bên vận chuyển | Bên vận chuyển | Đăng ký/edit/xóa phí giao theo khu vực cho từng bên VC ủy thác |
+| E03 | (NEW) | QL vận chuyển ủy thác | CRUD bên vận chuyển | Duyệt nội dung bên VC chỉnh sửa | Khi bên VC tự edit thông tin → duyệt/từ chối; sau duyệt → reflect vào data chính thức |
+
+### Xóa đi (4 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Lý do xóa |
+| --- | --- | --- | --- | --- | --- |
+| E02 | (?) | Cài đặt lịch giao | Cài đặt liên quan giao hàng | Cài đặt số lần giao/tháng | Số lần giao ảnh hưởng phí → không để pháp nhân tự đổi; phải qua yêu cầu thay đổi HĐ |
+| E02 | (?) | Cài đặt lịch giao | Cài đặt liên quan giao hàng | Cài đặt riêng theo loại hàng | Không cung cấp cài đặt riêng theo loại hàng; điều kiện giao thống nhất |
+| E03 | AW_SCHEDULE_002 | Màn hình lịch trình | Cài đặt lịch picking | Tự lấy ngày lễ Nhật | Không còn cần thiết |
+| E03 | AW_SCHEDULE_004 | Màn hình lịch trình | Cài đặt lịch picking | Nhập DS ngày không picking | Không còn cần thiết |

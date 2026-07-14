@@ -1,6 +1,6 @@
-# BF_SYSTEM & OTHER Cấu hình Hệ t
+# BF_SYSTEM & OTHER Cấu hình Hệ thống & Tích hợp
 
-> Domain slug: `system-other` · 29 stories
+> Domain slug: `system-other` · 29 stories (Phase 1) + **9 xóa** (Phase 2)
 
 ## Stories
 
@@ -35,3 +35,22 @@
 | 05 | 委託配送先WEB_画面一覧 - Contract Delivery Destination | Email notification |  |  | Gửi các thông báo liên quan qua email. | 9 | [SYSTEM & OTHER] Cấu hình Hệ thống & Tích hợp |
 | 05 | 委託配送先WEB_画面一覧 - Contract Delivery Destination | operation manual |  |  | Tải xuống tài liệu hướng dẫn thao tác sử dụng hệ thống. | 9 | [SYSTEM & OTHER] Cấu hình Hệ thống & Tích hợp |
 | 06 | ドライバーAPP(driver app)_P2 | Push notifications |  |  | Nhận và quản lý các thông báo đẩy. | 9 | [SYSTEM & OTHER] Cấu hình Hệ thống & Tích hợp |
+---
+
+## Phase 2 Scope Changes (2026-07)
+
+> Nguồn: `management/specification/Business_flow_scope_change.xlsx` · BF13
+
+### Xóa đi (9 mục) — Toàn bộ là xóa, không có thêm mới
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | Lý do xóa |
+| --- | --- | --- | --- | --- |
+| E02 | (?) | Trang cá nhân | Đổi mật khẩu | Đã có tính năng reset password → không cần |
+| E03 | (?) | Màn hình QL task | Logic tự tạo task | Chủ tịch Hosono yêu cầu xóa |
+| E03 | (?) | Màn hình QL task | Kanban view task | Chủ tịch Hosono yêu cầu xóa |
+| E03 | (?) | Màn hình QL task | Màn hình chi tiết task | Chủ tịch Hosono yêu cầu xóa |
+| E03 | (?) | Màn hình QL task | Màn hình chi tiết task (phụ) | Chủ tịch Hosono yêu cầu xóa |
+| E03 | (?) | Màn hình QL task | Tạo task thủ công | Chủ tịch Hosono yêu cầu xóa |
+| E03 | (?) | Màn hình QL task | Template task | Chủ tịch Hosono yêu cầu xóa |
+| E03 | (?) | Màn hình QL task | QL lịch sử task | Chủ tịch Hosono yêu cầu xóa |
+| E03 | (?) | Màn hình QL task | Thông báo qua Slack | Chủ tịch Hosono yêu cầu xóa |

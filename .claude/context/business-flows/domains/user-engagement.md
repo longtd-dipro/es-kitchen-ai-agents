@@ -1,6 +1,6 @@
-# BF_USER ENGAGEMENT Tương tác & 
+# BF_USER ENGAGEMENT Tương tác & Khảo sát
 
-> Domain slug: `user-engagement` · 12 stories
+> Domain slug: `user-engagement` · 12 stories (Phase 1) + **1 cập nhật / 1 xóa** (Phase 2)
 
 ## Stories
 
@@ -18,3 +18,20 @@
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 | Questionnaire collection and analysis | Creating a survey distribution |  | Tạo đợt khảo sát mới (chọn Loại khảo sát mặc định, setup thời gian gửi và chọn nhiều doanh nghiệp nhận cùng lúc). | 9 | [USER ENGAGEMENT] Tương tác & Khảo sát |
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Survey distribution history |  | Hiển thị lịch sử các chiến dịch Khảo sát đã được khởi tạo và gửi đi. | 9 | [USER ENGAGEMENT] Tương tác & Khảo sát |
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Details of survey response history | Auto-aggregation and graphing | Tự động tổng hợp dữ liệu phản hồi khảo sát từ người dùng và tự động vẽ biểu đồ trực quan hóa dữ liệu. | 9 | [USER ENGAGEMENT] Tương tác & Khảo sát |
+---
+
+## Phase 2 Scope Changes (2026-07)
+
+> Nguồn: `management/specification/Business_flow_scope_change.xlsx` · BF11
+
+### Cập nhật (1 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | Nội dung thay đổi |
+| --- | --- | --- | --- | --- |
+| E01 | (?) | Hướng dẫn sử dụng | Đăng ký thành viên | Đổi từ slide đơn giản → dùng package `showcaseview` (Flutter). Onboarding: tutorial động cho ~10 màn khi vào lần đầu. Xem lại từ menu: chỉ hiện màn cố định (VD: Home 5 bước). Figma: [link](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=21186-362850) |
+
+### Xóa đi (1 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | Lý do xóa |
+| --- | --- | --- | --- | --- |
+| E01 | (?) | Mức độ tương tác | Chức năng gửi ý kiến / góp ý | Gộp vào review sản phẩm; user gửi feedback trong review thay vì form riêng |

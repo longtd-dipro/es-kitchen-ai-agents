@@ -27,3 +27,37 @@
 | 04 | 仕入れ先WEB_画面 - Website Suplier | Supplier (Web nhà cung cấp) |  |  |  |  |  |  |
 | 05 | 委託配送先WEB_画面一覧 - Contract Delivery Destination | Công ty vận chuyển (Outsource Admin) |  |  |  |  |  |  |
 | 06 | ドライバーAPP(driver app)_P2 | Nhân viên giao hàng (Driver) |  |  |  |  |  |  |
+---
+
+## Phase 2 Scope Changes — Tổng hợp (2026-07)
+
+> Nguồn: `management/specification/Business_flow_scope_change.xlsx`
+> Cập nhật: 2026-07-14
+
+| BF# | Nghiệp Vụ | Nhóm | Tổng | Thêm mới | Xóa đi | Cập nhật | Domain File |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| BF01 | [HỢP ĐỒNG] Quản lý Hợp đồng | Vận hành Cốt lõi | 25 | 21 | 4 | 0 | `domains/hop-dong.md` |
+| BF02 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng | Vận hành Cốt lõi | 18 | 10 | 8 | 0 | `domains/menu-order.md` |
+| BF03 | [GIAO HÀNG] Lịch trình & Điều phối | Vận hành Cốt lõi | 16 | 12 | 4 | 0 | `domains/giao-hang-dieu-phoi.md` |
+| BF04 | [ĐẶT HÀNG NCC] Đặt hàng Nhà cung cấp | Vận hành Cốt lõi | 8 | 7 | 1 | 0 | `domains/dat-hang-ncc.md` |
+| BF05 | [GIAO HÀNG] Web Đối tác Vận chuyển | Vận hành Cốt lõi | 16 | 15 | 1 | 0 | `domains/giao-hang-doi-tac.md` |
+| BF06 | [GIAO HÀNG] App Tài xế | Vận hành Cốt lõi | 5 | 2 | 3 | 0 | `domains/giao-hang-tai-xe.md` |
+| BF07 | [THANH TOÁN] Thanh toán & Hoàn tiền | Vận hành Cốt lõi | 6 | 2 | 4 | 0 | `domains/thanh-toan.md` |
+| BF08 | [THU TIỀN & HÀNG HỦY] Báo cáo Thu tiền & Tiêu hủy | Vận hành Cốt lõi | 6 | 4 | 2 | 0 | `domains/thu-tien-huy.md` |
+| BF09 | [TỒN KHO & THIẾT BỊ] Quản lý Tồn kho & Vật tư | Quản lý Tài sản & CSKH | 10 | 8 | 2 | 0 | `domains/ton-kho-thiet-bi.md` |
+| BF10 | [USER BINDING] Liên kết Nhân viên & Phúc lợi | Quản lý Tài sản & CSKH | — | — | — | — | `domains/user-binding.md` (không thay đổi) |
+| BF11 | [USER ENGAGEMENT] Tương tác & Khảo sát | Quản lý Tài sản & CSKH | 2 | 0 | 1 | 1 | `domains/user-engagement.md` |
+| BF12 | [ĐẠI LÝ] Quản lý Đại lý (Agency & Partner) | Quản lý Tài sản & CSKH | 12 | 7 | 5 | 0 | `domains/dai-ly.md` |
+| BF13 | [SYSTEM & OTHER] Cấu hình Hệ thống & Tích hợp | Nền tảng & Quản trị | 9 | 0 | 9 | 0 | `domains/system-other.md` |
+| **Tổng** | | | **133** | **88** | **44** | **1** | |
+
+### Highlights thay đổi quan trọng
+
+1. **BF01 Hợp đồng (+21/-4)**: Thêm luồng phê duyệt đăng ký HĐ mới hoàn toàn (E03 + E02); thêm quản lý PLAN giá + tùy chọn dịch vụ + quản lý giảm giá; xóa invoice cũ → thay Bill One API.
+2. **BF02 Menu & Order (+10/-8)**: Thêm QL danh mục SP, tag SP, thống kê menu, checklist picking; xóa màn hình menu riêng E02, đánh giá sao tài xế, dashboard task, sao chép menu cũ.
+3. **BF03 Lịch trình (+12/-4)**: Thêm toàn bộ luồng QL YC vận chuyển (báo giá, so sánh, chốt bên VC); thêm bulk CSV/account cho bên VC; xóa cài đặt số lần giao/loại hàng từ E02.
+4. **BF05 Web ĐT Vận chuyển (+15/-1)**: Domain E05 xây mới gần như hoàn toàn — thêm login, form đăng ký, hồ sơ, lịch trình giao, QL yêu cầu báo giá.
+5. **BF06 App Tài xế (+2/-3)**: **Đổi platform App → Web**; xóa vật tư, chữ ký, HubSpot; thêm forgot PW + chi tiết thông báo.
+6. **BF07 Thanh toán (+2/-4)**: Xóa Rakuten Pay + Alipay; xóa hóa đơn E02 cũ; thêm Bill One API integration.
+7. **BF12 Đại lý (+7/-5)**: Thay thế mô hình campaign E02 bằng QL giới thiệu tập trung E03; thêm DS đại lý, DS giới thiệu, thanh toán phí GT.
+8. **BF13 System & Other (0/+9 xóa)**: Toàn bộ Task Management (kanban, auto-gen, template, Slack) bị xóa theo yêu cầu của Chủ tịch Hosono.
