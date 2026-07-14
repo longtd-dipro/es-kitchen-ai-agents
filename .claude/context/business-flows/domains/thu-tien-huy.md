@@ -1,6 +1,6 @@
 # BF_THU TIỀN & HÀNG HỦY
 
-> Domain slug: `thu-tien-huy` · 21 stories
+> Domain slug: `thu-tien-huy` · 21 stories (Phase 1) + **4 thêm mới / 2 xóa** (Phase 2)
 
 ## Stories
 
@@ -27,3 +27,24 @@
 | 06 | ドライバーAPP(driver app)_P2 | Final report content confirmation screen | View the full report |  | Xem lại toàn bộ nội dung báo cáo hoàn tất giao hàng trước khi submit. | 2 | [THU TIỀN & HÀNG HỦY] Báo cáo Thu tiền & Tiêu hủy |
 | 06 | ドライバーAPP(driver app)_P2 |  | edit |  | Chỉnh sửa lại báo cáo nếu cần thiết. | 2 | [THU TIỀN & HÀNG HỦY] Báo cáo Thu tiền & Tiêu hủy |
 | 06 | ドライバーAPP(driver app)_P2 |  | Confirm and submit |  | Xác nhận và gửi báo cáo hoàn tất đơn hàng. | 2 | [THU TIỀN & HÀNG HỦY] Báo cáo Thu tiền & Tiêu hủy |
+---
+
+## Phase 2 Scope Changes (2026-07)
+
+> Nguồn: `management/specification/Business_flow_scope_change.xlsx` · BF08
+
+### Thêm mới (4 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Chi tiết |
+| --- | --- | --- | --- | --- | --- |
+| E06 | (NEW) | Báo cáo tiêu hủy | Kiểm tra tồn kho / hàng hủy | | Hiển thị số tồn logic theo SP ở điểm giao; xác định SP bằng scan barcode; nhập/xác nhận số hủy + số tồn thực |
+| E06 | (NEW) | Báo cáo tiêu hủy | Đăng ký tồn kho / hàng hủy | | Đăng ký kết quả kiểm kê (số hủy, số tồn thực); reflect chênh lệch với tồn logic |
+| E06 | (NEW) | Báo cáo tiêu hủy | Quét mã vạch | | Đọc barcode SP → hiển thị màn nhập tồn/hủy của SP đó |
+| E06 | (NEW) | Báo cáo tiêu hủy | Xác nhận kết quả kiểm kê | | Xem DS + chốt số hủy + số tồn thực theo từng SP trước khi đăng ký |
+
+### Xóa đi (2 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Lý do xóa |
+| --- | --- | --- | --- | --- | --- |
+| E06 | (?) | Báo cáo tiêu hủy | Báo cáo tiêu hủy | | Thay bằng tính năng kiểm tra tồn kho/hàng hủy mới |
+| E06 | (?) | Báo cáo tiêu hủy | Báo cáo tiêu hủy riêng lẻ (常温) | | Thay bằng tính năng kiểm tra tồn kho/hàng hủy mới |

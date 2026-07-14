@@ -1,6 +1,6 @@
-# BF_MENU & ORDER Quản lý Thực đơ
+# BF_MENU & ORDER Quản lý Thực đơn & Đặt hàng
 
-> Domain slug: `menu-order` · 46 stories
+> Domain slug: `menu-order` · 46 stories (Phase 1) + **10 thêm mới / 8 xóa** (Phase 2)
 
 ## Stories
 
@@ -52,3 +52,36 @@
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Order Status Management | Hệ thống tự động cập nhật Trạng thái đơn hàng dựa trên phản hồi của Nhà cung cấp hoặc thao tác của Admin. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 |  | Order history | Order History List | Hiển thị bảng lịch sử đặt hàng, tìm theo nhà cung cấp, hiển thị tổng tiền tự động tính toán. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
 | 03 | 運営管理者Web-SystemAdmin_画面一覧 |  |  | Detailed information on order history | Nhấn vào chi tiết trong lịch sử để xem breakdown số lượng đặt của từng mặt hàng từ nhà cung cấp đó. | 5 | [MENU & ORDER] Quản lý Thực đơn & Đặt hàng |
+---
+
+## Phase 2 Scope Changes (2026-07)
+
+> Nguồn: `management/specification/Business_flow_scope_change.xlsx` · BF02
+
+### Thêm mới (10 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Chi tiết |
+| --- | --- | --- | --- | --- | --- |
+| E03 | (NEW) | QL master sản phẩm | DS sản phẩm | Xuất CSV | Xuất CSV template mới của master SP; dùng để đăng ký/update hàng loạt |
+| E03 | (NEW) | QL danh mục SP | DS danh mục | | DS danh mục: tên, hình, thứ tự hiển thị, trạng thái public; search/sort |
+| E03 | (NEW) | QL danh mục SP | Chi tiết danh mục | | Đăng ký/edit tên, hình, thứ tự hiển thị, trạng thái public; upload/thay thế hình |
+| E03 | (NEW) | QL danh mục SP | Xóa danh mục | | Chưa dùng → xóa/vô hiệu; đang gắn SP → không xóa, chỉ vô hiệu |
+| E03 | (NEW) | Danh sách menu | Xuất CSV | | Xuất CSV template menu mới; dùng để đăng ký/update hàng loạt menu |
+| E03 | (NEW) | CRUD menu tháng | Hiển thị / CRUD menu | QL tag SP | Thêm/edit/xóa tag SP trong menu (NEW, Best-seller...); tag reflect vào search popup |
+| E03 | (NEW) | CRUD menu tháng | Hiển thị / CRUD menu | Thống kê menu | Realtime: số SP, tổng đơn chuẩn, tổng max; thống kê theo danh mục/course/thời gian |
+| E03 | (NEW) | QL đơn vật tư | Chi tiết đơn | Kiểm tra dư miễn phí | Hiển thị số dư miễn phí tháng, đơn giá thêm, số lượng vượt, tiền thu thêm; cảnh báo khi vượt hạn mức |
+| E03 | AW_VERSION_001 | QL đơn vật tư | Chi tiết đơn | Checklist picking | Quản lý tình trạng picking từng vật tư dạng checklist |
+| E03 | (NEW) | QL đơn vật tư | Chi tiết đơn | QL giao vật tư | Sau picking → quản lý tình trạng giao + hoàn tất giao |
+
+### Xóa đi (8 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Lý do xóa |
+| --- | --- | --- | --- | --- | --- |
+| E02 | CW_ORDER_001 | Đặt món hàng tháng | Danh sách menu | | Pháp nhân xem menu được trong màn order → màn menu riêng không cần thiết |
+| E02 | (?) | Đặt món hàng tháng | Tự động tính SL đơn | Kiểm tra vượt hạn mức phúc lợi | Phúc lợi tính trên homepage → xóa khỏi hệ thống |
+| E02 | CW_ORDER_005 | Đặt món hàng tháng | Lịch sử đơn | Đánh giá sao tài xế | Gộp vào review sản phẩm |
+| E03 | AW_PERMISSION_006 | Bảng xếp hạng yêu thích | Cá nhân hóa | | Chủ tịch Hosono yêu cầu xóa |
+| E03 | AW_PERMISSION_007 | Bảng xếp hạng yêu thích | Dashboard | Danh sách chỉ số | Chủ tịch Hosono yêu cầu xóa |
+| E03 | AW_PERMISSION_007 | Bảng xếp hạng yêu thích | Dashboard | Danh sách task | Chủ tịch Hosono yêu cầu xóa |
+| E03 | (?) | CRUD menu tháng | Hiển thị / CRUD menu | Đề xuất SP phổ biến | Không còn cần thiết |
+| E03 | AW_MENU_005 | CRUD menu tháng | Hiển thị / CRUD menu | Sao chép menu cũ | Không còn cần thiết |

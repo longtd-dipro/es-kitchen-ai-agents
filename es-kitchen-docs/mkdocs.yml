@@ -58,6 +58,37 @@ nav:
 - Features:
   - DOCUMENT OVERVIEW: features/index.md
   - BA TODOs (Client Questions): features/BA_TODO_for_client.md
+  - Phase 2 - Scope Changes: features/scope-changes-phase2.md
+
+  # ── Business Flows BF01 → BF13 ──
+  - BF01 - Contract Management:
+    - Specification: features/contract-management/SPEC.md
+  - BF02 - Menu & Order:
+    - Specification: features/menu-order/SPEC.md
+  - BF03 - Delivery Dispatching:
+    - Specification: features/delivery-dispatching/SPEC.md
+  - BF04 - Supplier Ordering:
+    - Specification: features/supplier-ordering/SPEC.md
+  - BF05 - Delivery Partner:
+    - Specification: features/delivery-partner/SPEC.md
+  - BF06 - Delivery Driver:
+    - Specification: features/delivery-driver/SPEC.md
+  - BF07 - Payment:
+    - Specification: features/payment/SPEC.md
+  - BF08 - Collection & Cancellation:
+    - Specification: features/collection-cancellation/SPEC.md
+  - BF09 - Inventory & Equipment:
+    - Specification: features/inventory-equipment/SPEC.md
+  - BF10 - User Binding:
+    - Specification: features/user-binding/SPEC.md
+  - BF11 - User Engagement:
+    - Specification: features/user-engagement/SPEC.md
+  - BF12 - Agency Management:
+    - Specification: features/agency-management/SPEC.md
+  - BF13 - System Other:
+    - Specification: features/system-other/SPEC.md
+
+  # ── Other Features ──
   - Admin Account Management:
     - Specification: features/admin-account-management/SPEC.md
     - API Design: features/admin-account-management/es-kitchen-api/DESIGN.md
@@ -67,8 +98,6 @@ nav:
     - API Design: features/admin-role-permission/es-kitchen-api/DESIGN.md
     - Web Admin Design: features/admin-role-permission/es-kitchen-web-admin/DESIGN.md
     - Test Cases: features/admin-role-permission/test-cases/tc_role_permission.md
-  - Agency Management (Đại lý):
-    - Specification: features/agency-management/SPEC.md
   - AI Recommendation Engine:
     - Specification: features/ai-recommendation/SPEC.md
     - Overview: features/ai-recommendation/overview.md
@@ -96,18 +125,8 @@ nav:
       - Task 3-4: features/api-hardening/es-kitchen-api/tasks/task-3-4.md
   - Authentication:
     - Specification: features/authentication/SPEC.md
-  - Collection & Cancellation:
-    - Specification: features/collection-cancellation/SPEC.md
   - Contract & Delivery Authentication:
     - API Design: features/contract-delivery-authentication/es-kitchen-api/DESIGN.md
-  - Contract Management:
-    - Specification: features/contract-management/SPEC.md
-  - Delivery Dispatching:
-    - Specification: features/delivery-dispatching/SPEC.md
-  - Delivery Driver:
-    - Specification: features/delivery-driver/SPEC.md
-  - Delivery Partner:
-    - Specification: features/delivery-partner/SPEC.md
   - Driver Authentication:
     - API Design: features/driver-authentication/es-kitchen-api/DESIGN.md
   - Guest Mode:
@@ -136,8 +155,6 @@ nav:
       - Task 3-3: features/guest-mode/es-kitchen-payment-app/tasks/task-3-3.md
     - Web Admin Tasks:
       - Task 3-4: features/guest-mode/es-kitchen-web-admin/tasks/task-3-4.md
-  - Inventory & Equipment:
-    - Specification: features/inventory-equipment/SPEC.md
   - IP Whitelist:
     - Specification: features/ip-whitelist/SPEC.md
     - API Design: features/ip-whitelist/es-kitchen-api/DESIGN.md
@@ -148,51 +165,12 @@ nav:
     - API Design: features/maintain-management/es-kitchen-api/DESIGN.md
     - Mobile Design: features/maintain-management/es-kitchen-payment-app/DESIGN.md
     - Web Admin Design: features/maintain-management/es-kitchen-web-admin/DESIGN.md
-  - Menu & Order:
-    - Specification: features/menu-order/SPEC.md
   - Notification Management:
     - Specification: features/notification-management/SPEC.md
     - API Design: features/notification-management/es-kitchen-api/DESIGN.md
     - Web Admin Design: features/notification-management/es-kitchen-web-admin/DESIGN.md
     - Web Company Design: features/notification-management/es-kitchen-web-company/DESIGN.md
     - Mobile Design: features/notification-management/es-kitchen-payment-app/DESIGN.md
-  - Order List:
-    - Specification: features/order-list/SPEC.md
-    - API Design: features/order-list/es-kitchen-api/DESIGN.md
-    - Web Supplier Design: features/order-list/es-kitchen-web-supplier/DESIGN.md
-    - API Tasks:
-      - Task 1-1: features/order-list/es-kitchen-api/tasks/task-1-1.md
-      - Task 2-1: features/order-list/es-kitchen-api/tasks/task-2-1.md
-      - Task 2-2: features/order-list/es-kitchen-api/tasks/task-2-2.md
-    - Web Supplier Tasks:
-      - Task 3-1: features/order-list/es-kitchen-web-supplier/tasks/task-3-1.md
-      - Task 3-2: features/order-list/es-kitchen-web-supplier/tasks/task-3-2.md
-      - Task 3-3: features/order-list/es-kitchen-web-supplier/tasks/task-3-3.md
-  - Payment:
-    - Specification: features/payment/SPEC.md
-  - Supplier Authentication:
-    - API Design: features/supplier-authentication/es-kitchen-api/DESIGN.md
-    - Web Supplier Design: features/supplier-authentication/es-kitchen-web-supplier/DESIGN.md
-  - Supplier Ordering:
-    - Specification: features/supplier-ordering/SPEC.md
-  - Supplier Profile:
-    - Specification: features/supplier-profile/SPEC.md
-    - Plan: features/supplier-profile/PLAN.md
-    - API Design: features/supplier-profile/es-kitchen-api/DESIGN.md
-    - Web Supplier Design: features/supplier-profile/es-kitchen-web-supplier/DESIGN.md
-    - API Tasks:
-      - Task 2-1: features/supplier-profile/es-kitchen-api/tasks/task-2-1.md
-      - Task 4-1: features/supplier-profile/es-kitchen-api/tasks/task-4-1.md
-    - Web Supplier Tasks:
-      - Task 3-1: features/supplier-profile/es-kitchen-web-supplier/tasks/task-3-1.md
-  - Survey Management:
-    - Specification: features/survey-management/SPEC.md
-  - System Other (Settings & Common):
-    - Specification: features/system-other/SPEC.md
-  - User Binding:
-    - Specification: features/user-binding/SPEC.md
-  - User Engagement:
-    - Specification: features/user-engagement/SPEC.md
   - Version Management:
     - Specification: features/version-management/SPEC.md
     - API Design: features/version-management/es-kitchen-api/DESIGN.md

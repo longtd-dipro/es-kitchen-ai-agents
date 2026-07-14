@@ -1,6 +1,6 @@
 # BF_HỢP ĐỒNG Quản lý Hợp đồng
 
-> Domain slug: `hop-dong` · 56 stories
+> Domain slug: `hop-dong` · 56 stories (Phase 1) + **21 thêm mới / 4 xóa** (Phase 2)
 
 ## Stories
 
@@ -62,3 +62,43 @@
 |  |  |  |  |  |  |  |  | 利用規約スクロール | Scrollbox điều khoản | Optional | Read-only text | Hiển thị toàn bộ nội dung điều khoản dịch vụ dạng scrollable box. Người dùng cần đọc trước khi tick đồng ý. Nội dung không thể chỉnh sửa. |
 |  |  |  |  |  |  |  |  | 利用規約に同意する | Đồng ý điều khoản sử dụng | Required | Checkbox | Bắt buộc tick trước khi submit. Nếu chưa tick, nút 確認 sẽ bị disabled hoặc hiện lỗi validation. |
 |  |  |  |  |  |  |  |  | 確認ボタン | Nút Xác nhận | Required | Button (Submit) | Nút submit form. Chỉ active khi checkbox 利用規約 đã được tick. |
+---
+
+## Phase 2 Scope Changes (2026-07)
+
+> Nguồn: `management/specification/Business_flow_scope_change.xlsx` · BF01
+
+### Thêm mới (21 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Chi tiết |
+| --- | --- | --- | --- | --- | --- |
+| E03 | AW_CORPORATE_002 | QL chi nhánh | Đăng ký chi nhánh mới | Xuất CSV | Xuất data hàng loạt từ hệ thống để có thể edit bằng CSV |
+| E03 | (NEW) | Quy trình duyệt đăng ký HĐ | DS đăng ký HĐ | | Hiển thị danh sách đăng ký HĐ mới + đăng ký thay đổi HĐ từ pháp nhân; search/filter theo loại, thời gian, công ty, chi nhánh, trạng thái |
+| E03 | (NEW) | Quy trình duyệt đăng ký HĐ | Chi tiết đăng ký HĐ | | Hiển thị chi tiết nội dung đăng ký; đăng ký mới = toàn bộ nội dung; đăng ký thay đổi = diff trước/sau |
+| E03 | (NEW) | Quy trình duyệt đăng ký HĐ | Duyệt đăng ký HĐ | | Xác nhận + duyệt/từ chối; sau duyệt → tạo HĐ mới hoặc update thông tin HĐ |
+| E03 | (NEW) | Quy trình duyệt đăng ký HĐ | Duyệt đăng ký HĐ | Cấp TK trước | Phát hành TK admin cho pháp nhân trước khi HĐ bắt đầu |
+| E03 | (NEW) | Quy trình duyệt đăng ký HĐ | Duyệt đăng ký HĐ | Cài đặt nguồn GT | Set nguồn giới thiệu (pháp nhân/đại lý) khi đăng ký HĐ mới; nếu đại lý → auto apply PLAN phí GT |
+| E03 | (NEW) | Quy trình duyệt đăng ký HĐ | Lịch sử phê duyệt | | Lịch sử duyệt đăng ký HĐ: thời gian apply, người duyệt, trạng thái, comment |
+| E03 | (NEW) | QL hợp đồng | DS phí thu | | Quản lý theo pháp nhân: nội dung HĐ, phương thức giao, PLAN, thiết bị/option, rule điều chỉnh phí |
+| E03 | (NEW) | QL hợp đồng | DS phí thu | QL phương thức tính phí | Cài đặt/xác nhận phương thức giá bán (giá thường/giá riêng DN) + phương thức thu phí (theo lượng/mua đứt) |
+| E03 | AW_PLAN_001 | QL PLAN | DS PLAN | Nhập / Xuất CSV | Nhập/xuất CSV hàng loạt master PLAN + thông tin cài đặt giá |
+| E03 | (NEW) | QL PLAN | Chi tiết PLAN | Chi tiết điều chỉnh giá PLAN | Quản lý nhiều setting giá cho mỗi PLAN; chọn/switch giá đang apply |
+| E03 | (NEW) | QL PLAN | Chi tiết PLAN | Điều chỉnh phí theo HĐ | Đổi giá đang apply sang setting giá khác cho pháp nhân đang HĐ |
+| E03 | (NEW) | QL tùy chọn dịch vụ | Hiển thị tùy chọn | | DS tùy chọn thiết bị/dịch vụ/vật tư; tên, phân loại, giá apply, trạng thái hiệu lực |
+| E03 | (NEW) | QL tùy chọn dịch vụ | CRUD tùy chọn | | Đăng ký/edit thông tin cơ bản và thông tin giá của tùy chọn |
+| E03 | (NEW) | QL tùy chọn dịch vụ | CRUD tùy chọn | QL phí tùy chọn vật tư | Quản lý hạn mức vật tư miễn phí + đơn giá thêm theo từng PLAN |
+| E03 | (NEW) | QL tùy chọn dịch vụ | QL lịch sử phí | | Lịch sử đổi giá theo từng option; set ngày bắt đầu/kết thúc |
+| E03 | (NEW) | QL tùy chọn dịch vụ | Xóa / Vô hiệu tùy chọn | | Option chưa dùng → xóa; đã dùng → chỉ vô hiệu |
+| E03 | (NEW) | QL giảm giá | DS giảm giá | | DS: tên, phân loại, phí đích, phương thức giảm, thời gian apply, trạng thái |
+| E03 | (NEW) | QL giảm giá | CRUD giảm giá | | Cài đặt điều kiện, số tiền/tỷ lệ, đối tượng apply, thời gian, có/không kết hợp |
+| E03 | (NEW) | QL giảm giá | QL lịch sử giảm giá | | Lịch sử đổi giá; set ngày bắt đầu/kết thúc; giữ giá cũ + đăng ký giá mới |
+| E03 | (NEW) | QL giảm giá | Vô hiệu giảm giá | | Giảm giá đang dùng/có lịch sử → không xóa mà chỉ vô hiệu hóa |
+
+### Xóa đi (4 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Lý do xóa |
+| --- | --- | --- | --- | --- | --- |
+| E03 | AW_CONTRACT_004 | QL hợp đồng | Thêm HĐ | DS đề xuất bên vận chuyển | Timing thực thi khác nhau → xóa khỏi luồng thêm HĐ |
+| E03 | AW_CONTRACT_004 | QL hợp đồng | Thêm HĐ | Xuất CSV đồng bộ Google MyMap | Không còn sử dụng MyMap |
+| E03 | AW_INVOICE_001 | QL hợp đồng | DS phí thu | Hóa đơn theo hợp đồng | Thay bằng tích hợp API Bill One |
+| E03 | AW_INVOICE_002 | QL hợp đồng | DS phí thu | Xem trước hóa đơn | Thay bằng tích hợp API Bill One |
