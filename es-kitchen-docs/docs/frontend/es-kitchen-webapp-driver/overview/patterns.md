@@ -1,200 +1,156 @@
 # es-kitchen-webapp-driver — Patterns & Conventions
 
-> Đọc file này trước khi viết code React cho E06 Driver Web App.
-> Stack khác với các web repo khác: **Zustand** thay RTK, **shadcn/ui** thay Ant Design.
+> Đọc file này trước khi viết code cho E06. **Khác nhóm AntD/Redux (E02–E05)** — dùng shadcn + zustand.
 
 ---
 
-## State Management — Zustand (không phải Redux)
+## 1. UI stack — shadcn/ui + Base UI + Radix
 
-```typescript
-// stores/useAuthStore.ts
-export const useAuthStore = create<AuthState & AuthActions>(set => ({
-  accessToken: null,
-  refreshToken: null,
-  status: SESSION_STATUS.UNAUTHENTICATED,
-  user: null,
+- Components dựng bằng shadcn convention: source đặt tại `src/components/ui/` (button, input, dialog, …)
+- Underlying primitive: `@base-ui/react` (từ Base UI team) + `radix-ui` cho các component chưa có Base UI
+- **Không dùng AntD** trong repo này — nếu cần component mới, add shadcn thêm hoặc build từ Radix/Base UI
 
-  setAuthTokens({ accessToken, refreshToken }) {
-    setAuthCookies({ accessToken, refreshToken });
-    set({ accessToken, refreshToken, user: null, status: SESSION_STATUS.LOADING });
-  },
+### Cách thêm shadcn component
 
-  setCurrentUser(user) {
-    set({ user, status: SESSION_STATUS.AUTHENTICATED });
-  },
-
-  clearAuthState() {
-    clearAuthCookies();
-    set({ accessToken: null, refreshToken: null, user: null, status: SESSION_STATUS.UNAUTHENTICATED });
-  },
-}));
-
-// Dùng trong component
-const { user, setCurrentUser, clearAuthState } = useAuthStore();
+```bash
+pnpm dlx shadcn@latest add <component>
 ```
 
-> ⚠️ Không import `useSelector`, `useDispatch`, hay bất kỳ RTK API nào ở repo này.
-
-Khi thêm state mới: tạo Zustand store mới, không nhét vào `useAuthStore`.
+Nhưng phải check config `components.json` để đảm bảo path alias đúng.
 
 ---
 
-## UI Components — shadcn/ui
+## 2. State — zustand cho client, TanStack Query cho server
 
-Repo này dùng **shadcn/ui** thay Ant Design. Components nằm trong `src/components/ui/`.
+- **Zustand:** `src/stores/useAuthStore.ts` — hiện chỉ có auth. Nếu cần store thêm (theme, UI state), tạo `useXxxStore.ts` riêng, không gom một mega-store.
+- **TanStack Query v5 object syntax bắt buộc** — giống các FE repo khác. Config mặc định `staleTime: 5min`, `retry: 1` (khác E03 dùng `staleTime: 0`).
 
-```typescript
-// ✅ Dùng shadcn components
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
-
-// ❌ Không import từ antd
-import { Button } from "antd"; // SAI — antd không có trong repo này
-```
-
-Thêm component shadcn mới: `npx shadcn@latest add <component-name>`
-
----
-
-## HTTP Client Pattern
-
-Cùng `Requester` pattern với các web repo khác:
-
-```typescript
-// services/client/api.ts
-const API = new Requester();
-export default API;
-```
-
-API prefix của driver **không có prefix** như `/admin/` hay `/admin-company/`:
-
-```typescript
-// services/client/auth.service.ts
-const APIs = {
-  SIGNIN: "/auth/login",           // không có /admin/ prefix
-  ME: "/company/me",
-  LOGOUT: "/auth/logout",
-  FORGOT_PASSWORD: "/auth/forgot-password/request",
-  VERIFY_FORGOT_PASSWORD_OTP: "/auth/forgot-password/verify-otp",
-  RESET_PASSWORD: "/auth/forgot-password/confirm",
-};
-```
-
-Login dùng `companyCode` + `password` (không phải `email`):
-
-```typescript
-export const signIn = async (values: {
-  companyCode: string;
-  password: string;
-}): Promise<IBaseApiResponse<AdminLoginResponse>> => {
-  return API.post(APIs.SIGNIN, values);
-};
-```
-
----
-
-## TanStack Query Pattern (v5)
-
-Cùng object syntax với các repo khác:
-
-```typescript
-// ✅ v5 syntax
+```tsx
 const { data } = useQuery({
-  queryKey: ['driver-orders', filters],
-  queryFn: () => driverService.getOrders(filters),
-});
-
-const { mutate } = useMutation({
-  mutationFn: (orderId: string) => driverService.updateOrderStatus(orderId),
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['driver-orders'] });
-  },
+  queryKey: ['deliveries', driverId],
+  queryFn: () => deliveryService.list(driverId),
 });
 ```
 
----
-
-## Toast — sonner (không phải AntD message)
-
-```typescript
-import { toast } from "sonner";
-
-// ✅ Dùng sonner
-toast.success("Cập nhật thành công");
-toast.error("Đã có lỗi xảy ra");
-
-// ❌ Không dùng
-import { message } from "antd"; // SAI
-```
-
-`<Toaster />` đã được mount tại root qua `components/ui/sonner.tsx`.
+- **Không dùng Redux, không dùng Context API cho global state.**
 
 ---
 
-## shadcn cn() Utility
+## 3. Toast — Sonner, không react-toastify
 
-```typescript
-import { cn } from "@/lib/utils";
+```tsx
+import { toast } from 'sonner';
 
-// Kết hợp class có điều kiện
-<div className={cn("base-class", isActive && "active-class", className)} />
+toast.success('Delivery confirmed');
+toast.error('Network error');
 ```
+
+`<Toaster position="top-center">` mount trong `App.tsx`. Không import `react-toastify` — không có trong dependency.
 
 ---
 
-## Auth Flow
+## 4. Icons — lucide-react (không Phosphor/AntD icons)
 
+```tsx
+import { Package, MapPin, Check } from 'lucide-react';
 ```
-App khởi động → AuthBootstrap.tsx → syncAuthStateFromCookies()
-Login → POST /auth/login (companyCode + password)
-  → setAuthTokens() → cookies + Zustand store
-  → fetchCurrentAdmin() → setCurrentUser()
-  → redirect /dashboard
-401 → clearAuthState() → redirect /login
-```
+
+Không mix `@phosphor-icons/react` — E06 stack không có.
 
 ---
 
-## Routing Pattern
+## 5. Class merging — `cn()` utility
 
-```typescript
-// routes/index.tsx
-export const router = createBrowserRouter([
-  {
-    element: <PublicOnly />,        // redirect → /dashboard nếu đã auth
-    children: [
-      { path: ROUTE.LOGIN, element: <LoginPage /> },
-      { path: ROUTE.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
-      // ...
-    ],
+```tsx
+import { cn } from '@/lib/utils';
+
+<button className={cn('base-classes', condition && 'active-classes', className)} />
+```
+
+`cn` = `twMerge(clsx(...))` — resolve conflict TailwindCSS class. Không dùng `classnames` package.
+
+---
+
+## 6. Component variant — `class-variance-authority`
+
+```tsx
+const buttonVariants = cva('base', {
+  variants: {
+    variant: { default: '...', outline: '...' },
+    size: { sm: '...', md: '...' },
   },
-  {
-    element: <RequireAuth />,       // redirect → /login nếu chưa auth
-    children: [
-      {
-        element: <AuthLayout />,
-        children: [
-          { index: true, element: <Navigate to={ROUTE.DASHBOARD} replace /> },
-          { path: ROUTE.DASHBOARD, element: withSuspense(<DashboardPage />) },
-        ],
-      },
-    ],
-  },
-  { path: "*", element: <Navigate to={ROUTE.LOGIN} replace /> },
-]);
+});
 ```
+
+Chuẩn shadcn pattern — dùng cho component có nhiều biến thể (button, badge, alert).
 
 ---
 
-## Thêm page mới — Checklist
+## 7. Layout — mobile-first, BottomNavigation
 
-- [ ] Tạo folder trong `src/pages/<domain>/`
-- [ ] Thêm lazy import + route vào `routes/index.tsx`
-- [ ] Thêm route path vào `constants/route.ts`
-- [ ] Thêm service file `services/client/<domain>.service.ts` nếu cần API mới
-- [ ] API endpoint **không có prefix** `/admin/` — xác nhận với BE trước khi code
-- [ ] Dùng shadcn/ui components — không import từ `antd`
-- [ ] State mới → Zustand store mới trong `stores/` — không nhét vào `useAuthStore`
-- [ ] Toast → `sonner`, không dùng `antd message`
+- Viewport constrain `max-w-3xl` (768px) — không full width
+- `dvh` unit thay `vh` (Safari mobile URL bar issue)
+- `<BottomNavigation />` render trong `AuthLayout` — không tự tạo nav riêng cho page
+
+---
+
+## 8. Route guards
+
+- `RequireAuth` — check auth store status, redirect kèm `?redirect=` khi cần
+- `PublicOnly` — chặn logged-in user vào login
+- **Không có permission guard** — driver không phân quyền chi tiết
+
+---
+
+## 9. Barcode scanner — react-barcode-scanner
+
+Feature scan barcode dùng `react-barcode-scanner` (không phải `@zxing/browser` như E07). Nếu cần scan QR/barcode → import từ package này.
+
+---
+
+## 10. Forms — react-hook-form + Yup
+
+Giống các FE repo khác — schema Yup trong `src/validation/`. Không dùng AntD `Form` (không có AntD).
+
+---
+
+## 11. HTTP interceptors
+
+- Request interceptor gắn `Authorization: Bearer <token>` + timezone header
+- Response interceptor handle 401 qua `sessionExpired.ts` → `SessionExpiredModal`
+- Service không cần add token manual
+
+---
+
+## 12. Lazy loading
+
+Pages lazy qua `React.lazy()` với `BaseLoadingFullScreen` fallback. Suspense boundary set ở route level.
+
+---
+
+## 13. Path aliases
+
+Import qua alias (`@/`, `@components`, `@services`, …). Không relative `../..`.
+
+---
+
+## 14. Không có
+
+- ❌ **Ant Design** — dùng shadcn/Base UI/Radix
+- ❌ **Redux Toolkit** — dùng zustand
+- ❌ **react-toastify** — dùng Sonner
+- ❌ **Phosphor icons** — dùng lucide-react
+- ❌ **Socket.IO** — notification qua polling TanStack Query
+- ❌ **Rich text editor** — không có feature cần
+- ❌ **PWA manifest** — không standalone install
+- ❌ **Vite 7** — dùng Vite 8
+
+---
+
+## Session monitoring
+
+`useSessionExpired()` + `SessionExpiredModal`:
+
+- Modal hiển thị khi API trả 401
+- User confirm → clear auth store → redirect login
+- Không tự force logout mà không show modal (UX kém trên mobile)

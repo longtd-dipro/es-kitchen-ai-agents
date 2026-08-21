@@ -12,14 +12,14 @@
         <link rel="prev" href="../structure/">
       
       
-        <link rel="next" href="../../../../mobile/es-kitchen-payment-app/overview/structure/">
+        <link rel="next" href="../../../es-kitchen-webapp-payment/overview/structure/">
       
       
         
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1821,10 +1821,38 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#state-management-zustand-khong-phai-redux" class="md-nav__link">
+  <a href="#1-ui-stack-shadcnui-base-ui-radix" class="md-nav__link">
     <span class="md-ellipsis">
       
-        State Management — Zustand (không phải Redux)
+        1. UI stack — shadcn/ui + Base UI + Radix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. UI stack — shadcn/ui + Base UI + Radix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cach-them-shadcn-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cách thêm shadcn component
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-state-zustand-cho-client-tanstack-query-cho-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. State — zustand cho client, TanStack Query cho server
       
     </span>
   </a>
@@ -1832,10 +1860,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ui-components-shadcnui" class="md-nav__link">
+  <a href="#3-toast-sonner-khong-react-toastify" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UI Components — shadcn/ui
+        3. Toast — Sonner, không react-toastify
       
     </span>
   </a>
@@ -1843,10 +1871,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#http-client-pattern" class="md-nav__link">
+  <a href="#4-icons-lucide-react-khong-phosphorantd-icons" class="md-nav__link">
     <span class="md-ellipsis">
       
-        HTTP Client Pattern
+        4. Icons — lucide-react (không Phosphor/AntD icons)
       
     </span>
   </a>
@@ -1854,10 +1882,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tanstack-query-pattern-v5" class="md-nav__link">
+  <a href="#5-class-merging-cn-utility" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TanStack Query Pattern (v5)
+        5. Class merging — cn() utility
       
     </span>
   </a>
@@ -1865,10 +1893,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#toast-sonner-khong-phai-antd-message" class="md-nav__link">
+  <a href="#6-component-variant-class-variance-authority" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Toast — sonner (không phải AntD message)
+        6. Component variant — class-variance-authority
       
     </span>
   </a>
@@ -1876,10 +1904,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#shadcn-cn-utility" class="md-nav__link">
+  <a href="#7-layout-mobile-first-bottomnavigation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        shadcn cn() Utility
+        7. Layout — mobile-first, BottomNavigation
       
     </span>
   </a>
@@ -1887,10 +1915,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#auth-flow" class="md-nav__link">
+  <a href="#8-route-guards" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Auth Flow
+        8. Route guards
       
     </span>
   </a>
@@ -1898,10 +1926,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#routing-pattern" class="md-nav__link">
+  <a href="#9-barcode-scanner-react-barcode-scanner" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Routing Pattern
+        9. Barcode scanner — react-barcode-scanner
       
     </span>
   </a>
@@ -1909,10 +1937,65 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#them-page-moi-checklist" class="md-nav__link">
+  <a href="#10-forms-react-hook-form-yup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Thêm page mới — Checklist
+        10. Forms — react-hook-form + Yup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-http-interceptors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. HTTP interceptors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-lazy-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Lazy loading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-path-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Path aliases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-khong-co" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Không có
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#session-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session monitoring
       
     </span>
   </a>
@@ -1923,6 +2006,189 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Es Kitchen Webapp Payment (E07)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Es Kitchen Webapp Payment (E07)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6_1" id="__nav_4_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../es-kitchen-webapp-payment/overview/structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../es-kitchen-webapp-payment/overview/patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -7450,6 +7716,152 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_33" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_33" id="__nav_6_33_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Webapp Payment (One QR)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_33_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_33">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Webapp Payment (One QR)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/webapp-payment-oneqr/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/webapp-payment-oneqr/es-kitchen-api/DESIGN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/webapp-payment-oneqr/es-kitchen-webapp-payment/DESIGN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Webapp Payment Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
               
                 
   
@@ -7665,10 +8077,38 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#state-management-zustand-khong-phai-redux" class="md-nav__link">
+  <a href="#1-ui-stack-shadcnui-base-ui-radix" class="md-nav__link">
     <span class="md-ellipsis">
       
-        State Management — Zustand (không phải Redux)
+        1. UI stack — shadcn/ui + Base UI + Radix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. UI stack — shadcn/ui + Base UI + Radix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cach-them-shadcn-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cách thêm shadcn component
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-state-zustand-cho-client-tanstack-query-cho-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. State — zustand cho client, TanStack Query cho server
       
     </span>
   </a>
@@ -7676,10 +8116,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ui-components-shadcnui" class="md-nav__link">
+  <a href="#3-toast-sonner-khong-react-toastify" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UI Components — shadcn/ui
+        3. Toast — Sonner, không react-toastify
       
     </span>
   </a>
@@ -7687,10 +8127,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#http-client-pattern" class="md-nav__link">
+  <a href="#4-icons-lucide-react-khong-phosphorantd-icons" class="md-nav__link">
     <span class="md-ellipsis">
       
-        HTTP Client Pattern
+        4. Icons — lucide-react (không Phosphor/AntD icons)
       
     </span>
   </a>
@@ -7698,10 +8138,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tanstack-query-pattern-v5" class="md-nav__link">
+  <a href="#5-class-merging-cn-utility" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TanStack Query Pattern (v5)
+        5. Class merging — cn() utility
       
     </span>
   </a>
@@ -7709,10 +8149,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#toast-sonner-khong-phai-antd-message" class="md-nav__link">
+  <a href="#6-component-variant-class-variance-authority" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Toast — sonner (không phải AntD message)
+        6. Component variant — class-variance-authority
       
     </span>
   </a>
@@ -7720,10 +8160,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#shadcn-cn-utility" class="md-nav__link">
+  <a href="#7-layout-mobile-first-bottomnavigation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        shadcn cn() Utility
+        7. Layout — mobile-first, BottomNavigation
       
     </span>
   </a>
@@ -7731,10 +8171,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#auth-flow" class="md-nav__link">
+  <a href="#8-route-guards" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Auth Flow
+        8. Route guards
       
     </span>
   </a>
@@ -7742,10 +8182,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#routing-pattern" class="md-nav__link">
+  <a href="#9-barcode-scanner-react-barcode-scanner" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Routing Pattern
+        9. Barcode scanner — react-barcode-scanner
       
     </span>
   </a>
@@ -7753,10 +8193,65 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#them-page-moi-checklist" class="md-nav__link">
+  <a href="#10-forms-react-hook-form-yup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Thêm page mới — Checklist
+        10. Forms — react-hook-form + Yup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-http-interceptors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. HTTP interceptors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-lazy-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Lazy loading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-path-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Path aliases
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-khong-co" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Không có
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#session-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session monitoring
       
     </span>
   </a>
@@ -7782,160 +8277,115 @@
 
 <h1 id="es-kitchen-webapp-driver-patterns-conventions">es-kitchen-webapp-driver — Patterns &amp; Conventions</h1>
 <blockquote>
-<p>Đọc file này trước khi viết code React cho E06 Driver Web App.<br />
-Stack khác với các web repo khác: <strong>Zustand</strong> thay RTK, <strong>shadcn/ui</strong> thay Ant Design.</p>
+<p>Đọc file này trước khi viết code cho E06. <strong>Khác nhóm AntD/Redux (E02–E05)</strong> — dùng shadcn + zustand.</p>
 </blockquote>
 <hr />
-<h2 id="state-management-zustand-khong-phai-redux">State Management — Zustand (không phải Redux)</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// stores/useAuthStore.ts</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">useAuthStore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">create</span><span class="o">&lt;</span><span class="nx">AuthState</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nx">AuthActions</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">set</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">({</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nx">accessToken</span><span class="o">:</span><span class="w"> </span><span class="kt">null</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nx">refreshToken</span><span class="o">:</span><span class="w"> </span><span class="kt">null</span><span class="p">,</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">SESSION_STATUS.UNAUTHENTICATED</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="kt">null</span><span class="p">,</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nx">setAuthTokens</span><span class="p">({</span><span class="w"> </span><span class="nx">accessToken</span><span class="p">,</span><span class="w"> </span><span class="nx">refreshToken</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nx">setAuthCookies</span><span class="p">({</span><span class="w"> </span><span class="nx">accessToken</span><span class="p">,</span><span class="w"> </span><span class="nx">refreshToken</span><span class="w"> </span><span class="p">});</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nx">set</span><span class="p">({</span><span class="w"> </span><span class="nx">accessToken</span><span class="p">,</span><span class="w"> </span><span class="nx">refreshToken</span><span class="p">,</span><span class="w"> </span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="kt">null</span><span class="p">,</span><span class="w"> </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">SESSION_STATUS.LOADING</span><span class="w"> </span><span class="p">});</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p">},</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="nx">setCurrentUser</span><span class="p">(</span><span class="nx">user</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="nx">set</span><span class="p">({</span><span class="w"> </span><span class="nx">user</span><span class="p">,</span><span class="w"> </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">SESSION_STATUS.AUTHENTICATED</span><span class="w"> </span><span class="p">});</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="p">},</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="nx">clearAuthState</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="nx">clearAuthCookies</span><span class="p">();</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="nx">set</span><span class="p">({</span><span class="w"> </span><span class="nx">accessToken</span><span class="o">:</span><span class="w"> </span><span class="kt">null</span><span class="p">,</span><span class="w"> </span><span class="nx">refreshToken</span><span class="o">:</span><span class="w"> </span><span class="kt">null</span><span class="p">,</span><span class="w"> </span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="kt">null</span><span class="p">,</span><span class="w"> </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">SESSION_STATUS.UNAUTHENTICATED</span><span class="w"> </span><span class="p">});</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="p">},</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="p">}));</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="c1">// Dùng trong component</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">user</span><span class="p">,</span><span class="w"> </span><span class="nx">setCurrentUser</span><span class="p">,</span><span class="w"> </span><span class="nx">clearAuthState</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useAuthStore</span><span class="p">();</span>
-</code></pre></div>
-<blockquote>
-<p>⚠️ Không import <code>useSelector</code>, <code>useDispatch</code>, hay bất kỳ RTK API nào ở repo này.</p>
-</blockquote>
-<p>Khi thêm state mới: tạo Zustand store mới, không nhét vào <code>useAuthStore</code>.</p>
-<hr />
-<h2 id="ui-components-shadcnui">UI Components — shadcn/ui</h2>
-<p>Repo này dùng <strong>shadcn/ui</strong> thay Ant Design. Components nằm trong <code>src/components/ui/</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// ✅ Dùng shadcn components</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Button</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/components/ui/button&quot;</span><span class="p">;</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Input</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/components/ui/input&quot;</span><span class="p">;</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">PasswordInput</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/components/ui/password-input&quot;</span><span class="p">;</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1">// ❌ Không import từ antd</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Button</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;antd&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// SAI — antd không có trong repo này</span>
-</code></pre></div>
-<p>Thêm component shadcn mới: <code>npx shadcn@latest add &lt;component-name&gt;</code></p>
-<hr />
-<h2 id="http-client-pattern">HTTP Client Pattern</h2>
-<p>Cùng <code>Requester</code> pattern với các web repo khác:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// services/client/api.ts</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">API</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Requester</span><span class="p">();</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">API</span><span class="p">;</span>
-</code></pre></div>
-<p>API prefix của driver <strong>không có prefix</strong> như <code>/admin/</code> hay <code>/admin-company/</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// services/client/auth.service.ts</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">APIs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nx">SIGNIN</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/auth/login&quot;</span><span class="p">,</span><span class="w">           </span><span class="c1">// không có /admin/ prefix</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nx">ME</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/company/me&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nx">LOGOUT</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/auth/logout&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nx">FORGOT_PASSWORD</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/auth/forgot-password/request&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nx">VERIFY_FORGOT_PASSWORD_OTP</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/auth/forgot-password/verify-otp&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nx">RESET_PASSWORD</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/auth/forgot-password/confirm&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">};</span>
-</code></pre></div>
-<p>Login dùng <code>companyCode</code> + <code>password</code> (không phải <code>email</code>):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">signIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">values</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nx">companyCode</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">})</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">IBaseApiResponse</span><span class="o">&lt;</span><span class="nx">AdminLoginResponse</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">API</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="nx">APIs</span><span class="p">.</span><span class="nx">SIGNIN</span><span class="p">,</span><span class="w"> </span><span class="nx">values</span><span class="p">);</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">};</span>
-</code></pre></div>
-<hr />
-<h2 id="tanstack-query-pattern-v5">TanStack Query Pattern (v5)</h2>
-<p>Cùng object syntax với các repo khác:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// ✅ v5 syntax</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useQuery</span><span class="p">({</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nx">queryKey</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;driver-orders&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">filters</span><span class="p">],</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nx">queryFn</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">driverService</span><span class="p">.</span><span class="nx">getOrders</span><span class="p">(</span><span class="nx">filters</span><span class="p">),</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="p">});</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">mutate</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useMutation</span><span class="p">({</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="nx">mutationFn</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">driverService</span><span class="p">.</span><span class="nx">updateOrderStatus</span><span class="p">(</span><span class="nx">orderId</span><span class="p">),</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="nx">onSuccess</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="nx">queryClient</span><span class="p">.</span><span class="nx">invalidateQueries</span><span class="p">({</span><span class="w"> </span><span class="nx">queryKey</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;driver-orders&#39;</span><span class="p">]</span><span class="w"> </span><span class="p">});</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">  </span><span class="p">},</span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="p">});</span>
-</code></pre></div>
-<hr />
-<h2 id="toast-sonner-khong-phai-antd-message">Toast — sonner (không phải AntD message)</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">toast</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;sonner&quot;</span><span class="p">;</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1">// ✅ Dùng sonner</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nx">toast</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="s2">&quot;Cập nhật thành công&quot;</span><span class="p">);</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nx">toast</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&quot;Đã có lỗi xảy ra&quot;</span><span class="p">);</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1">// ❌ Không dùng</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;antd&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// SAI</span>
-</code></pre></div>
-<p><code>&lt;Toaster /&gt;</code> đã được mount tại root qua <code>components/ui/sonner.tsx</code>.</p>
-<hr />
-<h2 id="shadcn-cn-utility">shadcn cn() Utility</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cn</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;@/lib/utils&quot;</span><span class="p">;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1">// Kết hợp class có điều kiện</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="nx">cn</span><span class="p">(</span><span class="s2">&quot;base-class&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">isActive</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="s2">&quot;active-class&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">className</span><span class="p">)}</span><span class="w"> </span><span class="o">/&gt;</span>
-</code></pre></div>
-<hr />
-<h2 id="auth-flow">Auth Flow</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>App khởi động → AuthBootstrap.tsx → syncAuthStateFromCookies()
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Login → POST /auth/login (companyCode + password)
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>  → setAuthTokens() → cookies + Zustand store
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  → fetchCurrentAdmin() → setCurrentUser()
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  → redirect /dashboard
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>401 → clearAuthState() → redirect /login
-</code></pre></div>
-<hr />
-<h2 id="routing-pattern">Routing Pattern</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">// routes/index.tsx</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">router</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createBrowserRouter</span><span class="p">([</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="p">{</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nx">element</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">PublicOnly</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">,</span><span class="w">        </span><span class="c1">// redirect → /dashboard nếu đã auth</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="nx">children</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="kt">ROUTE.LOGIN</span><span class="p">,</span><span class="w"> </span><span class="nx">element</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">LoginPage</span><span class="w"> </span><span class="o">/&gt;</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="kt">ROUTE.FORGOT_PASSWORD</span><span class="p">,</span><span class="w"> </span><span class="nx">element</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">ForgotPasswordPage</span><span class="w"> </span><span class="o">/&gt;</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">      </span><span class="c1">// ...</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">    </span><span class="p">],</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">  </span><span class="p">},</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">  </span><span class="p">{</span>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="nx">element</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">RequireAuth</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">,</span><span class="w">       </span><span class="c1">// redirect → /login nếu chưa auth</span>
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">    </span><span class="nx">children</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">      </span><span class="p">{</span>
-<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">        </span><span class="nx">element</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">AuthLayout</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">,</span>
-<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">        </span><span class="nx">children</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">          </span><span class="p">{</span><span class="w"> </span><span class="nx">index</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span><span class="w"> </span><span class="nx">element</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">Navigate</span><span class="w"> </span><span class="nx">to</span><span class="o">=</span><span class="p">{</span><span class="nx">ROUTE</span><span class="p">.</span><span class="nx">DASHBOARD</span><span class="p">}</span><span class="w"> </span><span class="nx">replace</span><span class="w"> </span><span class="o">/&gt;</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">          </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="kt">ROUTE.DASHBOARD</span><span class="p">,</span><span class="w"> </span><span class="nx">element</span><span class="o">:</span><span class="w"> </span><span class="kt">withSuspense</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">DashboardPage</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">)</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="w">        </span><span class="p">],</span>
-<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">      </span><span class="p">},</span>
-<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">    </span><span class="p">],</span>
-<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w">  </span><span class="p">},</span>
-<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">element</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">Navigate</span><span class="w"> </span><span class="nx">to</span><span class="o">=</span><span class="p">{</span><span class="nx">ROUTE</span><span class="p">.</span><span class="nx">LOGIN</span><span class="p">}</span><span class="w"> </span><span class="nx">replace</span><span class="w"> </span><span class="o">/&gt;</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="p">]);</span>
-</code></pre></div>
-<hr />
-<h2 id="them-page-moi-checklist">Thêm page mới — Checklist</h2>
+<h2 id="1-ui-stack-shadcnui-base-ui-radix">1. UI stack — shadcn/ui + Base UI + Radix</h2>
 <ul>
-<li>[ ] Tạo folder trong <code>src/pages/&lt;domain&gt;/</code></li>
-<li>[ ] Thêm lazy import + route vào <code>routes/index.tsx</code></li>
-<li>[ ] Thêm route path vào <code>constants/route.ts</code></li>
-<li>[ ] Thêm service file <code>services/client/&lt;domain&gt;.service.ts</code> nếu cần API mới</li>
-<li>[ ] API endpoint <strong>không có prefix</strong> <code>/admin/</code> — xác nhận với BE trước khi code</li>
-<li>[ ] Dùng shadcn/ui components — không import từ <code>antd</code></li>
-<li>[ ] State mới → Zustand store mới trong <code>stores/</code> — không nhét vào <code>useAuthStore</code></li>
-<li>[ ] Toast → <code>sonner</code>, không dùng <code>antd message</code></li>
+<li>Components dựng bằng shadcn convention: source đặt tại <code>src/components/ui/</code> (button, input, dialog, …)</li>
+<li>Underlying primitive: <code>@base-ui/react</code> (từ Base UI team) + <code>radix-ui</code> cho các component chưa có Base UI</li>
+<li><strong>Không dùng AntD</strong> trong repo này — nếu cần component mới, add shadcn thêm hoặc build từ Radix/Base UI</li>
+</ul>
+<h3 id="cach-them-shadcn-component">Cách thêm shadcn component</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pnpm<span class="w"> </span>dlx<span class="w"> </span>shadcn@latest<span class="w"> </span>add<span class="w"> </span>&lt;component&gt;
+</code></pre></div>
+<p>Nhưng phải check config <code>components.json</code> để đảm bảo path alias đúng.</p>
+<hr />
+<h2 id="2-state-zustand-cho-client-tanstack-query-cho-server">2. State — zustand cho client, TanStack Query cho server</h2>
+<ul>
+<li><strong>Zustand:</strong> <code>src/stores/useAuthStore.ts</code> — hiện chỉ có auth. Nếu cần store thêm (theme, UI state), tạo <code>useXxxStore.ts</code> riêng, không gom một mega-store.</li>
+<li><strong>TanStack Query v5 object syntax bắt buộc</strong> — giống các FE repo khác. Config mặc định <code>staleTime: 5min</code>, <code>retry: 1</code> (khác E03 dùng <code>staleTime: 0</code>).</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useQuery</span><span class="p">({</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nx">queryKey</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">'deliveries'</span><span class="p">,</span><span class="w"> </span><span class="nx">driverId</span><span class="p">],</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nx">queryFn</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">deliveryService</span><span class="p">.</span><span class="nx">list</span><span class="p">(</span><span class="nx">driverId</span><span class="p">),</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">});</span>
+</code></pre></div>
+<ul>
+<li><strong>Không dùng Redux, không dùng Context API cho global state.</strong></li>
+</ul>
+<hr />
+<h2 id="3-toast-sonner-khong-react-toastify">3. Toast — Sonner, không react-toastify</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">toast</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'sonner'</span><span class="p">;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nx">toast</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="s1">'Delivery confirmed'</span><span class="p">);</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nx">toast</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'Network error'</span><span class="p">);</span>
+</code></pre></div>
+<p><code>&lt;Toaster position="top-center"&gt;</code> mount trong <code>App.tsx</code>. Không import <code>react-toastify</code> — không có trong dependency.</p>
+<hr />
+<h2 id="4-icons-lucide-react-khong-phosphorantd-icons">4. Icons — lucide-react (không Phosphor/AntD icons)</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Package</span><span class="p">,</span><span class="w"> </span><span class="nx">MapPin</span><span class="p">,</span><span class="w"> </span><span class="nx">Check</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'lucide-react'</span><span class="p">;</span>
+</code></pre></div>
+<p>Không mix <code>@phosphor-icons/react</code> — E06 stack không có.</p>
+<hr />
+<h2 id="5-class-merging-cn-utility">5. Class merging — <code>cn()</code> utility</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cn</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@/lib/utils'</span><span class="p">;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="p">&lt;</span><span class="nt">button</span><span class="w"> </span><span class="na">className</span><span class="o">=</span><span class="p">{</span><span class="nx">cn</span><span class="p">(</span><span class="s1">'base-classes'</span><span class="p">,</span><span class="w"> </span><span class="nx">condition</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="s1">'active-classes'</span><span class="p">,</span><span class="w"> </span><span class="nx">className</span><span class="p">)}</span><span class="w"> </span><span class="p">/&gt;</span>
+</code></pre></div>
+<p><code>cn</code> = <code>twMerge(clsx(...))</code> — resolve conflict TailwindCSS class. Không dùng <code>classnames</code> package.</p>
+<hr />
+<h2 id="6-component-variant-class-variance-authority">6. Component variant — <code>class-variance-authority</code></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">buttonVariants</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">cva</span><span class="p">(</span><span class="s1">'base'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nx">variants</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nx">variant</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="s1">'...'</span><span class="p">,</span><span class="w"> </span><span class="nx">outline</span><span class="o">:</span><span class="w"> </span><span class="s1">'...'</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nx">size</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">sm</span><span class="o">:</span><span class="w"> </span><span class="s1">'...'</span><span class="p">,</span><span class="w"> </span><span class="nx">md</span><span class="o">:</span><span class="w"> </span><span class="s1">'...'</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">});</span>
+</code></pre></div>
+<p>Chuẩn shadcn pattern — dùng cho component có nhiều biến thể (button, badge, alert).</p>
+<hr />
+<h2 id="7-layout-mobile-first-bottomnavigation">7. Layout — mobile-first, BottomNavigation</h2>
+<ul>
+<li>Viewport constrain <code>max-w-3xl</code> (768px) — không full width</li>
+<li><code>dvh</code> unit thay <code>vh</code> (Safari mobile URL bar issue)</li>
+<li><code>&lt;BottomNavigation /&gt;</code> render trong <code>AuthLayout</code> — không tự tạo nav riêng cho page</li>
+</ul>
+<hr />
+<h2 id="8-route-guards">8. Route guards</h2>
+<ul>
+<li><code>RequireAuth</code> — check auth store status, redirect kèm <code>?redirect=</code> khi cần</li>
+<li><code>PublicOnly</code> — chặn logged-in user vào login</li>
+<li><strong>Không có permission guard</strong> — driver không phân quyền chi tiết</li>
+</ul>
+<hr />
+<h2 id="9-barcode-scanner-react-barcode-scanner">9. Barcode scanner — react-barcode-scanner</h2>
+<p>Feature scan barcode dùng <code>react-barcode-scanner</code> (không phải <code>@zxing/browser</code> như E07). Nếu cần scan QR/barcode → import từ package này.</p>
+<hr />
+<h2 id="10-forms-react-hook-form-yup">10. Forms — react-hook-form + Yup</h2>
+<p>Giống các FE repo khác — schema Yup trong <code>src/validation/</code>. Không dùng AntD <code>Form</code> (không có AntD).</p>
+<hr />
+<h2 id="11-http-interceptors">11. HTTP interceptors</h2>
+<ul>
+<li>Request interceptor gắn <code>Authorization: Bearer &lt;token&gt;</code> + timezone header</li>
+<li>Response interceptor handle 401 qua <code>sessionExpired.ts</code> → <code>SessionExpiredModal</code></li>
+<li>Service không cần add token manual</li>
+</ul>
+<hr />
+<h2 id="12-lazy-loading">12. Lazy loading</h2>
+<p>Pages lazy qua <code>React.lazy()</code> với <code>BaseLoadingFullScreen</code> fallback. Suspense boundary set ở route level.</p>
+<hr />
+<h2 id="13-path-aliases">13. Path aliases</h2>
+<p>Import qua alias (<code>@/</code>, <code>@components</code>, <code>@services</code>, …). Không relative <code>../..</code>.</p>
+<hr />
+<h2 id="14-khong-co">14. Không có</h2>
+<ul>
+<li>❌ <strong>Ant Design</strong> — dùng shadcn/Base UI/Radix</li>
+<li>❌ <strong>Redux Toolkit</strong> — dùng zustand</li>
+<li>❌ <strong>react-toastify</strong> — dùng Sonner</li>
+<li>❌ <strong>Phosphor icons</strong> — dùng lucide-react</li>
+<li>❌ <strong>Socket.IO</strong> — notification qua polling TanStack Query</li>
+<li>❌ <strong>Rich text editor</strong> — không có feature cần</li>
+<li>❌ <strong>PWA manifest</strong> — không standalone install</li>
+<li>❌ <strong>Vite 7</strong> — dùng Vite 8</li>
+</ul>
+<hr />
+<h2 id="session-monitoring">Session monitoring</h2>
+<p><code>useSessionExpired()</code> + <code>SessionExpiredModal</code>:</p>
+<ul>
+<li>Modal hiển thị khi API trả 401</li>
+<li>User confirm → clear auth store → redirect login</li>
+<li>Không tự force logout mà không show modal (UX kém trên mobile)</li>
 </ul>
 
 
@@ -7995,7 +8445,7 @@ Stack khác với các web repo khác: <strong>Zustand</strong> thay RTK, <stron
       <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.expand", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

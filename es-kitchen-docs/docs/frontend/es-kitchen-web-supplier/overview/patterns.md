@@ -1,96 +1,73 @@
 # es-kitchen-web-supplier — Patterns & Conventions
 
-> Repo này được scaffold từ cùng template với `es-kitchen-web-admin` — **dependencies giống hệt** (cùng version React 19.2, Vite, RTK 2.12, TanStack Query 5.10, Ant Design 6.4, react-hook-form 7.76, yup 1.7).
->
-> **Pattern chính → tham chiếu `frontend/es-kitchen-web-admin/overview/patterns.md`** (single source of truth). File này chỉ note những điểm **khác biệt** hoặc **ràng buộc riêng** của repo Supplier.
+> Repo E04 — cùng template với E03/E02 nhưng dùng **Vite 8 + AntD 6.4** (mới hơn) và có **fake data services** phục vụ dev offline.
 
 ---
 
-## Stack reference
+## Kế thừa từ E03 web-admin
 
-| Layer | Library | Version | Pattern doc |
-|---|---|---|---|
-| HTTP client | Axios | 1.16 | [web-admin patterns — HTTP Client](../../es-kitchen-web-admin/overview/patterns.md#http-client-pattern) |
-| Server state | TanStack Query | 5.10 | [web-admin patterns — TanStack Query](../../es-kitchen-web-admin/overview/patterns.md#tanstack-query-pattern-v5) |
-| Client state | Redux Toolkit | 2.12 | [web-admin patterns — Redux Toolkit](../../es-kitchen-web-admin/overview/patterns.md#redux-toolkit-pattern-v2) |
-| Routing | react-router-dom | 7.15 | [web-admin patterns — Routing](../../es-kitchen-web-admin/overview/patterns.md#routing-pattern) |
-| Forms | react-hook-form + yup | 7.76 / 1.7 | [web-admin patterns — Form](../../es-kitchen-web-admin/overview/patterns.md) — section "Form Pattern" |
-| UI | Ant Design + TailwindCSS | 6.4 / 4.3 | [web-admin patterns — Ant Design v6](../../es-kitchen-web-admin/overview/patterns.md) — section "Ant Design v6" |
-| Auth tokens | js-cookie | 3.0 | Cookie storage (KHÔNG localStorage) |
+Đa số pattern áp dụng nguyên vẹn — xem `../es-kitchen-web-admin/overview/patterns.md`:
 
----
-
-## Khác biệt với web-admin
-
-| Khía cạnh | web-admin (E03) | web-supplier (E04) |
-|---|---|---|
-| Stage | Đầy đủ 24 routes, 13 services | Scaffold — 6 routes, 5 services |
-| Domain | System Admin — quản trị toàn hệ thống | Supplier — quản lý menu, nhận đơn |
-| Locale | `'Accept-Language': 'ja'` | Inherit — kiểm tra `services/http/` trước khi đổi |
-| Permission model | Operation vs User accounts | Supplier account (single role) — sẽ mở rộng theo SPEC |
+- #1 Lazy loading + Suspense
+- #3 Redux chỉ cho client state
+- #4 TanStack Query v5 object syntax bắt buộc
+- #5 `useMutationCustom` cho mutation
+- #6 Forms: react-hook-form + Yup
+- #7 HTTP interceptors — không tự thêm token
+- #8 API service pattern
+- #10 Path aliases bắt buộc
+- #11 `useTableParams`
+- #13 `useUnsavedChangesGuard`
+- #14 Toast — `react-toastify`
+- #17 Named export
+- #18 Env vars `VITE_*`
+- #19 Không dùng list
 
 ---
 
-## Ràng buộc riêng
+## Đặc thù E04
 
-### 1. Domain trong service file
+### 1. Fake data services — `*.fake.ts`
 
-Endpoint của Supplier phải prefix `/supplier/`:
+Repo có sẵn `<service>.fake.ts` bên cạnh `<service>.service.ts` để chạy offline khi API chưa sẵn sàng. **Rule:**
 
-```typescript
-// ✅ services/client/order.service.ts (sau khi implement)
-export const orderService = {
-  getOrders: (params) => API.get('/supplier/orders', params),
-  acceptOrder: (id) => API.post(`/supplier/orders/${id}/accept`),
-};
+- Khi API thật sẵn sàng → **swap** import từ `.fake` sang `.service`, xoá file `.fake`. Không giữ song song trong production.
+- Không viết thêm `.fake` cho service mới nếu API đã stable.
+- `.fake.ts` chỉ return static data — không mô phỏng error state phức tạp.
 
-// ❌ KHÔNG dùng /admin/* — đó là E03
-```
+### 2. Vite 8 — cẩn thận với plugin ecosystem
 
-### 2. Auth flow
+Vite 8.0.13 mới hơn E02/E03 (Vite 7). Khi copy plugin config từ E02/E03 → check version constraint. Ví dụ `vite-plugin-svgr` phiên bản 5.x mới compat với Vite 8.
 
-Login endpoint: `POST /supplier/auth/login` (xem `features/supplier-authentication/`).
+### 3. AntD 6.4 — breaking change từ 6.2
 
-Cookie naming convention giống web-admin nhưng giá trị bearer token là token của supplier domain — backend phải verify đúng `role=supplier` trong JWT payload.
+E04 dùng AntD `6.4.2`. Component API có thể khác `6.2.x` (E02/E03) — check migration guide khi share component cross-repo.
 
-### 3. Component reuse
+### 4. Không có socket session
 
-27 `Base*` components trong `components/Common/` được copy giống hệt web-admin. Khi sửa logic của 1 base component:
-- **Không tự sync** sang web-admin
-- Nếu cần fix bug ở base component, đề xuất tách thành package `@eskitchen/ui` shared (cross-repo refactor — cần PM approve)
+Giống E02: `use*SessionSocket` không có. Session quản lý qua 401 response.
 
-### 4. Tailwind config
+### 5. Layout tối giản
 
-TailwindCSS v4 — config qua PostCSS (`postcss.config.js`), KHÔNG có file `tailwind.config.js` cũ. Theme tokens trong `shared/theme/`.
+Sidebar E04 chỉ 3–4 mục (TOP, 受注一覧, パスワード変更, その他). Không dùng accordion đa cấp như E03.
 
-### 5. Test coverage
+### 6. Chỉ 1 Redux slice
 
-`package.json` script `test` hiện là `echo "No tests configured" && exit 0`. Khi implement feature đầu tiên cần test:
-- Setup Jest + React Testing Library + msw (giống pattern web-admin sẽ có)
-- Coverage target: ≥ 70% cho component critical path
+`auth` là slice duy nhất. Mọi server data đưa vào TanStack Query. Không tạo thêm slice cho page-level state — dùng `useState` hoặc URL param.
 
 ---
 
-## Implementing feature mới — checklist
+## Theme màu
 
-Khi bắt đầu task implementation từ `features/<feature>/es-kitchen-web-supplier/tasks/task-X-Y.md`:
+**Primary purple `#6639BA`** = `colors.primitives.purple.600`.
 
-1. Đọc DESIGN.md cùng folder để hiểu API contract
-2. Tạo service file mới trong `services/client/` (nếu chưa có)
-3. Tạo page mới trong `pages/<feature>/` theo pattern `page.tsx + [id]/page.tsx + components/`
-4. Add route vào `routes/index.tsx` với `withSuspense()` + lazy loading
-5. Add route constant vào `constants/route.ts`
-6. Form: react-hook-form + yup, schema trong `validation/`
-7. Server state: TanStack Query v5 (object syntax)
-8. Client state (nếu có): Redux slice trong `stores/reducers/`
-9. Tuân thủ Ant Design v6 breaking changes — xem patterns.md của web-admin
+> **Lưu ý:** purple **KHÔNG có trong `colors.semantics.*`** — dùng primitive trực tiếp. Khi tạo component chung cross-repo, cẩn thận vì purple là màu độc quyền E04.
 
 ---
 
-## Trigger Tech Lead khi cần update overview
+## Không tự thêm
 
-Khi repo này đã có thêm feature → outdated overview:
-
-```
-"Hãy là Tech Lead, cập nhật overview docs cho repo es-kitchen-web-supplier"
-```
+- ❌ Rich text editor — E04 workflow đơn giản, không cần
+- ❌ Chart library — chưa có dashboard cần chart
+- ❌ Drag-drop — không có bảng cần reorder trong scope hiện tại
+- ❌ Socket.IO — order update dùng polling qua TanStack Query

@@ -1,218 +1,68 @@
 # es-kitchen-web-company — Patterns & Conventions
 
 > Đọc file này trước khi viết code React mới cho E02. Cùng stack với web-admin nhưng scope nghiệp vụ khác.
-> Tham chiếu thêm: `es-kitchen-web-admin/overview/patterns.md` — các pattern cốt lõi giống nhau.
 
 ---
 
-## Điểm khác biệt so với web-admin
+## Kế thừa từ E03 web-admin
 
-| | `es-kitchen-web-admin` (E03) | `es-kitchen-web-company` (E02) |
-|---|---|---|
-| API prefix | `/admin/...` | `/admin-company/...` |
-| Default route | `/dashboard` | `/sales-management` |
-| RTK slices | `auth`, `monthlyMenuImport`, `counter` | `auth` only |
-| Service files | 13 files | 5 files |
-| Pages hiện có | 8 groups | 3 groups |
+E02 và E03 cùng React 19 · Vite 7 · AntD 6.2 · Redux Toolkit · TanStack Query v5. **Các pattern chung** — xem `../es-kitchen-web-admin/overview/patterns.md`, phần lớn áp dụng cho E02:
 
-> ⚠️ Không copy endpoint từ web-admin sang — prefix khác nhau hoàn toàn.
-
----
-
-## HTTP Client Pattern
-
-**Giống hệt web-admin** — cùng `Requester` class, cùng interceptor pattern.
-
-```typescript
-// services/client/api.ts — identical to web-admin
-const API = new Requester();  // singleton
-export default API;
-```
-
-Điểm khác biệt duy nhất: `baseURL` trỏ cùng server nhưng endpoint prefix là `/admin-company/...`
+- #1 Lazy loading + Suspense
+- #3 Redux chỉ cho client state
+- #4 TanStack Query v5 object syntax bắt buộc
+- #5 `useMutationCustom` cho mutation
+- #6 Forms: react-hook-form + Yup (không dùng AntD `Form.Item` rules native)
+- #7 HTTP interceptors — không tự thêm token
+- #8 API service pattern (function export, không class)
+- #10 Path aliases bắt buộc
+- #11 `useTableParams`
+- #13 `useUnsavedChangesGuard`
+- #14 Toast — `react-toastify` cho global, AntD `message` cho modal-local
+- #17 Named export component
+- #18 Env vars `VITE_*`
+- #19 Không dùng list
 
 ---
 
-## Service Layer
+## Khác biệt với E03
 
-Chỉ có 5 service files — scope nhỏ hơn web-admin:
+### 1. Ít guard hơn — 2 tầng thay vì 3
 
-```typescript
-// services/client/auth.service.ts
-export const authService = {
-  login: (data: LoginDto) =>
-    API.post('/admin-company/auth/login', data, { disabledToken: true }),
+E02 chỉ có `RequireAuth` + `PublicOnly`. **Không có `RequirePermission`** — mọi authenticated company admin đều thấy hết feature trong scope company (không RBAC nested).
 
-  logout: () => API.post('/admin-company/auth/logout'),
+Nếu tương lai thêm phân quyền trong E02 → cần thiết kế lại `RequirePermission` giống E03.
 
-  getMe: () => API.get('/admin-company/auth/me'),
-};
+### 2. Không có socket session monitoring
 
-// services/client/account.service.ts
-export const accountService = {
-  getUsers: (params: GetUsersParams) =>
-    API.get('/admin-company/users', params),
+E02 không dùng `useAdminSessionSocket()` — company admin không cần force logout từ server realtime. 401 detect qua axios response interceptor là đủ.
 
-  getUserDetail: (userId: string) =>
-    API.get(`/admin-company/users/${userId}`),
-};
+### 3. Layout có stats row
 
-// services/client/sales.service.ts
-export const salesService = {
-  getSales: (params: GetSalesParams) =>
-    API.get('/admin-company/orders', params),
+`AuthLayout.tsx` ở E02 có thêm **stats summary row (~60px)** trên đầu content — hiển thị KPIs của company. E03 không có.
 
-  getUserPurchaseHistory: (purchaseNumber: string) =>
-    API.get(`/admin-company/orders/${purchaseNumber}`),
+### 4. Register flow riêng
 
-  refundOrder: (orderId: string) =>
-    API.post(`/admin-company/orders/${orderId}/refund`),
-};
-```
+E02 có `/register` public route với `RegisterLayout` riêng — E03 không cho self-register (admin do system tạo).
+
+### 5. Post-reset flag qua sessionStorage
+
+Sau khi reset password, flag `passwordJustReset=true` lưu trong `sessionStorage` (không persistent). Dùng để hiển thị notice trên trang login lần đầu sau reset. Không lưu qua cookie hoặc Redux.
 
 ---
 
-## TanStack Query Pattern (v5)
+## Không tự thêm
 
-Cùng pattern với web-admin:
-
-```typescript
-// ✅ v5 syntax
-const { data } = useQuery({
-  queryKey: ['users', filters],
-  queryFn: () => accountService.getUsers(filters),
-});
-
-const { mutate: refund } = useMutation({
-  mutationFn: (orderId: string) => salesService.refundOrder(orderId),
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['sales'] });
-  },
-});
-```
+- ❌ Feature ngoài scope company (ví dụ quản lý deliverer, agency, supplier) — thuộc E03/E04/E05
+- ❌ Rich text editor (TipTap) — E02 chưa có use case
+- ❌ Chart library — E02 hiện dùng stats card đơn giản; nếu cần chart, phối hợp với PM/BA về nhu cầu thực
 
 ---
 
-## Redux Store
+## Theme màu
 
-Chỉ có 1 slice: `auth`. Không có `monthlyMenuImport` hay `counter` như web-admin.
+**Primary orange `#FAA51D`** = `colors.primitives.orange.400` / `colors.semantics.admin.400`.
 
-```typescript
-// stores/reducers/auth.ts — same pattern as web-admin
-// setAuthTokens / setCurrentUser / clearAuthState
+> **Lưu ý:** `colors.semantics.admin.*` là orange (dùng cho E02 Company Admin), `colors.semantics.company.*` là blue (dùng cho E03 System Admin và E06 Driver). Naming ngược với tên epic — đây là convention của ESKITCHEN design system.
 
-// Selectors
-export const selectCurrentUser = (state: { auth: AuthState }) => state.auth.user;
-export const selectIsAuthenticated = (state: { auth: AuthState }) =>
-  state.auth.status === SESSION_STATUS.AUTHENTICATED;
-```
-
-Khi thêm state mới: tạo slice mới trong `stores/reducers/` — không nhét vào `auth` slice.
-
----
-
-## Auth Flow
-
-Giống web-admin, nhưng gọi endpoint `/admin-company/auth/`:
-
-```
-App khởi động → bootstrapAuthStateFromCookies()
-Login → POST /admin-company/auth/login
-  → setAuthTokens() → cookies + Redux
-401 → clearAuthState() → redirect /login
-```
-
----
-
-## Routing Pattern
-
-```typescript
-// routes/index.tsx
-export const router = createBrowserRouter([
-  {
-    element: <PublicOnly />,
-    children: [
-      { path: ROUTE.LOGIN, element: withSuspense(<LoginPage />) },
-      // ... other auth pages
-    ],
-  },
-  {
-    element: <RequireAuth />,
-    children: [
-      {
-        element: <AuthLayout />,
-        children: [
-          // ← Default redirect: / → /sales-management (khác web-admin → /dashboard)
-          { index: true, element: <Navigate to={ROUTE.SALES_MANAGEMENT} replace /> },
-          { path: ROUTE.ACCOUNT_MANAGEMENT, element: withSuspense(<AccountManagementPage />) },
-          { path: ROUTE.SALES_MANAGEMENT, element: withSuspense(<SalesManagementPage />) },
-        ],
-      },
-    ],
-  },
-]);
-```
-
----
-
-## Page Structure Pattern
-
-Cùng pattern với web-admin:
-
-```
-pages/<domain>/
-├── page.tsx                    ← Entry point
-├── components/
-│   ├── <Feature>/
-│   │   ├── <Feature>Tab.tsx
-│   │   ├── FormSearch.tsx
-│   │   └── renderers.tsx       ← Table cell renderers
-└── [id] hoặc [purchaseNumber]/
-    └── page.tsx
-```
-
-Ví dụ thực tế:
-```
-pages/sales-management/
-├── page.tsx
-├── components/
-│   └── UserSales/
-│       ├── UserSalesTab.tsx
-│       ├── FormSearch.tsx
-│       ├── UserSaleSummary.tsx
-│       ├── RefundConfirmModal.tsx
-│       └── renderers.tsx
-└── user-purchase-history/[purchaseNumber]/
-    └── page.tsx
-```
-
----
-
-## Form Pattern
-
-```typescript
-// validation/schemas.ts — yup schemas
-export const loginSchema = yup.object({
-  email: yup.string().email().required(),
-  password: yup.string().min(8).required(),
-});
-
-// Trong component
-const { register, handleSubmit, formState: { errors } } = useForm({
-  resolver: yupResolver(loginSchema),
-});
-```
-
----
-
-## Thêm page mới — Checklist
-
-Khi thêm feature page mới vào web-company:
-
-- [ ] Tạo folder trong `src/pages/<domain>/`
-- [ ] Thêm lazy import trong `routes/index.tsx`
-- [ ] Thêm route path vào `createBrowserRouter`
-- [ ] Thêm constant vào `constants/route.ts`
-- [ ] Thêm service file trong `services/client/<domain>.service.ts` nếu cần
-- [ ] API endpoint prefix phải là `/admin-company/...` — không dùng `/admin/...`
-- [ ] Nếu cần state phức tạp: tạo RTK slice mới trong `stores/reducers/`
+Không tự đổi màu button/link primary — pass qua `AntdProvider` theme config trong `src/shared/theme/antd-theme.ts`.

@@ -2,17 +2,18 @@
 
 Tài liệu kỹ thuật và nghiệp vụ cho dự án **ESKITCHEN Phase 2** — hệ thống quản lý bếp doanh nghiệp cho client Nhật Bản.
 
-## Hệ sinh thái — 8 repos
+## Hệ sinh thái — 9 repos
 
 | Repo | Epic | Vai trò | Stack |
 |---|---|---|---|
-| `es-kitchen-api` | — | Core API · Business Logic · Database · Auth · Integrations | NestJS / TypeScript / PostgreSQL |
-| `es-kitchen-payment-app` | E01 | User Mobile App — order, menu, delivery, payment | Flutter 3.x / Riverpod 3 |
-| `es-kitchen-web-company` | E02 | Company Admin Web (58 functions) | React 19 / Vite 7 / Redux Toolkit |
-| `es-kitchen-web-admin` | E03 | System Admin Web (160 functions) | React 19 / Vite 7 / Redux Toolkit |
-| `es-kitchen-web-supplier` | E04 | Supplier Web — menu, nhận đơn | React 19 / Vite 7 / Redux Toolkit |
-| `es-kitchen-web-outsource-web-private` | E05 | Outsource / Internal Private Admin Web | React 19 / Vite 7 / Ant Design 6 |
-| `es-kitchen-webapp-driver` | E06 | Driver Web App | React 19 / Vite 7 / Ant Design |
+| `es-kitchen-api` | — | Core API · Business Logic · Database · Auth · Integrations | NestJS 11 / TypeScript / PostgreSQL / TypeORM 0.3 |
+| `es-kitchen-payment-app` | E01 | User Mobile App — order, menu, delivery, payment | Flutter 3.10 / Dart / Riverpod 3 / Retrofit / auto_route |
+| `es-kitchen-web-company` | E02 | Company Admin Web | React 19 / Vite 7 / Redux Toolkit / AntD 6.2 |
+| `es-kitchen-web-admin` | E03 | System Admin Web (60+ pages) | React 19 / Vite 7 / Redux Toolkit / AntD 6.2 |
+| `es-kitchen-web-supplier` | E04 | Supplier Web — menu, nhận đơn | React 19 / Vite 8 / Redux Toolkit / AntD 6.4 |
+| `es-kitchen-web-outsource-web-private` | E05 | Outsource / Internal Private Admin Web | React 19 / Vite 8 / Redux Toolkit / AntD 6.4 |
+| `es-kitchen-webapp-driver` | E06 | Driver Web App (mobile-first web) | React 19 / Vite 8 / **shadcn + Base UI** / **Zustand** |
+| `es-kitchen-webapp-payment` | E07 | User Web Ordering (QR scan · cart · elepay) — parallel to E01 Mobile | React 19 / Vite 8 / **shadcn + Base UI** / **Zustand** / PWA |
 | `es-kitchen-testing` | — | E2E Testing — Playwright specs + execution reports (độc lập, root level) | Playwright / TypeScript |
 
 ## BMAD Workflow 
@@ -252,7 +253,8 @@ docs/
 │   ├── es-kitchen-web-company/                ← E02 — Company Admin
 │   ├── es-kitchen-web-supplier/               ← E04 — Supplier
 │   ├── es-kitchen-web-outsource-web-private/  ← E05 — Outsource/Internal
-│   └── es-kitchen-webapp-driver/              ← E06 — Driver
+│   ├── es-kitchen-webapp-driver/              ← E06 — Driver
+│   └── es-kitchen-webapp-payment/             ← E07 — User Web Ordering
 ├── mobile/
 │   └── es-kitchen-payment-app/       ← E01 — Mobile App
 ├── features/                         ← Long-memory cho mọi feature (BMAD output)

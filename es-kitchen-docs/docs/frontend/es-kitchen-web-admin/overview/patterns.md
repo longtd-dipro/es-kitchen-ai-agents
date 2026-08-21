@@ -4,297 +4,203 @@
 
 ---
 
-## HTTP Client Pattern
+## 1. Lazy loading + Suspense
 
-Tất cả API call đi qua singleton `API` — một instance của class `Requester`:
+Mọi page dùng `lazy()` với `Suspense` fallback (`BaseLoading`).
 
-```typescript
-// services/client/api.ts — KHÔNG sửa file này
-class Requester {
-  constructor() {
-    const axiosInstance = axios.create({
-      baseURL: serverConfig.api_server_url,
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept-Language': 'ja',          // ← Tiếng Nhật mặc định
-      },
-    });
+```tsx
+const DashboardPage = lazy(() => import('@pages/dashboard/DashboardPage'));
 
-    // Request interceptor: inject Bearer token
-    axiosInstance.interceptors.request.use(async (config) => {
-      const accessToken = getAccessToken();
-      if (accessToken) config.headers['Authorization'] = `Bearer ${accessToken}`;
-      config.headers['timezone'] = new Date().getTimezoneOffset();
-      return config;
-    });
+<Suspense fallback={<BaseLoading />}>
+  <DashboardPage />
+</Suspense>
+```
 
-    // Response interceptor: 401 → logout
-    axiosInstance.interceptors.response.use(
-      (res) => res.data,
-      (error) => {
-        if (error.response?.status === 401) store.dispatch(clearAuthState());
-        return Promise.reject(error);
-      }
-    );
-  }
-}
-const API = new Requester();
-export default API;
+Có helper `withSuspense()` để wrap và apply class name cho loader.
+
+---
+
+## 2. Route guards — 3 tầng
+
+| Guard | Vai trò |
+|---|---|
+| `PublicOnly` | Redirect authenticated user khỏi trang login/auth |
+| `RequireAuth` | Redirect unauthenticated user về `/login`, show `BaseLoading` khi đang check session |
+| `RequirePermission` | Nested guard — check `usePermissions()` cho từng route protected |
+
+Config trong `src/routes/index.tsx`. Không tự bypass guard cho trang mới.
+
+---
+
+## 3. Redux — chỉ cho client/UI state
+
+- `auth`, `counter`, `monthlyMenuImport` — client state
+- **Server state qua TanStack Query** — không đưa vào Redux
+- **Auth bootstrap:** `bootstrapAuthStateFromCookies()` dispatch trong `main.tsx` trước render
+
+Không thêm slice mới cho data fetch từ API — dùng `useQuery`.
+
+---
+
+## 4. TanStack Query v5 — object syntax bắt buộc
+
+```tsx
+// ✅ Đúng
+const { data } = useQuery({
+  queryKey: ['orders', filters],
+  queryFn: () => orderService.list(filters),
+});
+
+// ❌ v4 positional — SAI
+const { data } = useQuery(['orders'], () => orderService.list());
+```
+
+**Config mặc định** (`services/query/queryClient.ts`):
+`staleTime: 0` · `gcTime: 0` · `retry: 1` · `refetchOnWindowFocus: false`
+
+Override per query khi cần cache dài.
+
+---
+
+## 5. Mutation — `useMutationCustom`
+
+Wrapper trong `hooks/useMutationCustom.ts` chuẩn hoá error/success handling — dùng thay `useMutation` raw để không lặp code toast/error.
+
+```tsx
+const { mutate } = useMutationCustom({
+  mutationFn: orderService.create,
+  successMessage: 'Order created',
+});
 ```
 
 ---
 
-## Service Layer Pattern
+## 6. Forms — react-hook-form + Yup
 
-Mỗi domain có 1 service file trong `services/client/`. Service chỉ gọi `API`, không chứa React hook hay state:
+- Schema Yup trong `src/validation/`
+- `resolver: yupResolver(schema)` khi khai báo `useForm`
+- Không dùng AntD `Form.Item` rules native — dùng `Controller` từ react-hook-form kết hợp AntD input
+
+```tsx
+const { control, handleSubmit } = useForm({ resolver: yupResolver(schema) });
+```
+
+---
+
+## 7. HTTP interceptors — không tự thêm token
+
+- **Request interceptor:** tự động add `Authorization: Bearer <token>` + timezone header
+- **Response interceptor:** unwrap `data` envelope + trigger `sessionEnded` khi 401
+
+Trong service không cần gắn token/header manual — chỉ gọi `axios.get(...)`.
+
+---
+
+## 8. API service pattern — `src/services/client/*`
+
+Mỗi domain một file service (`auth.service.ts`, `order.service.ts`, …) export các function pure return `Promise<T>` — không class.
 
 ```typescript
-// services/client/company.service.ts
-import API from './api';
-
-export const companyService = {
-  getCompanies: (params: GetCompaniesParams) =>
-    API.get('/admin/companies', params),
-
-  getCompanyDetail: (id: string) =>
-    API.get(`/admin/companies/${id}`),
-
-  createCompany: (data: CreateCompanyDto) =>
-    API.post('/admin/companies', data),
-
-  updateCompany: (id: string, data: UpdateCompanyDto) =>
-    API.put(`/admin/companies/${id}`, data),
-
-  importCsv: (file: File) => {
-    const form = new FormData();
-    form.append('file', file);
-    return API.post('/admin/companies/import-csv', form, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-  },
+// services/client/order.service.ts
+export const orderService = {
+  list: (params: ListParams) => api.get<Paginated<Order>>('/orders', { params }),
+  detail: (id: string) => api.get<Order>(`/orders/${id}`),
 };
 ```
 
 ---
 
-## TanStack Query Pattern (v5)
+## 9. Session monitoring — socket.io
 
-```typescript
-// ✅ v5 syntax — queryKey + queryFn object
-const { data, isLoading } = useQuery({
-  queryKey: ['companies', filters],
-  queryFn: () => companyService.getCompanies(filters),
+`useAdminSessionSocket()` chạy trong `AuthBootstrap` component:
+
+- Connect socket khi authenticated
+- Lắng nghe `session:ended` → dispatch action → `SessionEndedModal` hiển thị lý do logout (đăng nhập từ device khác, admin revoke, …)
+
+Không tự viết socket connection cho page cụ thể — dùng hook này.
+
+---
+
+## 10. Path aliases — luôn dùng, không relative `../..`
+
+Import phải qua alias (`@components`, `@services`, …). Không dùng `../../../pages/...`.
+
+---
+
+## 11. Column-scoped table state — `useTableParams`
+
+```tsx
+const { params, onChange } = useTableParams({
+  defaultPageSize: 20,
+  defaultSort: { field: 'createdAt', order: 'descend' },
 });
 
-// ✅ Mutation
-const { mutate } = useMutation({
-  mutationFn: (data: CreateCompanyDto) => companyService.createCompany(data),
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['companies'] });
-    message.success('Tạo thành công');
-  },
-});
-
-// ❌ v4 syntax — KHÔNG dùng
-useQuery(['companies', filters], () => companyService.getCompanies(filters));
+<Table {...} pagination={params.pagination} onChange={onChange} />
 ```
 
-**queryKey convention:**
-```typescript
-['companies']                    // list
-['companies', { page, search }]  // list with filters
-['companies', id]                // detail
-['contracts', companyId]         // nested resource
-```
+Query key derive từ `params` để tự động refetch khi user đổi page/sort/filter.
 
 ---
 
-## Redux Toolkit Pattern (v2)
+## 12. Drag-drop tables — `@dnd-kit`
 
-RTK chỉ dùng cho **client state** — không dùng cho server data (dùng TanStack Query cho đó).
-
-```typescript
-// stores/reducers/auth.ts — pattern hiện có
-const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    setAuthTokens(state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) {
-      setAuthCookies(action.payload);
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      state.status = SESSION_STATUS.LOADING;
-    },
-    setCurrentUser(state, action: PayloadAction<AuthCurrentUser>) {
-      state.user = action.payload;
-      state.status = SESSION_STATUS.AUTHENTICATED;
-    },
-    clearAuthState(state) {
-      clearAuthCookies();
-      state.accessToken = null;
-      state.refreshToken = null;
-      state.user = null;
-      state.status = SESSION_STATUS.UNAUTHENTICATED;
-    },
-  },
-});
-```
-
-Auth token lưu **cookie** (không phải localStorage). Đọc/ghi qua `services/http/authToken.ts`.
+`useTableRowDragDrop` cho các bảng cần reorder (menu items, monthly menu, …). Không viết drag handler manual.
 
 ---
 
-## Auth Flow
+## 13. Unsaved changes guard
 
-```
-App khởi động
-  → bootstrapAuthStateFromCookies()    ← đọc cookie vào Redux
-  → RequireAuth guard check status
-      LOADING → fetch /admin/me → setCurrentUser()
-      UNAUTHENTICATED → redirect /login
-      AUTHENTICATED → render page
-
-Login
-  → POST /admin/auth/login
-  → setAuthTokens({ accessToken, refreshToken })
-  → cookies set + Redux update
-
-401 response (bất kỳ request nào)
-  → interceptor dispatch clearAuthState()
-  → Redux status = UNAUTHENTICATED
-  → RequireAuth redirect /login
-```
+`useUnsavedChangesGuard(isDirty)` cảnh báo user khi rời trang có form đang chỉnh sửa. Bật cho mọi form CRUD lớn.
 
 ---
 
-## Routing Pattern
+## 14. Toast — `react-toastify`
 
-```typescript
-// routes/index.tsx — createBrowserRouter
-export const router = createBrowserRouter([
-  {
-    element: <PublicOnly />,    // redirect dashboard nếu đã auth
-    children: [
-      { path: ROUTE.LOGIN, element: withSuspense(<LoginPage />) },
-    ],
-  },
-  {
-    element: <RequireAuth />,   // redirect login nếu chưa auth
-    children: [
-      {
-        element: <AuthLayout />,   // layout có sidebar + header
-        children: [
-          { path: ROUTE.DASHBOARD, element: withSuspense(<DashboardPage />) },
-          { path: '/company-management/:id', element: withSuspense(<CompanyDetailPage />) },
-        ],
-      },
-    ],
-  },
-]);
-```
-
-Route constants trong `constants/route.ts` — luôn dùng `ROUTE.xxx` thay vì string trực tiếp.
-
-Lazy loading bắt buộc với `withSuspense()`:
-```typescript
-const CompanyDetailPage = lazy(() => import('@/pages/company-management/[id]/page'));
-// Dùng: withSuspense(<CompanyDetailPage />)
-```
+- Global `ToastContainer` mount trong `main.tsx`
+- Dùng `toast.success()` / `toast.error()` — không dùng AntD `message` cho global toast (giữ nhất quán)
+- AntD `message`/`notification` chỉ dùng cho modal-local feedback qua `AntdApp` context
 
 ---
 
-## Page Structure Pattern
+## 15. Rich text — TipTap
 
-```
-pages/<domain>/
-├── page.tsx                    ← Entry point (list page)
-├── [id]/
-│   ├── page.tsx                ← Detail page entry
-│   └── components/
-│       ├── <Domain>PageContent.tsx   ← Main content
-│       ├── shared/
-│       │   └── <Domain>Header.tsx
-│       └── tabs/
-│           ├── <TabName>Tab.tsx
-│           └── sections/
-│               └── <Section>.tsx
-```
-
-Ví dụ thực tế: `pages/contract-management/[id]/components/tabs/pricing-payment/`
+Editor dùng TipTap (`starter-kit`, `text-align`) trong notification/announcement/marketing content. Không thêm library rich text khác.
 
 ---
 
-## Form Pattern (react-hook-form v7 + yup)
+## 16. Charts — recharts
 
-```typescript
-// validation/schemas.ts — đặt yup schema tại đây
-export const createCompanySchema = yup.object({
-  name: yup.string().required('Tên công ty là bắt buộc'),
-  code: yup.string().required().max(10),
-});
-
-// Trong component
-const { register, handleSubmit, formState: { errors } } = useForm({
-  resolver: yupResolver(createCompanySchema),
-});
-```
+Dashboard analytics dùng `recharts`. Không dùng Chart.js/ECharts/D3 khác.
 
 ---
 
-## Ant Design v6 — Lưu ý breaking changes
+## 17. Component export
 
-```typescript
-// ❌ v5 — không dùng
-import { PageHeader } from 'antd';
+Named export ưu tiên. Interface Props đặt cùng file:
 
-// ✅ v6
-import { Flex, App } from 'antd';
-
-// ✅ v6 — message/notification qua App context
-const { message, notification } = App.useApp();
-
-// ✅ Table pagination v6
-<Table
-  pagination={{ pageSize: 20, showSizeChanger: true }}
-  rowKey="id"
-/>
+```tsx
+interface OrderCardProps { orderId: string; }
+export const OrderCard: React.FC<OrderCardProps> = ({ orderId }) => { ... };
 ```
 
-Khi dùng component Ant Design mới: kiểm tra docs v6 trước — API có thể khác v5.
+Không default export cho component thường — trừ page (để lazy load ergonomic).
 
 ---
 
-## Component Conventions
+## 18. Env vars — `import.meta.env.VITE_*`
 
-```typescript
-// ✅ Named export cho pages và components
-export const CompanyDetailPage = () => { ... };
-
-// ✅ Default export cho lazy-loaded pages
-export default CompanyDetailPage;
-
-// ✅ Type props rõ ràng
-type CompanyCardProps = {
-  company: Company;
-  onEdit: (id: string) => void;
-};
-```
+- Không hard-code URL trong code
+- Prefix bắt buộc `VITE_` (Vite convention)
+- Xem `.env.example` để tra danh sách var hợp lệ
 
 ---
 
-## useEffect — Dependency rules
+## 19. Không dùng
 
-```typescript
-// ✅ deps đầy đủ
-useEffect(() => {
-  fetchData(filters);
-}, [filters, fetchData]);
-
-// ❌ bỏ sót dep — eslint sẽ warn
-useEffect(() => {
-  fetchData(filters);
-}, []); // filters bị thiếu
-```
-
-Không `// eslint-disable-next-line` để bypass warning — fix đúng deps.
+- ❌ `useEffect` cho data fetching — dùng `useQuery`
+- ❌ Context API cho auth/global state — dùng Redux
+- ❌ TanStack Query v4 positional syntax
+- ❌ Native AntD `Form` validation rules cho form phức tạp — dùng react-hook-form
+- ❌ Chart.js / ECharts — dùng recharts
+- ❌ Zustand / Jotai — dùng Redux Toolkit
+- ❌ `localStorage` cho JWT — dùng cookie (js-cookie)

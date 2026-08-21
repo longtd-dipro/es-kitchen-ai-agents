@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#es-kitchen-api-entity-relationship-diagram" class="md-skip">
+        <a href="#es-kitchen-api-entity-relationship-overview" class="md-skip">
           Skip to content
         </a>
       
@@ -792,10 +792,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#diagram-tong-the-mermaid" class="md-nav__link">
+  <a href="#cluster-1-identity-auth" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Diagram tổng thể (Mermaid)
+        Cluster 1 — Identity &amp; Auth
       
     </span>
   </a>
@@ -803,22 +803,99 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#entities-chi-tiet" class="md-nav__link">
+  <a href="#cluster-2-business-core-company-contract-menu-product" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Entities chi tiết
+        Cluster 2 — Business core (Company / Contract / Menu / Product)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Entities chi tiết">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-3-delivery-logistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 3 — Delivery &amp; Logistics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-4-ordering-payment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 4 — Ordering &amp; Payment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-5-inventory-material" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 5 — Inventory &amp; Material
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-6-workflow-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 6 — Workflow / Request
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-7-ai-suggestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 7 — AI / Suggestion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-8-reference-notification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 8 — Reference / Notification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#convention-chung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Convention chung
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Convention chung">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#companies-cong-ty" class="md-nav__link">
+  <a href="#primary-key" class="md-nav__link">
     <span class="md-ellipsis">
       
-        companies — Công ty
+        Primary key
       
     </span>
   </a>
@@ -826,10 +903,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#company_admins-admin-cua-company-e02-login" class="md-nav__link">
+  <a href="#timestamp" class="md-nav__link">
     <span class="md-ellipsis">
       
-        company_admins — Admin của company (E02 login)
+        Timestamp
       
     </span>
   </a>
@@ -837,10 +914,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#company_contracts-hop-ong" class="md-nav__link">
+  <a href="#naming" class="md-nav__link">
     <span class="md-ellipsis">
       
-        company_contracts — Hợp đồng
+        Naming
       
     </span>
   </a>
@@ -848,241 +925,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#contract_equipments-thiet-bi-trong-hop-ong" class="md-nav__link">
+  <a href="#relation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        contract_equipments — Thiết bị trong hợp đồng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#contract_payment_items-hang-muc-thanh-toan-hop-ong" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        contract_payment_items — Hạng mục thanh toán hợp đồng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#admins-system-admin-e03-login" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        admins — System Admin (E03 login)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#users-end-users-mobile-app" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        users — End users (Mobile App)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#menus-menu-thang" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        menus — Menu tháng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#menu_products-san-pham-trong-menu-junction" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        menu_products — Sản phẩm trong menu (junction)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#products-san-pham-master-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        products — Sản phẩm (master data)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#product_suppliers-nha-cung-cap-san-pham" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        product_suppliers — Nhà cung cấp sản phẩm
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#product_images-hinh-anh-san-pham" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        product_images — Hình ảnh sản phẩm
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#orders-on-hang" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        orders — Đơn hàng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#order_details-chi-tiet-on-hang" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        order_details — Chi tiết đơn hàng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#payments-thanh-toan" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        payments — Thanh toán
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#payment_methods-phuong-thuc-thanh-toan-master" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        payment_methods — Phương thức thanh toán (master)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#carts-gio-hang-1-user-1-cart" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        carts — Giỏ hàng (1 user = 1 cart)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cart_items-item-trong-gio-hang" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        cart_items — Item trong giỏ hàng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#notifications-thong-bao-he-thong" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        notifications — Thông báo hệ thống
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#user_notifications-notification-gui-toi-user" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        user_notifications — Notification gửi tới user
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#user_favorites-san-pham-yeu-thich" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        user_favorites — Sản phẩm yêu thích
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#user_devices-fcm-device-tokens" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        user_devices — FCM device tokens
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#elepay_customers-elepay-customer-mapping" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        elepay_customers — Elepay customer mapping
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#elepay_customer_sources-the-tin-dung-luu-trong-elepay" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        elepay_customer_sources — Thẻ tín dụng lưu trong Elepay
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cac-entities-phu-tro" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Các entities phụ trợ
+        Relation
       
     </span>
   </a>
@@ -1095,10 +941,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#naming-conventions" class="md-nav__link">
+  <a href="#diagram-mermaid-6-cluster-tong-the" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Naming conventions
+        Diagram (mermaid — 6 cluster tổng thể)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-update-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Update Gate
       
     </span>
   </a>
@@ -2111,6 +1979,186 @@
   
     <li class="md-nav__item">
       <a href="../../../../frontend/es-kitchen-webapp-driver/overview/patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Es Kitchen Webapp Payment (E07)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Es Kitchen Webapp Payment (E07)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6_1" id="__nav_4_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../frontend/es-kitchen-webapp-payment/overview/structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../frontend/es-kitchen-webapp-payment/overview/patterns/" class="md-nav__link">
         
   
   
@@ -7653,6 +7701,152 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_33" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_33" id="__nav_6_33_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Webapp Payment (One QR)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_33_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_33">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Webapp Payment (One QR)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/webapp-payment-oneqr/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/webapp-payment-oneqr/es-kitchen-api/DESIGN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/webapp-payment-oneqr/es-kitchen-webapp-payment/DESIGN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Webapp Payment Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
               
                 
   
@@ -7868,10 +8062,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#diagram-tong-the-mermaid" class="md-nav__link">
+  <a href="#cluster-1-identity-auth" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Diagram tổng thể (Mermaid)
+        Cluster 1 — Identity &amp; Auth
       
     </span>
   </a>
@@ -7879,22 +8073,99 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#entities-chi-tiet" class="md-nav__link">
+  <a href="#cluster-2-business-core-company-contract-menu-product" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Entities chi tiết
+        Cluster 2 — Business core (Company / Contract / Menu / Product)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Entities chi tiết">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-3-delivery-logistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 3 — Delivery &amp; Logistics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-4-ordering-payment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 4 — Ordering &amp; Payment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-5-inventory-material" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 5 — Inventory &amp; Material
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-6-workflow-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 6 — Workflow / Request
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-7-ai-suggestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 7 — AI / Suggestion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-8-reference-notification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster 8 — Reference / Notification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#convention-chung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Convention chung
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Convention chung">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#companies-cong-ty" class="md-nav__link">
+  <a href="#primary-key" class="md-nav__link">
     <span class="md-ellipsis">
       
-        companies — Công ty
+        Primary key
       
     </span>
   </a>
@@ -7902,10 +8173,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#company_admins-admin-cua-company-e02-login" class="md-nav__link">
+  <a href="#timestamp" class="md-nav__link">
     <span class="md-ellipsis">
       
-        company_admins — Admin của company (E02 login)
+        Timestamp
       
     </span>
   </a>
@@ -7913,10 +8184,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#company_contracts-hop-ong" class="md-nav__link">
+  <a href="#naming" class="md-nav__link">
     <span class="md-ellipsis">
       
-        company_contracts — Hợp đồng
+        Naming
       
     </span>
   </a>
@@ -7924,241 +8195,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#contract_equipments-thiet-bi-trong-hop-ong" class="md-nav__link">
+  <a href="#relation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        contract_equipments — Thiết bị trong hợp đồng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#contract_payment_items-hang-muc-thanh-toan-hop-ong" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        contract_payment_items — Hạng mục thanh toán hợp đồng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#admins-system-admin-e03-login" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        admins — System Admin (E03 login)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#users-end-users-mobile-app" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        users — End users (Mobile App)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#menus-menu-thang" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        menus — Menu tháng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#menu_products-san-pham-trong-menu-junction" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        menu_products — Sản phẩm trong menu (junction)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#products-san-pham-master-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        products — Sản phẩm (master data)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#product_suppliers-nha-cung-cap-san-pham" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        product_suppliers — Nhà cung cấp sản phẩm
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#product_images-hinh-anh-san-pham" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        product_images — Hình ảnh sản phẩm
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#orders-on-hang" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        orders — Đơn hàng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#order_details-chi-tiet-on-hang" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        order_details — Chi tiết đơn hàng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#payments-thanh-toan" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        payments — Thanh toán
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#payment_methods-phuong-thuc-thanh-toan-master" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        payment_methods — Phương thức thanh toán (master)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#carts-gio-hang-1-user-1-cart" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        carts — Giỏ hàng (1 user = 1 cart)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cart_items-item-trong-gio-hang" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        cart_items — Item trong giỏ hàng
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#notifications-thong-bao-he-thong" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        notifications — Thông báo hệ thống
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#user_notifications-notification-gui-toi-user" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        user_notifications — Notification gửi tới user
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#user_favorites-san-pham-yeu-thich" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        user_favorites — Sản phẩm yêu thích
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#user_devices-fcm-device-tokens" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        user_devices — FCM device tokens
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#elepay_customers-elepay-customer-mapping" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        elepay_customers — Elepay customer mapping
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#elepay_customer_sources-the-tin-dung-luu-trong-elepay" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        elepay_customer_sources — Thẻ tín dụng lưu trong Elepay
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cac-entities-phu-tro" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Các entities phụ trợ
+        Relation
       
     </span>
   </a>
@@ -8171,10 +8211,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#naming-conventions" class="md-nav__link">
+  <a href="#diagram-mermaid-6-cluster-tong-the" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Naming conventions
+        Diagram (mermaid — 6 cluster tổng thể)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-update-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Update Gate
       
     </span>
   </a>
@@ -8198,1326 +8260,452 @@
 
 
 
-<h1 id="es-kitchen-api-entity-relationship-diagram">es-kitchen-api — Entity Relationship Diagram</h1>
+<h1 id="es-kitchen-api-entity-relationship-overview">es-kitchen-api — Entity Relationship Overview</h1>
 <blockquote>
-<p>Tổng hợp từ source code thực tế (<code>src/entities/*.entity.ts</code>).<br />
-38 entities, PostgreSQL, TypeORM. PK là <code>bigint</code> (trả về dạng <code>string</code> trong TypeScript).</p>
+<p>Tổng hợp entity landscape từ source code thực tế (<code>src/entities/*.entity.ts</code>).<br />
+<strong>159 entities</strong>, PostgreSQL, TypeORM 0.3.28.<br />
+PK convention: <code>bigint</code> (trả về dạng <code>string</code> trong TypeScript response).</p>
+<p><strong>Note:</strong> Full mermaid ERD với tất cả 159 entity không thực tế để maintain. File này liệt kê <strong>cluster + relation quan trọng</strong>. Chi tiết column/index của entity cụ thể → đọc trực tiếp <code>src/entities/&lt;name&gt;.entity.ts</code> (single source of truth).</p>
 </blockquote>
 <hr />
-<h2 id="diagram-tong-the-mermaid">Diagram tổng thể (Mermaid)</h2>
-<pre class="mermaid"><code>erDiagram
-    %% ── Company Domain ──────────────────────────────────
-    companies ||--o{ company_contracts : "contracts"
-    companies ||--o{ company_admins : "admins"
-    companies ||--o{ users : "users (nullable)"
-    companies ||--o{ company_history_logs : "historyLogs"
-
-    company_contracts ||--o{ contract_equipments : "equipments"
-    company_contracts ||--o{ contract_payment_items : "paymentItems"
-    company_contracts ||--o{ contract_history_logs : "historyLogs"
-
-    %% ── User Domain ─────────────────────────────────────
-    users }o--|| payment_methods : "defaultPaymentMethod (nullable)"
-    users ||--o{ user_devices : "devices"
-    users ||--o{ user_favorites : "favorites"
-    users ||--o{ user_notifications : "notifications"
-    users ||--o| carts : "cart (unique)"
-    users ||--o{ orders : "orders (SET NULL on delete)"
-    users ||--o{ user_company_history : "companyHistory"
-    users ||--o{ user_company_restrictions : "restrictions"
-    users ||--o| elepay_customers : "elepayCustomer"
-
-    %% ── Menu &amp; Product Domain ───────────────────────────
-    menus ||--o{ menu_products : "menuProducts"
-    products ||--o{ menu_products : "menuProducts"
-    products ||--o{ product_suppliers : "suppliers"
-    products ||--o{ product_images : "images"
-    products ||--o{ product_history : "history"
-    products ||--o{ user_favorites : "favoritedBy"
-    products ||--o{ cart_items : "cartItems"
-    products ||--o{ order_details : "orderDetails (nullable)"
-
-    %% ── Order &amp; Payment Domain ──────────────────────────
-    orders ||--o{ order_details : "orderDetails (CASCADE)"
-    orders ||--|| payments : "payment (CASCADE)"
-    orders }o--|| payment_methods : "paymentMethod (RESTRICT)"
-
-    payments }o--|| payment_methods : "paymentMethod (RESTRICT)"
-
-    %% ── Cart Domain ─────────────────────────────────────
-    carts ||--o{ cart_items : "items (CASCADE)"
-    cart_items }o--|| products : "product (CASCADE)"
-
-    %% ── Notification Domain ─────────────────────────────
-    notifications ||--o{ user_notifications : "userNotifications"
-
-    %% ── Elepay Domain ───────────────────────────────────
-    elepay_customers ||--o{ elepay_customer_sources : "sources"</code></pre>
-<hr />
-<h2 id="entities-chi-tiet">Entities chi tiết</h2>
-<h3 id="companies-cong-ty"><code>companies</code> — Công ty</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>company_code</code></td>
-<td>varchar UNIQUE</td>
-<td></td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td>varchar</td>
-<td></td>
-</tr>
-<tr>
-<td><code>name_kana</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>customer_postal_code</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>address_prefecture/city/street/building</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>department</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>customer_tel</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>fax</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>employee_count</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>installed_machine_count</code></td>
-<td>int DEFAULT 0</td>
-<td></td>
-</tr>
-<tr>
-<td><code>is_cash_payment_allowed</code></td>
-<td>boolean DEFAULT false</td>
-<td>Cho phép thanh toán tiền mặt</td>
-</tr>
-<tr>
-<td><code>order_limit</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>customer_note</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>status</code></td>
-<td>int DEFAULT 1</td>
-<td>1=PROVISIONAL, 2=REGISTERED, 3=DELETED</td>
-</tr>
-<tr>
-<td><code>user_monthly_limit</code></td>
-<td>int NULL</td>
-<td>Giới hạn đặt hàng tháng per user</td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
-<td>timestamp</td>
-<td>Soft delete</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="company_admins-admin-cua-company-e02-login"><code>company_admins</code> — Admin của company (E02 login)</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>company_id</code></td>
-<td>bigint FK → companies (CASCADE)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>name</code>, <code>name_kana</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>tel</code>, <code>email</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>hashed_refresh_token</code></td>
-<td>varchar NULL</td>
-<td>JWT refresh</td>
-</tr>
-<tr>
-<td><code>role</code></td>
-<td>varchar DEFAULT 'MAIN'</td>
-<td>MAIN | BILLING | SUB</td>
-</tr>
-<tr>
-<td><code>status</code></td>
-<td>varchar</td>
-<td>ACTIVE | INACTIVE</td>
-</tr>
-<tr>
-<td><code>last_login_at</code></td>
-<td>timestamp NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
-<td>timestamp</td>
-<td>Soft delete</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="company_contracts-hop-ong"><code>company_contracts</code> — Hợp đồng</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>company_id</code></td>
-<td>bigint FK → companies (CASCADE)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>contract_plan_id</code>, <code>plan</code>, <code>menu_type</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>target_year_month</code>, <code>creation_type</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>management_name</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>contract_start_period</code>, <code>contract_end_period</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>delivery_*</code> (nhiều cột)</td>
-<td>varchar NULL</td>
-<td>Thông tin giao hàng</td>
-</tr>
-<tr>
-<td><code>postal_code</code>, <code>prefecture/city/street/building</code></td>
-<td>varchar NULL</td>
-<td>Địa chỉ giao hàng</td>
-</tr>
-<tr>
-<td><code>tel</code>, <code>contact_name</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>payment_method</code>, <code>annual_payment</code>, <code>billing_notification_day</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>status</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code></td>
-<td>timestamp</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="contract_equipments-thiet-bi-trong-hop-ong"><code>contract_equipments</code> — Thiết bị trong hợp đồng</h3>
-<p>FK: <code>contract_id</code> → <code>company_contracts</code> (CASCADE)</p>
-<hr />
-<h3 id="contract_payment_items-hang-muc-thanh-toan-hop-ong"><code>contract_payment_items</code> — Hạng mục thanh toán hợp đồng</h3>
-<p>FK: <code>contract_id</code> → <code>company_contracts</code> (CASCADE)</p>
-<hr />
-<h3 id="admins-system-admin-e03-login"><code>admins</code> — System Admin (E03 login)</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>email</code></td>
-<td>varchar UNIQUE</td>
-<td></td>
-</tr>
-<tr>
-<td><code>password</code></td>
-<td>varchar</td>
-<td>bcrypt</td>
-</tr>
-<tr>
-<td><code>hashed_refresh_token</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>role</code>, <code>status</code></td>
-<td>varchar/enum</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
-<td>timestamp</td>
-<td>Soft delete</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="users-end-users-mobile-app"><code>users</code> — End users (Mobile App)</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>company_id</code></td>
-<td>bigint FK → companies NULL</td>
-<td>NULL nếu chưa link</td>
-</tr>
-<tr>
-<td><code>user_code</code></td>
-<td>varchar UNIQUE</td>
-<td></td>
-</tr>
-<tr>
-<td><code>email</code></td>
-<td>varchar UNIQUE (partial idx, where deleted_at IS NULL)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>user_name</code>, <code>gender</code>, <code>birthday</code>, <code>employee_id</code></td>
-<td>varchar/enum NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>password</code>, <code>hashed_refresh_token</code></td>
-<td>varchar</td>
-<td>bcrypt</td>
-</tr>
-<tr>
-<td><code>link_status</code></td>
-<td>enum</td>
-<td>UNLINKED | LINKED | RESTRICTED</td>
-</tr>
-<tr>
-<td><code>linked_at</code>, <code>unlinked_at</code></td>
-<td>timestamp NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>account_status</code></td>
-<td>enum DEFAULT ACTIVE</td>
-<td>ACTIVE | SUSPENDED</td>
-</tr>
-<tr>
-<td><code>unlinked_by</code></td>
-<td>bigint NULL</td>
-<td>Company admin id</td>
-</tr>
-<tr>
-<td><code>cart_confirm_popup_hidden_until</code></td>
-<td>timestamp NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>default_payment_method_id</code></td>
-<td>bigint FK → payment_methods NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>cart_reset_ack_event_id</code></td>
-<td>bigint NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>last_login_at</code></td>
-<td>timestamp NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
-<td>timestamp</td>
-<td>Soft delete</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="menus-menu-thang"><code>menus</code> — Menu tháng</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>menu_code</code></td>
-<td>varchar(12) NULL UNIQUE (where deleted_at IS NULL)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>year_month</code></td>
-<td>varchar(7)</td>
-<td>Format: YYYY-MM</td>
-</tr>
-<tr>
-<td><code>menu_type</code></td>
-<td>enum</td>
-<td>standard | premium</td>
-</tr>
-<tr>
-<td><code>publish_status</code></td>
-<td>enum DEFAULT unpublished</td>
-<td>published | unpublished | auto_public</td>
-</tr>
-<tr>
-<td><code>auto_pub_date</code></td>
-<td>timestamp NULL</td>
-<td>Dùng khi status = auto_public</td>
-</tr>
-<tr>
-<td><code>pdf_url</code></td>
-<td>varchar(2048) NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
-<td>timestamp</td>
-<td>Soft delete</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="menu_products-san-pham-trong-menu-junction"><code>menu_products</code> — Sản phẩm trong menu (junction)</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>menu_id</code></td>
-<td>bigint FK → menus (CASCADE)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>product_id</code></td>
-<td>bigint FK → products (CASCADE)</td>
-<td></td>
-</tr>
-<tr>
-<td>UNIQUE</td>
-<td><code>(menu_id, product_id)</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>selling_price</code></td>
-<td>decimal(12,2)</td>
-<td>Giá bán trong menu</td>
-</tr>
-<tr>
-<td><code>base_order_qty</code></td>
-<td>int DEFAULT 0</td>
-<td>Số lượng gợi ý</td>
-</tr>
-<tr>
-<td><code>std_order_qty_no_short_expiry</code></td>
-<td>int DEFAULT 0</td>
-<td></td>
-</tr>
-<tr>
-<td><code>vending_machine_order_qty</code></td>
-<td>int DEFAULT 0</td>
-<td></td>
-</tr>
-<tr>
-<td><code>product_tags</code></td>
-<td>simple-array NULL</td>
-<td>['NEW', '短賞味期限']</td>
-</tr>
-<tr>
-<td><code>is_public</code></td>
-<td>boolean DEFAULT false</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code></td>
-<td>timestamp</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="products-san-pham-master-data"><code>products</code> — Sản phẩm (master data)</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>product_code</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>jan_code</code></td>
-<td>varchar UNIQUE NULL</td>
-<td>JAN barcode</td>
-</tr>
-<tr>
-<td><code>category</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>price</code></td>
-<td>decimal(12,2) NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td>varchar</td>
-<td></td>
-</tr>
-<tr>
-<td><code>name_kana</code>, <code>description</code></td>
-<td>varchar/text NULL</td>
-<td></td>
-</tr>
-<tr>
-<td>Nutrition columns</td>
-<td>varchar/decimal</td>
-<td>energy, protein, fat, carbohydrate, salt_equivalent, etc.</td>
-</tr>
-<tr>
-<td><code>allergen_labeling</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>raw_material_name</code></td>
-<td>text NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>expiration_date_value</code>, <code>expiration_date_unit</code></td>
-<td>int/varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>shipment_bundled_material</code>, <code>shipment_special_instruction</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>short_expiry_type</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>storage_method_management</code>, <code>storage_method_display</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>vending_machine_column</code>, <code>vending_machine_column_notes</code></td>
-<td>varchar/text NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>supplier_website</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>favorite_count</code></td>
-<td>int DEFAULT 0</td>
-<td>Denormalized counter</td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
-<td>timestamp</td>
-<td>Soft delete</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="product_suppliers-nha-cung-cap-san-pham"><code>product_suppliers</code> — Nhà cung cấp sản phẩm</h3>
-<p>FK: <code>product_id</code> → <code>products</code> (CASCADE)</p>
-<hr />
-<h3 id="product_images-hinh-anh-san-pham"><code>product_images</code> — Hình ảnh sản phẩm</h3>
-<p>FK: <code>product_id</code> → <code>products</code> (CASCADE)</p>
-<hr />
-<h3 id="orders-on-hang"><code>orders</code> — Đơn hàng</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>order_number</code></td>
-<td>varchar(12) UNIQUE</td>
-<td></td>
-</tr>
-<tr>
-<td><code>user_id</code></td>
-<td>bigint FK → users NULL (SET NULL on delete)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>company_id</code></td>
-<td>bigint NULL</td>
-<td>Denormalized, không FK</td>
-</tr>
-<tr>
-<td><code>status</code></td>
-<td>enum DEFAULT PENDING</td>
-<td>PENDING | PAID | CANCELLED | REFUNDED | etc.</td>
-</tr>
-<tr>
-<td><code>payment_method_id</code></td>
-<td>bigint FK → payment_methods (RESTRICT)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>subtotal</code>, <code>total</code></td>
-<td>decimal(12,2) DEFAULT 0</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code></td>
-<td>timestamp</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="order_details-chi-tiet-on-hang"><code>order_details</code> — Chi tiết đơn hàng</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>order_id</code></td>
-<td>bigint FK → orders (CASCADE)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>product_id</code></td>
-<td>bigint NULL</td>
-<td>Không FK (snapshot)</td>
-</tr>
-<tr>
-<td><code>product_code</code>, <code>product_name</code></td>
-<td>varchar</td>
-<td>Snapshot lúc đặt hàng</td>
-</tr>
-<tr>
-<td><code>price</code>, <code>quantity</code>, <code>subtotal</code></td>
-<td>decimal/int</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code></td>
-<td>timestamp</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="payments-thanh-toan"><code>payments</code> — Thanh toán</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>order_id</code></td>
-<td>bigint FK → orders (CASCADE) UNIQUE</td>
-<td>OneToOne</td>
-</tr>
-<tr>
-<td><code>payment_method_id</code></td>
-<td>bigint FK → payment_methods (RESTRICT)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>status</code></td>
-<td>enum DEFAULT PENDING</td>
-<td>PENDING | PAID | FAILED | REFUNDED</td>
-</tr>
-<tr>
-<td><code>amount</code></td>
-<td>decimal(12,2)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>transaction_id</code></td>
-<td>varchar NULL</td>
-<td>Elepay transaction ID</td>
-</tr>
-<tr>
-<td><code>code_id</code></td>
-<td>varchar NULL</td>
-<td>Elepay EasyQR code ID</td>
-</tr>
-<tr>
-<td><code>paid_at</code></td>
-<td>timestamp NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>context</code></td>
-<td>varchar(50) DEFAULT CHECKOUT</td>
-<td>CHECKOUT | HISTORY</td>
-</tr>
-<tr>
-<td><code>metadata</code></td>
-<td>jsonb NULL</td>
-<td>Raw provider response</td>
-</tr>
-<tr>
-<td><code>reminder_count</code></td>
-<td>int DEFAULT 0</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code></td>
-<td>timestamp</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="payment_methods-phuong-thuc-thanh-toan-master"><code>payment_methods</code> — Phương thức thanh toán (master)</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>code</code></td>
-<td>varchar UNIQUE</td>
-<td>CREDIT_CARD, CASH, ALIPAY, WECHAT, etc.</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td>varchar</td>
-<td></td>
-</tr>
-<tr>
-<td><code>description</code></td>
-<td>text NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>is_active</code></td>
-<td>boolean DEFAULT true</td>
-<td></td>
-</tr>
-<tr>
-<td><code>is_default</code></td>
-<td>boolean DEFAULT false</td>
-<td></td>
-</tr>
-<tr>
-<td><code>sort_order</code></td>
-<td>int DEFAULT 0</td>
-<td></td>
-</tr>
-<tr>
-<td><code>image_url</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
-<td>timestamp</td>
-<td>Soft delete</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="carts-gio-hang-1-user-1-cart"><code>carts</code> — Giỏ hàng (1 user = 1 cart)</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>user_id</code></td>
-<td>bigint FK → users (CASCADE) UNIQUE</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code></td>
-<td>timestamp</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="cart_items-item-trong-gio-hang"><code>cart_items</code> — Item trong giỏ hàng</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>cart_id</code></td>
-<td>bigint FK → carts (CASCADE)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>product_id</code></td>
-<td>bigint FK → products (CASCADE)</td>
-<td>eager: true</td>
-</tr>
-<tr>
-<td>UNIQUE</td>
-<td><code>(cart_id, product_id)</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>quantity</code></td>
-<td>int DEFAULT 1</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code>, <code>updated_at</code></td>
-<td>timestamp</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="notifications-thong-bao-he-thong"><code>notifications</code> — Thông báo hệ thống</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>title</code>, <code>content</code></td>
-<td>varchar/text</td>
-<td></td>
-</tr>
-<tr>
-<td><code>type</code></td>
-<td>enum</td>
-<td>MENU_PUBLISH | ORDER_UPDATE | etc.</td>
-</tr>
-<tr>
-<td><code>body</code></td>
-<td>jsonb NULL</td>
-<td><code>{ link?, preViewLink?, orderId? }</code></td>
-</tr>
-<tr>
-<td><code>created_at</code></td>
-<td>timestamp</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="user_notifications-notification-gui-toi-user"><code>user_notifications</code> — Notification gửi tới user</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>notification_id</code></td>
-<td>bigint FK → notifications</td>
-<td></td>
-</tr>
-<tr>
-<td><code>user_id</code></td>
-<td>bigint FK → users</td>
-<td></td>
-</tr>
-<tr>
-<td>INDEX</td>
-<td><code>(user_id, is_read, created_at)</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>is_read</code></td>
-<td>boolean DEFAULT false</td>
-<td></td>
-</tr>
-<tr>
-<td><code>read_at</code></td>
-<td>timestamp NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code></td>
-<td>timestamp</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="user_favorites-san-pham-yeu-thich"><code>user_favorites</code> — Sản phẩm yêu thích</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>user_id</code></td>
-<td>bigint FK → users (CASCADE)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>product_id</code></td>
-<td>bigint FK → products (CASCADE)</td>
-<td></td>
-</tr>
-<tr>
-<td>UNIQUE</td>
-<td><code>(user_id, product_id)</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>created_at</code></td>
-<td>timestamp</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="user_devices-fcm-device-tokens"><code>user_devices</code> — FCM device tokens</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>user_id</code></td>
-<td>bigint FK → users (CASCADE) INDEX</td>
-<td></td>
-</tr>
-<tr>
-<td><code>token_device</code></td>
-<td>varchar(1024) UNIQUE</td>
-<td>FCM token</td>
-</tr>
-<tr>
-<td><code>platform</code></td>
-<td>enum</td>
-<td>IOS | ANDROID</td>
-</tr>
-<tr>
-<td><code>ip</code>, <code>user_agent</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-<tr>
-<td><code>last_active_at</code></td>
-<td>timestamptz NULL</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="elepay_customers-elepay-customer-mapping"><code>elepay_customers</code> — Elepay customer mapping</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK (giả định)</td>
-<td></td>
-</tr>
-<tr>
-<td><code>user_id</code></td>
-<td>bigint FK → users</td>
-<td></td>
-</tr>
-<tr>
-<td><code>elepay_customer_id</code></td>
-<td>varchar</td>
-<td>ID từ Elepay API</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td>varchar NULL</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="elepay_customer_sources-the-tin-dung-luu-trong-elepay"><code>elepay_customer_sources</code> — Thẻ tín dụng lưu trong Elepay</h3>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Ghi chú</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>bigint PK</td>
-<td></td>
-</tr>
-<tr>
-<td><code>elepay_customer_id</code></td>
-<td>varchar FK → elepay_customers</td>
-<td></td>
-</tr>
-<tr>
-<td><code>elepay_source_id</code></td>
-<td>varchar</td>
-<td>ID từ Elepay API</td>
-</tr>
-<tr>
-<td><code>payment_method</code></td>
-<td>varchar</td>
-<td>CREDIT_CARD</td>
-</tr>
-<tr>
-<td><code>status</code></td>
-<td>enum</td>
-<td>PENDING | ACTIVE | INACTIVE</td>
-</tr>
-<tr>
-<td><code>is_default</code></td>
-<td>boolean</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="cac-entities-phu-tro">Các entities phụ trợ</h3>
+<h2 id="cluster-1-identity-auth">Cluster 1 — Identity &amp; Auth</h2>
 <table>
 <thead>
 <tr>
 <th>Entity</th>
-<th>Table</th>
-<th>Mô tả</th>
+<th>Path</th>
+<th>Vai trò</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>Allergen</code></td>
-<td><code>allergens</code></td>
-<td>Danh sách allergen, cột <code>sort</code></td>
+<td><code>UserEntity</code></td>
+<td><code>src/entities/user.entity.ts</code></td>
+<td>End-user (E01, E07)</td>
 </tr>
 <tr>
-<td><code>Category</code></td>
-<td><code>categories</code></td>
-<td>Danh mục sản phẩm</td>
+<td><code>AdminEntity</code></td>
+<td><code>src/entities/admin.entity.ts</code></td>
+<td>System admin (E03)</td>
 </tr>
 <tr>
-<td><code>LegalDocument</code></td>
-<td><code>legal_documents</code></td>
-<td>Terms of Service / Privacy Policy</td>
+<td><code>CompanyAdminEntity</code></td>
+<td><code>src/entities/company-admin.entity.ts</code></td>
+<td>Company admin (E02)</td>
 </tr>
 <tr>
-<td><code>AppVersion</code></td>
-<td><code>app_versions</code></td>
-<td>Thông tin phiên bản app (force/optional update)</td>
+<td><code>PendingUserEntity</code></td>
+<td><code>src/entities/pending-user.entity.ts</code></td>
+<td>Registration flow buffer</td>
 </tr>
 <tr>
-<td><code>Contact</code></td>
-<td><code>contacts</code></td>
-<td>Yêu cầu liên hệ từ user</td>
+<td><code>AuthSessionEntity</code></td>
+<td><code>src/entities/auth-session.entity.ts</code></td>
+<td>Session tracking / device management</td>
 </tr>
 <tr>
-<td><code>Otp</code></td>
-<td><code>otps</code></td>
-<td>OTP tokens cho auth flows</td>
+<td><code>RoleEntity</code></td>
+<td><code>src/entities/role.entity.ts</code></td>
+<td>RBAC role</td>
 </tr>
 <tr>
-<td><code>PendingUser</code></td>
-<td><code>pending_users</code></td>
-<td>User đang chờ xác thực OTP đăng ký</td>
-</tr>
-<tr>
-<td><code>CompanyHistoryLog</code></td>
-<td><code>company_history_logs</code></td>
-<td>FK → companies</td>
-</tr>
-<tr>
-<td><code>ContractHistoryLog</code></td>
-<td><code>contract_history_logs</code></td>
-<td>FK → company_contracts</td>
-</tr>
-<tr>
-<td><code>ProductHistory</code></td>
-<td><code>product_history</code></td>
-<td>Lịch sử thay đổi sản phẩm</td>
-</tr>
-<tr>
-<td><code>ProductInStock</code></td>
-<td><code>product_in_stock</code></td>
-<td>Tồn kho sản phẩm</td>
-</tr>
-<tr>
-<td><code>UserCompanyHistory</code></td>
-<td><code>user_company_history</code></td>
-<td>Lịch sử link/unlink user↔company</td>
-</tr>
-<tr>
-<td><code>UserCompanyRestriction</code></td>
-<td><code>user_company_restrictions</code></td>
-<td>Restrict/unrestrict user by company admin</td>
-</tr>
-<tr>
-<td><code>CartResetEvent</code></td>
-<td><code>cart_reset_events</code></td>
-<td>Sự kiện reset giỏ hàng theo admin trigger</td>
+<td><code>PermissionEntity</code></td>
+<td><code>src/entities/permission.entity.ts</code></td>
+<td>RBAC permission</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Quan hệ chính:</strong></p>
+<ul>
+<li><code>UserEntity</code> — <code>AuthSessionEntity</code> (1-N)</li>
+<li><code>AdminEntity</code> — <code>RoleEntity</code> (N-1) — <code>PermissionEntity</code> (N-N qua join table)</li>
+<li><code>CompanyAdminEntity</code> — <code>CompanyEntity</code> (N-1)</li>
+</ul>
 <hr />
-<h2 id="naming-conventions">Naming conventions</h2>
+<h2 id="cluster-2-business-core-company-contract-menu-product">Cluster 2 — Business core (Company / Contract / Menu / Product)</h2>
 <table>
 <thead>
 <tr>
-<th>Convention</th>
-<th>Quy tắc</th>
+<th>Entity</th>
+<th>Vai trò</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Table name</td>
-<td>snake_case số nhiều: <code>users</code>, <code>company_contracts</code>, <code>order_details</code></td>
+<td><code>CompanyEntity</code></td>
+<td>Enterprise client — root aggregate cho E02</td>
 </tr>
 <tr>
-<td>Column name</td>
-<td>snake_case: <code>company_id</code>, <code>created_at</code>, <code>is_active</code></td>
+<td><code>ContractEntity</code></td>
+<td>Hợp đồng company ↔ ESKITCHEN</td>
 </tr>
 <tr>
-<td>PK</td>
-<td><code>id</code> bigint (TypeScript string)</td>
+<td><code>MenuEntity</code></td>
+<td>Menu master (config + monthly)</td>
 </tr>
 <tr>
-<td>FK column</td>
-<td><code>&lt;entity&gt;_id</code> — ví dụ: <code>company_id</code>, <code>user_id</code></td>
+<td><code>MonthlyMenuEntity</code></td>
+<td>Menu theo tháng cho company</td>
 </tr>
 <tr>
-<td>Soft delete</td>
-<td><code>deleted_at timestamptz NULL</code> — <code>@DeleteDateColumn</code></td>
+<td><code>ProductEntity</code></td>
+<td>Product catalog</td>
 </tr>
 <tr>
-<td>Timestamps</td>
-<td><code>created_at</code>, <code>updated_at</code> — <code>@CreateDateColumn</code>, <code>@UpdateDateColumn</code></td>
+<td><code>ProductTagEntity</code></td>
+<td>Tag/label cho product (dinh dưỡng, allergen, …)</td>
 </tr>
 <tr>
-<td>Unique partial index</td>
-<td>Dùng cho soft-delete: <code>WHERE deleted_at IS NULL</code></td>
+<td><code>CategoryEntity</code></td>
+<td>Product category</td>
+</tr>
+<tr>
+<td><code>SupplierEntity</code></td>
+<td>Supplier master</td>
+</tr>
+<tr>
+<td><code>PlanMasterEntity</code></td>
+<td>Service plan tier</td>
+</tr>
+<tr>
+<td><code>ServiceOptionEntity</code></td>
+<td>Optional add-on per plan</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quan hệ chính:</strong></p>
+<ul>
+<li><code>CompanyEntity</code> — <code>ContractEntity</code> (1-N) — <code>PlanMasterEntity</code> (N-1)</li>
+<li><code>MonthlyMenuEntity</code> — <code>CompanyEntity</code> (N-1) — <code>MenuEntity</code> (N-1)</li>
+<li><code>MenuEntity</code> — <code>ProductEntity</code> (N-N qua join)</li>
+<li><code>ProductEntity</code> — <code>SupplierEntity</code> (N-1) — <code>CategoryEntity</code> (N-1)</li>
+<li><code>ProductEntity</code> — <code>ProductTagEntity</code> (N-N)</li>
+</ul>
+<hr />
+<h2 id="cluster-3-delivery-logistics">Cluster 3 — Delivery &amp; Logistics</h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DeliveryCompanyEntity</code></td>
+<td>Carrier (dùng chung E05/E06)</td>
+</tr>
+<tr>
+<td><code>DelivererEntity</code></td>
+<td>Delivery partner (E05)</td>
+</tr>
+<tr>
+<td><code>DriverEntity</code></td>
+<td>Driver (E06)</td>
+</tr>
+<tr>
+<td><code>DeliveryCycleEntity</code></td>
+<td>Chu kỳ giao hàng</td>
+</tr>
+<tr>
+<td><code>DeliveryBlockEntity</code></td>
+<td>Khối giao hàng (thứ + slot)</td>
+</tr>
+<tr>
+<td><code>DeliveryAddressEntity</code></td>
+<td>Địa chỉ giao</td>
+</tr>
+<tr>
+<td><code>ShipmentDetailEntity</code></td>
+<td>Chi tiết một chuyến giao</td>
+</tr>
+<tr>
+<td><code>RelayDestinationEntity</code></td>
+<td>Điểm trung chuyển</td>
+</tr>
+<tr>
+<td><code>WarehouseEntity</code></td>
+<td>Kho</td>
+</tr>
+<tr>
+<td><code>PickingCalendarEntity</code></td>
+<td>Lịch picking</td>
+</tr>
+<tr>
+<td><code>PickingUnavailableDayEntity</code></td>
+<td>Ngày không picking</td>
+</tr>
+<tr>
+<td><code>SpecialDeliveryRuleEntity</code></td>
+<td>Rule đặc biệt (holiday, …)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quan hệ chính:</strong></p>
+<ul>
+<li><code>DelivererEntity</code> — <code>DriverEntity</code> (1-N)</li>
+<li><code>DeliveryCompanyEntity</code> — <code>DeliveryCycleEntity</code> (1-N) — <code>DeliveryBlockEntity</code> (1-N)</li>
+<li><code>ShipmentDetailEntity</code> — <code>OrderEntity</code> (N-1) — <code>DriverEntity</code> (N-1) — <code>DeliveryAddressEntity</code> (N-1)</li>
+</ul>
+<hr />
+<h2 id="cluster-4-ordering-payment">Cluster 4 — Ordering &amp; Payment</h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OrderEntity</code></td>
+<td>End-user order (E01, E07)</td>
+</tr>
+<tr>
+<td><code>CompanyOrderEntity</code></td>
+<td>Corporate order (E02 → aggregated)</td>
+</tr>
+<tr>
+<td><code>SupplierOrderEntity</code></td>
+<td>Purchase order gửi Supplier (E04)</td>
+</tr>
+<tr>
+<td><code>MaterialOrderEntity</code></td>
+<td>Material/ingredient PO</td>
+</tr>
+<tr>
+<td><code>PaymentEntity</code></td>
+<td>Payment record</td>
+</tr>
+<tr>
+<td><code>PaymentMethodEntity</code></td>
+<td>Method master (credit card, bank transfer, …)</td>
+</tr>
+<tr>
+<td><code>RefundEntity</code></td>
+<td>Refund request</td>
+</tr>
+<tr>
+<td><code>CompanyInvoiceEntity</code></td>
+<td>Invoice cho company</td>
+</tr>
+<tr>
+<td><code>BillOneApiLogEntity</code></td>
+<td>Billing API integration log</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quan hệ chính:</strong></p>
+<ul>
+<li><code>OrderEntity</code> — <code>UserEntity</code> (N-1) — <code>CompanyEntity</code> (N-1) — <code>PaymentEntity</code> (1-N)</li>
+<li><code>PaymentEntity</code> — <code>PaymentMethodEntity</code> (N-1)</li>
+<li><code>CompanyOrderEntity</code> — <code>CompanyEntity</code> (N-1) — <code>MonthlyMenuEntity</code> (N-1)</li>
+<li><code>CompanyOrderEntity</code> — <code>CompanyInvoiceEntity</code> (N-1)</li>
+<li><code>SupplierOrderEntity</code> — <code>SupplierEntity</code> (N-1)</li>
+</ul>
+<hr />
+<h2 id="cluster-5-inventory-material">Cluster 5 — Inventory &amp; Material</h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MaterialEntity</code></td>
+<td>Material master (ingredient)</td>
+</tr>
+<tr>
+<td><code>InventoryItemEntity</code></td>
+<td>Stock tracking</td>
+</tr>
+<tr>
+<td><code>MaterialOrderEntity</code></td>
+<td>PO cho material</td>
+</tr>
+<tr>
+<td><code>DisposalReportEntity</code></td>
+<td>Waste/disposal report</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quan hệ chính:</strong></p>
+<ul>
+<li><code>InventoryItemEntity</code> — <code>MaterialEntity</code> (N-1) — <code>WarehouseEntity</code> (N-1)</li>
+<li><code>MaterialOrderEntity</code> — <code>MaterialEntity</code> (N-1) — <code>SupplierEntity</code> (N-1)</li>
+<li><code>DisposalReportEntity</code> — <code>CompanyEntity</code> (N-1)</li>
+</ul>
+<hr />
+<h2 id="cluster-6-workflow-request">Cluster 6 — Workflow / Request</h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ChangeRequestEntity</code></td>
+<td>Request đổi contract/menu (workflow duyệt)</td>
+</tr>
+<tr>
+<td><code>QuotationRequestEntity</code></td>
+<td>Request báo giá (deliverer)</td>
+</tr>
+<tr>
+<td><code>TroubleReportEntity</code></td>
+<td>Báo cáo sự cố (driver, admin)</td>
+</tr>
+<tr>
+<td><code>TrialRequestEntity</code></td>
+<td>Trial company registration</td>
+</tr>
+<tr>
+<td><code>FeeChangeRequestEntity</code></td>
+<td>Deliverer fee update request</td>
+</tr>
+<tr>
+<td><code>DeliveryDateChangeRequestEntity</code></td>
+<td>User request đổi ngày giao</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<blockquote>
-<p>Cập nhật file này sau mỗi migration. Mermaid diagram có thể render tại GitHub hoặc mermaid.live.</p>
-</blockquote>
+<h2 id="cluster-7-ai-suggestion">Cluster 7 — AI / Suggestion</h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AiSuggestionJobEntity</code></td>
+<td>Job queue (async processing)</td>
+</tr>
+<tr>
+<td><code>AiSuggestionChatEntity</code></td>
+<td>Chat history với AI</td>
+</tr>
+<tr>
+<td><code>CompanyAiPreferenceEntity</code></td>
+<td>AI setting per company</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cluster-8-reference-notification">Cluster 8 — Reference / Notification</h2>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NotificationEntity</code></td>
+<td>System notification (push + in-app)</td>
+</tr>
+<tr>
+<td><code>MaintainSettingEntity</code></td>
+<td>Bảo trì system-wide</td>
+</tr>
+<tr>
+<td><code>AppVersionEntity</code></td>
+<td>Version gate cho mobile/web</td>
+</tr>
+<tr>
+<td><code>IpWhitelistEntity</code></td>
+<td>IP whitelist cho admin panel</td>
+</tr>
+<tr>
+<td><code>SurveyEntity</code></td>
+<td>Survey master</td>
+</tr>
+<tr>
+<td><code>FeedbackEntity</code></td>
+<td>User feedback</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="convention-chung">Convention chung</h2>
+<h3 id="primary-key">Primary key</h3>
+<ul>
+<li>Type: <code>bigint</code> (<code>@PrimaryGeneratedColumn('increment', { type: 'bigint' })</code>)</li>
+<li>Serialize sang <code>string</code> khi trả response (do JS <code>Number</code> không đủ range cho <code>bigint</code>)</li>
+<li>BigInt validation qua <code>BigIntValidationPipe</code> khi nhận input</li>
+</ul>
+<h3 id="timestamp">Timestamp</h3>
+<ul>
+<li><code>created_at</code>, <code>updated_at</code> mọi entity (base class <code>BaseEntity</code> trong <code>src/commons/framework/</code>)</li>
+<li><code>deleted_at</code> cho soft delete (dùng <code>@DeleteDateColumn</code>)</li>
+</ul>
+<h3 id="naming">Naming</h3>
+<ul>
+<li><strong>Column:</strong> <code>snake_case</code> với <code>@Column({ name: 'company_code' })</code></li>
+<li><strong>Property:</strong> <code>camelCase</code></li>
+<li><strong>Table:</strong> <code>snake_case</code> số nhiều (<code>companies</code>, <code>menu_items</code>)</li>
+</ul>
+<h3 id="relation">Relation</h3>
+<ul>
+<li>Default <code>eager: false</code> — tránh N+1</li>
+<li><code>@JoinColumn({ name: 'company_id' })</code> để explicit tên FK column</li>
+</ul>
+<hr />
+<h2 id="diagram-mermaid-6-cluster-tong-the">Diagram (mermaid — 6 cluster tổng thể)</h2>
+<pre class="mermaid"><code>erDiagram
+    Company ||--o{ Contract : "1-N"
+    Company ||--o{ CompanyAdmin : "1-N"
+    Company ||--o{ MonthlyMenu : "1-N"
+    Company ||--o{ CompanyOrder : "1-N"
+    Company ||--o{ CompanyInvoice : "1-N"
+
+    Contract }o--|| PlanMaster : "N-1"
+
+    MonthlyMenu }o--|| Menu : "N-1"
+    Menu ||--o{ Product : "N-N"
+
+    Product }o--|| Supplier : "N-1"
+    Product }o--|| Category : "N-1"
+    Product ||--o{ ProductTag : "N-N"
+
+    User ||--o{ Order : "1-N"
+    Order }o--|| Company : "N-1"
+    Order ||--o{ Payment : "1-N"
+    Payment }o--|| PaymentMethod : "N-1"
+
+    Order ||--o{ ShipmentDetail : "1-N"
+    ShipmentDetail }o--|| Driver : "N-1"
+    Driver }o--|| Deliverer : "N-1"
+
+    Deliverer }o--|| DeliveryCompany : "N-1"
+    DeliveryCompany ||--o{ DeliveryCycle : "1-N"
+    DeliveryCycle ||--o{ DeliveryBlock : "1-N"
+
+    Supplier ||--o{ SupplierOrder : "1-N"
+    Supplier ||--o{ MaterialOrder : "1-N"
+
+    Warehouse ||--o{ InventoryItem : "1-N"
+    Material ||--o{ InventoryItem : "1-N"
+    Material ||--o{ MaterialOrder : "1-N"</code></pre>
+<hr />
+<h2 id="migration-reference">Migration reference</h2>
+<ul>
+<li><strong>Path:</strong> <code>database/migrations/</code></li>
+<li><strong>Count:</strong> 205 files</li>
+<li><strong>Convention:</strong> <code>&lt;epoch&gt;-&lt;PascalCase&gt;.ts</code></li>
+<li><strong>Sync mode:</strong> OFF (migration-only, không dùng <code>synchronize: true</code> bất kỳ môi trường nào)</li>
+</ul>
+<p>Khi thêm entity mới → tạo migration mới, đừng sửa migration cũ.</p>
+<hr />
+<h2 id="memory-update-gate">Memory Update Gate</h2>
+<p>Khi thêm/đổi column, thêm/đổi relation, thêm entity mới → <strong>cập nhật cluster tương ứng</strong> trong file này (thêm dòng vào bảng + note relation). Với entity thêm mới hoàn toàn không thuộc cluster nào → tạo cluster mới.</p>
 
 
 
@@ -9576,7 +8764,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.expand", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

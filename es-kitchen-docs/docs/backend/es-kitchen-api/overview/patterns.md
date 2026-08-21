@@ -4,303 +4,194 @@
 
 ---
 
-## Module Pattern
+## 1. Module layout
 
-```typescript
-// Mỗi module import entity riêng qua TypeOrmModule.forFeature()
-@Module({
-  imports: [
-    TypeOrmModule.forFeature([Order, OrderDetail, Company]),
-    JwtModule.registerAsync({ global: true, useClass: JwtAdminConfigService }),
-    MailModule,
-  ],
-  controllers: [OrderController, CompanyController],
-  providers: [OrderService, CompanyService, AdminStrategy],
-})
-export class AdminModule {}
+Mỗi controller trong module đứng riêng — module là **role** (admin, admin-company, user, supplier, driver, deliverer), **controller** là **domain resource** (order, menu, contract, …). Không gom nhiều resource vào một controller.
+
+```
+src/modules/<role>/
+├── <role>.module.ts
+├── <resource>/                 ← ví dụ order/, menu/
+│   ├── <resource>.controller.ts
+│   ├── <resource>.service.ts
+│   ├── dto/
+│   │   ├── create-<resource>.dto.ts
+│   │   └── list-<resource>.dto.ts
+│   └── <resource>.service.spec.ts
 ```
 
-**Quy tắc:**
-- Mỗi module khai báo entity dùng trong module đó — không dùng chung repository giữa modules
-- JwtModule.registerAsync với `global: true` — token valid trong toàn module
-- MailModule import khi cần gửi email (AWS SES)
+**Ví dụ thực tế:** `src/modules/admin/` chứa 44 controllers (account, agency, app-version, category, dashboard, …), mỗi cái là một resource độc lập.
 
 ---
 
-## Controller Pattern
+## 2. Response envelope
+
+Tất cả response đi qua `TransformInterceptor` (`src/commons/framework/interceptors/transform.interceptor.ts`) được đăng ký global tại `main.ts`.
 
 ```typescript
-@Controller('admin/orders')
-@UseGuards(JwtAuthGuard)                    // Guard ở controller level
-export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+// Client nhận
+{
+  statusCode: 200,
+  message: "OK",
+  data: <payload>
+}
+```
 
+Không manual wrap trong controller — chỉ return raw data hoặc DTO instance (có `@Exclude()` cho sensitive fields).
+
+---
+
+## 3. Error handling
+
+- `AllExceptionsFilter` (global) — bắt mọi exception, normalize về `{ statusCode, message, errorCode }`
+- Custom exception factory trong `ValidationPipe` → mọi validation error trả về `ApiStatusCode.VALIDATION_ERROR`
+- Không `throw new Error(...)` raw — luôn dùng `HttpException` con hoặc typed exception (`BadRequestException`, `NotFoundException`, `ForbiddenException`)
+
+---
+
+## 4. Authentication + Authorization
+
+### JWT flow
+
+```typescript
+@UseGuards(JwtAuthGuard)
+@Controller("admin/orders")
+export class AdminOrderController {
   @Get()
-  async getOrders(@Query() query: GetOrdersRequest) {
-    return this.orderService.getOrders(query);
-  }
-
-  @Get(':id')
-  async getOrderDetail(@Param('id') id: string) {
-    return this.orderService.getOrderDetail(id);
-  }
-
-  @Post()
-  async createOrder(@Body() body: CreateOrderRequest) {
-    return this.orderService.createOrder(body);
-  }
+  list(@GetUser() user: AuthUser) { ... }
 }
 ```
 
-**URL prefix theo module:**
-- E03 System Admin: `/admin/...`
-- E02 Company Admin: `/admin-company/...`
-- E01 User: `/user/...`
+- **`@GetUser()`** custom decorator — extract user từ `request.user` (Passport gắn vào)
+- **JWT secrets per role** — admin, company, driver, supplier, deliverer có secret riêng (`config/index.ts`)
+
+### Permission decorator (RBAC)
+
+```typescript
+@Permissions("order.view")
+@Get()
+list() { ... }
+```
+
+Kết hợp với `PermissionGuard` để check role capability.
+
+### Public endpoint
+
+```typescript
+@Public()
+@Post("auth/login")
+login() { ... }
+```
+
+`OptionalJwtAuthGuard` cho endpoint mix (guest hoặc authenticated đều gọi được).
+
+### Guest restriction
+
+`@BlockGuest()` + `GuestRestrictionGuard` — chặn user chưa link email (User module có guest mode).
 
 ---
 
-## Service Pattern
+## 5. DTO + Validation
+
+- Mọi input dùng DTO với `class-validator` decorator (`@IsString`, `@IsOptional`, `@IsEmail`, …)
+- **Custom validators** trong `src/commons/decorators/`:
+  - `@IsCommaSeparatedEnum()` — parse CSV enum trong query string
+  - `@IsIntNonNegative()`
+  - `@ClientIp()` — bind client IP
+- `@Exclude()` từ `class-transformer` cho sensitive fields (password hash, internal ID) — response đi qua `ClassSerializerInterceptor`.
+
+### orderBy whitelist (tránh SQL injection + typo)
 
 ```typescript
-@Injectable()
-export class OrderService {
-  constructor(
-    @InjectRepository(Order) private orderRepository: Repository<Order>,
-    @InjectRepository(OrderDetail) private orderDetailRepository: Repository<OrderDetail>,
-  ) {}
+// ❌ SAI
+.orderBy(dto.orderBy, dto.direction)
 
-  async getOrders(query: GetOrdersRequest) {
-    const qb = this.orderRepository
-      .createQueryBuilder('order')
-      .leftJoinAndSelect('order.company', 'company')
-      .where('order.deleted_at IS NULL');
-
-    // orderBy whitelist — BẮT BUỘC để tránh TypeError
-    const ORDER_BY_MAP: Record<string, string> = {
-      createdAt: 'order.createdAt',
-      companyCode: 'company.companyCode',
-    };
-    const orderByField = ORDER_BY_MAP[query.orderBy] ?? 'order.createdAt';
-    qb.orderBy(orderByField, query.order ?? 'DESC');
-
-    return qb.getManyAndCount();
-  }
-}
+// ✅ Đúng — whitelist
+const ORDER_BY_MAP = { createdAt: 'order.created_at', status: 'order.status' };
+.orderBy(ORDER_BY_MAP[dto.orderBy] ?? 'order.created_at', 'DESC')
 ```
 
-**Lưu ý quan trọng — Known Bug:**
-```typescript
-// ❌ KHÔNG làm — TypeORM orderBy với string từ query param
-qb.orderBy(query.orderBy, 'DESC');
-// → TypeError: Cannot read properties of undefined (reading 'databaseName')
-
-// ✅ LUÔN dùng whitelist map
-const ORDER_BY_MAP = { createdAt: 'order.createdAt', ... };
-const field = ORDER_BY_MAP[query.orderBy] ?? 'order.createdAt';
-qb.orderBy(field, 'DESC');
-```
+Đã từng có bug prod vì bỏ qua whitelist.
 
 ---
 
-## Entity Pattern
+## 6. Swagger
 
-```typescript
-@Entity('orders')
-export class Order {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Column({ name: 'company_id' })   // ← snake_case trong DB
-  companyId: string;                  // ← camelCase trong TypeScript
-
-  @Column({ name: 'total_amount', type: 'decimal', precision: 10, scale: 2 })
-  totalAmount: number;
-
-  @Column({ name: 'status', type: 'enum', enum: OrderStatus })
-  status: OrderStatus;
-
-  @ManyToOne(() => Company)
-  @JoinColumn({ name: 'company_id' })
-  company: Company;
-
-  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
-  updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz', nullable: true })
-  deletedAt?: Date;
-}
-```
-
-**Conventions:**
-- PK: UUID (`@PrimaryGeneratedColumn('uuid')`)
-- Column name: phải explicit `{ name: 'snake_case' }` — TypeORM không tự convert
-- Timestamps: `timestamptz` — không dùng `timestamp`
-- Soft delete: `@DeleteDateColumn` với `deletedAt` — không `DELETE` cứng
-- Enum: dùng TypeScript enum + `type: 'enum'`
+- **7 tài liệu riêng biệt** — một cho mỗi role. Config trong `config/swagger.config.ts`.
+- Custom decorator `@ApiUnifiedResponse()` (`src/commons/framework/decorators/`) auto-wrap `TransformInterceptor` envelope trong Swagger schema.
+- Mỗi controller phải có `@ApiTags(...)` để group.
 
 ---
 
-## DTO / Request Pattern
+## 7. Realtime (Socket.io + Postgres)
 
-```typescript
-// requests/get-orders.request.ts
-import { IsOptional, IsString, IsEnum } from 'class-validator';
-
-export class GetOrdersRequest {
-  @IsOptional()
-  @IsString()
-  orderBy?: string;
-
-  @IsOptional()
-  @IsEnum(['ASC', 'DESC'])
-  order?: 'ASC' | 'DESC';
-
-  @IsOptional()
-  @IsString()
-  companyCode?: string;
-}
-```
-
-**Quy tắc:**
-- Tất cả request DTO dùng `class-validator` decorators
-- Đặt trong `http/requests/` — không đặt inline trong controller
-- Response DTO đặt trong `http/responses/`
+- **Không dùng Redis.** Cross-instance messaging qua `PostgresSocketIoAdapter` (`src/commons/auth-session/postgres-socket-io.adapter.ts`) — sử dụng PostgreSQL `LISTEN`/`NOTIFY`.
+- Gateway pattern chuẩn NestJS (`@WebSocketGateway`, `@SubscribeMessage`).
+- Payment webhook (`elepay-webhook.guard.ts`) verify signature trước khi broadcast socket event.
 
 ---
 
-## Guard Pattern
+## 8. Pessimistic locking
 
-```typescript
-// modules/admin/guards/admin.guard.ts
-@Injectable()
-export class AdminStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
-  constructor() {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.ADMIN_JWT_SECRET,
-    });
-  }
-
-  async validate(payload: JwtPayload) {
-    return payload;  // attach to request.user
-  }
-}
-```
-
-Mỗi module có strategy riêng với tên unique (`'admin-jwt'`, `'admin-company-jwt'`, `'user-jwt'`) để không conflict.
+`@PostgreLock()` decorator (`src/commons/decorators/`) — dùng cho critical section (ví dụ trừ stock, tạo order với sequence-based code) để tránh race condition ở tầng application.
 
 ---
 
-## Migration Pattern
+## 9. Migration workflow
 
-```typescript
-// migrations/1234567890-add-payment-method.ts
-export class AddPaymentMethod1234567890 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`
-      CREATE TABLE payment_methods (
-        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-        name VARCHAR(255) NOT NULL,
-        created_at TIMESTAMPTZ DEFAULT NOW(),
-        deleted_at TIMESTAMPTZ
-      )
-    `);
-  }
-
-  public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP TABLE payment_methods`);
-  }
-}
-```
-
-**Quy tắc migration:**
-- Mỗi schema change = 1 file migration riêng
-- Phải có cả `up()` và `down()`
-- Không sửa migration đã chạy trên STG/PROD
-- Tên file: `<timestamp>-<description>.ts`
+- Tất cả DDL change qua migration file trong `database/migrations/`
+- Naming: `<timestamp>-<PascalCaseChange>.ts`
+- Seed data: prefix `Seed*`
+- **Không sửa migration cũ** — nếu cần adjust, tạo migration mới.
+- **Không dùng `synchronize: true`** ở bất kỳ môi trường nào — kể cả DEV.
 
 ---
 
-## Event / Listener Pattern
+## 10. Column naming
+
+- **Snake_case explicit** cho DB column, camelCase cho property:
 
 ```typescript
-// commons/events/order-created.event.ts
-export class OrderCreatedEvent {
-  constructor(public readonly orderId: string) {}
-}
+@Column({ name: 'company_code', length: 50 })
+companyCode: string;
+```
 
-// modules/admin-company/listeners/admin-company.listener.ts
-@Injectable()
-export class AdminCompanyListener {
-  @OnEvent('order.created')
-  handleOrderCreated(event: OrderCreatedEvent) {
-    // side effects: notification, email, etc.
-  }
-}
+- Relation: `eager: false` mặc định để tránh N+1. Load qua QueryBuilder join hoặc explicit `relations`.
+
+```typescript
+@ManyToOne(() => CompanyEntity, { eager: false })
+@JoinColumn({ name: 'company_id' })
+company: CompanyEntity;
 ```
 
 ---
 
-## Redis Cache Pattern
+## 11. File upload (S3)
 
-```typescript
-@Injectable()
-export class ProductService {
-  constructor(
-    @InjectRepository(Product) private repo: Repository<Product>,
-    private redis: RedisService,
-  ) {}
-
-  async getProduct(id: string) {
-    const cacheKey = `eskitchen:product:${id}`;
-    const cached = await this.redis.get(cacheKey);
-    if (cached) return JSON.parse(cached);
-
-    const product = await this.repo.findOne({ where: { id } });
-    await this.redis.set(cacheKey, JSON.stringify(product), 'EX', 300); // 5 min TTL
-    return product;
-  }
-}
-```
-
-**Key naming:** `eskitchen:<domain>:<id>` hoặc `eskitchen:<domain>:list:<hash>`  
-**TTL:** Bắt buộc — không set key không có expiry.
+- Module `src/modules/file-upload/` — dùng chung cho mọi role
+- AWS SDK v3, credentials qua AWS Parameter Store (**không .env production**)
+- Upload flow: FE xin presigned URL → upload trực tiếp lên S3 → gọi API confirm.
 
 ---
 
-## Test Pattern
+## 12. Payment (elepay)
 
-```typescript
-// <service>.spec.ts — Jest + @nestjs/testing
-describe('OrderService', () => {
-  let service: OrderService;
-  let orderRepository: jest.Mocked<Repository<Order>>;
+- SDK server-side để create charge / verify webhook
+- **Webhook signature verify** qua `ElepayWebhookGuard` trước khi mutate DB
+- Alipay + WeChat Pay chỉ qua elepay — **không tích hợp Stripe/PayPal**.
 
-  beforeEach(async () => {
-    const module = await Test.createTestingModule({
-      providers: [
-        OrderService,
-        {
-          provide: getRepositoryToken(Order),
-          useValue: { findOne: jest.fn(), save: jest.fn() },
-        },
-      ],
-    }).compile();
+---
 
-    service = module.get(OrderService);
-    orderRepository = module.get(getRepositoryToken(Order));
-  });
+## 13. Secrets
 
-  it('should return order', async () => {
-    orderRepository.findOne.mockResolvedValue({ id: '1' } as Order);
-    const result = await service.getOrderDetail('1');
-    expect(result.id).toBe('1');
-  });
-});
-```
+- **AWS Parameter Store** là nguồn duy nhất cho secret production
+- Local dev: `.env` (không commit) — `config/index.ts` đọc via `process.env` với default fallback
+- **Không hard-code** token/key trong code hoặc migration.
 
-**Scope test bắt buộc:** `*.service.ts`, `*.guard.ts`, `*.interceptor.ts`  
-**Bỏ qua:** DTO, Entity files.
+---
+
+## 14. Logging + Observability
+
+- SQL logging enabled qua TypeORM (`logging: true`) — dev/staging có thể tắt.
+- Firebase Crashlytics tích hợp qua Firebase Admin SDK (chủ yếu cho notification, không cho error log server).
+- Không log token, password, payment PII.

@@ -1,7 +1,32 @@
 # es-kitchen-payment-app — Cấu trúc Source
 
-> Repo: `es-kitchen-payment-app` · Epic: E01 User Mobile App · 14 functions
-> Stack: Flutter 3.x / Riverpod (hooks_riverpod 3.0.1) / auto_route / Retrofit+Dio
+> Repo: `es-kitchen-payment-app` · Epic: **E01 User Mobile App** (Flutter/Dart — iOS + Android)
+> Vai trò: end user đặt hàng, xem menu, quản lý order, payment (elepay), notification (FCM), scan QR — flow tương tự E07 nhưng native mobile.
+
+---
+
+## Tech stack
+
+| Layer | Package | Version |
+|---|---|---|
+| Framework | Flutter SDK | ^3.10.8 |
+| Language | Dart | ^3.10.8 |
+| State | **hooks_riverpod** | 3.0.1 |
+| Routing | **auto_route** | 11.1.0 |
+| HTTP | dio + retrofit | 5.9.2 / 4.9.2 |
+| Codegen | freezed + freezed_annotation + json_serializable | 3.1.0 / 3.1.0 / 6.10.0 |
+| Realtime | socket_io_client | 3.1.4 |
+| **Payment** | **elepay_flutter** | 3.5.2 |
+| **Firebase** | firebase_core + firebase_messaging + firebase_crashlytics | 4.5.0 / 16.1.2 / 5.0.8 |
+| Sizing | flutter_screenutil | 5.9.3 |
+| SVG | flutter_svg | 2.2.4 |
+| UI | dropdown_button2 · dotted_border · skeletonizer · flutter_slidable | 2.3.9 / 3.1.0 / 2.1.3 / 4.0.3 |
+| Notifications | flutter_local_notifications · permission_handler · app_badge_plus | 20.1.0 / 12.0.1 / 1.2.7 |
+| **QR Scanner** | **mobile_scanner** | 7.2.0 |
+| Env | flutter_dotenv | 6.0.0 |
+| Persistence | shared_preferences · flutter_cache_manager · path_provider | 2.5.4 / 3.4.1 / 2.1.5 |
+| Logging | logger | 2.6.2 |
+| Other | url_launcher · rxdart · device_info_plus · package_info_plus · vibration · app_links | 6.3.2 / 0.28.0 / 12.3.0 / 9.0.0 / 3.1.8 / 7.0.0 |
 
 ---
 
@@ -9,254 +34,275 @@
 
 ```
 es-kitchen-payment-app/
-└── lib/
-    ├── app/                          ← App-level setup
-    │   ├── base/                     ← Base classes (BaseState, etc.)
-    │   ├── configs/                  ← App config (từ flutter_dotenv)
-    │   ├── core/
-    │   │   ├── enums/
-    │   │   ├── extensions/           ← Dart extension methods
-    │   │   ├── network/              ← Network utilities
-    │   │   ├── prefs/                ← SharedPreferences wrapper
-    │   │   ├── resources/            ← Colors, strings, assets paths
-    │   │   ├── services/             ← Core services (Firebase, Socket.IO)
-    │   │   └── utils/
-    │   ├── helpers/
-    │   ├── routers/
-    │   │   ├── app_router.dart       ← @AutoRouterConfig — route declarations
-    │   │   └── app_router.gr.dart    ← Generated — KHÔNG sửa tay
-    │   └── widgets/                  ← Shared widgets
-    │       ├── buttons/
-    │       ├── input/
-    │       ├── loading_overlay/
-    │       ├── pages/
-    │       ├── showcase/
-    │       ├── skeletons/
-    │       └── toast_overlay/
-    │
-    ├── data/                         ← Data layer
-    │   ├── api/
-    │   │   ├── app_api.dart          ← @RestApi Retrofit interface
-    │   │   ├── app_api.g.dart        ← Generated — KHÔNG sửa tay
-    │   │   ├── app_endpoints.dart    ← URL constants
-    │   │   └── provider/
-    │   │       └── api_provider.dart ← Riverpod provider cho AppApi
-    │   ├── logs/
-    │   │   ├── app_logger.dart
-    │   │   └── app_logger_provider.dart
-    │   ├── models/                   ← freezed models (+ .g.dart generated)
-    │   │   ├── app/                  ← AppVersion
-    │   │   ├── auth/
-    │   │   ├── cart/
-    │   │   ├── categories/
-    │   │   ├── device/
-    │   │   ├── ext/                  ← ApiResponse<T>, PaginatedResponse<T>
-    │   │   ├── favorite/
-    │   │   ├── notification/
-    │   │   ├── order/
-    │   │   ├── payment/
-    │   │   ├── product/
-    │   │   ├── purchase/
-    │   │   ├── term/
-    │   │   ├── toast/
-    │   │   └── user/
-    │   └── repositories/
-    │       ├── repository.dart       ← ApiRepository wrapping AppApi
-    │       ├── auth_repository.dart  ← Auth-specific repository
-    │       └── provider/             ← Riverpod providers cho repositories
-    │
-    ├── features/                     ← Feature modules (1 folder per screen)
-    │   ├── app_shell/                ← Root shell (wraps bottom bar + screens)
-    │   │   ├── controller/
-    │   │   ├── provider/
-    │   │   ├── state/
-    │   │   └── widgets/
-    │   ├── auth/
-    │   │   ├── login/
-    │   │   ├── register/
-    │   │   └── forgot_password/
-    │   ├── bottom_bar/               ← Bottom navigation
-    │   ├── menu/                     ← Menu listing (home screen)
-    │   ├── search/                   ← Product search
-    │   ├── product_details/          ← Product detail page
-    │   ├── cart/                     ← Cart + checkout
-    │   ├── favorite/                 ← Favorites list
-    │   ├── purchase_history/         ← Order history
-    │   ├── refund/                   ← Refund request
-    │   ├── notification/             ← Notification list
-    │   ├── notification_detail/      ← Notification detail
-    │   ├── payment_registration/     ← Credit card / payment method setup
-    │   ├── user/                     ← User profile
-    │   ├── basic_information/        ← Profile info
-    │   ├── policy/                   ← Terms/Privacy
-    │   ├── splash/                   ← Splash screen
-    │   ├── start/                    ← Onboarding / start
-    │   ├── scan_code/                ← Barcode scanner
-    │   ├── scan_qr/                  ← QR code scanner
-    │   └── widgets/                  ← Feature-level shared widgets
-    │
-    ├── flavor/                       ← Flutter flavors (DEV/STG/PROD)
-    └── gen/                          ← Generated assets (flutter_gen)
+├── lib/
+│   ├── main.dart                       ← Entry point (delegate qua flavor)
+│   ├── firebase_options.dart           ← Generated by FlutterFire CLI
+│   │
+│   ├── flavor/                         ← Flavor entry points
+│   │   ├── main_development.dart
+│   │   ├── main_staging.dart
+│   │   └── main_production.dart
+│   │
+│   ├── app/                            ← Core infra + shared
+│   │   ├── configs/                    ← socket_config, elepay_config, …
+│   │   ├── core/
+│   │   │   ├── network/provider/       ← network_provider.dart, dio_provider.dart
+│   │   │   └── services/
+│   │   │       ├── push_notification/  ← FCM (service + provider + controller + state)
+│   │   │       ├── elepay/             ← elepay_provider.dart, elepay_service.dart
+│   │   │       ├── socket/             ← socket_service.dart (singleton — chờ charge result)
+│   │   │       └── deep_link/          ← DeepLinkService
+│   │   ├── routers/                    ← auto_route config
+│   │   │   ├── app_router.dart         ← Route definitions
+│   │   │   └── app_router.gr.dart      ← Generated (32 KB)
+│   │   ├── widgets/                    ← Shared widgets
+│   │   │   ├── loading_overlay/
+│   │   │   ├── toast_overlay/
+│   │   │   └── ...
+│   │   └── helpers/
+│   │
+│   ├── data/
+│   │   ├── api/
+│   │   │   ├── app_api.dart            ← Retrofit client interface
+│   │   │   ├── app_api.g.dart          ← Generated (72 KB)
+│   │   │   └── app_endpoints.dart      ← Endpoint constants
+│   │   ├── models/                     ← Freezed @freezed models (20 folders)
+│   │   │   ├── app/  auth/  categories/  device/  ext/  favorite/  feedback/
+│   │   │   ├── notification/  order/  payment/  product/  purchase/  review/  survey/  term/  toast/
+│   │   ├── repositories/               ← auth_repository, repository (DDD pattern)
+│   │   └── logging/
+│   │
+│   ├── features/                       ← 27 feature modules
+│   │   ├── app_shell/  auth/  basic_information/  bottom_bar/  cart/
+│   │   ├── favorite/  maintenance/  menu/  notification/  notification_detail/
+│   │   ├── payment_registration/  policy/  preview_guide/  product_details/
+│   │   ├── purchase_history/  refund/  review_history/  scan_code/  scan_qr/
+│   │   ├── search/  setting_allergy/  splash/  start/  usage_guide/  user/  widgets/
+│   │
+│   └── gen/                            ← flutter_gen auto-generated (icons, images)
+│
+├── android/
+│   └── app/
+│       ├── google-services.json        ← Firebase config
+│       └── build.gradle.kts
+├── ios/
+│   ├── Runner/
+│   │   ├── GoogleService-Info.plist    ← Firebase config
+│   │   └── Info.plist
+│   ├── Runner.xcworkspace/             ← CocoaPods workspace
+│   └── Podfile
+├── macos/
+│   └── Runner/GoogleService-Info.plist
+│
+├── assets/
+│   ├── images/                         ← 68 files
+│   ├── icons/                          ← 47 files + allergens/ (allergen SVG)
+│   ├── fonts/                          ← NotoSansJP (6 weights) + DMSans (6 weights)
+│   ├── gifs/
+│   └── .env                            ← Env values (loaded via flutter_dotenv)
+│
+└── pubspec.yaml
 ```
 
 ---
 
-## Feature Module Structure (pattern nhất quán)
+## Feature modules (`lib/features/`) — 27 modules
 
-Mỗi feature trong `features/<feature>/`:
+`app_shell`, `auth`, `basic_information`, `bottom_bar`, `cart`, `favorite`, `maintenance`, `menu`, `notification`, `notification_detail`, `payment_registration`, `policy`, `preview_guide`, `product_details`, `purchase_history`, `refund`, `review_history`, `scan_code`, `scan_qr`, `search`, `setting_allergy`, `splash`, `start`, `usage_guide`, `user`, `widgets`
 
-```
-<feature>/
-├── controller/
-│   └── <feature>_controller.dart    ← StateNotifier business logic
-├── provider/
-│   └── <feature>_provider.dart      ← Riverpod provider declarations
-├── state/
-│   └── <feature>_state.dart         ← freezed state class
-├── ui/
-│   └── <feature>_page.dart          ← @RoutePage widget
-└── widgets/                         ← Page-specific widgets
-```
+**Convention:** mỗi feature là folder tự chứa — screen(s) + provider(s) + widget(s) private tới feature. Widgets dùng chung → `lib/app/widgets/` hoặc `lib/features/widgets/`.
 
 ---
 
-## Navigation (auto_route)
+## Providers / State — Riverpod 3
 
-Route hierarchy:
+Providers phân tán theo domain, không tập trung một file:
 
-```
-Splash (initial)
-  └── Start (onboarding)
-        └── Login / Register / ForgotPassword
-              └── AppShell (authenticated root)
-                    ├── BottomBar (initial)  ← Menu, Favorite, Notification, User tabs
-                    ├── Search
-                    ├── ProductDetails
-                    ├── Cart → CartDetailsConfirm → PaymentMethods
-                    ├── PurchaseHistory → PurchaseDetail
-                    ├── Refund
-                    ├── NotificationDetail
-                    ├── PaymentRegistration
-                    ├── BasicInformation → EditInformation
-                    ├── ScanCode / ScanQR
-                    ├── Policy
-                    └── CreditCardManagement / SelectCreditCard
-```
+- `lib/app/core/network/provider/` — `network_provider.dart`, `dio_provider.dart`
+- `lib/app/core/services/push_notification/provider/` — `fcm_provider.dart`
+- `lib/app/core/services/elepay/` — `elepay_provider.dart`
+- `lib/app/widgets/loading_overlay/providers/` — `loading_provider.dart`
+- `lib/app/widgets/toast_overlay/provider/` — `toast_overlay_provider.dart`
+- `lib/data/repositories/provider/` — `repository_provider.dart`, `auth_repository_provider.dart`
 
-**Quy tắc:**
-- Navigate: `context.router.push(RouteNameRoute())` — không `Navigator.push`
-- `app_router.gr.dart` là file generated — không sửa tay, chỉ thêm route trong `app_router.dart`
+**Bootstrap override:** `sharedPrefsProvider` override trong `ProviderContainer` tại `main.dart`.
 
 ---
 
-## Data Flow
+## API — Retrofit + Dio
 
-```
-UI (ConsumerWidget / HookConsumerWidget)
-    │ ref.watch(featureProvider)
-    ▼
-Provider (StateNotifierProvider)
-    │ notifier methods
-    ▼
-Controller (StateNotifier)
-    │ repository calls
-    ▼
-ApiRepository
-    │ AppApi (Retrofit)
-    ▼
-NestJS API
-```
+- **`lib/data/api/app_api.dart`** — Retrofit client interface (14 KB source)
+- **`lib/data/api/app_api.g.dart`** — Auto-generated (72 KB) từ codegen
+- **`lib/data/api/app_endpoints.dart`** — Endpoint path constants
+
+**Repository pattern (DDD):**
+- `lib/data/repositories/auth_repository.dart`
+- `lib/data/repositories/repository.dart`
+- Repository wrap Retrofit calls → return typed models (freezed)
 
 ---
 
-## Models (freezed)
+## Models — freezed + json_serializable
+
+`lib/data/models/` — 20 folders theo domain:
+
+`app/` · `auth/` · `categories/` · `device/` · `ext/` · `favorite/` · `feedback/` · `notification/` · `order/` · `payment/` · `product/` · `purchase/` · `review/` · `survey/` · `term/` · `toast/`
+
+**Pattern:** mỗi model `.dart` được annotate `@freezed`, generate 2 file `.freezed.dart` + `.g.dart`. Không sửa tay generated file.
 
 ```dart
 @freezed
-class ProductDetailModel with _$ProductDetailModel {
-  const factory ProductDetailModel({
+class Product with _$Product {
+  const factory Product({
     required String id,
     required String name,
-    @JsonKey(name: 'image_url') String? imageUrl,
-  }) = _ProductDetailModel;
-
-  factory ProductDetailModel.fromJson(Map<String, dynamic> json) =>
-      _$ProductDetailModelFromJson(json);
-}
-```
-
-**Sau khi thêm/sửa model:** Bắt buộc chạy:
-```bash
-dart run build_runner build --delete-conflicting-outputs
-```
-
-Các file `.g.dart` là generated — không sửa tay.
-
----
-
-## Riverpod Providers
-
-```dart
-// provider/menu_provider.dart
-final menuControllerProvider =
-    StateNotifierProvider<MenuController, MenuState>((ref) {
-  final repository = ref.read(apiRepositoryProvider);
-  return MenuController(repository);
-});
-```
-
-```dart
-// UI: ConsumerWidget
-class MenuPage extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(menuControllerProvider);
-    return state.when(
-      loading: () => const CircularProgressIndicator(),
-      data: (products) => ProductList(products: products),
-      error: (e, _) => ErrorWidget(e.toString()),
-    );
-  }
-}
-```
-
-**Quy tắc:**
-- Dùng `hooks_riverpod` — không dùng `flutter_riverpod` standalone
-- Không dùng Provider, BLoC, GetX
-- `ref.read()` trong actions, `ref.watch()` trong build
-
----
-
-## Payment Flow (elepay)
-
-```dart
-// elepay_flutter 3.5.2
-final elepayResult = await Elepay.handlePayload(payload);
-// payload từ NestJS /user/checkout
-```
-
-Không dùng Stripe hoặc payment SDK khác.
-
----
-
-## Socket.IO
-
-```dart
-// Cleanup bắt buộc trong dispose
-@override
-void dispose() {
-  socket.off('order_updated');
-  socket.disconnect();
-  super.dispose();
+  }) = _Product;
+  factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 }
 ```
 
 ---
 
-## Version Convention
+## Routing — auto_route
 
-| Env | `pubspec.yaml` version | Ghi chú |
-|---|---|---|
-| DEV | `0.0.<buildNumber>` | |
-| STG | `0.1.<buildNumber>` | TestFlight Internal |
-| PROD | `1.0.<buildNumber>` | App Store / Play Store |
+- `lib/app/routers/app_router.dart` — 115 lines, define route tree
+- `lib/app/routers/app_router.gr.dart` — Generated (32 KB)
+
+**Route tree:**
+
+```
+SplashRoute
+  → LoginRoute
+  → AppShellRoute
+      └─ nested: BottomBarRoute, SearchRoute, ProductDetailsRoute, CartRoute, PaymentMethodsRoute, ...
+```
+
+**Transitions:** Cupertino navigation, slide/zoom animation cho splash/start/login.
+
+---
+
+## Bootstrap — `main.dart`
+
+```dart
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  final sharedPrefs = await SharedPreferences.getInstance();
+
+  final container = ProviderContainer(overrides: [
+    sharedPrefsProvider.overrideWithValue(sharedPrefs),
+  ]);
+
+  await container.read(fcmServiceProvider).requestPermission();
+  container.read(fcmControllerProvider);
+  container.read(deepLinkServiceProvider).init();
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
+}
+```
+
+**Flavor entry:** `lib/flavor/main_development.dart` · `main_staging.dart` · `main_production.dart` — mỗi flavor set env, config Firebase khác nhau.
+
+---
+
+## Env — flutter_dotenv
+
+File `.env` (nằm trong `assets/`, khai báo trong `pubspec.yaml`):
+
+| Key | Purpose |
+|---|---|
+| `APP_NAME` | App display name |
+| `BUNDLE_IOS_ID` | iOS bundle ID |
+| `BUNDLE_ANDROID_ID` | Android package name |
+| `PROVISIONING_IOS` | iOS provisioning profile |
+| `APPLE_TEAM_ID` | Apple developer team |
+| `BASE_URL` | REST API base URL |
+| `SOCKET_URL` | Socket.io endpoint |
+| `DEPLOYGATE_API_KEY` | DeployGate CI |
+| `DEPLOYGATE_USER` | DeployGate user |
+| `EMAIL_STORE` | Contact email |
+
+**Không hard-code URL** — luôn qua `dotenv.env[...]`.
+
+---
+
+## Firebase
+
+- **Project:** `eskitchen-testing-d2760`
+- **Config files:**
+  - `android/app/google-services.json`
+  - `ios/Runner/GoogleService-Info.plist`
+  - `macos/Runner/GoogleService-Info.plist`
+- **Services:** FCM (push notification) + Crashlytics
+- **FCM integration:** `lib/app/core/services/push_notification/`
+  - `fcm_service.dart` — service
+  - `fcm_provider.dart` — Riverpod provider
+  - `fcm_controller.dart` — state notifier
+  - `fcm_state.dart` — state model
+  - `fcm_degate.dart` — DeployGate integration
+
+---
+
+## Payment — elepay_flutter
+
+- `lib/app/core/services/elepay/`
+  - `elepay_provider.dart`
+  - `elepay_service.dart`
+- Package: `elepay_flutter 3.5.2`
+- Tích hợp với order flow + `payment_registration` feature
+- **Không tích hợp Stripe/PayPal** — chỉ elepay (Alipay + WeChat Pay + card qua elepay)
+
+---
+
+## Socket.IO — real-time payment result
+
+- `lib/app/core/services/socket/socket_service.dart` — singleton
+- **Events:** `SocketConfig.chargeSucceeded`, `SocketConfig.chargeFailed`
+- **Timeout:** `SocketConfig.chargeResultTimeout`
+- **Config:** `lib/app/configs/socket_config.dart`
+
+Flow: user thanh toán → app subscribe socket → chờ event từ server → nếu timeout, fallback polling.
+
+---
+
+## Platform config
+
+### Android
+
+- `android/app/google-services.json` — Firebase
+- `android/app/build.gradle.kts` — Kotlin build script
+- **Package name:** đọc từ `BUNDLE_ANDROID_ID` env
+
+### iOS
+
+- `ios/Runner/GoogleService-Info.plist` — Firebase
+- `ios/Runner.xcworkspace/` — CocoaPods managed
+- `ios/Podfile` — Firebase pods
+- **Bundle ID:** `BUNDLE_IOS_ID` env
+
+### Orientation
+
+`SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])` — chỉ portrait, không landscape.
+
+---
+
+## Assets
+
+- `assets/images/` — 68 file (product photo, UI asset)
+- `assets/icons/` — 47 file + `allergens/` sub-folder (allergen SVG)
+- `assets/fonts/` — NotoSansJP (6 weights) + DMSans (6 weights)
+- `assets/gifs/` — animation
+- Access qua `flutter_gen` — `lib/gen/assets.gen.dart`
+
+---
+
+## Version convention
+
+- **Current:** `pubspec.yaml` version `0.1.1+9` — build 9, format STG (`0.1.X`)
+- **Rule:**
+  - **DEV:** `0.0.<build>`
+  - **STG:** `0.1.<build>`
+  - **PROD:** `1.0.<build>`
+- Không đảo ngược, không skip STG → PROD.
+- Flavor entry points có sẵn — nhưng version quản lý tập trung qua `pubspec.yaml`.
