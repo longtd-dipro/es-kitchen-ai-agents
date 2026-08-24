@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!-- ============================================================= -->
+<!-- 画面名: OW_DLVR_002 - 配送スタッフを紐付ける (配送状況管理)       -->
+<!-- 入力画像: OW_DLVR_002.png                                     -->
+<!-- ============================================================= -->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OW_DLVR_002 - 配送スタッフを紐付ける</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --green:#84cc16;--green-dark:#65a30d;--bg:#f3f4f6;--card:#fff;--line:#e5e7eb;
+    --text:#1f2937;--muted2:#6b7280;--orange:#f59e0b;--link:#2563eb;--sidebar-w:226px;--header-h:64px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",-apple-system,sans-serif;color:var(--text);background:var(--bg);font-size:14px;line-height:1.6}
+  .app{display:flex;min-height:100vh}
+  .sidebar{width:var(--sidebar-w);background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0}
+  .logo{display:flex;align-items:center;gap:8px;padding:16px 18px;height:var(--header-h)}
+  .logo .sun{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 50% 40%,#fbbf24,#f97316);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;box-shadow:0 0 0 3px #fff7ed}
+  .logo .name{font-weight:800;font-size:19px}
+  .logo .name .es{color:#ef4444}.logo .name .st{color:#1e293b}
+  .nav{padding:14px;display:flex;flex-direction:column;gap:6px}
+  .nav a{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:#374151;text-decoration:none;font-weight:600;font-size:15px}
+  .nav a i{width:20px;text-align:center;font-size:16px;color:#6b7280}
+  .nav a:hover{background:#f9fafb}
+  .nav a.active{background:var(--green);color:#fff;box-shadow:0 2px 6px rgba(132,204,22,.4)}
+  .nav a.active i{color:#fff}
+  .mascot{margin-top:auto;padding:18px;display:flex;justify-content:center}
+  .mascot .m-illu{width:120px;height:150px;border-radius:12px;background:radial-gradient(circle at 50% 30%,#fde68a,#fbbf24 70%,#f59e0b);display:flex;align-items:flex-end;justify-content:center;font-size:64px}
+  .collapse{padding:10px 18px;color:#9ca3af;font-size:18px;cursor:pointer}
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .topbar{height:var(--header-h);background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+  .topbar .welcome{display:flex;align-items:center;gap:10px;color:#374151;font-weight:600}
+  .topbar .welcome .sun{color:var(--orange);font-size:20px}
+  .topbar .user{display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:600}
+  .topbar .user .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#fcd34d,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid #fde68a}
+  .topbar .user .fa-chevron-down{color:#9ca3af;font-size:12px}
+  .content{padding:22px 26px;flex:1}
+  .crumb{color:var(--muted2);font-size:12px;margin-bottom:2px}
+  .head-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
+  .page-title{font-size:22px;font-weight:700}
+  .head-actions{display:flex;gap:10px}
+  .btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151}
+  .btn:hover{background:#f9fafb}
+  .btn-green{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 2px 5px rgba(132,204,22,.4)}
+  .btn-green:hover{background:var(--green-dark)}
+  /* form sections */
+  .section{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:16px;overflow:hidden}
+  .sec-head{display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-left:4px solid var(--green);padding:13px 18px;font-weight:700;color:#1f2937}
+  .sec-head .left{display:flex;align-items:center;gap:9px}
+  .sec-head .left i{color:#9ca3af}
+  .sec-head .chev{color:#9ca3af;font-size:13px}
+  .sec-body{padding:18px 20px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 20px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field.col-span-1{grid-column:span 1}
+  .field label{font-size:13px;color:#6b7280;font-weight:600}
+  .field input,.field select{height:40px;border:1px solid var(--line);border-radius:8px;padding:0 12px;font-size:14px;font-family:inherit;color:#374151;background:#f9fafb}
+  .field input[readonly]{background:#f3f4f6;color:#4b5563}
+  .field select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='3'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;background-color:#fff}
+  .field .with-cal{position:relative}
+  .field .with-cal i{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#9ca3af}
+  .lnk{color:var(--link);text-decoration:none}.lnk:hover{text-decoration:underline}
+  .file-field input{display:flex;align-items:center}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">
+      <span class="sun"><i class="fa-solid fa-sun"></i></span>
+      <span class="name"><span class="es">ES</span><span class="st">STATION</span></span>
+    </div>
+    <nav class="nav">
+      <a href="#"><i class="fa-regular fa-window-maximize"></i> TOP</a>
+      <a href="#" class="active"><i class="fa-solid fa-truck"></i> 配送状況</a>
+      <a href="#"><i class="fa-regular fa-rectangle-list"></i> 集金額</a>
+      <a href="#"><i class="fa-solid fa-user-group"></i> スタッフ</a>
+    </nav>
+    <div class="mascot"><div class="m-illu">🧑‍🍳</div></div>
+    <div class="collapse"><i class="fa-solid fa-bars-staggered"></i></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="welcome"><i class="fa-solid fa-sun sun"></i><span>お帰りなさい</span></div>
+      <div class="user"><span class="avatar">🦁</span><span>にっしぐち</span><i class="fa-solid fa-chevron-down"></i></div>
+    </header>
+
+    <main class="content">
+      <div class="head-row">
+        <div>
+          <div class="crumb">配送状況管理</div>
+          <h1 class="page-title">配送スタッフを紐付ける</h1>
+        </div>
+        <div class="head-actions">
+          <button class="btn">キャンセル</button>
+          <button class="btn btn-green">保存</button>
+        </div>
+      </div>
+
+      <!-- 配送スタッフ選択 -->
+      <section class="section">
+        <div class="sec-head"><span class="left"><i class="fa-solid fa-user"></i>配送スタッフ選択</span><i class="fa-solid fa-chevron-up chev"></i></div>
+        <div class="sec-body">
+          <div class="grid">
+            <div class="field"><label>配送スタッフ</label><select><option>伊藤 健司</option></select></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 納品先情報 -->
+      <section class="section">
+        <div class="sec-head"><span class="left"><i class="fa-solid fa-location-dot"></i>納品先情報</span><i class="fa-solid fa-chevron-up chev"></i></div>
+        <div class="sec-body">
+          <div class="grid">
+            <div class="field"><label>納品先名</label><input value="田中 太郎" readonly></div>
+            <div class="field"><label>住所</label><input value="東京都渋谷区神南1-2-3 サンビルディング4F" readonly></div>
+            <div class="field"><label>電話番号</label><input value="03-5678-9012" readonly></div>
+            <div class="field"><label>ご担当者</label><input value="佐藤 花子" readonly></div>
+            <div class="field"><label>納品予定日</label><div class="with-cal"><input value="2026/11/20" readonly><i class="fa-regular fa-calendar"></i></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 中継先情報 -->
+      <section class="section">
+        <div class="sec-head"><span class="left"><i class="fa-solid fa-warehouse"></i>中継先情報</span><i class="fa-solid fa-chevron-up chev"></i></div>
+        <div class="sec-body">
+          <div class="grid">
+            <div class="field"><label>中継先名</label><input value="鈴木 一郎" readonly></div>
+            <div class="field"><label>住所</label><input value="神奈川県横浜市西区みなとみらい2-3-5" readonly></div>
+            <div class="field"><label>電話番号</label><input value="045-321-6789" readonly></div>
+            <div class="field"><label>ご担当者</label><input value="山田 美咲" readonly></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 荷物情報 -->
+      <section class="section">
+        <div class="sec-head"><span class="left"><i class="fa-solid fa-box"></i>荷物情報</span><i class="fa-solid fa-chevron-up chev"></i></div>
+        <div class="sec-body">
+          <div class="grid">
+            <div class="field"><label>送り状No</label><input value="YM-20261115-00847" readonly></div>
+            <div class="field"><label>配送会社</label><input value="ヤマト運輸株式会社" readonly></div>
+            <div class="field"><label>荷物名</label><input value="冷凍食品セット" readonly></div>
+            <div class="field"><label>発送予定日</label><div class="with-cal"><input value="2026/11/15" readonly><i class="fa-regular fa-calendar"></i></div></div>
+            <div class="field"><label>納品日</label><div class="with-cal"><input value="2026/11/20" readonly><i class="fa-regular fa-calendar"></i></div></div>
+            <div class="field"><label>備考</label><input value="冷凍保管必要、丁寧に取り扱うこと" readonly></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 報告情報 -->
+      <section class="section">
+        <div class="sec-head"><span class="left"><i class="fa-solid fa-clipboard-check"></i>報告情報</span><i class="fa-solid fa-chevron-up chev"></i></div>
+        <div class="sec-body">
+          <div class="grid">
+            <div class="field"><label>駐車料金</label><input value="550" readonly></div>
+            <div class="field"><label>レシート画像</label><input style="color:#2563eb" value="receipt_20261115.jpg" readonly></div>
+            <div class="field"><label>報告画像</label><input style="color:#2563eb" value="delivery_photo_001.jpg" readonly></div>
+            <div class="field"><label>配送スタッフ連絡欄</label><input value="080-1234-5678（担当：伊藤 健司）" readonly></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</body>
+</html>

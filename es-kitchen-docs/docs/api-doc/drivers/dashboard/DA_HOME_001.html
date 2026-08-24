@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DA_HOME_001 — Driver Home (配送ホーム)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { padding: 24px 0; }
+        .docs-section { margin-top: 24px; border-top: 2px solid #edf2f7; }
+        .page-note {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #92400e;
+            margin: 14px 16px;
+        }
+        .screen-label {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 6px;
+            z-index: 200;
+        }
+        .lang-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .lang-tab {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #cbd5e0;
+            background: #fff;
+            color: #4a5568;
+        }
+        .lang-tab.active {
+            background: #2b6cb0;
+            color: #fff;
+            border-color: #2b6cb0;
+        }
+        .lang-block { display: none; }
+        .lang-block.active { display: block; }
+        .vi-text { color: #b7791f; font-style: italic; }
+        .docs-footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: #a0aec0;
+            border-top: 1px solid #edf2f7;
+            margin-top: 20px;
+        }
+        .api-ref {
+            font-size: 11px;
+            color: #2b6cb0;
+            font-weight: bold;
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div style="max-width: 1100px; width: 100%; margin: 0 auto; padding: 0 16px;">
+    <!-- Page heading -->
+    <div style="margin-bottom: 20px;">
+        <div class="lang-tabs">
+            <span class="lang-tab active" onclick="switchLang(this, 'ja')">日本語</span>
+            <span class="lang-tab" onclick="switchLang(this, 'vi')">Tiếng Việt</span>
+        </div>
+
+        <div class="lang-block ja active">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_HOME_001 — Driver Home（配送ホーム）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · Home screen (配送ホーム画面) · API spec + field mapping</p>
+        </div>
+        <div class="lang-block vi">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_HOME_001 — Trang chủ tài xế（配送ホーム）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · Màn hình chính · Spec API + mapping các trường dữ liệu</p>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <span style="background:#2b6cb0; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px;">Mobile App</span>
+            <span style="background:#48bb78; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">Screen ID: DA_HOME_001</span>
+        </div>
+    </div>
+
+    <!-- ===== MOCKUP SECTION ===== -->
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; align-items:start;">
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">MOCKUP</h3>
+            <div class="phone-wrapper">
+                <div class="screen-label">DA_HOME_001</div>
+
+                <!-- Header -->
+                <div class="header-banner">
+                    <div class="logo-area">
+                        <div class="brand-title">ES<span>STATION</span></div>
+                        <div class="notif-bell">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-top: 15px;">
+                        <div style="background:#fff; border-radius:50%; width:44px; height:44px; display:flex; justify-content:center; align-items:center; border:2px solid #e67e22; margin-right:10px; overflow:hidden;">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="#e67e22"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                        </div>
+                        <div class="driver-status-box">
+                            <div class="welcome-text"><span>Mochiduki</span> さん、<br>安全運転でいってらっしゃいませ。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPI Container -->
+                <div class="kpi-container">
+                    <div class="kpi-grid">
+                        <div class="kpi-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2b6cb0" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                            <span class="kpi-label">本日の配送件数</span>
+                            <span class="kpi-value"><span class="annotation-badge">(1)</span>10</span>
+                        </div>
+                        <div class="kpi-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#48bb78" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span class="kpi-label">完了件数</span>
+                            <span class="kpi-value" style="color:#48bb78;"><span class="annotation-badge">(2)</span>2</span>
+                        </div>
+                        <div class="kpi-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2"><path d="M5 2h14M5 22h14M19 2v6.5a7 7 0 0 1-14 0V2M5 22v-6.5a7 7 0 0 1 14 0V22"></path></svg>
+                            <span class="kpi-label">残り件数</span>
+                            <span class="kpi-value" style="color:#e53e3e;"><span class="annotation-badge">(3)</span>8</span>
+                        </div>
+                    </div>
+                    <div class="progress-row">
+                        <span class="progress-label">本日の進捗</span>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: 20%;">
+                                <span class="progress-text"><span class="annotation-badge">(4)</span>20%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schedule Content -->
+                <div class="schedule-content">
+                    <div class="section-title"><span class="annotation-badge">(5)</span> 配送予定一覧</div>
+
+                    <div class="date-header">■本日（2026-6-1）</div>
+
+                    <!-- Warehouse Card with nested company cards -->
+                    <div class="delivery-card" style="border-left: 4px solid #f6ad55;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box bg-orange">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title"><span class="annotation-badge">(6)</span>オージーフーズ倉庫</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-unreceived"><span class="annotation-badge">(7)</span>未受取</span>
+                        </div>
+                        <div class="address-row">
+                            <svg class="address-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div><span class="annotation-badge">(8)</span>東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階</div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div class="meta-grid">
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(9)</span>2</span> 社</div>
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(10)</span>4</span> 箱</div>
+                                <div class="meta-item"><span class="highlight-red"><span class="annotation-badge">(11)</span>500</span> 品</div>
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(12)</span>500</span> 品</div>
+                            </div>
+                            <button class="toggle-btn">非表示 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"></polyline></svg></button>
+                        </div>
+
+                        <!-- Nested company cards -->
+                        <div class="nested-cards-container">
+                            <!-- Nested card 1 -->
+                            <div class="delivery-card" style="border-left: 3px solid #b794f4;">
+                                <div class="card-header">
+                                    <div class="card-title-block">
+                                        <div class="icon-box bg-purple" style="width:26px; height:26px;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                        </div>
+                                        <div class="card-title" style="font-size:12px;"><span class="annotation-badge">(13)</span>東和精密機械工業株式会社</div>
+                                    </div>
+                                    <span class="badge badge-undelivered" style="font-size:10px; padding:2px 6px;"><span class="annotation-badge">(14)</span>未配送</span>
+                                </div>
+                                <div class="address-row" style="margin-bottom:6px;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    <div><span class="annotation-badge">(15)</span>大阪府大阪市北区太融寺町2-18富士林プラザ8番館6F</div>
+                                </div>
+                                <div class="meta-grid" style="font-size:11px;">
+                                    <div class="meta-item"><span><span class="annotation-badge">(16)</span>2</span> 箱</div>
+                                    <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(17)</span>10</span> 品</div>
+                                    <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(18)</span>20</span> 品</div>
+                                </div>
+                            </div>
+
+                            <!-- Nested card 2 -->
+                            <div class="delivery-card" style="border-left: 3px solid #63b3ed;">
+                                <div class="card-header">
+                                    <div class="card-title-block">
+                                        <div class="icon-box bg-blue" style="width:26px; height:26px;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                        </div>
+                                        <div class="card-title" style="font-size:12px;"><span class="annotation-badge">(19)</span>株式会社三葉重工業製作所</div>
+                                    </div>
+                                    <span class="badge badge-undelivered" style="font-size:10px; padding:2px 6px;"><span class="annotation-badge">(20)</span>未配送</span>
+                                </div>
+                                <div class="address-row" style="margin-bottom:6px;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    <div><span class="annotation-badge">(21)</span>大阪府大阪市北区太融寺町2-18富士林プラザ8番館6F</div>
+                                </div>
+                                <div class="meta-grid" style="font-size:11px;">
+                                    <div class="meta-item"><span><span class="annotation-badge">(22)</span>2</span> 箱</div>
+                                    <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(23)</span>10</span> 品</div>
+                                    <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(24)</span>20</span> 品</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Second warehouse card -->
+                    <div class="delivery-card" style="border-left: 4px solid #f6ad55;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box bg-orange">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                </div>
+                                <div>
+                                    <div class="card-title"><span class="annotation-badge">(25)</span>オージーフーズ倉庫</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-unreceived"><span class="annotation-badge">(26)</span>未受取</span>
+                        </div>
+                        <div class="address-row">
+                            <svg class="address-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div><span class="annotation-badge">(27)</span>東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階</div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div class="meta-grid">
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(28)</span>10</span> 社</div>
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(29)</span>50</span> 箱</div>
+                                <div class="meta-item"><span class="highlight-red"><span class="annotation-badge">(30)</span>500</span> 品</div>
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(31)</span>500</span> 品</div>
+                            </div>
+                            <button class="toggle-btn">表示 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Nav -->
+                <div class="bottom-nav">
+                    <a href="#" class="nav-item active">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        ホーム
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        マニュアル
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        配送一覧
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        トラブル
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        アカウント
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== FIELD LEGEND ===== -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">FIELD LEGEND</h3>
+
+            <div class="page-note">
+                <strong>📌 API:</strong> All fields on this screen are populated via
+                <code>GET /driver/home</code> (Driver Home).
+                Annotation numbers correspond to fields in the API Response DTO.
+            </div>
+
+            <div class="docs-section" style="margin-top:0; padding:14px 16px;">
+                <div class="docs-title">① Header / Driver Info（ヘッダー情報）</div>
+                <table class="field-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Field / Trường</th>
+                            <th>Type / Kiểu</th>
+                            <th>Source API Response / Nguồn API</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="field-num">(1)</td>
+                            <td>
+                                <div>Driver Name / Welcome Message</div>
+                                <div class="vi-text">Tên tài xế / Lời chào</div>
+                            </td>
+                            <td>string</td>
+                            <td>
+                                <code>GET /driver/home</code><br>Field: <code>driverName</code><br>Pattern: <code>{name} さん、安全運転で...</code>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="docs-section">
+                <div class="docs-title">② KPI Section — 本日の配送状況（Today's Delivery Status）</div>
+                <table class="field-table">
+                    <thead>
+                        <tr><th>#</th><th>Field / Trường</th><th>Type / Kiểu</th><th>Source API Response / Nguồn API</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="field-num">(1)</td>
+                            <td>
+                                <div>本日の配送件数<br>(Today's Total Deliveries)</div>
+                                <div class="vi-text">Tổng số lượt giao hôm nay</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>GET /driver/home</code><br>Field: <code>kpi.todayTotal</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(2)</td>
+                            <td>
+                                <div>完了件数<br>(Completed Count)</div>
+                                <div class="vi-text">Số lượt đã hoàn thành</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>GET /driver/home</code><br>Field: <code>kpi.completed</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(3)</td>
+                            <td>
+                                <div>残り件数<br>(Remaining Count)</div>
+                                <div class="vi-text">Số lượt còn lại</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>GET /driver/home</code><br>Field: <code>kpi.remaining</code><br><em>Computed: todayTotal - completed</em></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(4)</td>
+                            <td>
+                                <div>本日の進捗率<br>(Today's Progress %)</div>
+                                <div class="vi-text">Tỷ lệ tiến độ hôm nay</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>GET /driver/home</code><br>Field: <code>kpi.progressPercent</code><br><em>Computed: completed / todayTotal × 100</em></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="docs-section">
+                <div class="docs-title">③ Schedule List — 配送予定一覧（Delivery Schedule）</div>
+                <table class="field-table">
+                    <thead>
+                        <tr><th>#</th><th>Field / Trường</th><th>Type / Kiểu</th><th>Source API Response / Nguồn API</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="field-num">(5)</td>
+                            <td>
+                                <div>Section Title ("配送予定一覧")</div>
+                                <div class="vi-text">Tiêu đề section — Danh sách lịch giao hàng</div>
+                            </td>
+                            <td>string</td>
+                            <td><strong>Static UI label</strong> — no API</td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(6)</td>
+                            <td>
+                                <div>Warehouse Name / 倉庫名</div>
+                                <div class="vi-text">Tên kho hàng</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>GET /driver/home</code><br>Field: <code>blocks[].warehouseName</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(7)</td>
+                            <td>
+                                <div>Warehouse Status Badge / 倉庫 受取ステータス</div>
+                                <div class="vi-text">Trạng thái nhận hàng tại kho</div>
+                            </td>
+                            <td>enum</td>
+                            <td><code>blocks[].warehouseStatus</code><br>Values: <code>UNRECEIVED</code> (未受取) / <code>RECEIVED</code> (受取済)</td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(8)</td>
+                            <td>
+                                <div>Warehouse Address / 倉庫住所</div>
+                                <div class="vi-text">Địa chỉ kho hàng</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>blocks[].warehouseAddress</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(9)</td>
+                            <td>
+                                <div>Company Count (社)</div>
+                                <div class="vi-text">Số công ty cần giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>blocks[].companyCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(10)</td>
+                            <td>
+                                <div>Total Box Count (箱)</div>
+                                <div class="vi-text">Tổng số thùng hàng</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>blocks[].totalBoxCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(11)</td>
+                            <td>
+                                <div>Total Order Item Count (品) <em style="color:#e53e3e;">[red]</em></div>
+                                <div class="vi-text">Tổng số món hàng cần giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>blocks[].totalItemCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(12)</td>
+                            <td>
+                                <div>Total Delivered Count (品) <em style="color:#2b6cb0;">[blue]</em></div>
+                                <div class="vi-text">Tổng số món đã giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>blocks[].totalDeliveredCount</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="docs-section">
+                <div class="docs-title">④ Company Cards — 納品先カード（Nested Company Delivery Cards）</div>
+                <table class="field-table">
+                    <thead>
+                        <tr><th>#</th><th>Field / Trường</th><th>Type / Kiểu</th><th>Source API Response / Nguồn API</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="field-num">(13)</td>
+                            <td>
+                                <div>Company Name / 納品先名 <em>[Purple card]</em></div>
+                                <div class="vi-text">Tên công ty cần giao (thẻ tím)</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>blocks[].companies[].companyName</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(14)</td>
+                            <td>
+                                <div>Delivery Status Badge / 配送ステータス</div>
+                                <div class="vi-text">Trạng thái giao hàng</div>
+                            </td>
+                            <td>enum</td>
+                            <td><code>companies[].deliveryStatus</code><br>Values: <code>UNDELIVERED</code> (未配送) / <code>DELIVERED</code> (配送完了) / <code>TROUBLE</code> (トラブル)</td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(15)</td>
+                            <td>
+                                <div>Company Address / 納品先住所</div>
+                                <div class="vi-text">Địa chỉ công ty cần giao</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>companies[].deliveryAddress</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(16)</td>
+                            <td>
+                                <div>Box Count (箱)</div>
+                                <div class="vi-text">Số thùng hàng cho công ty này</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>companies[].boxCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(17)</td>
+                            <td>
+                                <div>Order Item Count (品) <em style="color:#2b6cb0;">[blue]</em></div>
+                                <div class="vi-text">Số món hàng cần giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>companies[].orderItemCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(18)</td>
+                            <td>
+                                <div>Delivered Count (品) <em style="color:#2b6cb0;">[blue]</em></div>
+                                <div class="vi-text">Số món đã giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>companies[].deliveredCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(19)</td>
+                            <td>
+                                <div>Company Name / 納品先名 <em>[Blue card]</em></div>
+                                <div class="vi-text">Tên công ty cần giao (thẻ xanh dương)</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>blocks[].companies[].companyName</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(20)</td>
+                            <td>
+                                <div>Delivery Status Badge</div>
+                                <div class="vi-text">Trạng thái giao hàng (tương tự 14)</div>
+                            </td>
+                            <td>enum</td>
+                            <td><code>companies[].deliveryStatus</code><br>Same as (14)</td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(21)</td>
+                            <td>
+                                <div>Company Address</div>
+                                <div class="vi-text">Địa chỉ công ty cần giao</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>companies[].deliveryAddress</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(22)</td>
+                            <td>
+                                <div>Box Count (箱)</div>
+                                <div class="vi-text">Số thùng hàng cho công ty này</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>companies[].boxCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(23)</td>
+                            <td>
+                                <div>Order Item Count (品)</div>
+                                <div class="vi-text">Số món hàng cần giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>companies[].orderItemCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(24)</td>
+                            <td>
+                                <div>Delivered Count (品)</div>
+                                <div class="vi-text">Số món đã giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>companies[].deliveredCount</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="docs-section">
+                <div class="docs-title">⑤ Second Warehouse Card</div>
+                <table class="field-table">
+                    <thead>
+                        <tr><th>#</th><th>Field / Trường</th><th>Type / Kiểu</th><th>Source API Response / Nguồn API</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="field-num">(25)</td>
+                            <td>
+                                <div>Warehouse Name / 倉庫名</div>
+                                <div class="vi-text">Tên kho hàng</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>blocks[1].warehouseName</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(26)</td>
+                            <td>
+                                <div>Warehouse Status Badge</div>
+                                <div class="vi-text">Trạng thái nhận hàng</div>
+                            </td>
+                            <td>enum</td>
+                            <td><code>blocks[1].warehouseStatus</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(27)</td>
+                            <td>
+                                <div>Warehouse Address</div>
+                                <div class="vi-text">Địa chỉ kho hàng</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>blocks[1].warehouseAddress</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(28)</td>
+                            <td>
+                                <div>Company Count (社)</div>
+                                <div class="vi-text">Số công ty cần giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>blocks[1].companyCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(29)</td>
+                            <td>
+                                <div>Total Box Count (箱)</div>
+                                <div class="vi-text">Tổng số thùng hàng</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>blocks[1].totalBoxCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(30)</td>
+                            <td>
+                                <div>Total Item Count (品) <em style="color:#e53e3e;">[red]</em></div>
+                                <div class="vi-text">Tổng số món hàng cần giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>blocks[1].totalItemCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(31)</td>
+                            <td>
+                                <div>Total Delivered Count (品) <em style="color:#2b6cb0;">[blue]</em></div>
+                                <div class="vi-text">Tổng số món đã giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>blocks[1].totalDeliveredCount</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="docs-footer">
+    Screen: DA_HOME_001 &nbsp;|&nbsp; Module: Driver (配送ドライバー) &nbsp;|&nbsp; Phase 2 &nbsp;|&nbsp; es-kitchen-api docs
+</div>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>注文管理 — API 配線ガイド (Supplier)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#0062CC; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F8F9FA; color:#222; }
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;margin-left:6px;
+    background:var(--primary);color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none; }
+  .nb:hover{ transform:scale(1.18);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .form-input{ height:36px;border:1px solid #D1D5DB;border-radius:6px;padding:0 10px;font-size:14px;background:#fff; }
+  .status-pill{ display:inline-block;font-size:12px;font-weight:700;padding:3px 12px;border-radius:12px; }
+  .dt{ width:100%;border-collapse:collapse; }
+  .dt th{ background:#F3F4F6;color:#6B7280;font-size:12px;font-weight:700;text-align:left;padding:10px 12px;border-bottom:1px solid #E5E7EB;white-space:nowrap; }
+  .dt td{ padding:12px;font-size:13px;border-bottom:1px solid #E5E7EB;vertical-align:middle;white-space:nowrap; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:820px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#dbeafe; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-post{background:#bee3f8;color:#2a4365;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+</style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Supplier · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">注文管理 — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số</b> bất kỳ → panel phải hiện <b>nguyên bảng tổng quan + API docs</b> (highlight dòng đã click). Contract: <code>SUPPLIER_DB_API_DESIGN.md › 3.2</code> · base <code>/supplier/*</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (GET)</span>
+      <span><span class="nb act" style="cursor:default">n</span> action/điều hướng</span>
+      <span><span class="nb tbd" style="cursor:default">n</span> nguồn DB chờ BA (TBD)</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP (khớp screenshot) ===== -->
+  <div class="card p-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">注文管理</h2>
+
+    <!-- filter bar -->
+    <div class="rounded-xl border border-gray-200 p-4 mb-5">
+      <div class="flex flex-wrap items-center gap-3">
+        <input type="month" class="form-input" value="2024-04" /><span class="nb" data-n="1">1</span>
+        <select class="form-input"><option>メニュー種別</option><option>通常</option><option>プレミアム</option></select><span class="nb" data-n="2">2</span>
+        <select class="form-input"><option>ステータス</option><option>未処理</option><option>仮注文</option><option>正式注文</option><option>確認済み</option></select><span class="nb" data-n="3">3</span>
+        <button class="px-4 py-2 rounded-lg border border-purple-500 text-purple-600 text-sm font-medium">クリア</button>
+        <button class="px-4 py-2 rounded-lg bg-purple-600 text-white text-sm font-medium">検索<span class="nb" data-n="4">4</span></button>
+      </div>
+    </div>
+
+    <!-- table -->
+    <div class="overflow-x-auto">
+      <table class="dt">
+        <thead><tr>
+          <th>No</th>
+          <th>注文年月<span class="nb" data-n="5">5</span></th>
+          <th>メニュー種別<span class="nb" data-n="6">6</span></th>
+          <th>出荷予定日<span class="nb" data-n="7">7</span></th>
+          <th>出荷実績日<span class="nb" data-n="8">8</span></th>
+          <th>商品数<span class="nb" data-n="9">9</span></th>
+          <th>合計金額<span class="nb tbd" data-n="10">10</span></th>
+          <th>ステータス<span class="nb" data-n="11">11</span></th>
+          <th class="text-center">操作<span class="nb act" data-n="12">12</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td>1</td><td>2024/04</td><td>通常</td><td>2024/05/23</td><td>2024/05/23</td><td>100</td><td>200円</td><td><span class="status-pill bg-gray-100 text-gray-600">未処理</span></td>
+            <td class="text-center"><i class="fa-solid fa-pen text-blue-600 mr-2"></i><i class="fa-solid fa-download text-blue-600"></i></td></tr>
+          <tr><td>2</td><td>2024/04</td><td>プレミアム</td><td>2024/05/23</td><td>2024/05/23</td><td>100</td><td>200円</td><td><span class="status-pill bg-orange-100 text-orange-600">仮注文</span></td>
+            <td class="text-center"><i class="fa-solid fa-pen text-blue-600 mr-2"></i><i class="fa-solid fa-download text-blue-600"></i></td></tr>
+          <tr><td>3</td><td>2024/04</td><td>通常</td><td>2024/05/23</td><td>2024/05/23</td><td>100</td><td>200円</td><td><span class="status-pill bg-blue-100 text-blue-700">正式注文</span></td>
+            <td class="text-center"><i class="fa-solid fa-pen text-blue-600 mr-2"></i><i class="fa-solid fa-download text-blue-600"></i></td></tr>
+          <tr><td>4</td><td>2024/04</td><td>通常</td><td>2024/05/23</td><td>2024/05/23</td><td>100</td><td>200円</td><td><span class="status-pill bg-green-100 text-green-700">確認済み</span></td>
+            <td class="text-center"><i class="fa-solid fa-pen text-blue-600 mr-2"></i><i class="fa-solid fa-download text-blue-600"></i></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- pagination -->
+    <div class="flex items-center justify-end gap-4 mt-4 text-sm text-gray-600">
+      <span>100件中 1-10件</span>
+      <div class="flex items-center gap-1"><span class="px-2 py-1 border rounded">1</span><span>…</span><span class="px-2 py-1 border rounded bg-purple-600 text-white">6</span><span>…</span><span class="px-2 py-1 border rounded">50</span></div>
+      <select class="form-input"><option>10件／ページ</option><option>20件／ページ</option><option>50件／ページ</option></select><span class="nb" data-n="13">13</span>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm số để xem bảng ráp + API docs. Số <span class="text-orange-600 font-bold">cam (10)</span> = 合計金額 chưa rõ nguồn DB (chờ BA). ⚠️ Màn trộn dữ liệu (出荷日 thuộc supplier_orders, メニュー種別 thuộc menus, 金額/status thuộc company_orders) — entity backing cần BA chốt.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — 注文管理 <span class="text-gray-400 font-normal text-sm">(§3.2)</span></b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:42px">No</th><th>UI element</th><th>API</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const P = e => '<code>'+e+'</code>';
+const GET_L = '<span class="method m-get">GET</span> '+P('/supplier/orders');
+const W = {
+  1:{ui:'Bộ lọc — 注文年月 (năm/tháng đơn)', api:GET_L, field:'query: <code>yearMonth</code>', tf:'Chọn tháng (yyyy-MM) để lọc. Gọi lại API khi bấm 検索.'},
+  2:{ui:'Bộ lọc — メニュー種別 (loại menu)', api:GET_L, field:'query: <code>menuType</code>', tf:'通常 = STANDARD, プレミアム = PREMIUM. Nguồn = <code>menus.menu_type</code> (đã rõ).'},
+  3:{ui:'Bộ lọc — ステータス (trạng thái)', api:GET_L, field:'query: <code>status</code>', tf:'Lọc theo trạng thái đơn (未処理/仮注文/正式注文/確認済み — xem map ở số 11).'},
+  4:{ui:'Nút 検索 (Tìm kiếm)', api:GET_L, field:'(trigger)', tf:'Gọi lại GET với filter 1–3. クリア = reset rồi gọi lại.'},
+  5:{ui:'Cột 注文年月', api:GET_L, field:'<code>items[].orderYearMonth</code>', tf:'Năm/tháng của đơn, hiển thị yyyy/MM.'},
+  6:{ui:'Cột メニュー種別', api:GET_L, field:'<code>items[].menuType</code>', tf:'STANDARD→通常 · PREMIUM→プレミアム. Từ <code>menus.menu_type</code>.'},
+  7:{ui:'Cột 出荷予定日 (ngày dự kiến xuất)', api:GET_L, field:'<code>items[].expectedShipDate</code>', tf:'= supplier_orders.expected_ship_date. Hiển thị yyyy/MM/dd.'},
+  8:{ui:'Cột 出荷実績日 (ngày xuất thực tế)', api:GET_L, field:'<code>items[].actualShipDate</code>', tf:'= supplier_orders.actual_ship_date.'},
+  9:{ui:'Cột 商品数 (số sản phẩm)', api:GET_L, field:'<code>items[].itemCount</code>', tf:'Tổng số SP trong đơn.'},
+  10:{ui:'Cột 合計金額 (tổng tiền)', api:GET_L, field:'<code>items[].amount</code>', tf:'Hiển thị "○○円". ⚠️ Nguồn DB chưa rõ (company_orders.submitted_total_amount?) — chờ BA xác nhận.', tbd:1},
+  11:{ui:'Cột ステータス (badge)', api:GET_L, field:'<code>items[].status</code>', tf:'Map: UNPROCESSED→未処理(xám) · PROVISIONAL→仮注文(cam) · OFFICIAL→正式注文(xanh dương) · CONFIRMED→確認済み(xanh lá). ⚠️ Enum cụ thể chờ BA.'},
+  12:{ui:'操作 — nút 編集 (Sửa/chi tiết)', api:'(điều hướng)', field:'→ màn 注文詳細編集 (§3.3)', tf:'Mở màn chi tiết/sửa đơn, truyền orderId.', act:1},
+  13:{ui:'表示件数 / phân trang', api:GET_L, field:'query: <code>page</code>, <code>limit</code>', tf:'limit ∈ 10/20/50. Response trả <code>total</code> để vẽ "100件中 1-10件".'}
+};
+// 操作 — ダウンロード (cùng cụm số 12, ghi riêng trong bảng)
+W[14] = {ui:'操作 — nút ダウンロード (Tải xuống)', api:'<span class="method m-get">GET</span> '+P('/supplier/orders/{id}/export'), field:'file (1 đơn)', tf:'Tải xuống 1 đơn (CSV/PDF). KHÁC với nút import ở màn 注文詳細編集.', act:1};
+
+const DOCS = `
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1e40af;margin-bottom:14px">
+  <b>API chính của màn:</b> <span class="method m-get">GET</span> <code>/supplier/orders</code> — danh sách đơn (lọc theo 注文年月 / メニュー種別 / ステータス + phân trang). Auth: <code>Bearer {supplier token}</code>.
+</div>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:8px 10px;font-size:12px;color:#92400e;margin-bottom:14px">
+  ⚠️ <b>Lưu ý nguồn DB:</b> màn này trộn khái niệm — <b>出荷予定日/出荷実績日</b> thuộc <code>supplier_orders</code>; <b>メニュー種別</b> thuộc <code>menus</code>; <b>合計金額 + status</b> nghiêng <code>company_orders</code>. <b>Entity backing + nguồn 合計金額 + enum status cần BA chốt</b> (xem §3 › Còn mở #B').
+</div>
+
+<h4>① <span class="method m-get">GET</span> /supplier/orders — Danh sách đơn &nbsp;<span style="color:#16a34a">(API CHÍNH)</span></h4>
+<p><b>Mục đích:</b> Lấy danh sách đơn để render bảng + bộ lọc + phân trang.</p>
+<p><b>Auth:</b> Supplier JWT.</p>
+
+<p style="font-weight:700;margin-top:10px">Query params</p>
+<table class="map"><thead><tr><th>Param</th><th>Kiểu</th><th>BB</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>yearMonth</code></td><td>string</td><td>—</td><td>Lọc theo 注文年月 (yyyy-MM). (số 1)</td></tr>
+<tr><td><code>menuType</code></td><td>enum</td><td>—</td><td><code>STANDARD</code> (通常) / <code>PREMIUM</code> (プレミアム). = menus.menu_type. (số 2)</td></tr>
+<tr><td><code>status</code></td><td>enum</td><td>—</td><td>Trạng thái đơn (số 3, 11).</td></tr>
+<tr><td><code>page</code> / <code>limit</code></td><td>number</td><td>—</td><td>Phân trang (mặc định 1 / 10; 10·20·50). (số 13)</td></tr>
+</tbody></table>
+
+<p style="font-weight:700;margin-top:12px">Response 200</p>
+<pre>{
+  "items": [
+    {
+      "id": 2001,                          // dùng cho 編集 / ダウンロード
+      "orderYearMonth": "2024/04",         // 注文年月 (số 5)
+      "menuType": "STANDARD",              // メニュー種別 通常/プレミアム (số 6)
+      "expectedShipDate": "2024-05-23",    // 出荷予定日 (số 7)
+      "actualShipDate": "2024-05-23",      // 出荷実績日 (số 8)
+      "itemCount": 100,                    // 商品数 (số 9)
+      "amount": 200,                       // 合計金額 (số 10) ⚠️ nguồn TBD
+      "status": "UNPROCESSED"              // ステータス (số 11)
+    }
+  ],
+  "page": 1, "limit": 10, "total": 100
+}</pre>
+
+<p style="font-weight:700;margin-top:12px">Bảng field response</p>
+<table class="map"><thead><tr><th>Field</th><th>Cột UI</th><th>Nguồn / ghi chú</th></tr></thead><tbody>
+<tr><td><code>orderYearMonth</code></td><td>注文年月</td><td>yyyy/MM.</td></tr>
+<tr><td><code>menuType</code></td><td>メニュー種別</td><td>menus.menu_type (STANDARD/PREMIUM).</td></tr>
+<tr><td><code>expectedShipDate</code></td><td>出荷予定日</td><td>supplier_orders.expected_ship_date.</td></tr>
+<tr><td><code>actualShipDate</code></td><td>出荷実績日</td><td>supplier_orders.actual_ship_date.</td></tr>
+<tr><td><code>itemCount</code></td><td>商品数</td><td>Đếm dòng/SP.</td></tr>
+<tr><td><code>amount</code></td><td>合計金額</td><td>⚠️ Nguồn chưa rõ (company_orders.submitted_total_amount?) — chờ BA.</td></tr>
+<tr><td><code>status</code></td><td>ステータス</td><td>Badge (map ở dưới).</td></tr>
+</tbody></table>
+
+<p style="font-weight:700;margin-top:12px">Map trạng thái → badge</p>
+<table class="map"><thead><tr><th>Giá trị</th><th>JP (badge)</th><th>Màu</th></tr></thead><tbody>
+<tr><td><code>UNPROCESSED</code></td><td>未処理</td><td>Xám</td></tr>
+<tr><td><code>PROVISIONAL</code></td><td>仮注文</td><td>Cam</td></tr>
+<tr><td><code>OFFICIAL</code></td><td>正式注文</td><td>Xanh dương</td></tr>
+<tr><td><code>CONFIRMED</code></td><td>確認済み</td><td>Xanh lá</td></tr>
+</tbody></table>
+<p style="color:#92400e">⚠️ Tên enum status cụ thể chờ BA (mock chỉ cho nhãn JP).</p>
+
+<h4 style="margin-top:20px">② Hành động trên dòng (操作)</h4>
+<p><b>編集 (số 12):</b> điều hướng sang màn <b>注文詳細編集</b> (§3.3), truyền <code>id</code>.</p>
+<p><b>ダウンロード (số 14):</b> <span class="method m-get">GET</span> <code>/supplier/orders/{id}/export</code> — tải xuống 1 đơn. <i>(KHÁC với nút import ở 注文詳細編集.)</i></p>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:8px 10px;font-size:12px;color:#92400e;margin-top:14px">
+  ⚠️ <b>Còn mở (chờ BA):</b> entity backing của 注文管理 (mock trộn supplier_orders + menus + company_orders); nguồn <b>合計金額</b>; tên enum <b>status</b>. Xem <code>SUPPLIER_DB_API_DESIGN.md › PART 3 › Còn mở #B'</code>.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).map(Number).sort((a,b)=>a-b).forEach(n=>{
+  const d=W[n], cls=d.tbd?'tbd':(d.act?'act':'');
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function open(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function close(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=close; ov.onclick=close;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();open(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

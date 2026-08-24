@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DA_HOME_001 - Schedule Screen（配送予定）</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { padding: 24px 0; }
+        .docs-section { margin-top: 24px; border-top: 2px solid #edf2f7; }
+        .screen-label {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 6px;
+            z-index: 200;
+        }
+        .lang-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .lang-tab {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #cbd5e0;
+            background: #fff;
+            color: #4a5568;
+        }
+        .lang-tab.active {
+            background: #2b6cb0;
+            color: #fff;
+            border-color: #2b6cb0;
+        }
+        .lang-block { display: none; }
+        .lang-block.active { display: block; }
+        .vi-text { color: #b7791f; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div style="max-width: 1100px; width: 100%; margin: 0 auto; padding: 0 16px;">
+    <div style="margin-bottom: 20px;">
+        <div class="lang-tabs">
+            <span class="lang-tab active" onclick="switchLang(this, 'ja')">日本語</span>
+            <span class="lang-tab" onclick="switchLang(this, 'vi')">Tiếng Việt</span>
+        </div>
+
+        <div class="lang-block ja active">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_HOME_001 — Schedule Screen（配送予定）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · Schedule tab (配送予定タブ) · API spec + field mapping</p>
+        </div>
+        <div class="lang-block vi">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_HOME_001 — Màn hình lịch giao hàng（配送予定）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · Tab lịch giao hàng · Spec API + mapping các trường dữ liệu</p>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <span style="background:#2b6cb0; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px;">Mobile App</span>
+            <span style="background:#48bb78; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">Screen ID: DA_HOME_001_Schedule</span>
+        </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; align-items:start;">
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">MOCKUP</h3>
+            <div class="phone-wrapper">
+                <div class="screen-label">DA_HOME_001_Schedule</div>
+
+                <div class="header-banner">
+                    <div class="logo-area">
+                        <div class="brand-title">ES<span>STATION</span></div>
+                        <div class="notif-bell">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; margin-top: 15px;">
+                        <div style="background:#fff; border-radius:50%; width:44px; height:44px; display:flex; justify-content:center; align-items:center; border:2px solid #e67e22; margin-right:10px; overflow:hidden;">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="#e67e22"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                        </div>
+                        <div class="driver-status-box">
+                            <div class="welcome-text"><span>Mochiduki</span> さん、<br>安全運転でいってらっしゃいませ。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="schedule-container">
+                    <div class="section-title">配送予定一覧</div>
+
+                    <div class="date-header">■本日（2026-6-1）</div>
+                    <div class="no-data-msg">配送予定データはありません。</div>
+
+                    <div class="date-header">■明日（2026-6-2）</div>
+                    <div class="delivery-card" style="border-left: 4px solid #f6ad55;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                </div>
+                                <div class="card-title"><span class="annotation-badge">(1)</span>オージーフーズ倉庫</div>
+                            </div>
+                            <span class="badge badge-unreceived"><span class="annotation-badge">(2)</span>未受取</span>
+                        </div>
+                        <div class="address-row">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div><span class="annotation-badge">(3)</span>東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階</div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div class="meta-grid">
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(4)</span>10</span> 社</div>
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(5)</span>50</span> 箱</div>
+                                <div class="meta-item"><span class="highlight-red"><span class="annotation-badge">(6)</span>500</span> 品</div>
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(7)</span>500</span> 品</div>
+                            </div>
+                            <button class="toggle-btn">表示 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+                        </div>
+                    </div>
+
+                    <div class="date-header">■明後日（2026-6-3）</div>
+                    <div class="delivery-card" style="border-left: 4px solid #f6ad55;">
+                        <div class="card-header">
+                            <div class="card-title-block">
+                                <div class="icon-box">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                </div>
+                                <div class="card-title"><span class="annotation-badge">(8)</span>オージーフーズ倉庫</div>
+                            </div>
+                            <span class="badge badge-unreceived"><span class="annotation-badge">(9)</span>未受取</span>
+                        </div>
+                        <div class="address-row">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <div><span class="annotation-badge">(10)</span>東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階</div>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div class="meta-grid">
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(11)</span>10</span> 社</div>
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(12)</span>50</span> 箱</div>
+                                <div class="meta-item"><span class="highlight-red"><span class="annotation-badge">(13)</span>500</span> 品</div>
+                                <div class="meta-item"><span class="highlight-blue"><span class="annotation-badge">(14)</span>500</span> 品</div>
+                            </div>
+                            <button class="toggle-btn">表示 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <a href="#" class="nav-item active">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        ホーム
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        マニュアル
+                    </a>
+                    <a href="#" class="nav-item active">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        配送一覧
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        トラブル
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        アカウント
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- FIELD LEGEND -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">FIELD LEGEND</h3>
+
+            <div class="docs-section" style="margin-top:0; padding:14px 16px;">
+                <div class="docs-title">配送予定一覧の項目マッピング / Mapping các trường dữ liệu</div>
+                <p class="docs-subtitle">「配送予定一覧」タブの各項目は GET <code>/driver/schedules</code> API の response から取得する。</p>
+                <p class="docs-subtitle vi-text">Các trường dữ liệu trong tab "配送予定一覧" được lấy từ response của API <code>GET /driver/schedules</code>.</p>
+                <table class="field-table">
+                    <thead>
+                        <tr><th>#</th><th>Field / Trường</th><th>Type / Kiểu</th><th>Source API Response / Nguồn API</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="field-num">(1)</td>
+                            <td>
+                                <div>Warehouse Name / 倉庫名</div>
+                                <div class="vi-text">Tên kho hàng</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>schedules[].warehouseName</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(2)</td>
+                            <td>
+                                <div>Warehouse Status / 倉庫 受取ステータス</div>
+                                <div class="vi-text">Trạng thái nhận hàng tại kho</div>
+                            </td>
+                            <td>enum</td>
+                            <td><code>schedules[].warehouseStatus</code><br>Values: <code>UNRECEIVED</code> (未受取) / <code>RECEIVED</code> (受取済)</td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(3)</td>
+                            <td>
+                                <div>Warehouse Address / 倉庫住所</div>
+                                <div class="vi-text">Địa chỉ kho hàng</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>schedules[].warehouseAddress</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(4)</td>
+                            <td>
+                                <div>Company Count (社)</div>
+                                <div class="vi-text">Số công ty cần giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>schedules[].companyCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(5)</td>
+                            <td>
+                                <div>Total Box Count (箱)</div>
+                                <div class="vi-text">Tổng số thùng hàng</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>schedules[].totalBoxCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(6)</td>
+                            <td>
+                                <div>Total Order Item Count (品)</div>
+                                <div class="vi-text">Tổng số món hàng cần giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>schedules[].totalItemCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(7)</td>
+                            <td>
+                                <div>Total Delivered Count (品)</div>
+                                <div class="vi-text">Tổng số món đã giao</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>schedules[].totalDeliveredCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(8)</td>
+                            <td>
+                                <div>Tomorrow Warehouse Name / 倉庫名</div>
+                                <div class="vi-text">Tên kho hàng ngày mai</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>schedules[1].warehouseName</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(9)</td>
+                            <td>
+                                <div>Tomorrow Warehouse Status / 倉庫ステータス</div>
+                                <div class="vi-text">Trạng thái kho ngày mai</div>
+                            </td>
+                            <td>enum</td>
+                            <td><code>schedules[1].warehouseStatus</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(10)</td>
+                            <td>
+                                <div>Tomorrow Warehouse Address / 倉庫住所</div>
+                                <div class="vi-text">Địa chỉ kho ngày mai</div>
+                            </td>
+                            <td>string</td>
+                            <td><code>schedules[1].warehouseAddress</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(11)</td>
+                            <td>
+                                <div>Tomorrow Company Count (社)</div>
+                                <div class="vi-text">Số công ty cần giao ngày mai</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>schedules[1].companyCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(12)</td>
+                            <td>
+                                <div>Tomorrow Total Box Count (箱)</div>
+                                <div class="vi-text">Tổng số thùng ngày mai</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>schedules[1].totalBoxCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(13)</td>
+                            <td>
+                                <div>Tomorrow Total Item Count (品)</div>
+                                <div class="vi-text">Tổng số món ngày mai</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>schedules[1].totalItemCount</code></td>
+                        </tr>
+                        <tr>
+                            <td class="field-num">(14)</td>
+                            <td>
+                                <div>Tomorrow Total Delivered Count (品)</div>
+                                <div class="vi-text">Tổng số món đã giao ngày mai</div>
+                            </td>
+                            <td>number</td>
+                            <td><code>schedules[1].totalDeliveredCount</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="docs-footer">
+    Screen: DA_HOME_001_Schedule &nbsp;|&nbsp; Module: Driver (配送ドライバー) &nbsp;|&nbsp; Phase 2 &nbsp;|&nbsp; es-kitchen-api docs
+</div>
+
+</body>
+</html>

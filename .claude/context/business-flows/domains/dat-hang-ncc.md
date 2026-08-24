@@ -1,6 +1,6 @@
-# BF_ĐẶT HÀNG NCC Đặt hàng Nhà cu
+# BF_ĐẶT HÀNG NCC Đặt hàng Nhà cung cấp
 
-> Domain slug: `dat-hang-ncc` · 18 stories
+> Domain slug: `dat-hang-ncc` · 18 stories (Phase 1) + **7 thêm mới / 1 xóa** (Phase 2)
 
 ## Stories
 
@@ -24,3 +24,26 @@
 |  |  | 3 | Ngày thực tế giao hàng | Ngày do thằng Driver App chụp ảnh và submit |  |  |  |
 |  |  | 4 | Ngày dự kiến xuất hàng | Ngày do phía Supplier tạo để xuất cho phía KHO |  |  |  |
 |  |  | 5 | Ngày xuất hàng thực tế | Ngày do phía Supplier fill khi đã gửi cho KHO |  |  |  |
+---
+
+## Phase 2 Scope Changes (2026-07)
+
+> Nguồn: `management/specification/Business_flow_scope_change.xlsx` · BF04
+
+### Thêm mới (7 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Chi tiết |
+| --- | --- | --- | --- | --- | --- |
+| E03 | AW_INTERGRATION_002 | QL nhà cung cấp | DS nhà cung cấp | Nhập / Xuất CSV | Xuất/nhập CSV hàng loạt thông tin NCC; hỗ trợ đăng ký mới/update |
+| E03 | (NEW) | QL nhà cung cấp | DS nhà cung cấp | Cấp TK hàng loạt | Phát hành TK hàng loạt cho nhiều NCC; auto sinh password + gửi mail invitation |
+| E03 | (NEW) | QL nhà cung cấp | CRUD nhà cung cấp | Duyệt nội dung NCC chỉnh sửa | Khi NCC tự edit thông tin → duyệt/từ chối; sau duyệt → reflect vào data chính thức, giữ lịch sử |
+| E04 | (NEW) | Đăng nhập | Nhập ID / Mật khẩu | | Đăng nhập cho NCC (domain tách riêng) |
+| E04 | (NEW) | Đăng nhập | Quên mật khẩu | | Quên mật khẩu cho NCC (domain tách riêng) |
+| E04 | (NEW) | Form đăng ký | Đăng ký form | | NCC nhập/apply thông tin công ty, người phụ trách, thông tin hàng cung cấp... để bắt đầu giao dịch |
+| E04 | (NEW) | Hồ sơ | Chỉnh sửa hồ sơ | Xem / CRUD thông tin NCC | Xem/edit thông tin cơ bản: công ty, người phụ trách, liên lạc, thông tin hàng cung cấp |
+
+### Xóa đi (1 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Lý do xóa |
+| --- | --- | --- | --- | --- | --- |
+| E04 | (?) | Đổi mật khẩu | Chi tiết đơn nhận | | Thay bằng flow đăng nhập mới (domain tách riêng) |

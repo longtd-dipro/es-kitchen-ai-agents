@@ -93,15 +93,20 @@ const { message, modal } = App.useApp();
    → Extract bảng `## API Contract` (method, endpoint, request, response)
    → Đây là source of truth — không gọi endpoint nào ngoài danh sách này
 
-3. Đọc SPEC.md + DESIGN.md + skills (song song):
+3. Đọc SPEC.md + DESIGN.md + overview docs (bản đồ repo FE) + skills (song song — BẮT BUỘC):
    ```
    tilth_read(paths: [
-     "<SPEC.md của feature>",                   ← business context + AC
-     "<DESIGN.md của repo FE>",                 ← component structure + API contract
+     "<SPEC.md của feature>",                                                        ← business context + AC
+     "<DESIGN.md của repo FE>",                                                      ← component structure + API contract
+     "es-kitchen-docs/docs/frontend/<repo-name>/overview/structure.md",              ← cấu trúc pages/components/hooks/services thật → đặt file đúng chỗ
+     "es-kitchen-docs/docs/frontend/<repo-name>/overview/patterns.md",               ← pattern codebase (useQuery, form, layout) → không phá convention
      ".claude/skills/react-expert/SKILL.md",
      ".claude/skills/frontend-review/SKILL.md"
    ])
    ```
+   > `<repo-name>` là repo FE của task này (từ `## Metadata` Repo trong task file): `es-kitchen-web-admin` / `-company` / `-supplier` / `-outsource-web-private` / `-webapp-driver`.
+   >
+   > **Overview docs BẮT BUỘC đọc TRƯỚC tilth** — bản đồ trước, kính lúp sau. Overview là snapshot repo do Memory Update Gate duy trì: cho biết structure thực tế (pages/hooks/services) + pattern hiện có (queryKey, mutation, form validation) → tránh tạo file lộn chỗ, tránh viết lại pattern đã có. `tilth_search` ở Bước 4 chỉ tìm hẹp từng symbol — không thay được. Nếu file overview chưa tồn tại (repo mới hoặc chưa init) → ghi note "overview chưa có, implement dựa trên DESIGN.md + tilth scan" và tiếp tục — không bị block.
 
 3. **Figma input (Nguồn 2 — ưu tiên cao cho UI task):**
    - Lấy `<path_figma>` theo thứ tự:

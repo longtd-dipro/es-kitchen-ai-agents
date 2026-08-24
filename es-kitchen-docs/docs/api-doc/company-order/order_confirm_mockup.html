@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E02 · 注文確認 — Xác nhận đơn (Company Order)</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+<style>
+  .fnum{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;
+    border-radius:9999px;background:var(--accent-500);color:#fff;font-size:10.5px;font-weight:700;margin-right:5px;
+    flex-shrink:0;font-family:"BIZ UDGothic",Consolas,monospace}
+  .impl{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9999px;margin-left:6px}
+  .impl.done{background:var(--green-50);color:var(--green-600)}
+  .impl.todo{background:var(--purple-50);color:var(--purple-600)}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;background:#fff;border:1px solid var(--gray-200);
+    border-radius:var(--r-lg);padding:14px 16px;margin-bottom:16px;box-shadow:var(--sh-raise)}
+  .kpi .k{display:flex;flex-direction:column;gap:3px}
+  .kpi .k label{font-size:12px;color:var(--gray-600);font-weight:600;display:flex;align-items:center}
+  .kpi .k .v{font-size:17px;font-weight:700}
+  .kpi .k .v small{font-size:12px;color:var(--gray-500);font-weight:400}
+  .prod-thumb{width:38px;height:38px;border-radius:var(--r-sm);background:var(--gray-100);display:grid;place-items:center;font-size:16px}
+  @media(max-width:760px){.kpi{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body class="theme-admin">
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="order_create_mockup.html">← 注文作成</a>
+</div>
+
+<div class="page">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span class="sep">›</span>
+    <a href="order_create_mockup.html">注文作成</a><span class="sep">›</span>
+    <b>注文確認</b> <span class="vi">(Xác nhận đơn)</span>
+  </div>
+
+  <div class="page-head">
+    <div class="page-title"><span class="accent-bar"></span> 2026年06月 <span class="vi">Xác nhận trước khi submit</span></div>
+    <div class="btn-row">
+      <button class="btn"><span class="fnum">5</span>キャンセル</button>
+      <button class="btn btn-primary"><span class="fnum">6</span>⭱ CSV <span class="api-note">GET …/export 🟡</span></button>
+      <button class="btn btn-primary"><span class="fnum">7</span>確定 (Submit) <span class="api-note">POST …/submit 🟡</span></button>
+    </div>
+  </div>
+
+  <div class="notice notice-approval">
+    <span class="ic">🛠️</span>
+    <div><b>実装状況:</b> submit / export đơn tháng <span class="impl todo">🟡 未実装</span>. (Code thật có <code>GET /company-admin/orders/export</code> nhưng cho concept đơn đã thanh toán, khác đơn tháng.) Sau submit: <code>status: draft → submitted</code>, snapshot tổng &amp; giá.</div>
+  </div>
+
+  <!-- KPI header -->
+  <div class="kpi">
+    <div class="k"><label><span class="fnum">1</span>注文月</label><div class="v">2026年06月 <span class="api-note">yearMonth</span></div></div>
+    <div class="k"><label><span class="fnum">2</span>製品の数量</label><div class="v">50 <small>/200食</small></div></div>
+    <div class="k"><label><span class="fnum">3</span>最大アイテム数</label><div class="v">5 <small>/38食</small></div></div>
+    <div class="k"><label><span class="fnum">4</span>合計金額</label><div class="v">5000 <small>円</small></div></div>
+  </div>
+
+  <!-- Filter (read-only review) -->
+  <div class="filter">
+    <div class="filter-grid">
+      <div class="field"><label>キーワード</label><input type="text" placeholder="商品名・カテゴリ・栄養素"></div>
+      <div class="field"><label>食べ物の種類</label><select><option>全て</option></select></div>
+      <div class="field"><label>ステータス</label><select><option>全て</option></select></div>
+    </div>
+    <div class="filter-actions"><button class="btn">クリア</button><button class="btn btn-primary">🔍 検索</button></div>
+  </div>
+
+  <!-- Confirm table -->
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr>
+          <th class="col-num"><span class="fnum">8</span>No</th>
+          <th><span class="fnum">9</span>商品画像</th>
+          <th><span class="fnum">10</span>商品名<span class="api-note">productName</span></th>
+          <th><span class="fnum">11</span>仕入先<span class="api-note">supplierName 🟡</span></th>
+          <th><span class="fnum">12</span>スペシャル区分<span class="api-note">productTags[]</span></th>
+          <th><span class="fnum">13</span>販売価格<span class="api-note">unitPrice</span></th>
+          <th><span class="fnum">14</span>数量<span class="api-note">quantity</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="col-num">1</td><td><div class="prod-thumb">🍱</div></td><td>鶏の照り焼き弁当</td><td>株式会社しいれ</td><td><span class="chip chip-green no-dot">おすすめ</span></td><td>1000 円</td><td>10</td></tr>
+        <tr><td class="col-num">2</td><td><div class="prod-thumb">🍗</div></td><td>鶏の唐揚げ</td><td>株式会社しいれ</td><td><span class="chip chip-orange no-dot">短賞味期限</span></td><td>1000 円</td><td>10</td></tr>
+        <tr><td class="col-num">3</td><td><div class="prod-thumb">🍱</div></td><td>豚の生姜焼き</td><td>株式会社しいれ</td><td><span class="chip chip-orange no-dot">短賞味期限</span></td><td>1000 円</td><td>10</td></tr>
+        <tr><td class="col-num">4</td><td><div class="prod-thumb">🍗</div></td><td>鶏の唐揚げ</td><td>株式会社しいれ</td><td><span class="chip chip-green no-dot">おすすめ</span></td><td>1000 円</td><td>10</td></tr>
+        <tr><td class="col-num">5</td><td><div class="prod-thumb">🍗</div></td><td>鶏の唐揚げ</td><td>株式会社しいれ</td><td><span class="chip chip-blue no-dot">NEW</span></td><td>1000 円</td><td>10</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="notice notice-info">
+    <span class="ic">💡</span>
+    <div>Chỉ hiển thị các SP có <code>quantity &gt; 0</code> (đã chọn). Submit chuyển <code>status</code> sang <b>submitted</b> &amp; ghi snapshot (<code>submitted_total_item_count</code>, <code>submitted_total_amount</code>). Sau <code>deadline_date</code> đơn tự <b>LOCKED</b>.</div>
+  </div>
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — 注文確認 (E02)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>実装状況</h4>
+    <table>
+      <tr><th>Phạm vi</th><th>Trạng thái</th></tr>
+      <tr><td>Get detail / submit / export đơn tháng</td><td><span class="impl todo">🟡 未実装</span></td></tr>
+      <tr><td>Order state machine (draft→submitted→locked)</td><td><span class="impl todo">🟡 設計</span> (DESIGN.md §2.3)</td></tr>
+    </table>
+
+    <h4>Endpoints (đề xuất E02 🟡)</h4>
+    <div class="ep"><span class="m get">GET</span> /company-admin/orders/:id <span class="guard">detail + items</span></div>
+    <div class="ep"><span class="m post">POST</span> /company-admin/orders/:id/submit <span class="guard">draft → submitted</span></div>
+    <div class="ep"><span class="m get">GET</span> /company-admin/orders/:id/export <span class="guard">CSV</span></div>
+
+    <h4>GET /company-admin/orders/:id — response</h4>
+    <pre>{
+  "id": "uuid",
+  "yearMonth": "2026-06",      // ①
+  "status": "draft",           // draft|submitted|locked|processing|completed|cancelled
+  "deadlineDate": "2026-05-15",
+  "totalItemCount": 50,        // ② (snapshot khi submit)
+  "totalAmount": 5000,         // ④
+  "items": [
+    {
+      "no": 1,
+      "productId": "uuid",
+      "productName": "鶏の照り焼き弁当", // ⑩
+      "supplierName": "株式会社しいれ",   // ⑪ 🟡
+      "productTags": ["おすすめ"],        // ⑫
+      "unitPrice": 1000,                 // ⑬
+      "employeeUnitPrice": 1000,         // giá NV (sau welfare)
+      "quantity": 10                     // ⑭
+    }
+  ]
+}</pre>
+
+    <h4>POST …/submit — validate</h4>
+    <pre>// kiểm tra: đơn chưa LOCKED, quantity ≤ contract limit, welfare limit
+// thành công → status=submitted, submitted_at=now,
+//             snapshot submitted_total_item_count & submitted_total_amount</pre>
+
+    <h4>Field Map</h4>
+    <table>
+      <tr><th>№</th><th>UI</th><th>API field / action</th></tr>
+      <tr><td>1–4</td><td>KPI header</td><td><code>yearMonth · totalItemCount · distinctItem · totalAmount</code></td></tr>
+      <tr><td>5</td><td>キャンセル</td><td>về 注文作成</td></tr>
+      <tr><td>6</td><td>CSV</td><td>GET …/export 🟡</td></tr>
+      <tr><td>7</td><td>確定 Submit</td><td>POST …/submit 🟡</td></tr>
+      <tr><td>8</td><td>No</td><td>row index</td></tr>
+      <tr><td>9</td><td>商品画像</td><td><code>images[0]</code></td></tr>
+      <tr><td>10</td><td>商品名</td><td><code>productName</code></td></tr>
+      <tr><td>11</td><td>仕入先</td><td><code>supplierName</code> 🟡</td></tr>
+      <tr><td>12</td><td>スペシャル区分</td><td><code>productTags[]</code></td></tr>
+      <tr><td>13</td><td>販売価格</td><td><code>unitPrice</code></td></tr>
+      <tr><td>14</td><td>数量</td><td><code>quantity</code></td></tr>
+    </table>
+
+    <h4>Errors</h4>
+    <table>
+      <tr><th>HTTP</th><th>Code</th></tr>
+      <tr><td>409</td><td>ORDER_ALREADY_SUBMITTED · ORDER_LOCKED</td></tr>
+      <tr><td>422</td><td>WELFARE_LIMIT_EXCEEDED · MAX_ITEM_EXCEEDED</td></tr>
+    </table>
+  </div>
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # BF_GIAO HÀNG App Tài xế
 
-> Domain slug: `giao-hang-tai-xe` · 21 stories
+> Domain slug: `giao-hang-tai-xe` · 21 stories (Phase 1) + **2 thêm mới / 3 xóa** (Phase 2)
 
 ## Stories
 
@@ -27,3 +27,25 @@
 | 2 | 06 | ドライバーAPP(driver app)_P2 |  | Real-time notification to headquarters |  | Thông báo thời gian thực đến trụ sở chính (Các cảnh báo sẽ hiển thị trực tiếp trên hệ thống ES Station mới để xử lý). | 2 | [GIAO HÀNG] App Tài xế |
 | 2 | 06 | ドライバーAPP(driver app)_P2 | Inquiry Response | Integration with Hubspot |  | Tích hợp API HubSpot Widget chatbot, cho phép phản hồi tự động thời gian thực và xử lý FAQ. | 2 | [GIAO HÀNG] App Tài xế |
 | 2 | 06 | ドライバーAPP(driver app)_P2 | Log out |  |  | Đăng xuất khỏi ứng dụng Driver App. | 2 | [GIAO HÀNG] App Tài xế |
+---
+
+## Phase 2 Scope Changes (2026-07)
+
+> Nguồn: `management/specification/Business_flow_scope_change.xlsx` · BF06
+
+> **Lưu ý quan trọng:** Driver App đổi platform từ **App (Flutter) → Web App** (React). Scope mới tập trung vào giao hàng thực phẩm, không còn vật tư.
+
+### Thêm mới (2 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Chi tiết |
+| --- | --- | --- | --- | --- | --- |
+| E06 | (NEW) | Thay đổi platform | Quên mật khẩu | | Đổi từ App → Web; không hỗ trợ responsive cho PC |
+| E06 | (NEW) | Trang chủ | Chi tiết thông báo | | Hiển thị chi tiết notification đã chọn; xem → update trạng thái đã đọc; quản lý chưa đọc/đã đọc |
+
+### Xóa đi (3 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Lý do xóa |
+| --- | --- | --- | --- | --- | --- |
+| E06 | DA_ESDL_003 | Kiểm tra hàng giao | Kiểm tra vật tư | | Giao vật tư không còn trong scope của Driver App |
+| E06 | (?) | Báo cáo hoàn tất giao hàng | Lấy chữ ký báo cáo hoàn tất | | Không còn trong scope Phase 2 |
+| E06 | (?) | Xử lý yêu cầu | Tích hợp HubSpot | | Không còn trong scope Phase 2 |

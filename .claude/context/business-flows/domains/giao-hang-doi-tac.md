@@ -1,6 +1,6 @@
-# BF_GIAO HÀNG Web Đối tác Vận ch
+# BF_GIAO HÀNG Web Đối tác Vận chuyển
 
-> Domain slug: `giao-hang-doi-tac` · 16 stories
+> Domain slug: `giao-hang-doi-tac` · 16 stories (Phase 1) + **15 thêm mới / 1 xóa** (Phase 2)
 
 ## Stories
 
@@ -22,3 +22,34 @@
 | 05 | 委託配送先WEB_画面一覧 - Contract Delivery Destination |  | Delivery Staff Registration |  | Nhập thông tin nhân viên giao hàng mới, tải lên hình ảnh giấy phép. | 2 | [GIAO HÀNG] Web Đối tác Vận chuyển |
 | 05 | 委託配送先WEB_画面一覧 - Contract Delivery Destination |  | Edit/Delete Delivery Staff Information |  | Chỉnh sửa hoặc xóa thông tin của nhân viên vận chuyển. | 2 | [GIAO HÀNG] Web Đối tác Vận chuyển |
 | 05 | 委託配送先WEB_画面一覧 - Contract Delivery Destination | Change password |  |  | Tính năng thay đổi mật khẩu đăng nhập. | 2 | [GIAO HÀNG] Web Đối tác Vận chuyển |
+---
+
+## Phase 2 Scope Changes (2026-07)
+
+> Nguồn: `management/specification/Business_flow_scope_change.xlsx` · BF05
+
+### Thêm mới (15 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Chi tiết |
+| --- | --- | --- | --- | --- | --- |
+| E05 | (NEW) | Đăng nhập | Nhập ID / Mật khẩu | | Domain tách riêng (E05) |
+| E05 | (NEW) | Đăng nhập | Quên mật khẩu | | Domain tách riêng (E05) |
+| E05 | (NEW) | Form đăng ký | Form đăng ký | | Công ty VC nhập/apply thông tin công ty, người phụ trách, khu vực xử lý... để bắt đầu sử dụng |
+| E05 | (NEW) | Hồ sơ | Hồ sơ | | Xem/edit thông tin cơ bản: công ty, người phụ trách, liên lạc, khu vực xử lý |
+| E05 | (NEW) | Hồ sơ | QL phí theo khu vực | | Xem/thay đổi phí giao theo khu vực phụ trách |
+| E05 | (NEW) | Hồ sơ | QL phí theo khu vực | Nhập / Xuất CSV phí | Xuất/nhập CSV phí giao theo khu vực |
+| E05 | (NEW) | Lịch trình giao | Lịch tuần (timeline) | | Hiển thị lịch giao dự kiến dạng timeline theo tuần: điểm giao, ngày, số lượng, tình trạng |
+| E05 | (NEW) | Lịch trình giao | Lịch tháng (tổng hợp) | | Tổng hợp tình trạng giao theo tháng: số đơn, trạng thái, đơn assign/chưa assign tài xế |
+| E05 | (NEW) | QL yêu cầu | DS yêu cầu | | DS yêu cầu VC gửi cho bên VC; search/filter theo tình trạng, ngày, điểm giao |
+| E05 | (NEW) | QL yêu cầu | Chi tiết / Trả lời yêu cầu | | Xem nội dung YC: địa chỉ giao, ngày muốn giao, thông tin hàng, điều kiện, ghi chú |
+| E05 | (NEW) | QL yêu cầu | Chi tiết / Trả lời yêu cầu | Trả lời OK/NG | Trả lời có xử lý được hay không; nếu NG → nhập lý do |
+| E05 | (NEW) | QL yêu cầu | Chi tiết / Trả lời yêu cầu | Nhập phí giao | Nếu OK → nhập báo giá + breakdown phí + ghi chú |
+| E05 | (NEW) | QL yêu cầu | Chi tiết / Trả lời yêu cầu | Đính kèm báo giá | Đính kèm file báo giá + tài liệu; admin xem/download |
+| E05 | (NEW) | QL yêu cầu | Chi tiết / Trả lời yêu cầu | Gửi câu trả lời | Gửi nội dung trả lời + notify admin; update trạng thái → "Đã submit báo giá" |
+| E05 | (NEW) | QL yêu cầu | Chi tiết / Trả lời yêu cầu | Xem lịch sử trả lời | Xem nội dung YC, báo giá, file đính kèm đã trả lời trước đây |
+
+### Xóa đi (1 mục)
+
+| EPIC | Screen Code | L1 (Tính năng) | L2 | L3 | Lý do xóa |
+| --- | --- | --- | --- | --- | --- |
+| E05 | (?) | Đổi mật khẩu | CRUD thông tin tài xế | | Thay bằng flow hồ sơ mới |

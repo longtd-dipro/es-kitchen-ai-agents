@@ -1,0 +1,485 @@
+<!--
+============================================================
+SCREEN NAME: 注文管理 (Order Management)
+============================================================
+FEATURES:
+- Fixed left sidebar with ES STATION branding
+- Active sidebar item: 注文管理 (purple #6B46C1)
+- Filter bar: date picker + menu type/status dropdowns + clear/search buttons
+- Data table with status badges, action icons, hover effect
+- Pagination with item count and page numbers
+- Mascot character at sidebar bottom
+============================================================
+REUSABLE CLASSES (see @layer components in <style>):
+- .nav-link / --active / --idle : sidebar menu links
+- .col-head                     : table header cell
+- .data-cell / --muted          : table body text cell
+- .action-cell                  : centered status/action cell
+- .status-pill + .badge-*       : status badge
+- .row-action                   : table row icon button
+============================================================
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文管理 - ES STATION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#6B46C1',
+                            700: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        gray: {
+                            50: '#F7FAFC',
+                            100: '#EDF2F7',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#4A5568',
+                            700: '#334155',
+                            800: '#1A202C',
+                            900: '#0F172A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            /* Sidebar navigation links */
+            .nav-link        { @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-colors; }
+            .nav-link--active { @apply bg-primary-600 text-white; }
+            .nav-link--idle  { @apply text-gray-600 hover:bg-gray-50; }
+
+            /* Data table */
+            .col-head        { @apply px-6 py-3.5 text-xs font-medium text-gray-600 uppercase tracking-wider; }
+            .data-cell       { @apply px-6 py-4 text-sm text-gray-800; }
+            .data-cell--muted { @apply text-gray-600; }
+            .action-cell     { @apply px-6 py-4 text-center; }
+            .status-pill     { @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium; }
+            /* NB: config has no primary-800, so the original hover:text-primary-800 was a
+               no-op; @apply would error on it, so it is omitted (rendering is unchanged). */
+            .row-action      { @apply text-primary-600 transition-colors; }
+        }
+
+        .mascot-container {
+            background: linear-gradient(180deg, #ffffff 0%, #fef3f2 100%);
+        }
+
+        /* Custom date input icon positioning */
+        .date-input-wrapper {
+            position: relative;
+        }
+        .date-input-wrapper input[type="date"] {
+            padding-right: 2.5rem;
+        }
+        .date-input-wrapper .calendar-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #94A3B8;
+        }
+
+        /* Table hover effect */
+        .table-row-hover:hover {
+            background-color: #F8FAFC;
+        }
+
+        /* Status badge colors (paired with .status-pill) */
+        .badge-pending   { background-color: #EDF2F7; color: #4A5568; }
+        .badge-temp      { background-color: #FFFAF0; color: #DD6B20; }
+        .badge-formal    { background-color: #EBF8FF; color: #2B6CB0; }
+        .badge-confirmed { background-color: #F0FFF4; color: #38A169; }
+
+        /* Pagination button */
+        .page-btn {
+            min-width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+        .page-btn:hover:not(.active):not(:disabled) {
+            background-color: #EDF2F7;
+        }
+        .page-btn.active {
+            background-color: #6B46C1;
+            color: #FFFFFF;
+            border-color: #6B46C1;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 antialiased">
+    <div class="flex min-h-screen">
+        <!-- ============ SIDEBAR ============ -->
+        <aside class="w-[260px] bg-white border-r border-gray-200 fixed h-full flex flex-col z-20">
+            <!-- Logo -->
+            <div class="px-6 py-5">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-sm"></i>
+                    </div>
+                    <span class="text-lg font-bold text-gray-900 tracking-wide">ES STATION</span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="nav-link nav-link--active">
+                            <i class="fas fa-clipboard-list text-sm"></i>
+                            <span class="text-sm font-medium">注文管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link nav-link--idle">
+                            <i class="far fa-home text-sm text-gray-400"></i>
+                            <span class="text-sm font-medium">TOP</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link nav-link--idle">
+                            <i class="far fa-clipboard text-sm text-gray-400"></i>
+                            <span class="text-sm font-medium">受注一覧</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link nav-link--idle">
+                            <i class="far fa-key text-sm text-gray-400"></i>
+                            <span class="text-sm font-medium">パスワード変更</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link nav-link--idle">
+                            <i class="fas fa-ellipsis-h text-sm text-gray-400"></i>
+                            <span class="text-sm font-medium">その他</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Bottom Section: Mascot + Toggle -->
+            <div class="mt-auto px-4 pb-4 space-y-3">
+                <!-- Mascot -->
+                <div class="mascot-container rounded-xl p-4 flex flex-col items-center">
+                    <svg viewBox="0 0 120 120" class="w-20 h-20 mb-2">
+                        <!-- Body -->
+                        <circle cx="60" cy="50" r="25" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+                        <!-- Eyes -->
+                        <circle cx="52" cy="45" r="3" fill="#334155"/>
+                        <circle cx="68" cy="45" r="3" fill="#334155"/>
+                        <!-- Smile -->
+                        <path d="M 52 55 Q 60 62 68 55" stroke="#334155" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <!-- Blush -->
+                        <ellipse cx="45" cy="55" rx="4" ry="2" fill="#FDA4AF" opacity="0.5"/>
+                        <ellipse cx="75" cy="55" rx="4" ry="2" fill="#FDA4AF" opacity="0.5"/>
+                        <!-- Body -->
+                        <ellipse cx="60" cy="90" rx="20" ry="15" fill="#6B46C1"/>
+                        <!-- Arms -->
+                        <ellipse cx="38" cy="85" rx="8" ry="5" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+                        <ellipse cx="82" cy="85" rx="8" ry="5" fill="#FFF7ED" stroke="#FED7AA" stroke-width="2"/>
+                        <!-- Feet -->
+                        <ellipse cx="48" cy="108" rx="6" ry="4" fill="#FED7AA"/>
+                        <ellipse cx="72" cy="108" rx="6" ry="4" fill="#FED7AA"/>
+                        <!-- Phone -->
+                        <rect x="72" y="78" width="10" height="16" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+                    </svg>
+                    <p class="text-xs text-gray-500 text-center">ご不明な点は<br>お気軽にどうぞ</p>
+                </div>
+
+                <!-- Toggle Sidebar Button -->
+                <button class="w-full flex items-center justify-center gap-2 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+                    <i class="fas fa-angles-left text-xs"></i>
+                    <span>メニューを隠す</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- ============ MAIN CONTENT ============ -->
+        <main class="flex-1 ml-[260px] min-h-screen">
+            <!-- Top Header -->
+            <header class="bg-white border-b border-gray-200 px-8 py-4">
+                <div class="flex items-center justify-between">
+                    <!-- Greeting -->
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-sun text-yellow-400 text-lg"></i>
+                        <span class="text-lg font-semibold text-gray-800">お帰りなさい</span>
+                    </div>
+                    <!-- User Profile -->
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-3 pl-6 border-l border-gray-200">
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-gray-800">にっしぐち</p>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                                <span class="text-sm font-semibold text-primary-700">に</span>
+                            </div>
+                            <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="p-8">
+                <!-- Breadcrumb & Title -->
+                <div class="mb-6">
+                    <p class="text-sm text-gray-500 mb-1">注文管理</p>
+                    <h1 class="text-2xl font-bold text-gray-800">注文管理</h1>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-6">
+                    <div class="flex flex-wrap items-end gap-4">
+                        <!-- Month Picker (注文年月) -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-medium text-gray-500">注文年月</label>
+                            <div class="date-input-wrapper">
+                                <input type="month" value="2024-04" class="h-10 pl-3 pr-10 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                <div class="calendar-icon">
+                                    <i class="far fa-calendar text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Menu Type Dropdown -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-medium text-gray-500">メニュー種別</label>
+                            <div class="relative">
+                                <select class="h-10 pl-3 pr-10 border border-gray-300 rounded-lg text-sm text-gray-700 appearance-none focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white">
+                                    <option>全て</option>
+                                    <option>朝食</option>
+                                    <option>昼食</option>
+                                    <option>夕食</option>
+                                </select>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Dropdown -->
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-medium text-gray-500">ステータス</label>
+                            <div class="relative">
+                                <select class="h-10 pl-3 pr-10 border border-gray-300 rounded-lg text-sm text-gray-700 appearance-none focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white">
+                                    <option>全て</option>
+                                    <option>未処理</option>
+                                    <option>仮注文</option>
+                                    <option>正式注文</option>
+                                    <option>確認済み</option>
+                                </select>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex items-center gap-3 ml-auto">
+                            <button class="h-10 px-6 border border-primary-600 text-primary-600 rounded-lg text-sm font-medium hover:bg-primary-50 transition-colors">
+                                クリア
+                            </button>
+                            <button class="h-10 px-6 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors">
+                                検索
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Table Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <table class="w-full">
+                        <!-- Table Header -->
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="col-head text-center">No</th>
+                                <th class="col-head text-left">注文年月</th>
+                                <th class="col-head text-left">メニュー種別</th>
+                                <th class="col-head text-left">出荷予定日</th>
+                                <th class="col-head text-left">出荷実績日</th>
+                                <th class="col-head text-right">商品数</th>
+                                <th class="col-head text-right">合計金額</th>
+                                <th class="col-head text-center">ステータス</th>
+                                <th class="col-head text-center">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <!-- Row 1 -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="data-cell text-center">1</td>
+                                <td class="data-cell">2024/04</td>
+                                <td class="data-cell">通常</td>
+                                <td class="data-cell data-cell--muted">2024/05/23</td>
+                                <td class="data-cell data-cell--muted">2024/05/23</td>
+                                <td class="data-cell text-right">100</td>
+                                <td class="data-cell text-right">200円</td>
+                                <td class="action-cell"><span class="status-pill badge-pending">未処理</span></td>
+                                <td class="action-cell">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button class="row-action" title="編集"><i class="fas fa-pen text-sm"></i></button>
+                                        <button class="row-action" title="ダウンロード"><i class="fas fa-download text-sm"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Row 2 -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="data-cell text-center">2</td>
+                                <td class="data-cell">2024/04</td>
+                                <td class="data-cell">プレミアム</td>
+                                <td class="data-cell data-cell--muted">2024/05/23</td>
+                                <td class="data-cell data-cell--muted">2024/05/23</td>
+                                <td class="data-cell text-right">100</td>
+                                <td class="data-cell text-right">200円</td>
+                                <td class="action-cell"><span class="status-pill badge-temp">仮注文</span></td>
+                                <td class="action-cell">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button class="row-action" title="編集"><i class="fas fa-pen text-sm"></i></button>
+                                        <button class="row-action" title="ダウンロード"><i class="fas fa-download text-sm"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Row 3 -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="data-cell text-center">3</td>
+                                <td class="data-cell">2024/04</td>
+                                <td class="data-cell">通常</td>
+                                <td class="data-cell data-cell--muted">2024/05/23</td>
+                                <td class="data-cell data-cell--muted">2024/05/23</td>
+                                <td class="data-cell text-right">100</td>
+                                <td class="data-cell text-right">200円</td>
+                                <td class="action-cell"><span class="status-pill badge-formal">正式注文</span></td>
+                                <td class="action-cell">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button class="row-action" title="編集"><i class="fas fa-pen text-sm"></i></button>
+                                        <button class="row-action" title="ダウンロード"><i class="fas fa-download text-sm"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Row 4 -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="data-cell text-center">4</td>
+                                <td class="data-cell">2024/04</td>
+                                <td class="data-cell">通常</td>
+                                <td class="data-cell data-cell--muted">2024/05/23</td>
+                                <td class="data-cell data-cell--muted">2024/05/23</td>
+                                <td class="data-cell text-right">100</td>
+                                <td class="data-cell text-right">200円</td>
+                                <td class="action-cell"><span class="status-pill badge-confirmed">確認済み</span></td>
+                                <td class="action-cell">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button class="row-action" title="編集"><i class="fas fa-pen text-sm"></i></button>
+                                        <button class="row-action" title="ダウンロード"><i class="fas fa-download text-sm"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex items-center justify-between mt-4">
+                    <div class="text-sm text-gray-500">
+                        100件中 1-10件
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <!-- Previous -->
+                        <button class="page-btn border border-gray-200 text-gray-600 hover:bg-gray-50" disabled>
+                            <i class="fas fa-chevron-left text-xs"></i>
+                        </button>
+
+                        <!-- Page numbers -->
+                        <button class="page-btn border border-gray-200 text-gray-600 hover:bg-gray-50">1</button>
+                        <button class="page-btn border border-gray-200 text-gray-600 hover:bg-gray-50">4</button>
+                        <button class="page-btn border border-gray-200 text-gray-600 hover:bg-gray-50">5</button>
+                        <button class="page-btn border border-gray-200 text-gray-600 hover:bg-gray-50">6</button>
+                        <button class="page-btn border border-primary-600 text-primary-600 active">7</button>
+                        <button class="page-btn border border-gray-200 text-gray-600 hover:bg-gray-50">8</button>
+
+                        <!-- Ellipsis -->
+                        <span class="text-gray-400 px-1">...</span>
+
+                        <!-- Next -->
+                        <button class="page-btn border border-gray-200 text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Rows per page -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-500">表示件数</span>
+                        <div class="relative">
+                            <select class="h-9 pl-3 pr-8 border border-gray-300 rounded-lg text-sm text-gray-700 appearance-none focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white">
+                                <option>10件／ページ</option>
+                                <option>20件／ページ</option>
+                                <option>50件／ページ</option>
+                            </select>
+                            <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Date picker simple enhancement
+        const dateInput = document.querySelector('input[type="date"]');
+        if (dateInput) {
+            // Ensure proper date format
+            dateInput.addEventListener('change', function() {
+                console.log('Date selected:', this.value);
+            });
+        }
+
+        // Pagination click handler (demo)
+        const pageBtns = document.querySelectorAll('.page-btn');
+        pageBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.hasAttribute('disabled')) return;
+
+                // Remove active from all
+                pageBtns.forEach(b => {
+                    b.classList.remove('active', 'border-primary-600', 'text-primary-600');
+                    b.classList.add('border-gray-200', 'text-gray-600');
+                });
+
+                // Add active to clicked
+                this.classList.remove('border-gray-200', 'text-gray-600');
+                this.classList.add('active', 'border-primary-600', 'text-primary-600');
+            });
+        });
+    </script>
+</body>
+</html>

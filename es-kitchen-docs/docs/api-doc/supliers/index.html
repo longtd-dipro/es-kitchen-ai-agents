@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESKitchen · 仕入先 (Supplier) — Mockup & API Guide</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESKitchen Mockups</div>
+  <span class="persona">仕入先 · Supplier (E04)</span>
+  <div class="spacer"></div>
+  <span class="tb-link mono">REST · NestJS · PostgreSQL</span>
+</div>
+
+<div class="page">
+
+  <div class="hero" style="background:linear-gradient(135deg,#2e1461,#6639ba)">
+    <h1>仕入先 — Supplier (E04)</h1>
+    <p>Bộ mockup + tài liệu API cho 2 phân hệ: <b>Admin quản lý 仕入先マスタ</b> (prefix <span class="mono">/admin/supplier-masters</span>) và <b>Supplier self-service</b> (prefix <span class="mono">/supplier</span>). Mỗi màn hình gắn <b>cờ trạng thái</b> rõ ràng — <span class="chip chip-green no-dot">LIVE</span> implement API thật ngay, <span class="chip chip-yellow no-dot">TBD</span> chờ BA chốt, <span class="chip chip-gray no-dot">OUT</span> ngoài scope — để FE biết bắt đầu từ đâu, không code nhầm phần chưa chốt.</p>
+  </div>
+
+  <!-- ===== Read order ===== -->
+  <div class="card">
+    <div class="card-head"><h3>0 · Đọc theo thứ tự nào?</h3></div>
+    <div class="card-body">
+      <div class="flow">
+        <div class="node">1. Trang này<small>overview + cờ trạng thái</small></div>
+        <div class="to">→</div>
+        <div class="node">2. SUPPLIER_API_CONTRACT.md<small>contract bàn giao FE</small></div>
+        <div class="to">→</div>
+        <div class="node">3. Mockup .html<small>UI từng màn</small></div>
+        <div class="to">→</div>
+        <div class="node">4. apis/*.html<small>interactive ráp field↔API</small></div>
+      </div>
+      <div class="notice notice-info" style="margin-top:14px;margin-bottom:0">
+        <span class="ic">💡</span>
+        <div><b>Single source of truth = <code>SUPPLIER_API_CONTRACT.md</code></b> (DTO, validation, error code). File <code>SUPPLIER_DB_API_DESIGN.md</code> là thiết kế DB/decision log nền tảng. Mockup <code>.html</code> + <code>apis/*.html</code> chỉ minh hoạ — khi lệch, <b>lấy theo .md</b>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== API conventions ===== -->
+  <div class="card">
+    <div class="card-head"><h3>1 · Convention API</h3></div>
+    <div class="card-body">
+      <table class="data" style="font-size:12.5px;margin-bottom:16px">
+        <thead><tr><th>Phân hệ</th><th>Base path</th><th>Auth</th></tr></thead>
+        <tbody>
+          <tr><td>Admin · 仕入先マスタ</td><td><code>/admin/supplier-masters</code></td><td>Admin JWT (Bearer)</td></tr>
+          <tr><td>Admin · アカウント発行</td><td><code>/admin/supplier-masters/accounts/issue</code></td><td>Admin JWT + perm <code>supplier_account.issue</code></td></tr>
+          <tr><td>Supplier self-service</td><td><code>/supplier/...</code> · <code>/auth/supplier/...</code></td><td>Supplier JWT (Bearer)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="form-grid">
+        <div>
+          <h4 class="section-title">Response envelope</h4>
+          <pre class="mono" style="background:var(--gray-900);color:#cdd6f4;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto">// Success
+{ "statusCode":"success",
+  "message":"...", "data": &lt;T&gt; }
+// Error
+{ "statusCode":"validation_error|...",
+  "message":"i18n", "title":"...",
+  "errorCode":"SUPPLIER_NAME_REQUIRED",
+  "data": null }</pre>
+        </div>
+        <div>
+          <h4 class="section-title">List / pagination</h4>
+          <pre class="mono" style="background:var(--gray-900);color:#cdd6f4;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto">// Query: page(1) limit(10) sort order(DESC)
+// List endpoints (flat):
+{ "items":[...], "total", "page",
+  "limit", "totalPages" }
+// History endpoint dùng meta{}:
+{ "items":[...], "meta":{ total,page,limit,totalPages } }</pre>
+        </div>
+      </div>
+      <div class="notice notice-warn" style="margin-top:14px;margin-bottom:0">
+        <span class="ic">⚠️</span>
+        <div><b>Lưu ý nhất quán:</b> list 仕入先マスタ trả phẳng (<code>items/total/page/limit/totalPages</code>), riêng <code>:id/history</code> bọc trong <code>meta{}</code>. FE đọc đúng theo từng endpoint trong contract.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Master enums ===== -->
+  <div class="card">
+    <div class="card-head"><h3>2 · Master Enums (tập trung)</h3></div>
+    <div class="card-body">
+      <table class="data" style="font-size:12.5px">
+        <thead><tr><th>Enum</th><th>Values</th><th>UI / Ghi chú</th></tr></thead>
+        <tbody>
+          <tr><td><code>SupplierRegistrationStatus</code></td><td><span class="chip chip-blue no-dot">REGISTERED 本登録</span> <span class="chip chip-gray no-dot">UNREGISTERED 未登録</span></td><td>Badge ステータス · tạo mới luôn UNREGISTERED</td></tr>
+          <tr><td><code>SupplierStatus</code> (lifecycle)</td><td><span class="chip chip-green no-dot">ACTIVE</span> <span class="chip chip-gray no-dot">INACTIVE</span></td><td>Chặn xoá khi ACTIVE → 400</td></tr>
+          <tr><td><code>SupplierAddressType</code> (multi)</td><td><code>HEAD_OFFICE 本社 · FACTORY 製造場所 · OTHER その他</code></td><td>1 địa chỉ gắn nhiều loại (mảng)</td></tr>
+          <tr><td><code>SupplierContactType</code></td><td><code>REPRESENTATIVE 代表 · SALES 営業 · OTHER その他</code></td><td>1 dòng 1 loại</td></tr>
+          <tr><td><code>classification</code> 仕入れ先区分 <span class="chip chip-yellow no-dot">PLACEHOLDER · chờ BA</span></td><td><code>CLASS_1 (区分1) · CLASS_2 (区分2)</code></td><td><b>Open Q A4-1</b> — FE dùng dynamic dropdown, KHÔNG hard-code nhãn</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== Error catalog ===== -->
+  <div class="card">
+    <div class="card-head"><h3>3 · Error catalog (errorCode → message)</h3></div>
+    <div class="card-body">
+      <table class="data" style="font-size:12px">
+        <thead><tr><th>HTTP</th><th>errorCode</th><th>message (i18n JA)</th></tr></thead>
+        <tbody>
+          <tr><td><span class="chip chip-yellow no-dot">400</span></td><td><code>SUPPLIER_NAME_REQUIRED</code></td><td>仕入先名を入力してください。</td></tr>
+          <tr><td><span class="chip chip-yellow no-dot">400</span></td><td><code>CLASSIFICATION_REQUIRED</code></td><td>仕入れ先区分を選択してください。</td></tr>
+          <tr><td><span class="chip chip-yellow no-dot">400</span></td><td><code>ADDRESS_REQUIRED</code></td><td>住所を1件以上入力してください。</td></tr>
+          <tr><td><span class="chip chip-yellow no-dot">400</span></td><td><code>CONTACT_REQUIRED</code></td><td>担当者を1件以上入力してください。</td></tr>
+          <tr><td><span class="chip chip-yellow no-dot">400</span></td><td><code>CONTACT_EMAIL_INVALID</code></td><td>メールアドレスの形式が正しくありません。</td></tr>
+          <tr><td><span class="chip chip-yellow no-dot">400</span></td><td><code>PRODUCT_IDS_REQUIRED</code></td><td>作れる商品を1件以上選択してください。</td></tr>
+          <tr><td><span class="chip chip-yellow no-dot">400</span></td><td><code>SUPPLIER_MASTER_ACTIVE_CANNOT_DELETE</code></td><td>有効な仕入先マスタは削除できません。先にINACTIVEに変更してください。</td></tr>
+          <tr><td><span class="chip chip-purple no-dot">409</span></td><td><code>SUPPLIER_CODE_DUPLICATED</code></td><td>仕入先IDが既に存在します。</td></tr>
+          <tr><td><span class="chip chip-orange no-dot">404</span></td><td><code>SUPPLIER_MASTER_NOT_FOUND</code></td><td>仕入先マスタが見つかりません。</td></tr>
+          <tr><td><span class="chip chip-yellow no-dot">400</span></td><td><code>SUPPLIER_IDS_REQUIRED</code></td><td>仕入先IDを選択してください。 (account issue)</td></tr>
+          <tr><td><span class="chip chip-gray no-dot">401</span></td><td><code>null</code></td><td>Unauthorized</td></tr>
+          <tr><td><span class="chip chip-red no-dot">403</span></td><td><code>null</code></td><td>権限がありません。</td></tr>
+        </tbody>
+      </table>
+      <div class="notice notice-info" style="margin-top:12px;margin-bottom:0"><span class="ic">💡</span><div>FE <b>hiển thị <code>message</code> trực tiếp từ response</b>, không hard-code text. <code>errorCode</code> dùng để rẽ nhánh logic. <code>accounts/issue</code> là <b>batch</b> → lỗi từng item nằm trong <code>failures[]</code> (<code>EMAIL_MISSING</code>/<code>MAIL_SEND_FAILED</code>), không phải HTTP error.</div></div>
+    </div>
+  </div>
+
+  <!-- ===== Screen catalog ===== -->
+  <div class="card">
+    <div class="card-head"><h3>4 · Danh mục màn hình (cờ trạng thái)</h3></div>
+    <div class="card-body">
+
+      <h4 class="section-title"><span class="persona-tag e03">ADMIN</span> 仕入先マスタ · <span class="chip chip-green no-dot">LIVE — implement ngay (Batch 1)</span></h4>
+      <div class="grid-cards" style="margin-bottom:22px">
+        <a class="screen-card" href="admin-management/supplier-master.html">
+          <span class="sc-id">2.1 · 2.2 · 2.5 · 2.6</span>
+          <span class="persona-tag e03">Admin</span>
+          <span class="sc-title">仕入先マスタ List + Detail</span>
+          <span class="sc-desc">List filter/pagination, detail (基本情報/住所/担当者/作れる商品/変更履歴), soft delete (chặn khi ACTIVE).</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /admin/supplier-masters</span></span>
+        </a>
+        <a class="screen-card" href="admin-management/supplier-register.html">
+          <span class="sc-id">2.3 · 2.4</span>
+          <span class="persona-tag e03">Admin</span>
+          <span class="sc-title">登録 / 編集 (Register/Edit)</span>
+          <span class="sc-desc">Form đa địa chỉ + đa 担当者 + 作れる商品. PUT replace toàn bộ. Tạo mới KHÔNG cấp account, mặc định UNREGISTERED.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m post">POST</span> /admin/supplier-masters</span><span class="api-chip"><span class="m patch">PUT</span> /:id</span></span>
+        </a>
+        <a class="screen-card" href="admin-management/supplier-edit-history.html">
+          <span class="sc-id">2.6</span>
+          <span class="persona-tag e03">Admin</span>
+          <span class="sc-title">変更履歴 (Change history)</span>
+          <span class="sc-desc">Read-only audit log <code>supplier_master_history_logs</code> (content/changedBy/changedAt). Response bọc <code>meta{}</code>.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /admin/supplier-masters/:id/history</span></span>
+        </a>
+        <div class="screen-card">
+          <span class="sc-id">2.7</span>
+          <span class="persona-tag e03">Admin</span>
+          <a class="sc-title" href="admin-management/popup-confirm-send-account.html">アカウント発行 (batch)</a>
+          <span class="sc-desc">Chọn 1+ supplier → popup xác nhận → 発行する → tạo login <code>SP\d+</code> + set REGISTERED + gửi mail. <a href="admin-management/popup-success-account-issue.html">→ success</a> · <a href="admin-management/popup-error-account-issue.html">→ error</a></span>
+          <span class="sc-eps"><span class="api-chip"><span class="m post">POST</span> /accounts/issue</span></span>
+        </div>
+      </div>
+
+      <h4 class="section-title"><span class="persona-tag e02">SUPPLIER</span> Self-service · <span class="chip chip-yellow no-dot">TBD — chờ BA chốt</span></h4>
+      <div class="grid-cards" style="margin-bottom:22px">
+        <a class="screen-card" href="DA_HOME_001.html">
+          <span class="sc-id">DA_HOME_001</span>
+          <span class="persona-tag e02">Supplier</span>
+          <span class="sc-title">HOME / Dashboard <span class="chip chip-blue no-dot">EXISTING</span></span>
+          <span class="sc-desc">Trang chủ supplier portal (sau login). Auth đã có sẵn trong code (Part C).</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /supplier/account/me</span></span>
+        </a>
+        <a class="screen-card" href="DA_注文管理.html">
+          <span class="sc-id">3.1 · #B'</span>
+          <span class="persona-tag e02">Supplier</span>
+          <span class="sc-title">注文管理 (Order list) <span class="chip chip-yellow no-dot">TBD</span></span>
+          <span class="sc-desc">UI mock OK, nhưng <b>chưa connect API</b>: 合計金額 + status enum (未処理/仮注文/正式注文/確認済み) thiếu entity backing. → Open Q #B'.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /supplier/orders <span style="color:#fbbf24">(designed)</span></span></span>
+        </a>
+        <a class="screen-card" href="DA_注文詳細編集.html">
+          <span class="sc-id">3.2 · #C'</span>
+          <span class="persona-tag e02">Supplier</span>
+          <span class="sc-title">注文詳細編集 (Order edit) <span class="chip chip-yellow no-dot">TBD</span></span>
+          <span class="sc-desc">UI mock OK, nhưng thiếu 2 cột <b>論理必要数 / 在庫数</b> chưa có nguồn DB. → Open Q #C'.</span>
+          <span class="sc-eps"><span class="api-chip">order detail <span style="color:#fbbf24">(designed)</span></span></span>
+        </a>
+        <a class="screen-card" href="DA_出荷処理.html">
+          <span class="sc-id">C3</span>
+          <span class="persona-tag e02">Supplier</span>
+          <span class="sc-title">出荷処理 (Shipment) <span class="chip chip-gray no-dot">OUT OF SCOPE</span></span>
+          <span class="sc-desc"><b>BA chốt KHÔNG làm</b> (mock sai/khó hiểu). Giữ để tham khảo, không implement.</span>
+          <span class="sc-eps"><span class="api-chip" style="background:var(--gray-400)">— không API —</span></span>
+        </a>
+      </div>
+
+      <h4 class="section-title">API ガイド (interactive) &amp; Auth có sẵn</h4>
+      <div class="grid-cards">
+        <a class="screen-card" href="admin-management/apis/supplier-master.html"><span class="persona-tag e03">Admin</span><span class="sc-title">仕入先マスタ API</span></a>
+        <a class="screen-card" href="admin-management/apis/supplier-register.html"><span class="persona-tag e03">Admin</span><span class="sc-title">登録 API</span></a>
+        <a class="screen-card" href="admin-management/apis/supplier-edit-history.html"><span class="persona-tag e03">Admin</span><span class="sc-title">変更履歴 API</span></a>
+        <a class="screen-card" href="apis/注文管理.html"><span class="persona-tag e02">Supplier</span><span class="sc-title">注文管理 API <span class="chip chip-yellow no-dot">TBD</span></span></a>
+        <a class="screen-card" href="apis/注文詳細編集.html"><span class="persona-tag e02">Supplier</span><span class="sc-title">注文詳細編集 API <span class="chip chip-yellow no-dot">TBD</span></span></a>
+        <a class="screen-card" href="apis/お知らせ.html"><span class="persona-tag e02">Supplier</span><span class="sc-title">お知らせ API <span class="chip chip-yellow no-dot">TBD</span></span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Open questions ===== -->
+  <div class="card">
+    <div class="card-head"><h3>5 · Open Questions chặn phần TBD (cần BA trả lời)</h3></div>
+    <div class="card-body">
+      <table class="data" style="font-size:12.5px">
+        <thead><tr><th>#</th><th>Câu hỏi</th><th>Chặn gì</th><th>Ưu tiên</th></tr></thead>
+        <tbody>
+          <tr><td><b>A4-1</b></td><td>Giá trị thực của 仕入れ先区分 (classification)?</td><td>Dropdown options (màn master/register)</td><td><span class="chip chip-red no-dot">HIGH</span></td></tr>
+          <tr><td><b>#B'</b></td><td>合計金額 (amount) trong 注文管理 lấy từ đâu? Status enum nguồn DB?</td><td>注文管理 connect API</td><td><span class="chip chip-red no-dot">HIGH</span></td></tr>
+          <tr><td><b>#C'</b></td><td>論理必要数 &amp; 在庫数 có nguồn DB nào?</td><td>2 cột trong 注文詳細編集</td><td><span class="chip chip-red no-dot">HIGH</span></td></tr>
+          <tr><td><b>D1</b></td><td>お知らせ phân loại 重要/お知らせ dùng <code>type</code> enum hay <code>is_important</code>? Thêm value SUPPLIER vào recipient_type.</td><td>お知らせ filter tabs</td><td><span class="chip chip-orange no-dot">MED</span></td></tr>
+          <tr><td><b>D2-1</b></td><td>Bộ cột CSV + encoding (Shift_JIS hay UTF-8) cho import/export?</td><td>CSV 取込/出力</td><td><span class="chip chip-orange no-dot">MED</span></td></tr>
+          <tr><td><b>A1-1</b></td><td>Bắt buộc 1 supplier có ít nhất 1 địa chỉ 本社?</td><td>Cột 本社住所 ở list</td><td><span class="chip chip-gray no-dot">LOW</span></td></tr>
+        </tbody>
+      </table>
+      <div class="legend" style="gap:18px;margin-top:14px">
+        <span>📋 <a href="SUPPLIER_API_CONTRACT.md">SUPPLIER_API_CONTRACT.md</a> — contract FE (DTO/validation/error/i18n)</span>
+        <span>🗄️ <a href="SUPPLIER_DB_API_DESIGN.md">SUPPLIER_DB_API_DESIGN.md</a> — DB change + decision log</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend" style="margin-top:18px">
+    <span><span class="sw" style="background:var(--green-500)"></span> LIVE — implement ngay</span>
+    <span><span class="sw" style="background:var(--yellow-500)"></span> TBD — chờ BA</span>
+    <span><span class="sw" style="background:var(--gray-400)"></span> OUT OF SCOPE</span>
+    <span><span class="sw" style="background:var(--company-500)"></span> EXISTING — đã có code</span>
+  </div>
+
+  <div class="footnote">
+    Nguồn: <code>SUPPLIER_API_CONTRACT.md</code> · <code>SUPPLIER_DB_API_DESIGN.md</code> (es-kitchen-api) + mockup <code>design/supliers/**</code>.
+    Mockup minh hoạ luồng &amp; hợp đồng API — không phải UI cuối. Cập nhật: 2026/06/19.
+  </div>
+
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>

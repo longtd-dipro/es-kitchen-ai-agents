@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E02 · AI自動配分 — Phân bổ AI (OUT OF SCOPE)</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+<style>
+  .fnum{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;
+    border-radius:9999px;background:var(--accent-500);color:#fff;font-size:10.5px;font-weight:700;margin-right:5px;
+    flex-shrink:0;font-family:"BIZ UDGothic",Consolas,monospace}
+  .impl{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9999px;margin-left:6px}
+  .impl.todo{background:var(--purple-50);color:var(--purple-600)}
+  .impl.no{background:var(--red-50);color:var(--red-600)}
+  .oos-banner{background:repeating-linear-gradient(45deg,#fff6f5,#fff6f5 12px,#ffe5e4 12px,#ffe5e4 24px);
+    border:2px dashed var(--red-400);color:var(--red-600);border-radius:var(--r-lg);padding:14px 16px;
+    margin-bottom:18px;font-weight:600;display:flex;gap:10px;align-items:flex-start}
+  .mode{display:flex;gap:12px;padding:14px;border:1px solid var(--gray-200);border-radius:var(--r-lg);margin-bottom:10px;cursor:pointer;background:#fff}
+  .mode.sel{border-color:var(--accent-500);background:var(--accent-50)}
+  .mode .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--gray-300);flex-shrink:0;margin-top:2px}
+  .mode.sel .radio{border-color:var(--accent-500);background:radial-gradient(circle,var(--accent-500) 40%,#fff 45%)}
+  .mode .t{font-weight:700;font-size:14px}
+  .mode .d{font-size:12.5px;color:var(--gray-500);margin-top:3px}
+  .prev{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--gray-100)}
+  .prev .th{width:34px;height:34px;border-radius:var(--r-sm);background:var(--gray-100);display:grid;place-items:center}
+  .prev .nm{flex:1;font-size:13px}
+  .prev .qty{font-weight:700;font-size:14px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:820px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="theme-admin">
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESSTATION</div>
+  <span class="persona">E02 Company Admin</span>
+  <div class="spacer"></div>
+  <a class="tb-link" href="order_create_mockup.html">← 注文作成</a>
+</div>
+
+<div class="page">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span class="sep">›</span>
+    <a href="order_create_mockup.html">注文作成</a><span class="sep">›</span>
+    <b>AI自動配分</b> <span class="vi">(Phân bổ AI)</span>
+  </div>
+
+  <div class="oos-banner">
+    <span style="font-size:18px">🚧</span>
+    <div><b>OUT OF SCOPE — team AI riêng.</b> AI modes (1/2/4/5) <span class="impl no">❌ chưa implement</span> trong <code>es-kitchen-api</code>. Code thật chỉ có <code>GET /ai-pro/dataset</code> — <b>data provider</b> (xuất lịch sử order + SP) cho service AI bên ngoài (<code>x-api-key</code>), chưa nối UI E02. Endpoint dưới đây là <b>đề xuất giao diện</b>, cần AI team chốt contract.</div>
+  </div>
+
+  <div class="page-head">
+    <div class="page-title"><span class="accent-bar"></span> AI自動配分 <span class="vi">Tự động phân bổ số lượng</span></div>
+  </div>
+
+  <div class="two">
+    <!-- STEP 1: mode select -->
+    <div class="card">
+      <div class="card-head"><h3>① モード選択 <span class="vi">Chọn chế độ</span></h3></div>
+      <div class="card-body">
+        <div class="mode sel"><div class="radio"></div><div>
+          <div class="t"><span class="fnum">1</span>モード1: 均等配分を推奨</div>
+          <div class="d">契約パッケージに合わせて料理の数量を自動的に均等配分する（推奨）。</div>
+        </div></div>
+        <div class="mode"><div class="radio"></div><div>
+          <div class="t"><span class="fnum">2</span>モード2: AIによる推奨</div>
+          <div class="d">システム会員の注文履歴と嗜好を自動的に分析して配分。</div>
+        </div></div>
+        <div class="mode"><div class="radio"></div><div>
+          <div class="t"><span class="fnum">3</span>モード4: 従業員のリクエストによる推奨</div>
+          <div class="d">従業員のリクエスト（アンケート）に基づいて配分。</div>
+        </div></div>
+        <div class="mode"><div class="radio"></div><div>
+          <div class="t"><span class="fnum">4</span>モード5: AIチャットを推奨</div>
+          <div class="d">AIチャットで対話しながら配分を調整。</div>
+        </div></div>
+        <div class="api-note">mode → <b>POST /ai/allocations</b> &#123; mode, yearMonth, companyId &#125; 🟡</div>
+        <div class="btn-row" style="margin-top:14px;justify-content:flex-end">
+          <button class="btn"><span class="fnum">5</span>キャンセル</button>
+          <button class="btn btn-primary"><span class="fnum">6</span>次へ →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: preview -->
+    <div class="card">
+      <div class="card-head"><h3>② AI提案プレビュー <span class="vi">(合計 200食 · ¥86,400)</span></h3></div>
+      <div class="card-body">
+        <div class="api-note" style="margin-bottom:8px"><span class="fnum">7</span>suggestion.items[] · <span class="fnum">8</span>totalQuantity / totalAmount 🟡</div>
+        <div class="prev"><div class="th">🍗</div><div class="nm">からあげ</div><div class="qty">30</div></div>
+        <div class="prev"><div class="th">🍤</div><div class="nm">チキンナゲット</div><div class="qty">25</div></div>
+        <div class="prev"><div class="th">🍚</div><div class="nm">ロコモコ</div><div class="qty">20</div></div>
+        <div class="prev"><div class="th">🍱</div><div class="nm">ハンバーグ弁当</div><div class="qty">30</div></div>
+        <div class="prev"><div class="th">🍜</div><div class="nm">ラーメンセット</div><div class="qty">20</div></div>
+        <div class="prev"><div class="th">🥗</div><div class="nm">サラダボウル</div><div class="qty">15</div></div>
+        <div class="prev"><div class="th">🍛</div><div class="nm">カレーライス</div><div class="qty">35</div></div>
+        <div class="prev"><div class="th">🍣</div><div class="nm">寿司盛り合わせ</div><div class="qty">25</div></div>
+        <div class="btn-row" style="margin-top:14px;justify-content:flex-end">
+          <button class="btn">キャンセル</button>
+          <button class="btn btn-primary"><span class="fnum">9</span>適用 (Áp dụng) <span class="api-note">→ PUT …/orders/:id/items</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice notice-info" style="margin-top:18px">
+    <span class="ic">🔌</span>
+    <div>Khi áp dụng: kết quả AI (<code>items[]</code>) được ghi vào đơn qua <code>PUT /company-admin/orders/:id/items</code> (replace) → quay lại 注文作成 với số lượng đã fill. Mode 5 (AIチャット) thêm vòng hội thoại trước khi ra preview.</div>
+  </div>
+</div>
+
+<!-- ===================== API SPEC DRAWER ===================== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>{ } API仕様 — AI自動配分 (OUT OF SCOPE)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>実装状況</h4>
+    <table>
+      <tr><th>Phạm vi</th><th>Trạng thái</th></tr>
+      <tr><td>AI allocation modes (1/2/4/5)</td><td><span class="impl no">❌ 未実装</span> — team AI riêng</td></tr>
+      <tr><td><code>GET /ai-pro/dataset</code> (data provider)</td><td><span class="impl todo">🟡 có nhưng chưa nối UI</span></td></tr>
+      <tr><td>Apply kết quả vào đơn</td><td><span class="impl todo">🟡 PUT …/items (đề xuất)</span></td></tr>
+    </table>
+
+    <h4>Code thật (reference)</h4>
+    <div class="ep"><span class="m get">GET</span> /ai-pro/dataset <span class="guard">AiProApiKeyGuard (x-api-key)</span></div>
+    <p class="muted" style="font-size:11.5px"><code>?format=json|csv</code> — xuất dữ liệu lịch sử order + SP cho service AI bên ngoài phân tích. <b>Không</b> phải endpoint customer-facing để E02 request phân bổ.</p>
+
+    <h4>Endpoints đề xuất (cần AI team chốt 🟡)</h4>
+    <div class="ep"><span class="m post">POST</span> /ai/allocations <span class="guard">tạo đề xuất theo mode</span></div>
+    <div class="ep"><span class="m post">POST</span> /ai/allocations/:id/chat <span class="guard">mode 5 — hội thoại</span></div>
+    <div class="ep"><span class="m put">PUT</span> /company-admin/orders/:id/items <span class="guard">apply kết quả</span></div>
+
+    <h4>POST /ai/allocations — body / response (đề xuất)</h4>
+    <pre>// request
+{ "mode": 1, "yearMonth": "2026-06", "companyId": "uuid" }
+// mode: 1=均等 · 2=AI履歴 · 4=従業員リクエスト · 5=AIチャット
+
+// response
+{
+  "allocationId": "uuid",
+  "mode": 1,
+  "totalQuantity": 200,        // ⑧
+  "totalAmount": 86400,        // ⑧
+  "items": [                   // ⑦
+    { "productId": "uuid", "productName": "からあげ", "quantity": 30 },
+    { "productId": "uuid", "productName": "チキンナゲット", "quantity": 25 }
+  ]
+}</pre>
+
+    <h4>Field Map</h4>
+    <table>
+      <tr><th>№</th><th>UI</th><th>API field / action</th></tr>
+      <tr><td>1–4</td><td>モード radio</td><td><code>mode</code> (1/2/4/5)</td></tr>
+      <tr><td>5</td><td>キャンセル</td><td>đóng modal</td></tr>
+      <tr><td>6</td><td>次へ</td><td>POST /ai/allocations 🟡</td></tr>
+      <tr><td>7</td><td>提案リスト</td><td><code>items[]</code></td></tr>
+      <tr><td>8</td><td>合計</td><td><code>totalQuantity · totalAmount</code></td></tr>
+      <tr><td>9</td><td>適用</td><td>PUT …/orders/:id/items 🟡</td></tr>
+    </table>
+
+    <p class="muted" style="font-size:11.5px">⚠️ Toàn bộ trang này là <b>đề xuất giao diện</b>. Contract thật do team AI quyết định — không tự ráp khi chưa confirm.</p>
+  </div>
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>

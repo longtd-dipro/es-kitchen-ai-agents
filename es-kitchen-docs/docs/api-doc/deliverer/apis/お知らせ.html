@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>お知らせ — API 配線ガイド (Deliverer)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#65a30d; --lime:#84cc16; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F3F4F6; color:#222; }
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;margin-left:6px;
+    background:#0062CC;color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none; }
+  .nb:hover{ transform:scale(1.18);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .tab-btn{ padding:14px 4px;font-size:15px;font-weight:600;color:#6b7280;border-bottom:3px solid transparent;cursor:pointer; }
+  .tab-btn.active{ color:var(--primary);border-bottom-color:var(--lime); }
+  .noti-head{ display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-left:4px solid var(--lime);border-radius:6px;padding:14px 18px;font-weight:700;color:#1f2937; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:820px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#ecfccb; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-patch{background:#e9d8fd;color:#553c9a;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+</style>
+</head>
+<body>
+<div class="max-w-4xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Deliverer · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">お知らせ — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số</b> bất kỳ → panel phải hiện <b>bảng ráp + API docs</b> (highlight dòng đã click). Contract: <code>API設計_配送関連.md</code> / <code>API仕様詳細_配送関連.md › A1</code> · base <code>/deliverer/*</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (GET)</span>
+      <span><span class="nb act" style="cursor:default">n</span> action/ghi (PATCH)</span>
+      <span><span class="nb tbd" style="cursor:default">n</span> còn chờ BA (TBD)</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP (khớp OW_ANNO_001/002) ===== -->
+  <div class="card p-6">
+    <div class="text-xs text-gray-500 mb-1">TOP</div>
+    <h2 class="text-xl font-bold text-gray-900 mb-4">お知らせを確認する</h2>
+
+    <!-- tabs -->
+    <div class="flex items-center gap-8 border-b border-gray-200 mb-5">
+      <span class="tab-btn active">すべて</span>
+      <span class="tab-btn">重要</span>
+      <span class="tab-btn">お知らせ</span>
+      <span class="nb" data-n="1">1</span>
+    </div>
+
+    <!-- notifications (accordion, khớp OW_ANNO_001/002) -->
+    <div class="space-y-5">
+      <div>
+        <div class="noti-head">
+          <span>【2024/02/29<span class="nb" data-n="3">3</span>】配送方法について<span class="nb" data-n="2">2</span></span>
+          <i class="fa-solid fa-chevron-down text-gray-400"></i><span class="nb act" data-n="6">6</span>
+        </div>
+        <div class="px-4 pt-4 text-sm text-gray-600">配送方法に関するいくつかの注意点があります。<br>詳細は添付ファイルをご確認ください。<span class="nb" data-n="4">4</span>
+          <hr class="my-3 border-0 border-t border-dashed border-gray-200" />
+          <div class="flex gap-8 text-sm text-blue-600">
+            <a class="inline-flex items-center gap-1">実行されようとしている（リンク） <i class="fa-solid fa-up-right-from-square text-xs"></i></a><span class="nb" data-n="5">5</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="noti-head">
+          <span>【2024/02/29】システムが更新されました</span>
+          <i class="fa-solid fa-chevron-down text-gray-400"></i>
+        </div>
+        <div class="px-4 pt-4 text-sm text-gray-600">システムが更新されました。<br>操作方法については添付の説明ファイルをご確認ください。
+          <hr class="my-3 border-0 border-t border-dashed border-gray-200" />
+          <div class="flex gap-8 text-sm text-blue-600">
+            <a class="inline-flex items-center gap-1">実行されようとしている（リンク） <i class="fa-solid fa-up-right-from-square text-xs"></i></a>
+            <a class="inline-flex items-center gap-1">実行サイト（リンク） <i class="fa-solid fa-up-right-from-square text-xs"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm số bất kỳ để xem bảng ráp + tài liệu API. Mock khớp <code>OW_ANNO_001 / OW_ANNO_002</code>. Phân loại 重要/お知らせ thể hiện qua tab (không có nhãn màu riêng trong mock).</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — お知らせ <span class="text-gray-400 font-normal text-sm">(§A1)</span></b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:42px">No</th><th>UI element</th><th>API</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const P = e => '<code>'+e+'</code>';
+const GET_N = '<span class="method m-get">GET</span> '+P('/deliverer/notifications');
+const W = {
+  1:{ui:'Tabs すべて / 重要 / お知らせ', api:GET_N, field:'query: <code>category=IMPORTANT|INFO</code>', tf:'Đổi tab → gọi lại API với <code>category</code>. すべて = bỏ trống. (phân loại = notifications.category)'},
+  2:{ui:'タイトル (tiêu đề)', api:GET_N, field:'<code>items[].title</code>', tf:'Tiêu đề mỗi thông báo, dạng 【yyyy/MM/dd】….'},
+  3:{ui:'日付 (ngày trong tiêu đề)', api:GET_N, field:'<code>items[].createdAt</code>', tf:'Ngày tạo, render 【yyyy/MM/dd】.'},
+  4:{ui:'本文 (nội dung)', api:GET_N, field:'<code>items[].content</code>', tf:'✅ BE trả content đầy đủ ở cả list & detail; FE tự cắt preview ở list (notification ngắn).'},
+  5:{ui:'リンク (links trong thông báo)', api:GET_N, field:'<code>items[].links[].{label,url,previewUrl}</code>', tf:'Từ notifications.body.links (jsonb). Render link click được (実行リンク / 実行サイト).'},
+  6:{ui:'Mở accordion / đánh dấu đã đọc', api:'<span class="method m-get">GET</span> '+P('/deliverer/notifications/{id}'), field:'path <code>id</code>', tf:'Mở 1 thông báo → gọi detail; BE tự set is_read=true, read_at=now().', act:1}
+};
+
+const DOCS = `
+<div style="background:#f7fee7;border:1px solid #d9f99d;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#3f6212;margin-bottom:14px">
+  <b>API chính:</b> <span class="method m-get">GET</span> <code>/deliverer/notifications</code> — danh sách thông báo theo tab. Auth: <code>Bearer {deliverer token}</code> (DelivererGuard).
+</div>
+
+<h4>① <span class="method m-get">GET</span> /deliverer/notifications — Danh sách &nbsp;<span style="color:#16a34a">(API CHÍNH)</span></h4>
+<p><b>Mục đích:</b> Lấy thông báo của deliverer theo tab (すべて/重要/お知らせ).</p>
+<p><b>Nguồn DB:</b> <code>notification_recipients</code> WHERE <code>recipient_type='DELIVERER'</code> & <code>recipient_id = me</code>; nội dung từ <code>notifications</code> (title/content/category/body).</p>
+<p style="font-weight:700;margin-top:10px">Query (BaseSearchRequest + category)</p>
+<table class="map"><thead><tr><th>Param</th><th>Kiểu</th><th>BB</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>category</code></td><td>enum</td><td>—</td><td><code>IMPORTANT</code> | <code>INFO</code> (bỏ trống = すべて) — số 1</td></tr>
+<tr><td><code>page / limit</code></td><td>number</td><td>—</td><td>Phân trang (limit ≤ 100).</td></tr>
+<tr><td><code>order / orderBy</code></td><td>—</td><td>—</td><td>Mặc định DESC theo createdAt.</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:12px">Response 200</p>
+<pre>{
+  "items": [{
+    "id": "101",
+    "title": "【2024/02/29】配送方法について",   // số 2,3
+    "category": "IMPORTANT",                       // số 1 (tab)
+    "content": "配送方法に関する…（full text）",     // số 4 — BE trả đầy đủ, FE cắt preview
+    "links": [{ "label":"実行されようとしている（リンク）","url":"https://…","previewUrl":null }], // số 5
+    "isRead": false,
+    "createdAt": "2024-02-29T00:00:00+09:00"
+  }],
+  "total": 2, "page": 1, "limit": 10, "totalPages": 1
+}</pre>
+
+<h4 style="margin-top:20px">② <span class="method m-get">GET</span> /deliverer/notifications/{id} — chi tiết + đánh dấu đã đọc (số 6)</h4>
+<p>Mở 1 thông báo (OW_ANNO_002). Trả full <code>content</code> + <code>links[]</code>. Side-effect: set <code>is_read=true</code>.</p>
+<pre>// Response 200
+{ "id":"101","title":"…","category":"INFO","content":"システムが更新されました。…",
+  "links":[{ "label":"実行サイト（リンク）","url":"https://…" }], "isRead":true, "createdAt":"…" }</pre>
+
+<h4 style="margin-top:18px">③ <span class="method m-get">GET</span> /deliverer/notifications/unread-count <span style="color:#94a3b8">(API phụ — không hiển thị badge trong mock này)</span></h4>
+<pre>{ "count": 3 }</pre>
+
+<h4 style="margin-top:18px">DB note (thiết kế)</h4>
+<p>Targeting polymorphic: <code>user_notifications → recipient_type + recipient_id</code>; enum <code>NotificationRecipientType</code> cần value <b><code>DELIVERER</code></b>. <code>notifications</code> + <code>category</code> (IMPORTANT/INFO); <code>body.links[]</code> (jsonb). Xem <code>API設計_配送関連.md › D2, G3, G5</code>.</p>
+<div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:8px 10px;font-size:12px;color:#065f46;margin-top:10px">
+  ✅ <b>Đã chốt:</b> ① <b>title</b> BE lưu thuần → <b>FE ghép 【yyyy/MM/dd】 từ createdAt</b>. ② <b>BE trả content đầy đủ, FE tự cắt</b> preview (bỏ field summary). ③ <b>FCM đã có deeplink</b>: payload <code>data: { id, route:'notification', type, link, createdAt, unreadCount }</code> (id = user_notification id) — xác nhận trong <code>notification.service.ts</code>.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).map(Number).sort((a,b)=>a-b).forEach(n=>{
+  const d=W[n], cls=d.tbd?'tbd':(d.act?'act':'');
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function open(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function close(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=close; ov.onclick=close;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();open(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

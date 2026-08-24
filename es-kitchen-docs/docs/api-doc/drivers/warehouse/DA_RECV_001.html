@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DA_RECV_001 — 荷物受取 (Warehouse Receipt)</title>
+    <link rel="stylesheet" href="../dashboard/style.css">
+    <style>
+        body { padding: 24px 0; }
+        .docs-section { margin-top: 24px; border-top: 2px solid #edf2f7; }
+        .page-note {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #92400e;
+            margin: 14px 0;
+        }
+        .api-note {
+            background: #ebf8ff;
+            border: 1px solid #bee3f8;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: #2c5282;
+            margin: 14px 0;
+        }
+        .screen-label {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #2b6cb0;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 6px;
+            z-index: 200;
+        }
+        .lang-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+        .lang-tab {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #cbd5e0;
+            background: #fff;
+            color: #4a5568;
+        }
+        .lang-tab.active { background: #2b6cb0; color: #fff; border-color: #2b6cb0; }
+        .lang-block { display: none; }
+        .lang-block.active { display: block; }
+        .vi-text { color: #b7791f; font-style: italic; }
+        .docs-footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: #a0aec0;
+            border-top: 1px solid #edf2f7;
+            margin-top: 20px;
+        }
+        .spec-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 12px; }
+        .spec-table th, .spec-table td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .spec-table th { background: #edf2f7; font-weight: bold; color: #1a202c; }
+        .spec-table tr:nth-child(even) td { background: #f7fafc; }
+        .spec-table code { background: #edf2f7; padding: 2px 5px; border-radius: 3px; font-size: 11px; }
+        /* annotation = API-bound field (numbered) */
+        .anno {
+            display: inline-block;
+            background: #e53e3e;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+        /* annotation = request-bound (POST) */
+        .anno-req {
+            display: inline-block;
+            background: #2a4365;
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+        /* FE-only control (no API) */
+        .anno-fe {
+            display: inline-block;
+            background: #a0aec0;
+            color: #fff;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 1px 5px;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+        .field-num { color: #e53e3e; font-weight: bold; white-space: nowrap; }
+        .req-num { color: #2a4365; font-weight: bold; white-space: nowrap; }
+        .recv-card { background:#fff; border:1px solid #e2e8f0; border-radius:14px; overflow:hidden; margin-bottom:12px; }
+        .recv-card-head { padding:10px; display:flex; gap:8px; }
+        .recv-row {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:8px 0; border-top:1px solid #f1f5f9; font-size:12px; color:#4a5568;
+        }
+        .chk { width:18px; height:18px; border:2px solid #cbd5e0; border-radius:4px; display:inline-block; }
+        .chk-on { width:18px; height:18px; border:1px solid #90cdf4; border-radius:4px; background:#ebf8ff; color:#2b6cb0; display:flex; align-items:center; justify-content:center; }
+        .warehouse-card { background:#fffdf6; border:1px solid #fde68a; border-radius:14px; padding:14px; margin:12px 16px; }
+        .recv-header {
+            background:#fff; padding:14px 16px 10px 16px;
+            display:flex; align-items:center; justify-content:space-between;
+            border-bottom:1px solid #edf2f7;
+        }
+        .circle-btn { width:34px; height:34px; border-radius:50%; border:1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; color:#718096; }
+        .complete-btn {
+            margin:0 16px; background:#1e6de6; color:#fff; font-weight:bold;
+            text-align:center; padding:11px; border-radius:12px; font-size:13px;
+        }
+    </style>
+</head>
+<body>
+
+<div style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 16px;">
+
+    <!-- Page heading -->
+    <div style="margin-bottom: 20px;">
+        <div class="lang-tabs">
+            <span class="lang-tab active" onclick="switchLang(this, 'ja')">日本語</span>
+            <span class="lang-tab" onclick="switchLang(this, 'vi')">Tiếng Việt</span>
+        </div>
+        <div class="lang-block ja active">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_RECV_001 — 荷物受取（Warehouse Receipt）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · 荷物受取画面 · 画面仕様書 + APIフィールドマッピング（レスポンスDTO組み立て）</p>
+        </div>
+        <div class="lang-block vi">
+            <h1 style="font-size: 22px; color: #1a202c; margin-bottom: 4px;">DA_RECV_001 — Nhận hàng tại kho（荷物受取）</h1>
+            <p style="font-size: 13px; color: #718096;">Driver app · Màn hình nhận hàng · Spec + mapping ráp API Response/Request DTO</p>
+        </div>
+        <div style="margin-top: 10px;">
+            <span style="background:#2b6cb0; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px;">Mobile App</span>
+            <span style="background:#48bb78; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">Screen ID: DA_RECV_001 / DA_RECV_003</span>
+            <span style="background:#805ad5; color:#fff; font-size:11px; font-weight:bold; padding:4px 10px; border-radius:6px; margin-left:8px;">V1.0</span>
+        </div>
+    </div>
+
+    <!-- ===== SCREEN INFO TABLE ===== -->
+    <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:16px; margin-bottom:20px;">
+        <h3 style="font-size:14px; color:#2d3748; margin-bottom:12px;">Screen Info / 画面情報</h3>
+        <table class="spec-table">
+            <thead><tr><th>項目</th><th>内容</th><th>Mục</th><th>Nội dung</th></tr></thead>
+            <tbody>
+                <tr><td>画面ID</td><td>DA_RECV_001 / DA_RECV_003</td><td>Mã màn hình</td><td>DA_RECV_001 / DA_RECV_003</td></tr>
+                <tr><td>画面名（日本語）</td><td>荷物受取</td><td>Tên màn hình (tiếng Việt)</td><td>Nhận hàng tại kho</td></tr>
+                <tr><td>遷移元</td><td>DA_HOME_001 倉庫カード（未受取）タップ</td><td>Màn hình chuyển từ</td><td>Nhấn thẻ kho (未受取) ở DA_HOME_001</td></tr>
+                <tr><td>API (取得)</td><td><code>GET /driver/receipts/{receiptId}</code></td><td>API (lấy dữ liệu)</td><td><code>GET /driver/receipts/{receiptId}</code></td></tr>
+                <tr><td>API (完了)</td><td><code>POST /driver/receipts/{receiptId}/complete</code></td><td>API (hoàn thành)</td><td><code>POST /driver/receipts/{receiptId}/complete</code></td></tr>
+                <tr><td>アイコン凡例（数量）</td><td colspan="3"><strong>雪の結晶</strong> = 冷凍 (Đông lạnh) &nbsp;|&nbsp; <strong>箱アイコン</strong> = 冷蔵・常温（合算）(Mát + Thường gộp)</td></tr>
+                <tr><td>配送種別アイコン<br><span class="field-num">(20)</span></td><td colspan="3"><strong>棚アイコン = ES配送便</strong> → 配送＋棚入れ (Giao + sếp lên kệ) &nbsp;|&nbsp; <strong>トラックアイコン = COOL便</strong> → 配送のみ (Chỉ giao, không sếp kệ) &nbsp;·&nbsp; field <code>groups[].shipmentType</code></td></tr>
+            </tbody>
+        </table>
+        <div class="api-note">
+            <strong>凡例 / Chú thích số:</strong>
+            <span class="anno">1</span> = field thuộc <strong>Response DTO</strong> (GET) &nbsp;
+            <span class="anno-req">R1</span> = field thuộc <strong>Request DTO</strong> (POST complete) &nbsp;
+            <span class="anno-fe">FE</span> = control <strong>chỉ phía client</strong>, không gọi API.
+        </div>
+    </div>
+
+    <!-- ===== MOCKUP GRID (annotated) ===== -->
+    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:16px; align-items:start; margin-bottom:30px;">
+
+        <!-- ===== Mockup 1: DA_RECV_001 (受取中) ===== -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">DA_RECV_001 · 受取中 (đang nhận)</h3>
+            <div class="phone-wrapper" style="min-height:760px; padding-bottom:0;">
+                <div class="screen-label">DA_RECV_001</div>
+
+                <!-- header -->
+                <div class="recv-header">
+                    <div class="circle-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </div>
+                    <div style="font-size:14px; font-weight:bold; color:#2d3748;">荷物受取</div>
+                    <div class="circle-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    </div>
+                </div>
+
+                <!-- warehouse card -->
+                <div class="warehouse-card">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px dashed #fcd34d; padding-bottom:10px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <div class="icon-box bg-orange" style="width:36px;height:36px;border-radius:10px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                            </div>
+                            <div class="card-title" style="font-size:14px;"><span class="anno">1</span>オージーフーズ倉庫</div>
+                        </div>
+                        <div style="display:grid; grid-template-columns:auto auto; gap:2px 8px; font-size:11px; color:#4a5568; text-align:right;">
+                            <div><span class="anno">6</span><b style="color:#2b6cb0;">10</b> 社</div>
+                            <div><span class="anno">7</span><b style="color:#2b6cb0;">50</b> 箱</div>
+                            <div><span class="anno">8</span><b style="color:#2b6cb0;">500</b> 品</div>
+                            <div><span class="anno">9</span><b style="color:#2b6cb0;">500</b> 品</div>
+                        </div>
+                    </div>
+                    <div style="padding-top:10px; font-size:12px; color:#4a5568;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span style="display:flex; align-items:center; gap:5px;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <span><span class="anno">3</span>2026-06-12（月）</span>
+                            </span>
+                            <span class="badge badge-unreceived"><span class="anno">2</span>未受取</span>
+                        </div>
+                        <div style="margin-bottom:4px; padding-left:17px;"><span class="anno">4</span>〒 151-0051</div>
+                        <div style="display:flex; gap:5px;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <span><span class="anno">5</span>東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- list title + filters -->
+                <div style="padding:0 16px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin:6px 0;">
+                        <h3 style="font-size:13px; font-weight:bold; color:#2d3748;">荷物受取一覧</h3>
+                        <span style="font-size:11px; color:#4a5568;"><span class="anno-fe">FE</span><span class="chk" style="width:13px;height:13px;vertical-align:middle;"></span> 未確認のみ表示</span>
+                    </div>
+                    <div style="position:relative; margin-bottom:12px;">
+                        <input type="text" placeholder="納品先拠点名" style="width:100%; padding:8px 12px; border:1px solid #e2e8f0; border-radius:10px; font-size:12px;">
+                        <span class="anno-fe" style="position:absolute; right:8px; top:9px;">FE</span>
+                    </div>
+
+                    <!-- group card 1 -->
+                    <div class="recv-card">
+                        <div class="recv-card-head" style="background:#eff6ff;">
+                            <div class="icon-box bg-blue" style="width:34px;height:34px;border-radius:8px;" title="ES配送便 — 配送+棚入れ">
+                                <!-- ES: 配送 + 棚入れ (shelf stocking) -->
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="1"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
+                            </div>
+                            <div style="flex:1; min-width:0;">
+                                <div class="card-title" style="font-size:12px;"><span class="anno">10</span>大和インターナショナル…</div>
+                                <div style="margin-top:3px;"><span class="anno">20</span><span class="badge" style="background:#dbeafe; color:#1e40af; font-size:9px;">ES · 棚入れあり</span></div>
+                                <div style="font-size:11px; color:#718096; margin-top:2px;"><span class="anno">11</span>東京都渋谷区1-2-3</div>
+                                <div style="display:flex; gap:10px; font-size:11px; margin-top:4px; color:#4a5568;">
+                                    <span><span class="anno">12</span><b style="color:#2b6cb0;">2</b>箱</span>
+                                    <span><span class="anno">13</span><b style="color:#2b6cb0;">10</b>品</span>
+                                    <span><span class="anno">14</span><b style="color:#2b6cb0;">20</b>品</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding:0 12px 4px 12px;">
+                            <div class="recv-row" style="border-top:none;">
+                                <span style="display:flex; gap:8px; align-items:center;"><span style="color:#a0aec0;"><span class="anno">15</span>1</span><span><span class="anno">16</span>2107-6228-5031</span></span>
+                                <span><span class="anno">17</span><span class="anno-req">R1</span><span class="chk"></span></span>
+                            </div>
+                            <div class="recv-row">
+                                <span style="display:flex; gap:8px; align-items:center;"><span style="color:#a0aec0;">2</span><span>2107-6228-5032</span></span>
+                                <span class="chk-on"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                            </div>
+                            <div class="recv-row">
+                                <span style="display:flex; gap:8px; align-items:center;"><span style="color:#a0aec0;">3</span><span>2107-6228-5033</span></span>
+                                <span class="badge" style="background:#fed7d7; color:#c53030; font-size:10px;"><span class="anno">18</span>トラブル</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- group card 2 -->
+                    <div class="recv-card">
+                        <div class="recv-card-head" style="background:#f5f3ff;">
+                            <div class="icon-box bg-purple" style="width:34px;height:34px;border-radius:8px;" title="COOL便 — 配送のみ">
+                                <!-- COOL: 配送のみ (no shelf stocking) -->
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                            </div>
+                            <div style="flex:1; min-width:0;">
+                                <div class="card-title" style="font-size:12px;">富士フィナンシャル…</div>
+                                <div style="margin-top:3px;"><span class="badge" style="background:#ede9fe; color:#5b21b6; font-size:9px;">COOL · 棚入れなし</span></div>
+                                <div style="font-size:11px; color:#718096; margin-top:2px;">東京都新宿区西新宿2-8-1</div>
+                                <div style="display:flex; gap:10px; font-size:11px; margin-top:4px; color:#4a5568;">
+                                    <span><b style="color:#2b6cb0;">2</b>箱</span>
+                                    <span><b style="color:#2b6cb0;">10</b>品</span>
+                                    <span><b style="color:#2b6cb0;">20</b>品</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding:0 12px 4px 12px;">
+                            <div class="recv-row" style="border-top:none;">
+                                <span style="display:flex; gap:8px; align-items:center;"><span style="color:#a0aec0;">1</span><span>3108-1234-1122</span></span>
+                                <span class="chk-on"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                            </div>
+                            <div class="recv-row">
+                                <span style="display:flex; gap:8px; align-items:center;"><span style="color:#a0aec0;">2</span><span>3108-5678-1122</span></span>
+                                <span class="chk"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- footer complete -->
+                <div style="padding:12px 0;">
+                    <div class="complete-btn"><span class="anno-req" style="background:#fff; color:#2a4365;">R0</span> 完了</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== Mockup 2: DA_RECV_003 (完了) ===== -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">DA_RECV_003 · 完了 (read-only)</h3>
+            <div class="phone-wrapper" style="min-height:760px; padding-bottom:0;">
+                <div class="screen-label">DA_RECV_003</div>
+                <div class="recv-header">
+                    <div class="circle-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+                    <div style="font-size:14px; font-weight:bold; color:#2d3748;">荷物受取</div>
+                    <div class="circle-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path></svg></div>
+                </div>
+
+                <!-- success banner -->
+                <div style="background:#eefbf2; border-bottom:1px solid #c6f6d5; padding:12px 16px; display:flex; gap:10px; align-items:flex-start;">
+                    <div style="width:20px;height:20px;border-radius:50%;background:#22c55e;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div>
+                        <div style="font-size:13px; font-weight:bold; color:#15803d;">荷物の受取は完了しました。</div>
+                        <div style="font-size:11px; color:#718096; margin-top:2px;"><span class="anno">19</span>2026年4月15日12時03分に受取ずみ</div>
+                    </div>
+                </div>
+
+                <div class="warehouse-card">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px dashed #fcd34d; padding-bottom:10px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <div class="icon-box bg-orange" style="width:36px;height:36px;border-radius:10px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                            </div>
+                            <div class="card-title" style="font-size:14px;">オージーフーズ倉庫</div>
+                        </div>
+                        <span class="badge" style="background:#c6f6d5; color:#276749; font-size:10px;">受取済</span>
+                    </div>
+                    <div style="padding-top:10px; font-size:12px; color:#4a5568;">
+                        <div>2026-06-12（月）</div>
+                        <div style="margin-top:4px;">東京都渋谷区千駄ヶ谷5-32-7…</div>
+                    </div>
+                </div>
+
+                <div style="padding:0 16px;">
+                    <h3 style="font-size:13px; font-weight:bold; color:#2d3748; margin:6px 0;">荷物受取一覧</h3>
+                    <div class="recv-card">
+                        <div class="recv-card-head" style="background:#eff6ff;">
+                            <div class="icon-box bg-blue" style="width:34px;height:34px;border-radius:8px;" title="ES配送便 — 配送+棚入れ">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="1"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
+                            </div>
+                            <div style="flex:1; min-width:0;">
+                                <div class="card-title" style="font-size:12px;">大和インターナショナル…</div>
+                                <div style="margin-top:3px;"><span class="badge" style="background:#dbeafe; color:#1e40af; font-size:9px;">ES · 棚入れあり</span></div>
+                                <div style="font-size:11px; color:#718096; margin-top:2px;">東京都渋谷区1-2-3</div>
+                            </div>
+                        </div>
+                        <div style="padding:0 12px 4px 12px;">
+                            <div class="recv-row" style="border-top:none;"><span style="display:flex;gap:8px;"><span style="color:#a0aec0;">1</span><span>2107-6228-5031</span></span><span class="chk-on"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></span></div>
+                            <div class="recv-row"><span style="display:flex;gap:8px;"><span style="color:#a0aec0;">2</span><span>2107-6228-5032</span></span><span class="chk-on"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></span></div>
+                            <div class="recv-row"><span style="display:flex;gap:8px;"><span style="color:#a0aec0;">3</span><span>2107-6228-5033</span></span><span class="chk-on"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== Mockup 3: Modal B (一部未受取) ===== -->
+        <div>
+            <h3 style="font-size:13px; color:#718096; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">Section B · 一部未受取モーダル</h3>
+            <div class="phone-wrapper" style="min-height:760px; padding-bottom:0; background:#e2e8f0; justify-content:center;">
+                <div class="screen-label">DA_RECV_001-02/03</div>
+                <div style="margin:auto; background:#fff; border-radius:24px; padding:20px; width:88%; box-shadow:0 10px 40px rgba(0,0,0,0.25);">
+                    <div style="text-align:center; font-size:42px;">📦</div>
+                    <div style="text-align:center; font-size:15px; font-weight:bold; color:#1a202c; margin-top:8px;">荷物の受取は完了しましたか？</div>
+                    <div style="text-align:center; font-size:11px; color:#718096; margin-top:8px; line-height:1.6;">
+                        一部の荷物が未確認の状態です。すべて受取していない場合は、ESキッチンまでご連絡ください。
+                    </div>
+
+                    <label style="display:flex; align-items:center; gap:8px; justify-content:center; margin:16px 0; font-size:11px; font-weight:bold; color:#2d3748;">
+                        <span class="anno-req">R2</span><span class="chk" style="width:16px;height:16px;"></span>
+                        未受取分は、ESキッチンへ連絡済みです。
+                    </label>
+
+                    <div style="background:#1e6de6; color:#fff; text-align:center; font-weight:bold; padding:10px; border-radius:12px; font-size:12px; margin-bottom:10px;">
+                        <span class="anno-req" style="background:#fff;color:#2a4365;">R2</span>
+                        📞 ESへ電話する（050-5784-2777）
+                    </div>
+                    <div style="background:#fff; border:1px solid #e2e8f0; color:#a0aec0; text-align:center; font-weight:bold; padding:10px; border-radius:12px; font-size:12px; margin-bottom:10px;">
+                        <span class="anno-req" style="background:#cbd5e0;color:#2a4365;">R0</span>
+                        一部未受取のまま完了
+                    </div>
+                    <div style="background:#fff; border:1px solid #cbd5e0; color:#4a5568; text-align:center; font-weight:bold; padding:10px; border-radius:12px; font-size:12px;">
+                        キャンセル
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TABLE A: RESPONSE DTO MAPPING (GET) ===== -->
+    <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:20px; margin-bottom:24px;">
+        <div class="lang-block ja active">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">表A: レスポンスDTO 組み立て / Response DTO mapping</h2>
+            <p style="font-size:12px; color:#718096;">注釈番号 ⇒ <code>GET /driver/receipts/{receiptId}</code> レスポンスのフィールド</p>
+        </div>
+        <div class="lang-block vi">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">Bảng A: Ráp Response DTO (GET)</h2>
+            <p style="font-size:12px; color:#718096;">Số chú thích ⇒ field trong response <code>GET /driver/receipts/{receiptId}</code></p>
+        </div>
+
+        <div class="api-note">
+            <strong>API:</strong> <code>GET /driver/receipts/{receiptId}</code> — chi tiết đầy đủ:
+            <a href="apis/index.html">apis/index.html</a> ·
+            <a href="../apis/warehouse-receipt.md">warehouse-receipt.md</a>
+        </div>
+
+        <table class="spec-table">
+            <thead>
+                <tr><th style="width:35px;">#</th><th>項目 (JP)</th><th>Trường (VN)</th><th>Type</th><th>Response field (ráp DTO)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="field-num">1</td><td>倉庫名</td><td>Tên kho</td><td>string</td><td><code>warehouseName</code></td></tr>
+                <tr><td class="field-num">2</td><td>受取ステータス（倉庫）</td><td>Trạng thái nhận (kho)</td><td>enum</td><td><code>receiptStatus</code> — UNRECEIVED/RECEIVED/TROUBLE/CANCELLED</td></tr>
+                <tr><td class="field-num">3</td><td>配送日</td><td>Ngày giao</td><td>date</td><td><code>deliveryDate</code> (yyyy-MM-dd)</td></tr>
+                <tr><td class="field-num">4</td><td>郵便番号</td><td>Mã bưu chính</td><td>string</td><td><code>postalCode</code></td></tr>
+                <tr><td class="field-num">5</td><td>住所</td><td>Địa chỉ kho</td><td>string</td><td><code>address</code></td></tr>
+                <tr><td class="field-num">6</td><td>社数</td><td>Số công ty</td><td>number</td><td><code>summary.companyCount</code></td></tr>
+                <tr><td class="field-num">7</td><td>箱数</td><td>Số thùng</td><td>number</td><td><code>summary.boxCount</code></td></tr>
+                <tr><td class="field-num">8</td><td>品数（冷蔵+常温）</td><td>Số món mát+thường</td><td>number</td><td><code>summary.chilledNormalItemCount</code> (icon thùng)</td></tr>
+                <tr><td class="field-num">9</td><td>品数（冷凍）</td><td>Số món đông lạnh</td><td>number</td><td><code>summary.frozenItemCount</code> (icon ❄)</td></tr>
+                <tr><td class="field-num">10</td><td>納品先名</td><td>Tên điểm giao</td><td>string</td><td><code>groups[].companyName</code></td></tr>
+                <tr><td class="field-num">11</td><td>納品先住所</td><td>Địa chỉ điểm giao</td><td>string</td><td><code>groups[].destinationAddress</code></td></tr>
+                <tr><td class="field-num">12</td><td>箱数（グループ）</td><td>Số thùng (nhóm)</td><td>number</td><td><code>groups[].boxCount</code></td></tr>
+                <tr><td class="field-num">13</td><td>品数 冷蔵+常温（グループ）</td><td>Mát+thường (nhóm)</td><td>number</td><td><code>groups[].chilledNormalItemCount</code></td></tr>
+                <tr><td class="field-num">14</td><td>品数 冷凍（グループ）</td><td>Đông lạnh (nhóm)</td><td>number</td><td><code>groups[].frozenItemCount</code></td></tr>
+                <tr><td class="field-num">15</td><td>行番号</td><td>Số thứ tự</td><td>number</td><td><code>groups[].items[].lineNo</code></td></tr>
+                <tr><td class="field-num">16</td><td>送り状番号</td><td>Số vận đơn</td><td>string</td><td><code>groups[].items[].trackingNo</code></td></tr>
+                <tr><td class="field-num">17</td><td>受取チェック状態</td><td>Trạng thái check nhận</td><td>boolean</td><td><code>groups[].items[].received</code> (initial state của checkbox)</td></tr>
+                <tr><td class="field-num">18</td><td>荷物ステータスバッジ</td><td>Badge trạng thái kiện</td><td>enum</td><td><code>groups[].items[].receiptStatus</code> — 未着荷/受領済/トラブル</td></tr>
+                <tr><td class="field-num">19</td><td>完了日時バナー</td><td>Banner thời điểm hoàn thành</td><td>datetime</td><td><code>completedAt</code> (null ⇒ DA_RECV_001; có giá trị ⇒ DA_RECV_003)</td></tr>
+                <tr><td class="field-num">20</td><td>配送種別（納品先グループ）</td><td>Loại giao hàng (nhóm)</td><td>enum</td><td><code>groups[].shipmentType</code> — <code>ES_DELIVERY</code>=配送+棚入れ (icon kệ) / <code>COOL</code>=配送のみ (icon xe)</td></tr>
+                <tr style="background:#fffaf0;"><td class="field-num">A.5</td><td>伝票番号</td><td>Số phiếu (import)</td><td>string</td><td><code>slipNumber</code> — <em class="vi-text">trong DTO nhưng CHƯA render trên mockup (placement TBD)</em></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ===== TABLE B: REQUEST DTO MAPPING (POST) ===== -->
+    <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:20px; margin-bottom:24px;">
+        <div class="lang-block ja active">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">表B: リクエストDTO 組み立て / Request DTO mapping</h2>
+            <p style="font-size:12px; color:#718096;">操作 ⇒ <code>POST /driver/receipts/{receiptId}/complete</code> リクエストボディ</p>
+        </div>
+        <div class="lang-block vi">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">Bảng B: Ráp Request DTO (POST complete)</h2>
+            <p style="font-size:12px; color:#718096;">Thao tác ⇒ body của <code>POST /driver/receipts/{receiptId}/complete</code></p>
+        </div>
+
+        <table class="spec-table">
+            <thead>
+                <tr><th style="width:40px;">#</th><th>UI / 操作</th><th>Hành động</th><th>Request field (ráp DTO)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="req-num">R0</td><td>「完了」/「一部未受取のまま完了」ボタン</td><td>Nút gửi → gọi POST</td><td><em>trigger</em> <code>POST .../complete</code></td></tr>
+                <tr><td class="req-num">R1</td><td>受取チェックボックス（行）</td><td>Tích từng kiện đã nhận</td><td><code>receivedItemIds: number[]</code> ⇐ gom <code>items[].id</code> đã tích</td></tr>
+                <tr><td class="req-num">R2</td><td>「連絡済み」チェック / 「ESへ電話する」</td><td>Check B.4 hoặc bấm gọi B.5</td><td><code>esKitchenContacted: boolean</code> (bắt buộc <code>true</code> nếu nhận một phần)</td></tr>
+            </tbody>
+        </table>
+
+        <h3 style="font-size:13px; color:#2d3748; margin:16px 0 6px 0;">Request body ví dụ</h3>
+        <pre>POST /driver/receipts/9001/complete
+
+{
+  "receivedItemIds": [70011, 70012, 70021],   // ⇐ R1 (các kiện đã tích)
+  "esKitchenContacted": true                          // ⇐ R2 (đã liên lạc ES)
+}</pre>
+
+        <div class="page-note">
+            <strong>Phân nhánh hoàn thành:</strong>
+            tất cả kiện đã tích ⇒ <code>FULL</code> (bỏ qua <code>esKitchenContacted</code>, toast → Home) ·
+            còn kiện chưa tích ⇒ hiện Modal B ⇒ cần <code>esKitchenContacted=true</code> ⇒ <code>PARTIAL</code>.
+            0 kiện tích ⇒ nút 完了 disabled (không gọi API).
+        </div>
+    </div>
+
+    <!-- ===== TABLE C: BEHAVIORS / FE-ONLY ===== -->
+    <div style="background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:20px; margin-bottom:24px;">
+        <div class="lang-block ja active">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">表C: 画面挙動 / FE-only コントロール</h2>
+        </div>
+        <div class="lang-block vi">
+            <h2 style="font-size:16px; color:#1a202c; margin-bottom:4px;">Bảng C: Hành vi màn hình / Control chỉ-FE</h2>
+        </div>
+        <table class="spec-table">
+            <thead><tr><th style="width:50px;">Mark</th><th>項目 (JP)</th><th>Mô tả (VN)</th></tr></thead>
+            <tbody>
+                <tr><td><span class="anno-fe">FE</span></td><td>未確認のみ表示 (A.7)</td><td>Lọc client-side kiện <code>received=false</code>. Không gọi API.</td></tr>
+                <tr><td><span class="anno-fe">FE</span></td><td>納品先拠点名 検索 (A.8)</td><td>Lọc client-side <code>groups[].companyName</code> (≤100 ký tự). Không gọi API.</td></tr>
+                <tr><td><span class="anno-fe">FE</span></td><td>完了トースト (Section C)</td><td>「荷物の受取は完了しました。」 5s → Home. Text cố định FE.</td></tr>
+                <tr><td><span class="anno-fe">FE</span></td><td>編集破棄ポップアップ (Section D)</td><td>「編集内容を破棄しますか？」 khi back sau khi đã tích ≥1. FE.</td></tr>
+                <tr><td><span class="anno-fe">FE</span></td><td>電話番号 050-5784-2777 (B.5)</td><td>Số ES Kitchen cố định ở FE (mở app gọi).</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="docs-footer">
+        DA_RECV_001 / DA_RECV_003 — Screen Specification v1.0 — ES STATION Driver App<br>
+        API contract: <a href="../apis/warehouse-receipt.md">warehouse-receipt.md</a> ·
+        Visual render: <a href="apis/index.html">apis/index.html</a>
+    </div>
+</div>
+
+<script>
+function switchLang(el, lang) {
+    document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.lang-block').forEach(b => {
+        b.classList.remove('active');
+        if (b.classList.contains(lang)) b.classList.add('active');
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>トラブル報告 — API 配線ガイド (Driver)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#65a30d; --lime:#84cc16; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F3F4F6; color:#222; }
+  /* ===== deliverer-format badges + drawer ===== */
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;margin-left:4px;
+    background:#0062CC;color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none;white-space:nowrap; }
+  .nb:hover{ transform:scale(1.15);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.act:hover{ background:#0f7a32; }
+  .nb.st{ background:#64748b; } .nb.st:hover{ background:#475569; }
+  .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:860px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#ecfccb; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.st{ color:#64748b; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-post{background:#bee3f8;color:#2a4365;} .m-put{background:#feebc8;color:#9c4221;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .doc table{ width:100%;border-collapse:collapse;font-size:12px;margin:6px 0; }
+  .doc th,.doc td{ border:1px solid #E5E7EB;padding:6px 8px;text-align:left;vertical-align:top; } .doc th{ background:#F3F4F6; }
+  /* ===== phone mockup (E06) ===== */
+  .gallery{ display:flex;gap:26px;overflow-x:auto;padding:10px 4px 22px; }
+  .mock{ flex:0 0 auto;text-align:center; }
+  .mock-cap{ font-size:13px;font-weight:800;color:#2d3748;margin-bottom:10px; }
+  .mock-cap .sid{ display:block;font-size:10px;color:#0066de;margin-top:2px; }
+  .frame{ zoom:.82; }
+  .phone{ width:390px;min-height:760px;background:#f4f6f9;border-radius:30px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.18);display:flex;flex-direction:column;position:relative;border:4px solid #2d3748;text-align:left; }
+  .phone *{ margin:0;padding:0;box-sizing:border-box; }
+  .header{ display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#fff; }
+  .hbtn{ width:40px;height:40px;border-radius:50%;border:1px solid #e3e3e3;display:flex;align-items:center;justify-content:center;background:#fff; }
+  .hbtn.ghost{ border:none; } .hbtn svg{ width:20px;height:20px;stroke:#333;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+  .htitle{ font-size:19px;font-weight:700;color:#1a1a1a; }
+  .content{ flex:1;overflow-y:auto;padding:14px 16px 96px; }
+  .sec-label{ font-size:16px;font-weight:700;color:#1a1a1a;margin:18px 2px 12px; } .content>.sec-label:first-child{ margin-top:0; }
+  .search-box{ position:relative;margin-bottom:12px; }
+  .search-input{ width:100%;padding:13px 44px 13px 16px;border:1px solid #e0e0e0;border-radius:12px;font-size:15px;background:#fff; }
+  .search-input::placeholder{ color:#b0b0b0; }
+  .search-icon{ position:absolute;right:14px;top:50%;transform:translateY(-50%); } .search-icon svg{ width:22px;height:22px;stroke:#999;fill:none;stroke-width:2; }
+  .note{ font-size:12.5px;color:#8a8f96;line-height:1.7;margin-bottom:14px; }
+  .rcard{ background:#fff;border:1px solid #ececec;border-radius:12px;padding:14px;margin-bottom:12px; }
+  .rcard-head{ display:flex;align-items:flex-start;gap:10px; }
+  .ricon{ width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .ricon svg{ width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round; }
+  .ricon.blue{ background:#1f6fe0; } .ricon.purple{ background:#5b3cc4; } .ricon.orange{ background:#f5921e; }
+  .rname{ flex:1;font-size:15px;font-weight:700;color:#1a1a1a;line-height:1.35; }
+  .rbadge{ font-size:12px;font-weight:700;padding:4px 9px;border-radius:7px;flex-shrink:0; }
+  .rbadge.undelivered{ background:#fff;border:1.4px solid #e3a93f;color:#d98e00; } .rbadge.unreceived{ background:#f0f0f2;color:#8a8f96; }
+  .rradio{ width:24px;height:24px;border-radius:50%;border:2px solid #c4c4c4;flex-shrink:0; }
+  .rradio.checked{ border-color:#1f6fe0;display:flex;align-items:center;justify-content:center; }
+  .rradio.checked::after{ content:'';width:13px;height:13px;border-radius:50%;background:#1f6fe0; }
+  .rmeta{ margin-top:10px; } .rmeta-row{ display:flex;align-items:flex-start;gap:6px;font-size:13px;color:#666;margin-top:5px; }
+  .rmeta-row svg{ width:15px;height:15px;stroke:#999;fill:none;stroke-width:1.6;flex-shrink:0;margin-top:1px; }
+  .rcounts{ display:flex;gap:14px;margin-top:8px;flex-wrap:wrap; } .rcount{ display:flex;align-items:center;gap:5px;font-size:13px;color:#555; }
+  .rcount svg{ width:16px;height:16px;stroke:#888;fill:none;stroke-width:1.6; } .rcount b{ color:#1f6fe0; }
+  .footer{ position:absolute;bottom:0;left:0;right:0;padding:14px 16px 20px;background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.05);display:flex;gap:12px; }
+  .btn{ flex:1;padding:15px;border-radius:12px;font-size:16px;font-weight:700; }
+  .btn-back{ background:#fff;color:#333;border:1.5px solid #e0e0e0; }
+  .btn-next,.btn-send.active{ background:#1a6dff;color:#fff;border:none;box-shadow:0 4px 14px rgba(26,109,255,.4); } .btn-send{ background:#cfd3da;color:#fff;border:none; }
+  .dest-card{ background:#fff;border:1px solid #ececec;border-radius:12px;overflow:hidden; }
+  .dest-head{ background:#e4eefb;padding:13px 14px;display:flex;align-items:flex-start;gap:11px; }
+  .dest-icon svg{ width:34px;height:34px; } .dest-info{ flex:1;min-width:0; }
+  .dest-name{ font-size:15px;font-weight:700;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .dest-addr{ display:flex;align-items:center;gap:5px;font-size:13px;color:#666;margin-top:5px; } .dest-addr svg{ width:14px;height:14px;stroke:#999;fill:none;stroke-width:1.6;flex-shrink:0; }
+  .dest-counts{ display:flex;gap:14px;margin-top:7px; } .dest-count{ display:flex;align-items:center;gap:4px;font-size:13px;color:#555; }
+  .dest-count svg{ width:15px;height:15px;stroke:#888;fill:none;stroke-width:1.6; } .dest-count b{ color:#1f6fe0; }
+  .dest-check{ width:24px;height:24px;border:2px solid #c4c4c4;border-radius:5px;flex-shrink:0; }
+  .dest-collapse{ width:26px;height:26px;background:#1f6fe0;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0; } .dest-collapse svg{ width:16px;height:16px;stroke:#fff;stroke-width:3; }
+  .pkg-row{ display:flex;align-items:center;gap:12px;padding:13px 14px;border-top:1px solid #f0f0f0; }
+  .pkg-num{ font-size:14px;color:#555;width:14px;flex-shrink:0; } .pkg-icon svg{ width:20px;height:20px;stroke:#666;fill:none;stroke-width:1.6; }
+  .pkg-code{ flex:1;font-size:14px;color:#1a1a1a; } .pkg-check{ width:24px;height:24px;border:2px solid #c4c4c4;border-radius:5px;flex-shrink:0; }
+  .cb-checked{ width:24px;height:24px;background:#1f6fe0;border:2px solid #1f6fe0;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center; } .cb-checked svg{ width:14px;height:14px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round; }
+  .hint{ font-size:12.5px;color:#8a8f96;margin:12px 2px 0; }
+  .radio-card{ background:#fff;border:1px solid #ececec;border-radius:12px; }
+  .radio-item{ display:flex;align-items:center;gap:12px;padding:15px 16px;border-bottom:1px solid #f0f0f0; } .radio-item:last-child{ border-bottom:none; }
+  .radio{ width:22px;height:22px;border-radius:50%;border:2px solid #c4c4c4;flex-shrink:0; }
+  .radio.checked{ border-color:#1f6fe0;display:flex;align-items:center;justify-content:center; } .radio.checked::after{ content:'';width:12px;height:12px;border-radius:50%;background:#1f6fe0; }
+  .radio-label{ font-size:15px;color:#1a1a1a; }
+  .reason-input{ width:100%;padding:13px;border:1.5px solid #e85a5a;border-radius:10px;font-size:13px;color:#999; }
+  .upload-box{ background:#fff;border:1px solid #ececec;border-radius:12px;padding:22px 16px;text-align:center; }
+  .upload-illust{ width:80px;height:56px;margin:0 auto 12px; } .upload-text{ font-size:13px;color:#9aa0a8;margin-bottom:14px; }
+  .upload-btn,.upload-btn-sm{ display:inline-flex;align-items:center;gap:8px;background:#3a4250;color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:600; }
+  .upload-btn svg,.upload-btn-sm svg{ width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+  .thumbs{ display:flex;gap:10px;margin-bottom:14px;justify-content:center; } .thumb{ position:relative;width:78px;height:58px;border-radius:8px;overflow:hidden;background:#dde3ea; } .thumb svg.ph{ width:100%;height:100%; }
+  .thumb-x{ position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(60,66,80,.85);border-radius:50%;display:flex;align-items:center;justify-content:center; } .thumb-x svg{ width:10px;height:10px;stroke:#fff;stroke-width:2.5; }
+  .textarea{ width:100%;min-height:80px;background:#fff;border:1px solid #ececec;border-radius:12px;padding:13px;font-size:13px;color:#333; }
+  .overlay{ position:absolute;inset:0;background:rgba(20,20,30,.45);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50; }
+  .modal{ background:#fff;border-radius:20px;width:100%;padding:24px 20px 20px;box-shadow:0 10px 40px rgba(0,0,0,.3); }
+  .mascot{ width:120px;height:112px;display:block;margin:0 auto 6px; }
+  .modal-title{ font-size:18px;font-weight:700;color:#1a1a1a;text-align:center; } .modal-sub{ font-size:13px;color:#8a8f96;text-align:center;line-height:1.7;margin:10px 0 18px; }
+  .modal-btn{ width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;margin-bottom:12px;border:none; } .modal-btn:last-child{ margin-bottom:0; }
+  .mb-primary{ background:#1a6dff;color:#fff; } .mb-outline{ background:#fff;color:#333;border:1.5px solid #e3e3e3; }
+  .modal-checkrow{ display:flex;align-items:center;gap:10px;margin:18px 0 16px; }
+  .mcheck{ width:22px;height:22px;background:#1a6dff;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center; } .mcheck svg{ width:14px;height:14px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round; } .mcheck-label{ font-size:14px;color:#444; }
+</style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Driver (E06) · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">トラブル報告 — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số/badge</b> bất kỳ → panel phải hiện <b>bảng ráp + API docs</b> (highlight dòng đã click). Contract: <code>apis/trouble-report.md</code> · base <code>/driver/*</code> · Auth <code>Bearer {Driver}</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (Res → UI)</span>
+      <span><span class="nb act" style="cursor:default">n</span> nhập/ghi (UI → Request)</span>
+      <span><span class="nb st" style="cursor:default">n</span> tĩnh, không API</span>
+    </div>
+    <div class="mt-2 flex gap-2 flex-wrap text-xs">
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_RPTD_001-01/02</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_RPTD_002-01 / 01-1 / 02</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_RPTD_002-03 / 03-1</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP GALLERY (E06 phones, khớp DA_RPTD_001/002) ===== -->
+  <div class="card p-4">
+  <div class="gallery">
+
+    <!-- ===== LIST · DA_RPTD_001-02 ===== -->
+    <div class="mock">
+      <div class="mock-cap">配達一覧（選択済）<span class="sid">DA_RPTD_001-02</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">トラブル報告</div><div class="hbtn ghost"></div></div>
+        <div class="content">
+          <div class="sec-label">配達一覧</div>
+          <div class="search-box">
+            <input class="search-input" placeholder="倉庫名・拠点名・送り状番号">
+            <span class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+            <span class="nb act" data-n="L.1" style="position:absolute;left:6px;top:-9px;">L.1</span>
+          </div>
+          <div class="note">※影響を受けた拠点を選択してください。<br>※未配送・未受取の注文が表示されます。<span class="nb st" data-n="L.2">L.2</span></div>
+          <div class="rcard">
+            <div class="rcard-head">
+              <div class="ricon blue"><svg viewBox="0 0 24 24"><circle cx="8" cy="6" r="2.3" fill="#fff" stroke="none"/><path d="M5.5 11c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5v4l-1.8 4-1.2-3-1.5 2.5z" fill="#fff" stroke="none"/><rect x="13" y="7" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/><rect x="13" y="11" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/><rect x="13" y="15" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/></svg></div>
+              <span class="rname">富士フィナンシャルアドバイザリー株式会社<span class="nb" data-n="L.4">L.4</span></span>
+              <span class="rbadge undelivered">未配送<span class="nb" data-n="L.5">L.5</span></span>
+              <span class="rradio checked"></span><span class="nb act" data-n="L.6">L.6</span>
+            </div>
+            <div class="rmeta">
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/></svg>オージーフーズ倉庫<span class="nb" data-n="L.7">L.7</span></div>
+              <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>神奈川県横浜市西区みなとみらい2-3-3<span class="nb" data-n="L.8">L.8</span></div>
+              <div class="rcounts">
+                <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>2</b> 箱</div>
+                <div class="rcount"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/></svg><b>10</b> 品</div>
+                <div class="rcount"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg><b>20</b> 品<span class="nb" data-n="L.9">L.9</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="rcard">
+            <div class="rcard-head">
+              <div class="ricon purple"><svg viewBox="0 0 24 24"><path d="M12 2.5l8 4.5v9l-8 4.5-8-4.5v-9l8-4.5z"/><path d="M4 7l8 4.5L20 7"/><path d="M12 11.5V21"/></svg><span class="nb" data-n="L.3" style="position:relative;top:-18px;">L.3</span></div>
+              <span class="rname">大和インターナショナルトレーディング株式会社</span>
+              <span class="rbadge undelivered">未配送</span><span class="rradio"></span>
+            </div>
+            <div class="rmeta"><div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都千代田区大手町1-2-3</div></div>
+          </div>
+          <div class="rcard">
+            <div class="rcard-head">
+              <div class="ricon orange"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/><rect x="7" y="13" width="10" height="8"/></svg></div>
+              <span class="rname">オージーフーズ倉庫</span>
+              <span class="rbadge unreceived">未受取</span><span class="rradio"></span>
+            </div>
+            <div class="rmeta"><div class="rcounts">
+              <div class="rcount"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="10" height="18"/><line x1="18" y1="9" x2="18" y2="21"/></svg><b>10</b> 社<span class="nb" data-n="L.9">L.9</span></div>
+              <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>50</b> 箱</div>
+            </div></div>
+          </div>
+        </div>
+        <div class="footer"><button class="btn btn-back">戻る</button><button class="btn btn-next">次へ<span class="nb act" data-n="L.10">L.10</span></button></div>
+      </div></div>
+    </div>
+
+    <!-- ===== FORM · DA_RPTD_002-01 ===== -->
+    <div class="mock">
+      <div class="mock-cap">フォーム（reason set 1）<span class="sid">DA_RPTD_002-01</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">トラブル報告</div><div class="hbtn ghost"></div></div>
+        <div class="content">
+          <div class="dest-card">
+            <div class="dest-head">
+              <div class="dest-icon"><svg viewBox="0 0 34 34"><circle cx="11" cy="8" r="3" fill="#2f6fed"/><path d="M7.5 14c0-1.9 1.6-3.5 3.5-3.5s3.5 1.6 3.5 3.5v5l-2.5 5-1.5-4-2 3.5z" fill="#2f6fed"/><rect x="18" y="9" width="10" height="4" rx="0.6" fill="#2f6fed"/><rect x="18" y="15" width="10" height="4" rx="0.6" fill="#7aa7f5"/><rect x="18" y="21" width="10" height="4" rx="0.6" fill="#2f6fed"/></svg><span class="nb" data-n="F.1">F.1</span></div>
+              <div class="dest-info">
+                <div class="dest-name">大和インターナショナルトレーデ…<span class="nb" data-n="F.2">F.2</span></div>
+                <div class="dest-addr"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都渋谷区1-2-3<span class="nb" data-n="F.3">F.3</span></div>
+                <div class="dest-counts">
+                  <div class="dest-count"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>2</b> 箱</div>
+                  <div class="dest-count"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/></svg><b>10</b> 品<span class="nb" data-n="F.4">F.4</span></div>
+                </div>
+              </div>
+              <span class="dest-check"></span><span class="nb act" data-n="F.5">F.5</span>
+            </div>
+            <div class="pkg-row"><span class="pkg-num">1<span class="nb" data-n="F.6">F.6</span></span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5031<span class="nb" data-n="F.7">F.7</span></span><span class="pkg-check"></span><span class="nb act" data-n="F.8">F.8</span></div>
+            <div class="pkg-row"><span class="pkg-num">2</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5032</span><span class="pkg-check"></span></div>
+            <div class="pkg-row"><span class="pkg-num">3</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5033</span><span class="pkg-check"></span></div>
+          </div>
+          <div class="hint">※影響を受けた送り状番号を選択してください<span class="nb st" data-n="F.9">F.9</span></div>
+          <div class="sec-label">トラブル内容<span class="nb act" data-n="F.10">F.10</span></div>
+          <div class="radio-card">
+            <div class="radio-item"><span class="radio checked"></span><span class="radio-label">箱数不足</span></div>
+            <div class="radio-item"><span class="radio"></span><span class="radio-label">誤配送</span></div>
+            <div class="radio-item"><span class="radio"></span><span class="radio-label">荷物破損</span></div>
+            <div class="radio-item"><span class="radio"></span><span class="radio-label">その他</span></div>
+          </div>
+          <div class="sec-label">画像</div>
+          <div class="upload-box">
+            <svg class="upload-illust" viewBox="0 0 90 64"><rect x="8" y="14" width="74" height="44" rx="4" fill="none" stroke="#d0d4da" stroke-width="2"/><path d="M8 50 l20 -18 l14 12 l12 -10 l18 16" fill="none" stroke="#d0d4da" stroke-width="2" stroke-linejoin="round"/><circle cx="62" cy="24" r="4" fill="#d0d4da"/></svg>
+            <div class="upload-text">写真はまだありません<span class="nb act" data-n="F.12">F.12</span></div>
+            <button class="upload-btn"><svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg> ファイル選択<span class="nb act" data-n="F.13">F.13</span></button>
+          </div>
+          <div class="sec-label">備考</div>
+          <textarea class="textarea" placeholder=""></textarea><span class="nb act" data-n="F.14">F.14</span>
+        </div>
+        <div class="footer"><button class="btn btn-back">戻る<span class="nb st" data-n="F.15">F.15</span></button><button class="btn btn-send">送信<span class="nb act" data-n="F.16">F.16</span></button></div>
+      </div></div>
+    </div>
+
+    <!-- ===== FORM FILLED · DA_RPTD_002-02 ===== -->
+    <div class="mock">
+      <div class="mock-cap">フォーム（その他 + 入力済）<span class="sid">DA_RPTD_002-02</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">トラブル報告</div><div class="hbtn ghost"></div></div>
+        <div class="content">
+          <div class="dest-card">
+            <div class="dest-head">
+              <div class="dest-icon"><svg viewBox="0 0 34 34"><circle cx="11" cy="8" r="3" fill="#2f6fed"/><path d="M7.5 14c0-1.9 1.6-3.5 3.5-3.5s3.5 1.6 3.5 3.5v5l-2.5 5-1.5-4-2 3.5z" fill="#2f6fed"/><rect x="18" y="9" width="10" height="4" rx="0.6" fill="#2f6fed"/><rect x="18" y="15" width="10" height="4" rx="0.6" fill="#7aa7f5"/><rect x="18" y="21" width="10" height="4" rx="0.6" fill="#2f6fed"/></svg></div>
+              <div class="dest-info"><div class="dest-name">大和インターナショナルトレーデ…</div><div class="dest-addr"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都渋谷区1-2-3</div></div>
+              <span class="dest-collapse"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            </div>
+            <div class="pkg-row"><span class="pkg-num">1</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5031</span><span class="cb-checked"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="nb act" data-n="F.8">F.8</span></div>
+            <div class="pkg-row"><span class="pkg-num">2</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5032</span><span class="pkg-check"></span></div>
+            <div class="pkg-row"><span class="pkg-num">3</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5033</span><span class="cb-checked"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+          </div>
+          <div class="hint">※影響を受けた送り状番号を選択してください</div>
+          <div class="sec-label">トラブル内容</div>
+          <div class="radio-card">
+            <div class="radio-item"><span class="radio"></span><span class="radio-label">箱数不足</span></div>
+            <div class="radio-item"><span class="radio"></span><span class="radio-label">誤配送</span></div>
+            <div class="radio-item"><span class="radio"></span><span class="radio-label">荷物破損</span></div>
+            <div class="radio-item"><span class="radio checked"></span><span class="radio-label">その他<span class="nb act" data-n="F.10">F.10</span></span></div>
+            <div style="padding:0 16px 16px;"><input class="reason-input" placeholder="理由を入力してください"><span class="nb act" data-n="F.11">F.11</span></div>
+          </div>
+          <div class="sec-label">画像</div>
+          <div class="upload-box">
+            <div class="thumbs">
+              <div class="thumb"><svg class="ph" viewBox="0 0 78 58"><rect width="78" height="58" fill="#cfd6df"/><path d="M0 46 l22 -18 l16 12 l12 -8 l28 18 v8 h-78z" fill="#aeb8c4"/><circle cx="56" cy="18" r="6" fill="#e7edf3"/></svg><span class="thumb-x"><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></span></div>
+              <div class="thumb"><svg class="ph" viewBox="0 0 78 58"><rect width="78" height="58" fill="#cfd6df"/><path d="M0 46 l22 -18 l16 12 l12 -8 l28 18 v8 h-78z" fill="#aeb8c4"/></svg><span class="thumb-x"><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></span></div>
+              <div class="thumb"><svg class="ph" viewBox="0 0 78 58"><rect width="78" height="58" fill="#cfd6df"/><path d="M0 46 l22 -18 l16 12 l12 -8 l28 18 v8 h-78z" fill="#aeb8c4"/></svg><span class="thumb-x"><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></span></div>
+              <span class="nb act" data-n="F.12" style="align-self:center;">F.12</span>
+            </div>
+            <button class="upload-btn-sm"><svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg> ファイル選択</button>
+          </div>
+          <div class="sec-label">備考</div>
+          <textarea class="textarea">配送先住所が不明確で配達に時間がかかりました。受取人と連絡が取れず遅延が発生しました。</textarea>
+        </div>
+        <div class="footer"><button class="btn btn-back">戻る</button><button class="btn btn-send active">送信<span class="nb act" data-n="F.16">F.16</span></button></div>
+      </div></div>
+    </div>
+
+    <!-- ===== CONFIRM MODAL · DA_RPTD_002-03 ===== -->
+    <div class="mock">
+      <div class="mock-cap">送信確認モーダル<span class="sid">DA_RPTD_002-03</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">トラブル報告</div><div class="hbtn ghost"></div></div>
+        <div class="content" style="filter:blur(1px);opacity:.5;"><div class="dest-card"><div class="dest-head" style="height:70px;"></div></div><div class="sec-label">トラブル内容</div><div class="radio-card" style="height:120px;"></div></div>
+        <div class="overlay">
+          <div class="modal">
+            <svg class="mascot" viewBox="0 0 160 150"><text x="40" y="34" font-size="26" font-weight="bold" fill="#e84d6a">?</text><text x="78" y="24" font-size="20" font-weight="bold" fill="#f5c518">?</text><text x="112" y="36" font-size="30" font-weight="bold" fill="#4db6e8">?</text><path d="M52 92 C46 60 60 40 80 40 C100 40 114 60 108 92 C108 100 104 108 96 110 L64 110 C56 108 52 100 52 92 Z" fill="#ffd429"/><ellipse cx="80" cy="84" rx="24" ry="26" fill="#ffe7c7"/><path d="M56 78 C54 56 66 46 80 46 C94 46 106 56 104 78 C100 64 92 60 86 64 C84 56 76 56 74 64 C68 60 60 64 56 78 Z" fill="#ffcf1a"/><ellipse cx="70" cy="84" rx="4" ry="5.5" fill="#5a3b1a"/><ellipse cx="90" cy="84" rx="4" ry="5.5" fill="#5a3b1a"/><path d="M77 98 C79 100 81 100 83 98" fill="none" stroke="#c98" stroke-width="1.8" stroke-linecap="round"/><path d="M58 122 C58 114 102 114 102 122 L102 134 L58 134 Z" fill="#ffd429"/></svg>
+            <div class="modal-title">この内容で報告を送信しますか？<span class="nb st" data-n="C.1">C.1</span></div>
+            <div class="modal-sub">送信後、対象の荷物は操作できなくなります。<br>ESキッチンの確認・対応までお待ちください。<span class="nb st" data-n="C.2">C.2</span></div>
+            <button class="modal-btn mb-primary">報告する<span class="nb act" data-n="C.3">C.3</span></button>
+            <button class="modal-btn mb-outline">キャンセル<span class="nb st" data-n="C.4">C.4</span></button>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ===== CALL MODAL · DA_RPTD_002-03-1 ===== -->
+    <div class="mock">
+      <div class="mock-cap">電話確認モーダル<span class="sid">DA_RPTD_002-03-1</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">トラブル報告</div><div class="hbtn ghost"></div></div>
+        <div class="content" style="filter:blur(1px);opacity:.5;"><div class="dest-card"><div class="dest-head" style="height:70px;"></div></div><div class="sec-label">トラブル内容</div><div class="radio-card" style="height:120px;"></div></div>
+        <div class="overlay">
+          <div class="modal">
+            <svg class="mascot" viewBox="0 0 160 150"><text x="40" y="34" font-size="26" font-weight="bold" fill="#e84d6a">?</text><text x="112" y="36" font-size="30" font-weight="bold" fill="#4db6e8">?</text><path d="M52 92 C46 60 60 40 80 40 C100 40 114 60 108 92 C108 100 104 108 96 110 L64 110 C56 108 52 100 52 92 Z" fill="#ffd429"/><ellipse cx="80" cy="84" rx="24" ry="26" fill="#ffe7c7"/><path d="M56 78 C54 56 66 46 80 46 C94 46 106 56 104 78 C100 64 92 60 86 64 C84 56 76 56 74 64 C68 60 60 64 56 78 Z" fill="#ffcf1a"/><ellipse cx="70" cy="84" rx="4" ry="5.5" fill="#5a3b1a"/><ellipse cx="90" cy="84" rx="4" ry="5.5" fill="#5a3b1a"/><path d="M77 98 C79 100 81 100 83 98" fill="none" stroke="#c98" stroke-width="1.8" stroke-linecap="round"/><path d="M58 122 C58 114 102 114 102 122 L102 134 L58 134 Z" fill="#ffd429"/></svg>
+            <div class="modal-title">ESキッチンへ電話しますか？<span class="nb st" data-n="C.5">C.5</span></div>
+            <div class="modal-checkrow"><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="mcheck-label">ESキッチンへ連絡済みです。<span class="nb act" data-n="C.6">C.6</span></span></div>
+            <button class="modal-btn mb-primary">ESへ電話する（050-5784-2777）<span class="nb" data-n="C.7">C.7</span></button>
+            <button class="modal-btn mb-outline">トラブル報告へ<span class="nb st" data-n="C.8">C.8</span></button>
+            <button class="modal-btn mb-outline">戻る</button>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+  </div><!-- /gallery -->
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm badge bất kỳ (L./F./C.) để xem bảng ráp + tài liệu API. Mock khớp <code>DA_RPTD_001/002</code>. Form không có endpoint riêng — tái dùng detail endpoint + enum FE <code>TroubleReason</code>.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — トラブル報告</b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:48px">No</th><th>UI element</th><th>API source</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const C = e => '<code>'+e+'</code>';
+const GET_T = '<span class="method m-get">GET</span> '+C('/driver/trouble-reports/targets');
+const DETAIL = '<span class="method m-get">GET</span> '+C('/driver/deliveries/{id}')+' · '+C('/driver/receipts/{id}');
+const POST_T = '<span class="method m-post">POST</span> '+C('/driver/trouble-reports');
+const FE = '<b>FE</b>';
+
+const W = {
+  'L.1':{cls:'act',ui:'検索 / Ô tìm',api:GET_T,field:'query '+C('keyword'),tf:'debounce → reload list (倉庫名/拠点名/送り状/tên cty/địa chỉ)'},
+  'L.2':{cls:'st',ui:'注意書き / Ghi chú hướng dẫn',api:'—',field:'Static UI',tf:'không API'},
+  'L.3':{cls:'',ui:'種別アイコン / Icon loại',api:GET_T,field:C('items[].targetType')+' + '+C('items[].shipmentType'),tf:'DELIVERY+ES→xanh · DELIVERY+COOL→tím · WAREHOUSE_RECEIPT→cam'},
+  'L.4':{cls:'',ui:'拠点名 / Tên điểm',api:GET_T,field:C('items[].name'),tf:'tên cty (DELIVERY) / tên kho (WAREHOUSE_RECEIPT)'},
+  'L.5':{cls:'',ui:'ステータス badge',api:GET_T,field:C('items[].status'),tf:'UNDELIVERED→未配送 · UNRECEIVED→未受取 · TROUBLE→トラブル'},
+  'L.6':{cls:'act',ui:'ラジオ選択 / Radio chọn 1',api:FE+' input',field:'giữ '+C('targetType')+'+'+C('id'),tf:'tap → enable 次へ'},
+  'L.7':{cls:'',ui:'倉庫名 / Kho nguồn',api:GET_T,field:C('items[].sourceWarehouseName'),tf:'ẩn khi null (WAREHOUSE_RECEIPT)'},
+  'L.8':{cls:'',ui:'住所 / Địa chỉ',api:GET_T,field:C('items[].address'),tf:'—'},
+  'L.9':{cls:'',ui:'数量 (社/箱/品)',api:GET_T,field:C('companyCount')+'·'+C('boxCount')+'·'+C('frozenItemCount')+'·'+C('chilledNormalItemCount'),tf:'ẩn counter khi 0/null'},
+  'L.10':{cls:'act',ui:'次へ / Tiếp',api:'<b>trigger</b> → form',field:'truyền target sang form',tf:'enable khi đã chọn 1; form tái dùng detail endpoint'},
+
+  'F.1':{cls:'',ui:'配送先アイコン / Icon',api:DETAIL,field:C('shipmentType'),tf:'ES→xanh · COOL→tím · null(kho)→cam'},
+  'F.2':{cls:'',ui:'配送先名 / Tên điểm',api:DETAIL,field:C('companyName')+' / '+C('warehouseName'),tf:'ellipsis 1 dòng'},
+  'F.3':{cls:'',ui:'住所 / Địa chỉ',api:DETAIL,field:C('destination.address')+' / '+C('address'),tf:'—'},
+  'F.4':{cls:'',ui:'数量 (箱/品)',api:DETAIL,field:C('cargoSummary')+' / '+C('summary'),tf:'boxCount·frozenItemCount·chilledNormalItemCount; ẩn khi 0'},
+  'F.5':{cls:'act',ui:'全選択チェック / Check cả điểm',api:FE+' input',field:'tick = chọn hết '+C('boxes[]'),tf:'tap'},
+  'F.6':{cls:'',ui:'行番号 / STT kiện',api:'index '+C('boxes[]')+' (1-based)',field:'—',tf:'render'},
+  'F.7':{cls:'',ui:'送り状番号 / Mã vận đơn',api:DETAIL,field:C('boxes[].trackingNo')+' / '+C('items[].trackingNo'),tf:'—'},
+  'F.8':{cls:'act',ui:'荷物チェック / Tick kiện',api:FE+' input → '+POST_T,field:C('affectedBoxIds[]'),tf:'gom '+C('boxes[].id')+' đã tick'},
+  'F.9':{cls:'st',ui:'ヒント / Gợi ý',api:'—',field:'Static UI',tf:'không API'},
+  'F.10':{cls:'act',ui:'トラブル内容 / Loại sự cố',api:'enum '+C('TroubleReason')+' (FE) → '+POST_T,field:C('reason')+' + '+C('type'),tf:'radio 1 (lọc theo type); lấy value'},
+  'F.11':{cls:'act',ui:'理由入力 / Ô lý do',api:FE+' input → '+POST_T,field:C('description'),tf:'hiện khi reason requiresDescription=true (viền đỏ = bắt buộc)'},
+  'F.12':{cls:'act',ui:'画像 / Ảnh',api:FE+' input → '+POST_T,field:C('photoUrls[]'),tf:'upload S3 trước; ≤ photoMax=5 (hằng số FE)'},
+  'F.13':{cls:'act',ui:'ファイル選択 / Chọn file',api:'<b>trigger</b> '+C('POST /files/presigned-upload-urls'),field:'presigned upload → fileUrl',tf:'tap'},
+  'F.14':{cls:'act',ui:'備考 / Ghi chú',api:FE+' input → '+POST_T,field:C('description'),tf:'gộp với F.11: "{理由}\\n\\n{備考}"'},
+  'F.15':{cls:'st',ui:'戻る / Quay lại',api:'<b>trigger</b> nav',field:'về list',tf:'tap'},
+  'F.16':{cls:'act',ui:'送信 / Gửi',api:'<b>trigger</b> → modal C.x',field:'mở modal xác nhận',tf:'enable khi đã chọn reason; chưa gọi API'},
+
+  'C.1':{cls:'st',ui:'「この内容で報告を送信しますか？」',api:'—',field:'Static UI',tf:'—'},
+  'C.2':{cls:'st',ui:'「送信後、操作できなくなります」',api:'—',field:'Static UI',tf:'—'},
+  'C.3':{cls:'act',ui:'報告する / Gửi báo cáo',api:POST_T,field:'body gom F.8/F.10/F.11/F.12/F.14',tf:'tap → tạo report'},
+  'C.4':{cls:'st',ui:'キャンセル / Huỷ',api:'<b>trigger</b> đóng modal',field:'về form',tf:'tap'},
+  'C.5':{cls:'st',ui:'「ESキッチンへ電話しますか？」',api:'—',field:'Static UI',tf:'type=DELAY (TRAFFIC/NO_CONTACT) → gợi gọi ES'},
+  'C.6':{cls:'act',ui:'連絡済み checkbox',api:FE+' input → '+POST_T,field:C('esKitchenContacted'),tf:'boolean (<b>TBD</b> cột DB — G7)'},
+  'C.7':{cls:'',ui:'ESへ電話する（050-5784-2777）',api:'hằng số FE',field:C('supportPhoneNumber'),tf:'dựng tel: link'},
+  'C.8':{cls:'st',ui:'トラブル報告へ / 戻る',api:'<b>trigger</b> nav',field:'về form / list',tf:'tap'}
+};
+
+const DOCS = `
+<div style="background:#f7fee7;border:1px solid #d9f99d;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#3f6212;margin-bottom:14px">
+  <b>2 API phục vụ màn này:</b> <span class="method m-get">GET</span> <code>/driver/trouble-reports/targets</code> (chọn điểm) → <span class="method m-post">POST</span> <code>/driver/trouble-reports</code> (gửi). Form <b>không có endpoint riêng</b> — tái dùng <code>GET /driver/deliveries/{id}</code> / <code>GET /driver/receipts/{id}</code>; reason = enum FE <code>TroubleReason</code>. Auth <code>Bearer {Driver}</code>.
+</div>
+
+<h4>① <span class="method m-get">GET</span> /driver/trouble-reports/targets — list điểm có thể báo cáo</h4>
+<p><b>Mục đích:</b> trộn điểm giao (DELIVERY, status UNDELIVERED/TROUBLE) + điểm nhận (WAREHOUSE_RECEIPT, status UNRECEIVED/TROUBLE) để radio chọn 1. Cursor pagination.</p>
+<p><b>Query:</b> <code>keyword</code> (倉庫/拠点/送り状/cty/địa chỉ) · <code>cursor</code> · <code>limit</code> (≤50). Filter cố định server: chỉ shipment của <code>driver_id = me</code>.</p>
+<pre>{ "items":[
+  { "targetType":"DELIVERY","id":2001,"shipmentType":"ES_DELIVERY","name":"富士…株式会社",
+    "status":"UNDELIVERED","deliveryDate":"2026-06-12","sourceWarehouseName":"オージーフーズ倉庫",
+    "address":"神奈川県…","companyCount":null,"boxCount":2,"frozenItemCount":10,"chilledNormalItemCount":20 },
+  { "targetType":"WAREHOUSE_RECEIPT","id":1001,"shipmentType":null,"name":"オージーフーズ倉庫",
+    "status":"UNRECEIVED","deliveryDate":"2026-06-12","sourceWarehouseName":null,
+    "address":"東京都渋谷区…","companyCount":10,"boxCount":50,"frozenItemCount":500,"chilledNormalItemCount":500 }
+], "nextCursor":"eyJpZCI6MTAwMX0=","hasMore":true }</pre>
+
+<h4 style="margin-top:18px">Dựng form (DA_RPTD_002) — không endpoint riêng</h4>
+<table><thead><tr><th>targetType</th><th>Endpoint tái dùng</th><th>Nguồn box / destination</th></tr></thead><tbody>
+<tr><td><code>DELIVERY</code></td><td><code>GET /driver/deliveries/{deliveryId}</code></td><td><code>boxes[]</code> + <code>destination</code> + <code>cargoSummary</code></td></tr>
+<tr><td><code>WAREHOUSE_RECEIPT</code></td><td><code>GET /driver/receipts/{receiptId}</code></td><td><code>groups[].items[]</code> + <code>warehouseName</code>/<code>address</code> + <code>summary</code></td></tr>
+</tbody></table>
+<p><code>reasonOptions</code> = enum FE <code>TroubleReason</code> (i18n, <code>requiresDescription</code> do FE). <code>supportPhoneNumber</code> (050-5784-2777) + <code>photoMax</code> (5) = hằng số FE.</p>
+
+<h4 style="margin-top:18px">② <span class="method m-post">POST</span> /driver/trouble-reports — gửi báo cáo</h4>
+<p>Tạo 1 <code>trouble_reports</code> (<code>status=PENDING</code>, <code>report_no=TR{seq}</code>, <code>submitted_at=now</code>) + N <code>trouble_report_items</code>. Sau gửi: target → <code>TROUBLE</code> &amp; <b>bị khóa thao tác</b>. 1 target chỉ 1 report mở → trùng = <b>409</b>.</p>
+<p style="font-weight:700;margin-top:8px">Body</p>
+<table><thead><tr><th>Param</th><th>BB</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>targetType</code></td><td>✅</td><td>DELIVERY | WAREHOUSE_RECEIPT</td></tr>
+<tr><td><code>targetId</code></td><td>✅</td><td>id target → resolve <code>shipment_id</code></td></tr>
+<tr><td><code>reason</code></td><td>✅</td><td>enum <code>TroubleReason</code></td></tr>
+<tr><td><code>type</code></td><td>✅</td><td><code>TROUBLE</code> | <code>DELAY</code> (FE gửi kèm: SHORTAGE/OTHER thuộc cả 2 bộ)</td></tr>
+<tr><td><code>description</code></td><td>⚠️</td><td>bắt buộc khi reason <code>requiresDescription</code> (vd OTHER)</td></tr>
+<tr><td><code>affectedBoxIds</code></td><td>—</td><td><code>boxes[].id</code> đã tick → mỗi id 1 <code>trouble_report_items</code></td></tr>
+<tr><td><code>photoUrls</code></td><td>—</td><td>0–5 URL S3 → <code>photo_urls</code> jsonb</td></tr>
+<tr><td><code>esKitchenContacted</code></td><td>—</td><td>C.6 — <b>TBD</b> cột DB (G7)</td></tr>
+</tbody></table>
+<pre>// Response
+{ "id":9001,"reportNo":"TR000000123","status":"PENDING","submittedAt":"2026-06-16T15:42:00+09:00",
+  "targetType":"DELIVERY","targetId":2002,"newStatus":"TROUBLE","message":"トラブル報告を送信しました。" }</pre>
+
+<h4 style="margin-top:18px">Errors</h4>
+<table><thead><tr><th>HTTP</th><th>statusCode</th><th>Điều kiện</th></tr></thead><tbody>
+<tr><td>400</td><td><code>error</code></td><td>thiếu reason · reason cần lý do nhưng description rỗng · photo > 5 · affectedBoxIds ngoài target</td></tr>
+<tr><td>404</td><td><code>not_found</code></td><td>target không tồn tại / không phải của tài xế</td></tr>
+<tr><td>409</td><td><code>conflict</code></td><td>target đã có report đang mở (PENDING/IN_PROGRESS)</td></tr>
+</tbody></table>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:9px 12px;font-size:12px;color:#92400e;margin-top:12px">
+  ⚠️ <b>TBD:</b> <code>POST /files/*</code> hiện gắn <code>AdminGuard</code> — cần mở cho Driver Cognito pool để upload ảnh (G8). <code>esKitchenContacted</code> chưa có cột riêng trong <code>trouble_reports</code> (G7). Chi tiết → <code>../../DB変更提案_ドライバーアプリ.md</code>.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).forEach(n=>{
+  const d=W[n], cls=d.cls||'';
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function openDw(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function closeDw(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=closeDw; ov.onclick=closeDw;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDw(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openDw(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

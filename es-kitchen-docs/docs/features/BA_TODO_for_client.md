@@ -7,8 +7,7 @@
 **Tổng số câu hỏi còn mở:** 30  
 **Cập nhật:** 2026-06-26 — đã xóa các câu đã được trả lời trong Qna_response_v1.xlsx
 
-> **Đã clear hoàn toàn:** Contract Management · Delivery Partner · Delivery Driver · Menu & Order · Payment · Collection & Cancellation · Inventory & Equipment · User Binding  
-> **Đã bỏ khỏi dự án:** Task Management
+> **Đã clear hoàn toàn:** Contract Management · Delivery Partner · Delivery Driver · Menu & Order · Payment · Collection & Cancellation · Inventory & Equipment · User Binding
 
 ---
 
@@ -63,18 +62,7 @@ SPEC: `delivery-dispatching/SPEC.md`
 
 ---
 
-## 4. MARKETING
-
-SPEC: `marketing/SPEC.md`
-
-| ID | Section | Câu hỏi | Trả lời của khách hàng |
-|---|---|---|---|
-| MKT-03 | HubSpot sync | 1 chiều hay 2 chiều? Trigger cron hay event? Tần suất? | |
-| MKT-08 | Số tab UI | Domain mô tả 5 tab nhưng section là "4 tab" — xác nhận với Designer/Client. | |
-
----
-
-## 5. SYSTEM OTHER (System Settings & Common)
+## 4. SYSTEM OTHER (System Settings & Common)
 
 SPEC: `system-other/SPEC.md`
 

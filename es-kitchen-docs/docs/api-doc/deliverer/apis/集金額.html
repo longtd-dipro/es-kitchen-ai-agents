@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>集金額 — API 配線ガイド (Deliverer)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#65a30d; --lime:#84cc16; }
+  body{ font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",-apple-system,sans-serif; background:#F3F4F6; color:#1f2937; }
+  /* ----- doc chrome ----- */
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;margin-left:6px;
+    background:#0062CC;color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none; }
+  .nb:hover{ transform:scale(1.18);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  /* ----- mock (khớp OW_CLCT) ----- */
+  .panel{ background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px 20px; }
+  .btn{ border:1px solid #e5e7eb;background:#fff;border-radius:8px;padding:9px 18px;font-size:14px;font-weight:600;cursor:pointer;color:#374151; }
+  .btn-green{ background:var(--lime);border-color:var(--lime);color:#fff; }
+  .select{ height:40px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;padding:0 12px;font-size:14px;color:#374151; }
+  .date-input{ height:40px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;padding:0 12px;display:inline-flex;align-items:center;gap:8px;font-size:14px;color:#374151; }
+  .date-input .cal{ color:#9ca3af; }
+  table.tb{ width:100%;border-collapse:collapse; }
+  table.tb thead th{ text-align:left;font-size:13px;color:#6b7280;font-weight:600;padding:12px 10px;border-bottom:1px solid #e5e7eb; }
+  table.tb tbody td{ padding:14px 10px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#374151; }
+  .ta-right{ text-align:right; } .ta-center{ text-align:center; }
+  .col-no{ width:50px;color:#9ca3af; }
+  .unit{ color:#9ca3af;font-size:12px;margin-left:4px; }
+  .op-btn{ width:30px;height:30px;border-radius:7px;border:1px solid #e5e7eb;background:#fff;color:#3b82f6;cursor:pointer; }
+  .pager{ display:flex;align-items:center;justify-content:center;gap:6px;margin-top:18px;font-size:13px;color:#6b7280;flex-wrap:wrap; }
+  .pager .total{ margin-right:16px; }
+  .pg{ min-width:30px;height:30px;border:1px solid #e5e7eb;border-radius:6px;background:#fff;display:inline-flex;align-items:center;justify-content:center;padding:0 6px; }
+  .pg.active{ border-color:var(--lime);color:var(--primary);font-weight:700; } .pg.dots{ border:none;background:none; }
+  .sum{ background:linear-gradient(180deg,#f0f7ff,#eef6ff);border:1px solid #dbeafe;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px; }
+  .sum .ic{ width:42px;height:42px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;color:#3b82f6;box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .sum .c-val{ font-size:24px;font-weight:800;color:#1e3a8a; } .sum .c-val .u{ font-size:13px;font-weight:600;color:#6b7280;margin-left:3px; }
+  /* ----- drawer ----- */
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:820px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#ecfccb; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+</style>
+</head>
+<body>
+<div class="max-w-5xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Deliverer · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">集金額 — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số</b> → bảng ráp + API docs. Contract: <code>API仕様詳細_配送関連.md › A3</code> · base <code>/deliverer/*</code>. Mock khớp <code>OW_CLCT_001</code> (一覧) & <code>OW_CLCT_002</code> (集計).</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (GET)</span>
+      <span><span class="nb act" style="cursor:default">n</span> action (export/điều hướng)</span>
+      <span><span class="nb tbd" style="cursor:default">n</span> còn chờ BA (TBD)</span>
+    </div>
+  </div>
+
+  <!-- ===== ① OW_CLCT_001 — 収集された金額のリスト ===== -->
+  <div class="text-xs font-bold text-gray-400 mb-2">① OW_CLCT_001 — 一覧 + フィルタ</div>
+  <div class="card p-6 mb-6">
+    <div class="flex items-start justify-between mb-4">
+      <div><div class="text-xs text-gray-500">集金額一覧</div><h2 class="text-xl font-bold text-gray-900">収集された金額のリスト</h2></div>
+      <div class="flex gap-2">
+        <button class="btn">CSVダウンロード<span class="nb act" data-n="1">1</span></button>
+        <button class="btn">レポート<span class="nb act" data-n="2">2</span></button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="flex items-center gap-3 mb-4 flex-wrap">
+        <select class="select" style="min-width:260px"><option>配送スタッフ名</option></select><span class="nb" data-n="3">3</span>
+        <span class="date-input">2025年10月1日 <i class="fa-regular fa-calendar cal"></i></span>
+        <span class="date-input">2025年10月31日 <i class="fa-regular fa-calendar cal"></i></span><span class="nb" data-n="4">4</span>
+        <span class="flex-1"></span>
+        <button class="btn">クリア</button>
+        <button class="btn btn-green">検索<span class="nb act" data-n="5">5</span></button>
+      </div>
+      <table class="tb">
+        <thead><tr><th class="col-no">No</th><th>発送日<span class="nb" data-n="6">6</span></th><th>配送スタッフ名<span class="nb" data-n="7">7</span></th><th class="ta-right">合計金額<span class="nb" data-n="8">8</span></th></tr></thead>
+        <tbody>
+          <tr><td class="col-no">1</td><td>11/15</td><td>テスト一号</td><td class="ta-right">4,100<span class="unit">円</span></td></tr>
+          <tr><td class="col-no">2</td><td>11/15</td><td>テスト一号</td><td class="ta-right">4,100<span class="unit">円</span></td></tr>
+        </tbody>
+      </table>
+      <div class="pager"><span class="total">100件中 1-10件</span>
+        <span class="pg"><i class="fa-solid fa-angle-left"></i></span><span class="pg">1</span><span class="pg dots">···</span>
+        <span class="pg active">6</span><span class="pg dots">···</span><span class="pg">50</span><span class="pg"><i class="fa-solid fa-angle-right"></i></span>
+        <select class="select" style="height:30px;padding:0 8px;font-size:12px"><option>10件/ページ</option></select><span class="nb" data-n="9">9</span></div>
+    </div>
+  </div>
+
+  <!-- ===== ② OW_CLCT_002 — 集計カード + 明細 ===== -->
+  <div class="text-xs font-bold text-gray-400 mb-2">② OW_CLCT_002 — 集計カード + 明細 (月別)</div>
+  <div class="card p-6">
+    <div class="flex items-start justify-between mb-4">
+      <div><div class="text-xs text-gray-500">集金額一覧</div><h2 class="text-xl font-bold text-gray-900">収集された金額のリスト</h2></div>
+      <div class="flex gap-2"><button class="btn">CSVダウンロード</button><button class="btn">レポート</button></div>
+    </div>
+    <div class="grid grid-cols-3 gap-4 mb-5">
+      <div class="sum"><span class="ic"><i class="fa-regular fa-calendar"></i></span><div class="flex-1 flex justify-between items-center"><span class="text-sm text-gray-500">納品月</span><span class="c-val">2024/11</span></div><span class="nb" data-n="10">10</span></div>
+      <div class="sum"><span class="ic"><i class="fa-regular fa-rectangle-list"></i></span><div class="flex-1 flex justify-between items-center"><span class="text-sm text-gray-500">集金合計</span><span class="c-val">8,700<span class="u">円</span></span></div><span class="nb" data-n="11">11</span></div>
+      <div class="sum"><span class="ic"><i class="fa-solid fa-square-parking"></i></span><div class="flex-1 flex justify-between items-center"><span class="text-sm text-gray-500">駐車場料金合計</span><span class="c-val">300<span class="u">円</span></span></div><span class="nb" data-n="12">12</span></div>
+    </div>
+    <div class="panel">
+      <table class="tb">
+        <thead><tr><th class="col-no">No</th><th>納品先<span class="nb" data-n="13">13</span></th><th>配送スタッフ名</th><th>納品日<span class="nb" data-n="14">14</span></th><th class="ta-right">集金合計<span class="nb" data-n="15">15</span></th><th class="ta-right">駐車場料金<span class="nb" data-n="16">16</span></th><th class="ta-center">操作<span class="nb act" data-n="17">17</span></th></tr></thead>
+        <tbody>
+          <tr><td class="col-no">1</td><td>請器美前頗市頭園町</td><td>テスト一号</td><td>11/15</td><td class="ta-right">4,100</td><td class="ta-right">0</td><td class="ta-center"><button class="op-btn" title="詳細を見る"><i class="fa-regular fa-eye"></i></button></td></tr>
+          <tr><td class="col-no">2</td><td>請器美前頗市頭園町</td><td>テスト一号</td><td>11/15</td><td class="ta-right">4,100</td><td class="ta-right">0</td><td class="ta-center"><button class="op-btn" title="詳細を見る"><i class="fa-regular fa-eye"></i></button></td></tr>
+        </tbody>
+      </table>
+      <div class="pager"><span class="total">100件中 1-10件</span><span class="pg">1</span><span class="pg dots">···</span><span class="pg active">6</span><span class="pg dots">···</span><span class="pg">50</span></div>
+    </div>
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Số <span class="text-orange-600 font-bold">cam (2)</span> = レポート chờ BA chốt định dạng. Dữ liệu read-only (driver app ghi 集金).</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — 集金額 <span class="text-gray-400 font-normal text-sm">(§A3)</span></b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:42px">No</th><th>UI element</th><th>API</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const P = e => '<code>'+e+'</code>';
+const LIST = '<span class="method m-get">GET</span> '+P('/deliverer/collection-reports');
+const SUM  = '<span class="method m-get">GET</span> '+P('/deliverer/collection-reports/summary');
+const DET  = '<span class="method m-get">GET</span> '+P('/deliverer/collection-reports/{id}');
+const EXP  = '<span class="method m-get">GET</span> '+P('/deliverer/collection-reports/export');
+const W = {
+  1:{ui:'Nút CSVダウンロード', api:EXP, field:'query = filter hiện tại', tf:'Tải CSV (text/csv, attachment).', act:1},
+  2:{ui:'Nút レポート', api:'<span class="method m-get">GET</span> '+P('/deliverer/collection-reports/report'), field:'query <code>month=YYYY-MM</code>', tf:'✅ Xuất <b>Excel (.xlsx)</b> báo cáo thu theo tháng (cần lib exceljs). Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.', act:1},
+  3:{ui:'Filter 配送スタッフ名', api:LIST, field:'query <code>driverId</code>', tf:'Lọc theo driver.'},
+  4:{ui:'Filter 発送日 (range, 年月日)', api:LIST, field:'query <code>dateFrom/dateTo</code>', tf:'shipments.scheduled_send_date. UI hiển thị 2 ô ngày kiểu 2025年10月1日.'},
+  5:{ui:'Nút 検索', api:LIST, field:'reload với filter', tf:'Submit filter (OW_CLCT_001).', act:1},
+  6:{ui:'列 発送日 (001)', api:LIST, field:'<code>items[].sendDate</code>', tf:'—'},
+  7:{ui:'列 配送スタッフ名 (001)', api:LIST, field:'<code>items[].driverName</code>', tf:'—'},
+  8:{ui:'列 合計金額 (001)', api:LIST, field:'<code>items[].totalAmount</code>', tf:'collected_amount, hiển thị + 円.'},
+  9:{ui:'Phân trang (001)', api:LIST, field:'query <code>page/limit</code>', tf:'envelope total/page/limit.'},
+  10:{ui:'Card 納品月 (002)', api:SUM, field:'<code>deliveryMonth</code>', tf:'Từ query month=YYYY-MM.'},
+  11:{ui:'Card 集金合計 (002)', api:SUM, field:'<code>totalCollected</code>', tf:'Σ collected_amount trong tháng.'},
+  12:{ui:'Card 駐車場料金合計 (002)', api:SUM, field:'<code>totalParkingFee</code>', tf:'Σ parking_fee trong tháng.'},
+  13:{ui:'列 納品先 (002)', api:SUM, field:'<code>items[].company</code>', tf:'company qua shipment_company.'},
+  14:{ui:'列 納品日 (002)', api:SUM, field:'<code>items[].deliveryDate</code>', tf:'shipments.actual_delivery_date.'},
+  15:{ui:'列 集金合計 (002)', api:SUM, field:'<code>items[].collectedAmount</code>', tf:'collection_reports.collected_amount.'},
+  16:{ui:'列 駐車場料金 (002)', api:SUM, field:'<code>items[].parkingFee</code>', tf:'collection_reports.parking_fee.'},
+  17:{ui:'操作 — 詳細を見る (xem)', api:DET, field:'path <code>id</code>', tf:'CHỈ XEM (read-only) — icon 👁 không phải 編集. Mở 1 report (collected/expected/diff/receipt/photos).', act:1}
+};
+
+const DOCS = `
+<div style="background:#f7fee7;border:1px solid #d9f99d;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#3f6212;margin-bottom:14px">
+  <b>API màn:</b> <span class="method m-get">GET</span> <code>/deliverer/collection-reports</code> (OW_CLCT_001) · <code>/summary</code> (OW_CLCT_002) · <code>/{id}</code> · <code>/export</code>. Read-only.
+</div>
+<h4>① <span class="method m-get">GET</span> /deliverer/collection-reports — 一覧 (OW_CLCT_001)</h4>
+<p>Query: <code>driverId</code>, <code>dateFrom/dateTo</code> (発送日), page/limit. WHERE shipment.deliverer_id=me.</p>
+<pre>{ "items":[{ "id":"7001","no":1,"sendDate":"2025-11-15","driverName":"テスト一号","totalAmount":4100 }],
+  "total":100,"page":1,"limit":10,"totalPages":10 }</pre>
+<h4 style="margin-top:18px">② <span class="method m-get">GET</span> /deliverer/collection-reports/summary — 集計 (OW_CLCT_002)</h4>
+<p>Query: <code>month=YYYY-MM</code> (required).</p>
+<pre>{ "deliveryMonth":"2024/11","totalCollected":8700,"totalParkingFee":300,
+  "items":[{ "id":"7001","no":1,"company":"請器美前頗市頭園町","driverName":"テスト一号","deliveryDate":"2024-11-15","collectedAmount":4100,"parkingFee":0 }],
+  "total":100,"page":1,"limit":10,"totalPages":10 }</pre>
+<h4 style="margin-top:18px">③ <span class="method m-get">GET</span> /deliverer/collection-reports/{id} (số 17)</h4>
+<pre>{ "id":"7001","collectedAmount":4100,"expectedAmount":4100,"difference":0,"parkingFee":0,
+  "receiptImageUrl":"…","deliveryPhotoUrls":["…"],"submittedAt":"…",
+  "shipment":{ "shipmentNo":"D000033215","company":"…" }, "driver":{ "id":"301","name":"テスト一号" } }</pre>
+<h4 style="margin-top:18px">④ <span class="method m-get">GET</span> /deliverer/collection-reports/export (số 1)</h4>
+<p>Trả <code>text/csv</code>; <b>charset = UTF-8 + BOM</b> (để Excel JP không lỗi font; nếu khách yêu cầu thì Shift_JIS). Cột: 発送日, 配送スタッフ名, 納品先, 集金合計, 駐車場料金, 差額, 提出日時.</p>
+<h4 style="margin-top:18px">DB note</h4>
+<p>Nguồn <code>collection_reports</code> (1-1 shipment_companies) → join shipment lấy 発送日/納品日/納品先 + scope deliverer_id=me. Tổng hợp tháng tính theo <b>JST</b>.</p>
+<div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:8px 10px;font-size:12px;color:#065f46;margin-top:10px">
+  ✅ <b>Đã chốt:</b> ① <b>レポート = Excel (.xlsx)</b> báo cáo thu theo tháng (exceljs). ② Flow <b>001→002</b>: FE truyền <code>month</code> = tháng của <code>dateFrom</code> (trống → tháng hiện tại); màn 集計 có thể có picker tháng riêng. ③ API trả ngày <b>ISO</b>, FE tự format.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).map(Number).sort((a,b)=>a-b).forEach(n=>{
+  const d=W[n], cls=d.tbd?'tbd':(d.act?'act':'');
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function open(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function close(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=close; ov.onclick=close;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();open(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<!-- アカウント発行のメール送信の確認 -->
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>アカウント発行のメール送信の確認</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background: #F8F9FA;
+    color: #333333;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  /* Demo background to visualize overlay */
+  .demo-bg {
+    padding: 40px;
+    color: #9CA3AF;
+    font-size: 14px;
+  }
+
+  /* Overlay */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  /* Modal */
+  .modal {
+    background: #ffffff;
+    border-radius: 8px;
+    width: 680px;
+    max-width: calc(100vw - 32px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 32px);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 0 24px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .modal-close {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: #6B7280;
+    cursor: pointer;
+    transition: background 0.2s;
+    background: transparent;
+    border: none;
+  }
+  .modal-close:hover { background: #F3F4F6; }
+
+  .modal-body {
+    padding: 20px 24px 24px 24px;
+  }
+
+  .modal-footer {
+    padding: 16px 24px 24px 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  /* Buttons */
+  .btn {
+    height: 38px;
+    border-radius: 4px;
+    padding: 0 18px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .btn-primary {
+    background: #0062CC;
+    color: #ffffff;
+    border-color: #0062CC;
+  }
+  .btn-primary:hover { background: #004C9F; border-color: #004C9F; }
+  .btn-outline {
+    background: #ffffff;
+    color: #0062CC;
+    border-color: #0062CC;
+  }
+  .btn-outline:hover { background: #E6F0FA; }
+
+  /* Mini table */
+  .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 16px;
+  }
+  .mini-table thead th {
+    background: #F8F9FA;
+    color: #6B7280;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #E5E7EB;
+    white-space: nowrap;
+  }
+  .mini-table tbody td {
+    padding: 10px 12px;
+    color: #333333;
+    border-bottom: 1px solid #E5E7EB;
+    vertical-align: middle;
+  }
+  .mini-table tbody tr:last-child td { border-bottom: none; }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #E6F0FA;
+    color: #0062CC;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+
+  .link-text {
+    color: #0062CC;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .link-text:hover { color: #004C9F; }
+
+  .note-text {
+    font-size: 13px;
+    color: #4B5563;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-bg">
+  <div>Background page (dummy)</div>
+</div>
+
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal-header">
+      <div class="modal-title" id="confirmTitle">アカウント発行のメール送信の確認</div>
+      <button class="modal-close" aria-label="Close" onclick="closeModal('confirmModal')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div style="font-size: 14px; color: #333333; line-height: 1.7;">
+        アカウント発行のメールを送信します。<br />
+        よろしいですか？
+      </div>
+
+      <div class="note-text">
+        ※既存アカウントがある場合、パスワードがリセットされ、再ログインが必要になります。
+      </div>
+
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th style="width: 60px;">No</th>
+            <th>ID</th>
+            <th>委託配送先名</th>
+            <th>担当者名</th>
+            <th>ステータス</th>
+            <th>メールアドレス</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>ID-001</td>
+            <td>サンプル物流株式会社</td>
+            <td>田中 太郎</td>
+            <td><span class="status-badge">本登録</span></td>
+            <td><span class="link-text">sample@email.com</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('confirmModal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="closeModal('confirmModal')">発行する</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.display = 'none';
+  }
+
+  document.getElementById('confirmModal').addEventListener('click', function (e) {
+    if (e.target === this) {
+      closeModal('confirmModal');
+    }
+  });
+</script>
+
+</body>
+</html>

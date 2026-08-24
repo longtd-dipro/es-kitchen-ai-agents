@@ -45,17 +45,20 @@ PM chỉ làm sau khi BA đã có SPEC.md và Tech Lead đã có DESIGN.md + tas
 
 ## Quy trình tạo PLAN.md
 
-### Bước 1 — Thu thập + skill
+### Bước 1 — Thu thập + business-flow-index + skill
 
 ```
 tilth_read(paths: [
   "<feature>/SPEC.md",
   ".claude/context/specification.md",
+  ".claude/context/business-flows/business-flow-index.md",  ← 23 nghiệp vụ + Target + Backlog ID + FigJam link — tra scope + dependency
   ".claude/skills/project-planning/SKILL.md"
 ])
 tilth_files(pattern: "*/DESIGN.md", path: "<feature-folder>/")
 tilth_files(pattern: "*/tasks/task-*.md", path: "<feature-folder>/")
 ```
+
+> **Business-flow-index** cho phép PM biết feature nằm trong nghiệp vụ nào, có story/target/FigJam liên quan → xác định scope thật (không phải chỉ SPEC hiện tại), dependency cross-feature (task khác đang làm cùng domain), risk timeline (chồng lấn milestone/story khác). Nếu file chưa tồn tại → ghi note "business-flow-index chưa có, PLAN dựa trên SPEC.md + specification.md" và tiếp tục — không bị block.
 
 > Check Designer đã xong chưa: đọc `SPEC.md ## Screens` → cột "Figma Link" phải có URL (không phải TBD). Nếu cột rỗng → cảnh báo user Designer Agent (bước 2c) chưa hoàn thành. PLAN.md vẫn có thể tạo nhưng FE task có thể thiếu visual reference.
 

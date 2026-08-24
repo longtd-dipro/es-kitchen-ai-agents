@@ -64,3 +64,6 @@ ai-website-design.md
 *.temp
 tmp/
 temp/
+
+# ─── Accidental tilde dir (from mistyped ~/ paths) ────────────────────────────
+~/

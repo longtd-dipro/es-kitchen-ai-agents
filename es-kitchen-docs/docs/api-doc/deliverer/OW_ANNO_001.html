@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!-- ============================================================= -->
+<!-- 画面名: OW_ANNO_001 - お知らせを確認する (お知らせ一覧)            -->
+<!-- 3つのタブ状態 (すべて / 重要 / お知らせ) を JS で切り替え        -->
+<!-- 入力画像: OW_ANNO_001 - 01.png / 02.png / 03.png               -->
+<!-- ============================================================= -->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OW_ANNO_001 - お知らせを確認する</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  /* ====================== 共通 SHELL スタイル ====================== */
+  :root{
+    --green:#84cc16;        /* アクセント（ライム） */
+    --green-dark:#65a30d;
+    --green-soft:#f0fdf4;
+    --bg:#f3f4f6;           /* コンテンツ背景 */
+    --card:#ffffff;
+    --line:#e5e7eb;
+    --text:#1f2937;
+    --muted:#9ca3af;
+    --muted2:#6b7280;
+    --link:#2563eb;
+    --orange:#f59e0b;
+    --sidebar-w:226px;
+    --header-h:64px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",-apple-system,"Segoe UI",sans-serif;
+    color:var(--text);background:var(--bg);font-size:14px;line-height:1.6;
+  }
+  .app{display:flex;min-height:100vh}
+
+  /* ----- サイドバー ----- */
+  .sidebar{
+    width:var(--sidebar-w);background:#fff;border-right:1px solid var(--line);
+    display:flex;flex-direction:column;position:relative;flex-shrink:0;
+  }
+  .logo{display:flex;align-items:center;gap:8px;padding:16px 18px;height:var(--header-h);}
+  .logo .sun{
+    width:34px;height:34px;border-radius:50%;
+    background:radial-gradient(circle at 50% 40%,#fbbf24,#f97316);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;
+    box-shadow:0 0 0 3px #fff7ed;
+  }
+  .logo .name{font-weight:800;font-size:19px;letter-spacing:.3px}
+  .logo .name .es{color:#ef4444}
+  .logo .name .st{color:#1e293b}
+  .nav{padding:14px 14px;display:flex;flex-direction:column;gap:6px}
+  .nav a{
+    display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;
+    color:#374151;text-decoration:none;font-weight:600;font-size:15px;transition:.15s;
+  }
+  .nav a i{width:20px;text-align:center;font-size:16px;color:#6b7280}
+  .nav a:hover{background:#f9fafb}
+  .nav a.active{background:var(--green);color:#fff;box-shadow:0 2px 6px rgba(132,204,22,.4)}
+  .nav a.active i{color:#fff}
+  .mascot{margin-top:auto;padding:18px;display:flex;justify-content:center}
+  .mascot .m-illu{
+    width:120px;height:150px;border-radius:12px;
+    background:radial-gradient(circle at 50% 30%,#fde68a,#fbbf24 70%,#f59e0b);
+    display:flex;align-items:flex-end;justify-content:center;font-size:64px;
+    filter:drop-shadow(0 4px 6px rgba(245,158,11,.3));
+  }
+  .collapse{padding:10px 18px;color:#9ca3af;font-size:18px;cursor:pointer}
+
+  /* ----- メイン ----- */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .topbar{
+    height:var(--header-h);background:#fff;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;padding:0 24px;
+  }
+  .topbar .welcome{display:flex;align-items:center;gap:10px;color:#374151;font-weight:600}
+  .topbar .welcome .sun{color:var(--orange);font-size:20px}
+  .topbar .user{display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:600}
+  .topbar .user .avatar{
+    width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#fcd34d,#f59e0b);
+    display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid #fde68a;
+  }
+  .topbar .user .fa-chevron-down{color:#9ca3af;font-size:12px}
+
+  .content{padding:22px 26px;flex:1}
+  .crumb{color:var(--muted2);font-size:12px;margin-bottom:2px}
+  .page-title{font-size:22px;font-weight:700;margin-bottom:20px}
+
+  /* ----- お知らせ用 ----- */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 22px 22px}
+  .tabs{display:flex;gap:34px;border-bottom:1px solid var(--line);padding:0 4px}
+  .tab{
+    background:none;border:none;cursor:pointer;font-size:15px;font-weight:600;color:#6b7280;
+    padding:16px 4px;position:relative;font-family:inherit;
+  }
+  .tab.active{color:var(--green-dark)}
+  .tab.active::after{
+    content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;
+    background:var(--green);border-radius:3px;
+  }
+  .notice{margin-top:20px}
+  .notice-head{
+    display:flex;align-items:center;justify-content:space-between;
+    background:#f8fafc;border-left:4px solid var(--green);border-radius:6px;
+    padding:14px 18px;font-weight:700;color:#1f2937;
+  }
+  .notice-head .fa-chevron-down{color:#9ca3af;font-size:13px}
+  .notice-body{padding:16px 18px 4px}
+  .notice-body p{color:#374151}
+  .notice-divider{border:none;border-top:1px dashed #e5e7eb;margin:14px 0}
+  .notice-links{display:flex;gap:34px;flex-wrap:wrap}
+  .notice-links a{color:var(--link);text-decoration:none;font-size:14px;display:inline-flex;align-items:center;gap:7px}
+  .notice-links a:hover{text-decoration:underline}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- ===== サイドバー ===== -->
+  <aside class="sidebar">
+    <div class="logo">
+      <span class="sun"><i class="fa-solid fa-sun"></i></span>
+      <span class="name"><span class="es">ES</span><span class="st">STATION</span></span>
+    </div>
+    <nav class="nav">
+      <a href="#" class="active"><i class="fa-regular fa-window-maximize"></i> TOP</a>
+      <a href="#"><i class="fa-solid fa-truck"></i> 配送状況</a>
+      <a href="#"><i class="fa-regular fa-rectangle-list"></i> 集金額</a>
+      <a href="#"><i class="fa-solid fa-user-group"></i> スタッフ</a>
+    </nav>
+    <div class="mascot"><div class="m-illu">🧑‍🍳</div></div>
+    <div class="collapse"><i class="fa-solid fa-bars-staggered"></i></div>
+  </aside>
+
+  <!-- ===== メイン ===== -->
+  <div class="main">
+    <header class="topbar">
+      <div class="welcome"><i class="fa-solid fa-sun sun"></i><span>お帰りなさい</span></div>
+      <div class="user">
+        <span class="avatar">🦁</span><span>にっしぐち</span><i class="fa-solid fa-chevron-down"></i>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="crumb">TOP</div>
+      <h1 class="page-title">お知らせを確認する</h1>
+
+      <section class="panel">
+        <div class="tabs">
+          <button class="tab active" data-tab="all">すべて</button>
+          <button class="tab" data-tab="important">重要</button>
+          <button class="tab" data-tab="info">お知らせ</button>
+        </div>
+
+        <!-- 重要なお知らせ -->
+        <article class="notice" data-cat="important">
+          <div class="notice-head">
+            <span>【2024/02/29】配送方法について</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="notice-body">
+            <p>配送方法に関するいくつかの注意点があります。<br>詳細は添付ファイルをご確認ください。</p>
+            <hr class="notice-divider">
+            <div class="notice-links">
+              <a href="#">実行されようとしている（リンク） <i class="fa-solid fa-up-right-from-square"></i></a>
+            </div>
+          </div>
+        </article>
+
+        <!-- お知らせ -->
+        <article class="notice" data-cat="info">
+          <div class="notice-head">
+            <span>【2024/02/29】システムが更新されました</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="notice-body">
+            <p>システムが更新されました。<br>操作方法については添付の説明ファイルをご確認ください。</p>
+            <hr class="notice-divider">
+            <div class="notice-links">
+              <a href="#">実行されようとしている（リンク） <i class="fa-solid fa-up-right-from-square"></i></a>
+              <a href="#">実行サイト（リンク） <i class="fa-solid fa-up-right-from-square"></i></a>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const notices = document.querySelectorAll('.notice');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const f = tab.dataset.tab; // all | important | info
+      notices.forEach(n=>{
+        const cat = n.dataset.cat;
+        const show = f==='all' || (f==='important'&&cat==='important') || (f==='info'&&cat==='info');
+        n.classList.toggle('hidden',!show);
+      });
+    });
+  });
+</script>
+</body>
+</html>

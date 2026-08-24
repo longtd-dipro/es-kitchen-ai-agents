@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ダッシュボード — API 配線ガイド (Driver)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#65a30d; --lime:#84cc16; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F3F4F6; color:#222; }
+  /* ===== deliverer-format badges + drawer ===== */
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;margin-left:4px;
+    background:#0062CC;color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none;white-space:nowrap; }
+  .nb:hover{ transform:scale(1.15);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.act:hover{ background:#0f7a32; }
+  .nb.st{ background:#64748b; } .nb.st:hover{ background:#475569; }
+  .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:860px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#ecfccb; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.st{ color:#64748b; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-post{background:#bee3f8;color:#2a4365;} .m-put{background:#feebc8;color:#9c4221;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .doc table{ width:100%;border-collapse:collapse;font-size:12px;margin:6px 0; }
+  .doc th,.doc td{ border:1px solid #E5E7EB;padding:6px 8px;text-align:left;vertical-align:top; } .doc th{ background:#F3F4F6; }
+  /* ===== phone mockup (E06) ===== */
+  .gallery{ display:flex;gap:26px;overflow-x:auto;padding:10px 4px 22px; }
+  .mock{ flex:0 0 auto;text-align:center; }
+  .mock-cap{ font-size:13px;font-weight:800;color:#2d3748;margin-bottom:10px; }
+  .mock-cap .sid{ display:block;font-size:10px;color:#0066de;margin-top:2px; }
+  .frame{ zoom:.82; }
+  .phone{ width:390px;min-height:760px;background:#f4f6f9;border-radius:30px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.18);display:flex;flex-direction:column;position:relative;border:4px solid #2d3748;text-align:left; }
+  .phone *{ margin:0;padding:0;box-sizing:border-box; }
+  .header{ display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#fff; }
+  .hbtn{ width:40px;height:40px;border-radius:50%;border:1px solid #e3e3e3;display:flex;align-items:center;justify-content:center;background:#fff; }
+  .hbtn.ghost{ border:none; } .hbtn svg{ width:20px;height:20px;stroke:#333;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+  .htitle{ font-size:19px;font-weight:700;color:#1a1a1a; }
+  .content{ flex:1;overflow-y:auto;padding:14px 16px 96px; }
+  .sec-label{ font-size:16px;font-weight:700;color:#1a1a1a;margin:18px 2px 12px; } .content>.sec-label:first-child{ margin-top:0; }
+  .note{ font-size:12.5px;color:#8a8f96;line-height:1.7;margin-bottom:14px; }
+  .rcard{ background:#fff;border:1px solid #ececec;border-radius:12px;padding:14px;margin-bottom:12px; }
+  .rcard-head{ display:flex;align-items:flex-start;gap:10px; }
+  .ricon{ width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .ricon svg{ width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round; }
+  .ricon.blue{ background:#1f6fe0; } .ricon.purple{ background:#5b3cc4; } .ricon.orange{ background:#f5921e; }
+  .rname{ flex:1;font-size:15px;font-weight:700;color:#1a1a1a;line-height:1.35; }
+  .rbadge{ font-size:12px;font-weight:700;padding:4px 9px;border-radius:7px;flex-shrink:0; }
+  .rbadge.undelivered{ background:#fff;border:1.4px solid #e3a93f;color:#d98e00; } .rbadge.unreceived{ background:#f0f0f2;color:#8a8f96; }
+  .rmeta{ margin-top:10px; } .rmeta-row{ display:flex;align-items:flex-start;gap:6px;font-size:13px;color:#666;margin-top:5px; }
+  .rmeta-row svg{ width:15px;height:15px;stroke:#999;fill:none;stroke-width:1.6;flex-shrink:0;margin-top:1px; }
+  .rcounts{ display:flex;gap:14px;margin-top:8px;flex-wrap:wrap; } .rcount{ display:flex;align-items:center;gap:5px;font-size:13px;color:#555; }
+  .rcount svg{ width:16px;height:16px;stroke:#888;fill:none;stroke-width:1.6; } .rcount b{ color:#1f6fe0; }
+  .footer{ position:absolute;bottom:0;left:0;right:0;padding:14px 16px 20px;background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.05);display:flex;gap:12px; }
+  .btn{ flex:1;padding:15px;border-radius:12px;font-size:16px;font-weight:700; }
+  .btn-back{ background:#fff;color:#333;border:1.5px solid #e0e0e0; }
+  .btn-next{ background:#1a6dff;color:#fff;border:none;box-shadow:0 4px 14px rgba(26,109,255,.4); }
+  .hint{ font-size:12.5px;color:#8a8f96;margin:12px 2px 0; }
+  /* ===== dashboard-specific (DA_HOME_001) ===== */
+  .greeting{ font-size:15px;font-weight:700;color:#1a1a1a;margin:4px 2px 12px; }
+  .kpi-card{ background:#fff;border:1px solid #ececec;border-radius:14px;padding:16px;margin-bottom:14px; }
+  .kpi-top{ display:flex;align-items:baseline;gap:8px;margin-bottom:10px; }
+  .kpi-total{ font-size:30px;font-weight:800;color:#65a30d;line-height:1; }
+  .kpi-unit{ font-size:14px;color:#666; }
+  .kpi-split{ display:flex;gap:18px;margin:8px 0 12px; } .kpi-cell{ font-size:13px;color:#555; } .kpi-cell b{ font-size:18px;color:#1a1a1a;display:block; }
+  .kpi-bar{ height:10px;border-radius:6px;background:#eef0f3;overflow:hidden; } .kpi-fill{ height:100%;background:#84cc16;border-radius:6px; }
+  .kpi-pct{ font-size:12px;color:#65a30d;font-weight:700;margin-top:5px;text-align:right; }
+  .block{ background:#fff;border:1px solid #ececec;border-radius:12px;padding:14px;margin-bottom:12px; }
+  .block-head{ display:flex;align-items:flex-start;gap:10px; }
+  .bwh{ flex:1;font-size:15px;font-weight:700;color:#1a1a1a; }
+  .co-row{ display:flex;align-items:flex-start;gap:8px;padding:10px 0;border-top:1px solid #f0f0f0;margin-top:8px; }
+  .co-name{ flex:1;font-size:14px;font-weight:600;color:#1a1a1a; }
+  .empty-box{ background:#fff;border:1px dashed #d6dbe2;border-radius:12px;padding:30px 16px;text-align:center;color:#9aa0a8;font-size:13px;margin-bottom:12px; }
+  .empty-box svg{ width:54px;height:54px;stroke:#cdd3db;fill:none;stroke-width:1.5;margin:0 auto 10px;display:block; }
+  .date-head{ font-size:15px;font-weight:700;color:#1a1a1a;margin:16px 2px 10px;display:flex;align-items:center;gap:8px; }
+  .date-label{ font-size:12px;font-weight:700;color:#65a30d;background:#f7fee7;border-radius:6px;padding:2px 8px; }
+  .tab-bar{ display:flex;gap:0;border-bottom:1px solid #ececec;margin-bottom:12px; }
+  .tab{ flex:1;text-align:center;padding:12px 0;font-size:14px;font-weight:700;color:#9aa0a8;border-bottom:2px solid transparent; }
+  .tab.active{ color:#65a30d;border-bottom-color:#65a30d; }
+</style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Driver (E06) · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">ダッシュボード — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số/badge</b> bất kỳ → panel phải hiện <b>bảng ráp + API docs</b> (highlight dòng đã click). Contract: <code>apis/dashboard.md</code> · base <code>/driver/*</code> · Auth <code>Bearer {Driver}</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (Res → UI)</span>
+      <span><span class="nb act" style="cursor:default">n</span> nhập/ghi (UI → Request)</span>
+      <span><span class="nb st" style="cursor:default">n</span> tĩnh, không API</span>
+    </div>
+    <div class="mt-2 flex gap-2 flex-wrap text-xs">
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_HOME_001</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_HOME_001_Schedule</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_HOME_001_Empty</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP GALLERY (E06 phones, khớp DA_HOME_001/Schedule/Empty) ===== -->
+  <div class="card p-4">
+  <div class="gallery">
+
+    <!-- ===== HOME · DA_HOME_001 ===== -->
+    <div class="mock">
+      <div class="mock-cap">ホーム（本日のKPI + 配送）<span class="sid">DA_HOME_001</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn ghost"></div><div class="htitle">ホーム</div><div class="hbtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c0-3.3 3.1-5 7-5s7 1.7 7 5"/></svg></div></div>
+        <div class="content">
+          <div class="greeting">こんにちは、Mochiduki さん<span class="nb" data-n="H.1">H.1</span></div>
+          <div class="kpi-card">
+            <div class="kpi-top"><span class="kpi-total">10</span><span class="kpi-unit">件 / 本日<span class="nb" data-n="H.2">H.2</span></span></div>
+            <div class="kpi-split">
+              <div class="kpi-cell">完了<b>2</b><span class="nb" data-n="H.3">H.3</span></div>
+              <div class="kpi-cell">残り<b>8</b><span class="nb" data-n="H.4">H.4</span></div>
+            </div>
+            <div class="kpi-bar"><div class="kpi-fill" style="width:20%"></div></div>
+            <div class="kpi-pct">20%<span class="nb" data-n="H.5">H.5</span></div>
+          </div>
+
+          <div class="sec-label">本日の配送<span class="nb" data-n="H.6">H.6</span></div>
+          <div class="block">
+            <div class="block-head">
+              <div class="ricon orange"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/></svg></div>
+              <span class="bwh">オージーフーズ倉庫<span class="nb" data-n="H.7">H.7</span></span>
+              <span class="rbadge unreceived">未受取<span class="nb" data-n="H.8">H.8</span></span>
+            </div>
+            <div class="rmeta"><div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都渋谷区千駄ヶ谷5-32-7…<span class="nb" data-n="H.9">H.9</span></div></div>
+            <div class="rcounts">
+              <div class="rcount"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/></svg><b>2</b> 社<span class="nb" data-n="H.10">H.10</span></div>
+              <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>4</b> 箱<span class="nb" data-n="H.11">H.11</span></div>
+              <div class="rcount"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/></svg><b>500</b> 品<span class="nb" data-n="H.12">H.12</span></div>
+            </div>
+            <div class="co-row">
+              <div class="ricon blue" style="width:30px;height:30px;border-radius:7px;"><svg viewBox="0 0 24 24"><rect x="13" y="7" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/><rect x="13" y="11" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/></svg></div>
+              <div style="flex:1;">
+                <div class="co-name">東和精密機械工業株式会社<span class="nb" data-n="H.14">H.14</span></div>
+                <div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>大阪府大阪市北区太融寺町2-18…<span class="nb" data-n="H.16">H.16</span></div>
+                <div class="rcounts">
+                  <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/></svg><b>2</b> 箱<span class="nb" data-n="H.17">H.17</span></div>
+                  <div class="rcount"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/></svg><b>10</b> 品</div>
+                  <div class="rcount"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/></svg><b>20</b> 品</div>
+                </div>
+              </div>
+              <span class="rbadge undelivered">未配送<span class="nb" data-n="H.15">H.15</span></span>
+            </div>
+            <div class="co-row">
+              <div class="ricon blue" style="width:30px;height:30px;border-radius:7px;"><svg viewBox="0 0 24 24"><rect x="13" y="7" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/><rect x="13" y="11" width="7" height="3" rx="0.5" fill="#fff" stroke="none"/></svg></div>
+              <div style="flex:1;"><div class="co-name">株式会社三葉重工業製作所</div></div>
+              <span class="rbadge undelivered">未配送</span>
+            </div>
+          </div>
+
+          <div class="block">
+            <div class="block-head">
+              <div class="ricon orange"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/></svg></div>
+              <span class="bwh">オージーフーズ倉庫</span>
+              <span class="rbadge unreceived">未受取</span>
+            </div>
+            <div class="rcounts">
+              <div class="rcount"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/></svg><b>10</b> 社</div>
+              <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/></svg><b>50</b> 箱</div>
+              <div class="rcount"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/></svg><b>500</b> 品</div>
+            </div>
+            <div class="hint">※会社リストが空の場合は集計のみ表示<span class="nb" data-n="H.13">H.13</span></div>
+          </div>
+        </div>
+        <div class="footer"><button class="btn btn-next">配送を開始<span class="nb st" data-n="H.18">H.18</span></button></div>
+      </div></div>
+    </div>
+
+    <!-- ===== SCHEDULE · DA_HOME_001_Schedule ===== -->
+    <div class="mock">
+      <div class="mock-cap">配送予定（日別）<span class="sid">DA_HOME_001_Schedule</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">配送予定</div><div class="hbtn ghost"></div></div>
+        <div class="content">
+          <div class="hint" style="margin:0 2px 6px;">days=3（既定）<span class="nb act" data-n="S.1">S.1</span></div>
+
+          <div class="date-head">2026-06-01 <span class="date-label">本日<span class="nb" data-n="S.3">S.3</span></span><span class="nb" data-n="S.2">S.2</span></div>
+          <div class="empty-box">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+            配送予定データはありません。<span class="nb" data-n="S.5">S.5</span>
+          </div>
+
+          <div class="date-head">2026-06-02 <span class="date-label">明日</span></div>
+          <div class="block">
+            <div class="block-head">
+              <div class="ricon orange"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/></svg></div>
+              <span class="bwh">オージーフーズ倉庫<span class="nb" data-n="S.6">S.6</span></span>
+              <span class="rbadge unreceived">未受取</span>
+            </div>
+            <div class="rmeta"><div class="rmeta-row"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都渋谷区千駄ヶ谷5-32-7…</div></div>
+            <div class="rcounts">
+              <div class="rcount"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/></svg><b>10</b> 社</div>
+              <div class="rcount"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/></svg><b>50</b> 箱</div>
+              <div class="rcount"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/></svg><b>500</b> 品</div>
+            </div>
+          </div>
+
+          <div class="date-head">2026-06-03 <span class="date-label">明後日</span></div>
+          <div class="empty-box">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+            配送予定データはありません。
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ===== EMPTY · DA_HOME_001_Empty ===== -->
+    <div class="mock">
+      <div class="mock-cap">配送予定（全て空）<span class="sid">DA_HOME_001_Empty</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">配送予定</div><div class="hbtn ghost"></div></div>
+        <div class="content">
+          <div class="date-head">2026-06-01 <span class="date-label">本日</span></div>
+          <div class="empty-box">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+            配送予定データはありません。<span class="nb" data-n="S.4">S.4</span>
+          </div>
+          <div class="date-head">2026-06-02 <span class="date-label">明日</span></div>
+          <div class="empty-box">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+            配送予定データはありません。
+          </div>
+          <div class="date-head">2026-06-03 <span class="date-label">明後日</span></div>
+          <div class="empty-box">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+            配送予定データはありません。
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+  </div><!-- /gallery -->
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm badge bất kỳ (H./S.) để xem bảng ráp + tài liệu API. Mock khớp <code>DA_HOME_001 / _Schedule / _Empty</code>. Block (kho + companies) dùng chung DTO <code>DriverScheduleResponse</code> giữa 2 endpoint.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — ダッシュボード</b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:48px">No</th><th>UI element</th><th>API source</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const C = e => '<code>'+e+'</code>';
+const GET_HOME = '<span class="method m-get">GET</span> '+C('/driver/home');
+const GET_SCHED = '<span class="method m-get">GET</span> '+C('/driver/schedules');
+const FE = '<b>FE</b>';
+
+const W = {
+  // ── DA_HOME_001 · GET /driver/home ──
+  'H.1':{cls:'',ui:'挨拶 / Lời chào',api:GET_HOME,field:C('driverName'),tf:'「こんにちは、{driverName} さん」'},
+  'H.2':{cls:'',ui:'本日合計 / Tổng đơn hôm nay',api:GET_HOME,field:C('kpi.todayTotal'),tf:'số đơn hôm nay'},
+  'H.3':{cls:'',ui:'完了 / Đã xong',api:GET_HOME,field:C('kpi.completed'),tf:'—'},
+  'H.4':{cls:'',ui:'残り / Còn lại',api:GET_HOME,field:C('kpi.remaining'),tf:'—'},
+  'H.5':{cls:'',ui:'進捗バー / Thanh tiến độ',api:GET_HOME,field:C('kpi.progressPercent'),tf:'width = {progressPercent}% + nhãn "{n}%"'},
+  'H.6':{cls:'',ui:'本日の配送 (section)',api:GET_HOME,field:C('blocks[]'),tf:'mỗi phần tử = 1 thẻ kho'},
+  'H.7':{cls:'',ui:'倉庫名 / Tên kho',api:GET_HOME,field:C('blocks[].warehouseName'),tf:'—'},
+  'H.8':{cls:'',ui:'倉庫ステータス badge',api:GET_HOME,field:C('blocks[].warehouseStatus'),tf:'UNRECEIVED→未受取 · RECEIVED→受取済'},
+  'H.9':{cls:'',ui:'倉庫住所 / Địa chỉ kho',api:GET_HOME,field:C('blocks[].warehouseAddress'),tf:'—'},
+  'H.10':{cls:'',ui:'社数 / Số công ty',api:GET_HOME,field:C('blocks[].companyCount'),tf:'「X 社」'},
+  'H.11':{cls:'',ui:'箱数 / Số thùng',api:GET_HOME,field:C('blocks[].totalBoxCount'),tf:'「X 箱」'},
+  'H.12':{cls:'',ui:'品数 / Số món',api:GET_HOME,field:C('blocks[].totalItemCount')+' · '+C('blocks[].totalDeliveredCount'),tf:'「X 品」(totalItemCount); totalDeliveredCount = tổng đã giao'},
+  'H.13':{cls:'',ui:'空リストヒント / Block rỗng',api:GET_HOME,field:C('blocks[].companies = []'),tf:'companies rỗng → chỉ hiện dòng tóm tắt kho'},
+  'H.14':{cls:'',ui:'会社名 / Tên công ty',api:GET_HOME,field:C('blocks[].companies[].companyName')+' (+ '+C('companyId')+')',tf:'companyId dùng để mở chi tiết'},
+  'H.15':{cls:'',ui:'配送ステータス badge (社)',api:GET_HOME,field:C('blocks[].companies[].deliveryStatus'),tf:'UNDELIVERED→未配送 · DELIVERED→配送完了 · TROUBLE→トラブル (suy ra, không có DELIVERING)'},
+  'H.16':{cls:'',ui:'配送先住所 / Địa chỉ giao',api:GET_HOME,field:C('blocks[].companies[].deliveryAddress'),tf:'—'},
+  'H.17':{cls:'',ui:'社別数量 (箱/品)',api:GET_HOME,field:C('boxCount')+' · '+C('orderItemCount')+' · '+C('deliveredCount'),tf:'「X 箱 / X 品」 per company'},
+  'H.18':{cls:'st',ui:'配送を開始 / CTA',api:'<b>trigger</b> nav',field:'điều hướng sang luồng giao',tf:'không API trên màn này'},
+
+  // ── DA_HOME_001_Schedule / _Empty · GET /driver/schedules ──
+  'S.1':{cls:'act',ui:'日数パラメータ / param days',api:GET_SCHED,field:'query '+C('days'),tf:'mặc định 3; số ngày kể từ hôm nay'},
+  'S.2':{cls:'',ui:'日付 / Ngày',api:GET_SCHED,field:C('schedules[].date'),tf:'yyyy-MM-dd'},
+  'S.3':{cls:'',ui:'ラベル / Nhãn ngày',api:GET_SCHED,field:C('schedules[].label'),tf:'本日 / 明日 / 明後日 …'},
+  'S.4':{cls:'',ui:'空メッセージ (全空)',api:GET_SCHED,field:C('schedules[].emptyMessage'),tf:'≠null khi items rỗng — JP「配送予定データはありません。」/ VN「Không có dữ liệu giao hàng dự kiến.」'},
+  'S.5':{cls:'',ui:'空メッセージ (1 ngày)',api:GET_SCHED,field:C('schedules[].items = []')+' + '+C('emptyMessage'),tf:'items=[] → render emptyMessage'},
+  'S.6':{cls:'',ui:'予定ブロック / Block lịch',api:GET_SCHED,field:C('schedules[].items[]'),tf:'cùng DTO '+C('DriverScheduleResponse')+' như /driver/home blocks[]'}
+};
+
+const DOCS = `
+<div style="background:#f7fee7;border:1px solid #d9f99d;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#3f6212;margin-bottom:14px">
+  <b>2 API phục vụ 3 màn này:</b> <span class="method m-get">GET</span> <code>/driver/home</code> (DA_HOME_001 — KPI + block hôm nay) · <span class="method m-get">GET</span> <code>/driver/schedules</code> (DA_HOME_001_Schedule / _Empty — lịch gom theo ngày). Block (kho + companies) dùng chung DTO <code>DriverScheduleResponse</code>. Auth <code>Bearer {Driver}</code> · <code>Accept-Language: ja | vi</code>.
+</div>
+
+<h4>① <span class="method m-get">GET</span> /driver/home — KPI + block giao hàng hôm nay</h4>
+<p><b>Phục vụ:</b> <code>DA_HOME_001</code>. Trả KPI hôm nay + các block giao hàng hôm nay (gom theo kho). <b>Không có query params.</b></p>
+<pre>GET /driver/home
+Authorization: Bearer {accessToken}
+Accept-Language: ja | vi</pre>
+<p style="font-weight:700;margin-top:8px">Response 200</p>
+<pre>{
+  "driverName": "Mochiduki",
+  "kpi": { "todayTotal":10, "completed":2, "remaining":8, "progressPercent":20 },
+  "blocks": [
+    { "warehouseName":"オージーフーズ倉庫","warehouseStatus":"UNRECEIVED",
+      "warehouseAddress":"東京都渋谷区千駄ヶ谷5-32-7...",
+      "companyCount":2,"totalBoxCount":4,"totalItemCount":500,"totalDeliveredCount":500,
+      "companies":[
+        { "companyId":101,"companyName":"東和精密機械工業株式会社","deliveryStatus":"UNDELIVERED",
+          "deliveryAddress":"大阪府大阪市北区太融寺町2-18...","boxCount":2,"orderItemCount":10,"deliveredCount":20 },
+        { "companyId":102,"companyName":"株式会社三葉重工業製作所","deliveryStatus":"UNDELIVERED",
+          "deliveryAddress":"大阪府大阪市北区太融寺町2-18...","boxCount":2,"orderItemCount":10,"deliveredCount":20 }
+      ] },
+    { "warehouseName":"オージーフーズ倉庫","warehouseStatus":"UNRECEIVED",
+      "warehouseAddress":"東京都渋谷区千駄ヶ谷5-32-7...",
+      "companyCount":10,"totalBoxCount":50,"totalItemCount":500,"totalDeliveredCount":500,
+      "companies":[] }
+  ]
+}</pre>
+<table><thead><tr><th>Field</th><th>Vị trí trên DA_HOME_001</th></tr></thead><tbody>
+<tr><td><code>driverName</code></td><td>Lời chào / header (H.1)</td></tr>
+<tr><td><code>kpi.todayTotal</code></td><td>Tổng đơn hôm nay (H.2)</td></tr>
+<tr><td><code>kpi.completed</code> / <code>kpi.remaining</code></td><td>Đã xong / còn lại (H.3 / H.4)</td></tr>
+<tr><td><code>kpi.progressPercent</code></td><td>Thanh tiến độ % (H.5)</td></tr>
+<tr><td><code>blocks[]</code></td><td>Mỗi block = 1 thẻ kho (H.6)</td></tr>
+<tr><td><code>block.warehouseStatus</code></td><td>Badge kho UNRECEIVED/RECEIVED (H.8)</td></tr>
+<tr><td><code>block.companyCount / totalBoxCount / totalItemCount</code></td><td>Dòng tóm tắt 「X 社 / X 箱 / X 品」 (H.10–H.12)</td></tr>
+<tr><td><code>block.companies[]</code></td><td>DS công ty trong block; rỗng → chỉ hiện tóm tắt (H.13–H.17)</td></tr>
+</tbody></table>
+
+<h4 style="margin-top:18px">② <span class="method m-get">GET</span> /driver/schedules — lịch giao gom theo ngày</h4>
+<p><b>Phục vụ:</b> <code>DA_HOME_001_Schedule</code> &amp; <code>DA_HOME_001_Empty</code>. Trả lịch giao gom theo ngày.</p>
+<pre>GET /driver/schedules?days=3
+Authorization: Bearer {accessToken}
+Accept-Language: ja | vi</pre>
+<p style="font-weight:700;margin-top:8px">Query Parameters</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>BB</th><th>Default</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>days</code></td><td>number</td><td>—</td><td><code>3</code></td><td>Số ngày cần trả về kể từ hôm nay</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:8px">Response 200</p>
+<pre>{
+  "schedules": [
+    { "date":"2026-06-01","label":"本日","items":[],"emptyMessage":"配送予定データはありません。" },
+    { "date":"2026-06-02","label":"明日","items":[
+        { "warehouseName":"オージーフーズ倉庫","warehouseStatus":"UNRECEIVED",
+          "warehouseAddress":"東京都渋谷区千駄ヶ谷5-32-7...",
+          "companyCount":10,"totalBoxCount":50,"totalItemCount":500,"totalDeliveredCount":500,
+          "companies":[] }
+      ],"emptyMessage":null },
+    { "date":"2026-06-03","label":"明後日","items":[],"emptyMessage":"配送予定データはありません。" }
+  ]
+}</pre>
+<p><b>Empty state (DA_HOME_001_Empty):</b> khi <code>items</code> của 1 ngày = <code>[]</code> → FE render <code>emptyMessage</code>. <code>emptyMessage</code> chỉ ≠ <code>null</code> khi ngày đó rỗng. JP「配送予定データはありません。」/ VN「Không có dữ liệu giao hàng dự kiến.」</p>
+
+<h4 style="margin-top:18px">Response DTOs</h4>
+<pre>// GET /driver/home
+class DriverHomeResponse { driverName:string; kpi:DriverHomeKpiResponse; blocks:DriverScheduleResponse[]; }
+class DriverHomeKpiResponse { todayTotal:number; completed:number; remaining:number; progressPercent:number; }
+
+// GET /driver/schedules
+class DriverScheduleListResponse { schedules:DriverScheduleDateResponse[]; }
+class DriverScheduleDateResponse { date:string; label:string; items:DriverScheduleResponse[]; emptyMessage:string|null; }
+
+// dùng chung (block trong home & schedules)
+class DriverScheduleResponse {
+  warehouseName:string; warehouseStatus:'UNRECEIVED'|'RECEIVED'; warehouseAddress:string;
+  companyCount:number; totalBoxCount:number; totalItemCount:number; totalDeliveredCount:number;
+  companies:DriverScheduleCompanyResponse[];
+}
+class DriverScheduleCompanyResponse {
+  companyId:number; companyName:string; deliveryStatus:'UNDELIVERED'|'DELIVERED'|'TROUBLE';
+  deliveryAddress:string; boxCount:number; orderItemCount:number; deliveredCount:number;
+}</pre>
+
+<h4 style="margin-top:18px">Enums</h4>
+<p style="font-weight:700"><code>warehouseStatus</code></p>
+<table><thead><tr><th>Value</th><th>日本語</th><th>Ý nghĩa</th></tr></thead><tbody>
+<tr><td><code>UNRECEIVED</code></td><td>未受取</td><td>Chưa nhận hàng từ kho</td></tr>
+<tr><td><code>RECEIVED</code></td><td>受取済</td><td>Đã nhận</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:8px"><code>deliveryStatus</code> (company — shared <code>DeliveryStatus</code>)</p>
+<table><thead><tr><th>Value</th><th>日本語</th><th>Ý nghĩa</th></tr></thead><tbody>
+<tr><td><code>UNDELIVERED</code></td><td>未配送</td><td>Chưa giao</td></tr>
+<tr><td><code>DELIVERED</code></td><td>配送完了</td><td>Đã giao xong</td></tr>
+<tr><td><code>TROUBLE</code></td><td>トラブル</td><td>Có sự cố</td></tr>
+</tbody></table>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:9px 12px;font-size:12px;color:#92400e;margin-top:12px">
+  ⚠️ <b>DB note:</b> Không có <code>DELIVERING</code> (配送中) ở cấp công ty — <code>shipment_companies</code> không có cột status. <code>deliveryStatus</code> là <b>giá trị suy ra</b> (DELIVERED ⇐ <code>delivery_completion_reports.submitted_at</code>; TROUBLE ⇐ trouble report). Trạng thái "đang giao" chỉ tồn tại cấp chuyến (<code>shipments.status = IN_TRANSIT</code>), chưa quy được về 1 công ty.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).forEach(n=>{
+  const d=W[n], cls=d.cls||'';
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function openDw(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function closeDw(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=closeDw; ov.onclick=closeDw;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDw(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openDw(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

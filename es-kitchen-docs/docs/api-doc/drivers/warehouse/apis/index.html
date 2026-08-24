@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>荷物受取 — API 配線ガイド (Driver)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root{ --primary:#65a30d; --lime:#84cc16; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif; background:#F3F4F6; color:#222; }
+  /* ===== deliverer-format badges + drawer ===== */
+  .nb{ display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;margin-left:4px;
+    background:#0062CC;color:#fff;font-size:11px;font-weight:800;border-radius:10px;cursor:pointer;vertical-align:middle;
+    box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .12s,background .12s;user-select:none;white-space:nowrap; }
+  .nb:hover{ transform:scale(1.15);background:#004C9F; }
+  .nb.act{ background:#16a34a; } .nb.act:hover{ background:#0f7a32; }
+  .nb.st{ background:#64748b; } .nb.st:hover{ background:#475569; }
+  .nb.tbd{ background:#d97706; }
+  .card{ background:#fff;border:1px solid #E5E7EB;border-radius:12px; }
+  .ov{ position:fixed;inset:0;background:rgba(15,23,42,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60; }
+  .ov.show{ opacity:1;pointer-events:auto; }
+  .dw{ position:fixed;top:0;right:0;bottom:0;width:860px;max-width:96vw;background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.2);
+    transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column; }
+  .dw.show{ transform:translateX(0); }
+  .dw-head{ padding:14px 20px;border-bottom:1px solid #E5E7EB;display:flex;align-items:center;justify-content:space-between; }
+  .dw-body{ padding:18px 20px;overflow-y:auto; }
+  .dw-tabs{ display:flex;gap:8px;padding:0 20px;border-bottom:1px solid #E5E7EB; }
+  .dw-tab{ padding:10px 14px;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2px solid transparent; }
+  .dw-tab.active{ color:var(--primary);border-bottom-color:var(--primary); }
+  .map{ width:100%;border-collapse:collapse;font-size:12.5px; }
+  .map th,.map td{ border:1px solid #E5E7EB;padding:8px 10px;text-align:left;vertical-align:top; }
+  .map th{ background:#F3F4F6;color:#475569;font-weight:700; }
+  .map code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .map tr.hl td{ background:#ecfccb; }
+  .map .num{ font-weight:800;color:#0062CC;text-align:center;white-space:nowrap; }
+  .map .num.act{ color:#16a34a; } .map .num.st{ color:#64748b; } .map .num.tbd{ color:#d97706; }
+  .method{ display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:4px; }
+  .m-get{background:#c6f6d5;color:#276749;} .m-post{background:#bee3f8;color:#2a4365;} .m-put{background:#feebc8;color:#9c4221;}
+  .doc h4{ font-size:13.5px;font-weight:800;margin:18px 0 6px; }
+  .doc p{ font-size:12.5px;color:#475569;margin:2px 0; }
+  .doc pre{ background:#0f1b2d;color:#dfe8f3;border-radius:8px;padding:12px;font-size:11.5px;overflow-x:auto;margin:6px 0; }
+  .doc code{ background:#eef2f7;border-radius:4px;padding:1px 5px;font-size:11.5px; }
+  .doc table{ width:100%;border-collapse:collapse;font-size:12px;margin:6px 0; }
+  .doc th,.doc td{ border:1px solid #E5E7EB;padding:6px 8px;text-align:left;vertical-align:top; } .doc th{ background:#F3F4F6; }
+  /* ===== phone mockup (E06) ===== */
+  .gallery{ display:flex;gap:26px;overflow-x:auto;padding:10px 4px 22px; }
+  .mock{ flex:0 0 auto;text-align:center; }
+  .mock-cap{ font-size:13px;font-weight:800;color:#2d3748;margin-bottom:10px; }
+  .mock-cap .sid{ display:block;font-size:10px;color:#0066de;margin-top:2px; }
+  .frame{ zoom:.82; }
+  .phone{ width:390px;min-height:760px;background:#f4f6f9;border-radius:30px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.18);display:flex;flex-direction:column;position:relative;border:4px solid #2d3748;text-align:left; }
+  .phone *{ margin:0;padding:0;box-sizing:border-box; }
+  .header{ display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#fff; }
+  .hbtn{ width:40px;height:40px;border-radius:50%;border:1px solid #e3e3e3;display:flex;align-items:center;justify-content:center;background:#fff; }
+  .hbtn.ghost{ border:none; } .hbtn svg{ width:20px;height:20px;stroke:#333;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+  .htitle{ font-size:19px;font-weight:700;color:#1a1a1a; }
+  .content{ flex:1;overflow-y:auto;padding:14px 16px 96px; }
+  .sec-label{ font-size:16px;font-weight:700;color:#1a1a1a;margin:18px 2px 12px; } .content>.sec-label:first-child{ margin-top:0; }
+  .search-box{ position:relative;margin-bottom:12px; }
+  .search-input{ width:100%;padding:13px 44px 13px 16px;border:1px solid #e0e0e0;border-radius:12px;font-size:15px;background:#fff; }
+  .search-input::placeholder{ color:#b0b0b0; }
+  .search-icon{ position:absolute;right:14px;top:50%;transform:translateY(-50%); } .search-icon svg{ width:22px;height:22px;stroke:#999;fill:none;stroke-width:2; }
+  .note{ font-size:12.5px;color:#8a8f96;line-height:1.7;margin-bottom:14px; }
+  .rcard{ background:#fff;border:1px solid #ececec;border-radius:12px;padding:14px;margin-bottom:12px; }
+  .rcard-head{ display:flex;align-items:flex-start;gap:10px; }
+  .ricon{ width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .ricon svg{ width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round; }
+  .ricon.blue{ background:#1f6fe0; } .ricon.purple{ background:#5b3cc4; } .ricon.orange{ background:#f5921e; }
+  .rname{ flex:1;font-size:15px;font-weight:700;color:#1a1a1a;line-height:1.35; }
+  .rbadge{ font-size:12px;font-weight:700;padding:4px 9px;border-radius:7px;flex-shrink:0; }
+  .rbadge.undelivered{ background:#fff;border:1.4px solid #e3a93f;color:#d98e00; } .rbadge.unreceived{ background:#f0f0f2;color:#8a8f96; }
+  .rradio{ width:24px;height:24px;border-radius:50%;border:2px solid #c4c4c4;flex-shrink:0; }
+  .rradio.checked{ border-color:#1f6fe0;display:flex;align-items:center;justify-content:center; }
+  .rradio.checked::after{ content:'';width:13px;height:13px;border-radius:50%;background:#1f6fe0; }
+  .rmeta{ margin-top:10px; } .rmeta-row{ display:flex;align-items:flex-start;gap:6px;font-size:13px;color:#666;margin-top:5px; }
+  .rmeta-row svg{ width:15px;height:15px;stroke:#999;fill:none;stroke-width:1.6;flex-shrink:0;margin-top:1px; }
+  .rcounts{ display:flex;gap:14px;margin-top:8px;flex-wrap:wrap; } .rcount{ display:flex;align-items:center;gap:5px;font-size:13px;color:#555; }
+  .rcount svg{ width:16px;height:16px;stroke:#888;fill:none;stroke-width:1.6; } .rcount b{ color:#1f6fe0; }
+  .footer{ position:absolute;bottom:0;left:0;right:0;padding:14px 16px 20px;background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.05);display:flex;gap:12px; }
+  .btn{ flex:1;padding:15px;border-radius:12px;font-size:16px;font-weight:700; }
+  .btn-back{ background:#fff;color:#333;border:1.5px solid #e0e0e0; }
+  .btn-next,.btn-send.active{ background:#1a6dff;color:#fff;border:none;box-shadow:0 4px 14px rgba(26,109,255,.4); } .btn-send{ background:#cfd3da;color:#fff;border:none; }
+  .dest-card{ background:#fff;border:1px solid #ececec;border-radius:12px;overflow:hidden;margin-bottom:12px; }
+  .dest-head{ background:#fff7e6;padding:13px 14px;display:flex;align-items:flex-start;gap:11px; }
+  .dest-icon svg{ width:34px;height:34px; } .dest-info{ flex:1;min-width:0; }
+  .dest-name{ font-size:15px;font-weight:700;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .dest-addr{ display:flex;align-items:center;gap:5px;font-size:13px;color:#666;margin-top:5px; } .dest-addr svg{ width:14px;height:14px;stroke:#999;fill:none;stroke-width:1.6;flex-shrink:0; }
+  .dest-counts{ display:flex;gap:14px;margin-top:7px;flex-wrap:wrap; } .dest-count{ display:flex;align-items:center;gap:4px;font-size:13px;color:#555; }
+  .dest-count svg{ width:15px;height:15px;stroke:#888;fill:none;stroke-width:1.6; } .dest-count b{ color:#1f6fe0; }
+  .dest-collapse{ width:26px;height:26px;background:#1f6fe0;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0; } .dest-collapse svg{ width:16px;height:16px;stroke:#fff;stroke-width:3; }
+  /* group header (納品先) inside receipt */
+  .grp-head{ display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:#eef4ff;border-radius:11px 11px 0 0; }
+  .grp-icon{ width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .grp-icon svg{ width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round; }
+  .grp-icon.shelf{ background:#2da44e; } .grp-icon.truck{ background:#5b3cc4; }
+  .grp-info{ flex:1;min-width:0; } .grp-name{ font-size:14px;font-weight:700;color:#1a1a1a; }
+  .grp-addr{ display:flex;align-items:center;gap:4px;font-size:12px;color:#666;margin-top:4px; } .grp-addr svg{ width:13px;height:13px;stroke:#999;fill:none;stroke-width:1.6;flex-shrink:0; }
+  .grp-counts{ display:flex;gap:12px;margin-top:6px;flex-wrap:wrap; } .grp-count{ display:flex;align-items:center;gap:4px;font-size:12px;color:#555; } .grp-count svg{ width:14px;height:14px;stroke:#888;fill:none;stroke-width:1.6; } .grp-count b{ color:#1f6fe0; }
+  .pkg-row{ display:flex;align-items:center;gap:12px;padding:13px 14px;border-top:1px solid #f0f0f0; }
+  .pkg-num{ font-size:14px;color:#555;width:14px;flex-shrink:0; } .pkg-icon svg{ width:20px;height:20px;stroke:#666;fill:none;stroke-width:1.6; }
+  .pkg-code{ flex:1;font-size:14px;color:#1a1a1a; }
+  .pkg-status{ font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;flex-shrink:0; }
+  .ps-un{ background:#fff3e0;color:#dd6b20; } .ps-rc{ background:#e6f6ea;color:#38a169; } .ps-tr{ background:#fdecec;color:#e53e3e; }
+  .pkg-check{ width:24px;height:24px;border:2px solid #c4c4c4;border-radius:5px;flex-shrink:0; }
+  .cb-checked{ width:24px;height:24px;background:#1f6fe0;border:2px solid #1f6fe0;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center; } .cb-checked svg{ width:14px;height:14px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round; }
+  .cb-disabled{ width:24px;height:24px;background:#f0f0f2;border:2px solid #e0e0e0;border-radius:5px;flex-shrink:0; }
+  .hint{ font-size:12.5px;color:#8a8f96;margin:12px 2px 0; }
+  /* warehouse header card (yellow) */
+  .whcard{ background:#fff7e6;border:1px solid #f6dca0;border-radius:12px;padding:14px;margin-bottom:14px; }
+  .wh-top{ display:flex;align-items:flex-start;gap:11px; }
+  .wh-icon{ width:40px;height:40px;border-radius:9px;background:#f5921e;display:flex;align-items:center;justify-content:center;flex-shrink:0; } .wh-icon svg{ width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round; }
+  .wh-info{ flex:1;min-width:0; } .wh-name{ font-size:16px;font-weight:700;color:#1a1a1a; }
+  .wh-date{ font-size:12.5px;color:#7a6a44;margin-top:3px; }
+  .wh-badge{ font-size:12px;font-weight:700;padding:4px 9px;border-radius:7px;flex-shrink:0;background:#f0f0f2;color:#8a8f96; }
+  .wh-addr{ display:flex;align-items:flex-start;gap:5px;font-size:12.5px;color:#7a6a44;margin-top:9px; } .wh-addr svg{ width:14px;height:14px;stroke:#b08c4c;fill:none;stroke-width:1.6;flex-shrink:0;margin-top:1px; }
+  .wh-counts{ display:flex;gap:14px;margin-top:10px;flex-wrap:wrap; } .wh-count{ display:flex;align-items:center;gap:5px;font-size:13px;color:#6b5b34; } .wh-count svg{ width:16px;height:16px;stroke:#b08c4c;fill:none;stroke-width:1.6; } .wh-count b{ color:#d86107; }
+  /* completed banner (DA_RECV_003) */
+  .done-banner{ background:#e6f6ea;border:1px solid #a8e0bb;border-radius:12px;padding:13px 14px;display:flex;align-items:center;gap:10px;margin-bottom:14px; }
+  .done-banner svg{ width:22px;height:22px;stroke:#2f855a;fill:none;stroke-width:2;flex-shrink:0; } .done-text{ font-size:13px;font-weight:700;color:#276749; } .done-time{ font-size:11.5px;color:#48916b;margin-top:2px; }
+  /* modal (Section B — partial receipt) */
+  .overlay{ position:absolute;inset:0;background:rgba(20,20,30,.45);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50; }
+  .modal{ background:#fff;border-radius:20px;width:100%;padding:24px 20px 20px;box-shadow:0 10px 40px rgba(0,0,0,.3); }
+  .mascot{ width:120px;height:112px;display:block;margin:0 auto 6px; }
+  .modal-title{ font-size:18px;font-weight:700;color:#1a1a1a;text-align:center; } .modal-sub{ font-size:13px;color:#8a8f96;text-align:center;line-height:1.7;margin:10px 0 18px; }
+  .modal-btn{ width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;margin-bottom:12px;border:none; } .modal-btn:last-child{ margin-bottom:0; }
+  .mb-primary{ background:#1a6dff;color:#fff; } .mb-outline{ background:#fff;color:#333;border:1.5px solid #e3e3e3; }
+  .modal-checkrow{ display:flex;align-items:center;gap:10px;margin:18px 0 16px; }
+  .mcheck{ width:22px;height:22px;background:#1a6dff;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center; } .mcheck svg{ width:14px;height:14px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round; } .mcheck-label{ font-size:14px;color:#444; }
+</style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto p-6">
+
+  <div class="mb-4">
+    <div class="text-xs text-gray-500 mb-1">Driver (E06) · API 配線ガイド</div>
+    <h1 class="text-2xl font-bold text-gray-900">荷物受取 — hướng dẫn ráp API cho FE</h1>
+    <p class="text-sm text-gray-600 mt-1">Click <b>số/badge</b> bất kỳ → panel phải hiện <b>bảng ráp + API docs</b> (highlight dòng đã click). Contract: <code>apis/warehouse-receipt.md</code> · base <code>/driver/*</code> · Auth <code>Bearer {Driver}</code>.</p>
+    <div class="mt-2 text-xs text-slate-500 flex gap-4 flex-wrap">
+      <span><span class="nb" style="cursor:default">n</span> đọc Response (Res → UI)</span>
+      <span><span class="nb act" style="cursor:default">n</span> nhập/ghi (UI → Request)</span>
+      <span><span class="nb st" style="cursor:default">n</span> tĩnh, không API</span>
+    </div>
+    <div class="mt-2 flex gap-2 flex-wrap text-xs">
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_RECV_001（đang nhận）</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_RECV_001（đã chọn）</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">Modal 一部受取（Section B）</span>
+      <span class="bg-slate-100 rounded-full px-3 py-1 font-bold text-slate-600">DA_RECV_003（đã hoàn thành）</span>
+    </div>
+  </div>
+
+  <!-- ===== MOCKUP GALLERY (E06 phones, khớp DA_RECV_001/003) ===== -->
+  <div class="card p-4">
+  <div class="gallery">
+
+    <!-- ===== DA_RECV_001 · đang nhận (chưa check) ===== -->
+    <div class="mock">
+      <div class="mock-cap">荷物受取（受取中）<span class="sid">DA_RECV_001</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">荷物受取</div><div class="hbtn ghost"></div></div>
+        <div class="content">
+          <!-- warehouse header card (yellow) -->
+          <div class="whcard">
+            <div class="wh-top">
+              <div class="wh-icon"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/><rect x="7" y="13" width="10" height="8"/></svg></div>
+              <div class="wh-info">
+                <div class="wh-name">オージーフーズ倉庫<span class="nb" data-n="A.3">A.3</span></div>
+                <div class="wh-date">2026-06-12（金）<span class="nb" data-n="A.4">A.4</span> · 伝票 DN-20260612-0001<span class="nb" data-n="A.5">A.5</span></div>
+              </div>
+              <span class="wh-badge">未受取<span class="nb" data-n="A.10">A.10</span></span>
+            </div>
+            <div class="wh-addr"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>〒151-0051 東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階<span class="nb" data-n="A.6">A.6</span></div>
+            <div class="wh-counts">
+              <div class="wh-count"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/></svg><b>10</b> 社</div>
+              <div class="wh-count"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>50</b> 箱</div>
+              <div class="wh-count"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/></svg><b>500</b> 品</div>
+              <div class="wh-count"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg><b>500</b> 品<span class="nb" data-n="A.SUM">A.SUM</span></div>
+            </div>
+          </div>
+
+          <div class="search-box">
+            <input class="search-input" placeholder="納品先拠点名">
+            <span class="search-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+            <span class="nb st" data-n="A.8" style="position:absolute;left:6px;top:-9px;">A.8</span>
+          </div>
+          <div class="note">☑ 未確認のみ表示<span class="nb st" data-n="A.7">A.7</span></div>
+
+          <!-- group 1: COOL -->
+          <div class="dest-card">
+            <div class="grp-head">
+              <div class="grp-icon truck"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg><span class="nb" data-n="A.20" style="position:relative;top:-16px;">A.20</span></div>
+              <div class="grp-info">
+                <div class="grp-name">大和インターナショナルトレーディング株式会社<span class="nb" data-n="A.11">A.11</span></div>
+                <div class="grp-addr"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都渋谷区1-2-3<span class="nb" data-n="A.GADDR">A.GADDR</span></div>
+                <div class="grp-counts">
+                  <div class="grp-count"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>2</b> 箱</div>
+                  <div class="grp-count"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/></svg><b>10</b> 品</div>
+                  <div class="grp-count"><svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg><b>20</b> 品<span class="nb" data-n="A.GCNT">A.GCNT</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="pkg-row"><span class="pkg-num">1<span class="nb" data-n="A.LINE">A.LINE</span></span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5031<span class="nb" data-n="A.12">A.12</span></span><span class="pkg-status ps-un">未着荷<span class="nb" data-n="A.10b">A.10b</span></span><span class="pkg-check"></span><span class="nb act" data-n="A.9">A.9</span></div>
+            <div class="pkg-row"><span class="pkg-num">2</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5032</span><span class="pkg-status ps-un">未着荷</span><span class="pkg-check"></span></div>
+            <div class="pkg-row"><span class="pkg-num">3</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5033</span><span class="pkg-status ps-tr">トラブル</span><span class="cb-disabled"></span></div>
+          </div>
+
+          <!-- group 2: ES_DELIVERY -->
+          <div class="dest-card">
+            <div class="grp-head">
+              <div class="grp-icon shelf"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg></div>
+              <div class="grp-info">
+                <div class="grp-name">富士フィナンシャルアドバイザリー株式会社</div>
+                <div class="grp-addr"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都新宿区西新宿2-8-1</div>
+                <div class="grp-counts"><div class="grp-count"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg><b>2</b> 箱</div></div>
+              </div>
+            </div>
+            <div class="pkg-row"><span class="pkg-num">1</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">3108-1234-1122</span><span class="pkg-status ps-rc">受領済</span><span class="cb-checked"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+            <div class="pkg-row"><span class="pkg-num">2</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">3108-5678-1122</span><span class="pkg-status ps-un">未着荷</span><span class="pkg-check"></span></div>
+          </div>
+        </div>
+        <div class="footer"><button class="btn btn-back">戻る<span class="nb st" data-n="A.D">A.D</span></button><button class="btn btn-next">完了<span class="nb act" data-n="A.13">A.13</span></button></div>
+      </div></div>
+    </div>
+
+    <!-- ===== DA_RECV_001 · đã chọn (FULL → /complete) ===== -->
+    <div class="mock">
+      <div class="mock-cap">荷物受取（受取選択済 → 完了）<span class="sid">DA_RECV_001</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">荷物受取</div><div class="hbtn ghost"></div></div>
+        <div class="content">
+          <div class="whcard">
+            <div class="wh-top">
+              <div class="wh-icon"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/><rect x="7" y="13" width="10" height="8"/></svg></div>
+              <div class="wh-info"><div class="wh-name">オージーフーズ倉庫</div><div class="wh-date">2026-06-12（金）</div></div>
+              <span class="wh-badge">未受取</span>
+            </div>
+            <div class="wh-addr"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>〒151-0051 東京都渋谷区千駄ヶ谷5-32-7…</div>
+          </div>
+          <div class="note">☑ 未確認のみ表示</div>
+          <div class="dest-card">
+            <div class="grp-head">
+              <div class="grp-icon truck"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg></div>
+              <div class="grp-info"><div class="grp-name">大和インターナショナルトレーディング株式会社</div><div class="grp-addr"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>東京都渋谷区1-2-3</div></div>
+            </div>
+            <div class="pkg-row"><span class="pkg-num">1</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5031</span><span class="pkg-status ps-rc">受領済</span><span class="cb-checked"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="nb act" data-n="A.9">A.9</span></div>
+            <div class="pkg-row"><span class="pkg-num">2</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5032</span><span class="pkg-status ps-rc">受領済</span><span class="cb-checked"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+            <div class="pkg-row"><span class="pkg-num">3</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5033</span><span class="pkg-status ps-tr">トラブル</span><span class="cb-disabled"></span></div>
+          </div>
+        </div>
+        <div class="footer"><button class="btn btn-back">戻る</button><button class="btn btn-send active">完了<span class="nb act" data-n="A.13">A.13</span></button></div>
+      </div></div>
+    </div>
+
+    <!-- ===== Modal Section B · nhận một phần (PARTIAL) ===== -->
+    <div class="mock">
+      <div class="mock-cap">一部受取 確認モーダル<span class="sid">DA_RECV_001-02/03</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">荷物受取</div><div class="hbtn ghost"></div></div>
+        <div class="content" style="filter:blur(1px);opacity:.5;"><div class="whcard" style="height:80px;"></div><div class="dest-card"><div class="grp-head" style="height:60px;"></div></div></div>
+        <div class="overlay">
+          <div class="modal">
+            <svg class="mascot" viewBox="0 0 160 150"><text x="40" y="34" font-size="26" font-weight="bold" fill="#e84d6a">!</text><text x="112" y="36" font-size="30" font-weight="bold" fill="#4db6e8">?</text><path d="M52 92 C46 60 60 40 80 40 C100 40 114 60 108 92 C108 100 104 108 96 110 L64 110 C56 108 52 100 52 92 Z" fill="#ffd429"/><ellipse cx="80" cy="84" rx="24" ry="26" fill="#ffe7c7"/><path d="M56 78 C54 56 66 46 80 46 C94 46 106 56 104 78 C100 64 92 60 86 64 C84 56 76 56 74 64 C68 60 60 64 56 78 Z" fill="#ffcf1a"/><ellipse cx="70" cy="84" rx="4" ry="5.5" fill="#5a3b1a"/><ellipse cx="90" cy="84" rx="4" ry="5.5" fill="#5a3b1a"/><path d="M77 98 C79 100 81 100 83 98" fill="none" stroke="#c98" stroke-width="1.8" stroke-linecap="round"/><path d="M58 122 C58 114 102 114 102 122 L102 134 L58 134 Z" fill="#ffd429"/></svg>
+            <div class="modal-title">未受取の荷物があります<span class="nb st" data-n="B.1">B.1</span></div>
+            <div class="modal-sub">受取が完了していない荷物があります。<br>ESキッチンへ連絡のうえ受取を完了してください。<span class="nb st" data-n="B.2">B.2</span></div>
+            <div class="modal-checkrow"><span class="mcheck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="mcheck-label">ESキッチンへ連絡済みです。<span class="nb act" data-n="B.4">B.4</span></span></div>
+            <button class="modal-btn mb-primary">ESへ電話する（050-5784-2777）<span class="nb act" data-n="B.5">B.5</span></button>
+            <button class="modal-btn mb-primary">受取を完了する<span class="nb act" data-n="B.6">B.6</span></button>
+            <button class="modal-btn mb-outline">戻る<span class="nb st" data-n="B.7">B.7</span></button>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ===== DA_RECV_003 · đã hoàn thành (read-only) ===== -->
+    <div class="mock">
+      <div class="mock-cap">荷物受取（完了）<span class="sid">DA_RECV_003</span></div>
+      <div class="frame"><div class="phone">
+        <div class="header"><div class="hbtn"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="htitle">荷物受取</div><div class="hbtn ghost"></div></div>
+        <div class="content">
+          <div class="done-banner"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg><div><div class="done-text">荷物の受取は完了しました。</div><div class="done-time">2026-04-15 12:03<span class="nb" data-n="C.DONE">C.DONE</span></div></div></div>
+          <div class="whcard">
+            <div class="wh-top">
+              <div class="wh-icon"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12"/><path d="M3 21h18"/><rect x="7" y="13" width="10" height="8"/></svg></div>
+              <div class="wh-info"><div class="wh-name">オージーフーズ倉庫</div><div class="wh-date">2026-06-12（金）</div></div>
+              <span class="wh-badge" style="background:#e6f6ea;color:#38a169;">受取済<span class="nb" data-n="C.STAT">C.STAT</span></span>
+            </div>
+            <div class="wh-addr"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>〒151-0051 東京都渋谷区千駄ヶ谷5-32-7…</div>
+          </div>
+          <div class="dest-card">
+            <div class="grp-head">
+              <div class="grp-icon truck"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="13" height="11" rx="1"/><path d="M14 9h4l3 3v5h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg></div>
+              <div class="grp-info"><div class="grp-name">大和インターナショナルトレーディング株式会社</div></div>
+            </div>
+            <div class="pkg-row"><span class="pkg-num">1</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5031</span><span class="pkg-status ps-rc">受領済<span class="nb" data-n="C.RO">C.RO</span></span><span class="cb-checked"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+            <div class="pkg-row"><span class="pkg-num">2</span><span class="pkg-icon"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span><span class="pkg-code">2107-6228-5032</span><span class="pkg-status ps-rc">受領済</span><span class="cb-checked"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+          </div>
+          <div class="hint">※完了済みのため操作できません（read-only）<span class="nb st" data-n="C.LOCK">C.LOCK</span></div>
+        </div>
+      </div></div>
+    </div>
+
+  </div><!-- /gallery -->
+  </div>
+
+  <p class="text-xs text-gray-500 mt-4">💡 Bấm badge bất kỳ (A./B./C.) để xem bảng ráp + tài liệu API. Mock khớp <code>DA_RECV_001 / DA_RECV_003</code> + modal Section B. 2 endpoint: <code>GET /driver/receipts/{id}</code> + <code>POST .../complete</code>.</p>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="dw" id="dw">
+  <div class="dw-head"><b>API ráp guide — 荷物受取</b>
+    <button id="dw-close" class="text-gray-400 hover:text-gray-700 text-xl"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="dw-tabs">
+    <div class="dw-tab active" data-tab="map">① Bảng ráp (No → field)</div>
+    <div class="dw-tab" data-tab="doc">② API Docs</div>
+  </div>
+  <div class="dw-body">
+    <div id="pane-map"><table class="map"><thead><tr><th style="width:48px">No</th><th>UI element</th><th>API source</th><th>Field / Action</th><th>Transform</th></tr></thead><tbody id="map-body"></tbody></table></div>
+    <div id="pane-doc" class="doc" style="display:none"></div>
+  </div>
+</aside>
+
+<script>
+const C = e => '<code>'+e+'</code>';
+const GET_R = '<span class="method m-get">GET</span> '+C('/driver/receipts/{receiptId}');
+const POST_C = '<span class="method m-post">POST</span> '+C('/driver/receipts/{receiptId}/complete');
+const FE = '<b>FE</b>';
+
+const W = {
+  'A.3':{cls:'',ui:'倉庫名 / Tên kho (header vàng)',api:GET_R,field:C('warehouseName'),tf:'—'},
+  'A.4':{cls:'',ui:'配送日 / Ngày giao',api:GET_R,field:C('deliveryDate'),tf:'render '+C('yyyy-MM-dd（曜日）')},
+  'A.5':{cls:'',ui:'伝票番号 / Số phiếu',api:GET_R,field:C('slipNumber'),tf:'free format; ẩn khi null (placement TBD)'},
+  'A.6':{cls:'',ui:'住所 / Địa chỉ kho',api:GET_R,field:C('address')+' + '+C('postalCode'),tf:'〒 + dòng địa chỉ'},
+  'A.SUM':{cls:'',ui:'数量 (社/箱/品/品)',api:GET_R,field:C('summary.companyCount')+'·'+C('summary.boxCount')+'·'+C('summary.chilledNormalItemCount')+'·'+C('summary.frozenItemCount'),tf:'X社·X箱·X品(mát+thường, icon boxes)·X品(đông lạnh, icon bông tuyết)'},
+  'A.7':{cls:'st',ui:'未確認のみ表示 / Lọc chưa nhận',api:'—',field:'Static UI',tf:'lọc client-side '+C('items[].received === false')+'; không sinh request'},
+  'A.8':{cls:'st',ui:'検索 納品先拠点名 / Ô tìm',api:'—',field:'Static UI',tf:'lọc client-side '+C('groups[].companyName')+' (≤100 ký tự); không query param'},
+  'A.10':{cls:'',ui:'倉庫ステータス badge (header)',api:GET_R,field:C('receiptStatus'),tf:'ReceiptStatus: UNRECEIVED→未受取 · RECEIVED→受取済 · TROUBLE→トラブル · CANCELLED→中止'},
+  'A.11':{cls:'',ui:'納品先名 / Tên nhóm',api:GET_R,field:C('groups[].companyName'),tf:'tiêu đề thẻ nhóm; sort ASC'},
+  'A.20':{cls:'',ui:'種別アイコン nhóm / Icon loại giao',api:GET_R,field:C('groups[].shipmentType'),tf:'ES_DELIVERY→棚 (giao + sếp kệ) · COOL→トラック (chỉ giao); field hiển thị, không đổi luồng'},
+  'A.GADDR':{cls:'',ui:'納品先住所 / Địa chỉ nhóm',api:GET_R,field:C('groups[].destinationAddress'),tf:'—'},
+  'A.GCNT':{cls:'',ui:'数量 nhóm (箱/品/品)',api:GET_R,field:C('groups[].boxCount')+'·'+C('groups[].chilledNormalItemCount')+'·'+C('groups[].frozenItemCount'),tf:'dòng tóm tắt của nhóm'},
+  'A.LINE':{cls:'',ui:'行番号 / STT kiện',api:GET_R,field:C('items[].lineNo'),tf:'sort ASC theo lineNo'},
+  'A.12':{cls:'',ui:'送り状番号 / Mã vận đơn',api:GET_R,field:C('items[].trackingNo'),tf:'—'},
+  'A.10b':{cls:'',ui:'荷物 badge / Badge kiện',api:GET_R,field:C('items[].receiptStatus'),tf:'ItemReceiptStatus: UNRECEIVED→未着荷(cam) · RECEIVED→受領済(xanh) · TROUBLE→トラブル(đỏ)'},
+  'A.9':{cls:'act',ui:'受取チェック / Tick nhận',api:FE+' input → '+POST_C,field:C('receivedItemIds[]')+' (gom '+C('items[].id')+' đã tick)',tf:'toggle UNRECEIVED↔RECEIVED; kiện TROUBLE không tick được (disabled)'},
+  'A.13':{cls:'act',ui:'完了 / Hoàn thành',api:'<b>trigger</b> → '+POST_C,field:'gửi '+C('receivedItemIds[]'),tf:'disabled khi 0 kiện tick. Tất cả tick→FULL→toast→Home. Còn kiện→mở modal Section B'},
+  'A.D':{cls:'st',ui:'戻る / Quay lại (Section D)',api:'—',field:'Static UI',tf:'popup 「編集内容を破棄しますか？」 khi đã thao tác ≥1 checkbox (FE-only)'},
+
+  'B.1':{cls:'st',ui:'「未受取の荷物があります」',api:'—',field:'Static UI',tf:'modal Section B khi còn kiện chưa tick'},
+  'B.2':{cls:'st',ui:'「ESキッチンへ連絡のうえ…」',api:'—',field:'Static UI',tf:'text + số ĐT 050-5784-2777 cố định ở FE'},
+  'B.4':{cls:'act',ui:'連絡済み checkbox',api:FE+' input → '+POST_C,field:C('esKitchenContacted'),tf:'boolean; PARTIAL bắt buộc =true (B.4 check HOẶC B.5 đã gọi)'},
+  'B.5':{cls:'act',ui:'ESへ電話する（050-5784-2777）',api:'<b>trigger</b> tel: + set '+C('esKitchenContacted'),field:C('supportPhoneNumber'),tf:'bấm = đã liên hệ → '+C('esKitchenContacted=true')+'; số cố định FE'},
+  'B.6':{cls:'act',ui:'受取を完了する / Hoàn thành (PARTIAL)',api:POST_C,field:'body '+C('receivedItemIds[]')+' + '+C('esKitchenContacted'),tf:'gọi /complete → completionType PARTIAL → Home. 400 nếu esKitchenContacted=false'},
+  'B.7':{cls:'st',ui:'戻る / Đóng modal',api:'<b>trigger</b> đóng modal',field:'về DA_RECV_001',tf:'tap; chưa gọi API'},
+
+  'C.DONE':{cls:'',ui:'完了バナー時刻 / Thời điểm hoàn thành',api:GET_R,field:C('completedAt'),tf:'!= null → DA_RECV_003 read-only; banner 「荷物の受取は完了しました。」 + thời điểm'},
+  'C.STAT':{cls:'',ui:'倉庫 badge 受取済 (header)',api:GET_R,field:C('receiptStatus')+' = '+C('RECEIVED'),tf:'→ 受取済 (xanh)'},
+  'C.RO':{cls:'',ui:'荷物 badge read-only',api:GET_R,field:C('items[].receiptStatus')+' / '+C('items[].received'),tf:'mọi item received=true → dấu check read-only'},
+  'C.LOCK':{cls:'st',ui:'操作不可ヒント / Khoá thao tác',api:'—',field:'Static UI (suy từ '+C('completedAt != null')+')',tf:'completedAt!=null → ẩn nút 完了, checkbox read-only. completedAt!=null khi gọi lại /complete → 409'}
+};
+
+const DOCS = `
+<div style="background:#f7fee7;border:1px solid #d9f99d;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#3f6212;margin-bottom:14px">
+  <b>2 API phục vụ cả luồng:</b> <span class="method m-get">GET</span> <code>/driver/receipts/{receiptId}</code> (header kho + groups[] theo 納品先 + items[] kèm trạng thái) → <span class="method m-post">POST</span> <code>/driver/receipts/{receiptId}/complete</code> (hoàn thành FULL / PARTIAL). Cùng GET phục vụ cả <code>DA_RECV_001</code> (đang nhận, <code>completedAt=null</code>) và <code>DA_RECV_003</code> (đã hoàn thành, <code>completedAt!=null</code>). Auth <code>Bearer {Driver}</code> · <code>Accept-Language: ja | vi</code>.
+</div>
+
+<h4>① <span class="method m-get">GET</span> /driver/receipts/{receiptId} — chi tiết điểm nhận hàng</h4>
+<p><b>Mục đích:</b> header kho + tóm tắt số lượng + danh sách nhóm nhận hàng theo điểm giao (納品先), mỗi nhóm chứa các kiện (送り状番号) kèm trạng thái nhận. Phân biệt <code>DA_RECV_001</code> vs <code>DA_RECV_003</code> qua <code>completedAt</code>.</p>
+<p><b>Path:</b> <code>receiptId</code> (= <code>id</code> thẻ kho ở Home / Tab A delivery-list). Bộ lọc 未確認のみ表示 (A.7) + ô tìm 納品先拠点名 (A.8) là <b>lọc client-side</b> — không có query param.</p>
+<p style="font-weight:700;margin-top:8px">Response 200 — đang nhận (<code>completedAt: null</code>, DA_RECV_001)</p>
+<pre>{
+  "receiptId": 9001,
+  "warehouseName": "オージーフーズ倉庫",
+  "deliveryDate": "2026-06-12",
+  "slipNumber": "DN-20260612-0001",
+  "receiptStatus": "UNRECEIVED",
+  "postalCode": "151-0051",
+  "address": "東京都渋谷区千駄ヶ谷5-32-7野村不動産南新宿ビル2階",
+  "completedAt": null,
+  "summary": { "companyCount": 10, "boxCount": 50, "chilledNormalItemCount": 500, "frozenItemCount": 500 },
+  "groups": [
+    { "id": 5001, "shipmentType": "COOL",
+      "companyName": "大和インターナショナルトレーディング株式会社",
+      "destinationAddress": "東京都渋谷区1-2-3",
+      "boxCount": 2, "chilledNormalItemCount": 10, "frozenItemCount": 20,
+      "items": [
+        { "id": 70011, "lineNo": 1, "trackingNo": "2107-6228-5031", "receiptStatus": "UNRECEIVED", "received": false },
+        { "id": 70012, "lineNo": 2, "trackingNo": "2107-6228-5032", "receiptStatus": "UNRECEIVED", "received": false },
+        { "id": 70013, "lineNo": 3, "trackingNo": "2107-6228-5033", "receiptStatus": "TROUBLE", "received": false }
+      ] },
+    { "id": 5002, "shipmentType": "ES_DELIVERY",
+      "companyName": "富士フィナンシャルアドバイザリー株式会社",
+      "destinationAddress": "東京都新宿区西新宿2-8-1",
+      "boxCount": 2, "chilledNormalItemCount": 10, "frozenItemCount": 20,
+      "items": [
+        { "id": 70021, "lineNo": 1, "trackingNo": "3108-1234-1122", "receiptStatus": "RECEIVED", "received": true },
+        { "id": 70022, "lineNo": 2, "trackingNo": "3108-5678-1122", "receiptStatus": "UNRECEIVED", "received": false }
+      ] }
+  ]
+}</pre>
+<p style="font-weight:700;margin-top:8px">Response 200 — đã hoàn thành (<code>completedAt != null</code>, DA_RECV_003)</p>
+<pre>{
+  "receiptId": 9001, "warehouseName": "オージーフーズ倉庫", "deliveryDate": "2026-06-12",
+  "slipNumber": "DN-20260612-0001", "receiptStatus": "RECEIVED",
+  "postalCode": "151-0051", "address": "東京都渋谷区千駄ヶ谷5-32-7…",
+  "completedAt": "2026-04-15T12:03:00+09:00",
+  "summary": { "companyCount": 10, "boxCount": 50, "chilledNormalItemCount": 500, "frozenItemCount": 500 },
+  "groups": [ "...(mọi item received=true, hiển thị dấu check read-only)..." ]
+}</pre>
+<p><b>Phân biệt màn:</b> <code>completedAt == null</code> & <code>receiptStatus != CANCELLED</code> → <b>DA_RECV_001</b> editable (cho tích checkbox). <code>completedAt != null</code> → <b>DA_RECV_003</b> read-only (banner + dấu check, ẩn nút 完了). <code>receiptStatus == CANCELLED</code> → read-only.</p>
+
+<h4 style="margin-top:18px">Response DTO</h4>
+<pre>export class WarehouseReceiptDetailResponse {
+  receiptId: number;
+  warehouseName: string;            // A.3
+  deliveryDate: string;             // A.4 yyyy-MM-dd
+  slipNumber: string | null;        // A.5
+  receiptStatus: 'UNRECEIVED'|'RECEIVED'|'TROUBLE'|'CANCELLED'; // A.10 kho
+  postalCode: string | null;
+  address: string;                  // A.6
+  completedAt: string | null;       // ISO8601; null = DA_RECV_001
+  summary: ReceiptSummaryDto;        // companyCount/boxCount/chilledNormalItemCount/frozenItemCount
+  groups: ReceiptGroupDto[];
+}
+export class ReceiptGroupDto {
+  id: number; shipmentType: 'ES_DELIVERY'|'COOL'; // A.20 icon
+  companyName: string;              // A.11
+  destinationAddress: string; boxCount: number; chilledNormalItemCount: number; frozenItemCount: number;
+  items: ReceiptBoxItemDto[];
+}
+export class ReceiptBoxItemDto {
+  id: number;                       // dùng trong /complete (receivedItemIds)
+  lineNo: number;                   // A.LINE
+  trackingNo: string;               // A.12
+  receiptStatus: 'UNRECEIVED'|'RECEIVED'|'TROUBLE'; // A.10 badge kiện
+  received: boolean;                // A.9 checkbox
+}</pre>
+
+<h4 style="margin-top:18px">② <span class="method m-post">POST</span> /driver/receipts/{receiptId}/complete — hoàn thành nhận hàng</h4>
+<p>Một endpoint xử lý <b>cả 2 luồng</b>:</p>
+<ul style="font-size:12.5px;color:#475569;line-height:1.8;margin:4px 0 6px 18px;list-style:disc">
+  <li><b>FULL</b>: mọi kiện nhận được đều đã tích → hoàn thành ngay → toast Section C → Home. <code>esKitchenContacted</code> bị bỏ qua.</li>
+  <li><b>PARTIAL</b>: còn kiện chưa nhận → <b>bắt buộc</b> <code>esKitchenContacted = true</code> (B.4 check hoặc B.5 gọi) → ngược lại <code>400</code>.</li>
+</ul>
+<p style="font-weight:700;margin-top:8px">Request body</p>
+<pre>POST /driver/receipts/9001/complete
+{ "receivedItemIds": [70011, 70012, 70021, 70022], "esKitchenContacted": false }</pre>
+<table><thead><tr><th>Param</th><th>Type</th><th>BB</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>receivedItemIds</code></td><td>number[]</td><td>✅</td><td><code>items[].id</code> đã tích nhận (A.9). Phải ≥ 1 phần tử</td></tr>
+<tr><td><code>esKitchenContacted</code></td><td>boolean</td><td>✅</td><td>Đã báo ES về phần chưa nhận (B.4/B.5). Bắt buộc <code>true</code> nếu PARTIAL</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:8px">Response 200 — FULL</p>
+<pre>{ "receiptId": 9001, "completionType": "FULL", "receiptStatus": "RECEIVED",
+  "completedAt": "2026-06-12T12:03:00+09:00", "receivedCount": 5, "unreceivedCount": 0,
+  "message": "荷物の受取は完了しました。" }</pre>
+<p style="font-weight:700;margin-top:8px">Response 200 — PARTIAL</p>
+<pre>{ "receiptId": 9001, "completionType": "PARTIAL", "receiptStatus": "RECEIVED",
+  "completedAt": "2026-06-12T12:03:00+09:00", "receivedCount": 3, "unreceivedCount": 2,
+  "message": "一部未受取のまま受取を完了しました。" }</pre>
+<p>Kiện trong <code>receivedItemIds</code> → <code>RECEIVED</code>; kiện không có giữ nguyên (<code>UNRECEIVED</code>/<code>TROUBLE</code>). <code>receiptStatus</code> điểm nhận → <code>RECEIVED</code> ở cả 2 loại. Phân loại server: <code>FULL</code> ⇔ mọi kiện receipt thuộc <code>receivedItemIds</code> (không còn UNRECEIVED/TROUBLE); ngược lại <code>PARTIAL</code> ⇒ bắt buộc <code>esKitchenContacted=true</code>. Idempotent guard: <code>completedAt != null</code> → <b>409</b>.</p>
+<pre>export class CompleteReceiptResponse {
+  receiptId: number;
+  completionType: 'FULL' | 'PARTIAL';
+  receiptStatus: 'RECEIVED';
+  completedAt: string;              // ISO8601
+  receivedCount: number; unreceivedCount: number;
+  message: string;                  // đa ngôn ngữ theo Accept-Language
+}</pre>
+
+<h4 style="margin-top:18px">Enums</h4>
+<p style="font-weight:700"><code>ItemReceiptStatus</code> (A.10 — badge từng kiện; nhãn JP cấp kiện khác cấp điểm nhận)</p>
+<table><thead><tr><th>Value</th><th>日本語</th><th>Tiếng Việt</th><th>Badge</th></tr></thead><tbody>
+<tr><td><code>UNRECEIVED</code></td><td>未着荷</td><td>Chưa nhận</td><td style="color:#dd6b20">Orange</td></tr>
+<tr><td><code>RECEIVED</code></td><td>受領済</td><td>Đã nhận</td><td style="color:#38a169">Green</td></tr>
+<tr><td><code>TROUBLE</code></td><td>トラブル</td><td>Trục trặc</td><td style="color:#e53e3e">Red (độc lập checkbox)</td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:8px"><code>ReceiptCompletionType</code></p>
+<table><thead><tr><th>Value</th><th>日本語</th><th>Tiếng Việt</th><th>Mô tả</th></tr></thead><tbody>
+<tr><td><code>FULL</code></td><td>全量受取</td><td>Nhận toàn bộ</td><td>Mọi kiện nhận được đều đã tích</td></tr>
+<tr><td><code>PARTIAL</code></td><td>一部未受取</td><td>Nhận một phần</td><td>Còn kiện chưa nhận → cần <code>esKitchenContacted = true</code></td></tr>
+</tbody></table>
+<p style="font-weight:700;margin-top:8px"><code>ShipmentType</code> (A.20 — icon loại giao, cấp nhóm 納品先) · <code>ReceiptStatus</code> (header)</p>
+<table><thead><tr><th>Enum</th><th>Value → 日本語</th></tr></thead><tbody>
+<tr><td><code>ShipmentType</code></td><td><code>ES_DELIVERY</code> ES配送便 (棚入れあり) · <code>COOL</code> COOL便 (棚入れなし)</td></tr>
+<tr><td><code>ReceiptStatus</code> (điểm nhận)</td><td><code>UNRECEIVED</code> 未受取 · <code>RECEIVED</code> 受取済 · <code>TROUBLE</code> トラブル · <code>CANCELLED</code> 中止</td></tr>
+</tbody></table>
+
+<h4 style="margin-top:18px">Errors</h4>
+<p style="font-size:12px;color:#5a6473">Envelope: <code>statusCode</code> enum chuỗi (400→<code>error</code>, 401→<code>unauthorized</code>, 403→<code>forbidden</code>, 404→<code>not_found</code>, 409→<code>conflict</code>) + <code>message</code>/<code>title</code>/<code>errorCode</code>/<code>data:null</code>.</p>
+<table><thead><tr><th>HTTP</th><th>Điều kiện</th><th>Message (JP)</th></tr></thead><tbody>
+<tr><td>400</td><td><code>receivedItemIds</code> rỗng</td><td>受け取った荷物を1件以上選択してください</td></tr>
+<tr><td>400</td><td>PARTIAL nhưng <code>esKitchenContacted = false</code></td><td>未受取の荷物があります。ESキッチンへの連絡を確認してください</td></tr>
+<tr><td>400</td><td>id không thuộc receipt / đang <code>TROUBLE</code>/<code>CANCELLED</code></td><td>無効な荷物が含まれています</td></tr>
+<tr><td>401</td><td>Token sai/hết hạn</td><td>認証エラー</td></tr>
+<tr><td>403</td><td>Không phải tài xế được phân công</td><td>この受取を操作する権限がありません</td></tr>
+<tr><td>404</td><td><code>receiptId</code> không tồn tại</td><td>指定された荷物受取が見つかりません</td></tr>
+<tr><td>409</td><td>Đã hoàn thành (<code>completedAt != null</code>)</td><td>この荷物受取はすでに完了しています</td></tr>
+</tbody></table>
+<pre>{ "statusCode": "conflict", "message": "この荷物受取はすでに完了しています", "title": "Conflict", "errorCode": null, "data": null }</pre>
+
+<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:9px 12px;font-size:12px;color:#92400e;margin-top:12px">
+  ⚠️ <b>FE-only (không cần API):</b> Section C toast 「荷物の受取は完了しました。」 (5s → Home) · Section D popup 「編集内容を破棄しますか？」 (back sau khi thao tác ≥1 checkbox) · Section B modal nhận một phần (text + 050-5784-2777 cố định FE). Cross-ref: thẻ kho ở <code>DA_HOME_001</code> cần bổ sung <code>warehouseReceiptId</code> (= <code>receiptId</code>) để điều hướng.
+</div>
+`;
+
+const mb=document.getElementById('map-body');
+Object.keys(W).forEach(n=>{
+  const d=W[n], cls=d.cls||'';
+  const tr=document.createElement('tr'); tr.id='row-'+n;
+  tr.innerHTML='<td class="num '+cls+'">'+n+'</td><td>'+d.ui+'</td><td>'+d.api+'</td><td>'+d.field+'</td><td>'+(d.tf||'—')+'</td>';
+  mb.appendChild(tr);
+});
+document.getElementById('pane-doc').innerHTML=DOCS;
+const ov=document.getElementById('ov'), dw=document.getElementById('dw');
+function openDw(n){ switchTab('map'); document.querySelectorAll('.map tr.hl').forEach(r=>r.classList.remove('hl'));
+  if(n){ const r=document.getElementById('row-'+n); if(r){ r.classList.add('hl'); setTimeout(()=>r.scrollIntoView({block:'center',behavior:'smooth'}),60);} }
+  dw.classList.add('show'); ov.classList.add('show'); }
+function closeDw(){ dw.classList.remove('show'); ov.classList.remove('show'); }
+function switchTab(t){ document.querySelectorAll('.dw-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));
+  document.getElementById('pane-map').style.display=t==='map'?'':'none'; document.getElementById('pane-doc').style.display=t==='doc'?'':'none'; }
+document.getElementById('dw-close').onclick=closeDw; ov.onclick=closeDw;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDw(); });
+document.querySelectorAll('.dw-tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+document.querySelectorAll('.nb[data-n]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openDw(b.getAttribute('data-n'));}));
+</script>
+</body>
+</html>

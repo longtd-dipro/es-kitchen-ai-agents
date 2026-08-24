@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#es-kitchen-api-entity-relationship-overview" class="md-skip">
+        <a href="#es-kitchen-api-entity-relationship-diagram" class="md-skip">
           Skip to content
         </a>
       
@@ -792,10 +792,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cluster-1-identity-auth" class="md-nav__link">
+  <a href="#diagram-tong-the-mermaid" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cluster 1 — Identity &amp; Auth
+        Diagram tổng thể (Mermaid)
       
     </span>
   </a>
@@ -803,99 +803,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cluster-2-business-core-company-contract-menu-product" class="md-nav__link">
+  <a href="#entities-chi-tiet" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cluster 2 — Business core (Company / Contract / Menu / Product)
+        Entities chi tiết
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-3-delivery-logistics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 3 — Delivery &amp; Logistics
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-4-ordering-payment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 4 — Ordering &amp; Payment
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-5-inventory-material" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 5 — Inventory &amp; Material
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-6-workflow-request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 6 — Workflow / Request
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-7-ai-suggestion" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 7 — AI / Suggestion
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-8-reference-notification" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 8 — Reference / Notification
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#convention-chung" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Convention chung
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Convention chung">
+    <nav class="md-nav" aria-label="Entities chi tiết">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#primary-key" class="md-nav__link">
+  <a href="#companies-cong-ty" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Primary key
+        companies — Công ty
       
     </span>
   </a>
@@ -903,10 +826,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#timestamp" class="md-nav__link">
+  <a href="#company_admins-admin-cua-company-e02-login" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Timestamp
+        company_admins — Admin của company (E02 login)
       
     </span>
   </a>
@@ -914,10 +837,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#naming" class="md-nav__link">
+  <a href="#company_contracts-hop-ong" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Naming
+        company_contracts — Hợp đồng
       
     </span>
   </a>
@@ -925,10 +848,560 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#relation" class="md-nav__link">
+  <a href="#contract_equipments-thiet-bi-trong-hop-ong" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Relation
+        contract_equipments — Thiết bị trong hợp đồng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contract_payment_items-hang-muc-thanh-toan-hop-ong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        contract_payment_items — Hạng mục thanh toán hợp đồng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admins-system-admin-e03-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        admins — System Admin (E03 login)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-end-users-mobile-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        users — End users (Mobile App)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menus-menu-thang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        menus — Menu tháng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menu_products-san-pham-trong-menu-junction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        menu_products — Sản phẩm trong menu (junction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menu_histories-lich-su-thay-oi-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        menu_histories — Lịch sử thay đổi menu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#products-san-pham-master-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        products — Sản phẩm (master data)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product_suppliers-nha-cung-cap-san-pham" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        product_suppliers — Nhà cung cấp sản phẩm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product_images-hinh-anh-san-pham" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        product_images — Hình ảnh sản phẩm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#orders-on-hang-le-e01-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        orders — Đơn hàng lẻ (E01 user)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#order_details-chi-tiet-on-hang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        order_details — Chi tiết đơn hàng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#company_orders-on-thang-cua-company" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        company_orders — Đơn tháng của company
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#company_order_items-chi-tiet-on-thang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        company_order_items — Chi tiết đơn tháng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#company_order_delivery_slots-lich-giao-trong-on-thang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        company_order_delivery_slots — Lịch giao trong đơn tháng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#company_order_item_delivery_quantities-so-luong-moi-mon-theo-tung-lan-giao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        company_order_item_delivery_quantities — Số lượng mỗi món theo từng lần giao
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#materials-nguyen-lieu-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        materials — Nguyên liệu (master)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#material_orders-on-at-nguyen-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        material_orders — Đơn đặt nguyên liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#material_order_items-chi-tiet-on-nguyen-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        material_order_items — Chi tiết đơn nguyên liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#material_deliveries-giao-hang-nguyen-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        material_deliveries — Giao hàng nguyên liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#suppliers-nha-cung-cap-e04-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        suppliers — Nhà cung cấp (E04 login)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_addresses-ia-chi-cua-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_addresses — Địa chỉ của supplier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_contacts-nguoi-lien-he-cua-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_contacts — Người liên hệ của supplier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_history_logs-lich-su-thay-oi-supplier-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_history_logs — Lịch sử thay đổi supplier master
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_orders-on-nha-cung-cap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_orders — Đơn nhà cung cấp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_order_details-chi-tiet-dong-on-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_order_details — Chi tiết dòng đơn supplier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_order_material_details-chi-tiet-nguyen-lieu-on-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_order_material_details — Chi tiết nguyên liệu đơn supplier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#order_deadline_configs-cau-hinh-deadline-at-hang-thang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        order_deadline_configs — Cấu hình deadline đặt hàng tháng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drivers-tai-xe-e06-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        drivers — Tài xế (E06 login)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverers-nhan-vien-giao-hang-e05-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        deliverers — Nhân viên giao hàng (E05 login)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles-vai-tro-rbac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        roles — Vai trò RBAC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin_roles-mapping-admin-role-junction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        admin_roles — Mapping admin ↔ role (junction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permission_groups-nhom-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        permission_groups — Nhóm permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissions-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        permissions — Permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actions-actions-cho-permission-readwritedelete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        actions — Actions cho permission (READ/WRITE/DELETE...)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permission_actions-mapping-permission-action-junction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        permission_actions — Mapping permission ↔ action (junction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role_permissions-mapping-role-permission-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        role_permissions — Mapping role ↔ permission ↔ action
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip_whitelists-danh-sach-ip-uoc-phep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ip_whitelists — Danh sách IP được phép
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintain_settings-cau-hinh-maintain-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maintain_settings — Cấu hình maintain mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintain_setting_histories-lich-su-thay-oi-maintain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maintain_setting_histories — Lịch sử thay đổi maintain
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payments-thanh-toan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        payments — Thanh toán
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payment_methods-phuong-thuc-thanh-toan-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        payment_methods — Phương thức thanh toán (master)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#carts-gio-hang-1-user-1-cart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        carts — Giỏ hàng (1 user = 1 cart)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cart_items-item-trong-gio-hang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cart_items — Item trong giỏ hàng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notifications-thong-bao-he-thong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        notifications — Thông báo hệ thống
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_notifications-notification-gui-toi-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_notifications — Notification gửi tới user
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_favorites-san-pham-yeu-thich" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_favorites — Sản phẩm yêu thích
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_devices-fcm-device-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_devices — FCM device tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elepay_customers-elepay-customer-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        elepay_customers — Elepay customer mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elepay_customer_sources-the-tin-dung-luu-trong-elepay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        elepay_customer_sources — Thẻ tín dụng lưu trong Elepay
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cac-entities-phu-tro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các entities phụ trợ
       
     </span>
   </a>
@@ -941,32 +1414,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#diagram-mermaid-6-cluster-tong-the" class="md-nav__link">
+  <a href="#naming-conventions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Diagram (mermaid — 6 cluster tổng thể)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#migration-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Migration reference
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#memory-update-gate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Memory Update Gate
+        Naming conventions
       
     </span>
   </a>
@@ -2015,186 +2466,6 @@
 
               
             
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Es Kitchen Webapp Payment (E07)
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Es Kitchen Webapp Payment (E07)
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_6_1" id="__nav_4_6_1_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_6_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_6_1">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Overview
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../frontend/es-kitchen-webapp-payment/overview/structure/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Structure
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../frontend/es-kitchen-webapp-payment/overview/patterns/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Patterns
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -2392,6 +2663,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../mobile/es-kitchen-payment-app/overview/patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2531,6 +2830,34 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../../../features/scope-changes-phase2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 2 - Scope Changes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
     
@@ -2547,10 +2874,1180 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_3" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_4" >
         
           
-          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF01 - Contract Management
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF01 - Contract Management
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/contract-management/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF02 - Menu & Order
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF02 - Menu & Order
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/menu-order/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_6" id="__nav_6_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF03 - Delivery Dispatching
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF03 - Delivery Dispatching
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/delivery-dispatching/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_7" id="__nav_6_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF04 - Supplier Ordering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF04 - Supplier Ordering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/supplier-ordering/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_8" id="__nav_6_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF05 - Delivery Partner
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF05 - Delivery Partner
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/delivery-partner/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_9" id="__nav_6_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF06 - Delivery Driver
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF06 - Delivery Driver
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/delivery-driver/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_10" id="__nav_6_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF07 - Payment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF07 - Payment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/payment/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_11" id="__nav_6_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF08 - Collection & Cancellation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF08 - Collection & Cancellation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/collection-cancellation/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_12" id="__nav_6_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF09 - Inventory & Equipment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF09 - Inventory & Equipment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/inventory-equipment/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_13" id="__nav_6_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF10 - User Binding
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF10 - User Binding
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/user-binding/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_14" id="__nav_6_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF11 - User Engagement
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF11 - User Engagement
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/user-engagement/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_15" id="__nav_6_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF12 - Agency Management
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF12 - Agency Management
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/agency-management/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_16" id="__nav_6_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BF13 - System Other
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_16">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BF13 - System Other
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../features/system-other/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_17" id="__nav_6_17_label" tabindex="0">
             
   
   
@@ -2568,8 +4065,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_17">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2693,10 +4190,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_18" >
         
           
-          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_18" id="__nav_6_18_label" tabindex="0">
             
   
   
@@ -2714,8 +4211,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_18">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -2867,100 +4364,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_5" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_19" >
         
           
-          <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Agency Management
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Agency Management
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/agency-management/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_6" id="__nav_6_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_19" id="__nav_6_19_label" tabindex="0">
             
   
   
@@ -2978,8 +4385,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_19">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3159,10 +4566,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_7" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_20" >
         
           
-          <label class="md-nav__link" for="__nav_6_7" id="__nav_6_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_20" id="__nav_6_20_label" tabindex="0">
             
   
   
@@ -3180,8 +4587,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_20">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3297,10 +4704,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_7_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_20_4" >
         
           
-          <label class="md-nav__link" for="__nav_6_7_4" id="__nav_6_7_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_20_4" id="__nav_6_20_4_label" tabindex="0">
             
   
   
@@ -3318,8 +4725,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_7_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_7_4">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_20_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_20_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3759,10 +5166,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_8" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_21" >
         
           
-          <label class="md-nav__link" for="__nav_6_8" id="__nav_6_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_21" id="__nav_6_21_label" tabindex="0">
             
   
   
@@ -3780,8 +5187,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_8_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_8">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_21">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3849,100 +5256,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_9" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_22" >
         
           
-          <label class="md-nav__link" for="__nav_6_9" id="__nav_6_9_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Collection & Cancellation
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_9">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Collection & Cancellation
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/collection-cancellation/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_10" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_10" id="__nav_6_10_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_22" id="__nav_6_22_label" tabindex="0">
             
   
   
@@ -3960,8 +5277,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_10">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_22">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4029,370 +5346,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_11" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_23" >
         
           
-          <label class="md-nav__link" for="__nav_6_11" id="__nav_6_11_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Contract Management
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_11">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Contract Management
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/contract-management/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_12" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_12" id="__nav_6_12_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Delivery Dispatching
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_12">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Delivery Dispatching
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/delivery-dispatching/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_13" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_13" id="__nav_6_13_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Delivery Driver
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_13">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Delivery Driver
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/delivery-driver/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_14" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_14" id="__nav_6_14_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Delivery Partner
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_14_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_14">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Delivery Partner
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/delivery-partner/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_15" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_15" id="__nav_6_15_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_23" id="__nav_6_23_label" tabindex="0">
             
   
   
@@ -4410,8 +5367,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_15_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_15">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_23">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4479,10 +5436,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_16" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_24" >
         
           
-          <label class="md-nav__link" for="__nav_6_16" id="__nav_6_16_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_24" id="__nav_6_24_label" tabindex="0">
             
   
   
@@ -4500,8 +5457,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_16_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_16">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_24_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_24">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4869,10 +5826,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_16_13" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_24_13" >
         
           
-          <label class="md-nav__link" for="__nav_6_16_13" id="__nav_6_16_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_24_13" id="__nav_6_24_13_label" tabindex="0">
             
   
   
@@ -4890,8 +5847,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_16_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_16_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_24_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_24_13">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5099,10 +6056,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_16_14" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_24_14" >
         
           
-          <label class="md-nav__link" for="__nav_6_16_14" id="__nav_6_16_14_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_24_14" id="__nav_6_24_14_label" tabindex="0">
             
   
   
@@ -5120,8 +6077,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_16_14_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_16_14">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_24_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_24_14">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5245,10 +6202,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_16_15" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_24_15" >
         
           
-          <label class="md-nav__link" for="__nav_6_16_15" id="__nav_6_16_15_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_24_15" id="__nav_6_24_15_label" tabindex="0">
             
   
   
@@ -5266,8 +6223,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_16_15_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_16_15">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_24_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_24_15">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5343,100 +6300,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_17" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_25" >
         
           
-          <label class="md-nav__link" for="__nav_6_17" id="__nav_6_17_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Inventory & Equipment
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_17_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_17">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Inventory & Equipment
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/inventory-equipment/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_18" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_18" id="__nav_6_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_25" id="__nav_6_25_label" tabindex="0">
             
   
   
@@ -5454,8 +6321,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_18">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_25_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_25">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5607,10 +6474,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_19" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_26" >
         
           
-          <label class="md-nav__link" for="__nav_6_19" id="__nav_6_19_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_26" id="__nav_6_26_label" tabindex="0">
             
   
   
@@ -5628,8 +6495,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_19_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_19">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_26_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_26">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -5781,190 +6648,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_20" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_27" >
         
           
-          <label class="md-nav__link" for="__nav_6_20" id="__nav_6_20_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Marketing
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_20_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_20">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Marketing
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/marketing/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_21" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_21" id="__nav_6_21_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Menu & Order
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_21_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_21">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Menu & Order
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/menu-order/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_22" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_22" id="__nav_6_22_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_27" id="__nav_6_27_label" tabindex="0">
             
   
   
@@ -5982,8 +6669,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_22_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_22">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_27_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_27">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -6163,1488 +6850,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_23" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_23" id="__nav_6_23_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Order List
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_23_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_23">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Order List
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/order-list/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/order-list/es-kitchen-api/DESIGN/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    API Design
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/order-list/es-kitchen-web-supplier/DESIGN/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Web Supplier Design
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_23_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_23_4" id="__nav_6_23_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    API Tasks
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_23_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_23_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    API Tasks
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/order-list/es-kitchen-api/tasks/task-1-1/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task 1-1
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/order-list/es-kitchen-api/tasks/task-2-1/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task 2-1
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/order-list/es-kitchen-api/tasks/task-2-2/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task 2-2
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_23_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_23_5" id="__nav_6_23_5_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Web Supplier Tasks
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_23_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_23_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Web Supplier Tasks
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/order-list/es-kitchen-web-supplier/tasks/task-3-1/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task 3-1
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/order-list/es-kitchen-web-supplier/tasks/task-3-2/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task 3-2
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/order-list/es-kitchen-web-supplier/tasks/task-3-3/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task 3-3
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_24" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_24" id="__nav_6_24_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Payment
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_24_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_24">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Payment
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/payment/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_25" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_25" id="__nav_6_25_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Supplier Authentication
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_25_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_25">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Supplier Authentication
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/supplier-authentication/es-kitchen-api/DESIGN/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    API Design
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/supplier-authentication/es-kitchen-web-supplier/DESIGN/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Web Supplier Design
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_26" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_26" id="__nav_6_26_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Supplier Ordering
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_26_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_26">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Supplier Ordering
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/supplier-ordering/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_27" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_27" id="__nav_6_27_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Supplier Profile
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_27_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_27">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Supplier Profile
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/supplier-profile/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/supplier-profile/PLAN/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Plan
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/supplier-profile/es-kitchen-api/DESIGN/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    API Design
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/supplier-profile/es-kitchen-web-supplier/DESIGN/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Web Supplier Design
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_27_5" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_27_5" id="__nav_6_27_5_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    API Tasks
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_27_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_27_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    API Tasks
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/supplier-profile/es-kitchen-api/tasks/task-2-1/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task 2-1
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/supplier-profile/es-kitchen-api/tasks/task-4-1/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task 4-1
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_27_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_27_6" id="__nav_6_27_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Web Supplier Tasks
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_27_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_27_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Web Supplier Tasks
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/supplier-profile/es-kitchen-web-supplier/tasks/task-3-1/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Task 3-1
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_28" >
         
           
           <label class="md-nav__link" for="__nav_6_28" id="__nav_6_28_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Survey Management
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_28_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_28">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Survey Management
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/survey-management/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_29" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_29" id="__nav_6_29_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    System Other (Settings & Common)
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_29_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_29">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    System Other (Settings & Common)
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/system-other/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_30" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_30" id="__nav_6_30_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    User Binding
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_30_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_30">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    User Binding
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/user-binding/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_31" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_31" id="__nav_6_31_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    User Engagement
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_31_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_31">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    User Engagement
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/user-engagement/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_32" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_32" id="__nav_6_32_label" tabindex="0">
             
   
   
@@ -7662,8 +6871,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_32_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_32">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_28_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_28">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7688,152 +6897,6 @@
     
   
     Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_33" >
-        
-          
-          <label class="md-nav__link" for="__nav_6_33" id="__nav_6_33_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Webapp Payment (One QR)
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_33_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_33">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Webapp Payment (One QR)
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/webapp-payment-oneqr/SPEC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Specification
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/webapp-payment-oneqr/es-kitchen-api/DESIGN/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    API Design
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../features/webapp-payment-oneqr/es-kitchen-webapp-payment/DESIGN/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Webapp Payment Design
   
 
     
@@ -8062,10 +7125,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cluster-1-identity-auth" class="md-nav__link">
+  <a href="#diagram-tong-the-mermaid" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cluster 1 — Identity &amp; Auth
+        Diagram tổng thể (Mermaid)
       
     </span>
   </a>
@@ -8073,99 +7136,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cluster-2-business-core-company-contract-menu-product" class="md-nav__link">
+  <a href="#entities-chi-tiet" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cluster 2 — Business core (Company / Contract / Menu / Product)
+        Entities chi tiết
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-3-delivery-logistics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 3 — Delivery &amp; Logistics
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-4-ordering-payment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 4 — Ordering &amp; Payment
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-5-inventory-material" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 5 — Inventory &amp; Material
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-6-workflow-request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 6 — Workflow / Request
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-7-ai-suggestion" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 7 — AI / Suggestion
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cluster-8-reference-notification" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cluster 8 — Reference / Notification
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#convention-chung" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Convention chung
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Convention chung">
+    <nav class="md-nav" aria-label="Entities chi tiết">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#primary-key" class="md-nav__link">
+  <a href="#companies-cong-ty" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Primary key
+        companies — Công ty
       
     </span>
   </a>
@@ -8173,10 +7159,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#timestamp" class="md-nav__link">
+  <a href="#company_admins-admin-cua-company-e02-login" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Timestamp
+        company_admins — Admin của company (E02 login)
       
     </span>
   </a>
@@ -8184,10 +7170,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#naming" class="md-nav__link">
+  <a href="#company_contracts-hop-ong" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Naming
+        company_contracts — Hợp đồng
       
     </span>
   </a>
@@ -8195,10 +7181,560 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#relation" class="md-nav__link">
+  <a href="#contract_equipments-thiet-bi-trong-hop-ong" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Relation
+        contract_equipments — Thiết bị trong hợp đồng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contract_payment_items-hang-muc-thanh-toan-hop-ong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        contract_payment_items — Hạng mục thanh toán hợp đồng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admins-system-admin-e03-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        admins — System Admin (E03 login)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-end-users-mobile-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        users — End users (Mobile App)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menus-menu-thang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        menus — Menu tháng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menu_products-san-pham-trong-menu-junction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        menu_products — Sản phẩm trong menu (junction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#menu_histories-lich-su-thay-oi-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        menu_histories — Lịch sử thay đổi menu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#products-san-pham-master-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        products — Sản phẩm (master data)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product_suppliers-nha-cung-cap-san-pham" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        product_suppliers — Nhà cung cấp sản phẩm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product_images-hinh-anh-san-pham" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        product_images — Hình ảnh sản phẩm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#orders-on-hang-le-e01-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        orders — Đơn hàng lẻ (E01 user)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#order_details-chi-tiet-on-hang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        order_details — Chi tiết đơn hàng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#company_orders-on-thang-cua-company" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        company_orders — Đơn tháng của company
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#company_order_items-chi-tiet-on-thang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        company_order_items — Chi tiết đơn tháng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#company_order_delivery_slots-lich-giao-trong-on-thang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        company_order_delivery_slots — Lịch giao trong đơn tháng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#company_order_item_delivery_quantities-so-luong-moi-mon-theo-tung-lan-giao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        company_order_item_delivery_quantities — Số lượng mỗi món theo từng lần giao
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#materials-nguyen-lieu-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        materials — Nguyên liệu (master)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#material_orders-on-at-nguyen-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        material_orders — Đơn đặt nguyên liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#material_order_items-chi-tiet-on-nguyen-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        material_order_items — Chi tiết đơn nguyên liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#material_deliveries-giao-hang-nguyen-lieu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        material_deliveries — Giao hàng nguyên liệu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#suppliers-nha-cung-cap-e04-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        suppliers — Nhà cung cấp (E04 login)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_addresses-ia-chi-cua-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_addresses — Địa chỉ của supplier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_contacts-nguoi-lien-he-cua-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_contacts — Người liên hệ của supplier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_history_logs-lich-su-thay-oi-supplier-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_history_logs — Lịch sử thay đổi supplier master
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_orders-on-nha-cung-cap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_orders — Đơn nhà cung cấp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_order_details-chi-tiet-dong-on-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_order_details — Chi tiết dòng đơn supplier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplier_order_material_details-chi-tiet-nguyen-lieu-on-supplier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        supplier_order_material_details — Chi tiết nguyên liệu đơn supplier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#order_deadline_configs-cau-hinh-deadline-at-hang-thang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        order_deadline_configs — Cấu hình deadline đặt hàng tháng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drivers-tai-xe-e06-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        drivers — Tài xế (E06 login)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverers-nhan-vien-giao-hang-e05-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        deliverers — Nhân viên giao hàng (E05 login)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles-vai-tro-rbac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        roles — Vai trò RBAC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin_roles-mapping-admin-role-junction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        admin_roles — Mapping admin ↔ role (junction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permission_groups-nhom-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        permission_groups — Nhóm permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permissions-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        permissions — Permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actions-actions-cho-permission-readwritedelete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        actions — Actions cho permission (READ/WRITE/DELETE...)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permission_actions-mapping-permission-action-junction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        permission_actions — Mapping permission ↔ action (junction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role_permissions-mapping-role-permission-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        role_permissions — Mapping role ↔ permission ↔ action
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip_whitelists-danh-sach-ip-uoc-phep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ip_whitelists — Danh sách IP được phép
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintain_settings-cau-hinh-maintain-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maintain_settings — Cấu hình maintain mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintain_setting_histories-lich-su-thay-oi-maintain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        maintain_setting_histories — Lịch sử thay đổi maintain
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payments-thanh-toan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        payments — Thanh toán
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payment_methods-phuong-thuc-thanh-toan-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        payment_methods — Phương thức thanh toán (master)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#carts-gio-hang-1-user-1-cart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        carts — Giỏ hàng (1 user = 1 cart)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cart_items-item-trong-gio-hang" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cart_items — Item trong giỏ hàng
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notifications-thong-bao-he-thong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        notifications — Thông báo hệ thống
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_notifications-notification-gui-toi-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_notifications — Notification gửi tới user
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_favorites-san-pham-yeu-thich" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_favorites — Sản phẩm yêu thích
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_devices-fcm-device-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_devices — FCM device tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elepay_customers-elepay-customer-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        elepay_customers — Elepay customer mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elepay_customer_sources-the-tin-dung-luu-trong-elepay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        elepay_customer_sources — Thẻ tín dụng lưu trong Elepay
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cac-entities-phu-tro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Các entities phụ trợ
       
     </span>
   </a>
@@ -8211,32 +7747,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#diagram-mermaid-6-cluster-tong-the" class="md-nav__link">
+  <a href="#naming-conventions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Diagram (mermaid — 6 cluster tổng thể)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#migration-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Migration reference
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#memory-update-gate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Memory Update Gate
+        Naming conventions
       
     </span>
   </a>
@@ -8260,452 +7774,2844 @@
 
 
 
-<h1 id="es-kitchen-api-entity-relationship-overview">es-kitchen-api — Entity Relationship Overview</h1>
+<h1 id="es-kitchen-api-entity-relationship-diagram">es-kitchen-api — Entity Relationship Diagram</h1>
 <blockquote>
-<p>Tổng hợp entity landscape từ source code thực tế (<code>src/entities/*.entity.ts</code>).<br />
-<strong>159 entities</strong>, PostgreSQL, TypeORM 0.3.28.<br />
-PK convention: <code>bigint</code> (trả về dạng <code>string</code> trong TypeScript response).</p>
-<p><strong>Note:</strong> Full mermaid ERD với tất cả 159 entity không thực tế để maintain. File này liệt kê <strong>cluster + relation quan trọng</strong>. Chi tiết column/index của entity cụ thể → đọc trực tiếp <code>src/entities/&lt;name&gt;.entity.ts</code> (single source of truth).</p>
+<p>Tổng hợp từ source code thực tế (<code>src/entities/*.entity.ts</code>).<br />
+66 entities, PostgreSQL, TypeORM. PK là <code>bigint</code> (trả về dạng <code>string</code> trong TypeScript).</p>
 </blockquote>
 <hr />
-<h2 id="cluster-1-identity-auth">Cluster 1 — Identity &amp; Auth</h2>
-<table>
-<thead>
-<tr>
-<th>Entity</th>
-<th>Path</th>
-<th>Vai trò</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>UserEntity</code></td>
-<td><code>src/entities/user.entity.ts</code></td>
-<td>End-user (E01, E07)</td>
-</tr>
-<tr>
-<td><code>AdminEntity</code></td>
-<td><code>src/entities/admin.entity.ts</code></td>
-<td>System admin (E03)</td>
-</tr>
-<tr>
-<td><code>CompanyAdminEntity</code></td>
-<td><code>src/entities/company-admin.entity.ts</code></td>
-<td>Company admin (E02)</td>
-</tr>
-<tr>
-<td><code>PendingUserEntity</code></td>
-<td><code>src/entities/pending-user.entity.ts</code></td>
-<td>Registration flow buffer</td>
-</tr>
-<tr>
-<td><code>AuthSessionEntity</code></td>
-<td><code>src/entities/auth-session.entity.ts</code></td>
-<td>Session tracking / device management</td>
-</tr>
-<tr>
-<td><code>RoleEntity</code></td>
-<td><code>src/entities/role.entity.ts</code></td>
-<td>RBAC role</td>
-</tr>
-<tr>
-<td><code>PermissionEntity</code></td>
-<td><code>src/entities/permission.entity.ts</code></td>
-<td>RBAC permission</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Quan hệ chính:</strong></p>
-<ul>
-<li><code>UserEntity</code> — <code>AuthSessionEntity</code> (1-N)</li>
-<li><code>AdminEntity</code> — <code>RoleEntity</code> (N-1) — <code>PermissionEntity</code> (N-N qua join table)</li>
-<li><code>CompanyAdminEntity</code> — <code>CompanyEntity</code> (N-1)</li>
-</ul>
-<hr />
-<h2 id="cluster-2-business-core-company-contract-menu-product">Cluster 2 — Business core (Company / Contract / Menu / Product)</h2>
-<table>
-<thead>
-<tr>
-<th>Entity</th>
-<th>Vai trò</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>CompanyEntity</code></td>
-<td>Enterprise client — root aggregate cho E02</td>
-</tr>
-<tr>
-<td><code>ContractEntity</code></td>
-<td>Hợp đồng company ↔ ESKITCHEN</td>
-</tr>
-<tr>
-<td><code>MenuEntity</code></td>
-<td>Menu master (config + monthly)</td>
-</tr>
-<tr>
-<td><code>MonthlyMenuEntity</code></td>
-<td>Menu theo tháng cho company</td>
-</tr>
-<tr>
-<td><code>ProductEntity</code></td>
-<td>Product catalog</td>
-</tr>
-<tr>
-<td><code>ProductTagEntity</code></td>
-<td>Tag/label cho product (dinh dưỡng, allergen, …)</td>
-</tr>
-<tr>
-<td><code>CategoryEntity</code></td>
-<td>Product category</td>
-</tr>
-<tr>
-<td><code>SupplierEntity</code></td>
-<td>Supplier master</td>
-</tr>
-<tr>
-<td><code>PlanMasterEntity</code></td>
-<td>Service plan tier</td>
-</tr>
-<tr>
-<td><code>ServiceOptionEntity</code></td>
-<td>Optional add-on per plan</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Quan hệ chính:</strong></p>
-<ul>
-<li><code>CompanyEntity</code> — <code>ContractEntity</code> (1-N) — <code>PlanMasterEntity</code> (N-1)</li>
-<li><code>MonthlyMenuEntity</code> — <code>CompanyEntity</code> (N-1) — <code>MenuEntity</code> (N-1)</li>
-<li><code>MenuEntity</code> — <code>ProductEntity</code> (N-N qua join)</li>
-<li><code>ProductEntity</code> — <code>SupplierEntity</code> (N-1) — <code>CategoryEntity</code> (N-1)</li>
-<li><code>ProductEntity</code> — <code>ProductTagEntity</code> (N-N)</li>
-</ul>
-<hr />
-<h2 id="cluster-3-delivery-logistics">Cluster 3 — Delivery &amp; Logistics</h2>
-<table>
-<thead>
-<tr>
-<th>Entity</th>
-<th>Vai trò</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>DeliveryCompanyEntity</code></td>
-<td>Carrier (dùng chung E05/E06)</td>
-</tr>
-<tr>
-<td><code>DelivererEntity</code></td>
-<td>Delivery partner (E05)</td>
-</tr>
-<tr>
-<td><code>DriverEntity</code></td>
-<td>Driver (E06)</td>
-</tr>
-<tr>
-<td><code>DeliveryCycleEntity</code></td>
-<td>Chu kỳ giao hàng</td>
-</tr>
-<tr>
-<td><code>DeliveryBlockEntity</code></td>
-<td>Khối giao hàng (thứ + slot)</td>
-</tr>
-<tr>
-<td><code>DeliveryAddressEntity</code></td>
-<td>Địa chỉ giao</td>
-</tr>
-<tr>
-<td><code>ShipmentDetailEntity</code></td>
-<td>Chi tiết một chuyến giao</td>
-</tr>
-<tr>
-<td><code>RelayDestinationEntity</code></td>
-<td>Điểm trung chuyển</td>
-</tr>
-<tr>
-<td><code>WarehouseEntity</code></td>
-<td>Kho</td>
-</tr>
-<tr>
-<td><code>PickingCalendarEntity</code></td>
-<td>Lịch picking</td>
-</tr>
-<tr>
-<td><code>PickingUnavailableDayEntity</code></td>
-<td>Ngày không picking</td>
-</tr>
-<tr>
-<td><code>SpecialDeliveryRuleEntity</code></td>
-<td>Rule đặc biệt (holiday, …)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Quan hệ chính:</strong></p>
-<ul>
-<li><code>DelivererEntity</code> — <code>DriverEntity</code> (1-N)</li>
-<li><code>DeliveryCompanyEntity</code> — <code>DeliveryCycleEntity</code> (1-N) — <code>DeliveryBlockEntity</code> (1-N)</li>
-<li><code>ShipmentDetailEntity</code> — <code>OrderEntity</code> (N-1) — <code>DriverEntity</code> (N-1) — <code>DeliveryAddressEntity</code> (N-1)</li>
-</ul>
-<hr />
-<h2 id="cluster-4-ordering-payment">Cluster 4 — Ordering &amp; Payment</h2>
-<table>
-<thead>
-<tr>
-<th>Entity</th>
-<th>Vai trò</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>OrderEntity</code></td>
-<td>End-user order (E01, E07)</td>
-</tr>
-<tr>
-<td><code>CompanyOrderEntity</code></td>
-<td>Corporate order (E02 → aggregated)</td>
-</tr>
-<tr>
-<td><code>SupplierOrderEntity</code></td>
-<td>Purchase order gửi Supplier (E04)</td>
-</tr>
-<tr>
-<td><code>MaterialOrderEntity</code></td>
-<td>Material/ingredient PO</td>
-</tr>
-<tr>
-<td><code>PaymentEntity</code></td>
-<td>Payment record</td>
-</tr>
-<tr>
-<td><code>PaymentMethodEntity</code></td>
-<td>Method master (credit card, bank transfer, …)</td>
-</tr>
-<tr>
-<td><code>RefundEntity</code></td>
-<td>Refund request</td>
-</tr>
-<tr>
-<td><code>CompanyInvoiceEntity</code></td>
-<td>Invoice cho company</td>
-</tr>
-<tr>
-<td><code>BillOneApiLogEntity</code></td>
-<td>Billing API integration log</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Quan hệ chính:</strong></p>
-<ul>
-<li><code>OrderEntity</code> — <code>UserEntity</code> (N-1) — <code>CompanyEntity</code> (N-1) — <code>PaymentEntity</code> (1-N)</li>
-<li><code>PaymentEntity</code> — <code>PaymentMethodEntity</code> (N-1)</li>
-<li><code>CompanyOrderEntity</code> — <code>CompanyEntity</code> (N-1) — <code>MonthlyMenuEntity</code> (N-1)</li>
-<li><code>CompanyOrderEntity</code> — <code>CompanyInvoiceEntity</code> (N-1)</li>
-<li><code>SupplierOrderEntity</code> — <code>SupplierEntity</code> (N-1)</li>
-</ul>
-<hr />
-<h2 id="cluster-5-inventory-material">Cluster 5 — Inventory &amp; Material</h2>
-<table>
-<thead>
-<tr>
-<th>Entity</th>
-<th>Vai trò</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>MaterialEntity</code></td>
-<td>Material master (ingredient)</td>
-</tr>
-<tr>
-<td><code>InventoryItemEntity</code></td>
-<td>Stock tracking</td>
-</tr>
-<tr>
-<td><code>MaterialOrderEntity</code></td>
-<td>PO cho material</td>
-</tr>
-<tr>
-<td><code>DisposalReportEntity</code></td>
-<td>Waste/disposal report</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Quan hệ chính:</strong></p>
-<ul>
-<li><code>InventoryItemEntity</code> — <code>MaterialEntity</code> (N-1) — <code>WarehouseEntity</code> (N-1)</li>
-<li><code>MaterialOrderEntity</code> — <code>MaterialEntity</code> (N-1) — <code>SupplierEntity</code> (N-1)</li>
-<li><code>DisposalReportEntity</code> — <code>CompanyEntity</code> (N-1)</li>
-</ul>
-<hr />
-<h2 id="cluster-6-workflow-request">Cluster 6 — Workflow / Request</h2>
-<table>
-<thead>
-<tr>
-<th>Entity</th>
-<th>Vai trò</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>ChangeRequestEntity</code></td>
-<td>Request đổi contract/menu (workflow duyệt)</td>
-</tr>
-<tr>
-<td><code>QuotationRequestEntity</code></td>
-<td>Request báo giá (deliverer)</td>
-</tr>
-<tr>
-<td><code>TroubleReportEntity</code></td>
-<td>Báo cáo sự cố (driver, admin)</td>
-</tr>
-<tr>
-<td><code>TrialRequestEntity</code></td>
-<td>Trial company registration</td>
-</tr>
-<tr>
-<td><code>FeeChangeRequestEntity</code></td>
-<td>Deliverer fee update request</td>
-</tr>
-<tr>
-<td><code>DeliveryDateChangeRequestEntity</code></td>
-<td>User request đổi ngày giao</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="cluster-7-ai-suggestion">Cluster 7 — AI / Suggestion</h2>
-<table>
-<thead>
-<tr>
-<th>Entity</th>
-<th>Vai trò</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>AiSuggestionJobEntity</code></td>
-<td>Job queue (async processing)</td>
-</tr>
-<tr>
-<td><code>AiSuggestionChatEntity</code></td>
-<td>Chat history với AI</td>
-</tr>
-<tr>
-<td><code>CompanyAiPreferenceEntity</code></td>
-<td>AI setting per company</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="cluster-8-reference-notification">Cluster 8 — Reference / Notification</h2>
-<table>
-<thead>
-<tr>
-<th>Entity</th>
-<th>Vai trò</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>NotificationEntity</code></td>
-<td>System notification (push + in-app)</td>
-</tr>
-<tr>
-<td><code>MaintainSettingEntity</code></td>
-<td>Bảo trì system-wide</td>
-</tr>
-<tr>
-<td><code>AppVersionEntity</code></td>
-<td>Version gate cho mobile/web</td>
-</tr>
-<tr>
-<td><code>IpWhitelistEntity</code></td>
-<td>IP whitelist cho admin panel</td>
-</tr>
-<tr>
-<td><code>SurveyEntity</code></td>
-<td>Survey master</td>
-</tr>
-<tr>
-<td><code>FeedbackEntity</code></td>
-<td>User feedback</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="convention-chung">Convention chung</h2>
-<h3 id="primary-key">Primary key</h3>
-<ul>
-<li>Type: <code>bigint</code> (<code>@PrimaryGeneratedColumn('increment', { type: 'bigint' })</code>)</li>
-<li>Serialize sang <code>string</code> khi trả response (do JS <code>Number</code> không đủ range cho <code>bigint</code>)</li>
-<li>BigInt validation qua <code>BigIntValidationPipe</code> khi nhận input</li>
-</ul>
-<h3 id="timestamp">Timestamp</h3>
-<ul>
-<li><code>created_at</code>, <code>updated_at</code> mọi entity (base class <code>BaseEntity</code> trong <code>src/commons/framework/</code>)</li>
-<li><code>deleted_at</code> cho soft delete (dùng <code>@DeleteDateColumn</code>)</li>
-</ul>
-<h3 id="naming">Naming</h3>
-<ul>
-<li><strong>Column:</strong> <code>snake_case</code> với <code>@Column({ name: 'company_code' })</code></li>
-<li><strong>Property:</strong> <code>camelCase</code></li>
-<li><strong>Table:</strong> <code>snake_case</code> số nhiều (<code>companies</code>, <code>menu_items</code>)</li>
-</ul>
-<h3 id="relation">Relation</h3>
-<ul>
-<li>Default <code>eager: false</code> — tránh N+1</li>
-<li><code>@JoinColumn({ name: 'company_id' })</code> để explicit tên FK column</li>
-</ul>
-<hr />
-<h2 id="diagram-mermaid-6-cluster-tong-the">Diagram (mermaid — 6 cluster tổng thể)</h2>
+<h2 id="diagram-tong-the-mermaid">Diagram tổng thể (Mermaid)</h2>
 <pre class="mermaid"><code>erDiagram
-    Company ||--o{ Contract : "1-N"
-    Company ||--o{ CompanyAdmin : "1-N"
-    Company ||--o{ MonthlyMenu : "1-N"
-    Company ||--o{ CompanyOrder : "1-N"
-    Company ||--o{ CompanyInvoice : "1-N"
+    %% ── Company Domain ──────────────────────────────────
+    companies ||--o{ company_contracts : "contracts"
+    companies ||--o{ company_admins : "admins"
+    companies ||--o{ users : "users (nullable)"
+    companies ||--o{ company_history_logs : "historyLogs"
 
-    Contract }o--|| PlanMaster : "N-1"
+    company_contracts ||--o{ contract_equipments : "equipments"
+    company_contracts ||--o{ contract_payment_items : "paymentItems"
+    company_contracts ||--o{ contract_history_logs : "historyLogs"
 
-    MonthlyMenu }o--|| Menu : "N-1"
-    Menu ||--o{ Product : "N-N"
+    %% ── User Domain ─────────────────────────────────────
+    users }o--|| payment_methods : "defaultPaymentMethod (nullable)"
+    users ||--o{ user_devices : "devices"
+    users ||--o{ user_favorites : "favorites"
+    users ||--o{ user_notifications : "notifications"
+    users ||--o| carts : "cart (unique)"
+    users ||--o{ orders : "orders (SET NULL on delete)"
+    users ||--o{ user_company_history : "companyHistory"
+    users ||--o{ user_company_restrictions : "restrictions"
+    users ||--o| elepay_customers : "elepayCustomer"
 
-    Product }o--|| Supplier : "N-1"
-    Product }o--|| Category : "N-1"
-    Product ||--o{ ProductTag : "N-N"
+    %% ── Menu &amp; Product Domain ───────────────────────────
+    menus ||--o{ menu_products : "menuProducts"
+    menus ||--o{ menu_histories : "histories"
+    products ||--o{ menu_products : "menuProducts"
+    products ||--o{ product_suppliers : "suppliers"
+    products ||--o{ product_images : "images"
+    products ||--o{ product_history : "history"
+    products ||--o{ user_favorites : "favoritedBy"
+    products ||--o{ cart_items : "cartItems"
+    products ||--o{ order_details : "orderDetails (nullable)"
 
-    User ||--o{ Order : "1-N"
-    Order }o--|| Company : "N-1"
-    Order ||--o{ Payment : "1-N"
-    Payment }o--|| PaymentMethod : "N-1"
+    %% ── Order &amp; Payment Domain ──────────────────────────
+    orders ||--o{ order_details : "orderDetails (CASCADE)"
+    orders ||--|| payments : "payment (CASCADE)"
+    orders }o--|| payment_methods : "paymentMethod (RESTRICT)"
+    payments }o--|| payment_methods : "paymentMethod (RESTRICT)"
 
-    Order ||--o{ ShipmentDetail : "1-N"
-    ShipmentDetail }o--|| Driver : "N-1"
-    Driver }o--|| Deliverer : "N-1"
+    %% ── Company Monthly Order Domain ────────────────────
+    companies ||--o{ company_orders : "monthlyOrders"
+    company_orders ||--o{ company_order_items : "items"
+    company_orders ||--o{ company_order_delivery_slots : "deliverySlots"
+    company_order_items ||--o{ company_order_item_delivery_quantities : "deliveryQuantities"
+    company_order_delivery_slots ||--o{ company_order_item_delivery_quantities : "itemQuantities"
 
-    Deliverer }o--|| DeliveryCompany : "N-1"
-    DeliveryCompany ||--o{ DeliveryCycle : "1-N"
-    DeliveryCycle ||--o{ DeliveryBlock : "1-N"
+    %% ── Material Order Domain ───────────────────────────
+    companies ||--o{ material_orders : "materialOrders"
+    material_orders ||--o{ material_order_items : "items"
+    material_orders ||--o{ material_deliveries : "deliveries"
+    materials ||--o{ material_order_items : "orderItems"
 
-    Supplier ||--o{ SupplierOrder : "1-N"
-    Supplier ||--o{ MaterialOrder : "1-N"
+    %% ── Supplier Domain ─────────────────────────────────
+    suppliers ||--o{ supplier_addresses : "addresses"
+    suppliers ||--o{ supplier_contacts : "contacts"
+    suppliers ||--o{ supplier_history_logs : "historyLogs"
+    suppliers ||--o{ supplier_orders : "orders"
+    supplier_orders ||--o{ supplier_order_details : "details"
+    supplier_orders ||--o{ supplier_order_material_details : "materialDetails"
 
-    Warehouse ||--o{ InventoryItem : "1-N"
-    Material ||--o{ InventoryItem : "1-N"
-    Material ||--o{ MaterialOrder : "1-N"</code></pre>
+    %% ── Cart Domain ─────────────────────────────────────
+    carts ||--o{ cart_items : "items (CASCADE)"
+    cart_items }o--|| products : "product (CASCADE)"
+
+    %% ── Notification Domain ─────────────────────────────
+    notifications ||--o{ user_notifications : "userNotifications"
+
+    %% ── Elepay Domain ───────────────────────────────────
+    elepay_customers ||--o{ elepay_customer_sources : "sources"
+
+    %% ── RBAC Domain ─────────────────────────────────────
+    admins ||--o{ admin_roles : "adminRoles"
+    admin_roles }o--|| roles : "role"
+    roles ||--o{ role_permissions : "rolePermissions"
+    permission_groups ||--o{ permissions : "permissions"
+    permissions ||--o{ permission_actions : "actions"
+    actions ||--o{ permission_actions : "permissionActions"
+
+    %% ── Maintain Domain ─────────────────────────────────
+    maintain_settings ||--o{ maintain_setting_histories : "histories"
+
+    %% ── Order Deadline Domain ───────────────────────────
+    order_deadline_configs }o--|| companies : "company (optional)"</code></pre>
 <hr />
-<h2 id="migration-reference">Migration reference</h2>
-<ul>
-<li><strong>Path:</strong> <code>database/migrations/</code></li>
-<li><strong>Count:</strong> 205 files</li>
-<li><strong>Convention:</strong> <code>&lt;epoch&gt;-&lt;PascalCase&gt;.ts</code></li>
-<li><strong>Sync mode:</strong> OFF (migration-only, không dùng <code>synchronize: true</code> bất kỳ môi trường nào)</li>
-</ul>
-<p>Khi thêm entity mới → tạo migration mới, đừng sửa migration cũ.</p>
+<h2 id="entities-chi-tiet">Entities chi tiết</h2>
+<h3 id="companies-cong-ty"><code>companies</code> — Công ty</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>company_code</code></td>
+<td>varchar UNIQUE</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name_kana</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>customer_postal_code</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>address_prefecture/city/street/building</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>department</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>customer_tel</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>fax</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>employee_count</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>installed_machine_count</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>is_cash_payment_allowed</code></td>
+<td>boolean DEFAULT false</td>
+<td>Cho phép thanh toán tiền mặt</td>
+</tr>
+<tr>
+<td><code>order_limit</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>customer_note</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>int DEFAULT 1</td>
+<td>1=PROVISIONAL, 2=REGISTERED, 3=DELETED</td>
+</tr>
+<tr>
+<td><code>user_monthly_limit</code></td>
+<td>int NULL</td>
+<td>Giới hạn đặt hàng tháng per user</td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="memory-update-gate">Memory Update Gate</h2>
-<p>Khi thêm/đổi column, thêm/đổi relation, thêm entity mới → <strong>cập nhật cluster tương ứng</strong> trong file này (thêm dòng vào bảng + note relation). Với entity thêm mới hoàn toàn không thuộc cluster nào → tạo cluster mới.</p>
+<h3 id="company_admins-admin-cua-company-e02-login"><code>company_admins</code> — Admin của company (E02 login)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>company_id</code></td>
+<td>bigint FK → companies (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name</code>, <code>name_kana</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>tel</code>, <code>email</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>hashed_refresh_token</code></td>
+<td>varchar NULL</td>
+<td>JWT refresh</td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td>varchar DEFAULT 'MAIN'</td>
+<td>MAIN | BILLING | SUB</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>varchar</td>
+<td>ACTIVE | INACTIVE</td>
+</tr>
+<tr>
+<td><code>last_login_at</code></td>
+<td>timestamp NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="company_contracts-hop-ong"><code>company_contracts</code> — Hợp đồng</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>company_id</code></td>
+<td>bigint FK → companies (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>contract_plan_id</code>, <code>plan</code>, <code>menu_type</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>target_year_month</code>, <code>creation_type</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>management_name</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>contract_start_period</code>, <code>contract_end_period</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>delivery_*</code> (nhiều cột)</td>
+<td>varchar NULL</td>
+<td>Thông tin giao hàng</td>
+</tr>
+<tr>
+<td><code>postal_code</code>, <code>prefecture/city/street/building</code></td>
+<td>varchar NULL</td>
+<td>Địa chỉ giao hàng</td>
+</tr>
+<tr>
+<td><code>tel</code>, <code>contact_name</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>payment_method</code>, <code>annual_payment</code>, <code>billing_notification_day</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="contract_equipments-thiet-bi-trong-hop-ong"><code>contract_equipments</code> — Thiết bị trong hợp đồng</h3>
+<p>FK: <code>contract_id</code> → <code>company_contracts</code> (CASCADE)</p>
+<hr />
+<h3 id="contract_payment_items-hang-muc-thanh-toan-hop-ong"><code>contract_payment_items</code> — Hạng mục thanh toán hợp đồng</h3>
+<p>FK: <code>contract_id</code> → <code>company_contracts</code> (CASCADE)</p>
+<hr />
+<h3 id="admins-system-admin-e03-login"><code>admins</code> — System Admin (E03 login)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>user_name</code></td>
+<td>varchar</td>
+<td></td>
+</tr>
+<tr>
+<td><code>admin_code</code></td>
+<td>varchar UNIQUE NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>varchar</td>
+<td></td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>varchar NULL</td>
+<td>bcrypt</td>
+</tr>
+<tr>
+<td><code>hashed_refresh_token</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td>varchar NULL</td>
+<td>Legacy role field (xem RBAC)</td>
+</tr>
+<tr>
+<td><code>is_super_admin</code></td>
+<td>boolean DEFAULT false</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>smallint DEFAULT 1</td>
+<td></td>
+</tr>
+<tr>
+<td><code>last_login_at</code></td>
+<td>timestamp NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<p>Relation: <code>admins ||--o{ admin_roles : "adminRoles"</code></p>
+<hr />
+<h3 id="users-end-users-mobile-app"><code>users</code> — End users (Mobile App)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>company_id</code></td>
+<td>bigint FK → companies NULL</td>
+<td>NULL nếu chưa link</td>
+</tr>
+<tr>
+<td><code>user_code</code></td>
+<td>varchar UNIQUE</td>
+<td></td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>varchar UNIQUE (partial idx, where deleted_at IS NULL)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>user_name</code>, <code>gender</code>, <code>birthday</code>, <code>employee_id</code></td>
+<td>varchar/enum NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>password</code>, <code>hashed_refresh_token</code></td>
+<td>varchar</td>
+<td>bcrypt</td>
+</tr>
+<tr>
+<td><code>link_status</code></td>
+<td>enum</td>
+<td>UNLINKED | LINKED | RESTRICTED</td>
+</tr>
+<tr>
+<td><code>linked_at</code>, <code>unlinked_at</code></td>
+<td>timestamp NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>account_status</code></td>
+<td>enum DEFAULT ACTIVE</td>
+<td>ACTIVE | SUSPENDED</td>
+</tr>
+<tr>
+<td><code>unlinked_by</code></td>
+<td>bigint NULL</td>
+<td>Company admin id</td>
+</tr>
+<tr>
+<td><code>cart_confirm_popup_hidden_until</code></td>
+<td>timestamp NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>default_payment_method_id</code></td>
+<td>bigint FK → payment_methods NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>cart_reset_ack_event_id</code></td>
+<td>bigint NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>last_login_at</code></td>
+<td>timestamp NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="menus-menu-thang"><code>menus</code> — Menu tháng</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>menu_code</code></td>
+<td>varchar(12) NULL UNIQUE (where deleted_at IS NULL)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>year_month</code></td>
+<td>varchar(7)</td>
+<td>Format: YYYY-MM</td>
+</tr>
+<tr>
+<td><code>menu_type</code></td>
+<td>enum</td>
+<td>standard | premium</td>
+</tr>
+<tr>
+<td><code>publish_status</code></td>
+<td>enum DEFAULT unpublished</td>
+<td>published | unpublished | auto_public</td>
+</tr>
+<tr>
+<td><code>auto_pub_date</code></td>
+<td>timestamp NULL</td>
+<td>Dùng khi status = auto_public</td>
+</tr>
+<tr>
+<td><code>pdf_url</code></td>
+<td>varchar(2048) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="menu_products-san-pham-trong-menu-junction"><code>menu_products</code> — Sản phẩm trong menu (junction)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>menu_id</code></td>
+<td>bigint FK → menus (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>product_id</code></td>
+<td>bigint FK → products (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>(menu_id, product_id)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>selling_price</code></td>
+<td>decimal(12,2)</td>
+<td>Giá bán trong menu</td>
+</tr>
+<tr>
+<td><code>base_order_qty</code></td>
+<td>int DEFAULT 0</td>
+<td>Số lượng gợi ý</td>
+</tr>
+<tr>
+<td><code>std_order_qty_no_short_expiry</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>vending_machine_order_qty</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>product_tags</code></td>
+<td>simple-array NULL</td>
+<td>['NEW', '短賞味期限']</td>
+</tr>
+<tr>
+<td><code>is_public</code></td>
+<td>boolean DEFAULT false</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="menu_histories-lich-su-thay-oi-menu"><code>menu_histories</code> — Lịch sử thay đổi menu</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>menu_id</code></td>
+<td>bigint</td>
+<td>Không FK (snapshot)</td>
+</tr>
+<tr>
+<td><code>action</code></td>
+<td>varchar(20)</td>
+<td>IMPORT | EDIT</td>
+</tr>
+<tr>
+<td><code>admin_id</code></td>
+<td>bigint</td>
+<td></td>
+</tr>
+<tr>
+<td><code>admin_name</code></td>
+<td>varchar(255)</td>
+<td>Snapshot tên admin</td>
+</tr>
+<tr>
+<td><code>changed_at</code></td>
+<td>timestamptz (CreateDateColumn)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="products-san-pham-master-data"><code>products</code> — Sản phẩm (master data)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>product_code</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>jan_code</code></td>
+<td>varchar UNIQUE NULL</td>
+<td>JAN barcode</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>price</code></td>
+<td>decimal(12,2) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name_kana</code>, <code>description</code></td>
+<td>varchar/text NULL</td>
+<td></td>
+</tr>
+<tr>
+<td>Nutrition columns</td>
+<td>varchar/decimal</td>
+<td>energy, protein, fat, carbohydrate, salt_equivalent, etc.</td>
+</tr>
+<tr>
+<td><code>allergen_labeling</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>raw_material_name</code></td>
+<td>text NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>expiration_date_value</code>, <code>expiration_date_unit</code></td>
+<td>int/varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>shipment_bundled_material</code>, <code>shipment_special_instruction</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>short_expiry_type</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>storage_method_management</code>, <code>storage_method_display</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>vending_machine_column</code>, <code>vending_machine_column_notes</code></td>
+<td>varchar/text NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>supplier_website</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>favorite_count</code></td>
+<td>int DEFAULT 0</td>
+<td>Denormalized counter</td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="product_suppliers-nha-cung-cap-san-pham"><code>product_suppliers</code> — Nhà cung cấp sản phẩm</h3>
+<p>FK: <code>product_id</code> → <code>products</code> (CASCADE)</p>
+<hr />
+<h3 id="product_images-hinh-anh-san-pham"><code>product_images</code> — Hình ảnh sản phẩm</h3>
+<p>FK: <code>product_id</code> → <code>products</code> (CASCADE)</p>
+<hr />
+<h3 id="orders-on-hang-le-e01-user"><code>orders</code> — Đơn hàng lẻ (E01 user)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_number</code></td>
+<td>varchar(12) UNIQUE</td>
+<td></td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>bigint FK → users NULL (SET NULL on delete)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>company_id</code></td>
+<td>bigint NULL</td>
+<td>Denormalized, không FK</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>enum DEFAULT PENDING</td>
+<td>PENDING | PAID | CANCELLED | REFUNDED | etc.</td>
+</tr>
+<tr>
+<td><code>payment_method_id</code></td>
+<td>bigint FK → payment_methods (RESTRICT)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>subtotal</code>, <code>total</code></td>
+<td>decimal(12,2) DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="order_details-chi-tiet-on-hang"><code>order_details</code> — Chi tiết đơn hàng</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_id</code></td>
+<td>bigint FK → orders (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>product_id</code></td>
+<td>bigint NULL</td>
+<td>Không FK (snapshot)</td>
+</tr>
+<tr>
+<td><code>product_code</code>, <code>product_name</code></td>
+<td>varchar</td>
+<td>Snapshot lúc đặt hàng</td>
+</tr>
+<tr>
+<td><code>price</code>, <code>quantity</code>, <code>subtotal</code></td>
+<td>decimal/int</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="company_orders-on-thang-cua-company"><code>company_orders</code> — Đơn tháng của company</h3>
+<blockquote>
+<p>Khác với <code>orders</code> (đơn lẻ E01). Mỗi company chỉ có 1 đơn / tháng — sinh tự động bởi cron đầu tháng.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>company_id</code></td>
+<td>bigint FK → companies (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>contract_id</code></td>
+<td>bigint NULL</td>
+<td>Snapshot hợp đồng lúc sinh đơn</td>
+</tr>
+<tr>
+<td><code>menu_id</code></td>
+<td>bigint NULL</td>
+<td>Snapshot menu tháng</td>
+</tr>
+<tr>
+<td><code>year_month</code></td>
+<td>varchar(7)</td>
+<td>Format: YYYY-MM</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>enum DEFAULT DRAFT</td>
+<td>DRAFT | SUBMITTED | LOCKED | CONFIRMED | CANCELLED</td>
+</tr>
+<tr>
+<td><code>deadline_date</code></td>
+<td>date NULL</td>
+<td>Snapshot deadline chỉnh sửa</td>
+</tr>
+<tr>
+<td><code>delivery_schedule</code></td>
+<td>jsonb NULL</td>
+<td><code>[{ deliveryDate, pickingDate }]</code></td>
+</tr>
+<tr>
+<td><code>submitted_total_item_count</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>submitted_total_amount</code></td>
+<td>decimal(14,2) DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>submitted_at</code></td>
+<td>timestamptz NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>locked_at</code></td>
+<td>timestamptz NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>text NULL</td>
+<td>Memo nội bộ</td>
+</tr>
+<tr>
+<td><code>generated_by</code></td>
+<td>enum DEFAULT CRON</td>
+<td>CRON | MANUAL</td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>(company_id, year_month)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="company_order_items-chi-tiet-on-thang"><code>company_order_items</code> — Chi tiết đơn tháng</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_id</code></td>
+<td>bigint FK → company_orders (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>product_id</code></td>
+<td>bigint FK → products (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>menu_product_id</code></td>
+<td>bigint NULL</td>
+<td>Snapshot menu_products row</td>
+</tr>
+<tr>
+<td><code>quantity</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>unit_price</code></td>
+<td>decimal(12,2)</td>
+<td>Snapshot giá bán gốc</td>
+</tr>
+<tr>
+<td><code>employee_unit_price</code></td>
+<td>decimal(12,2)</td>
+<td>Snapshot giá sau welfare</td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>(order_id, product_id)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="company_order_delivery_slots-lich-giao-trong-on-thang"><code>company_order_delivery_slots</code> — Lịch giao trong đơn tháng</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_id</code></td>
+<td>bigint FK → company_orders (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sequence</code></td>
+<td>int</td>
+<td>Thứ tự lần giao trong tháng</td>
+</tr>
+<tr>
+<td><code>delivery_date</code></td>
+<td>date</td>
+<td></td>
+</tr>
+<tr>
+<td><code>picking_date</code></td>
+<td>date</td>
+<td>Ngày lấy hàng = deliveryDate − leadTime</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>varchar(20) DEFAULT 'pending'</td>
+<td></td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>text NULL</td>
+<td></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>(order_id, sequence)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="company_order_item_delivery_quantities-so-luong-moi-mon-theo-tung-lan-giao"><code>company_order_item_delivery_quantities</code> — Số lượng mỗi món theo từng lần giao</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_item_id</code></td>
+<td>bigint FK → company_order_items (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>delivery_slot_id</code></td>
+<td>bigint FK → company_order_delivery_slots (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>quantity</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>(order_item_id, delivery_slot_id)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="materials-nguyen-lieu-master"><code>materials</code> — Nguyên liệu (master)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar(255)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td>varchar(50)</td>
+<td>Đơn vị tính</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>varchar(100) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>unit_price</code></td>
+<td>decimal(12,2) DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>boolean DEFAULT true</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="material_orders-on-at-nguyen-lieu"><code>material_orders</code> — Đơn đặt nguyên liệu</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>company_id</code></td>
+<td>bigint FK → companies (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>year_month</code></td>
+<td>varchar(7)</td>
+<td>Format: YYYY-MM</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>enum DEFAULT DRAFT</td>
+<td>DRAFT | SUBMITTED | CONFIRMED | etc.</td>
+</tr>
+<tr>
+<td><code>submitted_at</code></td>
+<td>timestamptz NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>text NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_by_company_admin_id</code></td>
+<td>bigint NULL</td>
+<td></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>(company_id, year_month)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="material_order_items-chi-tiet-on-nguyen-lieu"><code>material_order_items</code> — Chi tiết đơn nguyên liệu</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_id</code></td>
+<td>bigint FK → material_orders (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>material_id</code></td>
+<td>bigint FK → materials (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>quantity</code></td>
+<td>int</td>
+<td></td>
+</tr>
+<tr>
+<td><code>unit_price</code></td>
+<td>decimal(12,2)</td>
+<td></td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>(order_id, material_id)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="material_deliveries-giao-hang-nguyen-lieu"><code>material_deliveries</code> — Giao hàng nguyên liệu</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>material_order_id</code></td>
+<td>bigint FK → material_orders (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>enum DEFAULT PENDING</td>
+<td>PENDING | SHIPPED | DELIVERED | etc.</td>
+</tr>
+<tr>
+<td><code>tracking_ref</code></td>
+<td>varchar(200) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>carrier_code</code></td>
+<td>varchar(50) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>expected_delivery_date</code></td>
+<td>date NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>actual_delivery_date</code></td>
+<td>date NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>raw_response</code></td>
+<td>jsonb NULL</td>
+<td>Raw response từ carrier API</td>
+</tr>
+<tr>
+<td><code>last_synced_at</code></td>
+<td>timestamptz NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="suppliers-nha-cung-cap-e04-login"><code>suppliers</code> — Nhà cung cấp (E04 login)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>supplier_code</code></td>
+<td>varchar(20) UNIQUE (partial: deleted_at IS NULL)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>varchar(255) UNIQUE (partial: deleted_at IS NULL)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>supplier_name</code></td>
+<td>varchar(255) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>supplier_name_kana</code></td>
+<td>varchar(255) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>registration_status</code></td>
+<td>enum DEFAULT UNREGISTERED</td>
+<td>UNREGISTERED | REGISTERED</td>
+</tr>
+<tr>
+<td><code>remarks</code></td>
+<td>text NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>varchar(20) DEFAULT 'ACTIVE'</td>
+<td>ACTIVE | INACTIVE</td>
+</tr>
+<tr>
+<td><code>last_login_at</code></td>
+<td>timestamp NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_by</code></td>
+<td>bigint NULL</td>
+<td>Admin id</td>
+</tr>
+<tr>
+<td><code>hashed_refresh_token</code></td>
+<td>varchar NULL</td>
+<td><code>@Exclude()</code></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="supplier_addresses-ia-chi-cua-supplier"><code>supplier_addresses</code> — Địa chỉ của supplier</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>supplier_id</code></td>
+<td>bigint FK → suppliers (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>address_types</code></td>
+<td>enum[]</td>
+<td>HEAD_OFFICE | BRANCH | DELIVERY | etc. (array)</td>
+</tr>
+<tr>
+<td><code>postal_code</code></td>
+<td>varchar(20)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>prefecture</code>, <code>city</code>, <code>street</code></td>
+<td>varchar</td>
+<td></td>
+</tr>
+<tr>
+<td><code>building</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>tel</code>, <code>fax</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sort_order</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="supplier_contacts-nguoi-lien-he-cua-supplier"><code>supplier_contacts</code> — Người liên hệ của supplier</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>supplier_id</code></td>
+<td>bigint FK → suppliers (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>contact_type</code></td>
+<td>enum</td>
+<td>REPRESENTATIVE | SALES | etc.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar(255)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name_kana</code></td>
+<td>varchar(255) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>varchar(255)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>tel</code></td>
+<td>varchar(50) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sort_order</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="supplier_history_logs-lich-su-thay-oi-supplier-master"><code>supplier_history_logs</code> — Lịch sử thay đổi supplier master</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>supplier_id</code></td>
+<td>bigint FK → suppliers (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>text</td>
+<td>Nội dung thay đổi</td>
+</tr>
+<tr>
+<td><code>changed_by</code></td>
+<td>varchar(255)</td>
+<td>Tên admin thay đổi</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamptz</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="supplier_orders-on-nha-cung-cap"><code>supplier_orders</code> — Đơn nhà cung cấp</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_no</code></td>
+<td>varchar(20) UNIQUE</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_type</code></td>
+<td>enum DEFAULT PROVISIONAL</td>
+<td>PROVISIONAL | OFFICIAL</td>
+</tr>
+<tr>
+<td><code>provisional_order_id</code></td>
+<td>bigint FK → supplier_orders NULL (SET NULL)</td>
+<td>Liên kết 仮発注 → 本発注</td>
+</tr>
+<tr>
+<td><code>officialized_date</code></td>
+<td>date NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>supplier_id</code></td>
+<td>bigint FK → suppliers (RESTRICT)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>year_month</code></td>
+<td>varchar(7)</td>
+<td>Format: MM/YYYY (vd: <code>04/2024</code>)</td>
+</tr>
+<tr>
+<td><code>menu_type</code></td>
+<td>enum</td>
+<td>standard | premium</td>
+</tr>
+<tr>
+<td><code>desired_delivery_date</code></td>
+<td>date NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>enum DEFAULT WAITING_REPLY</td>
+<td>WAITING_REPLY | PROVISIONAL | OFFICIAL | CONFIRMED</td>
+</tr>
+<tr>
+<td><code>expected_ship_date</code>, <code>actual_ship_date</code></td>
+<td>date NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>delivery_method</code></td>
+<td>enum NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>carrier_name</code></td>
+<td>varchar(255) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_by_admin_id</code></td>
+<td>bigint NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="supplier_order_details-chi-tiet-dong-on-supplier"><code>supplier_order_details</code> — Chi tiết dòng đơn supplier</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_id</code></td>
+<td>bigint FK → supplier_orders (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>product_id</code></td>
+<td>bigint FK → products (RESTRICT)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>product_name</code></td>
+<td>varchar(255)</td>
+<td>Snapshot</td>
+</tr>
+<tr>
+<td><code>quantity</code></td>
+<td>int</td>
+<td>オーダー数</td>
+</tr>
+<tr>
+<td><code>line_status</code></td>
+<td>enum DEFAULT UNPROCESSED</td>
+<td>UNPROCESSED | PROVISIONAL_ORDERED | OFFICIAL_ORDERED</td>
+</tr>
+<tr>
+<td><code>provisional_quantity</code></td>
+<td>int NULL</td>
+<td>仮発注数</td>
+</tr>
+<tr>
+<td><code>official_quantity</code></td>
+<td>int NULL</td>
+<td>本発注数</td>
+</tr>
+<tr>
+<td><code>logical_required_qty</code></td>
+<td>int NULL</td>
+<td>論理必要数 (cron fill sau)</td>
+</tr>
+<tr>
+<td><code>stock_qty</code></td>
+<td>int NULL</td>
+<td>在庫数</td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td>varchar(50) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>expiry_date</code></td>
+<td>date NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="supplier_order_material_details-chi-tiet-nguyen-lieu-on-supplier"><code>supplier_order_material_details</code> — Chi tiết nguyên liệu đơn supplier</h3>
+<blockquote>
+<p>⚠️ DEFERRED — bảng tồn tại trong schema nhưng chưa được query (cron sinh đơn chưa implement).</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_id</code></td>
+<td>bigint FK → supplier_orders (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>material_id</code></td>
+<td>bigint NULL</td>
+<td>Không FK (chưa có bảng materials link)</td>
+</tr>
+<tr>
+<td><code>material_name</code></td>
+<td>varchar(255)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>quantity</code></td>
+<td>int</td>
+<td></td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td>varchar(50) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>expiry_date</code></td>
+<td>date NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="order_deadline_configs-cau-hinh-deadline-at-hang-thang"><code>order_deadline_configs</code> — Cấu hình deadline đặt hàng tháng</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>enum DEFAULT GLOBAL</td>
+<td>GLOBAL | COMPANY</td>
+</tr>
+<tr>
+<td><code>company_id</code></td>
+<td>bigint FK → companies NULL (CASCADE)</td>
+<td>NULL nếu scope=GLOBAL</td>
+</tr>
+<tr>
+<td><code>deadline_day</code></td>
+<td>smallint</td>
+<td>Ngày trong tháng (1–28)</td>
+</tr>
+<tr>
+<td><code>effective_month</code></td>
+<td>smallint</td>
+<td>Tháng hiệu lực</td>
+</tr>
+<tr>
+<td><code>effective_year</code></td>
+<td>smallint</td>
+<td>Năm hiệu lực</td>
+</tr>
+<tr>
+<td><code>created_by_admin_id</code></td>
+<td>bigint FK → admins NULL (SET NULL)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="drivers-tai-xe-e06-login"><code>drivers</code> — Tài xế (E06 login)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>driver_code</code></td>
+<td>varchar(20) UNIQUE (partial: deleted_at IS NULL)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>varchar(255) UNIQUE (partial: deleted_at IS NULL)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>driver_name</code></td>
+<td>varchar(255) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>varchar(20) DEFAULT 'ACTIVE'</td>
+<td>ACTIVE | INACTIVE</td>
+</tr>
+<tr>
+<td><code>last_login_at</code></td>
+<td>timestamp NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_by</code></td>
+<td>bigint NULL</td>
+<td>Admin id</td>
+</tr>
+<tr>
+<td><code>hashed_refresh_token</code></td>
+<td>varchar NULL</td>
+<td><code>@Exclude()</code></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="deliverers-nhan-vien-giao-hang-e05-login"><code>deliverers</code> — Nhân viên giao hàng (E05 login)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>deliverer_code</code></td>
+<td>varchar(20) UNIQUE (partial: deleted_at IS NULL)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>varchar(255)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>deliverer_name</code></td>
+<td>varchar(255) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>varchar(20) DEFAULT 'ACTIVE'</td>
+<td>ACTIVE | INACTIVE</td>
+</tr>
+<tr>
+<td><code>last_login_at</code></td>
+<td>timestamp NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_by</code></td>
+<td>bigint NULL</td>
+<td>Admin id</td>
+</tr>
+<tr>
+<td><code>hashed_refresh_token</code></td>
+<td>varchar NULL</td>
+<td><code>@Exclude()</code></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="roles-vai-tro-rbac"><code>roles</code> — Vai trò RBAC</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar(255) UNIQUE</td>
+<td></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>text NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>varchar(20) DEFAULT 'active'</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="admin_roles-mapping-admin-role-junction"><code>admin_roles</code> — Mapping admin ↔ role (junction)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>admin_id</code></td>
+<td>bigint PK FK → admins (CASCADE)</td>
+<td>Composite PK</td>
+</tr>
+<tr>
+<td><code>role_id</code></td>
+<td>bigint PK FK → roles (CASCADE)</td>
+<td>Composite PK</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="permission_groups-nhom-permissions"><code>permission_groups</code> — Nhóm permissions</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>code</code></td>
+<td>varchar(100) UNIQUE</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar(255)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sort_order</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="permissions-permissions"><code>permissions</code> — Permissions</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>group_id</code></td>
+<td>bigint FK → permission_groups</td>
+<td></td>
+</tr>
+<tr>
+<td><code>code</code></td>
+<td>varchar(100) UNIQUE</td>
+<td>Vd: <code>account.admin.view</code></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar(255)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>text NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sort_order</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="actions-actions-cho-permission-readwritedelete"><code>actions</code> — Actions cho permission (READ/WRITE/DELETE...)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>code</code></td>
+<td>varchar(50) UNIQUE</td>
+<td>Vd: <code>VIEW</code>, <code>CREATE</code>, <code>EDIT</code>, <code>DELETE</code></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar(100)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="permission_actions-mapping-permission-action-junction"><code>permission_actions</code> — Mapping permission ↔ action (junction)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>permission_id</code></td>
+<td>bigint PK FK → permissions</td>
+<td>Composite PK</td>
+</tr>
+<tr>
+<td><code>action_id</code></td>
+<td>bigint PK FK → actions</td>
+<td>Composite PK</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="role_permissions-mapping-role-permission-action"><code>role_permissions</code> — Mapping role ↔ permission ↔ action</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>role_id</code></td>
+<td>bigint PK FK → roles</td>
+<td>Composite PK (3 cột)</td>
+</tr>
+<tr>
+<td><code>permission_id</code></td>
+<td>bigint PK FK → permissions</td>
+<td>Composite PK</td>
+</tr>
+<tr>
+<td><code>action_id</code></td>
+<td>bigint PK FK → actions</td>
+<td>Composite PK</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="ip_whitelists-danh-sach-ip-uoc-phep"><code>ip_whitelists</code> — Danh sách IP được phép</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>varchar(255)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>ip_address</code></td>
+<td>varchar(45) UNIQUE (partial: deleted_at IS NULL)</td>
+<td>IPv4</td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamptz</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="maintain_settings-cau-hinh-maintain-mode"><code>maintain_settings</code> — Cấu hình maintain mode</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>platform</code></td>
+<td>varchar(50) UNIQUE</td>
+<td>Vd: <code>ios</code>, <code>android</code></td>
+</tr>
+<tr>
+<td><code>is_maintain</code></td>
+<td>boolean DEFAULT false</td>
+<td></td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>varchar(255) NULL</td>
+<td>Tiêu đề popup</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>text NULL</td>
+<td>Nội dung popup</td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamptz</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="maintain_setting_histories-lich-su-thay-oi-maintain"><code>maintain_setting_histories</code> — Lịch sử thay đổi maintain</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>maintain_setting_id</code></td>
+<td>bigint FK → maintain_settings (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>platform</code></td>
+<td>varchar(50)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>is_maintain</code></td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>varchar(255) NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>text NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>end_at</code></td>
+<td>timestamptz NULL</td>
+<td>Thời điểm kết thúc maintain</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamptz</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="payments-thanh-toan"><code>payments</code> — Thanh toán</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>order_id</code></td>
+<td>bigint FK → orders (CASCADE) UNIQUE</td>
+<td>OneToOne</td>
+</tr>
+<tr>
+<td><code>payment_method_id</code></td>
+<td>bigint FK → payment_methods (RESTRICT)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>enum DEFAULT PENDING</td>
+<td>PENDING | PAID | FAILED | REFUNDED</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td>decimal(12,2)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>transaction_id</code></td>
+<td>varchar NULL</td>
+<td>Elepay transaction ID</td>
+</tr>
+<tr>
+<td><code>code_id</code></td>
+<td>varchar NULL</td>
+<td>Elepay EasyQR code ID</td>
+</tr>
+<tr>
+<td><code>paid_at</code></td>
+<td>timestamp NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>varchar(50) DEFAULT CHECKOUT</td>
+<td>CHECKOUT | HISTORY</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>jsonb NULL</td>
+<td>Raw provider response</td>
+</tr>
+<tr>
+<td><code>reminder_count</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="payment_methods-phuong-thuc-thanh-toan-master"><code>payment_methods</code> — Phương thức thanh toán (master)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>code</code></td>
+<td>varchar UNIQUE</td>
+<td>CREDIT_CARD, CASH, ALIPAY, WECHAT, etc.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar</td>
+<td></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>text NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>boolean DEFAULT true</td>
+<td></td>
+</tr>
+<tr>
+<td><code>is_default</code></td>
+<td>boolean DEFAULT false</td>
+<td></td>
+</tr>
+<tr>
+<td><code>sort_order</code></td>
+<td>int DEFAULT 0</td>
+<td></td>
+</tr>
+<tr>
+<td><code>image_url</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code>, <code>deleted_at</code></td>
+<td>timestamp</td>
+<td>Soft delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="carts-gio-hang-1-user-1-cart"><code>carts</code> — Giỏ hàng (1 user = 1 cart)</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>bigint FK → users (CASCADE) UNIQUE</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="cart_items-item-trong-gio-hang"><code>cart_items</code> — Item trong giỏ hàng</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>cart_id</code></td>
+<td>bigint FK → carts (CASCADE)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>product_id</code></td>
+<td>bigint FK → products (CASCADE)</td>
+<td>eager: true</td>
+</tr>
+<tr>
+<td>UNIQUE</td>
+<td><code>(cart_id, product_id)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>quantity</code></td>
+<td>int DEFAULT 1</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code>, <code>updated_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="notifications-thong-bao-he-thong"><code>notifications</code> — Thông báo hệ thống</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>title</code>, <code>content</code></td>
+<td>varchar/text</td>
+<td></td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>enum</td>
+<td>MENU_PUBLISH | ORDER_UPDATE | etc.</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td>jsonb NULL</td>
+<td><code>{ link?, preViewLink?, orderId? }</code></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="user_notifications-notification-gui-toi-user"><code>user_notifications</code> — Notification gửi tới user</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>notification_id</code></td>
+<td>bigint FK → notifications</td>
+<td></td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>bigint FK → users</td>
+<td></td>
+</tr>
+<tr>
+<td>INDEX</td>
+<td><code>(user_id, is_read, created_at)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>is_read</code></td>
+<td>boolean DEFAULT false</td>
+<td></td>
+</tr>
+<tr>
+<td><code>read_at</code></td>
+<td>timestamp NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="user_favorites-san-pham-yeu-thich"><code>user_favorites</code> — Sản phẩm yêu thích</h3>
+<p>FK: <code>user_id</code> → users (CASCADE), <code>product_id</code> → products (CASCADE). UNIQUE <code>(user_id, product_id)</code>.</p>
+<hr />
+<h3 id="user_devices-fcm-device-tokens"><code>user_devices</code> — FCM device tokens</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>bigint FK → users (CASCADE) INDEX</td>
+<td></td>
+</tr>
+<tr>
+<td><code>token_device</code></td>
+<td>varchar(1024) UNIQUE</td>
+<td>FCM token</td>
+</tr>
+<tr>
+<td><code>platform</code></td>
+<td>enum</td>
+<td>IOS | ANDROID</td>
+</tr>
+<tr>
+<td><code>ip</code>, <code>user_agent</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+<tr>
+<td><code>last_active_at</code></td>
+<td>timestamptz NULL</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="elepay_customers-elepay-customer-mapping"><code>elepay_customers</code> — Elepay customer mapping</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>bigint FK → users</td>
+<td></td>
+</tr>
+<tr>
+<td><code>elepay_customer_id</code></td>
+<td>varchar</td>
+<td>ID từ Elepay API</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar NULL</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="elepay_customer_sources-the-tin-dung-luu-trong-elepay"><code>elepay_customer_sources</code> — Thẻ tín dụng lưu trong Elepay</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>bigint PK</td>
+<td></td>
+</tr>
+<tr>
+<td><code>elepay_customer_id</code></td>
+<td>varchar FK → elepay_customers</td>
+<td></td>
+</tr>
+<tr>
+<td><code>elepay_source_id</code></td>
+<td>varchar</td>
+<td>ID từ Elepay API</td>
+</tr>
+<tr>
+<td><code>payment_method</code></td>
+<td>varchar</td>
+<td>CREDIT_CARD</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>enum</td>
+<td>PENDING | ACTIVE | INACTIVE</td>
+</tr>
+<tr>
+<td><code>is_default</code></td>
+<td>boolean</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="cac-entities-phu-tro">Các entities phụ trợ</h3>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Table</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Allergen</code></td>
+<td><code>allergens</code></td>
+<td>Danh sách allergen, cột <code>sort</code></td>
+</tr>
+<tr>
+<td><code>Category</code></td>
+<td><code>categories</code></td>
+<td>Danh mục sản phẩm</td>
+</tr>
+<tr>
+<td><code>LegalDocument</code></td>
+<td><code>legal_documents</code></td>
+<td>Terms of Service / Privacy Policy</td>
+</tr>
+<tr>
+<td><code>AppVersion</code></td>
+<td><code>app_versions</code></td>
+<td>Thông tin phiên bản app (force/optional update)</td>
+</tr>
+<tr>
+<td><code>Contact</code></td>
+<td><code>contacts</code></td>
+<td>Yêu cầu liên hệ từ user</td>
+</tr>
+<tr>
+<td><code>Otp</code></td>
+<td><code>otps</code></td>
+<td>OTP tokens cho auth flows</td>
+</tr>
+<tr>
+<td><code>PendingUser</code></td>
+<td><code>pending_users</code></td>
+<td>User đang chờ xác thực OTP đăng ký</td>
+</tr>
+<tr>
+<td><code>CompanyHistoryLog</code></td>
+<td><code>company_history_logs</code></td>
+<td>FK → companies</td>
+</tr>
+<tr>
+<td><code>ContractHistoryLog</code></td>
+<td><code>contract_history_logs</code></td>
+<td>FK → company_contracts</td>
+</tr>
+<tr>
+<td><code>ProductHistory</code></td>
+<td><code>product_history</code></td>
+<td>Lịch sử thay đổi sản phẩm</td>
+</tr>
+<tr>
+<td><code>ProductInStock</code></td>
+<td><code>product_in_stock</code></td>
+<td>Tồn kho sản phẩm</td>
+</tr>
+<tr>
+<td><code>UserCompanyHistory</code></td>
+<td><code>user_company_history</code></td>
+<td>Lịch sử link/unlink user↔company</td>
+</tr>
+<tr>
+<td><code>UserCompanyRestriction</code></td>
+<td><code>user_company_restrictions</code></td>
+<td>Restrict/unrestrict user by company admin</td>
+</tr>
+<tr>
+<td><code>CartResetEvent</code></td>
+<td><code>cart_reset_events</code></td>
+<td>Sự kiện reset giỏ hàng theo admin trigger</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="naming-conventions">Naming conventions</h2>
+<table>
+<thead>
+<tr>
+<th>Convention</th>
+<th>Quy tắc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table name</td>
+<td>snake_case số nhiều: <code>users</code>, <code>company_contracts</code>, <code>order_details</code></td>
+</tr>
+<tr>
+<td>Column name</td>
+<td>snake_case: <code>company_id</code>, <code>created_at</code>, <code>is_active</code></td>
+</tr>
+<tr>
+<td>PK</td>
+<td><code>id</code> bigint (TypeScript string)</td>
+</tr>
+<tr>
+<td>FK column</td>
+<td><code>&lt;entity&gt;_id</code> — ví dụ: <code>company_id</code>, <code>user_id</code></td>
+</tr>
+<tr>
+<td>Soft delete</td>
+<td><code>deleted_at timestamptz NULL</code> — <code>@DeleteDateColumn</code></td>
+</tr>
+<tr>
+<td>Timestamps</td>
+<td><code>created_at</code>, <code>updated_at</code> — <code>@CreateDateColumn</code>, <code>@UpdateDateColumn</code></td>
+</tr>
+<tr>
+<td>Unique partial index</td>
+<td>Dùng cho soft-delete: <code>WHERE deleted_at IS NULL</code></td>
+</tr>
+<tr>
+<td>Enum column</td>
+<td><code>enumName</code> explicit để tránh conflict TypeORM</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p>Cập nhật file này sau mỗi migration. Mermaid diagram có thể render tại GitHub hoặc mermaid.live.</p>
+</blockquote>
 
 
 
@@ -8764,7 +10670,7 @@ PK convention: <code>bigint</code> (trả về dạng <code>string</code> trong 
       <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.expand", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

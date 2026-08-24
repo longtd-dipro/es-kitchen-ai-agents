@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UE-5 · アンケート (Survey from System Admin)</title>
+<link rel="stylesheet" href="../assets/eskitchen.css">
+</head>
+<body>
+
+<div class="device">
+  <div class="device-title"><b>UE-5 · Notification → Survey form (deadline-locked)</b><br>
+    <a href="../index.html">← Danh mục</a> &nbsp;·&nbsp; <a href="next_month_menu_survey_wishlist_from_company.html">UE-6 Wishlist →</a>
+  </div>
+
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="statusbar"><span>9:41</span><span class="r">📶 🔋</span></div>
+
+    <!-- ============ SCREEN: NOTIFICATION DETAIL ============ -->
+    <div id="s-noti" class="screen active">
+      <div class="appbar">
+        <button class="icon-btn">‹</button>
+        <div class="title">お知らせ <small>Chi tiết thông báo</small></div>
+        <button class="icon-btn">☰</button>
+      </div>
+      <div class="app-body">
+        <div style="padding:12px 16px;background:#fff;border-bottom:1px solid var(--gray-100)">
+          <div style="font-weight:700;font-size:14px">サービス満足度アンケートのお願い <span class="ftag ro">title</span></div>
+          <div class="muted" style="font-size:11px">今日 07:00 · <span class="chip chip-blue" style="vertical-align:middle">SURVEY</span> <span class="ftag ro">type</span></div>
+        </div>
+
+        <div class="m-card-pad" style="text-align:center;padding:22px 16px">
+          <div style="font-size:18px;font-weight:800;color:var(--blue-600);letter-spacing:1px">ESSTATION</div>
+          <div style="font-weight:700;margin:6px 0 4px">サービス満足度アンケート</div>
+          <div class="vi" style="color:var(--app-700);font-weight:700;margin-bottom:14px">Khảo sát mức độ hài lòng dịch vụ</div>
+          <div style="font-size:12.5px;color:var(--gray-700);line-height:1.6;text-align:justify">いつもご利用ありがとうございます。サービス品質向上のため、以下アンケートにご協力ください。
+            <span class="vi" style="display:block;border-top:1px dashed var(--gray-100);padding-top:8px;margin-top:8px">Cảm ơn bạn đã sử dụng dịch vụ. Vui lòng tham gia khảo sát để chúng tôi cải thiện chất lượng.</span>
+            <span class="ftag ro">content</span>
+          </div>
+          <div class="banner banner-deadline" style="margin:16px 0 0;text-align:left">⏰ 回答期限: 2026/02/28 23:59 まで <small>Hạn trả lời · ngoài hạn form tự khoá</small> <span class="ftag ro">survey.closeAt</span></div>
+        </div>
+
+        <div class="pad">
+          <button class="btn btn-primary btn-block btn-lg btn-pill" onclick="goScreen('s-survey')">アンケートに参加する <small>Tham gia khảo sát</small></button>
+        </div>
+        <div class="api-note" style="margin:0 14px">Thông báo loại <code>SURVEY</code> mang <code>body.surveyId</code>. Bấm tham gia → <b>GET /user/surveys/:id</b>. Nút disable nếu <code>now &gt; closeAt</code> hoặc đã trả lời.</div>
+      </div>
+    </div>
+
+    <!-- ============ SCREEN: SURVEY FORM ============ -->
+    <div id="s-survey" class="screen">
+      <div class="appbar">
+        <button class="icon-btn" onclick="goScreen('s-noti')">‹</button>
+        <div class="title center">アンケート <small>Khảo sát</small></div>
+        <span style="width:34px"></span>
+      </div>
+      <div class="app-body">
+        <div style="padding:13px 16px;background:var(--app-50);border-bottom:1px solid var(--app-100)">
+          <div style="font-weight:700;color:var(--app-700);font-size:13.5px">ES Kitchen サービス満足度アンケート</div>
+          <div class="vi">Trả lời trong hạn · các câu * bắt buộc</div>
+        </div>
+        <div class="banner banner-deadline" style="margin:12px 14px">⏰ 残り時間: あと 12日 <small>Còn 12 ngày — hết hạn sẽ tự khoá</small></div>
+
+        <!-- Q1 single choice -->
+        <div class="m-card"><div class="m-card-pad">
+          <div class="f-label">1. 料理の味についてどう感じましたか *<small>Hương vị món ăn? (chọn 1) · type=SINGLE_CHOICE</small></div>
+          <label class="opt"><input type="radio" name="q1"> とても満足 <span class="vi">Rất hài lòng</span></label>
+          <label class="opt"><input type="radio" name="q1" checked> 満足 <span class="vi">Hài lòng</span></label>
+          <label class="opt"><input type="radio" name="q1"> 普通 <span class="vi">Bình thường</span></label>
+          <label class="opt"><input type="radio" name="q1"> やや不満 <span class="vi">Hơi không hài lòng</span></label>
+          <label class="opt"><input type="radio" name="q1"> 不満 <span class="vi">Không hài lòng</span></label>
+        </div></div>
+
+        <!-- Q2 multi choice -->
+        <div class="m-card"><div class="m-card-pad">
+          <div class="f-label">2. ES Kitchen を利用する理由 *<small>Lý do dùng dịch vụ (chọn nhiều) · type=MULTI_CHOICE</small></div>
+          <label class="opt"><input type="checkbox" checked> 手軽に注文できる <span class="vi">Đặt tiện lợi</span></label>
+          <label class="opt"><input type="checkbox" checked> 料理が美味しい <span class="vi">Món ngon</span></label>
+          <label class="opt"><input type="checkbox"> 価格が手頃 <span class="vi">Giá phải chăng</span></label>
+          <label class="opt"><input type="checkbox"> メニューが豊富 <span class="vi">Thực đơn phong phú</span></label>
+          <label class="opt"><input type="checkbox"> その他 <span class="vi">Khác</span></label>
+        </div></div>
+
+        <!-- Q3 free text -->
+        <div class="m-card"><div class="m-card-pad">
+          <div class="f-label">3. ご意見・ご要望 <small>Ý kiến / nguyện vọng (≤256) · type=FREE_TEXT</small></div>
+          <textarea class="f-input" rows="4" maxlength="256" data-counter="#sc" oninput="countChars(this)" placeholder="入力してください…"></textarea>
+          <div class="counter"><span id="sc">0</span> / 256</div>
+        </div></div>
+
+        <div class="pad"><button class="btn btn-blue btn-block btn-lg btn-pill" onclick="openOverlay('dlg-done')">送信 <small>Gửi khảo sát</small></button></div>
+        <div class="api-note" style="margin:0 14px 14px">Submit → <b>POST /user/surveys/:id/responses</b> với mảng <code>answers[]</code> theo <code>questionId</code>. BE chặn nếu ngoài <code>[openAt, closeAt]</code> hoặc đã trả lời → 1 user/1 survey.</div>
+      </div>
+    </div>
+  <!-- success dialog -->
+<div class="overlay dialog-wrap" id="dlg-done">
+  <div class="dialog">
+    <div class="d-ic">✅</div>
+    <div class="d-title ok">アンケート完了</div>
+    <div class="d-text">回答が送信されました。ご協力ありがとうございました。
+      <small>Đã gửi (POST …/responses). Kết quả tổng hợp + biểu đồ hiển thị ở màn quản trị Admin (ngoài app).</small>
+    </div>
+    <div class="d-actions"><button class="btn btn-primary btn-block" onclick="closeOverlay('dlg-done');goScreen('s-noti')">通知一覧に戻る</button></div>
+  </div>
+</div>
+
+  </div>
+</div>
+
+<!-- ===== API SPEC DRAWER ===== -->
+<div class="drawer" id="apiDrawer">
+  <div class="drawer-head"><h3>UE-5 · API仕様 — Survey (Admin → User)</h3><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+
+    <h4>① Thông báo khảo sát</h4>
+    <div class="ep"><span class="m get">GET</span> /user/notifications/:id <span class="ep-tag reuse">REUSE P1</span><span class="guard">JwtAuthGuard</span></div>
+    <pre>// NotificationDetailResponse (type=SURVEY)
+{ "id":"701", "title":"…アンケートのお願い",
+  "content":"…", "type":"SURVEY",
+  "body": { "surveyId":"55" },   // P2: gắn surveyId
+  "isRead":true, "createdAt":"…" }</pre>
+    <p class="muted" style="font-size:12px">P2 thêm <code>SURVEY</code> vào <code>NotificationType</code> &amp; <code>surveyId</code> vào <code>NotificationBody</code>.</p>
+
+    <h4>② Lấy nội dung khảo sát</h4>
+    <div class="ep"><span class="m get">GET</span> /user/surveys/:id <span class="ep-tag new">NEW</span><span class="guard">JwtAuthGuard</span></div>
+    <pre>{
+  "id":"55", "title":"サービス満足度アンケート",
+  "description":"…",
+  "openAt":"2026-02-16T00:00:00Z",
+  "closeAt":"2026-02-28T14:59:00Z",
+  "status":"OPEN",            // OPEN | CLOSED
+  "alreadyAnswered": false,
+  "questions": [
+    { "id":"1","order":1,"type":"SINGLE_CHOICE",
+      "text":"料理の味は？","required":true,
+      "options":[{"id":"o1","label":"とても満足"}, …] },
+    { "id":"2","order":2,"type":"MULTI_CHOICE", … },
+    { "id":"3","order":3,"type":"FREE_TEXT",
+      "maxLength":256,"required":false }
+  ]
+}</pre>
+    <table>
+      <tr><th>question.type</th><th>UI</th></tr>
+      <tr><td><code>SINGLE_CHOICE</code></td><td>radio</td></tr>
+      <tr><td><code>MULTI_CHOICE</code></td><td>checkbox</td></tr>
+      <tr><td><code>FREE_TEXT</code></td><td>textarea (maxLength)</td></tr>
+    </table>
+
+    <h4>③ Gửi câu trả lời</h4>
+    <div class="ep"><span class="m post">POST</span> /user/surveys/:id/responses <span class="ep-tag new">NEW</span><span class="guard">JwtAuthGuard · @BlockGuest</span></div>
+    <pre>{ "answers": [
+    { "questionId":"1", "optionIds":["o2"] },
+    { "questionId":"2", "optionIds":["o1","o2"] },
+    { "questionId":"3", "freeText":"…" }
+] }</pre>
+    <p class="muted" style="font-size:12px"><b>Rule:</b> chỉ user thuộc company đích &amp; <code>openAt ≤ now ≤ closeAt</code>; mỗi user 1 lần (<code>409</code> nếu đã trả lời). Bảng mới: <code>surveys, survey_questions, survey_distributions(company), survey_responses, survey_answers</code>.</p>
+
+    <div class="notice notice-out" style="margin-top:14px"><span class="ic">🖥️</span><div><b>Ngoài scope App:</b> E03 tạo khảo sát + chọn nhiều company + lịch sử chiến dịch; auto-lock theo deadline + biểu đồ tròn/cột tổng hợp — ở web-admin.</div></div>
+  </div>
+</div>
+
+<script src="../assets/eskitchen.js"></script>
+</body>
+</html>

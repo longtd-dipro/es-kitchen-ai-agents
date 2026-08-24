@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>báo cáo vấn đề — Trouble Report Screens</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; background: #1a1a2e; color: #e0e0e0; padding: 40px; }
+h1 { font-size: 26px; text-align: center; margin-bottom: 8px; }
+.sub { text-align: center; color: #888; margin-bottom: 30px; font-size: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; max-width: 1200px; margin: 0 auto; }
+.card { background: #0f3460; border: 1px solid #1a4a7a; border-radius: 10px; padding: 16px; text-decoration: none; color: #e0e0e0; transition: .2s; }
+.card:hover { background: #1a4a7a; transform: translateY(-2px); }
+.tag { font-size: 11px; color: #7fb3e6; }
+.name { font-size: 15px; font-weight: 600; margin-top: 4px; }
+.desc { font-size: 12px; color: #aab; margin-top: 6px; line-height: 1.5; }
+.grp { max-width: 1200px; margin: 0 auto 10px; font-size: 13px; color: #f5a623; font-weight: 600; padding-top: 18px; }
+</style>
+</head>
+<body>
+<h1>トラブル報告 — Báo cáo vấn đề (7 màn)</h1>
+<div class="sub">Hand-coded pixel-perfect · render-verified · CSS thuần + inline SVG</div>
+
+<div class="grp">📐 API 配線ガイド <span style="color:#7fb3e6;font-weight:400;">/ hướng dẫn ráp API (mockup đánh số + DTO/Res)</span></div>
+<div class="grid">
+  <a class="card" href="apis/index.html" style="border-color:#f5a623;"><div class="tag">apis/index.html</div><div class="name">API ráp guide (số → Res/DTO)</div><div class="desc">Mockup đánh số (L.x/F.x/C.x) + bảng ráp từng số → endpoint/field. Contract: docs/drivers/apis/trouble-report.md</div></a>
+</div>
+
+<div class="grp">配達一覧（chọn điểm có vấn đề）</div>
+<div class="grid">
+  <a class="card" href="DA_RPTD_001_02_selected.html"><div class="tag">DA_RPTD_001-02</div><div class="name">配達一覧（đã chọn）</div><div class="desc">Radio đầu chọn(xanh) → footer 戻る/次へ. Note đổi sang "未配送の注文のみ"</div></a>
+</div>
+
+<div class="grp">トラブル報告 フォーム</div>
+<div class="grid">
+  <a class="card" href="DA_RPTD_002_01_form.html"><div class="tag">DA_RPTD_002-01</div><div class="name">フォーム（箱数不足 set）</div><div class="desc">荷物 list checkbox + トラブル内容(箱数不足/誤配送/荷物破損/その他) + 画像 upload trống + 備考</div></a>
+  <a class="card" href="DA_RPTD_002_02_filled.html"><div class="tag">DA_RPTD_002-02</div><div class="name">フォーム（đã điền）</div><div class="desc">checkbox tick 1,3 + collapse header + その他 + input lý do(viền đỏ) + 3 ảnh upload + 備考 text + 送信 active</div></a>
+</div>
+
+<div class="grp">確認モーダル（mascot ESSTATION）</div>
+<div class="grid">
+  <a class="card" href="DA_RPTD_002_03_confirm.html"><div class="tag">DA_RPTD_002-03</div><div class="name">送信確認モーダル</div><div class="desc">Mascot + 「この内容で報告を送信しますか？」+ 報告する / キャンセル</div></a>
+  <a class="card" href="DA_RPTD_002_03_1_call.html"><div class="tag">DA_RPTD_002-03-1</div><div class="name">電話確認モーダル</div><div class="desc">Mascot + 「ESキッチンへ電話しますか？」+ checkbox + ESへ電話する / トラブル報告へ / 戻る</div></a>
+</div>
+
+<div class="grp">参考（đã có ở cool-driver / driver）</div>
+<div class="grid">
+  <a class="card" href="../../../design/cool-driver/DA_HOME_001.html"><div class="tag">DA_HOME_001</div><div class="name">ホーム</div><div class="desc">→ design/cool-driver/DA_HOME_001.html</div></a>
+  <a class="card" href="../cool-driver/DA_COOL_001_01_default.html"><div class="tag">DA_COOL_001-01</div><div class="name">COOL便</div><div class="desc">→ cool-driver/DA_COOL_001_01_default.html</div></a>
+  <a class="card" href="../driver/index.html"><div class="tag">DA_ESDL / Frame</div><div class="name">ES配送便 / 荷物受取</div><div class="desc">→ driver/ (deliver_02 ESDL, deliver_01 Frame)</div></a>
+</div>
+
+</body>
+</html>

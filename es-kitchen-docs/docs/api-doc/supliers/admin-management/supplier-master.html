@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<!-- 仕入先マスタ (Supplier Master Management) -->
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>仕入先マスタ - ESSTATION</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background: #F8F9FA;
+    color: #333333;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 260px;
+    background: #ffffff;
+    border-right: 1px solid #E5E7EB;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 50;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #4B5563;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .menu-item:hover { background: #F3F4F6; }
+
+  .menu-parent.active {
+    background: #0062CC;
+    color: #ffffff;
+  }
+  .menu-parent.active .menu-icon { color: #ffffff; }
+  .menu-parent.active .menu-caret { color: #ffffff; }
+
+  .menu-child {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px 10px 52px;
+    color: #4B5563;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .menu-child:hover { background: #F3F4F6; }
+  .menu-child.active {
+    background: #E6F0FA;
+    color: #0062CC;
+    font-weight: 600;
+  }
+
+  /* Main content offset */
+  .main-wrap {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+
+  /* Top header bar */
+  .top-header {
+    background: #ffffff;
+    border-bottom: 1px solid #E5E7EB;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Buttons */
+  .btn {
+    height: 38px;
+    border-radius: 4px;
+    padding: 0 18px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: #0062CC;
+    color: #ffffff;
+    border: 1px solid #0062CC;
+  }
+  .btn-primary:hover { background: #004C9F; border-color: #004C9F; }
+  .btn-outline {
+    background: #ffffff;
+    color: #0062CC;
+    border: 1px solid #0062CC;
+  }
+  .btn-outline:hover { background: #E6F0FA; }
+
+  /* Filter card */
+  .filter-card {
+    background: #ffffff;
+    border: 1px solid #E5E7EB;
+    border-radius: 4px;
+    padding: 20px 24px 20px 56px;
+    position: relative;
+  }
+  .filter-card::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 32px;
+    width: 2px;
+    background: #0062CC;
+  }
+  .filter-arrow {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #E5E7EB;
+    color: #6B7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .input-field, .select-field {
+    height: 38px;
+    border: 1px solid #D1D5DB;
+    border-radius: 4px;
+    background: #ffffff;
+    font-size: 14px;
+    color: #333333;
+    padding: 0 12px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-field:focus, .select-field:focus { border-color: #0062CC; }
+  .input-wrap { position: relative; }
+  .input-wrap .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+    font-size: 14px;
+    pointer-events: none;
+  }
+  .input-wrap .input-field { padding-left: 36px; }
+
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: "\f078";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+    font-size: 11px;
+    pointer-events: none;
+  }
+  .select-wrap .select-field {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 32px;
+  }
+
+  /* Table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+  }
+  .data-table thead th {
+    background: #F3F4F6;
+    color: #6B7280;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    padding: 14px 16px;
+    border-bottom: 1px solid #E5E7EB;
+    white-space: nowrap;
+  }
+  .data-table tbody td {
+    padding: 16px;
+    font-size: 14px;
+    color: #333333;
+    border-bottom: 1px solid #E5E7EB;
+    vertical-align: middle;
+  }
+  .data-table tbody tr:hover { background: #F9FAFB; }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+
+  .supplier-link {
+    color: #0062CC;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .supplier-link:hover { color: #004C9F; }
+
+  .status-badge {
+    display: inline-block;
+    background: #E6F0FA;
+    color: #0062CC;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+  }
+
+  .action-icon {
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px 6px;
+    transition: opacity 0.2s;
+  }
+  .action-icon:hover { opacity: 0.7; }
+  .action-edit { color: #0062CC; }
+  .action-delete { color: #DC2626; }
+
+  /* Pagination */
+  .page-btn {
+    min-width: 32px;
+    height: 32px;
+    border: 1px solid #E5E7EB;
+    background: #ffffff;
+    color: #6B7280;
+    font-size: 13px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .page-btn:hover:not(:disabled) { border-color: #0062CC; color: #0062CC; }
+  .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .page-btn.active {
+    background: #ffffff;
+    color: #0062CC;
+    border-color: #0062CC;
+    font-weight: 600;
+  }
+
+  /* Mascot area */
+  .mascot-area {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 160px;
+  }
+
+  /* Scrollbar for table on small screens */
+  .table-responsive { overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar">
+  <!-- Logo -->
+  <div class="flex items-center gap-2 px-5 py-5 border-b border-gray-100">
+    <i class="fa-solid fa-bowl-food text-red-500 text-2xl"></i>
+    <span class="font-bold text-red-500 text-lg tracking-wide">ESSTATION</span>
+  </div>
+
+  <!-- Menu -->
+  <nav class="py-2">
+    <!-- ダッシュボード -->
+    <div class="menu-item">
+      <i class="fa-solid fa-gauge-high menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>ダッシュボード</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- メニュー管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-list menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>メニュー管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- マスタ管理 (Active - open) -->
+    <div class="menu-parent active menu-item">
+      <i class="fa-solid fa-folder menu-icon w-5 mr-3"></i>
+      <span>マスタ管理</span>
+      <i class="fa-solid fa-chevron-up menu-caret ml-auto text-xs"></i>
+    </div>
+
+    <!-- Sub menu (open) -->
+    <div class="bg-gray-50">
+      <div class="menu-child">プランマスタ</div>
+      <div class="menu-child">商品マスタ</div>
+      <div class="menu-child">資材マスタ</div>
+      <div class="menu-child">
+        配送関連
+        <i class="fa-solid fa-chevron-down ml-auto text-xs text-gray-400"></i>
+      </div>
+      <div class="menu-child active">仕入先マスタ</div>
+      <div class="menu-child">代理店・パートナー管理</div>
+      <div class="menu-child">
+        機種マスタ
+        <i class="fa-solid fa-chevron-down ml-auto text-xs text-gray-400"></i>
+      </div>
+    </div>
+
+    <!-- 法人・契約管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-building menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>法人・契約管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- アカウント管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-user-gear menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>アカウント管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- 売上管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-coins menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>売上管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+
+    <!-- 配送管理 -->
+    <div class="menu-item">
+      <i class="fa-solid fa-truck menu-icon w-5 mr-3 text-gray-400"></i>
+      <span>配送管理</span>
+      <i class="fa-solid fa-chevron-down menu-caret ml-auto text-xs text-gray-400"></i>
+    </div>
+  </nav>
+
+  <!-- Mascot (decorative) -->
+  <div class="mascot-area">
+    <div class="w-full h-full flex items-center justify-center">
+      <div class="text-center">
+        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-b from-yellow-300 to-yellow-500 flex items-center justify-center shadow-md">
+          <i class="fa-solid fa-hat-chef text-4xl text-white"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ MAIN CONTENT ============ -->
+<div class="main-wrap">
+
+  <!-- Top header -->
+  <header class="top-header">
+    <div class="flex items-center gap-2 text-sm text-gray-500">
+      <i class="fa-solid fa-sun text-yellow-400"></i>
+      <span>お帰りなさい</span>
+    </div>
+    <div class="flex items-center gap-2 cursor-pointer">
+      <div class="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-white">
+        <i class="fa-solid fa-user text-sm"></i>
+      </div>
+      <span class="text-sm text-gray-700">にっしくん</span>
+      <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
+    </div>
+  </header>
+
+  <!-- Content body -->
+  <main class="p-8">
+
+    <!-- Page title + Action buttons -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <div class="text-xs text-gray-500 mb-1">マスタ管理 / 仕入先マスタ</div>
+        <h1 class="text-2xl font-bold text-gray-800">仕入先マスタ</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <!-- Bulk account issuance: enable khi đã chọn ≥1 dòng (checkbox). Cấp phát 1 hoặc nhiều cùng lúc. -->
+        <button class="btn btn-outline" id="btn-issue-account" disabled title="選択した仕入先のアカウントを発行">
+          <i class="fa-solid fa-paper-plane"></i>
+          アカウント発行 <span id="issue-count" class="text-gray-400">(0)</span>
+        </button>
+        <button class="btn btn-outline">
+          <i class="fa-solid fa-upload"></i>
+          CSV取込
+        </button>
+        <button class="btn btn-outline">
+          <i class="fa-solid fa-download"></i>
+          CSV出力
+        </button>
+        <button class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i>
+          新規登録
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter card -->
+    <div class="filter-card mb-6">
+      <div class="filter-arrow">
+        <i class="fa-solid fa-chevron-up"></i>
+      </div>
+
+      <div class="grid grid-cols-12 gap-3 mb-3">
+        <div class="col-span-5">
+          <div class="input-wrap">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" class="input-field" placeholder="仕入先ID、仕入先名" />
+          </div>
+        </div>
+        <div class="col-span-3">
+          <div class="select-wrap">
+            <select class="select-field">
+              <option>ステータス</option>
+              <option>本登録</option>
+              <option>未登録</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-span-2">
+          <button class="btn btn-outline w-full justify-center">クリア</button>
+        </div>
+        <div class="col-span-2">
+          <button class="btn btn-primary w-full justify-center">検索</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-12 gap-3 items-center">
+        <div class="col-span-3">
+          <div class="select-wrap">
+            <select class="select-field">
+              <option>作れる商品</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-span-3">
+          <div class="select-wrap">
+            <select class="select-field">
+              <option>仕入れ先区分</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-span-6 flex justify-end">
+          <button class="btn btn-outline">
+            並べ替え
+            <i class="fa-solid fa-arrow-down-wide-short ml-1"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data table -->
+    <div class="bg-white border border-gray-200 rounded">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="text-center w-10"><input type="checkbox" id="check-all" title="全選択" /></th>
+              <th class="text-center w-16">No</th>
+              <th class="w-32">仕入先ID</th>
+              <th>仕入先名</th>
+              <th>本社住所</th>
+              <th>担当者名</th>
+              <th>担当者の電話番号</th>
+              <th>ステータス</th>
+              <th class="text-center w-28">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center text-gray-500">1</td>
+              <td>HU00001</td>
+              <td><a class="supplier-link">佐川急便 川崎新羽営業所</a></td>
+              <td>京都府 京都市下京区四条</td>
+              <td>加藤真由美</td>
+              <td>000-0000-0000</td>
+              <td><span class="status-badge">本登録</span></td>
+              <td class="text-center">
+                <i class="fa-solid fa-pen action-icon action-edit"></i>
+                <i class="fa-solid fa-trash action-icon action-delete"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center text-gray-500">2</td>
+              <td>HU00001</td>
+              <td><a class="supplier-link">ヤマト運輸 館林駅前営業所</a></td>
+              <td>京都府 京都市下京区四条</td>
+              <td></td>
+              <td></td>
+              <td><span class="status-badge">本登録</span></td>
+              <td class="text-center">
+                <i class="fa-solid fa-pen action-icon action-edit"></i>
+                <i class="fa-solid fa-trash action-icon action-delete"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center text-gray-500">3</td>
+              <td>HU00001</td>
+              <td><a class="supplier-link">ヤマト運輸 館林駅前営業所</a></td>
+              <td>京都府 京都市下京区四条</td>
+              <td>加藤真由美</td>
+              <td>000-0000-0000</td>
+              <td><span class="status-badge">本登録</span></td>
+              <td class="text-center">
+                <i class="fa-solid fa-pen action-icon action-edit"></i>
+                <i class="fa-solid fa-trash action-icon action-delete"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center text-gray-500">4</td>
+              <td>HU00001</td>
+              <td><a class="supplier-link">ヤマト運輸 館林駅前営業所</a></td>
+              <td>京都府 京都市下京区四条</td>
+              <td></td>
+              <td></td>
+              <td><span class="status-badge">本登録</span></td>
+              <td class="text-center">
+                <i class="fa-solid fa-pen action-icon action-edit"></i>
+                <i class="fa-solid fa-trash action-icon action-delete"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center text-gray-500">5</td>
+              <td>HU00001</td>
+              <td><a class="supplier-link">ヤマト運輸 館林駅前営業所</a></td>
+              <td>京都府 京都市下京区四条</td>
+              <td></td>
+              <td></td>
+              <td><span class="status-badge">本登録</span></td>
+              <td class="text-center">
+                <i class="fa-solid fa-pen action-icon action-edit"></i>
+                <i class="fa-solid fa-trash action-icon action-delete"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center text-gray-500">6</td>
+              <td>HU00001</td>
+              <td><a class="supplier-link">ヤマト運輸 館林駅前営業所</a></td>
+              <td>京都府 京都市下京区四条</td>
+              <td>加藤真由美</td>
+              <td>000-0000-0000</td>
+              <td><span class="status-badge">本登録</span></td>
+              <td class="text-center">
+                <i class="fa-solid fa-pen action-icon action-edit"></i>
+                <i class="fa-solid fa-trash action-icon action-delete"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center text-gray-500">7</td>
+              <td>HU00001</td>
+              <td><a class="supplier-link">ヤマト運輸 館林駅前営業所</a></td>
+              <td>京都府 京都市下京区四条</td>
+              <td></td>
+              <td></td>
+              <td><span class="status-badge">本登録</span></td>
+              <td class="text-center">
+                <i class="fa-solid fa-pen action-icon action-edit"></i>
+                <i class="fa-solid fa-trash action-icon action-delete"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center text-gray-500">8</td>
+              <td>HU00001</td>
+              <td><a class="supplier-link">ヤマト運輸 館林駅前営業所</a></td>
+              <td>京都府 京都市下京区四条</td>
+              <td>加藤真由美</td>
+              <td>000-0000-0000</td>
+              <td><span class="status-badge">本登録</span></td>
+              <td class="text-center">
+                <i class="fa-solid fa-pen action-icon action-edit"></i>
+                <i class="fa-solid fa-trash action-icon action-delete"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center text-gray-500">9</td>
+              <td>HU00001</td>
+              <td><a class="supplier-link">ヤマト運輸 館林駅前営業所</a></td>
+              <td>京都府 京都市下京区四条</td>
+              <td>加藤真由美</td>
+              <td>000-0000-0000</td>
+              <td><span class="status-badge">本登録</span></td>
+              <td class="text-center">
+                <i class="fa-solid fa-pen action-icon action-edit"></i>
+                <i class="fa-solid fa-trash action-icon action-delete"></i>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center text-gray-500">10</td>
+              <td>HU00001</td>
+              <td><a class="supplier-link">ヤマト運輸 館林駅前営業所</a></td>
+              <td>京都府 京都市下京区四条</td>
+              <td>加藤真由美</td>
+              <td>000-0000-0000</td>
+              <td><span class="status-badge">本登録</span></td>
+              <td class="text-center">
+                <i class="fa-solid fa-pen action-icon action-edit"></i>
+                <i class="fa-solid fa-trash action-icon action-delete"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex items-center justify-end gap-3 px-4 py-4 border-t border-gray-200 bg-white">
+        <span class="text-sm text-gray-500 mr-2">100件中 1-10件</span>
+        <button class="page-btn" disabled><i class="fa-solid fa-chevron-left text-xs"></i></button>
+        <button class="page-btn">1</button>
+        <span class="text-gray-400 text-sm">...</span>
+        <button class="page-btn">4</button>
+        <button class="page-btn">5</button>
+        <button class="page-btn active">6</button>
+        <button class="page-btn">7</button>
+        <button class="page-btn">8</button>
+        <span class="text-gray-400 text-sm">...</span>
+        <button class="page-btn">50</button>
+        <button class="page-btn"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+        <div class="select-wrap ml-3" style="min-width: 110px;">
+          <select class="select-field">
+            <option>10件／ページ</option>
+            <option>20件／ページ</option>
+            <option>50件／ページ</option>
+            <option>100件／ページ</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

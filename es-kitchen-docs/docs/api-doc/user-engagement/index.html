@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESKitchen · User Engagement Phase 2 — Mockup & API Guide</title>
+<link rel="stylesheet" href="assets/eskitchen.css">
+</head>
+<body class="no-fab">
+
+<div class="topbar">
+  <div class="brand"><span class="logo">ES</span> ESKitchen Mockups</div>
+  <span class="persona">Phase 2 · User Engagement (E01 App)</span>
+  <div class="spacer"></div>
+  <span class="tb-link mono">REST · NestJS · Flutter · iPhone 390×844</span>
+</div>
+
+<div class="page">
+
+  <div class="hero">
+    <h1>User Engagement — Phase 2</h1>
+    <p>Bộ mockup + hợp đồng API cho đội <b>Mobile (E01 · Flutter)</b>. 6 màn hình liên kết với nhau như một prototype tĩnh: bấm nút / dòng / tab để đi đúng luồng (mở bottom-sheet, popup cảnh báo, gọi API). Mỗi màn có nút <span class="mono">{ } API仕様</span> (góc phải dưới) mở panel đặc tả endpoint, và <span class="mono">🏷️ FE注釈</span> để bật/tắt nhãn tên field ngay trên UI. Tất cả endpoint bám sát convention <b>Phase 1</b> của <code>UserModule</code>.</p>
+  </div>
+
+  <!-- ===== business flow ===== -->
+  <div class="card">
+    <div class="card-head"><h3>1 · 6 nghiệp vụ tương tác (Engagement)</h3></div>
+    <div class="card-body">
+      <div class="flow">
+        <div class="node">① Onboarding + Dị ứng<small>khai báo allergen lần đầu</small></div>
+        <div class="to">→</div>
+        <div class="node">② Lọc dị ứng ở Menu<small>ẩn / cảnh báo món</small></div>
+        <div class="to">→</div>
+        <div class="node">③ Đánh giá sau mua<small>sao 1–5 + bình luận</small></div>
+        <div class="to">→</div>
+        <div class="node">④ Khảo sát (Admin)<small>trả lời trong hạn</small></div>
+        <div class="to">→</div>
+        <div class="node">⑤ Wishlist tháng sau<small>chọn ≤15 món · thang 3 bậc</small></div>
+        <div class="to">→</div>
+        <div class="node">⑥ Feedback / ご意見<small>gửi → admin reply email</small></div>
+      </div>
+      <div class="notice notice-info" style="margin-top:14px">
+        <span class="ic">💡</span>
+        <div><b>Nguồn nghiệp vụ:</b> <code>user-engagement/SPEC.md</code> + <code>REQUIREMENT.md</code>. Mockup chỉ minh hoạ <b>phần App di động (E01)</b> — các phần quản trị (tạo khảo sát, biểu đồ thống kê, cảnh báo low-rating, phát động wishlist, soạn email reply) thuộc <b>E03/E02 web</b>, xem mục 4.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== API conventions ===== -->
+  <div class="card">
+    <div class="card-head"><h3>2 · Convention API — bám sát Phase 1 (BẮT BUỘC)</h3></div>
+    <div class="card-body">
+      <div class="notice notice-warn">
+        <span class="ic">⚠️</span>
+        <div><b>Routing:</b> App di động = <code>UserModule</code> được <code>RouterModule.register()</code> với prefix <code>''</code> → <b>full path = đúng path khai trong <code>@Controller()</code></b>. Hầu hết controller dùng prefix <code>user/...</code> (vd <code>GET /user/menu/products</code>, <code>GET /user/favorites</code>). Riêng feedback dùng <code>POST /contact</code> (không có <code>user/</code>).</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px">
+        <div>
+          <h4 class="section-title">Response envelope</h4>
+          <pre class="mono" style="background:var(--gray-900);color:#cdd6f4;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto">{
+  "statusCode": "success",
+  "message": "Request successful",
+  "data": &lt;payload&gt;
+}
+// Controller return data thô; envelope
+// tự bọc ở interceptor. Lỗi validate:
+// { statusCode:"validaton_error", ... }</pre>
+        </div>
+        <div>
+          <h4 class="section-title">List / pagination</h4>
+          <pre class="mono" style="background:var(--gray-900);color:#cdd6f4;padding:12px;border-radius:6px;font-size:12px;overflow-x:auto">// Query (BaseSearchRequest):
+?page=1&amp;limit=10&amp;q=&amp;order=DESC&amp;orderBy=createdAt
+
+// data:
+{ "items":[...], "total":100,
+  "page":1, "limit":10, "totalPages":10 }</pre>
+        </div>
+      </div>
+
+      <h4 class="section-title" style="margin-top:8px">Guards · Decorators · Enums</h4>
+      <table class="data">
+        <thead><tr><th>Hạng mục</th><th>Giá trị (Phase 1 thực tế)</th></tr></thead>
+        <tbody>
+          <tr><td>Guard mặc định</td><td><code>@UseGuards(JwtAuthGuard)</code> + <code>@ApiBearerAuth()</code> · lấy user qua <code>@GetUser('id')</code></td></tr>
+          <tr><td>Chặn guest (khách)</td><td><code>GuestRestrictionGuard</code> + <code>@BlockGuest()</code> cho hành động ghi (toggle favorite, mark-read, gửi đánh giá…)</td></tr>
+          <tr><td>Auth tuỳ chọn</td><td><code>OptionalJwtAuthGuard</code> — dùng cho <code>POST /contact</code> (có/không token đều gửi được)</td></tr>
+          <tr><td><code>ProductTag</code></td><td><span class="chip chip-new no-dot">NEW</span> <span class="chip chip-expiry no-dot">短賞味期限</span></td></tr>
+          <tr><td><code>OrderStatus</code></td><td><span class="chip chip-green">COMPLETED</span> <span class="chip chip-gray">PENDING</span> <span class="chip chip-red">CANCELLED</span> WAITING_REFUND · REFUNDED · REFUND_FAILED — <b>review chỉ mở khi COMPLETED</b></td></tr>
+          <tr><td><code>NotificationType</code></td><td>MENU_PUBLISHED · SYSTEM_ANNOUNCEMENT · PAYMENT_REMINDER <span class="chip chip-green" style="margin-left:4px">+ SURVEY</span> <span class="chip chip-green">+ WISHLIST_CAMPAIGN</span> (P2 thêm)</td></tr>
+          <tr><td>Allergen master</td><td><code>GET /user/allergens</code> → <code>{id,name,imageUrl,sort,allergenType}</code> · type = <code>specified</code> (特定原材料) | <code>quasi_specified</code> (準ずる)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="notice notice-new" style="margin-top:16px">
+        <span class="ic">🟢</span>
+        <div><b>Tái sử dụng tối đa:</b> cảnh báo dị ứng = đối chiếu <b>client-side</b> giữa <code>productDetail.allergens[]</code> (đã có) và allergen user đã lưu — <i>không cần API mới</i>. Endpoint <span class="ep-tag new">NEW</span> chỉ phát sinh ở: lưu allergen của user, review sản phẩm, survey, wishlist tháng sau. Mỗi drawer ghi rõ <span class="ep-tag reuse">REUSE</span> / <span class="ep-tag ext">EXTEND</span> / <span class="ep-tag new">NEW</span>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== mapping table ===== -->
+  <div class="card">
+    <div class="card-head"><h3>3 · Mapping nghiệp vụ → màn hình → API</h3></div>
+    <div class="card-body">
+      <table class="data">
+        <thead><tr><th>Nghiệp vụ (SPEC)</th><th>Màn mockup</th><th>API chính</th><th>Loại</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Onboarding + khai báo dị ứng · đổi cài đặt ở Profile</td>
+            <td><a href="user/user_allergy_profile_mobile.html">My Page · Allergen Settings</a></td>
+            <td><code>GET/PUT /user/allergens/me</code> · <code>GET/POST /user/preferences/tutorial</code></td>
+            <td><span class="ep-tag new">NEW</span></td>
+          </tr>
+          <tr>
+            <td>Bộ lọc dị ứng khi xem Menu (ẩn / cảnh báo)</td>
+            <td><a href="user/allergy_filter_mobile.html">Menu · Allergen Filter</a></td>
+            <td><code>GET /user/menu/products</code> (+ allergen) · <code>GET /user/allergens</code></td>
+            <td><span class="ep-tag ext">EXTEND</span></td>
+          </tr>
+          <tr>
+            <td>Xem đánh giá công khai của món ăn</td>
+            <td><a href="user/product_detail_reviews_mobile.html">Product Detail · Reviews</a></td>
+            <td><code>GET /user/menu/products/:id</code> · <code>GET …/:id/reviews</code></td>
+            <td><span class="ep-tag new">NEW</span></td>
+          </tr>
+          <tr>
+            <td>Chấm sao 1–5 + bình luận sau khi mua · gửi ご意見</td>
+            <td><a href="user/product_review_mobile_mockup.html">Order History · Review &amp; Feedback</a></td>
+            <td><code>POST /user/orders/:id/reviews</code> · <code>POST /contact</code></td>
+            <td><span class="ep-tag new">NEW</span> <span class="ep-tag reuse">REUSE</span></td>
+          </tr>
+          <tr>
+            <td>Khảo sát System Admin → user (có hạn chót)</td>
+            <td><a href="user/survey_notification_from_admin_mobile.html">Survey from Admin</a></td>
+            <td><code>GET /user/surveys/:id</code> · <code>POST …/:id/responses</code></td>
+            <td><span class="ep-tag new">NEW</span></td>
+          </tr>
+          <tr>
+            <td>Bình chọn thực đơn tháng sau (≤15 món · thang 3 bậc)</td>
+            <td><a href="user/next_month_menu_survey_wishlist_from_company.html">Next-month Wishlist</a></td>
+            <td><code>GET /user/wishlist-campaigns/active</code> · <code>POST …/:id/votes</code></td>
+            <td><span class="ep-tag new">NEW</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 class="section-title">Bấm vào màn để mở</h4>
+      <div class="grid-cards">
+        <a class="screen-card" href="user/user_allergy_profile_mobile.html">
+          <span class="sc-id">UE-1</span><span class="persona-tag e01">E01</span>
+          <span class="sc-title">My Page · Allergen Settings</span>
+          <span class="sc-desc">Trang cá nhân → cài đặt dị ứng (toggle, lưu) → demo cảnh báo khi thêm giỏ. Có luồng Onboarding lần đầu.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m put">PUT</span> /user/allergens/me</span></span>
+        </a>
+        <a class="screen-card" href="user/allergy_filter_mobile.html">
+          <span class="sc-id">UE-2</span><span class="persona-tag e01">E01</span>
+          <span class="sc-title">Menu · Allergen Filter</span>
+          <span class="sc-desc">Danh sách món + bottom-sheet chọn chất dị ứng. Chế độ ẩn/cảnh báo, badge tồn kho.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /user/menu/products</span></span>
+        </a>
+        <a class="screen-card" href="user/product_detail_reviews_mobile.html">
+          <span class="sc-id">UE-3</span><span class="persona-tag e01">E01</span>
+          <span class="sc-title">Product Detail · Reviews</span>
+          <span class="sc-desc">Chi tiết món + tab 詳細/レビュー hiển thị đánh giá công khai cùng công ty + giỏ hàng sticky.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m get">GET</span> /user/menu/products/:id/reviews</span></span>
+        </a>
+        <a class="screen-card" href="user/product_review_mobile_mockup.html">
+          <span class="sc-id">UE-4</span><span class="persona-tag e01">E01</span>
+          <span class="sc-title">Order History · Review &amp; Feedback</span>
+          <span class="sc-desc">Chi tiết đơn COMPLETED → form chấm sao từng món + chip lý do + ご意見 (≤100).</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m post">POST</span> /user/orders/:id/reviews</span></span>
+        </a>
+        <a class="screen-card" href="user/survey_notification_from_admin_mobile.html">
+          <span class="sc-id">UE-5</span><span class="persona-tag e01">E01</span>
+          <span class="sc-title">Survey from Admin</span>
+          <span class="sc-desc">Thông báo khảo sát → form câu hỏi (single/multi/free-text), khoá khi hết hạn.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m post">POST</span> /user/surveys/:id/responses</span></span>
+        </a>
+        <a class="screen-card" href="user/next_month_menu_survey_wishlist_from_company.html">
+          <span class="sc-id">UE-6</span><span class="persona-tag e01">E01</span>
+          <span class="sc-title">Next-month Wishlist</span>
+          <span class="sc-desc">Danh sách ≤15 món tháng sau · chấm thang 3 bậc · deadline · trạng thái đã gửi.</span>
+          <span class="sc-eps"><span class="api-chip"><span class="m post">POST</span> /user/wishlist-campaigns/:id/votes</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== scope ===== -->
+  <div class="card">
+    <div class="card-head"><h3>4 · Phạm vi — trong / ngoài App di động</h3></div>
+    <div class="card-body">
+      <div class="notice notice-new"><span class="ic">📱</span><div><b>Trong mockup (E01 App):</b> khai báo dị ứng · lọc dị ứng menu · xem &amp; gửi đánh giá sau mua · gửi feedback · trả lời khảo sát Admin · bình chọn wishlist tháng sau.</div></div>
+      <div class="notice notice-out"><span class="ic">🖥️</span><div><b>Ngoài mockup (E03/E02 Web — chỉ tham chiếu):</b> tạo &amp; phân phối khảo sát + biểu đồ tổng hợp (E03) · cảnh báo low-rating tự động cho Supplier (E03) · phát động chiến dịch wishlist + xem tổng điểm để chốt order sỉ (E02) · admin soạn &amp; gửi email reply cho feedback (E03) · thuật toán xếp hạng &amp; đồng bộ tồn kho (Backend). Các phần này sẽ có mockup/API riêng ở web-admin / web-company.</div></div>
+      <div class="legend">
+        <span><span class="sw" style="background:var(--app-400)"></span> E01 User App</span>
+        <span><span class="sw" style="background:var(--orange-500)"></span> E02 Company (ngoài scope)</span>
+        <span><span class="sw" style="background:var(--blue-500)"></span> E03 Admin (ngoài scope)</span>
+        <span><span class="ep-tag reuse">REUSE</span> dùng nguyên API Phase 1</span>
+        <span><span class="ep-tag ext">EXTEND</span> thêm field vào API cũ</span>
+        <span><span class="ep-tag new">NEW</span> endpoint/bảng mới</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Nguồn: rà soát codebase Phase 1 <code>src/modules/user</code> (controllers, responses, entities) + <code>SPEC.md</code> / <code>REQUIREMENT.md</code>.
+    Mockup minh hoạ luồng &amp; hợp đồng API — không phải UI cuối (UI cuối theo Figma E01). Cập nhật: 2026/06/18.
+  </div>
+
+</div>
+
+<script src="assets/eskitchen.js"></script>
+</body>
+</html>
