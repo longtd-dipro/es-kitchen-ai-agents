@@ -48,6 +48,10 @@ nav:
     - Overview:
       - Structure: frontend/es-kitchen-webapp-driver/overview/structure.md
       - Patterns: frontend/es-kitchen-webapp-driver/overview/patterns.md
+  - Es Kitchen Webapp Payment (E07):
+    - Overview:
+      - Structure: frontend/es-kitchen-webapp-payment/overview/structure.md
+      - Patterns: frontend/es-kitchen-webapp-payment/overview/patterns.md
 
 - Mobile:
   - Es Kitchen Payment App (E01):
@@ -173,6 +177,10 @@ nav:
     - Mobile Design: features/notification-management/es-kitchen-payment-app/DESIGN.md
   - Version Management:
     - Specification: features/version-management/SPEC.md
+  - Webapp Payment (One QR):
+    - Specification: features/webapp-payment-oneqr/SPEC.md
+    - API Design: features/webapp-payment-oneqr/es-kitchen-api/DESIGN.md
+    - Webapp Payment Design: features/webapp-payment-oneqr/es-kitchen-webapp-payment/DESIGN.md
     - API Design: features/version-management/es-kitchen-api/DESIGN.md
     - Mobile Design: features/version-management/es-kitchen-payment-app/DESIGN.md
     - Web Admin Design: features/version-management/es-kitchen-web-admin/DESIGN.md

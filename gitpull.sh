@@ -8,6 +8,7 @@ REPOS=(
   "es-kitchen-web-outsource-web-private"
   "es-kitchen-web-supplier"
   "es-kitchen-webapp-driver"
+  "es-kitchen-webapp-payment"
 )
 
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)/es-kitchen-repository"
