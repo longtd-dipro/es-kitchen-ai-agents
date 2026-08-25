@@ -188,6 +188,18 @@ nav:
 - Quality:
   - Phase 1 Quality: quality/phase1_quality.md
 
+- Migration Data:
+  - Overview: migration/index.md
+  - Hợp đồng ⭐:
+    - Contract & Plans: migration/contract/index.md
+  - Khách hàng & User: migration/company/index.md
+  - Kho & Item Master: migration/warehouse/index.md
+  - Supplier & Đặt hàng: migration/supplier/index.md
+  - Đơn Order: migration/order/index.md
+  - Giao hàng: migration/delivery/index.md
+  - Hao hụt & Thông tin: migration/loss/index.md
+  - Ghi chú kỹ thuật: migration/reference.md
+
 validation:
   links:
     not_found: info
