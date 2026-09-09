@@ -18,3 +18,4 @@
 | `figma-design/` | All FE repos (E02–E06) + E01 Mobile | Figma MCP tools (read + write), token mapping Figma → ESKITCHEN |
 | `task-decomposition/` | — | Phân rã task từ DESIGN.md — dùng bởi `techlead-tasks-agent` |
 | `project-planning/` | — | Risk, dependency, critical path — dùng bởi `pm-agent` |
+| `commit-pr/` | — | Sinh commit message / PR description từ diff — **chỉ sinh chữ**, không stage/commit/push |
