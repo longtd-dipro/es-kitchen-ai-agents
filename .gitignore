@@ -67,3 +67,5 @@ temp/
 
 # ─── Accidental tilde dir (from mistyped ~/ paths) ────────────────────────────
 ~/
+
+.claude.backup.20260911_144800/

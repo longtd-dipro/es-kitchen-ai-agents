@@ -1,13 +1,13 @@
 ---
 name: flutter-review
-description: Code review và best practices cho es-kitchen-payment-app (E01 User Mobile App, Flutter/Dart). Stack: Riverpod 3, Retrofit+Dio, auto_route, freezed, socket_io_client, elepay. Trigger khi review Flutter code, hỏi "code này đúng không", hoặc implement tính năng mobile.
+description: Code review và best practices cho mobile app Flutter/Dart. Stack: Riverpod 3, Retrofit+Dio, auto_route, freezed, socket_io_client, payment SDK. Trigger khi review Flutter code, hỏi "code này đúng không", hoặc implement tính năng mobile.
 metadata:
   tags: flutter, dart, mobile, riverpod, code-review
 ---
 
-# Flutter Review — ESKITCHEN Mobile (E01)
+# Flutter Review — Mobile
 
-> Áp dụng cho: `es-kitchen-payment-app` (iOS + Android, E01 User Mobile App)
+> Áp dụng cho repo có vai trò `mobile` trong bảng Ecosystem (`AGENTS.md`)
 
 ## Stack Reference
 
@@ -18,7 +18,7 @@ metadata:
 | HTTP | `dio 5.9.2` + `retrofit 4.9.2` | Không dùng `http` package |
 | Model | `freezed 3.x` + `json_annotation 4.9.0` | Phải chạy build_runner sau khi sửa |
 | Real-time | `socket_io_client 3.1.4` | Phải cleanup `off()` trong dispose |
-| Payment | `elepay_flutter 3.5.2` | — |
+| Payment | payment SDK (vd elepay — thay bằng payment SDK thật của dự án nếu khác) | — |
 | Reactive | `rxdart 0.28.0` | — |
 | Config | `flutter_dotenv 6.0.0` | Không hard-code URL/key |
 | Sizing | `flutter_screenutil 5.9.3` | Dùng `.w`, `.h`, `.sp` |

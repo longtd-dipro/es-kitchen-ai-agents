@@ -1,13 +1,13 @@
 ---
 name: react-expert
 description: >-
-  React expert cho ESKITCHEN frontend. Stack: React 19, Vite 7, Redux Toolkit v2, TanStack Query v5,
+  React expert cho frontend repos. Stack: React 19, Vite 7, Redux Toolkit v2, TanStack Query v5,
   Ant Design v6, react-router-dom v7, TailwindCSS v4. Dùng khi nghiên cứu React API, viết/review
-  component, hook, store cho es-kitchen-web-admin (E03) hoặc es-kitchen-web-company (E02).
+  component, hook, store cho repo có vai trò `frontend` trong bảng Ecosystem (`AGENTS.md`).
   Cũng dùng khi cần authoritative usage examples, caveats, hoặc errors cho React feature.
 ---
 
-> **ESKITCHEN Context:** 2 web repos dùng CÙNG stack. Stack constraints: `.claude/rules/stack-constraints.md` · Coding style: `.claude/rules/coding-style.md`
+> **Context:** Các repo frontend dùng CÙNG stack. Stack constraints: `.claude/rules/stack-constraints.md` · Coding style: `.claude/rules/coding-style.md`
 
 # React Expert Research Skill
 

@@ -1,6 +1,8 @@
 # Workflow: New Feature — BMAD Pipeline
 
-Quy trình chuẩn để đưa một feature mới từ yêu cầu đến production trong ESKITCHEN.
+Quy trình chuẩn để đưa một feature mới từ yêu cầu đến production.
+
+> **Shortcut:** `/create-feature <feature> [mô tả]` rồi `/create-feature <feature> build` chạy gộp Bước 1→3 và Bước 5→6 bên dưới (không gồm Bước 4 PM) qua 2 workflow `bmad-plan-phase`/`bmad-build-phase`. Dùng bảng dưới đây khi cần chạy tay từng bước hoặc debug 1 bước cụ thể. Guide chạy automation test (Bước 6, `qc-automation-agent`) → `Automation_Test.md` ở root kit.
 
 ---
 
@@ -13,7 +15,7 @@ User requirement
    SPEC.md  ←── /create-spec <feature>
       │
       ▼ [techlead-design-agent + qc-agent + designer-agent song song]
-DESIGN.md per repo  ←── /create-design <SPEC.md>
+Design-Technical.md per repo  ←── /create-design <SPEC.md>
       │
       ▼ [techlead-tasks-agent]
 tasks/task-*.md  ←── /create-tasks <feature-folder/>
@@ -34,7 +36,7 @@ tasks/task-*.md  ←── /create-tasks <feature-folder/>
       ┌─────────────────┬──────────────────┐
       │                 │                  │
 [frontend-agent]  [frontend-agent]  [mobile-agent]
- task-3-x (E03)   task-3-x (E02)   task-3-x (E01)
+ task-3-x (repo FE-a) task-3-x (repo FE-b) task-3-x (repo mobile)
  Step1 service     Step1 service    Step1 service
  Step2 hooks       Step2 hooks      Step2 provider
  Step3 wire UI     Step3 wire UI    Step3 wire UI
@@ -59,31 +61,31 @@ tasks/task-*.md  ←── /create-tasks <feature-folder/>
 **Context cần đọc:**
 - `.claude/context/specification.md` — business overview, actors
 - `.claude/context/doc-structure.md` — cấu trúc folder
-- Các SPEC hiện có trong `es-kitchen-docs/docs/features/`
+- Các SPEC hiện có trong `<DOCS_ROOT>/features/`
 
-**Output (path duy nhất):** `es-kitchen-docs/docs/features/<feature-name>/SPEC.md`
+**Output (path duy nhất):** `<DOCS_ROOT>/features/<feature-name>/SPEC.md`
 
-> Folder `docs/epics/` đã bị bỏ — mọi feature đặt trong `docs/features/`. Single-actor vs cross-repo phân biệt qua section Actors trong SPEC, không qua path.
+> Single-actor vs cross-repo phân biệt qua section Actors trong SPEC, không qua path.
 
 **Gate:** Không tiếp tục nếu SPEC chưa được PM/BrSE review.
 
 ---
 
-## Bước 2 — Thiết kế kỹ thuật (Tech Lead Design)
+## Bước 2 — Thiết kế kỹ thuật (Tech Lead)
 
 **Agent:** `techlead-design-agent`
 **Command:** `/create-design <path/to/SPEC.md>`
 **Context cần đọc:**
 - `.claude/context/technical.md` — tech stack, known bugs
-- `es-kitchen-docs/docs/backend/es-kitchen-api/overview/patterns.md`
-- `es-kitchen-docs/docs/backend/es-kitchen-api/overview/erd.md`
+- `<DOCS_ROOT>/backend/<backend-repo>/overview/patterns.md`
+- `<DOCS_ROOT>/backend/<backend-repo>/overview/erd.md`
 
-**BẮT BUỘC trước khi viết DESIGN:**
+**BẮT BUỘC trước khi viết Design-Technical:**
 ```
 tilth_deps(path: "<file sẽ thay đổi>")
 ```
 
-**Output:** `DESIGN.md` per repo (cùng folder với SPEC.md)
+**Output:** `Design-Technical.md` per repo (cùng folder với SPEC.md)
 
 ---
 
@@ -95,9 +97,9 @@ tilth_deps(path: "<file sẽ thay đổi>")
 
 | Phase | Nội dung | Repo | Template |
 |---|---|---|---|
-| 1 | DB migration / schema | `es-kitchen-api` | Bước 6 (template chung) |
-| 2 | Service + API endpoint | `es-kitchen-api` | Bước 6 (template chung) |
-| 3 | Frontend E02/E03/E04 + Mobile (song song) | `web-*` + `payment-app` | **Bước 6b** (template FE/Mobile) |
+| 1 | DB migration / schema | repo vai trò backend | Bước 6 (template chung) |
+| 2 | Service + API endpoint | repo vai trò backend | Bước 6 (template chung) |
+| 3 | Frontend + Mobile (song song) | repo vai trò frontend/mobile | **Bước 6b** (template FE/Mobile) |
 | 4 | Integration test | Tất cả | Bước 6 (template chung) |
 
 **Output:** `tasks/task-X-Y.md` per repo
@@ -119,27 +121,27 @@ tilth_deps(path: "<file sẽ thay đổi>")
 
 ## CONTRACT LOCK ⚠️ (trước Phase 3)
 
-**Nguồn tham chiếu:** `DESIGN.md ## 3. API Definition` (per repo es-kitchen-api) — bảng này phải có trước khi sign-off.
+**Nguồn tham chiếu:** `Design-Technical.md ## 3. API Definition` (per repo vai trò backend) — bảng này phải có trước khi sign-off.
 
 Phải confirm đầy đủ trước khi FE/Mobile bắt đầu implement:
 
-- [ ] `DESIGN.md ## 3. API Definition` đã có bảng đủ cột: Method / Endpoint / Auth / Request / Response / Error codes
+- [ ] `Design-Technical.md ## 3. API Definition` đã có bảng đủ cột: Method / Endpoint / Auth / Request / Response / Error codes
 - [ ] WebSocket events: tên event, payload schema (nếu có)
 - [ ] Push notification: payload format, trigger condition (nếu có)
-- [ ] FE/Mobile đã đọc và hiểu DESIGN.md — không có câu hỏi chưa giải đáp
+- [ ] FE/Mobile đã đọc và hiểu Design-Technical.md — không có câu hỏi chưa giải đáp
 
 **Ai confirm:** Backend dev + Frontend dev + Mobile dev (nếu có) + PM
 
-> Nếu DESIGN.md chưa có `## 3. API Definition` → yêu cầu `techlead-design-agent` bổ sung trước khi lock.
+> Nếu Design-Technical.md chưa có `## 3. API Definition` → yêu cầu `techlead-design-agent` bổ sung trước khi lock.
 
 ---
 
 ## Bước 5 — Implement (Dev)
 
-**Agent theo repo:**
-- `es-kitchen-api` → `backend-agent`
-- `es-kitchen-web-admin` / `es-kitchen-web-company` / `es-kitchen-web-supplier` → `frontend-agent`
-- `es-kitchen-payment-app` → `mobile-agent`
+**Agent theo vai trò repo (xem bảng Ecosystem trong `AGENTS.md`):**
+- repo vai trò backend → `backend-agent`
+- repo vai trò frontend → `frontend-agent`
+- repo vai trò mobile → `mobile-agent`
 
 **Thứ tự bắt buộc:**
 

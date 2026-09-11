@@ -26,18 +26,18 @@ skills:
 
 ## Output path
 
-`es-kitchen-docs/docs/features/<feature>/test-cases/regression_<release>.md`
+`docs/features/<feature>/test-cases/regression_<release>.md`
 
 ## Các bước
 
 ### Bước 1 — Phân tích scope thay đổi
 
-| Loại | Ví dụ ESKITCHEN | Mức ảnh hưởng |
+| Loại | Ví dụ | Mức ảnh hưởng |
 |---|---|---|
 | New feature | Thêm export PDF Order | Direct + module dùng chung Order data |
 | Bug fix | Fix validation email | Direct module đó |
 | Refactor | Tách OrderService → OrderQueryService + OrderCommandService | Tất cả module gọi OrderService |
-| Config change | Tăng timeout API gọi elepay | Tất cả flow payment |
+| Config change | Tăng timeout API gọi payment gateway | Tất cả flow payment |
 | DB migration | Thêm cột `delivery_window` vào `orders` | Tất cả TC liên quan Order |
 
 ### Bước 2 — Map thay đổi → Modules

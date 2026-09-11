@@ -28,7 +28,7 @@ mcp__figma__get_variable_defs(url: "<figma-url>")
 mcp__figma__get_screenshot(url: "<figma-url>")
 ```
 
-## Bước 2 — Map tokens Figma → ESKITCHEN
+## Bước 2 — Map tokens Figma → design tokens dự án
 
 Đọc `.claude/rules/design_rule.md` rồi build bảng mapping từ `get_variable_defs` output:
 
@@ -37,14 +37,14 @@ mcp__figma__get_screenshot(url: "<figma-url>")
 - Border radius px → `borders.semantics.border-radius.<token>`
 - Font size + line-height + weight → `font.text|display <size>.<weight>`
 
-Nếu có token Figma KHÔNG match được token ESKITCHEN nào → liệt kê vào section `## Notes` để user/BA confirm.
+Nếu có token Figma KHÔNG match được token nào trong design system dự án → liệt kê vào section `## Notes` để user/BA confirm.
 
 ## Bước 3 — Ghi file context
 
 **Path output (tạo folder nếu chưa có):**
 ```
-es-kitchen-docs/docs/features/<feature>/figma/figma_<ComponentName>_context.md
-es-kitchen-docs/docs/features/<feature>/figma/figma_<ComponentName>.png
+docs/features/<feature>/figma/figma_<ComponentName>_context.md
+docs/features/<feature>/figma/figma_<ComponentName>.png
 ```
 
 Nếu feature folder hoàn toàn chưa tồn tại → hỏi user xác nhận trước khi tạo (tránh tạo nhầm feature mới).
@@ -67,9 +67,9 @@ Nếu feature folder hoàn toàn chưa tồn tại → hỏi user xác nhận tr
 ## Design Context
 <output get_design_context — layout, spacing, colors, typography raw>
 
-## Tokens Mapping (Figma → ESKITCHEN)
+## Tokens Mapping (Figma → Design System dự án)
 
-| Figma token | Figma raw value | ESKITCHEN token |
+| Figma token | Figma raw value | Design token dự án |
 |---|---|---|
 | primary/500 | #0969da | colors.semantics.company.500 |
 | spacing/md | 16px | spacing.padding.16 |
@@ -92,19 +92,19 @@ Báo cáo ngắn gọn:
 
 ```
 ✅ Figma context đã ghi:
-   - es-kitchen-docs/docs/features/<feature>/figma/figma_<ComponentName>_context.md
-   - es-kitchen-docs/docs/features/<feature>/figma/figma_<ComponentName>.png
+   - docs/features/<feature>/figma/figma_<ComponentName>_context.md
+   - docs/features/<feature>/figma/figma_<ComponentName>.png
 
 📋 Tokens map được: <X>/<Y>
 ⚠️  Ambiguities cần confirm: <N> (xem section Notes)
 
 Bước tiếp theo:
-→ "Hãy là FE AGENT, thực thi code giao diện tại path figma context mới tạo xong: es-kitchen-docs/docs/features/<feature>/figma/figma_<ComponentName>_context.md"
+→ "Hãy là FE AGENT, thực thi code giao diện tại path figma context mới tạo xong: docs/features/<feature>/figma/figma_<ComponentName>_context.md"
 ```
 
 ## Ràng buộc
 
 - ❌ Không generate code component trong command này — chỉ ghi context file.
-- ❌ Không tự đoán target repo (E02/E03/E04...) — để FE agent quyết định ở bước sau dựa trên feature.
+- ❌ Không tự đoán target repo — để FE agent quyết định ở bước sau dựa trên feature.
 - ❌ Không tạo feature folder mới nếu chưa tồn tại — phải hỏi user trước.
 - ✅ Nếu file context đã tồn tại (đọc lại node lần 2) → update file cũ, thêm `**Updated at:** <date>` ở header, không tạo file mới.
