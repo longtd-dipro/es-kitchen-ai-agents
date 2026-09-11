@@ -7,12 +7,12 @@ description: Sinh Playwright spec từ SPEC.md + Figma (+ TC.md nếu có) và c
 Arguments: **$ARGUMENTS**
 
 Parse arguments theo thứ tự:
-1. `feature-path` — path đến folder feature (ví dụ: `es-kitchen-docs/docs/features/company-account`)
+1. `feature-path` — path đến folder feature (ví dụ: `docs/features/company-account`)
 2. `figma-url` — Figma node URL (ví dụ: `https://www.figma.com/file/xxx/...`)
 3. `testcases` _(tùy chọn)_ — path đến file TC thủ công từ qc-agent. Khi có → ưu tiên đọc TC file thay vì tự suy từ SPEC.md.
 
-`target-app`: tự suy từ context (tên feature, repo, app được đề cập). Nếu không rõ → hỏi 1 câu trước khi chạy.
-`website-url`: đọc tự động từ `.env.test` (`E02_URL` / `E03_URL` / `E04_URL` / `E05_URL` / `E06_URL`) — không hỏi user.
+`target-app`: `web-admin` (E03) / `web-company` (E02) / `web-supplier` (E04) / `web-outsource` (E05) / `webapp-driver` (E06) — tự suy từ context (tên feature, repo, app được đề cập). Nếu không rõ → hỏi 1 câu trước khi chạy.
+`website-url`: đọc tự động từ `es-kitchen-testing/.env.test` (biến `E02_URL` / `E03_URL` / `E04_URL` / `E05_URL` / `E06_URL` tương ứng với target app) — không hỏi user.
 
 Nếu thiếu argument 1–2 → hỏi user trước khi bắt đầu.
 
