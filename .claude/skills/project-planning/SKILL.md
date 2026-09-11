@@ -1,11 +1,11 @@
 ---
 name: project-planning
-description: Risk identification, dependency mapping, critical path analysis cho ESKITCHEN Waterfall G1–G6. Dùng khi pm-agent cần điền Dependencies & Risks trong PLAN.md, xác định Contract Lock timing, hoặc phân tích critical path cross-repo.
+description: Risk identification, dependency mapping, critical path analysis cho dự án theo phase-gate Waterfall. Dùng khi pm-agent cần điền Dependencies & Risks trong PLAN.md, xác định Contract Lock timing, hoặc phân tích critical path cross-repo.
 metadata:
-  tags: project-management, risk-management, agile-planning, critical-path, ESKITCHEN
+  tags: project-management, risk-management, agile-planning, critical-path
 ---
 
-# Project Planning — ESKITCHEN
+# Project Planning
 
 > Áp dụng cho: `pm-agent` khi tạo PLAN.md — phần Dependencies, Risks, Timeline, Contract Lock
 
@@ -61,12 +61,12 @@ Với mỗi feature, scan qua các category sau và đánh dấu risk nào apply
 ### Bước 1: Xác định repo bị ảnh hưởng
 
 ```
-Đọc SPEC → Actors → map actor → repo:
-  E01 (User mobile)  → es-kitchen-payment-app
-  E02 (Company Admin) → es-kitchen-web-company + es-kitchen-api
-  E03 (System Admin)  → es-kitchen-web-admin + es-kitchen-api
-  E04 (Supplier)      → es-kitchen-web-supplier + es-kitchen-api
-  E06 (Driver)        → es-kitchen-webapp-driver + es-kitchen-api
+Đọc SPEC → Actors → map actor → repo (theo bảng Ecosystem trong AGENTS.md), ví dụ:
+  Actor A (mobile end-user)  → repo mobile
+  Actor B (org admin)        → repo frontend #1 + repo backend
+  Actor C (system admin)     → repo frontend #2 + repo backend
+  Actor D (supplier)         → repo frontend #3 + repo backend
+  Actor E (driver)           → repo frontend #4 + repo backend
 ```
 
 ### Bước 2: Identify contract points
@@ -119,7 +119,7 @@ Ví dụ:
   → Với 2 dev (FE + Mobile song song Phase 3): 16h - 5h (mobile song song) = 11h
 ```
 
-### Buffer Rules cho ESKITCHEN
+### Buffer Rules (ví dụ)
 
 | Loại task | Buffer thêm |
 |---|---|
@@ -138,7 +138,7 @@ Trước khi estimate deadline, xác định feature cần pass gate nào:
 | Gate | Tiêu chí | Blocker nếu fail |
 |---|---|---|
 | **G1** — Requirements | SPEC.md approved, AC rõ ràng | Không được bắt đầu Design |
-| **G2** — Design | DESIGN.md approved, Contract Lock signed | Không được bắt đầu Phase 3 |
+| **G2** — Design | Design-Technical.md approved, Contract Lock signed | Không được bắt đầu Phase 3 |
 | **G3** — Code Complete | Tất cả tasks "Request Review", CI pass | Không được deploy STG |
 | **G4** — STG Testing | QC sign-off, no Critical/Major bug open | Không được deploy PROD |
 | **G5** — Release | PM + Stakeholder approve | Không release |

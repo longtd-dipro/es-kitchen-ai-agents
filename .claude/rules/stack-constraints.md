@@ -6,7 +6,7 @@
 |---|---|---|
 | Database | PostgreSQL + TypeORM | MySQL, MongoDB, SQLite, Prisma |
 | API Style | REST | GraphQL, gRPC, tRPC |
-| Payment | elepay · Alipay · WeChat Pay | Stripe, PayPal, VNPay |
+| Payment | _(điền qua /init-kit — ví dụ kit: elepay · Alipay · WeChat Pay)_ | Stripe, PayPal, VNPay |
 | Mobile State | `hooks_riverpod` | Provider, BLoC, GetX, MobX |
 | Mobile HTTP | Retrofit + Dio | `http` package, `chopper` |
 | Mobile Routing | `auto_route` | `go_router`, `Navigator.push` trực tiếp |

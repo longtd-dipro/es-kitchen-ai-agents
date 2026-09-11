@@ -1,7 +1,7 @@
 # Skill: figma-design
 
 > Reusable knowledge cho designer-agent và /read-figma command.
-> Covers: Figma MCP read tools, write tool pointers, ESKITCHEN token mapping, templates, quality checklist.
+> Covers: Figma MCP read tools, write tool pointers, design token mapping, templates, quality checklist.
 
 ---
 
@@ -16,9 +16,9 @@ mcp__claude_ai_Figma__get_variable_defs(fileKey, nodeId)  → design tokens
 mcp__claude_ai_Figma__get_screenshot(fileKey, nodeId)     → PNG screenshot
 ```
 
-**Precondition:** Figma Desktop phải đang mở file. Verify: tool get_metadata available và không trả về "Invalid tool call".
+**Precondition:** Figma Desktop phải đang mở đúng file của dự án. Verify: tool get_metadata available và không trả về "Invalid tool call".
 
-**File key ESKITCHEN:** VKAAOyoSPvgoB3H2qdeeV3
+**File key:** Lấy từ URL Figma của dự án (`figma.com/design/<fileKey>/...`) — không hard-code, mỗi dự án có file key riêng.
 
 ---
 
@@ -45,33 +45,31 @@ Figma Link = TBD hoặc trống
     1. Load figma-use skill
     2. Load figma-generate-design skill
     3. Tạo frames → đặt trong page "01. Design"
-    4. Frame name = Screen Code (AW_MENU_001...)
+    4. Frame name = Screen Code theo quy ước dự án
 
 Figma Link = URL hợp lệ
   → Scenario B: ĐỌC + ENRICH
     1. Gọi 4 read tools song song
-    2. Map tokens → ESKITCHEN
+    2. Map giá trị raw (hex, radius, spacing) → design tokens của dự án
     3. Viết context files
 ```
 
 ---
 
-## 4. Token Mapping Quick Reference
+## 4. Token Mapping
 
-Đọc .claude/rules/design_rule.md section 10–11 để biết per-site tokens.
+Đọc `.claude/rules/design_rule.md` để biết bảng mapping Figma raw value (hex, radius, spacing) → design token của dự án hiện tại (per-site/per-app nếu có nhiều theme).
 
-| Figma raw | ESKITCHEN token |
+Nguyên tắc chung khi map:
+
+| Loại giá trị Figma | Map sang |
 |---|---|
-| #0969DA | colors.semantics.company.500 (E03, E06) |
-| #FAA51D | colors.primitives.orange.400 / admin.400 (E02) |
-| #FAC215 | colors.primitives.yellow.400 / app.400 (E01) |
-| #6639BA | colors.primitives.purple.600 (E04) |
-| #8ACA0D | KHÔNG trong token table — dùng hex (E05) |
-| radius 6px | borders.semantics.border-radius.action |
-| radius 8px | borders.semantics.border-radius.halfmodal |
-| radius 12px | borders.semantics.border-radius.modal |
-| 16px padding | spacing.padding.16 |
-| 24px padding | spacing.padding.24 |
+| Màu hex | `colors.semantics.*` hoặc `colors.primitives.*` theo `design_rule.md` |
+| Border radius | `borders.semantics.border-radius.*` |
+| Padding/gap | `spacing.padding.*` |
+| Font size/weight/line-height | `typography.*` |
+
+Không tự bịa token mới nếu `design_rule.md` chưa định nghĩa — hỏi lại design system owner.
 
 ---
 
@@ -84,10 +82,10 @@ Designer Agent **KHÔNG tạo file `.md` riêng** (không UI-SPEC, không figma 
 
 | Screen Code | Screen | Actor | App | Screen Type | Mô tả ngắn | Figma Link |
 |---|---|---|---|---|---|---|
-| AW_MENU_001 | Monthly Menu Management | E03 | E03 | List | ... | [Figma](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/...?node-id=<id>&m=dev) |
+| <SCREEN_CODE> | <Screen Name> | <Actor> | <App> | List | ... | [Figma](https://www.figma.com/design/<fileKey>/<project>?node-id=<id>&m=dev) |
 ```
 
-URL format: `https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node-id=<frame-id>&m=dev`
+URL format: `https://www.figma.com/design/<fileKey>/<project-name>?node-id=<frame-id>&m=dev`
 
 > FE/Mobile/QC/QA agents khi cần đọc design sẽ tự gọi MCP `get_design_context` / `get_metadata` / `get_screenshot` từ URL này — không có pre-extracted context file.
 
@@ -98,8 +96,8 @@ URL format: `https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen?node
 Trước khi declare done per screen:
 
 - [ ] Frame tạo thành công trong Figma page `01. Design`
-- [ ] Frame name = Screen Code (vd `AW_MENU_001`)
-- [ ] Color theme đúng per site (xem `design_rule.md` section 10–11)
+- [ ] Frame name = Screen Code theo quy ước dự án
+- [ ] Color theme đúng per site/app (xem `design_rule.md`)
 - [ ] Layout structure đúng (sidebar width / header height per site)
 - [ ] Components reuse từ `02. Local Component` page (không vẽ lại từ rectangle)
 - [ ] Figma URL đã điền vào cột `Figma Link` của SPEC.md ## Screens

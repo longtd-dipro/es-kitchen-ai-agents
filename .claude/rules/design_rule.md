@@ -1,6 +1,6 @@
-# ESKitchen Design System — Token Reference
+# Design System — Token Reference
 
-> **Purpose:** AI design input. Apply these tokens exactly when generating UI, components, or specifications for the ESKitchen product.
+> **Purpose:** AI design input. Apply these tokens exactly when generating UI, components, or specifications for the product.
 
 > **Font:** Noto Sans JP (default)
 
@@ -445,7 +445,7 @@ Max-width breakpoints for containers and modals.
 
 ## 9. AI Usage Rules
 
-When generating any UI or design spec for ESKitchen, follow these rules:
+When generating any UI or design spec, follow these rules:
 
 **Colors**
 
@@ -487,270 +487,34 @@ When generating any UI or design spec for ESKitchen, follow these rules:
 
 ## 10. Per-Site Layout Rules
 
-> Dùng section này khi Designer Agent tạo Figma cho từng app cụ thể.
-> **[confirmed]** = đọc trực tiếp từ Figma. **[inferred]** = suy luận từ token system + site type.
+> Section này RỖNG trong kit gốc — mỗi repo trong bảng Ecosystem cần 1 sub-section riêng (viewport, layout structure, sidebar width, common components...), do `designer-agent` điền dần khi đọc Figma thật của dự án lần đầu. Format tham khảo (nhân bản cho mỗi repo):
 
----
+### \<Tên repo\> — \<vai trò\> (\<mô tả ngắn\>)
 
-### E03 — System Admin Web (`es-kitchen-web-admin`) [confirmed Figma + image]
+**Color theme:** _(token chính dùng cho button primary/active state)_
 
-**Color theme:** `colors.semantics.company.*` (blue — `#0969da`) — button primary, active states, links
+**Viewport:** _(kích thước chuẩn — desktop 1440×1024 hay mobile 390×844...)_
 
-**Viewport:** 1440 × 1024px (desktop)
-
-**Layout structure:**
-```
-┌──────────┬────────────────────────────────────┐
-│ Sidebar  │ Header (54px)                      │
-│ 210px    ├────────────────────────────────────┤
-│ (white,  │ Page Header: Breadcrumb + Title     │
-│ accordion│ (94px: 20px top pad + 22px + 32px) │
-│ nav)     ├────────────────────────────────────┤
-│          │ Main Content (padding: 24px horiz) │
-│          │ bg: colors.semantics.neutral.50    │
-└──────────┴────────────────────────────────────┘
-```
+**Layout structure:** _(sơ đồ ASCII layout tổng quan)_
 
 | Yếu tố | Giá trị |
 |---|---|
-| Sidebar width | **210px** |
-| Header height | **54px** |
-| Page header height | **94px** (breadcrumb 22px + title 32px + padding) |
-| Content horizontal padding | **24px** |
-| Content starts at | x=210, y=148 |
-| Content area width | 1183px |
-| Background | `colors.semantics.neutral.50` (#f6f8fa) |
+| ... | ... |
 
-**Navigation:** Left sidebar — expandable accordion, nhiều mục (ダッシュボード, メニュー管理, マスタ管理, 法人・契約管理, アカウント管理, 売上管理, 配送管理), màu trắng/light với text navy
+**Navigation:** _(pattern sidebar/top-nav/bottom-nav)_
 
-**Common components (confirmed từ Figma metadata):**
-- `Sidebar` — 210×1024, accordion nav, character mascot + hamburger ở bottom
-- `Header` — 1231×54, ESSTATION logo + greeting + user profile
-- `Breadcrumb` — 22px height, separator ">"
-- Page title — `font.display xs.bold` (24px/700)
-- Action buttons in header — **48px** height
-- Table columns: row height **54px**, header row **55px**
-- Table pagination — **48px** height, "100件 1-10件 | 1...N | 10件/ページ"
-- Filter bar — **112px** height (search inputs + buttons)
-- Table cell action column — **96px** width
-- Collapsible section headers — accordion style với caret icon
-
-**Screen naming convention:** `AW_<MODULE>_<SEQ>_<日本語>`
+**Screen naming convention:** _(quy tắc đặt tên frame Figma)_
 
 ---
 
-### E02 — Company Admin Web (`es-kitchen-web-company`) [confirmed from image]
+## 11. Figma → Token Quick Lookup (per repo)
 
-**Color theme:** `colors.semantics.admin.*` (orange — `#FAA51D` = `colors.primitives.orange.400`) — button primary, active nav, badges
+_(điền dần khi Designer đọc Figma thật của từng repo — mapping hex code Figma → token trong section 1-3)_
 
-**Viewport:** 1440 × 1024px (desktop)
-
-**Layout structure:**
-```
-┌──────────┬────────────────────────────────────┐
-│ Sidebar  │ Header (~56px)                     │
-│ ~180px   ├────────────────────────────────────┤
-│ (white,  │ Breadcrumb + Page Title            │
-│ simple   ├────────────────────────────────────┤
-│ nav)     │ Stats Row (summary cards)          │
-│          ├────────────────────────────────────┤
-│          │ Filter Bar + Table + Pagination    │
-└──────────┴────────────────────────────────────┘
-```
-
-| Yếu tố | Giá trị |
-|---|---|
-| Sidebar width | **~180px** (narrower hơn E03) |
-| Header height | **~56px** |
-| Content horizontal padding | **~24px** |
-| Stats summary row | ~60px height |
-| Table row height | ~54px (inferred same pattern) |
-| Pagination | "100件 1-10件 | 1...N | 10件/ページ" |
-
-**Navigation:** Left sidebar — ít mục hơn E03 (売上管理, ユーザー一覧...), character mascot + hamburger ở bottom
-
-**Phân biệt với E03:**
-- Orange accent (#FAA51D) thay vì blue
-- Sidebar ít items hơn (58 functions vs 160)
-- Có stats summary row (tổng KPIs) ở đầu content
-- CSV export button ở top right (orange outline)
-- Scope: chỉ quản lý company của mình
-
-**Screen naming convention:** `CW_<MODULE>_<SEQ>_<日本語>` (inferred)
-
----
-
-### E01 — User Mobile App (`es-kitchen-payment-app`) [confirmed from image]
-
-**Color theme:** `colors.semantics.app.*` (yellow — `#FAC215` = `colors.primitives.yellow.400`) — primary button, badges, highlights
-
-**Viewport:** 390 × 844px (iPhone 14 standard)
-
-**Layout structure:**
-```
-┌──────────────────────┐
-│ Status Bar (safe)    │  ~44px
-├──────────────────────┤
-│ Navigation Bar       │  ~56px (title + back button)
-├──────────────────────┤
-│                      │
-│   Main Content       │  scroll vertical
-│   (product cards,    │
-│    cart items...)    │
-│                      │
-├──────────────────────┤
-│ Action Bar / Button  │  ~56px (full-width CTA)
-└──────────────────────┘
-```
-
-| Yếu tố | Giá trị |
-|---|---|
-| Screen width | 390px |
-| Top nav bar | ~56px (title + back) |
-| Content horizontal padding | 16px |
-| Product card border radius | `borders.semantics.border-radius.halfmodal` (8px) |
-| Primary button | Full width, yellow (#FAC215), border-radius `action` (6px) |
-| Modal/bottom sheet | `borders.semantics.border-radius.modal` (12px) top corners |
-| Cart item row height | ~72px (image 48px + padding) |
-
-**Navigation:** Top nav bar (back + title). Modal overlay dùng bottom sheet pattern.
-
-**Platform:** Flutter 3.x — sizing qua `flutter_screenutil`, không hard-code pixel
-
-**Common patterns (từ ảnh):**
-- Product list: thumbnail left + text right + quantity/price badge
-- Cart: list items + total bar at bottom + action button
-- Confirmation modal: centered overlay với character mascot, buttons stack vertical
-- Quantity badge: yellow circle, `font.text xs.bold`
-
-**Screen naming convention:** `APP_<MODULE>_<SEQ>_<日本語>` (inferred)
-
----
-
-### E04 — Supplier Web (`es-kitchen-web-supplier`) [confirmed from image]
-
-**Color theme:** `colors.primitives.purple.600` (`#6639BA`) — button primary, active nav highlight, status badges
-
-> ⚠️ Purple không có trong `colors.semantics.*` table — dùng primitive trực tiếp: `colors.primitives.purple.600`
-
-**Viewport:** 1440 × 1024px (desktop)
-
-**Layout structure:**
-```
-┌──────────┬────────────────────────────────────┐
-│ Sidebar  │ Header (~56px)                     │
-│ ~120px   ├────────────────────────────────────┤
-│ (white,  │ Breadcrumb + Page Title            │
-│ minimal  ├────────────────────────────────────┤
-│ 3 items) │ Filter Bar + Table + Pagination    │
-└──────────┴────────────────────────────────────┘
-```
-
-| Yếu tố | Giá trị |
-|---|---|
-| Sidebar width | **~120px** (rất hẹp — chỉ text, không có icon riêng) |
-| Header height | **~56px** |
-| Content padding | **~24px** |
-| Table row height | ~54px |
-| Filter bar | date picker + dropdown + search button |
-| Pagination | "100件 1-10件 | 1...N | 10件/ページ" |
-
-**Navigation:** Left sidebar — chỉ 3-4 mục (TOP, 受注一覧, パスワード変更, その他), character mascot + hamburger ở bottom
-
-**Screen naming convention:** `SW_<MODULE>_<SEQ>_<日本語>` (inferred)
-
----
-
-### E05 — Outsource / Internal Private Web (`es-kitchen-web-outsource-web-private`) [confirmed from image]
-
-**Color theme:** `#8ACA0D` (lime green) — button primary, active nav
-
-> ⚠️ Lime green `#8ACA0D` **KHÔNG có trong token table** của ESKITCHEN. Khi tạo Figma cho E05, dùng giá trị hex trực tiếp hoặc tạo custom token `colors.primitives.green.outsource` = `#8ACA0D`. Cần confirm với design system owner.
-
-**Viewport:** 1440 × 1024px (desktop)
-
-**Layout structure:**
-```
-┌──────────┬────────────────────────────────────┐
-│ Sidebar  │ Header (~56px)                     │
-│ ~150px   ├────────────────────────────────────┤
-│ (white,  │ Breadcrumb + Page Title            │
-│ 3-4 items├────────────────────────────────────┤
-│ )        │ Accordion Form Sections            │
-└──────────┴────────────────────────────────────┘
-```
-
-| Yếu tố | Giá trị |
-|---|---|
-| Sidebar width | **~150px** |
-| Header height | **~56px** |
-| Content padding | **~24px** |
-| Section header | collapsible accordion, caret icon |
-| Form grid | 3-column cho info fields |
-
-**Navigation:** Left sidebar — 3-4 mục (TOP, 配送状況, 集金額, スタッフ), character mascot + hamburger ở bottom
-
-**Common patterns:** Accordion form sections, dropdown selects, date pickers, edit button top-right
-
-**Screen naming convention:** `OW_<MODULE>_<SEQ>_<日本語>` (inferred)
-
----
-
-### E06 — Driver Web App (`es-kitchen-webapp-driver`) [confirmed from image]
-
-**Color theme:** `colors.semantics.company.*` (blue — `#0969DA`) — FAB button, active states, links
-
-**Viewport:** ~390px mobile-optimized web (ReactJS, không phải native)
-
-**Layout structure:**
-```
-┌──────────────────────┐
-│ Top Header           │  ~56px (logo + greeting + user)
-├──────────────────────┤
-│                      │
-│   Order Card List    │  scroll vertical
-│   (delivery cards)   │
-│                      │
-│                 [FAB]│  floating action button, bottom-right
-└──────────────────────┘
-```
-
-| Yếu tố | Giá trị |
-|---|---|
-| Screen width | ~390px |
-| Top header | **~56px** (ESSTATION logo + greeting + profile) |
-| Content padding | 16px |
-| Order card | white card, `borders.semantics.border-radius.halfmodal` (8px) |
-| FAB button | circle, blue (#0969DA), bottom-right fixed |
-
-**Navigation:** Top header only — không có sidebar, không có bottom tab bar. Driver workflow là linear (nhận đơn → giao → confirm).
-
-**Common patterns (từ ảnh):**
-- Delivery cards: company name + date + status + product info
-- 3-column layout trong card (thông tin giao hàng)
-- FAB button: blue circle, trigger delivery action
-- Completion dialog: overlay với character mascot + confirm button
-
-**Stack:** React 19 / Ant Design — mobile-first CSS breakpoint
-
-**Screen naming convention:** `DW_<MODULE>_<SEQ>_<日本語>` (inferred)
-
----
-
-## 11. Figma → ESKITCHEN Token Quick Lookup (per site)
-
-| Site | Primary button hex | ESKITCHEN token | Nguồn |
+| Repo | Primary button hex | Token | Nguồn |
 |---|---|---|---|
-| E03 System Admin | `#0969DA` | `colors.semantics.company.500` | confirmed |
-| E02 Company Admin | `#FAA51D` | `colors.primitives.orange.400` / `colors.semantics.admin.400` | confirmed |
-| E01 Mobile App | `#FAC215` | `colors.primitives.yellow.400` / `colors.semantics.app.400` | confirmed |
-| E04 Supplier | `#6639BA` | `colors.primitives.purple.600` | confirmed |
-| E05 Outsource | `#8ACA0D` | **KHÔNG trong token table** — dùng hex trực tiếp | confirmed |
-| E06 Driver | `#0969DA` | `colors.semantics.company.500` (same as E03) | confirmed |
 
-> **Lưu ý quan trọng:** `colors.semantics.company.*` = blue → dùng cho **E03** (System Admin) và **E06** (Driver). `colors.semantics.admin.*` = orange → dùng cho **E02** (Company Admin). Mapping này ngược với tên token — đây là convention của ESKITCHEN design system.
-
-**Shared error / success / warning** — tất cả sites:
+**Shared error / success / warning** — tất cả repo:
 | Intent | Token | Hex |
 |---|---|---|
 | Error / Destructive | `colors.semantics.negative.500` | `#cf222e` |
@@ -762,4 +526,3 @@ When generating any UI or design spec for ESKitchen, follow these rules:
 | Text disabled | `colors.components.text.low` | `#6e7781` |
 | Border default | `colors.components.divider.middle` | `#d0d7de` |
 | Background page | `colors.semantics.neutral.50` | `#f6f8fa` |
-

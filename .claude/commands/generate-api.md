@@ -1,5 +1,5 @@
 ---
-description: Generate scaffold NestJS API endpoint theo đúng pattern ESKITCHEN — module/controller/service/dto/entity. Dùng: /generate-api <module-name> [resource-name]
+description: Generate scaffold NestJS API endpoint theo đúng pattern dự án — module/controller/service/dto/entity. Dùng: /generate-api <module-name> [resource-name]
 ---
 
 Generate NestJS API endpoint scaffold cho: **$ARGUMENTS**
@@ -8,10 +8,10 @@ Generate NestJS API endpoint scaffold cho: **$ARGUMENTS**
 
 ```
 tilth_search(query: "AdminController")   ← xem pattern controller hiện tại
-tilth_files(pattern: "**/*.module.ts", path: "es-kitchen-api/src/modules/")
+tilth_files(pattern: "**/*.module.ts", path: "<repo-backend>/src/modules/")
 ```
 
-## Bước 2 — Generate theo đúng ESKITCHEN pattern
+## Bước 2 — Generate theo đúng pattern dự án
 
 Tạo các file sau (nếu chưa có):
 

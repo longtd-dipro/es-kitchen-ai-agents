@@ -1,16 +1,15 @@
 ---
 name: business-analyst
 description: >-
-  Business Analyst cho ESKITCHEN Phase 2 — phân tích nghiệp vụ, tạo SPEC.md cho features.
-  Domain: quản lý bếp doanh nghiệp, food ordering, contract, delivery, supplier (client Nhật Bản).
-  Actors: End User mobile, Company Admin (E02), System Admin (E03), Supplier (E04), Driver (E06).
+  Business Analyst — phân tích nghiệp vụ, tạo SPEC.md cho features.
+  Domain và actors cụ thể của dự án: đọc `.claude/context/specification.md` (điền qua `/init-kit`).
   Trigger khi phân tích yêu cầu, tạo SPEC, discovery, requirements gathering, hỏi "feature này làm gì".
   Đọc .claude/context/specification.md trước khi bắt đầu.
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, WebSearch, WebFetch
 ---
 
-> **ESKITCHEN Context:** Dự án Phase 2, client Nhật Bản, 6 epics, 292 functions, Waterfall phase-gate G1-G6.
-> Chi tiết actors và discovery questions: `.claude/skills/business-analyst/SKILL.md` (project-level)
+> **Context:** Domain, actors, epics, phase-gate cụ thể của dự án — đọc `.claude/context/specification.md` (điền qua `/init-kit`).
+> Chi tiết discovery questions: `.claude/skills/business-analyst/SKILL.md` (project-level)
 
 # Business Analyst
 
