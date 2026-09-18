@@ -12,6 +12,7 @@
 | `frontend-review/` | frontend (all FE repos) | Code review React 19 / TanStack v5 / RTK v2 / AntD v6 |
 | `flutter-review/` | mobile | Code review Flutter |
 | `business-analyst/` | — | Discovery, SPEC template |
+| `ba-figma-output/` | — | Canonical rule vẽ 3 Figma frames của `ba-agent` (Flow Tổng Quan · Screen Flow · Screens+Items) — BẮT BUỘC load trước mọi `use_figma`, kèm ảnh mẫu trong `examples/` |
 | `solution-architect/` | — | Kiến trúc cross-cutting |
 | `rbt_manual_testing/` | — | Master skill cho `qc-agent` — 4 sections pipeline (context → analyze-req → plan-tcs → gen-tcs) + Complex Logic Patterns (Decision Table / State Transition / Boundary Tier) |
 | `requirements_analyzer/` | — | Phân tích requirements đa nguồn (Google Drive, Figma, .md, Backlog) — dùng bởi `/test/analyze-req` + Figma 2-phase quy trình |

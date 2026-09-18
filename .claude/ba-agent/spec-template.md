@@ -8,6 +8,7 @@ Cấu trúc bắt buộc:
 
 ## Mô tả nghiệp vụ
 ## BA Deliverables        ← BẮT BUỘC — entry point cho downstream (TL/Designer/QC), format ở figma-outputs/shared-rules.md
+## Source Register        ← BẮT BUỘC — classify từng requirement (FACT/PROPOSAL/INFERENCE/UNKNOWN/CONFLICT) + evidence
 ## Actors & Preconditions
 ## Flow Tổng Quan
 ## Happy Path
@@ -18,6 +19,32 @@ Cấu trúc bắt buộc:
 ## Screen Details
 ## Responsive Requirements
 ```
+
+**⚠️ `## Source Register` — vị trí + nội dung (BẮT BUỘC):**
+
+- Đặt NGAY SAU `## BA Deliverables`, TRƯỚC `## Actors & Preconditions`
+- Mục đích: **chống hallucination** — mọi kết luận trong SPEC/Flow/Screen PHẢI trace về source. Downstream (TL/QC/Designer) đọc biết chỗ nào là fact vs propose vs inference vs unknown.
+- Bảng bắt buộc:
+
+```markdown
+## Source Register
+
+> Mọi statement trong SPEC này PHẢI trace về 1 row dưới. `FACT` = user/BRSE đã confirm; `PROPOSAL` = BA đề xuất, chờ approve; `INFERENCE` = BA suy luận từ context, cần verify; `UNKNOWN` = chưa rõ, đưa vào Q&A; `CONFLICT` = ≥2 source mâu thuẫn.
+
+| ID | Statement | Classification | Evidence (file + section/timestamp/user turn) | Confidence | Used in flow? |
+|---|---|---|---|---|---|
+| RQ-001 | Actor A phải login trước khi tạo order | FACT | user turn 3 ("phải login trước") | High | Yes — Flow Tổng Quan bước 1 |
+| RQ-002 | Payment gateway là elepay | PROPOSAL | BA đề xuất dựa POLICIES §5 | Medium | No — chờ BRSE approve |
+| RQ-003 | Refund window 7 ngày | INFERENCE | suy từ industry standard, chưa hỏi | Low | No — đưa vào Q&A |
+| RQ-004 | Có SMS OTP hay không? | UNKNOWN | user chưa trả lời | — | No — blocking |
+| RQ-005 | Meeting note nói "1 ngày" nhưng SPEC cũ nói "3 ngày" | CONFLICT | meeting 12/09 vs SPEC v2 | — | No — cần BRSE quyết |
+```
+
+**Rule bắt buộc:**
+- Chỉ `FACT` được đưa vào Happy Path / AC như kết luận chính thức
+- `PROPOSAL` phải có badge `[PROPOSAL — chờ BRSE approve]` trong SPEC body nơi được reference
+- `INFERENCE` phải có badge `[INFERENCE — cần verify]` + list vào `## Alternative Flows & Edge Cases` như giả định
+- `UNKNOWN` và `CONFLICT` KHÔNG được nối vào flow bằng giả định — bắt buộc list vào cuối SPEC section `## Open Questions` (tạo thêm nếu chưa có)
 
 **⚠️ `## BA Deliverables` — vị trí + nội dung:**
 - Đặt NGAY SAU `## Mô tả nghiệp vụ`, TRƯỚC `## Actors & Preconditions`
@@ -46,6 +73,93 @@ User → Mở App → Login Screen → Nhập credentials → [OK] → Home Scre
                                                  → [Sai pass] → Toast "Sai mật khẩu" → Login Screen
                                                  → [Quên pass] → Forgot Password Screen → Gửi email
 ```
+
+---
+
+**Xác định độ chi tiết 1 Screen (BẮT BUỘC đọc trước khi điền bảng Screens) — lỗ hổng đã xảy ra thực tế:**
+
+> Tổng quan nguyên tắc granularity chung (cả Flow lẫn Screen) xem `.claude/ba-agent/granularity-principles.md`.
+
+> Agent từng liệt kê Screen Code y hệt số dòng mà tài liệu nguồn (VD Estimate) liệt kê, thay vì tự phán đoán độc lập UI state nào thực sự là 1 màn hình khác biệt. Hệ quả: 4 biến thể checkout được tách thành 4 Screen Code `Wizard` riêng dù định nghĩa `Wizard` bên dưới vốn dành cho "nhiều bước trong 1 màn hình". Không được lặp lại — chạy đủ Test C + Test D dưới đây cho MỌI cặp UI state gần giống nhau trước khi chốt bảng Screens.
+
+1. **Test C — Distinct Layout/Purpose:** 2 UI state là **1 Screen** nếu dùng chung layout khung + chung điểm vào, chỉ khác field hiện/ẩn theo lựa chọn trước đó hoặc khác data hiển thị. Là **2 Screen khác nhau** nếu cấu trúc layout/kiểu tương tác khác hẳn nhau (VD: bản đồ chọn chỗ ngồi vs. form đếm số lượng + toggle thanh toán) — khác biệt phải nằm ở **cấu trúc UI**, không phải chỉ khác nội dung text.
+2. **Test D — Wizard-step reachability:** Nếu 1 UI state chỉ tồn tại tạm thời như 1 bước do 1 lựa chọn trước đó dẫn tới, KHÔNG có lý do cần deep-link/điều hướng riêng tới thẳng nó → đó là **1 step của Screen Type = `Wizard`**, KHÔNG tách Screen Code riêng. Chỉ tách Screen Code riêng khi step đó pass được Test C (khác cấu trúc layout hẳn) VÀ có thể được truy cập/tham chiếu độc lập trong luồng khác.
+
+**Khi nào bảng Screens có nhiều Screen Code "biến thể" của cùng 1 hành động (VD 4 kiểu checkout):** mặc định GỘP thành 1 Screen Type=`Wizard` với các bước mô tả trong `## Screen Details` (section riêng cho từng bước dùng heading phụ `#### Bước <n> — <tên>`), TRỪ KHI Test C xác nhận layout khác hẳn — khi đó giữ tách nhưng PHẢI ghi rõ trong Screen Details lý do tách (`> Tách riêng vì Test C: <lý do cấu trúc layout khác>`).
+
+**Bắt buộc trước khi vẽ Output 2/3 (Figma):** trình bảng Screens đã chốt (kèm lý do gộp/tách theo Test C/D cho các case biến thể) cho user xác nhận — tương tự bước xác nhận N-flow ở Output 1 (`output-1-flow.md`). Không vẽ Figma trước khi user confirm bảng Screens.
+
+**Rule phân loại mức hiển thị lỗi → có sinh Screen Code mới hay không (BẮT BUỘC — quyết định số screen Non-Happy):**
+
+> Lỗ hổng đã xác định khi audit: kit có `## Non-Happy Case` và có NG node ở Output 2, nhưng KHÔNG có rule nào nói lỗi nào cần 1 màn hình riêng, lỗi nào chỉ là state của màn hiện tại. Vì vậy số screen Non-Happy lúc thừa lúc thiếu, hoàn toàn cảm tính.
+
+| Cách hiển thị lỗi | Sinh Screen Code mới? | Ghi ở đâu |
+|---|---|---|
+| Inline error · Toast · Banner · Tooltip | ❌ **Không** — chỉ là **state** của screen hiện tại | Bảng SCREEN STATES ở Output 3 (`S05-validation-error` / `S06-system-error`) |
+| Modal · Popup · Bottom-sheet | ⚠️ **Có nếu** modal mang nội dung nghiệp vụ riêng (VD modal huỷ đơn + chọn lý do + xác nhận).<br>**Không nếu** chỉ là alert 1 nút OK | Có → 1 dòng trong `## Screens`, Screen Type = `Modal` |
+| Full screen (hết phiên · không có quyền · thanh toán thất bại · maintenance · 404) | ✅ **Bắt buộc** có Screen Code riêng | 1 dòng trong `## Screens` + 1 block `## Screen Details` |
+
+**Checklist 8 nhóm Non-Happy — rà BẮT BUỘC cho MỌI screen có submit / gọi API:**
+
+| # | Nhóm | Ví dụ |
+|---|---|---|
+| 1 | Validation input | field trống, sai định dạng, quá độ dài |
+| 2 | Auth / session / permission | chưa login, hết session, sai role |
+| 3 | Network | mất mạng, timeout, kết nối chập chờn |
+| 4 | Server error | 500, service unavailable, maintenance |
+| 5 | Empty state | không có dữ liệu, kết quả tìm kiếm rỗng |
+| 6 | Conflict | double-submit, bản ghi đã bị người khác sửa/xoá |
+| 7 | Business rule violation | hết hàng, quá hạn, vượt hạn mức, chưa đủ điều kiện |
+| 8 | External integration fail | payment gateway lỗi, SMS/email không gửi được, 3rd-party timeout |
+
+Nhóm nào không áp dụng → ghi `N/A — <lý do>`. Nhóm nào chưa có evidence từ requirement → ghi `UNKNOWN` (sẽ vào Edge/Exceptional Panel ở Output 2), **KHÔNG tự bịa hành vi**.
+
+---
+
+**⚠️ Rule FORMAT Non-Happy — BẮT BUỘC dạng BẢNG, cấm văn xuôi (lỗ hổng đã xảy ra thực tế):**
+
+> Lỗ hổng: agent viết Non-Happy dạng văn xuôi 1 dòng (`**Non-Happy Case (rút gọn):** Empty state → "Chưa có dữ liệu"`) cho phần lớn screen. Hệ quả: (1) không đếm được, (2) không vẽ được lên Figma, (3) không biết message thật hiển thị cho user là gì. Khi audit phát hiện 40/53 screen ở dạng này → phải làm lại toàn bộ.
+
+- ❌ **CẤM** viết Non-Happy dạng câu văn, dạng `giống <SCREEN_CODE>`, dạng `theo pattern chuẩn`, dạng `(rút gọn)`
+- ✅ **MỌI screen** (100%, kể cả màn tĩnh/List/Settings đơn giản) PHẢI có bảng đúng 4 cột:
+
+```markdown
+**Non-Happy Case:**
+| Nhóm | Trigger | Hiển thị | Message |
+|---|---|---|---|
+| 5 Empty | Chưa có thông báo nào được đăng | Empty state | "Chưa có thông báo nào" |
+| 3 Network | Mất mạng khi tải danh sách | Banner | "Không tải được danh sách. Kéo để thử lại." |
+```
+
+| Cột | Bắt buộc chứa gì | Sai ví dụ |
+|---|---|---|
+| `Nhóm` | Số + tên nhóm theo checklist 8 nhóm ở trên (`3 Network`) | để trống, ghi "lỗi mạng" |
+| `Trigger` | Nguyên nhân cụ thể gây lỗi | "lỗi hệ thống" (quá chung) |
+| `Hiển thị` | **1 giá trị enum**: `Toast` · `Modal` · `Popup` · `Banner` · `Full screen` · `Empty state` · `Inline error` · `Button disabled` · `Tooltip` · `Chặn UI` | "Toast, disable button khi đang xử lý" (2 giá trị trong 1 ô) |
+| `Message` | **Nội dung text THẬT user nhìn thấy**, đặt trong `" "` | "báo lỗi cho user" (mô tả, không phải nội dung) |
+
+Screen nào thực sự không có case của 1 nhóm → vẫn giữ 1 dòng, ghi `N/A — <lý do>` ở cột Trigger và `—` ở 2 cột còn lại.
+
+---
+
+**⚠️ Rule THỐNG KÊ màn hình trong `## Screens` — BẮT BUỘC (đồng bộ với `figma-outputs/output-2-screen-flow.md` §④):**
+
+Toast · Modal · Popup · Banner · Full screen · Empty state **ĐỀU LÀ MÀN HÌNH** và PHẢI cộng vào tổng. Inline error · Button disabled · Tooltip · Chặn UI chỉ là **state** của màn hiện tại → KHÔNG cộng.
+
+Đầu section `## Screens` PHẢI có block thống kê dạng:
+
+```markdown
+> **TỔNG: <N> màn hình** = **<A> màn chính** + **<B> màn lỗi/popup**.
+>
+> | Loại | Số lượng | Đếm vào tổng? |
+> |---|---|---|
+> | Màn hình chính | <A> | ✅ |
+> | Toast / Modal / Popup / Banner / Full screen / Empty state | <B> | ✅ |
+> | Inline error / Button disabled / Tooltip / Chặn UI | <C> | ❌ — chỉ là state |
+> | **Tổng error display định nghĩa** | **<B+C>** | |
+```
+
+Mỗi error display được đánh ID `E-001`…`E-<n>` theo thứ tự xuất hiện trong `## Screen Details` để trace 1-1 sang Output 2. **Thiếu block thống kê này → Bước 4.6 FAIL, không được sang Bước 5.**
 
 ---
 
@@ -83,7 +197,7 @@ Notation chuyển màn hình (ghi vào cột **Transition To**):
 - `Modal` — popup/dialog overlay (không phải full page)
 - `Card-list` — danh sách dạng card (chủ yếu mobile)
 - `Chat` — giao diện chat/AI
-- `Wizard` — multi-step flow (onboarding, checkout steps)
+- `Wizard` — multi-step flow (onboarding, checkout steps) — **mặc định 1 Wizard = 1 Screen Code duy nhất chứa nhiều bước**, xem Test D ở trên; không tách Screen Code riêng cho mỗi bước trừ khi pass Test C
 - `Calendar` — lịch, schedule view
 - `Report` — biểu đồ, báo cáo, export
 - `Settings` — cài đặt, toggle, configuration
