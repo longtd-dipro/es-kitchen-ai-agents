@@ -63,7 +63,21 @@ tasks/task-*.md  ←── /create-tasks <feature-folder/>
 - `.claude/context/doc-structure.md` — cấu trúc folder
 - Các SPEC hiện có trong `<DOCS_ROOT>/features/`
 
-**Output (path duy nhất):** `<DOCS_ROOT>/features/<feature-name>/SPEC.md`
+**Output — 5 outputs BẮT BUỘC** (BA chỉ được báo hoàn thành khi đủ cả 5, xem `## BA Deliverables` trong SPEC.md):
+
+| # | Output | Path / Location |
+|---|---|---|
+| 0 | `SPEC.md` (14 sections) | `<DOCS_ROOT>/features/<feature-name>/SPEC.md` |
+| 1 | Figma frame — Flow Tổng Quan (Business Logic + Technology Table + Sitemap) | Node trên Figma page user cung cấp |
+| 2 | Figma frame — Screen Flow (Happy + Non-Happy + Bảng Index) | Node Figma |
+| 3 | Figma frame — Screens + Items + Error Scenarios | Node Figma |
+| 4 | HTML Prototype standalone | `<DOCS_ROOT>/features/<feature-name>/prototype/index.html` |
+
+**Trước khi viết SPEC:** BA hỏi 7 câu preflight (Scope · Platform · Figma URL · Tech stack · Granularity · Actors · Ngôn ngữ) rồi in **Discovery Brief** chờ user confirm — chi tiết `.claude/ba-agent/preflight-questions.md`.
+
+**Trong khi vẽ Figma:** Quality Gate PASS/FAIL sau **mỗi** output (Bước 5.5) + gate hỏi user theo Mode — Light Mode (`SCOPE_TYPE=[A]`) 2 gate · Strict Mode (`[B]/[C]`) 5 gate `WAITING FOR BRSE APPROVAL`.
+
+**Versioning:** mỗi lần chạy snapshot vào `versions/v<N>_<DDMMYYYY>/` — không overwrite version cũ.
 
 > Single-actor vs cross-repo phân biệt qua section Actors trong SPEC, không qua path.
 

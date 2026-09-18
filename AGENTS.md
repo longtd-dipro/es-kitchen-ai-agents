@@ -93,7 +93,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 
 | Agent | Vai trò | Trigger khi | Slash command |
 |---|---|---|---|
-| `ba-agent.md` | Business Analyst | Phân tích yêu cầu, tạo SPEC.md | `/create-spec` |
+| `ba-agent.md` | Business Analyst | Phân tích yêu cầu → **5 outputs bắt buộc**: SPEC.md (14 sections) + 3 Figma frames (Flow Tổng Quan · Screen Flow · Screens+Items) + HTML Prototype. Workflow chi tiết tách ra `.claude/ba-agent/` (xem bảng bên dưới) | `/create-spec` |
 | `techlead-design-agent.md` | Tech Lead Design | Đọc SPEC → tạo DESIGN.md per repo | `/create-design` |
 | `techlead-tasks-agent.md` | Tech Lead Tasks | Đọc DESIGN → phân rã task files | `/create-tasks` |
 | `pm-agent.md` | Project Manager | Tạo PLAN.md, phase-gate, timeline | `/create-plan` |
@@ -106,6 +106,36 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | `qc-automation-agent.md` | QC Automation Tester | **Sau khi Dev deploy lên DEV** — đọc SPEC.md + Figma URL, sinh Playwright `.spec.ts`, chạy E2E test **có headed mode** (browser hiển thị để quan sát), xuất execution report | `"Hãy là QC Automation, test feature: <feature-path>, Figma: <url>"` (+ `testcases: <path>` nếu có TC file) |
 
 > **QC vs QA vs QC-Automation:** `qc-agent` = manual tester sinh/thực thi TC (artifact `.md`); `qa-agent` = post-dev verify unit test + coverage (QA Report per task); `qc-automation-agent` = E2E test tự động trên browser sau khi website chạy (`.spec.ts` + execution report). Ba agent bổ sung nhau, không thay thế.
+
+### BA Agent workflow files — `.claude/ba-agent/` (đọc on-demand)
+
+> `ba-agent.md` là canonical entry point; chi tiết quy trình tách thành các file dưới đây để agent Read đúng lúc cần. **Sửa quy trình BA → sửa file tương ứng ở đây, không sửa `/create-spec`.**
+
+| File | Nội dung | ba-agent Read khi |
+|---|---|---|
+| `preflight-questions.md` | 7 câu preflight (0.4 Scope · 0 Platform · 0.5 Figma URL · 0.8 Tech stack · 0.9 Granularity · 0.10 Actors · 0.11 Ngôn ngữ) + 10 câu chuẩn + template **Discovery Brief** | Bước 2b — trước mọi câu hỏi |
+| `clarify-ambiguity.md` | Template trình 2-3 diễn giải khi request mơ hồ | Bước 2a khi trigger ambiguity |
+| `granularity-principles.md` | Nguyên tắc granularity chung cho Flow + Screen (chống flow quá thô/quá vụn) | Bước 4 + Bước 5 Output 1 |
+| `spec-template.md` | Template 14 sections SPEC.md + rule phân loại Non-Happy theo mức hiển thị (Inline/Toast · Modal · Full screen → Screen Code riêng) | Bước 4 — trước khi viết SPEC |
+| `versioning.md` | Rule snapshot `versions/v<N>_<DDMMYYYY>/` — không overwrite version cũ | Bước 3 |
+| `recheck.md` | Checklist 5 tiêu chí visual + **Tiêu chí 7 — quét bbox bằng script** | Bước 5.5 Quality Gate |
+| `self-feedback.md` | Template self-feedback theo `POLICIES.md §4.5` | Bước 5.6 |
+| `post-meeting-workflow.md` | Quy trình cập nhật SPEC sau meeting với khách | Khi user trigger |
+| `template-ba.md` | Template BA tổng hợp | Bước 4 |
+| `figma-outputs/shared-rules.md` | Sequential Rule · **Gate Rules (Light/Strict Mode)** · state machine `WAITING_APPROVAL`/`APPROVED`/`STALE` · GATE ẢNH MẪU · Post-Delivery `## BA Deliverables` | Bước 5 — trước mọi `use_figma` |
+| `figma-outputs/code-patterns.md` | JS pattern cho Figma Design / FigJam | Bước 5 |
+| `figma-outputs/output-1-flow.md` … `output-5-mkdocs.md` | Spec chi tiết từng output | Bước 5 — đúng output đang vẽ |
+
+**4 rule cứng khi vẽ Figma (không được vi phạm):**
+
+| Rule | Nội dung | File gốc |
+|---|---|---|
+| ⛔ **Gate ảnh mẫu** | Trước MỌI `use_figma`: mở ảnh mẫu trong `.claude/skills/ba-figma-output/examples/` **và mô tả lại bố cục bằng lời của mình**. Đọc rule dạng chữ mà không xem ảnh → vẽ sai bố cục | `figma-outputs/shared-rules.md` |
+| 🔗 **Connector thật** | Mọi screen node phải nối nhau bằng arrow vẽ thật (`hl`/`vl`/`arrowHead`). Liệt kê chip/card rời rạc không mũi tên → **FAIL** | `agents/ba-agent.md` |
+| 📊 **Đếm màn lỗi** | `Toast` · `Modal` · `Popup` · `Banner` · `Full screen` · `Empty state` **ĐỀU tính là màn hình** trong thống kê tổng. Non-Happy bắt buộc dạng **bảng 4 cột** có message thật, cấm văn xuôi | `ba-agent/spec-template.md` |
+| 📐 **Quét bbox** | Kết luận "không chồng đè" phải bằng **script quét toạ độ**, không bằng mắt nhìn screenshot | `ba-agent/recheck.md` Tiêu chí 7 |
+
+**Verdict 3 mức** thay PASS/FAIL nhị phân ở Quality Gate: ✅ `Complete` → gate kế tiếp · ⚠️ `Needs Revision` → BA tự sửa rồi rerun · ❌ `Critical Gaps` (thiếu dữ liệu nguồn) → **DỪNG hỏi user**, không tự bịa.
 
 ### Slash Commands — `.claude/commands/`
 
@@ -152,7 +182,7 @@ Danh sách đầy đủ (skill → repo → khi nào dùng) → `.claude/skills/
 
 | Bước | Command | Output | Agent | Phase |
 |---|---|---|---|---|
-| 1 | `/create-spec <feature>` | `SPEC.md` | `ba-agent` | Discovery |
+| 1 | `/create-spec <feature>` | `SPEC.md` + 3 Figma frames + `prototype/index.html` (5 outputs — xem `## BA Deliverables` trong SPEC.md) | `ba-agent` | Discovery |
 | 2a | `/create-design <SPEC.md>` | `DESIGN.md` per repo | `techlead-design-agent` | Design |
 | 2b | `/test/generate_manual_testcases_rbt` (parallel) | `test-cases/tc_*.md` | `qc-agent` | Design |
 | 2c | `/create-ui-design <SPEC.md>` (parallel) | Figma frames + URL điền vào SPEC.md ## Screens | `designer-agent` | Design |

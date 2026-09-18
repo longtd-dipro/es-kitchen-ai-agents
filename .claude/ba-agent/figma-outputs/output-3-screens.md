@@ -176,6 +176,69 @@ Xem mockup HiFi (do Designer tạo) hoặc SPEC.md `## Screen Details`, đánh s
 **Ví dụ ĐÚNG:** 12 items → bảng có 12 dòng.
 **Ví dụ SAI:** Màn hình có 15 items nhưng bảng chỉ ghi 5 → **thiếu**, phải bổ sung.
 
+---
+
+## ⚠️ 4 phép kiểm "đủ item hay chưa" (BẮT BUỘC — chống thiếu từ gốc)
+
+> **Lỗ hổng đã xác định khi audit:** `recheck.md` Tiêu chí 5 chỉ đối chiếu **NỘI BỘ** (badge trên mockup vs row trong bảng của chính nó). Nếu BA liệt kê thiếu ngay từ đầu thì cả hai cùng thiếu như nhau → **vẫn PASS**. Bắt buộc phải có ít nhất 1 phép đối chiếu với nguồn NGOÀI.
+
+### Phép 1 — Đối chiếu chéo với SPEC (phép kiểm NGOÀI, bắt buộc)
+
+> `số item bảng ITEMS` **≥** `số row bảng Components trong SPEC ## Screen Details` của chính screen đó
+
+- Thiếu → **FAIL**, phải bổ sung trước khi báo xong
+- Thừa là **bình thường và đúng** — Output 3 chi tiết hơn SPEC (divider, section header, badge, status dot mà SPEC không liệt kê)
+
+### Phép 2 — Rà theo VÙNG, không rà theo LOẠI (zone sweep)
+
+> Checklist 10 loại ở trên rà theo **loại**; phép này rà theo **không gian**. Con người và LLM đều quét màn hình theo vùng — rà theo loại rất dễ sót nguyên một vùng (hay sót nhất: overlay và trạng thái phụ).
+
+| # | Vùng | Phải kiểm |
+|---|---|---|
+| 1 | Status bar / Header | back, title, action bên phải |
+| 2 | Navigation | tab bar, drawer, breadcrumb, stepper |
+| 3 | Body — nội dung chính | list / form / detail content |
+| 4 | Body — trạng thái phụ | empty state, loading skeleton, inline error |
+| 5 | Footer / CTA | nút chính, nút phụ, disclaimer |
+| 6 | Overlay | modal, toast, tooltip, bottom-sheet, snackbar |
+
+Mỗi vùng PHẢI có ≥1 dòng trong bảng ITEMS **hoặc** ghi rõ `N/A — <lý do>`.
+
+### Phép 3 — Ngưỡng cảnh báo tối thiểu theo Screen Type
+
+> KHÔNG fail cứng (có màn thật sự đơn giản) — nhưng BẮT BUỘC in cảnh báo và hỏi user. Cùng tinh thần "smoke detector" như Test E (Cardinality Budget) ở Output 1.
+
+| Screen Type | Số item tối thiểu hợp lý |
+|---|---|
+| `Form` | ≥ số field + submit + validation message + back (thường ≥ 6) |
+| `List` | ≥ 6 (header · search/filter · sort · row template · empty state · pagination) |
+| `Detail` | ≥ 5 |
+| `Dashboard` | ≥ 6 |
+| `Modal` | ≥ 3 (title · body · ≥1 action) |
+| `Wizard` | ≥ (số bước × 3) + progress indicator |
+
+Dưới ngưỡng → in: `⚠️ <Screen Code> chỉ có N item — dưới ngưỡng tối thiểu của type <T>. Xác nhận màn này thật sự đơn giản, hay tôi đang liệt kê thiếu?`
+
+### Phép 4 — Đảo chiều check Navigation Mapping
+
+> `số item có cột Action ≠ "—"` **=** `số row Navigation Mapping có From = screen đó`
+
+Rule hiện có chỉ nói "mọi item phải có ≥1 row" (chiều xuôi). Phép đếm ngược này bắt được trường hợp bảng Navigation Mapping bị bỏ sót dòng.
+
+### Câu hỏi bắt buộc trong Self-Feedback Output 3 — *implied items*
+
+> Mượn từ skill **Business Analyst Reviewer** (marketplace): *"Are there implied requirements not captured?"*
+
+Sau khi liệt kê xong, BA PHẢI tự hỏi và trả lời trong self-feedback:
+
+```
+Item nào là IMPLIED — user chắc chắn cần nhưng requirement không bao giờ viết ra — mà tôi chưa liệt kê?
+Nhóm hay thiếu nhất: nút back · loading indicator · empty state · pull-to-refresh ·
+confirm khi thoát form đang nhập dở · disabled state của CTA · error inline dưới field
+```
+
+Đây đúng là nhóm item mà Dev luôn phải hỏi lại khi build nếu BA bỏ sót.
+
 **Ví dụ ĐÚNG (logic-focused):**
 ```
 BUTTONS:
@@ -191,3 +254,61 @@ BUTTONS:
 ```
 
 **BA KHÔNG tạo:** px, hex color, font-size, border-radius, component instances → đó là Designer-agent.
+
+---
+
+## Bổ sung 2 bảng mới cạnh Bảng ITEMS + ERROR SCENARIOS (BẮT BUỘC)
+
+> 2 bảng dưới đây bổ sung **CẠNH** bảng ITEMS/ERROR SCENARIOS hiện tại (đặt DƯỚI, cùng width). KHÔNG thay mockup phone. Mục đích: cho TL Design + QC + FE Dev đủ thông tin về states và navigation trace-back.
+
+### Bảng 3 — SCREEN STATES (8 state chuẩn)
+
+> Bắt buộc list mọi state screen có thể ở, không được silent-skip. State nào chưa có evidence → đánh dấu `UNKNOWN`.
+
+| State ID | Trigger | Visible / disabled items | System behavior | Exit condition |
+|---|---|---|---|---|
+| S01-default | Load lần đầu, đủ điều kiện | Tất cả items enabled | — | Tap CTA |
+| S02-loading | Đang fetch data | Skeleton loader thay content; CTA disabled | GET /api/... | Response về |
+| S03-success | Action success | Toast success + navigate | Redirect S1 kế | Auto 2s |
+| S04-empty | Data trống | Empty illustration + "Chưa có..." | — | Tap "Tạo mới" |
+| S05-validation-error | Form field invalid | Inline error dưới field; CTA disabled | — | User sửa field |
+| S06-system-error | API 500 / network | Banner đỏ + "Thử lại"; CTA disabled | Log Sentry | Tap Retry |
+| S07-disabled | Precondition không đủ (VD: chưa verify email) | CTA disabled + tooltip lý do | — | User đi verify |
+| S08-permission-denied | User không đủ role | Overlay + "Không có quyền" | Log audit | Back |
+
+**Rule bắt buộc:**
+- 8 state là **checklist tối đa** — nếu screen không có state nào (VD Detail read-only chỉ có S01 + S06) → xóa row không dùng, ghi note `Chỉ có 2/8 states`
+- State chưa có evidence từ SPEC/user → đánh `UNKNOWN` vào cột System behavior, KHÔNG tự invent
+- Row S05/S06 phải link về Exception Matrix ID trong Output 2 (VD "xem EX-01, EX-03")
+
+### Bảng 4 — NAVIGATION MAPPING (trace về Flow Manifest + Source Register)
+
+> Bảng này cho phép QC + FE Dev trace từng action trên screen về đúng transition trong Flow Output 2 VÀ về requirement gốc trong Source Register (SPEC.md). Chống drift 2 chiều: giữa screen action ↔ flow diagram, và giữa screen action ↔ requirement.
+
+| User/System action | From | Condition | To | Manifest transition ID | Source RQ-ID |
+|---|---|---|---|---|---|
+| Tap [Gọi ngay] | AX_FEAT_002 | CA Online | AX_FEAT_003 | CALL_D01_ONLINE | RQ-012 |
+| Tap [Gọi ngay] | AX_FEAT_002 | CA Offline | (disabled) | — | RQ-015 |
+| Tap [Gọi ngay] | AX_FEAT_002 | CA Busy | Tooltip "Đang bận" | — | RQ-016 |
+| Tap [Xem tất cả →] | AX_FEAT_002 | — | AX_FEAT_006 | HISTORY_NAV | RQ-020 |
+| Tap [←] | AX_FEAT_002 | — | AX_FEAT_001 | BACK_NAV | — (UI convention) |
+| System push arrival | AX_FEAT_003 | Actor B pick up | AX_FEAT_004 | CALL_D02_PICKUP | RQ-013 |
+| System timeout 30s | AX_FEAT_003 | Actor B không pick | AX_FEAT_005 (missed) | CALL_D02_TIMEOUT | RQ-014 |
+
+**Rule bắt buộc:**
+- Mọi button / interactive element trong Bảng ITEMS PHẢI có ≥ 1 row trong Navigation Mapping (kể cả action = `—` cho disabled state)
+- Cột "Manifest transition ID" trace về Flow diagram Output 2 — format `<FLOW>_<DECISION>_<CONDITION>` (VD `CALL_D01_ONLINE`). Nếu Output 2 chưa có transition ID → BA phải quay lại Output 2 thêm ID.
+- **Cột "Source RQ-ID"** trace về row trong `## Source Register` (SPEC.md):
+  - Row có business logic → PHẢI có RQ-ID (VD `RQ-012`) — nếu không có → row Source Register thiếu, BA phải bổ sung trước
+  - Row là UI convention thuần túy (back button, close icon) → để `— (UI convention)` explicit, không được để trống
+  - Row có RQ-ID classification `UNKNOWN` / `PROPOSAL` trong Source Register → thêm badge `⚠ UNKNOWN` / `⚠ PROPOSAL` sau ID (VD `RQ-021 ⚠ UNKNOWN`)
+- Row không có Manifest transition (VD tooltip disabled) → cột ID để `—`, nhưng phải có row để explicit "không navigate đi đâu"
+
+**Cross-verification khi Quality Gate O3:**
+- 100% Source RQ-ID phải tồn tại trong `## Source Register` — grep check
+- Row có Source RQ-ID `UNKNOWN` → phải có tương ứng entry trong Exception Matrix Output 2 (không được silent skip)
+
+**Downstream impact:**
+- FE Dev đọc bảng này biết đúng route + condition
+- QC đọc bảng này viết test case cho từng transition
+- TL Design verify không có action nào bị orphan (button không dẫn đi đâu mà không có lý do rõ ràng)

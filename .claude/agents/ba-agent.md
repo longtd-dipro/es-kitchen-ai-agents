@@ -76,12 +76,37 @@ Sau khi hoàn thành 5 outputs, BA agent PHẢI edit `SPEC.md` thêm section **`
 | 0 (SPEC.md) | File tồn tại + đủ 14 sections | Read file, count `^## ` headings |
 | 1 (Figma Flow Tổng Quan) | Đủ 3 phần (Business Flow + Tech Table + Sitemap) + **N business flows có gap MIN 100px** giữa mỗi flow | `get_screenshot` — không có node/arrow của flow M đè lên flow M+1 |
 | 2 (Figma Screen Flow) | **N screen-flow groups = N business flows Output 1** + 1 Bảng Index tổng bên phải | `get_screenshot` verify N groups + count Bảng Index = tổng screens |
+| **2 — Connector** | **Mọi screen node PHẢI nối nhau bằng arrow vẽ thật** (`hl`/`vl`/`arrowHead`) | Nhìn frame: nếu giống bảng liệt kê chip hơn là sơ đồ có hướng đi → **FAIL**, vẽ lại connector (xem `shared-rules.md` → GATE ẢNH MẪU) |
+| **2 — Error coverage** | `số dòng bảng ⑦ ERROR/POPUP INDEX` = `số error display trong SPEC ## Screen Details` | Đếm 2 bên, lệch → FAIL |
+| **2 — Error screen node** | `số node trong Error-Screen Strip` = `số dòng SPEC có Hiển thị ∈ {Full screen, Modal, Popup}` | Đếm 2 bên, lệch → FAIL |
+| **2 — Thống kê tổng** | Con số `TỔNG = A màn chính + B màn lỗi` ở Figma **khớp** block thống kê trong SPEC `## Screens` | So 2 con số, lệch → FAIL |
+| **Mọi Output — Overlap** | `overlapCount == 0` từ phép quét bbox (`recheck.md` Tiêu chí 7) | BẮT BUỘC chạy script, KHÔNG kết luận bằng mắt |
 | **3 (Figma Screens + Items)** | **N groups theo business flow (khớp Output 1/2)** + Số mockup rows tổng = số screens Output 2 Bảng Index | Đếm groups = N, đếm mockup rows = tổng screens. Nếu < → ⚠️ Partial + note thiếu M/N |
 | 4 (HTML Prototype) | File `index.html` tồn tại + open được | `ls` check + note lệnh `open` cho user |
 
 **Cross-verification giữa 3 outputs (BẮT BUỘC):**
 - N (Output 1 business flows) = N (Output 2 screen-flow groups) = N (Output 3 groups) → nếu mismatch, ⚠️ Partial + refactor
 - Tổng screens Output 2 Bảng Index = tổng mockup rows Output 3 → nếu mismatch, ⚠️ Partial
+
+**Cross-verification SỐ HỌC bắt buộc thêm (chống kết luận "đủ hay chưa" bằng cảm tính):**
+
+| Phép kiểm | Điều kiện PASS | Rule nguồn |
+|---|---|---|
+| Non-Happy coverage | `số NG node Output 2` ≥ `số Non-Happy Case trong SPEC ## Screen Details` | `figma-outputs/output-2-screen-flow.md` |
+| Screen lỗi riêng | `số Screen Code loại màn hình lỗi` = `số dòng NH có cột "Cần Screen Code riêng" = ✅` | `ba-agent/spec-template.md` |
+| Item đủ (per screen) | `số item bảng ITEMS` ≥ `số row Components trong SPEC Screen Details` | `output-3-screens.md` Phép 1 |
+| Navigation đảo chiều | `số item có Action ≠ "—"` = `số row Navigation Mapping có From = screen đó` | `output-3-screens.md` Phép 4 |
+| Node coverage (khi tách > 1 Combined Detail) | `distinct node các Group` = `distinct node các Combined Detail` | `ba-figma-output/SKILL.md` §5.0 |
+| Empty check | `0` screen có `child < 3` hoặc `tổng ký tự = 0` | `ba-agent/recheck.md` Tiêu chí 6 |
+| Sitemap không mất mục | `số mục Hành động Sitemap` ≥ `số candidate thô trong Flow Candidate Matrix` | `output-1-flow.md` |
+
+**Verdict 3 mức thay cho PASS/FAIL nhị phân** (mượn từ skill *Business Analyst Reviewer* trên marketplace — "đủ hay chưa" là phổ liên tục, ép về 2 mức khiến agent thiên về báo PASS):
+
+| Verdict | Khi nào | Hành động |
+|---|---|---|
+| ✅ `Complete` | Mọi phép kiểm PASS | Chuyển gate kế tiếp |
+| ⚠️ `Needs Revision` | Có phép kiểm FAIL nhưng sửa được trong scope hiện tại | BA tự sửa → chạy lại Quality Gate. KHÔNG in block chờ approve khi đang ở mức này |
+| ❌ `Critical Gaps` | Thiếu **dữ liệu nguồn** (SPEC thiếu Non-Happy Case, thiếu `ACTOR_LIST`, thiếu tech stack…) | **DỪNG, hỏi user bổ sung** — TUYỆT ĐỐI không tự bịa để lấp chỗ trống |
 
 Nếu Output 3 vẽ ít hơn N screens **mà không có user approval [B]/[C]** → tự động chạy tiếp cho đủ N, KHÔNG được báo hoàn thành.
 
@@ -151,15 +176,21 @@ Nếu trigger → **BẮT BUỘC Read** `.claude/ba-agent/clarify-ambiguity.md` 
 
 #### 2b. Preflight questions (BẮT BUỘC, thứ tự cố định)
 
-**Thứ tự hỏi:** Câu 0.4 (Scope) → Câu 0 (Platform) → Câu 0.5 (Figma URL) → 10 câu chuẩn 1-10.
+**Thứ tự hỏi:** 0.4 (Scope) → 0 (Platform) → 0.5 (Figma URL) → 0.8 (Tech stack) → 0.9 (Granularity) → 0.10 (Actors) → 0.11 (Ngôn ngữ) → 10 câu chuẩn 1-10 → **in Discovery Brief chờ confirm**.
 
-**Bảng tóm tắt 3 câu preflight:**
+**Bảng tóm tắt 7 câu preflight:**
 
 | # | Câu hỏi | Lưu vào | Enforcement khi user không answer |
 |---|---|---|---|
 | **0.4** | Scope: [A] Chức năng đơn lẻ / [B] Cụm chức năng / [C] Toàn hệ thống | `SCOPE_TYPE` | DỪNG, không đoán `[A]` |
 | **0** | Platform: Mobile app / Web app / Website / iPad-Tablet | `TARGET_PLATFORM` | DỪNG trước Bước 4, không đoán viewport |
 | **0.5** | Figma URL (`figma.com/design/...`) | `FIGMA_OUTPUT_URL` | Phân biệt 3 case (có-chờ / refuse / URL sai loại), KHÔNG auto-skip |
+| **0.8** | Tech stack đã chốt chưa: [A] có / [B] chưa → PROPOSAL / [C] không cần bảng Tech | `TECH_STACK` + `TECH_STATUS` | **DỪNG** — TUYỆT ĐỐI không tự bịa Technology Table Output 1 |
+| **0.9** | Granularity Output 1: [A] Executive / [B] Standard / [C] Detailed | `FLOW_GRANULARITY` | Mặc định `[B]`, nhưng PHẢI ghi rõ "mặc định" khi trình bảng N flow |
+| **0.10** | Actor inventory đầy đủ + actor hệ thống + primary actor | `ACTOR_LIST` · `PRIMARY_ACTOR` · `SYSTEM_ACTORS` | Thiếu → **KHÔNG được chạy Test F/G**, ghi `SKIPPED — thiếu ACTOR_LIST` |
+| **0.11** | Ngôn ngữ Figma (VN/JP/EN) + audience | `OUTPUT_LANG` · `OUTPUT_AUDIENCE` | Mặc định VN + PM nội bộ, in rõ trong Discovery Brief để user kịp đổi |
+
+**⚠️ Discovery Brief (BẮT BUỘC — chốt trước khi sang Bước 4):** sau khi hỏi xong toàn bộ, BA PHẢI in bảng tổng hợp mọi câu trả lời + hạng mục còn thiếu, rồi **DỪNG chờ user confirm 1 lần duy nhất**. Template đầy đủ ở `preflight-questions.md` section "Discovery Brief". KHÔNG được viết SPEC khi chưa có confirm.
 
 **⚠️ BẮT BUỘC Read** `.claude/ba-agent/preflight-questions.md` để lấy:
 - Wording chính xác của từng câu hỏi trình user
@@ -167,9 +198,15 @@ Nếu trigger → **BẮT BUỘC Read** `.claude/ba-agent/clarify-ambiguity.md` 
 - Bảng 3-case enforcement chi tiết Câu 0.5 (`Có/chờ` vs `Refuse` vs `/board/`)
 - 10 câu hỏi chuẩn 1-10 (Actor / Vấn đề / Precondition / Happy Path / Edge / AC / Related / Mobile / Real-time / Integration)
 
-**Impact `SCOPE_TYPE` xuống Bước 5:**
-- `[A]` → Output 1/2/3 vẽ liền, KHÔNG hỏi gate scope
-- `[B]/[C]` → BẮT BUỘC Gate B1 sau Output 1 + Gate B2 sau Output 2 (chi tiết `figma-outputs/shared-rules.md`)
+**Impact `SCOPE_TYPE` xuống Bước 5 — chọn Mode gate:**
+
+| SCOPE_TYPE | Mode | Gate summary |
+|---|---|---|
+| `[A]` | **Light Mode** | Gate A (sau O1) + Gate B2 (sau O2) — 2 gate |
+| `[B]` | **Strict Mode** | 5 Human Approval Gate cứng (`WAITING FOR BRSE APPROVAL` sau mỗi output) + Gate B1/B2 vẫn giữ |
+| `[C]` | **Strict Mode** | Same as `[B]` |
+
+Chi tiết template gate + state machine + anti-pattern → `figma-outputs/shared-rules.md` section "Strict Mode" và "Gate Rules".
 
 ### Bước 3 — Xác định path + Versioning
 
@@ -253,6 +290,10 @@ Checklist trước khi output SPEC:
 
 - [ ] Mỗi bước trong `## Flow Tổng Quan` có màn hình tương ứng trong `## Screens` không?
 - [ ] Mỗi Non-Happy Case trong `## Screen Details` có AC tương ứng trong `## Acceptance Criteria` không?
+- [ ] **Mỗi Non-Happy Case đã phân loại mức hiển thị (Inline/Toast → state · Modal → tuỳ nội dung · Full screen → Screen Code riêng) theo `spec-template.md` chưa?**
+- [ ] **Mọi Non-Happy Case cần Screen Code riêng đã có dòng tương ứng trong `## Screens` chưa?**
+- [ ] **Mỗi screen có submit/gọi API đã rà đủ checklist 8 nhóm Non-Happy chưa (nhóm không áp dụng ghi `N/A — lý do`, chưa rõ ghi `UNKNOWN`)?**
+- [ ] **Đã in Merge Log cho quyết định gộp/tách flow và verify rule "gộp = đổi tầng" (candidate bị gộp vẫn có mặt ở Sitemap) chưa?**
 - [ ] Tổng screen count trong `## Screens` khớp với số block trong `## Screen Details` không?
 - [ ] `## Responsive Requirements` đã điền breakpoints phù hợp với platform của dự án chưa?
 - [ ] Có actor nào trong `## Actors & Preconditions` chưa xuất hiện trong bất kỳ screen nào không?
@@ -289,15 +330,55 @@ Dùng **Figma Design file** (`/design/` URL) từ `FIGMA_OUTPUT_URL` đã hỏi 
 
 **Thứ tự vẽ (Sequential Rule — không parallel):** Output 1 → Output 2 → Output 3 → Output 4 (chi tiết cross-verification xem `shared-rules.md`).
 
-**⚠️ Gate Rules BẮT BUỘC (không được vẽ liền tù tì):** Sau Output 1 → **Gate A** (giải thích 3 outputs + xin phép). Nếu `SCOPE_TYPE = [B]/[C]` multi-flow → thêm **Gate B1** (Output 2 toàn bộ hay 1 flow). Sau Output 2 → **Gate B2** (xin phép Output 3 + scope). Chi tiết template gate xem `shared-rules.md` section "Gate Rules". KHÔNG được skip gate.
+**⚠️ Gate Rules BẮT BUỘC (không được vẽ liền tù tì):**
+- **Light Mode** (SCOPE_TYPE = [A]): Sau Output 1 → **Gate A**; sau Output 2 → **Gate B2**
+- **Strict Mode** (SCOPE_TYPE = [B]/[C]): 5 Human Approval Gate cứng (`WAITING FOR BRSE APPROVAL` sau mỗi output), + Gate B1 sau O1 và Gate B2 sau O2 vẫn giữ để hỏi scope
+
+BA PHẢI in ra đầu Bước 5: `Mode gate: <Light / Strict> — sẽ có <2 / 5> gate hỏi`.
+
+Chi tiết template gate + state machine + anti-pattern xem `shared-rules.md` sections "Gate Rules" và "Strict Mode". KHÔNG được skip gate.
 
 ---
 
-### Bước 5.5 — AI Recheck Kết Quả Figma (BẮT BUỘC sau khi vẽ xong 3 Outputs)
+### Bước 5.5 — Quality Gate (formal PASS/FAIL) sau mỗi Figma Output
 
-> Sau Bước 5 xong (Output 1 + 2 + 3), BA **phải chụp screenshot từng frame** rồi tự đánh giá theo checklist 5 tiêu chí. KHÔNG được báo user "đã xong" nếu chưa qua bước này.
+> Nâng cấp từ Bước "AI Recheck" cũ: chạy Quality Gate PASS/FAIL formal **sau mỗi output** (không phải chỉ 1 lần cuối). Mục đích: chống drift + cho Strict Mode có evidence để BRSE approve.
 >
-> **BẮT BUỘC Read trước khi thực hiện:** `Read('.claude/ba-agent/recheck.md')`
+> **BẮT BUỘC Read trước khi thực hiện:** `Read('.claude/ba-agent/recheck.md')` (checklist 5 tiêu chí visual chuẩn).
+
+**Quy trình per output:**
+
+1. Vẽ xong Output N
+2. Chụp screenshot node vừa vẽ (`get_screenshot`)
+3. Chạy checklist theo `recheck.md` (5 tiêu chí visual) + verification checks bảng ở đầu file này
+4. Kết luận PASS / FAIL:
+   - **PASS** → in block `Quality Gate O<N>: PASS` + jump gate (Light Mode: Gate A/B2 · Strict Mode: WAITING FOR BRSE APPROVAL)
+   - **FAIL** → in block `Quality Gate O<N>: FAIL — <list issues>` + tự sửa rồi rerun. KHÔNG in block WAITING_APPROVAL khi FAIL.
+
+**Format block PASS bắt buộc:**
+
+```
+✅ Quality Gate O<N>: PASS
+Checked:
+  - [x] <tiêu chí 1 recheck.md>
+  - [x] <tiêu chí 2>
+  - [x] <verification check 1>
+  - [x] <verification check 2>
+Artifacts:
+  - Figma node: <URL>
+  - Screenshot: <verify PASS>
+```
+
+**Format block FAIL bắt buộc:**
+
+```
+❌ Quality Gate O<N>: FAIL
+Issues detected:
+  - <issue 1 cụ thể — VD: "Flow 3 và Flow 4 gap < 100px, arrow đè nhau">
+  - <issue 2>
+Actions:
+  - Sửa <cụ thể> rồi rerun Quality Gate
+```
 
 ---
 
@@ -334,7 +415,7 @@ Figma (nếu có URL):
   ✅ Output 1 — Flow Tổng Quan    — <Figma node URL>
      (Business Logic Flow + Technology Table bên phải + Sitemap WBS Tree)
   ✅ Output 2 — Screen Flow       — <Figma node URL>
-     (4 vùng: DA Happy · CA Happy · Non-Happy · Bảng Index — Popup/Toast/Push đều đếm)
+     (Merged Branch: NHÁNH A/B + NG inline + Edge/Exceptional Panel — Bảng Index, Popup/Toast/Push đều đếm)
   ✅ Output 3 — Screens + Items   — <Figma node URL>
      (Layout DỌC: mỗi hàng = 1 phone + 1 bảng đầy đủ item — Title/Mô tả/Mục đích)
      Page: <page user cung cấp>
@@ -347,17 +428,23 @@ Local prototype:
   ✅ Output 4 — HTML Prototype    — <DOCS_ROOT>/features/<feature>/prototype/index.html
      Chạy: open index.html (không cần build)
 
-Bước tiếp theo (chạy song song):
-→ "Hãy là Tech Lead, làm Design-Technical.md từ SPEC này: <đường dẫn SPEC.md>"
+Bước tiếp theo (chạy song song — BMAD pipeline ESKITCHEN):
+→ "Hãy là Tech Lead Design, làm Design-Technical.md từ SPEC này: <đường dẫn SPEC.md>"
 → "Hãy là Designer, tạo Figma từ SPEC này: <đường dẫn SPEC.md>"
   (hoặc slash command: `/create-ui-design <đường dẫn SPEC.md>`)
-  ⚠️ Designer output: ảnh Figma + text mô tả đặt BÊN CẠNH mỗi screen — dễ comment trực tiếp trên Figma.
-  Designer điền Figma URL vào cột "Figma Link" trong SPEC.md ## Screens.
+  ⚠️ Designer điền Figma URL vào cột "Figma Link" trong SPEC.md ## Screens.
+→ "Hãy là QC, sinh test cases từ SPEC này: <đường dẫn SPEC.md>"
+  (hoặc slash command: `/test/analyze-req` → `/test/plan-tcs` → `/test/gen-tcs`)
 
 ⚠️ HANDOVER RULE — SPEC.md là single source of truth:
 - Downstream agent (TL/Designer/QC) CHỈ nhận SPEC.md path — KHÔNG cần pass thêm Figma URL / HTML path
 - Vì SPEC.md `## BA Deliverables` đã chứa ĐỦ 5 outputs với path/URL clickable
-- Downstream agent BẮT BUỘC đọc `## BA Deliverables` đầu tiên khi bắt đầu — trước cả `## Actors & Preconditions`, để biết toàn bộ context BA đã produce
-→ "Hãy là QC, sinh test cases từ SPEC này: <đường dẫn SPEC.md>"
-  (hoặc slash command: `/test/analyze-req` → `/test/plan-tcs` → `/test/gen-tcs`)
+- Downstream agent BẮT BUỘC đọc `## BA Deliverables` đầu tiên khi bắt đầu — trước cả `## Actors & Preconditions`
+
+💡 HINT — Có feedback? Cứ nói trực tiếp (không cần lệnh đặc biệt), VD:
+   "Sửa AC-05 trong SPEC", "Đổi lại field X ở màn Y", "OQ-03 chốt rồi: ..."
+   → BA sẽ scoped update (chỉ sửa đúng phần liên quan, không regenerate toàn bộ)
+   → Feedback được ghi vào versions/v<N>_<DDMMYYYY>/ba-outputs-log.md (version hiện tại)
+   → Sau khi sửa xong, BA tạo version MỚI versions/v<N+1>_<DDMMYYYY>/ kèm mục
+     "Diff so với version trước" — v<N> cũ vẫn giữ nguyên để so sánh
 ```
