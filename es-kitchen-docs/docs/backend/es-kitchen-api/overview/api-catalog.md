@@ -614,6 +614,98 @@
 | GET | `/deliverer/account/me` | Profile deliverer đang đăng nhập |
 | POST | `/deliverer/account/change-password` | Đổi mật khẩu deliverer |
 
+### Notifications `/deliverer/notifications`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/deliverer/notifications/unread-count` | Số thông báo chưa đọc (badge) |
+| GET | `/deliverer/notifications` | Danh sách thông báo |
+| GET | `/deliverer/notifications/:id` | Chi tiết thông báo |
+| PATCH | `/deliverer/notifications/:id/read` | Đánh dấu đã đọc |
+
+### Delivery blocks `/deliverer/delivery-blocks`
+
+> ⚠️ Tài liệu `api-doc/deliverer/API設計_配送関連.md` gọi cụm này là `/deliverer/shipments` — **path thực tế đã đổi thành `/delivery-blocks`**. Lấy path ở bảng này làm chuẩn.
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/deliverer/delivery-blocks` | Danh sách 配送 (query: `shipmentNo`, `scheduledSendDateFrom/To`, `deliveryDateFrom/To`, `transitPointId`, `status`, `page`, `limit`, `sortBy`, `order`) |
+| GET | `/deliverer/delivery-blocks/timeline` | Timeline theo tuần (`weekStart`) |
+| GET | `/deliverer/delivery-blocks/summary` | Tổng hợp theo tháng (`month`) |
+| GET | `/deliverer/delivery-blocks/:id` | Chi tiết 配送 |
+| GET | `/deliverer/delivery-blocks/:id/assignable-drivers` | Danh sách tài xế gán được |
+| PATCH | `/deliverer/delivery-blocks/:id/assign-driver` | Gán tài xế |
+| PATCH | `/deliverer/delivery-blocks/:id/status` | Cập nhật trạng thái |
+| DELETE | `/deliverer/delivery-blocks/:id` | Xoá |
+| GET | `/deliverer/relay-destinations` | Danh sách trạm trung chuyển (dropdown filter) |
+
+### Drivers `/deliverer/drivers`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/deliverer/drivers` | Danh sách tài xế (query: `q`, `type`, `status`, `page`, `limit`) |
+| GET | `/deliverer/drivers/:id` | Chi tiết tài xế |
+| POST | `/deliverer/drivers` | Tạo tài xế |
+| PATCH | `/deliverer/drivers/:id` | Sửa tài xế |
+| DELETE | `/deliverer/drivers/:id` | Xoá mềm |
+| POST | `/deliverer/drivers/:id/send-password` | Gửi mật khẩu qua email |
+
+### Collection reports `/deliverer/collection-reports`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/deliverer/collection-reports` | Danh sách báo cáo thu tiền (`driverId`, `dateFrom`, `dateTo`, `page`, `limit`) |
+| GET | `/deliverer/collection-reports/summary` | Tổng hợp tháng (`month`) — có `totalCollectedAmount` + `totalParkingFee` |
+| GET | `/deliverer/collection-reports/export` | **CSV UTF-8 BOM**, 7 cột: 発送日 / 配送スタッフ名 / 納品先 / 集金合計 / 駐車場料金 / 差額 / 提出日時 |
+| GET | `/deliverer/collection-reports/report` | CSV UTF-8 BOM theo tháng (cùng 7 cột) |
+| GET | `/deliverer/collection-reports/:id` | Chi tiết báo cáo |
+
+### Contacts `/deliverer/me/contacts`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/deliverer/me/contacts` | Danh sách người phụ trách |
+| GET | `/deliverer/me/contacts/:id` | Chi tiết |
+| POST | `/deliverer/me/contacts` | Thêm |
+| PATCH | `/deliverer/me/contacts/:id` | Sửa |
+| DELETE | `/deliverer/me/contacts/:id` | Xoá |
+
+### Quotation requests `/deliverer/quotation-requests`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/deliverer/quotation-requests` | Danh sách yêu cầu báo giá |
+| GET | `/deliverer/quotation-requests/:id` | Chi tiết |
+| POST | `/deliverer/quotation-requests/:id/reply` | Gửi trả lời (OK/NG + phí + file) |
+| GET | `/deliverer/quotation-requests/:id/reply-history` | Lịch sử trả lời |
+
+### Fee change requests `/deliverer/fee-change-requests`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/deliverer/fee-change-requests` | Danh sách yêu cầu đổi phí |
+| POST | `/deliverer/fee-change-requests` | Tạo yêu cầu |
+| POST | `/deliverer/fee-change-requests/import` | Import CSV phí |
+| GET | `/deliverer/fee-change-requests/:id` | Chi tiết |
+
+### Self-service (đăng ký công khai + hồ sơ)
+
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/deliverer/register/regions/prefectures` | Danh mục 都道府県 |
+| GET | `/deliverer/register/regions/cities` | Danh mục 市区町村 |
+| GET | `/deliverer/register/regions/towns` | Danh mục 町域 |
+| POST | `/deliverer/register` | Đăng ký đối tác (public) |
+| GET | `/deliverer/profile` | Hồ sơ đối tác |
+| PATCH | `/deliverer/profile` | Cập nhật hồ sơ |
+
+### Uploads `/deliverer/uploads`
+
+| Method | Path | Mô tả |
+|---|---|---|
+| POST | `/deliverer/uploads/presigned-upload-url` | Lấy presigned URL (1 file) |
+| POST | `/deliverer/uploads/presigned-upload-urls` | Lấy presigned URL (nhiều file) |
+
 ---
 
 ## Module: AI-Pro (Internal Integration)

@@ -131,6 +131,18 @@ nav:
     - Specification: features/authentication/SPEC.md
   - Contract & Delivery Authentication:
     - API Design: features/contract-delivery-authentication/es-kitchen-api/DESIGN.md
+  - Delivery Driver:
+    - Open Questions: features/delivery-driver/OPEN-QUESTIONS.md
+    - Test Cases - Driver App: features/delivery-driver/test-cases/driver-app/test-cases.md
+    - Test Cases - Analysis: features/delivery-driver/test-cases/driver-app/analysis.md
+    - Test Cases - Plan: features/delivery-driver/test-cases/driver-app/plan-tcs.md
+  - Delivery Partner:
+    - Figma Analysis: features/delivery-partner/Figma-Analysis.md
+    - Tasks Overview: features/delivery-partner/tasks-overview.md
+    - API Design: features/delivery-partner/es-kitchen-api/Design-Technical.md
+    - Web Outsource Design: features/delivery-partner/es-kitchen-web-outsource-web-private/Design-Technical.md
+    - Test Cases - Auth & Dashboard: features/delivery-partner/test-cases/auth-dashboard/test-cases.md
+    - Test Cases - Delivery Ops: features/delivery-partner/test-cases/delivery-ops/test-cases.md
   - Driver Authentication:
     - API Design: features/driver-authentication/es-kitchen-api/DESIGN.md
   - Guest Mode:

@@ -331,52 +331,6 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 
 ---
 
-## Decisions — BrSE confirmed 22/09/2026
-
-> Toàn bộ **34 Open Question** đã được chốt. Bảng này là **nguồn chính thức** cho các dòng ghi `UNKNOWN (OQ-xx)` trong `## Screen Details` — khi đọc gặp `UNKNOWN (OQ-xx)`, tra sang bảng dưới để lấy giá trị đã chốt.
-> Các dòng `UNKNOWN` trong `## Screen Details` **giữ nguyên nguyên trạng** để trace được rằng Figma gốc không định nghĩa — không sửa tại chỗ.
-
-| OQ | Quyết định (chốt 22/09/2026) | Lệch gợi ý BA? |
-|---|---|---|
-| **OQ-08** | Message lỗi mạng / lỗi server **dùng chung trong phạm vi từng app** (E06 Driver App có 1 cặp message riêng, không dùng chung cross-app). Áp cho cả 28 màn. Giữ dữ liệu đang nhập, cho retry. | — |
-| **OQ-09** | Session **được giữ persistent**, TTL **~1 năm**. ⚠️ **Rủi ro bảo mật đã ghi nhận:** thiết bị tài xế bị mất hoặc dùng chung sẽ giữ quyền truy cập rất lâu — BrSE đã quyết, ghi nhận để review lại nếu có yêu cầu bảo mật từ khách. | ✅ **Lệch** — BA đề xuất session ngắn + không giữ dữ liệu |
-| **OQ-23** | Popup Step 3 hiện khi **「差異が1件以上」** — có ≥1 sản phẩm lệch số lượng. Chốt theo **bảng**, bỏ cách hiểu của connector. | — |
-| **OQ-07** | 配送一覧: phân trang **20 bản ghi/lần + infinite scroll**. `DA_RECV_001` · `DA_ESDL_002` · `DA_ESDL_003`: **tải hết 1 lần** (vì lọc/tìm kiếm chạy phía client), trần **200 dòng**. | — |
-| **OQ-34** | **Giữ nguyên `送り状番号`** của từng vận đơn (là mã vận đơn thật từ kho). Tag mới **chỉ cấp `伝票番号` mới**. **Không giới hạn** số lần sinh tag. | — |
-| **OQ-32** | Dùng **`DA_COOL_001` / `DA_ESDL_000_*`** (theo bảng chi tiết). `DA_DLVR_001-*` là tên frame cũ còn sót → **Designer cần đổi tên frame** cho khớp. | — |
-| **OQ-25** | Step 4 (陳列後写真) **CÓ sửa lại được** trong 7 ngày. Thiếu connector 「Step 4 edit」 là sót khi vẽ Figma. | — |
-| **OQ-02** | 「もっと表示」 tải **20 thông báo/lần**. | — |
-| **OQ-03** | Email ở `DA_AUTHEN_002_02` **KHÔNG mask** — hiển thị đầy đủ. | ✅ **Lệch** — BA đề xuất mask `sa***@email.com` |
-| **OQ-04** | Link trong nội dung thông báo mở bằng **tab browser mới** (E06 là web app, không có WebView). | — |
-| **OQ-05** | File đính kèm: **PDF / JPEG / PNG**, **tải về** bằng browser, **không xem inline**. | — |
-| **OQ-13** | Câu tiếp sau 「パスワードリセットに成功しました。」 là **「新しいパスワードでログインしました。」** | — |
-| **OQ-21** | 「※次回納品日 〇月〇日」 **KHÔNG hiển thị năm** (次回納品日 luôn trong vòng vài tuần). | — |
-| **OQ-22** | Bấm 「戻る」 Step 2 → Step 1 **CÓ giữ dữ liệu đã nhập** — nhất quán với Step 3 (`23451:37606` mục 5.1). | — |
-| **OQ-31** | Đơn COOL便 **ngày tương lai KHÔNG hiện** nút 「完了」 — giống ES配送便 ẩn nút 「陳列を開始する」. | — |
-| **OQ-01** | Tab 「マニュアル」 = màn xem tài liệu hướng dẫn trưng bày (Quy trình · Chuẩn bị · Lấy đồ · Cách chụp ảnh · Trưng bày). ⚠️ **Designer cần vẽ thêm** — hiện chưa có frame nào. | — |
-| **OQ-06** | Empty state 3 tab 配送一覧: **「該当する配送はありません。」** | — |
-| **OQ-10** | **Pull-to-refresh thủ công** (không polling, không WebSocket — giảm tải 4G). | — |
-| **OQ-11** | SES không gửi được mã → **「認証コードの送信に失敗しました。しばらくしてから再度お試しください。」** | — |
-| **OQ-12** | Token reset mật khẩu: **30 phút** (từ lúc verify mã thành công đến khi submit mật khẩu mới). | — |
-| **OQ-14** | Truy cập trực tiếp `/reset-password/complete` chưa qua B3 → **redirect về `DA_AUTHEN_001`**. | — |
-| **OQ-15** | API đánh dấu đã đọc lỗi → **giữ nguyên chấm đỏ**, không báo lỗi cho tài xế (retry ở lần mở sau). | — |
-| **OQ-16** | Admin xóa thông báo khi tài xế đang mở → **「このお知らせは削除されました。」** → về `DA_NOTI_001`. | — |
-| **OQ-17** | Bật 「未受取のみ表示」 khi đã tick hết → **「未受取の荷物はありません。」** · 「未確認のみ表示」 → **「未確認の商品はありません。」** | — |
-| **OQ-18** | API hoàn tất nhận hàng lỗi → **giữ nguyên toàn bộ trạng thái tick** + hiện Toast lỗi, cho bấm 「完了」 lại. | — |
-| **OQ-19** | `tel:` lỗi → **hiện số `050-5784-2777` dạng text** cho tài xế tự bấm. Camera lỗi → **chỉ còn chọn file từ máy**. | — |
-| **OQ-20** | `DA_RECV_003` = giống `DA_RECV_001` nhưng **checkbox disabled** (hiện trạng thái đã tick), **ẩn** nút 「完了」, back **không** hiện popup xác nhận. | — |
-| **OQ-24** | Cảnh báo 実集金額 lệch: **Inline error màu cam** ngay dưới ô `実集金額` (**không chặn** thao tác). Admin nhận qua **thông báo in-app trên Admin Web**. | — |
-| **OQ-26** | `DA_COOL_001` bấm back khi đã tick ≥1 → **CÓ popup** 「編集内容を破棄しますか？」 (dùng chung `E-03`). | — |
-| **OQ-27** | `DA_RPTD_001` không có đơn 未配送 → **「報告可能な配送はありません。」** + **ẩn** nút 「次へ」. | — |
-| **OQ-28** | **1 breakpoint mobile**; layout co giãn **320px–480px**; font **không** scale theo viewport. | — |
-| **OQ-29** | Ảnh: **nén client-side xuống ≤2MB** trước upload · **retry tự động 3 lần** · **không** upload nền. | — |
-| **OQ-30** | URL: `/home` · `/notifications` · `/notifications/:id` · `/account` · `/deliveries` · `/warehouse/:id` · `/es/:id` · `/es/:id/step:n` · `/cool/:id` · `/trouble` · `/trouble/:id` | — |
-| **OQ-33** | Chat/hỗ trợ HubSpot: **LOẠI khỏi scope Phase 2** (đã có tổng đài 050-5784-2777 thay thế). | — |
-
-**Tác động xuống Designer (2 việc phát sinh):**
-1. **OQ-01** — vẽ thêm màn 「マニュアル」 (hiện bottom nav có tab nhưng không có frame).
-2. **OQ-32** — đổi tên frame `DA_DLVR_001-*` thành `DA_COOL_001` / `DA_ESDL_000_*` cho khớp bảng mô tả.
-
 ## Actors & Preconditions
 
 | Actor | Vai trò | Precondition |
@@ -1947,8 +1901,6 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 
 ## Open Questions
 
-> ✅ **TOÀN BỘ 34 OQ ĐÃ ĐƯỢC CHỐT ngày 22/09/2026** — xem giá trị đã chốt ở `## Decisions — BrSE confirmed 22/09/2026`. Bảng dưới giữ nguyên để trace nguồn gốc câu hỏi.
->
 > Toàn bộ OQ dưới đây phát sinh vì **Figma không định nghĩa** hoặc **chính Figma ghi 「要確認」**. SPEC **không suy đoán** để lấp.
 
 ### Blocking mức hệ thống (nên chốt 1 lần cho cả app)
