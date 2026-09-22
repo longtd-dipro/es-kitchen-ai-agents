@@ -115,18 +115,18 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 |---|---|---|
 | `preflight-questions.md` | 7 câu preflight (0.4 Scope · 0 Platform · 0.5 Figma URL · 0.8 Tech stack · 0.9 Granularity · 0.10 Actors · 0.11 Ngôn ngữ) + 10 câu chuẩn + template **Discovery Brief** | Bước 2b — trước mọi câu hỏi |
 | `clarify-ambiguity.md` | Template trình 2-3 diễn giải khi request mơ hồ | Bước 2a khi trigger ambiguity |
-| `granularity-principles.md` | Nguyên tắc granularity chung cho Flow + Screen (chống flow quá thô/quá vụn) | Bước 4 + Bước 5 Output 1 |
-| `spec-template.md` | Template 14 sections SPEC.md + rule phân loại Non-Happy theo mức hiển thị (Inline/Toast · Modal · Full screen → Screen Code riêng) | Bước 4 — trước khi viết SPEC |
+| `granularity-principles.md` | Nguyên tắc granularity chung cho Flow + Screen (chống flow quá thô/quá vụn) + **⛔ GATE FR COVERAGE** — mốc đếm phải là DÒNG CHỨC NĂNG GỐC, không phải nhóm do BA tự gom | Bước 4 + Bước 5 Output 1 |
+| `spec-template.md` | Template 14 sections SPEC.md + rule phân loại Non-Happy theo mức hiển thị (Inline/Toast · Modal · Full screen → Screen Code riêng) + **cột `FR No.` bắt buộc** trong bảng `## Screens` khi nguồn đánh số được | Bước 4 — trước khi viết SPEC |
 | `versioning.md` | Rule snapshot `versions/v<N>_<DDMMYYYY>/` — không overwrite version cũ | Bước 3 |
-| `recheck.md` | Checklist 5 tiêu chí visual + **Tiêu chí 7 — quét bbox bằng script** | Bước 5.5 Quality Gate |
+| `recheck.md` | **9 tiêu chí** — visual + **Tiêu chí 7 quét bbox** + **Tiêu chí 8 FR Coverage scan** (phép trừ tập hợp về tài liệu nguồn) + **Tiêu chí 9 node phải nằm trong biên frame** (chạy TRƯỚC tiêu chí 7) | Bước 5.5 Quality Gate |
 | `self-feedback.md` | Template self-feedback theo `POLICIES.md §4.5` | Bước 5.6 |
 | `post-meeting-workflow.md` | Quy trình cập nhật SPEC sau meeting với khách | Khi user trigger |
 | `template-ba.md` | Template BA tổng hợp | Bước 4 |
 | `figma-outputs/shared-rules.md` | Sequential Rule · **Gate Rules (Light/Strict Mode)** · state machine `WAITING_APPROVAL`/`APPROVED`/`STALE` · GATE ẢNH MẪU · Post-Delivery `## BA Deliverables` | Bước 5 — trước mọi `use_figma` |
-| `figma-outputs/code-patterns.md` | JS pattern cho Figma Design / FigJam | Bước 5 |
+| `figma-outputs/code-patterns.md` | JS pattern cho Figma Design / FigJam + **rule toạ độ**: `node.x` là TƯƠNG ĐỐI FRAME, cấm cộng `absoluteBoundingBox` | Bước 5 |
 | `figma-outputs/output-1-flow.md` … `output-5-mkdocs.md` | Spec chi tiết từng output | Bước 5 — đúng output đang vẽ |
 
-**4 rule cứng khi vẽ Figma (không được vi phạm):**
+**5 rule cứng khi vẽ Figma (không được vi phạm):**
 
 | Rule | Nội dung | File gốc |
 |---|---|---|
@@ -134,6 +134,17 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | 🔗 **Connector thật** | Mọi screen node phải nối nhau bằng arrow vẽ thật (`hl`/`vl`/`arrowHead`). Liệt kê chip/card rời rạc không mũi tên → **FAIL** | `agents/ba-agent.md` |
 | 📊 **Đếm màn lỗi** | `Toast` · `Modal` · `Popup` · `Banner` · `Full screen` · `Empty state` **ĐỀU tính là màn hình** trong thống kê tổng. Non-Happy bắt buộc dạng **bảng 4 cột** có message thật, cấm văn xuôi | `ba-agent/spec-template.md` |
 | 📐 **Quét bbox** | Kết luận "không chồng đè" phải bằng **script quét toạ độ**, không bằng mắt nhìn screenshot | `ba-agent/recheck.md` Tiêu chí 7 |
+| 🔢 **FR Coverage** | Khi nguồn có danh sách chức năng đánh số: phải chạy **phép trừ tập hợp** `set(FR nguồn) − set(FR trong artifact) = ∅`. So *số lượng* thay vì so *tập hợp* → gate PASS giả, đã làm 3 chức năng biến mất khỏi SPEC lẫn Figma | `ba-agent/granularity-principles.md` § GATE FR COVERAGE · `recheck.md` Tiêu chí 8 |
+
+**⚠️ Kit sync exceptions — ngoại lệ so với `ba-kit/requirement-to-flow` (giữ nguyên khi sync lại):**
+
+| # | Ngoại lệ | Lý do | Chốt ngày |
+|---|---|---|---|
+| 1 | Khối **"Bước tiếp theo" + HANDOVER RULE** cuối `agents/ba-agent.md` | Kit là bản generic, không có pipeline ESKITCHEN. Khối này trỏ tới `/create-ui-design` và `/test/analyze-req → plan-tcs → gen-tcs` — **copy đè kit sẽ mất** | 21/09/2026 |
+| 2 | **Bước 5.7 Prototype Quality Gate (Playwright) KHÔNG áp dụng.** Không đưa `figma-outputs/output-4-verify.md` và `skills/business-analyst/scripts/verify-prototype.js` vào dự án | Dự án không cài Playwright cho nhánh BA. Output 4 kiểm thủ công theo Rule P4–P8 của `output-4-html.md` | 22/09/2026 |
+| 3 | `.claude/context/backlog-workflow.md` giữ bản dự án, **không** lấy bản kit (kit 324 dòng vs dự án 229) | Quyết định của PM — ảnh hưởng cả PM/QC/TL, không chỉ BA | 22/09/2026 |
+
+> Mọi file BA workflow khác trong `.claude/ba-agent/`, `.claude/skills/ba-figma-output/`, `.claude/skills/business-analyst/` **khớp 1-1 với kit** — sync bằng cách copy đè là an toàn.
 
 **Verdict 3 mức** thay PASS/FAIL nhị phân ở Quality Gate: ✅ `Complete` → gate kế tiếp · ⚠️ `Needs Revision` → BA tự sửa rồi rerun · ❌ `Critical Gaps` (thiếu dữ liệu nguồn) → **DỪNG hỏi user**, không tự bịa.
 

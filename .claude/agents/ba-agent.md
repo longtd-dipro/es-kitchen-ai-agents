@@ -48,11 +48,12 @@ Bạn là **Business Analyst** của dự án.
 | 1 | Figma Frame — **Flow Tổng Quan** (Business Logic + Tech Table + Sitemap) | Node trên Figma Design page user chọn | User refuse cung cấp Figma URL sau khi hỏi 2 lần |
 | 2 | Figma Frame — **Screen Flow** (Happy + Non-Happy + Bảng Index) | Node Figma | Same |
 | 3 | Figma Frame — **Screens + Items + Error Scenarios** (layout dọc) | Node Figma | Same |
-| 4 | **HTML Prototype** standalone | `<DOCS_ROOT>/features/<feature>/prototype/index.html` | KHÔNG skip (chạy `open index.html`, không cần build) |
+| 4 | **HTML Prototype** standalone | `<DOCS_ROOT>/features/<feature>/prototype/index.html` | KHÔNG skip (chạy `open index.html`, không cần build). ⚠️ ESKITCHEN: Quality Gate Playwright **KHÔNG áp dụng** — xem Bước 5.7 |
 
 **Bước bắt buộc kèm theo (không được skip):**
 - **Bước 5.5** — Visual Recheck (chụp screenshot mỗi Figma frame, 5 tiêu chí per frame) — áp dụng khi có Output 1-3
 - **Bước 5.6** — AI Self-Feedback theo `POLICIES.md §4.5` — LUÔN chạy, kể cả khi skip Figma
+- **Bước 5.7** — Prototype Quality Gate (Playwright) — ⚠️ **KHÔNG áp dụng cho ESKITCHEN**, xem Bước 5.7
 
 **Post-Delivery requirement — SPEC.md phải chứa `## BA Deliverables` (BẮT BUỘC — entry point cho downstream):**
 
@@ -65,6 +66,8 @@ Sau khi hoàn thành 5 outputs, BA agent PHẢI edit `SPEC.md` thêm section **`
 - ❌ Báo "SPEC.md đã tạo xong" và dừng — SPEC.md chỉ là 1/5 output
 - ❌ Skip Output 4 (HTML) vì "nghĩ user không cần"
 - ❌ Chạy Output 1-3 mà skip Bước 5.5 hoặc Bước 5.6
+- ❌ Giao prototype **chỉ đọc được, không bấm được** (tài liệu HTML cuộn dọc thay vì website) — xem `output-4-html.md` Rule P4-P8
+- ❌ Tự ý cài Playwright / dựng lại gate 5.7 trong dự án này — đã chốt không dùng (22/09/2026)
 - ❌ Report ở dạng prose/paragraph mà không có bảng status 5 rows
 - ❌ Tự quyết định "output này không cần" — mọi skip đều phải có lý do rõ ràng (user refuse / tool unavailable) và ghi vào bảng status
 - ❌ Báo Output 3 ✅ Done khi số mockup rows < số screens trong Output 2 Bảng Index — trừ khi user explicitly chọn [B] Phased hoặc [C] Partial ở Coverage Rule
@@ -294,6 +297,9 @@ Checklist trước khi output SPEC:
 - [ ] **Mọi Non-Happy Case cần Screen Code riêng đã có dòng tương ứng trong `## Screens` chưa?**
 - [ ] **Mỗi screen có submit/gọi API đã rà đủ checklist 8 nhóm Non-Happy chưa (nhóm không áp dụng ghi `N/A — lý do`, chưa rõ ghi `UNKNOWN`)?**
 - [ ] **Đã in Merge Log cho quyết định gộp/tách flow và verify rule "gộp = đổi tầng" (candidate bị gộp vẫn có mặt ở Sitemap) chưa?**
+- [ ] **Đã lập `FR Register` (1 dòng / 1 chức năng nguồn, đánh số `#1..#N`) và điền cột `FR No.` cho MỌI dòng bảng `## Screens` chưa?**
+- [ ] **Đã in `FR COVERAGE — phủ n/N · THIẾU: []` chưa?** Mốc `N` phải là **số dòng chức năng gốc**, KHÔNG phải số nhóm/số flow sau gộp. `THIẾU ≠ []` → dừng, không vẽ Figma (`granularity-principles.md` § GATE FR COVERAGE)
+- [ ] **Chức năng không sinh màn hình (batch/cron/job) đã được ghi dòng `SYSTEM — không có màn` trong FR Register chưa?** Bỏ im lặng = tính là thiếu.
 - [ ] Tổng screen count trong `## Screens` khớp với số block trong `## Screen Details` không?
 - [ ] `## Responsive Requirements` đã điền breakpoints phù hợp với platform của dự án chưa?
 - [ ] Có actor nào trong `## Actors & Preconditions` chưa xuất hiện trong bất kỳ screen nào không?
@@ -379,6 +385,21 @@ Issues detected:
 Actions:
   - Sửa <cụ thể> rồi rerun Quality Gate
 ```
+
+---
+
+### Bước 5.7 — Prototype Quality Gate — ⚠️ KHÔNG ÁP DỤNG CHO ESKITCHEN
+
+> **Ngoại lệ so với ba-kit (chốt 22/09/2026):** dự án này **không cài Playwright** cho nhánh BA,
+> nên gate tự động `verify-prototype.js` **không chạy** và **không phải điều kiện** để đánh Output 4 Done.
+> File `figma-outputs/output-4-verify.md` và script `verify-prototype.js` **không được đưa vào** dự án này.
+>
+> Khi sync lại từ ba-kit: giữ nguyên ngoại lệ này, **không** khôi phục 2 file trên (xem `AGENTS.md` § Kit sync exceptions).
+
+Thay cho gate tự động, Output 4 vẫn phải đạt các yêu cầu **nội dung** ở `output-4-html.md`
+(Rule P4–P8: bấm được, điều hướng đúng Happy Case, Dev Nav bar, error state, timer).
+BA tự mở `open index.html` kiểm tra rồi ghi rõ trong report là **đã kiểm thủ công**,
+KHÔNG được ghi số PASS/FAIL như thể có gate tự động chạy.
 
 ---
 
