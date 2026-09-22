@@ -69,3 +69,10 @@ temp/
 ~/
 
 .claude.backup.20260911_144800/
+# Python venv (tạo local để chạy script export xlsx — không commit)
+.venv/
+venv/
+
+# Data migration: chứa .env + PII khách hàng thật (顧客名/住所/電話番号) + 609MB
+# POLICIES.md §SECRETS_MANAGEMENT + §CLIENT_DATA_&_PRIVACY — KHÔNG được commit
+es-kitchen-migration/

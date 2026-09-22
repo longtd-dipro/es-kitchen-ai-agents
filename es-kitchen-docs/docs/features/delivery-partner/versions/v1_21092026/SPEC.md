@@ -33,10 +33,10 @@ Portal web dành riêng cho **công ty vận chuyển được ES Kitchen ủy t
 | # | Output | Status | Path / URL |
 |---|---|---|---|
 | 0 | **SPEC.md** (bản này) | ✅ Done | `es-kitchen-docs/docs/features/delivery-partner/SPEC.md` |
-| 1 | Figma Frame — **Flow Tổng Quan** (Business Flow + Technology Stack + Sitemap WBS) | ✅ Done | [node `32079-49624`](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=32079-49624) — page `Feature - Flow` |
-| 2 | Figma Frame — **Screen Flow** (7 Group + Combined Overview + 4 bảng index) | ✅ Done | [node `32087-49623`](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=32087-49623) — page `Feature - Flow` |
-| 3 | Figma Frame — **Screens + Items + Error Scenarios** | ❌ Skipped | User quyết định không cần — Figma nguồn của khách đã có đủ 57 frame giao diện + 24 bảng 画面設計書 |
-| 4 | **HTML Prototype** | ❌ Skipped | User quyết định không cần |
+| 1 | Figma Frame — **Flow Tổng Quan** | ⏳ Pending | Page `Feature - Flow` — `https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=31403-200061` |
+| 2 | Figma Frame — **Screen Flow** | ⏳ Pending | Page `Feature - Flow` (cùng URL trên) |
+| 3 | Figma Frame — **Screens + Items + Error Scenarios** | ⏳ Pending | Page `Feature - Flow` (cùng URL trên) |
+| 4 | **HTML Prototype** | ⏳ Pending | `es-kitchen-docs/docs/features/delivery-partner/prototype/index.html` |
 | — | **Figma nguồn (client)** — 57 frame giao diện + 24 bảng 画面設計書 | ✅ Có sẵn | `https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=26173-304942` |
 | — | **Phụ lục phân tích Figma** (Tech Lead, 2026-09-18) | ✅ Có sẵn | [`Figma-Analysis.md`](Figma-Analysis.md) |
 
@@ -109,7 +109,7 @@ Portal web dành riêng cho **công ty vận chuyển được ES Kitchen ủy t
 
 ## Flow Tổng Quan
 
-> Granularity: **[B] Standard** — **9 business flow**, bám đúng 9 `Flow note` divider trong canvas Figma nguồn (Login · 新規登録フォーム · Reset PW · ホーム · スケジュール · 配送管理 · 金額の確認 · 配送スタッフ · プロフィール). Không tự gộp/tách thêm.
+> Granularity: **[B] Standard** — 8 business flow.
 
 ### Flow 1 — Đăng nhập
 
@@ -184,7 +184,7 @@ OW_CLCT_001 Quản lý thu tiền (mặc định kỳ = ngày 1 → ngày cuối
   → [CSV出力] → Tải file `集金管理_{開始日}-{終了日}_{条件}_{出力日時}.csv` (7 cột, 1 dòng / 1 配送)
 ```
 
-### Flow 8 — Quản lý tài xế (配送スタッフ)
+### Flow 8 — Quản lý tài xế & hồ sơ công ty
 
 ```
 OW_STAF_001 Danh sách tài xế (checkbox + 免許 thumbnail + ステータス + アカウント状態)
@@ -194,15 +194,9 @@ OW_STAF_001 Danh sách tài xế (checkbox + 免許 thumbnail + ステータス 
         → [発行する] → [Toàn bộ OK]  → Popup thành công
                      → [Một phần lỗi] → Popup có nút 再度実行 (chỉ gửi lại dòng lỗi)
                      → [0 dòng hợp lệ] → Nút 発行する disabled
-```
 
-### Flow 9 — Hồ sơ công ty (プロフィール)
-
-```
-Sidebar → プロフィール → OW_PROF_001 基本情報  ⇄ [Tab] ⇄ OW_PROF_002 配送対応情報
-        → [編集] → chế độ sửa (xuất hiện nút 住所検索, chip khu vực có nút ×)
-        → [保存]  → về chế độ Xem
-        → [キャンセル] → bỏ thay đổi
+Sidebar → プロフィール → OW_PROF_001 Thông tin cơ bản  ⇄ [Tab] ⇄ OW_PROF_002 Năng lực giao hàng
+        → [編集] → chế độ sửa → [保存 / キャンセル]
 ```
 
 ---
@@ -1439,7 +1433,7 @@ Sidebar → プロフィール → OW_PROF_001 基本情報  ⇄ [Tab] ⇄ OW_PR
 | **OQ-09** | Cách người đăng ký xem `契約書` trước khi tick đồng ý: link URL, popup, hay file PDF tải về? | RQ-024 · Figma bảng `195504` B.3 | `OW_AUTH_004` B.3 | BrSE + khách |
 | **OQ-10** | Form đăng ký 2 bước: có nút `戻る` từ bước 2 về bước 1 không? Nếu có thì giữ dữ liệu đã nhập chứ? | AF-2.6 · UX Review | `OW_AUTH_003/004` | BA + khách |
 | **OQ-11** | Hành vi khi **dịch vụ ngoài thất bại**: gửi email OTP lỗi · gửi email thông tin đăng nhập lỗi · tra cứu 郵便番号 không phản hồi. Hiển thị gì cho user? | RQ-003 (nhóm 8 của 6 screen) | `OW_AUTH_002/003/004` · `OW_STAF_003/005` · `OW_PROF_001` | BrSE |
-| **OQ-12** | **Empty state + lỗi hệ thống chưa được thiết kế.** Figma không vẽ trạng thái rỗng cho 10 màn có danh sách, cũng không vẽ banner/toast lỗi mạng/500 và màn hết phiên. Hiện SPEC đang dùng message `[INFERENCE]`. Cần khách duyệt bộ message chuẩn (JP) dùng chung.<br>**Hệ quả kiểm tra khi vẽ Output 2:** 14 dòng `Full screen` (đều là «phiên hết hạn») theo rule `spec-template.md` PHẢI có Screen Code riêng, nhưng bảng `## Screens` hiện **chưa có** mã cho màn hết phiên — vì Figma nguồn không có frame này. BA **không tự thêm** (theo yêu cầu bám 100% Figma). Cần khách bổ sung frame hoặc duyệt tạo mã mới. | RQ-003 (nhóm 3/4/5 toàn bộ screen) | **10 màn có danh sách** + toàn bộ màn gọi API | Designer + BrSE |
+| **OQ-12** | **Empty state + lỗi hệ thống chưa được thiết kế.** Figma không vẽ trạng thái rỗng cho 10 màn có danh sách, cũng không vẽ banner/toast lỗi mạng/500 và màn hết phiên. Hiện SPEC đang dùng message `[INFERENCE]`. Cần khách duyệt bộ message chuẩn (JP) dùng chung. | RQ-003 (nhóm 3/4/5 toàn bộ screen) | **10 màn có danh sách** + toàn bộ màn gọi API | Designer + BrSE |
 | **OQ-13** | Màn tài xế: (a) xóa tài xế đang được gán cho đơn giao hàng — chặn hay cho xóa? (b) `パスワード送信` đơn lẻ có áp rule "chỉ trạng thái `有効`" như luồng hàng loạt không? (c) email tài xế có check trùng không (bảng Figma không khai báo)? | `OW_STAF_001/003/004` nhóm 6/7 | `OW_STAF_001/003/004` | BrSE |
 | **OQ-14** | Xác nhận tab `配送対応情報` của プロフィール dùng **chung data model** với Step 2 form đăng ký (`OW_AUTH_004`). Nếu đúng → cần bảng 画面設計書 riêng cho プロフィール hay dùng lại bảng `195504`? | RQ-012 | `OW_PROF_002` | BA + Designer |
 | **OQ-15** | Một số error message trong Figma đang viết **bằng tiếng Việt** (`「Vui lòng tải lên tệp hình ảnh...」` · `「Dung lượng tối đa... 5MB.」` · `「Chỉ có thể đăng ký tối đa 20 file.」` · toàn bộ message của `OW_STAF_003/004`) trong khi portal là tiếng Nhật 100%. Cần bản JP chính thức. | RQ-003 · UX Review | `OW_DLVR_002` · `OW_STAF_003/004` | BrSE + khách |
