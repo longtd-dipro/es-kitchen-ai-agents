@@ -13,7 +13,7 @@ Tất cả source code nằm trong thư mục **`es-kitchen-repository/`**.
 | `es-kitchen-web-company` | `es-kitchen-repository/es-kitchen-web-company` | Company Admin Web (E02) — 58 functions | React 19 / Vite 7 / Redux Toolkit |
 | `es-kitchen-web-admin` | `es-kitchen-repository/es-kitchen-web-admin` | System Admin Web (E03) — 160 functions | React 19 / Vite 7 / Redux Toolkit |
 | `es-kitchen-web-supplier` | `es-kitchen-repository/es-kitchen-web-supplier` | Supplier Web (E04) — quản lý menu, nhận đơn | React 19 / Vite 8 / Redux Toolkit |
-| `es-kitchen-web-outsource-web-private` | `es-kitchen-repository/es-kitchen-web-outsource-web-private` | Outsource / Internal Private Admin Web (E05) — operation tool quản lý account & sales | React 19 / Vite 8 / Redux Toolkit |
+| `es-kitchen-web-outsource-web-private` | `es-kitchen-repository/es-kitchen-web-outsource-web-private` | **Công ty vận chuyển Web** (E05 · 委託配送会社Web — tên cũ: Outsource / Logistic Web) | React 19 / Vite 8 / Redux Toolkit |
 | `es-kitchen-webapp-driver` | `es-kitchen-repository/es-kitchen-webapp-driver` | Driver Web App (E06) — nhận order, cập nhật trạng thái giao hàng | React 19 / Vite 8 / Ant Design |
 
 **Docs:** `es-kitchen-docs/docs/features/` — **single long-memory** chứa SPEC, DESIGN, PLAN, tasks, test-cases. Folder `docs/epics/` cũ đã bị bỏ — mọi feature đặt cùng path. Chi tiết → `.claude/context/doc-structure.md`.
@@ -31,7 +31,7 @@ Tất cả source code nằm trong thư mục **`es-kitchen-repository/`**.
 > **AI behavior policy chung** (không đoán mò · stack constraints · permission per persona · ...) → xem `./POLICIES.md` (always-loaded). Dưới đây chỉ liệt kê rules **đặc thù project ESKITCHEN** mà POLICIES.md không cover.
 
 1. **Không nhầm E02 ↔ E03** — `web-company` = Company Admin (E02), `web-admin` = System Admin (E03). Đây là bug phổ biến nhất.
-2. **Không nhầm E04 ↔ E05** — `web-supplier` = Supplier domain (E04, public-facing), `web-outsource-web-private` = internal operation tool (E05).
+2. **Không nhầm E04 ↔ E05** — `web-supplier` = Supplier domain (E04, public-facing), `web-outsource-web-private` = Công ty vận chuyển Web (E05, 委託配送会社 — tên cũ Outsource/Logistic).
 3. **Context files đọc đúng theo role** — xem cột "Ai đọc" trong bảng Context (section `<agent_architecture>` bên dưới). Không đọc rộng ra ngoài role.
 4. **Doc location single path:** mọi feature docs đặt trong `es-kitchen-docs/docs/features/<feature>/`. Folder `docs/epics/` cũ đã bị bỏ.
 5. **Memory Update Gate** sau mỗi dev task (xem section `<memory_update_gate>` bên dưới) — không skip.
@@ -166,6 +166,7 @@ Danh sách đầy đủ (skill → repo → khi nào dùng) → `.claude/skills/
 | `technical.md` | Tech stack, CI/CD, known bugs | `techlead-design-agent`, `backend-agent` |
 | `backlog-workflow.md` | Quy tắc tạo issue/task, status workflow | `techlead-tasks-agent`, `pm-agent`, `backend-agent`, `frontend-agent`, `mobile-agent` |
 | `doc-structure.md` | Cấu trúc SPEC/DESIGN/PLAN theo feature type | `ba-agent`, `techlead-design-agent`, `techlead-tasks-agent`, `designer-agent` |
+| `../designer-agent/design-spec/` | **Design Spec Phase 2** — token đã đo, font/size, shell + pattern từng trang cho 7 platform (Admin/Company/Supplier/Công ty vận chuyển E05 web · User App · ES_QR mới · Driver), `tokens.json`, ảnh `refs/`. LEARNING bắt buộc ở Bước 0 | `designer-agent` (BẮT BUỘC, trước mọi bước) |
 | `designer-context.md` | UI components catalog (30+ Base*) per repo, theme thực tế, conflicts (E04 color), sample data tiếng Nhật. Auto-extracted từ source code es-kitchen-repository/. | `designer-agent` (BẮT BUỘC mỗi lần chạy) |
 | `business-flows/README.md` | Index 15 domain + map repo→domain (long-term business memory, nguồn `function_list.xlsx`) | `ba-agent`, `techlead-design-agent`, `pm-agent` |
 | `business-flows/business-flow-index.md` | 23 nghiệp vụ + Target + Backlog ID + FigJam link | `ba-agent` (lookup domain), `pm-agent` (scope) |

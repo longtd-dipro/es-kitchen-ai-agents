@@ -13,7 +13,7 @@
 | **E02** Company Admin | `es-kitchen-web-company` | React 19 · AntD 6.2.2 · TanStack Query 5 · RTK 2 · TailwindCSS 4 · react-hook-form + Yup | Production |
 | **E03** System Admin | `es-kitchen-web-admin` | React 19 · AntD 6.2.2 · TanStack Query 5 · RTK 2 · TailwindCSS 4 · Phosphor Icons | Production |
 | **E04** Supplier | `es-kitchen-web-supplier` | React 19 · AntD 6.4.2 · TanStack Query 5 · RTK 2 · TailwindCSS 4 · Phosphor Icons | Production |
-| **E05** Outsource | `es-kitchen-web-outsource-web-private` | React 19 · Vite 8 · AntD 6.4.2 · RTK 2 · TailwindCSS 4 · Phosphor Icons | Production |
+| **E05** Công ty vận chuyển (委託配送会社Web · tên cũ Outsource/Logistic) | `es-kitchen-web-outsource-web-private` | React 19 · Vite 8 · AntD 6.4.2 · RTK 2 · TailwindCSS 4 · Phosphor Icons | Production |
 | **E06** Driver | `es-kitchen-webapp-driver` | React 19 · **shadcn/ui + Base UI** (KHÔNG AntD!) · Zustand 5 · Lucide Icons | Production |
 
 > **Cảnh báo E06:** Driver app dùng **shadcn/ui** (lowercase `button.tsx`) thay vì AntD. Khi thiết kế cho E06 trên Figma, **KHÔNG** dùng AntD components — phải dùng shadcn-style (rounded-2xl, lucide icons).
@@ -22,13 +22,15 @@
 
 ## 2. Color Theme thực tế per repo
 
+> ⚠️ **Update 2026-09-29:** Màu Figma Phase 2 đã đo lại → xem `.claude/designer-agent/design-spec/00-foundation.md` §1 (nguồn ưu tiên khi vẽ). Khác biệt so với bảng dưới: E02 fill = `#F4860C` (không phải `#faa61f`), E05 Công ty vận chuyển (tên cũ Logistic) = `#1A7F37` thay lime. ES_QR là WebApp mới (spec 21). Bảng dưới giữ nguyên = màu trong **code production**.
+
 | App | Primary color (code) | Mapping ESKITCHEN token | Note |
 |---|---|---|---|
 | E01 Mobile | `#CA9A04` + `#FAC215` (yellow/gold) | `colors.primitives.yellow.400` (`app.400`) | Gold tone, dùng cho CTAs |
 | E02 Company | `#faa61f` (orange) | `colors.primitives.orange.400` (`admin.400`) | ⚠️ Slight diff với design_rule (#FAA51D) |
 | E03 System Admin | `#0969DA` (blue) | `colors.semantics.company.500` | Matches design_rule |
 | E04 Supplier | `#6639BA` (purple) — **CONFIRMED 2026-06-09** | `colors.primitives.purple.600` | Code production hiện = orange `#faa61f` (chưa migrate). Designer dùng purple cho mọi screen E04 mới. |
-| E05 Outsource | `#8ACA0D` (lime green) | KHÔNG có trong token table — hardcoded | Brand color riêng |
+| E05 Công ty vận chuyển | `#8ACA0D` (lime green — code cũ) | KHÔNG có trong token table — hardcoded | ⚠️ Figma Phase 2 = green `#1A7F37` (`success.500`) — thiết kế mới dùng green |
 | E06 Driver | `#0969DA` (info-500) | `colors.semantics.company.500` | Same as E03 |
 
 **Semantic colors chung (tất cả repos):**
