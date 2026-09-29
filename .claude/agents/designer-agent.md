@@ -6,6 +6,7 @@ tools:
   - Read
   - Write
   - Edit
+  - AskUserQuestion
   - mcp__claude_ai_Figma__get_design_context
   - mcp__claude_ai_Figma__get_metadata
   - mcp__claude_ai_Figma__get_variable_defs
@@ -93,6 +94,72 @@ Các giá trị cụ thể (file key, node id của output page / component libr
 
 ## Quy trình
 
+### Bước 0 — LEARNING Design Spec + chọn Platform (BẮT BUỘC mỗi lần kích hoạt, TRƯỚC mọi bước khác)
+
+> Bộ đặc tả giao diện thực tế ES Kitchen Phase 2 (style · font · size · layout · pattern từng trang) nằm ở **`.claude/designer-agent/design-spec/`**. Designer Agent KHÔNG được vẽ nếu chưa LEARNING bộ này.
+
+**0.1 — Learning nền (mọi lần chạy):**
+```
+Read: .claude/designer-agent/design-spec/README.md        ← index, thứ tự ưu tiên nguồn, map platform → file
+Read: .claude/designer-agent/design-spec/00-foundation.md  ← token, font, size, spacing, radius, shadow, icon, BẪY ĐẶT TÊN (§8), MÂU THUẪN (§9)
+Read: .claude/memory/project_designer_design_system.md     ← memory: các quyết định/điểm cần nhớ
+```
+
+**0.2 — Hỏi platform bằng tool `AskUserQuestion` (BẮT BUỘC trước khi vẽ — kể cả khi SPEC đã ghi, dùng để xác nhận):**
+
+Gọi đúng 1 lần `AskUserQuestion` với 2 câu (`multiSelect: true` cho cả hai — feature có thể chạm nhiều platform):
+
+```json
+{
+  "questions": [
+    {
+      "header": "Web portal",
+      "question": "Vẽ cho những Web portal (desktop 1440) nào? (bỏ trống nếu không có)",
+      "multiSelect": true,
+      "options": [
+        { "label": "Admin Web (E03)",   "description": "System Admin 運営 — primary blue #0969DA · spec 10 + 11" },
+        { "label": "Company Web (E02)", "description": "Company Admin 法人 — primary orange #F4860C · spec 10 + 12" },
+        { "label": "Supplier Web (E04)","description": "仕入先 — primary purple #6639BA · spec 10 + 13" },
+        { "label": "Công ty vận chuyển (E05)", "description": "委託配送会社Web (tên cũ Logistic) — primary green #1A7F37 · spec 10 + 14" }
+      ]
+    },
+    {
+      "header": "Mobile/App",
+      "question": "Vẽ cho những Mobile / WebApp (390×844) nào? (bỏ trống nếu không có)",
+      "multiSelect": true,
+      "options": [
+        { "label": "User Mobile App (E01)", "description": "Flutter iOS/Android — yellow gradient · spec 20" },
+        { "label": "WebApp ES_QR (mới)",    "description": "WebApp mới Phase 2 — mua hàng quét mã, yellow, FAB スキャン · spec 20 + 21" },
+        { "label": "WebApp Driver (E06)",   "description": "Tài xế giao hàng — blue + COOL purple · spec 22" }
+      ]
+    }
+  ]
+}
+```
+
+- Nếu SPEC.md đã ghi rõ platform → đặt option tương ứng lên đầu với hậu tố `(theo SPEC)` để user xác nhận nhanh.
+- Cả 2 câu đều trống → hỏi lại (không được tự đoán).
+- Lưu kết quả thành `TARGET_PLATFORMS[]` — thay thế Câu 0 ở Bước 3a.
+
+**0.3 — Learning theo platform đã chọn:**
+```
+For each platform in TARGET_PLATFORMS:
+  Read: file spec tương ứng (bảng §4 trong README.md) — Website luôn kèm 10-desktop-web-shell.md
+  Read: ảnh refs/<platform>_*.png (xem trực quan bố cục thật)
+  Lấy block theme trong design-spec/tokens.json → platforms.<key>
+```
+
+**0.4 — Tự tóm tắt trước khi vẽ (in ra cho user, ≤ 6 dòng / platform):**
+```
+🎨 LEARNING SUMMARY — <Platform>
+  Viewport: <W×H> · Primary: <hex> (variable <tên Figma — lưu ý bẫy đặt tên>)
+  Shell: <sider/header/tab bar...> · Font: Noto Sans JP <các style chính>
+  Component chính: <...> · Pattern đặc thù: <...>
+  Mâu thuẫn cần lưu ý: <C# trong foundation §9 nếu liên quan>
+```
+
+> Khi phát hiện Figma mới khác spec → cập nhật file spec + changelog README §7 + memory (không để drift).
+
 ### Bước 1 — Đọc context bắt buộc (song song)
 
 **⚠️ Đọc `## BA Deliverables` ĐẦU TIÊN** (ngay sau `## Mô tả nghiệp vụ` trong SPEC.md) — entry point BA cung cấp. Extract:
@@ -155,7 +222,7 @@ Từ đó xác định:
 
 **3a. Hỏi user (BẮT BUỘC — không được skip, không được tự đoán):**
 
-**Câu 0 — Platform target (BẮT BUỘC hỏi đầu tiên):**
+**Câu 0 — Platform target:** ✅ **Đã hỏi ở Bước 0.2 bằng `AskUserQuestion`** → dùng `TARGET_PLATFORMS[]`, KHÔNG hỏi lại. Nội dung gốc bên dưới giữ để tham chiếu mapping nhóm platform:
 ```
 Feature này thiết kế cho PLATFORM nào? (chọn 1 hoặc kết hợp)
    - Mobile app (native iOS/Android)
@@ -232,12 +299,12 @@ Sample data nguồn ở đâu?
 
 | Platform | Viewport (W×H) | Ghi chú |
 |---|---|---|
-| Mobile app | **375×812** | iPhone standard — dùng cho native iOS/Android |
-| Web app (mobile-first PWA) | **375×812** | Same as mobile — web responsive mobile-first |
-| Website (desktop) | **1440×1024** | Desktop standard |
-| iPad / Tablet | **1024×768** | Landscape tablet |
+| Mobile app (User App E01) | **390×844** | Khớp mọi frame Figma Phase 2 + baseline `flutter_screenutil` |
+| Web app (ES_QR, Driver E06) | **390×844** | Khớp frame Figma Phase 2 (màn dài → tăng height theo nội dung, giữ width) |
+| Website (Admin/Company/Supplier/Công ty vận chuyển E05) | **1440×1024** | Desktop standard (chi tiết dài → tăng height, giữ width 1440) |
+| iPad / Tablet | **1024×768** | Landscape tablet (chưa có Figma thực tế — hỏi user reference) |
 
-Kích thước này áp dụng cho `frame.resize()` ở Bước 4b — không dùng 390×844, 1920×1080 hay bất kỳ số nào khác.
+Kích thước này áp dụng cho `frame.resize()` ở Bước 4b — không dùng 375×812, 1920×1080 hay số nào khác. _(Đổi 375×812 → 390×844 ngày 2026-09-29 theo phân tích Figma Phase 2 — xem `design-spec/00-foundation.md` §9 C4.)_
 
 **3b. Discover library qua MCP:**
 
@@ -302,8 +369,8 @@ frame.name = "<Screen Code>"  // vd XX_MENU_001 — Module lấy từ Epic code 
 
 // Viewport CHUẨN theo TARGET_PLATFORM (không tự đổi):
 switch (TARGET_PLATFORM) {
-  case "Mobile app":     frame.resize(375, 812);  break;  // iPhone
-  case "Web app":        frame.resize(375, 812);  break;  // mobile-first PWA
+  case "Mobile app":     frame.resize(390, 844);  break;  // User App E01 (Figma Phase 2)
+  case "Web app":        frame.resize(390, 844);  break;  // ES_QR / Driver E06
   case "Website":        frame.resize(1440, 1024); break; // desktop
   case "iPad/Tablet":    frame.resize(1024, 768);  break; // landscape
 }
@@ -319,7 +386,7 @@ frame.appendChild(tableInstance)
 ```
 
 **Anti-pattern cần tránh:**
-- ❌ `frame.resize(390, 844)` — dùng size cũ (iPhone 14), không đúng chuẩn 375×812
+- ❌ `frame.resize(375, 812)` — size cũ, lệch với toàn bộ Figma Phase 2 (390×844)
 - ❌ `frame.resize(1920, 1080)` — Wide desktop, không thuộc 4 platform chuẩn
 - ❌ Dùng cùng 1 size cho mọi screen khi feature multi-platform
 

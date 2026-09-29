@@ -505,14 +505,36 @@ When generating any UI or design spec, follow these rules:
 
 **Screen naming convention:** _(quy tắc đặt tên frame Figma)_
 
+### ESKITCHEN — đã điền 2026-09-29 (Designer Agent, từ Figma Phase 2)
+
+> Chi tiết đầy đủ từng site (shell, component, pattern trang, DoD) → **`.claude/designer-agent/design-spec/`** (file 10–14 web, 20–22 mobile). Bảng dưới là tóm tắt để pass Gate A (Câu 0.6).
+
+| Site | Repo | Viewport | Layout | Navigation | Screen prefix | Spec |
+|---|---|---|---|---|---|---|
+| Admin Web E03 | `es-kitchen-web-admin` | 1440×1024 | sider 210 + container 1230 · header 54 · page header 94 | Sider (collapse 80) | `AW_` | 10 + 11 |
+| Company Web E02 | `es-kitchen-web-company` | 1440×1024 | như trên + tab cửa hàng dưới title | Sider | `CW_` | 10 + 12 |
+| Supplier Web E04 | `es-kitchen-web-supplier` | 1440×1024 | như trên | Sider | `SW_` | 10 + 13 |
+| Công ty vận chuyển Web E05 | `es-kitchen-web-outsource-web-private` | 1440×1024 | như trên | Sider | `OW_` | 10 + 14 |
+| User Mobile App E01 | `es-kitchen-payment-app` | 390×844 | header ảnh 200 + sheet bo 24 (y=100) + footer 85 | Title bar + bottom sheet | `UA_` | 20 |
+| WebApp ES_QR (mới) | chưa có repo (WebApp mới Phase 2) | 390×844 | header vàng `#FEE28A` + sheet bo 24 + FAB スキャン | Top search + FAB | `UA_` | 21 |
+| WebApp Driver E06 | `es-kitchen-webapp-driver` | 390×844 | header 64 + card list + bottom tab / CTA 80 | Bottom tab 5 mục | `DA_` | 22 |
+
 ---
 
 ## 11. Figma → Token Quick Lookup (per repo)
 
 _(điền dần khi Designer đọc Figma thật của từng repo — mapping hex code Figma → token trong section 1-3)_
 
+> ⚠️ Tên semantic `company.*` = blue và `admin.*` = orange là tên của **library**, NGƯỢC với tên portal (xem `design-spec/00-foundation.md` §8).
+
 | Repo | Primary button hex | Token | Nguồn |
 |---|---|---|---|
+| E03 Admin | `#0969DA` | `colors.semantics.company.500` (blue.500) | Figma AW_MAINTAIN_001 (đo 2026-09-29) |
+| E02 Company | `#F4860C` | `colors.semantics.admin.500` (orange.500) | Figma CW_ORDER_003 (đo) — `#FAA51D` (orange.400) chỉ dùng logo |
+| E04 Supplier | `#6639BA` | `colors.primitives.purple.600` | Figma SW_HOME_006 (đo) |
+| E05 Công ty vận chuyển | `#1A7F37` | `colors.semantics.success.500` (green.500) | Figma OW_SCHED_001 (đo) |
+| E01 Mobile / ES_QR | `#FAC215`→`#FFC562` gradient | `colors.semantics.app.400` (yellow.400) | Figma Cart / Home (đo) |
+| E06 Driver | `#0969DA` (+ COOL `#5A3AE9`) | `colors.semantics.company.500` | Figma DA_COOL_001 (đo) |
 
 **Shared error / success / warning** — tất cả repo:
 | Intent | Token | Hex |
