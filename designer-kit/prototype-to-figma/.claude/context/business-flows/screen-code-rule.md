@@ -1,0 +1,41 @@
+# Screen Code Rule
+
+> Quy tắc đặt Screen Code cho dự án ESKITCHEN.
+
+- 1. · Mục tiêu
+  - - · Đồng bộ tên giữa ticket/spec/design/code/test
+  - - · Trace dễ
+  - - · Quản lý
+- 2. · Definition
+  - - · Syntax: Screen Code = <Module(2)>_<Feature(4)>_<Seq(3)>
+  - - · Ví dụ: UA_PAYM_003
+    - • · UA: User App (2 ký tự)
+    - • · PAYM: chức năng Payment (4 ký tự)
+    - • · 003: số thứ tự màn hình trong feature
+  - - · Danh sách module prefix (2 ký tự)
+    - • · UA = User App
+    - • · DA = Driver App
+    - • · CW = Company Web
+    - • · AW = Admin Web
+    - • · SW = Supplier Web
+    - • · OW = Outsource Web
+- 3. · Rule
+  - - · Bắt buộc
+      - Unique trong phạm vi dự án (không trùng)
+      - Khi có màn hình mới thêm vào, chỉ tăng dần số thứ tự, không đổi mã của màn hình cũ
+      - Chỉ đổi mã của màn hình khi bản chất màn hình thay đổi: split/merge/đổi flow/đổi target.
+- 4. · Process
+  - • · Áp dụng Screen Code vào các tài liệu tương ứng: Spec/REQ, Màn hình được thiết kế trên figma, Ticket,...
+  - • · Trường hợp tách màn hình nhưng chưa được định nghĩa Screen Code, người chịu trách nhiệm task có thể tự định nghĩa theo rule trên và thông báo tới PM, hoặc thông báo tới PM mà không cần định nghĩa ngay (bổ sung sau).
+- 5. · RACI
+  - • · PM
+  - • · BrSE
+  - • · Des = Designer
+  - • · QC
+  - • · Dev
+  - Activity · PM · BrSE · Des · QC · Dev
+  - Định nghĩa và duy trì rule · R/A · C · I · I · I
+  - Định nghĩa Screen Code · R/A · R/A · C · C · C
+  - Thay đổi/tách mã · R/A · R · C · C · C
+  - Áp dụng mã vào ticket · R/A · I · I · R/A · R/A
+  - Legend: R = Responsible · A = Accountable · C = Consulted · I = Informed
