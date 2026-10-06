@@ -1,0 +1,130 @@
+No,フェーズ,場面,画面,ボタン,メッセージタイトル,メッセージ（JP）,ポップアップのボタン,メッセージタイプ,メッセージ表示形式,,,,,,,,,
+,フェーズ１,必須項目を未登録の場合,-,「登録」「保存」,-,{対象項目名}は必須項目です。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,ログイン画面で認証失敗の場合,ログイン画面,ログイン,-,ログインに失敗しました。 メールアドレス・パスワードをもう一度ご確認ください。,-,エラー (error),ページ内メッセージエリア,,,,,,,,,
+,フェーズ１,登録外のメールアドレスを入力場合,パスワードを忘れた方画面,メールアドレス入力,-,このメールアドレスは登録されていません。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,コード不一致,会員登録OTP認証画面,認証コード入力,-,認証コードが正しくありません。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,期限切れのコード,会員登録OTP認証画面,認証コード入力,-,認証コードの有効期限が切れています。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,文字数・属性不足,会員登録画面,パスワード,-,8桁以上で英文字・数字を含めてください。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,パスワード不一致,会員登録画面,パスワード（確認用）,-,パスワードが一致しません。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,削除成功時,共通,「削除」,-,削除が完了しました。,,成功 (Success),トーストメッセージ,,,,,,,,,
+,フェーズ１,削除失敗時,共通,「削除」,-,削除に失敗しました。,,エラー (error),トーストメッセージ,,,,,,,,,
+,フェーズ１,CSVのインポートが完了する場合,-,CSVインポート,-,CSVインポートが成功しました。,,成功 (Success),ページ内メッセージエリア,,,,,,,,,
+,フェーズ１,CSVのインポートに失敗する場合,-,CSVインポート,-,CSVインポートが失敗しました。,,エラー (error),ページ内メッセージエリア,,,,,,,,,
+,フェーズ１,"商品の削除を完了する場合
+",商品マスタ管理／商品一覧画面,「削除」,-,"商品を削除しました。
+",,成功 (Success),ページ内メッセージエリア,,,,,,,,,
+,フェーズ１,商品の削除に失敗する場合,商品マスタ管理／商品一覧画面,「削除」,-,商品の削除に失敗しました。,,エラー (error),ページ内メッセージエリア,,,,,,,,,
+,フェーズ１,数値以外入力場合,商品マスタ管理／商品詳細・編集画面,販売価格,-,販売価格は数値で入力してください。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,画像ファイルの形式が不正場合,商品マスタ管理／商品詳細・編集画面,画像ファイルをアップロード,-,JPG、JPEG、PNGのいずれかの形式で画像ファイルをアップロードしてください。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,ファイルサイズ制限あり,商品マスタ管理／商品詳細・編集画面,画像ファイルをアップロード,-,アップロード画像ファイルの上限サイズは5MBです。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,メールアドレス重複入力の場合,アカウント登録画面,メールアドレス,-,このメールアドレスは既に登録されています。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,メールアドレスの形式が間違っている場合,アカウント登録画面,メールアドレス,-,正しいメールアドレスの形式で入力してください。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,文字数・属性不足,アカウント登録画面,パスワード,-,8桁以上で英文字・数字を含めてください。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ１,"・正しくないメールアドレス入力場合
+正しくないパスワード入力場合
+・正しくないログインID、正しくないパスワード入力場合",ログイン画面,メールアドレス・パスワード,-,"・メールアドレスまたはパスワードが正しくありません。
+・ログインIDまたはパスワードが正しくありません。",,エラー (error),インラインメッセージ,,,,,, ,,,
+,フェーズ1,削除、クリアボタンをクリックした場合に表示する,-,「削除」「クリア」,{ボタン名}しますか？,"本当に{ボタン名}してもよろしいですか？
+{ボタン名}すると元に戻せません。","「{ボタン名}」→Delete, clear...
+「キャンセル」→Back",警告 (warning),モーダルウィンドウ,,,,,,,,,
+,フェーズ1,ステータスが「公開」・「自動公開」に変更したが、PDFファイルが添付されません。,画面名: 月間メニュー CSV取込（確認・保存）_CSV Import (Step 2: 確認・保存)										,「保存」,,PDFは必須です。PDFファイルを添付してください。,,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,ステータスが「公開」・「自動公開」に変更したが、1件でも未チェックの商品が存在する場合、公開処理を中止する。,画面名: 月間メニュー CSV取込（確認・保存）_CSV Import (Step 2: 確認・保存)										,「保存」,,"メニュー内のすべての商品が公開可能な状態ではありません。
+すべてにチェックを入れてから、再度ご確認ください。",,エラー (error),ページ内メッセージエリア,,,,,,,,,
+,フェーズ1,"・表示しているテーブルにレコードがない場合。
+・検索結果で１つもレコードがない場合。",-,-,-,表示するデータがありません。,-,情報 (Info),ページ内メッセージエリア,,,,,,,,,
+,フェーズ1,登録・編集画面で内容を編集したが、まだ「保存」ボタンを押せずに、閉じるボタンをクリックする。,-,「閉じる」「X」「戻る」「キャンセル」,編集内容を破棄しますか？,"編集中の内容は保存されません。
+編集内容を破棄してもよろしいですか？","「キャンセル」→Back to edit screen
+「破棄」→Close and Do not save",警告 (warning),モーダルウィンドウ,,,,,,,,,
+,フェーズ1,メニューが「公開」設定されてい際に「保存」をクリックする。,画面名: 月間メニュー CSV取込（確認・保存）_CSV Import (Step 2: 確認・保存)										,「保存」,保存して公開しますか？,"このメニューは現在「公開」ステータスです。
+保存すると即座に反映され、ユーザーに通知が届きます。
+よろしいですか？","「キャンセル」
+「公開して保存」",情報 (Info),モーダルウィンドウ,,,,,,,,,
+,フェーズ1,メニューが「自動公開」設定されてい際に「保存」をクリックする。,画面名: 月間メニュー CSV取込（確認・保存）_CSV Import (Step 2: 確認・保存)										,「保存」,保存して自動公開しますか？,"このメニューは現在「自動公開」ステータスです。 
+保存すると、指定日時にこの内容で公開されます。 
+よろしいですか？","「キャンセル」
+「自動公開して保存」",情報 (Info),モーダルウィンドウ,,,,,,,,,
+,フェーズ1,条件が揃っているけど、メニューが「非公開」設定されてい際に「保存」をクリックする。,画面名: 月間メニュー CSV取込（確認・保存）_CSV Import (Step 2: 確認・保存)										,「保存」,「自動公開」に変更して保存しますか？,"公開に必要な条件がすべて揃っています。
+ステータスを「自動公開」に変更して保存しますか？
+ーーー
+※「そのまま保存」を選ぶと、非公開のまま保存されます。","「そのまま保存」
+「自動公開して保存」
+「キャンセル」",情報 (Info),モーダルウィンドウ,,,,,,,,,
+,フェーズ1,メニューが「非公開」のまま「保存」をクリックする。,画面名: 月間メニュー CSV取込（確認・保存）_CSV Import (Step 2: 確認・保存)										,「保存」,-,"保存が完了しました。
+ーーー
+メニューは非公開ステータスです。",-,情報 (Info),トーストメッセージ,,,,,,,,,
+,フェーズ1,メニューが「公開」設定されてい際に「保存」をクリックし、「公開して保存」をクリックする,画面名: 月間メニュー CSV取込（確認・保存）_CSV Import (Step 2: 確認・保存)										,「保存」,-,"保存が完了しました。
+ーーー
+メニューが公開されました。",-,情報 (Info),トーストメッセージ,,,,,,,,,
+,フェーズ1,"・メニューが「自動公開」設定されてい際に「保存」をクリックし、「自動公開して保存」をクリックする
+・条件が揃っているけど、メニューが「非公開」設定されてい際に「保存」をクリックし、「自動公開して保存」をクリックする。",画面名: 月間メニュー CSV取込（確認・保存）_CSV Import (Step 2: 確認・保存)										,「保存」,-,"保存が完了しました。
+ーーー
+メニューが自動公開されます。",-,情報 (Info),トーストメッセージ,,,,,,,,,
+,フェーズ1,重複のエラー,画面名: AW_PROD_003_商品編集_Product Edit					,「保存」,-,{対象項目名}は既に登録されています。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,"文字種・形式に関するエラーメッセージ
+数値（半角数字）",画面名: AW_PROD_003_商品編集_Product Edit					,「保存」,-,{対象項目名}は数値で入力してください。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,"文字種・形式に関するエラーメッセージ
+半角英数字",画面名: AW_PROD_003_商品編集_Product Edit					,「保存」,-,{対象項目名}は半角英数字で入力してください。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,"文字種・形式に関するエラーメッセージ
+全角カタカナ",画面名: AW_PROD_003_商品編集_Product Edit					,「保存」,-,{対象項目名}は全角カタカナで入力してください。,-,エラー (error),インラインメッセージ,,,,,,,,,
+8~13桁,フェーズ1,"文字種・形式に関するエラーメッセージ
+数値（半角数字）・桁数",画面名: AW_PROD_003_商品編集_Product Edit					,「保存」,-,{対象項目名}は{桁数}桁の半角数字で入力してください。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,"文字種・形式に関するエラーメッセージ
+URL形式",画面名: AW_PROD_003_商品編集_Product Edit					,「保存」,-,正しいURLの形式で入力してください。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,上限エラー（最大文字数オーバー）,画面名: AW_PROD_003_商品編集_Product Edit					,「保存」,-,{最大文字数}文字以内で入力してください。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,件数上限エラー：,画面名: AW_PROD_003_商品編集_Product Edit					,「行追加」,-,最大登録数を超えています。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,"保存の条件が揃ってない。
+
+ステータスが公開の場合、PDFがアップロードされないか、全て項目の「公開可能」にチェックされない。",画面名: 月間メニュー CSV取込（確認・保存）_CSV Import (Step 2: 確認・保存)										,「保存」,-,公開するには、PDFの添付とすべての項目へのチェックが必要です。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,"保存の条件が揃ってない。
+ステータスが自動公開の場合、自動公開日が設定されないか、PDFがアップロードされないか、全て項目の「公開可能」にチェックされない。",画面名: 月間メニュー CSV取込（確認・保存）_CSV Import (Step 2: 確認・保存)										,「保存」,-,自動公開するには、公開日時の設定、PDFの添付、すべての項目へのチェックが必要です。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,有効な契約が存在する場合は、法人の削除不可,法人管理（一覧）・詳細,「削除」,-,有効な契約が存在するため削除できません。,-,エラー (error),トーストメッセージ,,,,,,,,,
+,フェーズ1,同時に複数ユーザーが同じ画面で編集した場合,編集画面,「保存」,最新の内容ではありません。,他のユーザーにより内容が更新されています。 上書きすると保存されます。,"上書き→上書きして保存
+キャンセル→ポップアップを閉じて、編集モードに戻る",警告 (warning),モーダルウィンドウ,,,,,,,,,
+,フェーズ1,定義フォーマットが間違っている場合,編集画面,「保存」,-,正しい〇〇を入力してください。,-,エラー (error),インラインメッセージ,,,,,,,,,
+,フェーズ1,正常にデータが保存された場合,編集画面,「保存」,-,保存しました。,-,情報 (Info),トーストメッセージ,,,,,,,,,
+,フェーズ２,郵便番号の形式が間違っている場合,申込フォーム・法人／拠点の編集・代理入力,郵便番号,-,郵便番号は数字7桁でご入力ください（ハイフンはあってもなくても構いません）。,-,エラー (error),インラインメッセージ,,,,Postal code format is wrong,Application form / company・branch edit,Postal code,Enter the postal code as 7 digits (with or without a hyphen).,error,インラインメッセージ
+,フェーズ２,電話番号・FAX番号の形式が間違っている場合,申込フォーム・法人／拠点の編集・代理入力,電話番号・FAX番号,-,{対象項目名}は数字とハイフンだけでご入力ください。,-,エラー (error),インラインメッセージ,,,,Phone/FAX format is wrong,Application form / company・branch edit,Phone / FAX,Enter {item} using only digits and hyphens.,error,インラインメッセージ
+,フェーズ２,全角の数字・英字が入力された場合（保存のときに自動で半角に直す）,共通（入力欄）,「保存」「確認へ進む」,-,（メッセージなし。全角の数字・英字・ハイフン・@ は、保存のときに自動で半角に直して保存する）,-,情報 (Info),-,,,,Full-width digits entered (auto-converted on save),Common,Save / Next,(No message. Full-width digits/letters/hyphen/@ are converted to half-width on save.),Info,-
+,フェーズ２,お申し込み者を選んでいない場合,申込フォーム（確認画面）,「送信」,-,お申し込み者をご担当者から選んでください。,-,エラー (error),インラインメッセージ,,,,Applicant not selected,Application form (confirm),Submit,Select the applicant from the contacts.,error,インラインメッセージ
+,フェーズ２,メイン担当者・請求担当者がいない場合,申込フォーム・法人情報・拠点の編集,「確認へ進む」「保存」,-,{メイン担当者／請求担当者}を1名登録してください。,-,エラー (error),ページ内メッセージエリア,,,,Main / billing contact missing,Application form / company・branch edit,Next / Save,Register one {main contact / billing contact}.,error,ページ内メッセージエリア
+,フェーズ２,お申し込みを送信した場合,申込フォーム（完了画面）,「送信」,お申し込みを受け付けました,"受付番号：{受付番号}
+ご登録のメールアドレスへ、受付完了のメールをお送りしました。運営で確認し、2〜3営業日でご連絡します。",-,成功 (Success),ページ内メッセージエリア,,,,Application submitted,Application form (complete),Submit,Reception No.: {no}. A confirmation email has been sent. We will contact you within 2–3 business days.,Success,ページ内メッセージエリア
+,フェーズ２,承認待ちの申請がある拠点で、新しい申請をしようとした場合,申込フォーム（変更のお申し込み）・拠点詳細,「変更のお申し込み」,-,承認待ちのお申し込みがあるため、承認後にお申し込みください。,-,警告 (warning),ページ内メッセージエリア,,,,Pending request exists,Change request form / branch detail,Request change,There is a pending request. Please apply after it is approved.,warning,ページ内メッセージエリア
+,フェーズ２,変更する項目を選んでいない場合,申込フォーム（変更のお申し込み）,「確認へ進む」,-,変更する項目を1つ以上選んでください。,-,エラー (error),ページ内メッセージエリア,,,,No item to change selected,Change request form,Next,Select at least one item to change.,error,ページ内メッセージエリア
+,フェーズ２,休止の通算が12ヶ月を超える場合,申込フォーム（休止）,休止したい期間,-,休止は通算12ヶ月までです。残り{n}ヶ月を超える期間は選べません。,-,エラー (error),インラインメッセージ,,,,Suspension exceeds 12 months in total,Change request form (suspend),Suspension period,Suspension is limited to 12 months in total. You cannot choose more than the remaining {n} months.,error,インラインメッセージ
+,フェーズ２,法人アカウント以外が法人情報の変更をしようとした場合,申込フォーム（法人情報の変更）,「法人情報の変更」,-,法人情報の変更は法人アカウントだけが申し込めます。,-,情報 (Info),ページ内メッセージエリア,,,,Non-company account tries to change company info,Change request form,Company info change,Only the company account can request company information changes.,Info,ページ内メッセージエリア
+,フェーズ２,添付ファイルが上限を超える場合,申込フォーム・申請詳細（添付）,ファイルを添付,-,ファイルは1つ5MBまで、10件までです。,-,エラー (error),インラインメッセージ,,,,Attachment limit exceeded,Application form / request detail,Attach file,"Each file up to 5MB, up to 10 files.",error,インラインメッセージ
+,フェーズ２,承認するとき,運営：契約申請管理／申請詳細,「承認」,このお申し込みを承認しますか？,承認すると、ご契約に反映し、法人へお知らせメールを送ります。,"「キャンセル」→戻る
+「承認」→承認する",情報 (Info),モーダルウィンドウ,,,,Approve,Admin: request detail,Approve,"When approved, the contract is updated and a notification email is sent to the company.",Info,モーダルウィンドウ
+,フェーズ２,承認の確認にチェックがない場合,運営：契約申請管理／申請詳細,「承認」,-,確認にチェックを入れてください。,-,エラー (error),インラインメッセージ,,,,Confirmation checkbox not checked,Admin: request detail,Approve,Please check the confirmation box.,error,インラインメッセージ
+,フェーズ２,解約日がルールに合わない場合,運営：契約申請管理／申請詳細（解約）,「承認」,-,最短の解約日（{日付}）より前のため承認できません。却下して、{日付}以降の解約日でお申し込みいただくようご案内してください。,-,エラー (error),ページ内メッセージエリア,,,,Cancellation date violates the rule,Admin: request detail (cancel),Approve,Cannot approve because it is earlier than the earliest cancellation date ({date}).,error,ページ内メッセージエリア
+,フェーズ２,申込の承認がオーダー締切を過ぎている場合,運営：契約申請管理／申請詳細,「承認」,オーダー締切を過ぎています,翌サイクルへ繰り下げるか、運営が代理でオーダーするかを選んでください。,"「翌サイクルへ繰り下げ」
+「運営が代理オーダー」
+「キャンセル」",警告 (warning),モーダルウィンドウ,,,,Approval after order deadline,Admin: request detail,Approve,Choose to postpone to the next cycle or to place the order on behalf of the customer.,warning,モーダルウィンドウ
+,フェーズ２,却下の理由が空の場合,運営：契約申請管理／申請詳細,「却下」,-,却下の理由をご入力ください。,-,エラー (error),インラインメッセージ,,,,Rejection reason empty,Admin: request detail,Reject,Enter the reason for rejection.,error,インラインメッセージ
+,フェーズ２,請求済みの子契約で金額に効く変更をしようとした場合,運営：子契約・請求,「保存」,-,この拠点の当月分は請求済みです。金額に効く変更はできません。,-,エラー (error),ページ内メッセージエリア,,,,Change on billed child contract,Admin: child contract / billing,Save,This month has already been billed. Changes affecting the amount are not allowed.,error,ページ内メッセージエリア
+,フェーズ２,請求書発行リードタイムを変えて、前払いが重なる・抜ける月がある場合,運営：法人／拠点の請求条件,「保存」,前払いの月が{重なります／抜けます},切り替えの月（{YYYY年M月}）に、前払いの請求が{2ヶ月分になります／ない月があります}。このまま保存しますか？,"「キャンセル」
+「保存」",警告 (warning),モーダルウィンドウ,,,,Lead time change causes overlap/gap,Admin: billing conditions,Save,Prepayment will {overlap / have a gap} in {month}. Save anyway?,warning,モーダルウィンドウ
+,フェーズ２,Bill One で発行した場合,運営：請求の確定・請求書,「Bill One で発行」,-,{n}通の請求書を Bill One に送りました。発行日は {YYYY/MM/01} です。,-,成功 (Success),トーストメッセージ,,,,Issued via Bill One,Admin: billing confirm / invoices,Issue via Bill One,{n} invoices were sent to Bill One. Issue date: {date}.,Success,トーストメッセージ
+,フェーズ２,Bill One への送信に失敗した場合,運営：請求の確定・請求書,「Bill One で発行」,-,Bill One への送信に失敗しました（{件数}通）。内容を確認して再送してください。,-,エラー (error),ページ内メッセージエリア,,,,Bill One send failed,Admin: billing confirm / invoices,Issue via Bill One,Failed to send to Bill One ({n}). Check and resend.,error,ページ内メッセージエリア
+,フェーズ２,都度入力のオプション・値引きで金額が空の場合,運営：子契約（オプション・割引の異動）,「保存」,-,このオプションは金額を毎回入力します。金額をご入力ください。,-,エラー (error),インラインメッセージ,,,,Amount empty for per-time option,Admin: child contract (options),Save,This option requires an amount each time. Enter the amount.,error,インラインメッセージ
+,フェーズ２,回数の上限がある値引きを、上限を超えて付けようとした場合,運営：子契約（オプション・割引の異動）,「保存」,-,この値引きは{法人ごとに1回}までです。すでに {拠点名} に付いています。,-,エラー (error),インラインメッセージ,,,,Discount usage limit exceeded,Admin: child contract (discounts),Save,This discount can be applied {once per company}. It is already applied to {branch}.,error,インラインメッセージ
+,フェーズ２,対象外のコース・機種区分の拠点にオプションを付けようとした場合,運営：子契約（オプション・割引の異動）,オプションを選ぶ,-,このオプションは{ESライト（自販機）}の拠点だけに付けられます。,-,エラー (error),インラインメッセージ,,,,Option not available for this course,Admin: child contract (options),Select option,This option is only available for {ES Light (vending)} branches.,error,インラインメッセージ
+,フェーズ２,プランマスタの上限の合計が合わない場合,運営：プランマスタ編集,「保存」,-,冷凍と冷蔵・常温の上限の合計が、月次提供上限の合計（{n}食）と一致しません。,-,エラー (error),ページ内メッセージエリア,,,,Plan caps do not match total,Admin: plan master edit,Save,The sum of frozen and chilled caps does not match the monthly total ({n}).,error,ページ内メッセージエリア
+,フェーズ２,営業サンプルの月の枠を超える場合,運営：発注・入荷／営業サンプル,「登録」,-,今月の営業サンプルの枠（{n}件）を超えるため登録できません。,-,エラー (error),ページ内メッセージエリア,,,,Sales sample monthly limit exceeded,Admin: sales samples,Register,Cannot register because it exceeds this month's sample limit ({n}).,error,ページ内メッセージエリア
+,フェーズ２,自社便だけの拠点の解約を承認した場合,運営：契約申請管理／申請詳細（解約）,「承認」,-,この拠点は自社便だけのため、委託配送会社への通知はありません。社内の配送担当にお知らせを出しました（最終配送日 {YYYY/MM/DD}）。,-,情報 (info),ページ内メッセージエリア,,,,Cancellation approved (own-fleet only),Admin: request detail (cancel),Approve,No notice to contractors because this site is served only by our own fleet. An internal notice was sent to the delivery team (last delivery {date}).,info,ページ内メッセージエリア
+,フェーズ２,自社便だけの拠点の解約を承認した場合（社内の配送担当へのお知らせ）,運営：ホーム／お知らせ（配送担当）,-,配送停止（自社便）,{拠点名}（{拠点ID}）のご契約が終了します。最終配送日は {YYYY/MM/DD} です。以降の配送データは作られません。,-,情報 (info),お知らせ一覧,,,,Delivery stop (own fleet),Admin: home / notices (delivery team),-,The contract for {site} ({ID}) ends. Last delivery is {date}. No further delivery data will be created.,info,お知らせ一覧
+,フェーズ２,請求書を取消して再発行する場合（確認）,運営：請求書,「取消して再発行」,請求書の取消・再発行,Bill One で請求書 {INV-…} の取消は済みましたか？ ES では {INV-…} を「取消」にして、新しい請求書番号で作り直します（Bill One の取消は Bill One の画面で行います）。,"「キャンセル」
+「取消して再発行」",警告 (warning),モーダルウィンドウ,,,,Cancel and reissue invoice (confirm),Admin: invoices,Cancel & reissue,Have you cancelled invoice {INV} in Bill One? ES will mark {INV} as cancelled and create a new invoice number.,warning,モーダルウィンドウ
+,フェーズ２,請求書を取消して再発行した場合,運営：請求書,「取消して再発行」,-,請求書 {INV-旧} を取消にし、{INV-新} を作りました。「Bill One で発行」で送ってください。,-,成功 (Success),トーストメッセージ,,,,Invoice reissued,Admin: invoices,Cancel & reissue,"Invoice {old} was cancelled and {new} was created. Send it with ""Issue via Bill One"".",Success,トーストメッセージ
+,フェーズ２,解約した拠点のアカウントでログインした場合（参照のみの期間）,法人Web：全画面,-,-,ご契約は {YYYY/MM/DD} に終了しました。{YYYY/MM/DD}（最後のご請求の入金期限）まで参照のみでご利用いただけます。,-,警告 (warning),ページ上部のお知らせ,,,,Read-only after cancellation,Corporate web: all screens,-,Your contract ended on {date}. You can view (read-only) until {date} (payment due date of the final invoice).,warning,ページ上部のお知らせ
+,フェーズ２,停止したアカウントでログインしようとした場合,法人Web：ログイン,「ログイン」,-,このアカウントはご解約により停止しています。お問い合わせは ESキッチンサポート窓口までご連絡ください。,-,エラー (error),ページ内メッセージエリア,,,,Account stopped,Corporate web: login,Login,This account has been stopped due to cancellation. Please contact ES Kitchen support.,error,ページ内メッセージエリア
+,フェーズ２,仕入先が本発注を承認していない（営業日24時間ごとに確認）,運営Web：発注・入荷 ＞ 発注（仕入先からの通知）,「見る」,-,本発注の承認待ち（仕入先が未処理）{n}件。本発注から営業日24時間ごとに仕入先へアラートメールを送っています（{発注番号}：{回数}回）。,-,警告 (warning),バナー / インラインメッセージ,,,,Hon order not approved,Admin web: purchase order,View,{n} final orders are waiting for supplier approval. Alert mails are sent every 24 business hours.,warning,バナー / インラインメッセージ
+,フェーズ２,仕入先が受注不可と回答した,運営Web：発注・入荷 ＞ 発注（仕入先からの通知）,「見る」,-,仕入先が受注不可と回答しました（{発注番号}）。別の仕入先への手配か、発注のキャンセルをしてください。,-,エラー (error),バナー / インラインメッセージ,,,,Order rejected by supplier,Admin web: purchase order,View,The supplier cannot accept order {no}. Arrange another supplier or cancel the order.,error,バナー / インラインメッセージ
+,フェーズ２,仕入先が分納を登録した（承認は不要）,運営Web：発注・入荷 ＞ 発注（仕入先からの通知）,「確認した」,-,仕入先が分納を登録しました（{発注番号}：{n}回）。承認は不要です。,-,情報 (Info),バナー / インラインメッセージ,,,,Split delivery registered,Admin web: purchase order,Confirmed,The supplier registered a split delivery ({no}: {n} times). No approval is needed.,info,バナー / インラインメッセージ
+,フェーズ２,倉庫の入荷確認で数が違った,運営Web：発注・入荷 ＞ 入荷確認（倉庫）,「確認を保存」,-,予定と違うため「NG／ES要確認」にしました。運営と仕入先に知らせます。,-,警告 (warning),トーストメッセージ,,,,Receiving mismatch,Admin web: receiving check,Save,Marked as NG / needs ES check because the count differs. ES staff and the supplier will be notified.,warning,トーストメッセージ
+,フェーズ２,仕入先が本発注を承認した後に数量を直そうとした,運営Web：発注データ詳細,-,-,仕入先が本発注を承認したため、数量は直せません。増やすときは「追加発注」、減らすときは「キャンセル」して出し直してください。,-,情報 (Info),ページ内メッセージエリア,,,,Cannot edit after approval,Admin web: order detail,-,The supplier has approved this order. Use additional order or cancel and reorder.,info,ページ内メッセージエリア
+,フェーズ２,仕入先が分納の上限・範囲を超えた,仕入先Web：発注詳細（回答・本発注の承認）,「承認して回答する」「承認する」,-,分納は{3}回までです。／納品日は最初の入荷希望日（{YYYY/MM/DD}）までにしてください（分納の各回とも）。,-,エラー (error),インラインメッセージ,,,,Split delivery limit,Supplier web: order detail,Approve,Up to {3} split deliveries. Each delivery date must be on or before the first requested arrival date ({date}).,error,インラインメッセージ
+,フェーズ２,入荷箱数が数量より多い,仕入先Web：発注詳細（本発注の承認）,「承認する」,-,箱数が数量より多くなっています（箱数と数量が逆になっていませんか）。,-,エラー (error),インラインメッセージ,,,,Boxes exceed quantity,Supplier web: order detail,Approve,The number of boxes exceeds the quantity. Are boxes and quantity swapped?,error,インラインメッセージ
+,フェーズ２,入荷箱数×入り数と数量が合わない,仕入先Web：発注詳細（本発注の承認）,「承認する」,-,箱数×入り数（{箱数}×{入り数}＝{n}）と数量（{数量}）が合いません。このままでよければ、もう一度承認を押してください。,-,警告 (warning),インラインメッセージ,,,,Box count check,Supplier web: order detail,Approve,Boxes × units per box ({b}×{l}={n}) does not match the quantity ({q}). Press approve again to continue.,warning,インラインメッセージ
+,,,,,,,,,,,,,,,,,,
