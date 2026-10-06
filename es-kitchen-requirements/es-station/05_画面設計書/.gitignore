@@ -1,0 +1,4 @@
+# make.py が作るものは入れない（データ .py と _release/snapshot.json だけ入れる）。HTML はルートの .gitignore（docs/**/*.html）で除外済み
+出力/**/*.xlsx
+出力/**/img/
+出力/**/capture_report.json
