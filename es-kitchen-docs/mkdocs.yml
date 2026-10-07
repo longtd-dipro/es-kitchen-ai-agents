@@ -59,6 +59,8 @@ nav:
       - Structure: mobile/es-kitchen-payment-app/overview/structure.md
       - Patterns: mobile/es-kitchen-payment-app/overview/patterns.md
 
+- ES-STATION: requirements/es-station/index.md
+
 - Features:
   - DOCUMENT OVERVIEW: features/index.md
   - BA TODOs (Client Questions): features/BA_TODO_for_client.md
