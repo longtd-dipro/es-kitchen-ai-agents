@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "520bb5fd-4ebe-451d-bb72-e5f8ea8ee99b",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/60_Tồn_kho/dataflow-ton-kho-20261007-095856/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/60_Tồn_kho/dataflow-ton-kho-20261007-095856/ton-kho.html",
+  "specification": {
+    "sha256": "71d1fa742370cdbf33d68d5bd113b0ba009d00fe0dd05cc715876d50b6f5da9c",
+    "bytes": 5198
+  },
+  "artifact": {
+    "sha256": "dd33b335211b04406c0d55425ce4ee0f50056a50daad8a5e8ed32c4fd3e41a89",
+    "bytes": 766685
+  }
+}

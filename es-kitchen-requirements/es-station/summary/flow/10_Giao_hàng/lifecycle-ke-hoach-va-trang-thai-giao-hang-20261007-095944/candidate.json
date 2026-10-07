@@ -1,0 +1,236 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Vòng đời kế hoạch và trạng thái giao hàng",
+    "output": "flow/10_Giao_hàng/lifecycle-ke-hoach-va-trang-thai-giao-hang-20261007-095944/ke-hoach-va-trang-thai-giao-hang.html",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "plan lifecycle (shipping_plans)"
+    },
+    {
+      "id": "status",
+      "label": "delivery status (deliveries)"
+    },
+    {
+      "id": "child",
+      "label": "Bản con (nhân bản)"
+    },
+    {
+      "id": "terminal",
+      "label": "Trạng thái cuối"
+    }
+  ],
+  "states": [
+    {
+      "id": "draft",
+      "type": "start",
+      "label": "draft",
+      "sublabel": "chưa có delivery status",
+      "lane": "main",
+      "col": 0
+    },
+    {
+      "id": "published",
+      "type": "active",
+      "label": "published",
+      "sublabel": "đã có dữ liệu giao hàng",
+      "lane": "main",
+      "col": 1
+    },
+    {
+      "id": "locked",
+      "type": "success",
+      "label": "locked",
+      "sublabel": "không còn chạm vào",
+      "lane": "main",
+      "col": 2
+    },
+    {
+      "id": "cho_xuat",
+      "type": "start",
+      "label": "Chờ xuất hàng",
+      "sublabel": "từ khi có dữ liệu",
+      "lane": "status",
+      "col": 1
+    },
+    {
+      "id": "da_xuat",
+      "type": "active",
+      "label": "Đã xuất hàng",
+      "sublabel": "kho đã xuất",
+      "lane": "status",
+      "col": 2
+    },
+    {
+      "id": "da_nhan",
+      "type": "active",
+      "label": "Đã nhận",
+      "sublabel": "tài xế nhận ở kho",
+      "lane": "status",
+      "col": 3
+    },
+    {
+      "id": "da_giao",
+      "type": "success",
+      "label": "Đã giao",
+      "sublabel": "giao đủ số lượng",
+      "lane": "status",
+      "col": 4
+    },
+    {
+      "id": "dang_xn",
+      "type": "waiting",
+      "label": "Đang xác nhận",
+      "sublabel": "con chờ vận hành",
+      "lane": "child",
+      "col": 0
+    },
+    {
+      "id": "huy",
+      "type": "failure",
+      "label": "Hủy",
+      "sublabel": "chưa xuất khỏi kho",
+      "lane": "terminal",
+      "col": 1
+    },
+    {
+      "id": "dung",
+      "type": "failure",
+      "label": "Dừng",
+      "sublabel": "đã xuất, không giao",
+      "lane": "terminal",
+      "col": 2
+    },
+    {
+      "id": "gmp",
+      "type": "neutral",
+      "label": "Giao một phần",
+      "sublabel": "con giữ số còn lại",
+      "lane": "terminal",
+      "col": 3
+    },
+    {
+      "id": "cgl",
+      "type": "neutral",
+      "label": "Chờ giao lại",
+      "sublabel": "con giữ toàn bộ SL",
+      "lane": "terminal",
+      "col": 4
+    }
+  ],
+  "transitions": [
+    {
+      "from": "draft",
+      "to": "published",
+      "label": "sinh chính thức"
+    },
+    {
+      "from": "published",
+      "to": "locked",
+      "label": "gửi chỉ thị OK",
+      "variant": "emphasis"
+    },
+    {
+      "from": "published",
+      "to": "cho_xuat",
+      "label": "tạo dữ liệu",
+      "variant": "dashed"
+    },
+    {
+      "from": "cho_xuat",
+      "to": "da_xuat",
+      "label": "CSV thực tích"
+    },
+    {
+      "from": "da_xuat",
+      "to": "da_nhan",
+      "label": "nhận hết VĐ"
+    },
+    {
+      "from": "da_nhan",
+      "to": "da_giao",
+      "label": "giao đủ"
+    },
+    {
+      "from": "da_xuat",
+      "to": "da_giao",
+      "label": "06:00 xem như xong",
+      "variant": "dashed"
+    },
+    {
+      "from": "cho_xuat",
+      "to": "huy",
+      "label": "không xuất được",
+      "variant": "security"
+    },
+    {
+      "from": "da_xuat",
+      "to": "dung",
+      "label": "vận hành dừng",
+      "variant": "security"
+    },
+    {
+      "from": "da_nhan",
+      "to": "gmp",
+      "label": "giải quyết sự cố"
+    },
+    {
+      "from": "da_nhan",
+      "to": "cgl",
+      "label": "giao 0, gửi lại"
+    },
+    {
+      "from": "dang_xn",
+      "to": "cho_xuat",
+      "label": "chốt ngày・SL",
+      "variant": "emphasis"
+    },
+    {
+      "from": "dang_xn",
+      "to": "huy",
+      "label": "hủy bỏ",
+      "variant": "security"
+    },
+    {
+      "from": "gmp",
+      "to": "dang_xn",
+      "label": "tạo con",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Hai máy trạng thái tách biệt",
+      "items": [
+        "lifecycle (draft / published / locked) trả lời 'từ khi nào không thể chạm vào'; status trả lời 'hàng đã đi đến đâu'; một bản ghi giữ cả hai giá trị (Giao_hàng_04 §7-7)",
+        "Cấm published → draft, locked → published; locked chỉ khi lần gửi chỉ thị xuất hàng đầu tiên thành công, không phải khi cấp số vận đơn",
+        "draft chưa có delivery status (cột trạng thái '—'); sinh chính thức vào ngày bắt đầu đặt hàng thì thành Chờ xuất hàng"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Ai chuyển và điều kiện",
+      "items": [
+        "Chờ xuất hàng → Đã xuất hàng: nhập CSV thực tích / vận đơn (hệ thống)",
+        "Đã xuất hàng → Đã nhận: chỉ từ ứng dụng tài xế ES; nhận chặng tiếp theo ở điểm trung chuyển giữ nguyên Đã nhận (lưu picked_up_at)",
+        "Final leg là parcel_carrier: batch 06:00 ngày sau xem như Đã giao (presumed); final leg self / partner_driver không xem như hoàn thành mà đưa vào missing queue",
+        "Dừng, Hủy, Chờ giao lại chỉ do vận hành (logistics) thực hiện; tài xế và công ty giao hàng ủy thác chỉ báo cáo; Dừng và Hủy bắt buộc có lý do"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Giải thích và suy luận",
+      "items": [
+        "Giao một phần / Chờ giao lại là trạng thái cuối của bản cha; số còn lại hoặc toàn bộ nằm ở bản con bắt đầu từ Đang xác nhận, rồi sang Chờ xuất hàng (§7-7 bảng chuyển đổi)",
+        "Bản con cũng được tạo (Đang xác nhận) khi đăng ký sự cố loại giao nhầm・vắng mặt・hư hỏng, bản cha giữ nguyên trạng thái; chỉ vẽ nhánh từ Giao một phần, nhánh từ Chờ giao lại và sự cố giữ ở thẻ để tránh rối (suy luận về cách vẽ)",
+        "Báo cáo sự cố và liên hệ sau giao không đưa Đã giao quay lại Đang xác nhận; Đã xuất hàng・Đã nhận → Dừng cũng gồm Đã nhận",
+        "Draft bị xóa khi phê duyệt tạm ngừng・hủy hợp đồng (override còn lại dạng Hủy kèm lý do); 'xóa' không phải giá trị status nên không vẽ thành trạng thái"
+      ]
+    }
+  ]
+}

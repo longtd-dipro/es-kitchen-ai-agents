@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "2a069482-61b8-483e-a6df-c4a0ecb1f87b",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/70_Đại_lý/dataflow-agency-referral-20261007-103000/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/70_Đại_lý/dataflow-agency-referral-20261007-103000/agency-referral.html",
+  "specification": {
+    "sha256": "ecf329cb30f60004facf018c3ee8139577c3d5c9446ed7cd99f964f5d7b2ad8d",
+    "bytes": 5840
+  },
+  "artifact": {
+    "sha256": "1253c764f72832242f602b4def42f85c63f0d9b41196d5b5e200bf098acba9dd",
+    "bytes": 763255
+  }
+}

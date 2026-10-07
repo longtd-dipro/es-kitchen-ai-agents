@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "cf789ad7-61bb-43b6-8395-7800063b2b78",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/55_Đặt_hàng_Nhập_mua_Nhập_kho/dataflow-dat-hang-nhap-kho-20261007-095858/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/55_Đặt_hàng_Nhập_mua_Nhập_kho/dataflow-dat-hang-nhap-kho-20261007-095858/dat-hang-nhap-kho.html",
+  "specification": {
+    "sha256": "6c12c5dadd5f716de3420034a829b3dc62fcf78c0b56f88662aff00585caef8d",
+    "bytes": 5292
+  },
+  "artifact": {
+    "sha256": "e025238cbd631da9159e7165a03e8d39b30ca65c7e0d7774729e7da11b3d0c54",
+    "bytes": 764619
+  }
+}

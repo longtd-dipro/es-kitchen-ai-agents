@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "82b6907b-cb9b-4963-9f29-0d61c5aa7057",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/80_Màn_hình_vận_hành_và_doanh_nghiệp/lifecycle-notification-status-20261007-104600/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/80_Màn_hình_vận_hành_và_doanh_nghiệp/lifecycle-notification-status-20261007-104600/notification-status.html",
+  "specification": {
+    "sha256": "7109a8975c08cee41c2fdc063a288f31e6cd05d46aec985bfbca1ea19a3010eb",
+    "bytes": 2472
+  },
+  "artifact": {
+    "sha256": "9dc7a2674a23dd80cb41c94876260f8ddb14fc66e0d5ff7f9818f23524fdd164",
+    "bytes": 754112
+  }
+}

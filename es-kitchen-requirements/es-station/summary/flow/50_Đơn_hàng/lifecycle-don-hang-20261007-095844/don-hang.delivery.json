@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "b5fa57f8-dbce-47f2-bb4a-e8abc28135ab",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/50_Đơn_hàng/lifecycle-don-hang-20261007-095844/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/50_Đơn_hàng/lifecycle-don-hang-20261007-095844/don-hang.html",
+  "specification": {
+    "sha256": "fcdb0ace860d3cf35b0b943619cc544816921985eb92813ec0e7a05913fb67d4",
+    "bytes": 3737
+  },
+  "artifact": {
+    "sha256": "9b996e04b9d945afebfc20522a82519783bf8a09d9460cc568a656e9805ffb62",
+    "bytes": 757701
+  }
+}

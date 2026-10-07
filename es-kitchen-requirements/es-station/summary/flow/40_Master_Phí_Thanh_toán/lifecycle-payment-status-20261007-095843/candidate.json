@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": { "title": "Trạng thái thanh toán (vận hành, 5 giai đoạn)", "output": "flow/40_Master_Phí_Thanh_toán/lifecycle-payment-status-20261007-095843/payment-status.html", "quality_profile": "showcase" },
+  "lanes": [ { "id":"main", "label":"Trả trước (①)" }, { "id":"post", "label":"Trả sau (②)" } ],
+  "states": [
+    { "id":"pre_created", "type":"start", "label":"Đã tạo", "sublabel":"trả trước", "lane":"main", "col":0 },
+    { "id":"pre_c1", "type":"active", "label":"① xác nhận", "sublabel":"trả trước", "lane":"main", "col":1 },
+    { "id":"pre_fac", "type":"waiting", "label":"Cơ sở xác nhận", "sublabel":"trả trước", "lane":"main", "col":2 },
+    { "id":"pre_corp", "type":"waiting", "label":"DN xác nhận", "sublabel":"trả trước", "lane":"main", "col":3 },
+    { "id":"pre_paid", "type":"success", "label":"Đã thanh toán", "sublabel":"trả trước", "lane":"main", "col":4 },
+    { "id":"post_open", "type":"start", "label":"Chưa tổng hợp", "sublabel":"trả sau", "lane":"post", "col":0 },
+    { "id":"post_c2", "type":"active", "label":"② xác nhận", "sublabel":"trả sau", "lane":"post", "col":1 },
+    { "id":"post_fac", "type":"waiting", "label":"Cơ sở xác nhận", "sublabel":"trả sau", "lane":"post", "col":2 },
+    { "id":"post_corp", "type":"waiting", "label":"DN xác nhận", "sublabel":"trả sau", "lane":"post", "col":3 },
+    { "id":"post_paid", "type":"success", "label":"Đã thanh toán", "sublabel":"trả sau", "lane":"post", "col":4 }
+  ],
+  "transitions": [
+    { "from":"pre_created", "to":"pre_c1" }, { "from":"pre_c1", "to":"pre_fac" }, { "from":"pre_fac", "to":"pre_corp" }, { "from":"pre_corp", "to":"pre_paid" },
+    { "from":"post_open", "to":"post_c2" }, { "from":"post_c2", "to":"post_fac" }, { "from":"post_fac", "to":"post_corp" }, { "from":"post_corp", "to":"post_paid" }
+  ],
+  "cards": [
+    { "dot":"cyan", "title":"Căn cứ (Quy_tắc_thanh_toán §1-6, STEP2 Q6)", "items":["Vận hành có 5 giai đoạn: trả trước (đã tạo / ① xác nhận / cơ sở xác nhận / doanh nghiệp xác nhận / đã thanh toán) và trả sau (chưa tổng hợp / ② xác nhận / cơ sở xác nhận / doanh nghiệp xác nhận / đã thanh toán)","Thứ tự mũi tên theo thứ tự liệt kê trong tài liệu"] },
+    { "dot":"amber", "title":"Suy luận / không chắc", "items":["Tài liệu chỉ liệt kê tên giai đoạn, không nêu rõ ai thực hiện hay điều kiện chuyển — nên mũi tên không gắn nhãn","Không có thông tin lùi trạng thái hay trạng thái lỗi cho 5 giai đoạn này","Web doanh nghiệp chỉ có 3 giai đoạn: chưa xác nhận / đã xác nhận / đã thanh toán (không vẽ). Màn hình xác nhận thanh toán chưa có demo (§8)"] }
+  ]
+}

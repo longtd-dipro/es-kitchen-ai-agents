@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "a9ad4cf8-0b71-48c3-81c2-5c52bde4f884",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/55_Đặt_hàng_Nhập_mua_Nhập_kho/lifecycle-trang-thai-dat-hang-20261007-095858/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/55_Đặt_hàng_Nhập_mua_Nhập_kho/lifecycle-trang-thai-dat-hang-20261007-095858/trang-thai-dat-hang.html",
+  "specification": {
+    "sha256": "4b47558121433ddeeda5b143e57d1166fb993c8d1d745ea60b88c08fcdf6a371",
+    "bytes": 3743
+  },
+  "artifact": {
+    "sha256": "8de134b8877801c846ba8c52131a3ef81dd3876b1941bd579bedaa08c058b58f",
+    "bytes": 763788
+  }
+}

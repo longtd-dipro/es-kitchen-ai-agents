@@ -98,6 +98,100 @@ Các giá trị cụ thể (file key, node id của output page / component libr
 
 > Bộ đặc tả giao diện thực tế ES Kitchen Phase 2 (style · font · size · layout · pattern từng trang) nằm ở **`.claude/designer-agent/design-spec/`**. Designer Agent KHÔNG được vẽ nếu chưa LEARNING bộ này.
 
+**0.I — Hỏi INPUT bằng `AskUserQuestion` (BẮT BUỘC, chạy ĐẦU TIÊN — trước 0.0):**
+
+Trước khi làm gì, xác định đủ 4 nhóm input. Mục nào **user đã cung cấp rõ trong câu lệnh** (vd `prototype: <path>`, `figma: <url>`) → bỏ câu đó; còn lại gộp vào **1 lần** `AskUserQuestion` (tối đa 4 câu):
+
+```json
+{
+  "questions": [
+    {
+      "header": "Prototype",
+      "question": "Prototype HTML nằm ở đâu?",
+      "multiSelect": false,
+      "options": [
+        { "label": "Trong input/ (Recommended)", "description": "Agent Glob input/**/*.html, liệt kê để bạn xác nhận file nào dùng" },
+        { "label": "Đường dẫn khác", "description": "Bạn gõ đường dẫn file .html / folder prototype ở ô Other" },
+        { "label": "Không có prototype", "description": "Vẽ từ SPEC.md / tài liệu khác (chọn ở câu tiếp theo)" }
+      ]
+    },
+    {
+      "header": "Tài liệu",
+      "question": "Có tài liệu nào khác kèm theo không? (chọn nhiều)",
+      "multiSelect": true,
+      "options": [
+        { "label": "SPEC.md", "description": "Có ## Screens → dùng đúng Screen Code + điền Figma Link" },
+        { "label": "Figma BA / low-fi", "description": "Frame BA đã vẽ (Flow / Screen Flow / Screens) — dùng làm reference bố cục" },
+        { "label": "Tài liệu yêu cầu", "description": ".md / .docx / .xlsx / .pdf / ảnh trong input/ — function list, REQ, mô tả nghiệp vụ" },
+        { "label": "Không có", "description": "Chỉ dùng prototype" }
+      ]
+    },
+    {
+      "header": "Figma đích",
+      "question": "Đặt output Figma ở đâu?",
+      "multiSelect": false,
+      "options": [
+        { "label": "ES-Kitchen-phase-2 (Recommended)", "description": "Section mới trong file VKAAOyoSPvgoB3H2qdeeV3 — agent tạo Section mới ở vùng trống, không đè frame cũ" },
+        { "label": "Gửi URL có sẵn", "description": "Paste URL figma.com/design/...?node-id=... ở ô Other" },
+        { "label": "Tạo file Figma mới", "description": "Agent tạo file mới (create_new_file) trong team/project bạn chỉ định" }
+      ]
+    },
+    {
+      "header": "Tên output",
+      "question": "Tên Section / group output đặt thế nào?",
+      "multiSelect": false,
+      "options": [
+        { "label": "Agent tự đề xuất (Recommended)", "description": "Theo mẫu AI_Generate_<Tên tính năng> (+ ngôn ngữ ở 0.2b), in ra để bạn duyệt trước khi tạo" },
+        { "label": "Tôi tự đặt tên", "description": "Gõ tên ở ô Other" }
+      ]
+    }
+  ]
+}
+```
+
+- Lưu thành `INPUT = { prototype, docs[], figmaTarget, outputName }`.
+- Chọn "Trong input/" → `Glob input/**/*.html`; nhiều file → hỏi tiếp (AskUserQuestion, options = tên file, tối đa 4, còn lại gõ Other); **0 file** → báo user, hỏi lại.
+- Chọn tài liệu khác → `Read` từng file (docx/xlsx/pdf dùng skill tương ứng nếu có); Figma BA → `get_metadata` + `get_screenshot` làm reference.
+- "Agent tự đề xuất" tên → đề xuất 1–2 phương án (vd `AI_Generate_Duyệt đăng ký Company`), **chờ user duyệt** rồi mới tạo Section.
+- **Không có prototype VÀ không có tài liệu nào** → DỪNG, không vẽ.
+- Figma đích lấy ở đây → **Câu 0.5 (Bước 3a) không hỏi lại**; D4 ở 0.0 kiểm tra library trên đúng file này.
+
+**0.0 — Kiểm tra đầu vào Design System (BẮT BUỘC, chạy ngay sau 0.I):**
+
+Dự án phải có design system đầy đủ **tương đương chuẩn ES Kitchen** trước khi vẽ. Kiểm tra 4 điều kiện:
+
+| # | Điều kiện | Cách kiểm tra | PASS khi |
+|---|---|---|---|
+| D1 | Bộ design-spec | `Read .claude/designer-agent/design-spec/README.md` + `00-foundation.md` | Tồn tại, có bảng màu primary theo platform + typography + spacing |
+| D2 | Token máy đọc | `Read .claude/designer-agent/design-spec/tokens.json` | JSON hợp lệ, có `platforms.<key>` cho platform sắp vẽ |
+| D3 | Design rule | `Read .claude/rules/design_rule.md` §10 + §11 | Đã điền per-site layout + Figma → token cho repo đích (không phải placeholder kit) |
+| D4 | Figma component library | `get_libraries` / `search_design_system("Button")` trên file đích | Trả về component (Button, Input, Table cell, Pagination…) |
+
+- **Cả 4 PASS** → in `✅ Design System input: OK (D1–D4)` → sang 0.1.
+- **Thiếu bất kỳ mục nào** → **DỪNG**, KHÔNG tự dùng kit default, KHÔNG vẽ rectangle → hỏi bằng `AskUserQuestion` (1 lần, gộp các mục thiếu):
+
+```json
+{
+  "questions": [
+    {
+      "header": "Design sys",
+      "question": "Dự án chưa có đủ design system (thiếu: <D1/D2/D3/D4>). Lấy design system từ đâu?",
+      "multiSelect": false,
+      "options": [
+        { "label": "Figma URL design system (Recommended)", "description": "User gửi link page Foundations/Design Tokens/Component Library → agent get_variable_defs + get_design_context, dựng design-spec + tokens.json + design_rule §10–11 theo chuẩn ES Kitchen, xin duyệt rồi mới vẽ" },
+        { "label": "Tài liệu / artifact design system", "description": "User gửi link artifact, Notion, .md, PDF… → agent trích token + rule, dựng design-spec, xin duyệt" },
+        { "label": "Dùng tạm chuẩn ES Kitchen", "description": "Lấy design-spec ES Kitchen làm nền, đánh dấu 'TBD design lock' trong handover và SPEC Open Questions" },
+        { "label": "Agent đề xuất design system mới", "description": "Agent đề xuất token + component từ reference screen user cung cấp → user duyệt từng phần trước khi vẽ screen" }
+      ]
+    }
+  ]
+}
+```
+
+- Nếu chỉ thiếu **D4** (library) → dùng template Gate B ở `.claude/rules/designer-preflight.md` nhưng vẫn hỏi qua `AskUserQuestion` (options A–D của Gate B).
+- Chọn nguồn mới (option 1/2/4) → dựng đủ D1–D3 theo cấu trúc `design-spec/` của ES Kitchen **TRƯỚC** khi vẽ screen đầu tiên; ghi changelog README §7.
+- Quyết định của user → ghi vào note đầu Bước 6 handover.
+
 **0.1 — Learning nền (mọi lần chạy):**
 ```
 Read: .claude/designer-agent/design-spec/README.md        ← index, thứ tự ưu tiên nguồn, map platform → file
@@ -141,6 +235,56 @@ Gọi đúng 1 lần `AskUserQuestion` với 2 câu (`multiSelect: true` cho c�
 - Cả 2 câu đều trống → hỏi lại (không được tự đoán).
 - Lưu kết quả thành `TARGET_PLATFORMS[]` — thay thế Câu 0 ở Bước 3a.
 
+**0.2b — Hỏi ngôn ngữ đặt tên `group_name` · `section_name` · `screen_name` bằng `AskUserQuestion` (BẮT BUỘC trước khi vẽ):**
+
+> `group_name` = tên nhóm flow/group frame · `section_name` = tên Figma Section (session) · `screen_name` = tên frame màn hình (sau Screen Code).
+
+Gọi **1 lần** `AskUserQuestion` với 3 câu (single-select mỗi câu; muốn tổ hợp khác, vd `en` hoặc `ja + en`, chọn "Other"):
+
+```json
+{
+  "questions": [
+    {
+      "header": "Group name",
+      "question": "group_name (tên nhóm flow) dùng ngôn ngữ nào?",
+      "multiSelect": false,
+      "options": [
+        { "label": "vi + ja + en (Recommended)", "description": "3 ngôn ngữ, mỗi ngôn ngữ 1 dòng — không bị cắt chữ" },
+        { "label": "vi + ja", "description": "Song ngữ Việt – Nhật, 2 dòng" },
+        { "label": "ja", "description": "Chỉ tiếng Nhật (theo UI sản phẩm)" },
+        { "label": "vi", "description": "Chỉ tiếng Việt (team nội bộ)" }
+      ]
+    },
+    {
+      "header": "Section name",
+      "question": "section_name (tên Figma Section) dùng ngôn ngữ nào?",
+      "multiSelect": false,
+      "options": [
+        { "label": "vi + ja + en (Recommended)", "description": "3 ngôn ngữ, mỗi ngôn ngữ 1 dòng" },
+        { "label": "vi + ja", "description": "Song ngữ Việt – Nhật, 2 dòng" },
+        { "label": "ja", "description": "Chỉ tiếng Nhật" },
+        { "label": "vi", "description": "Chỉ tiếng Việt" }
+      ]
+    },
+    {
+      "header": "Screen name",
+      "question": "screen_name (tên frame màn hình, sau Screen Code) dùng ngôn ngữ nào?",
+      "multiSelect": false,
+      "options": [
+        { "label": "vi + ja + en (Recommended)", "description": "Screen Code + 3 ngôn ngữ, mỗi ngôn ngữ 1 dòng" },
+        { "label": "vi + ja", "description": "Screen Code + song ngữ Việt – Nhật, 2 dòng" },
+        { "label": "ja", "description": "Screen Code + tiếng Nhật" },
+        { "label": "vi", "description": "Screen Code + tiếng Việt" }
+      ]
+    }
+  ]
+}
+```
+
+- Lưu thành `NAMING_LANG = { group, section, screen }` (vd `{ group: ["vi","ja","en"], ... }`). Thứ tự dòng = đúng thứ tự user chọn (mặc định **vi → ja → en**).
+- **Song ngữ / đa ngữ → BẮT BUỘC xuống dòng, không để bị cắt chữ** — áp dụng rule `design-spec/00-foundation.md` §12 (layer name 1 dòng nối ` | ` + **text label hiển thị nhiều dòng** đặt trên group/section/frame, `textAutoResize = "HEIGHT"`, width cố định = width node).
+- Nguồn bản dịch: tên ja lấy từ SPEC/Figma gốc; vi/en dịch theo thuật ngữ foundation §10. Không chắc thuật ngữ → ghi `[Design]` Open Question, không tự bịa.
+
 **0.3 — Learning theo platform đã chọn:**
 ```
 For each platform in TARGET_PLATFORMS:
@@ -156,6 +300,7 @@ For each platform in TARGET_PLATFORMS:
   Shell: <sider/header/tab bar...> · Font: Noto Sans JP <các style chính>
   Component chính: <...> · Pattern đặc thù: <...>
   Mâu thuẫn cần lưu ý: <C# trong foundation §9 nếu liên quan>
+  Naming: group=<vi+ja+en…> · section=<…> · screen=<…> (xuống dòng theo foundation §12)
 ```
 
 > Khi phát hiện Figma mới khác spec → cập nhật file spec + changelog README §7 + memory (không để drift).
@@ -237,7 +382,7 @@ Feature này thiết kế cho PLATFORM nào? (chọn 1 hoặc kết hợp)
 - Nếu user CHƯA trả lời và SPEC.md CŨNG chưa ghi rõ → **DỪNG WORKFLOW**, không được tự đoán, không được tiếp tục Bước 4 vẽ frame
 - Lưu answer làm `TARGET_PLATFORM` — dùng cho `frame.resize()` ở Bước 4b (mapping chuẩn ở phần "Viewport CHUẨN CỨNG" ngay dưới)
 
-**Câu 0.5 — Figma URL output đích (BẮT BUỘC hỏi thứ hai):**
+**Câu 0.5 — Figma URL output đích:** ✅ **Đã hỏi ở Bước 0.I** (`INPUT.figmaTarget`) → không hỏi lại. Nội dung gốc giữ để tham chiếu:
 ```
 Figma Design file nào để đặt output screens? (URL dạng figma.com/design/...)
    - File key + page/section đích

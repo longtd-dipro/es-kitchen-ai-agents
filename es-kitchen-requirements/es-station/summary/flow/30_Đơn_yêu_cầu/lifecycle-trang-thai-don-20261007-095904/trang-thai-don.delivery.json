@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "62785056-e713-4066-b586-316f2eecbfbb",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/30_Đơn_yêu_cầu/lifecycle-trang-thai-don-20261007-095904/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/30_Đơn_yêu_cầu/lifecycle-trang-thai-don-20261007-095904/trang-thai-don.html",
+  "specification": {
+    "sha256": "05f06299bdebfc46d2faf1d64fb2d2d4dfc33b4ca7c54067d9547ffdc965bbe3",
+    "bytes": 2997
+  },
+  "artifact": {
+    "sha256": "7d9efa909b772832593b95517fd2bfbc8a62fb3ba0aabd888640f469e5287798",
+    "bytes": 756448
+  }
+}

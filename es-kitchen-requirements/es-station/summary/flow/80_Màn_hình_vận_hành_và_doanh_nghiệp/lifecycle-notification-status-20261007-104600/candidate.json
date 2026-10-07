@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": { "title": "Vòng đời trạng thái Thông báo (AW_NOTI)", "output": "flow/80_Màn_hình_vận_hành_và_doanh_nghiệp/lifecycle-notification-status-20261007-104600/notification-status.html", "quality_profile": "showcase" },
+  "lanes": [ { "id": "main", "label": "Thông báo" }, { "id": "ops", "label": "Thao tác vận hành" }, { "id": "terminal", "label": "Kết thúc" } ],
+  "states": [
+    { "id": "planned", "type": "start", "label": "Đã lên kế hoạch", "sublabel": "chưa bắt đầu", "lane": "main", "col": 0 },
+    { "id": "published", "type": "active", "label": "Đang công khai", "sublabel": "hiển thị cho đối tượng", "lane": "main", "col": 1 },
+    { "id": "ended", "type": "success", "label": "Đã kết thúc", "sublabel": "suy luận từ ngày kết thúc", "lane": "main", "col": 2 },
+    { "id": "stopped", "type": "failure", "label": "Đã dừng gửi", "sublabel": "không hoàn tác・không sửa", "lane": "ops", "col": 1 },
+    { "id": "deleted", "type": "neutral", "label": "Đã xóa", "sublabel": "chỉ từ mục đã dừng", "lane": "terminal", "col": 2 }
+  ],
+  "transitions": [
+    { "from": "planned", "to": "published", "label": "đến ngày bắt đầu" },
+    { "from": "published", "to": "ended", "label": "đến ngày kết thúc" },
+    { "from": "planned", "to": "stopped", "label": "Dừng gửi", "variant": "security" },
+    { "from": "published", "to": "stopped", "label": "Dừng gửi", "variant": "security" },
+    { "from": "stopped", "to": "deleted", "label": "Xóa" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Căn cứ (§5)", "items": ["5-4: chưa bắt đầu = 'Đã lên kế hoạch' (không dùng 'Đã đặt trước')", "5-5: 'Dừng gửi' áp dụng cho mục đang công khai・đã lên kế hoạch, sau xác nhận, không hoàn tác; mục đã dừng không sửa được, có thể xóa", "5-7: kết thúc để trống = không kết thúc"] },
+    { "dot": "amber", "title": "Suy luận (tài liệu không nêu rõ)", "items": ["Tên trạng thái 'Đang công khai' lấy từ 5-5 / 5-13; 'Đã kết thúc' là suy luận từ ngày giờ kết thúc", "Việc tự chuyển Đã lên kế hoạch → Đang công khai theo ngày bắt đầu là suy luận", "Chưa rõ có xóa được mục ở trạng thái khác không; nguồn: Màn_hình_vận_hành_và_doanh_nghiệp.md"] }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "04396bbe-6581-4f15-abfd-8b1fa2df2c10",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/.archify/lifecycle-trang-thai-giao-hang-20261007-093226/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/.archify/lifecycle-trang-thai-giao-hang-20261007-093226/lifecycle-trang-thai-giao-hang.html",
+  "specification": {
+    "sha256": "57bb13515c5cfad26de6495945af38418cb4f00757014dba9cc763932bc62a67",
+    "bytes": 6023
+  },
+  "artifact": {
+    "sha256": "ebbbc3f859988e36b0aae7a8812e2f3d21d3c7dd03aadbf6a3e3564910054166",
+    "bytes": 772387
+  }
+}

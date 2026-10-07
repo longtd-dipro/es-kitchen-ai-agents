@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Vòng đời trạng thái đơn hàng hằng tháng",
+    "output": "flow/50_Đơn_hàng/lifecycle-don-hang-20261007-095844/don-hang.html",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "main", "label": "Doanh nghiệp" },
+    { "id": "system", "label": "Hệ thống" },
+    { "id": "ops", "label": "ES Kitchen (Vận hành)" },
+    { "id": "terminal", "label": "Kết thúc" }
+  ],
+  "states": [
+    { "id": "unregistered", "type": "start", "label": "Chưa đăng ký", "sublabel": "trong thời gian tiếp nhận", "lane": "main", "col": 0 },
+    { "id": "registered", "type": "active", "label": "Khách đã đăng ký", "sublabel": "nhấn \"Đăng ký\"", "lane": "main", "col": 1 },
+    { "id": "default_order", "type": "waiting", "label": "ĐH mặc định", "sublabel": "xác định tự động", "lane": "system", "col": 0 },
+    { "id": "es_changed", "type": "external", "label": "ES đã thay đổi", "sublabel": "Vận hành sửa", "lane": "ops", "col": 2 },
+    { "id": "cancelled", "type": "failure", "label": "Đã hủy", "sublabel": "tạm dừng・hủy hợp đồng", "lane": "terminal", "col": 3 }
+  ],
+  "transitions": [
+    { "from": "unregistered", "to": "registered", "variant": "emphasis", "label": "đăng ký" },
+    { "from": "unregistered", "to": "default_order", "label": "đến hạn chốt" },
+    { "from": "default_order", "to": "registered", "variant": "dashed", "label": "nhập lại" },
+    { "from": "registered", "to": "default_order", "variant": "security", "label": "đổi gói" },
+    { "from": "registered", "to": "es_changed", "variant": "security", "label": "ES sửa" },
+    { "from": "default_order", "to": "es_changed", "variant": "security", "label": "ES sửa" },
+    { "from": "es_changed", "to": "cancelled", "variant": "security", "label": "hủy HĐ" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "4 trạng thái (Đơn_hàng.md §1-5)",
+      "items": [
+        "Chỉ có một trạng thái duy nhất: chưa đăng ký / khách hàng đã đăng ký / ES Kitchen đã thay đổi / đơn hàng mặc định",
+        "Không có đơn tạm・bản nháp・phê duyệt: cái đã nhấn \"Đăng ký\" chính là đơn hàng (§1-3)",
+        "Ai・khi nào nhập・sửa đều ghi vào lịch sử thay đổi, kể cả thay đổi của ES sau hạn chốt"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Điều kiện chuyển đổi",
+      "items": [
+        "Đăng ký lại được nhiều lần đến hạn chốt (§1-3); cơ sở chưa đăng ký đến hạn chốt → đơn mặc định (§1-4)",
+        "Đổi gói・đổi số lần giao hàng → đưa về đơn mặc định theo điều kiện mới, nhập lại được đến hạn chốt (§8)",
+        "ES sửa được bất cứ lúc nào, ở bất kỳ trạng thái nào; khách hàng không tự hủy・dừng được (§1-6)"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Kết thúc và điểm suy luận",
+      "items": [
+        "Tạm dừng・hủy hợp đồng được phê duyệt → đơn hàng của chu kỳ đó bị hủy (§8, bảng)",
+        "Suy luận: \"Đã hủy\" tách thành trạng thái kết thúc để vẽ (tài liệu chỉ ghi kết quả \"Hủy\"); việc hủy áp dụng cả với trạng thái Chưa đăng ký・Khách đã đăng ký・ĐH mặc định, sơ đồ chỉ vẽ một đường qua ES đã thay đổi cho gọn",
+        "Tài liệu không nêu rõ có quay lại từ \"ES đã thay đổi\" sang khách đăng ký hay không nên không vẽ"
+      ]
+    }
+  ]
+}

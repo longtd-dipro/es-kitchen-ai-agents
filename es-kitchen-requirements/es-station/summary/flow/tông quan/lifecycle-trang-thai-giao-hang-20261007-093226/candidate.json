@@ -1,0 +1,231 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "ES Station – Vòng đời trạng thái giao hàng (delivery status)",
+    "output": ".archify/lifecycle-trang-thai-giao-hang-20261007-093226/lifecycle-trang-thai-giao-hang.html",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "Đường giao hàng chính"
+    },
+    {
+      "id": "waiting",
+      "label": "Bản ghi con chờ quyết định"
+    },
+    {
+      "id": "terminal",
+      "label": "Trạng thái kết thúc"
+    }
+  ],
+  "states": [
+    {
+      "id": "plan",
+      "type": "start",
+      "label": "Kế hoạch",
+      "sublabel": "draft · chưa có status",
+      "lane": "main",
+      "col": 0,
+      "step": "01",
+      "tag": "—"
+    },
+    {
+      "id": "waitship",
+      "type": "active",
+      "label": "Chờ xuất hàng",
+      "sublabel": "đã có dữ liệu giao hàng",
+      "lane": "main",
+      "col": 1,
+      "step": "02",
+      "tag": "deliveries"
+    },
+    {
+      "id": "shipped",
+      "type": "active",
+      "label": "Đã xuất hàng",
+      "sublabel": "kho đã xuất",
+      "lane": "main",
+      "col": 2,
+      "step": "03",
+      "tag": "kho"
+    },
+    {
+      "id": "received",
+      "type": "active",
+      "label": "Đã nhận",
+      "sublabel": "tài xế đã nhận",
+      "lane": "main",
+      "col": 3,
+      "step": "04",
+      "tag": "app ES"
+    },
+    {
+      "id": "delivered",
+      "type": "success",
+      "label": "Đã giao",
+      "sublabel": "giao đủ số lượng",
+      "lane": "main",
+      "col": 4,
+      "step": "05",
+      "tag": "kết thúc"
+    },
+    {
+      "id": "confirming",
+      "type": "waiting",
+      "label": "Đang xác nhận",
+      "sublabel": "chờ chốt ngày · SL",
+      "lane": "waiting",
+      "col": 1,
+      "tag": "bản ghi con"
+    },
+    {
+      "id": "cancelled",
+      "type": "failure",
+      "label": "Hủy",
+      "sublabel": "trước khi xuất kho",
+      "lane": "terminal",
+      "col": 1,
+      "tag": "kết thúc"
+    },
+    {
+      "id": "stopped",
+      "type": "failure",
+      "label": "Dừng",
+      "sublabel": "sau khi đã xuất kho",
+      "lane": "terminal",
+      "col": 2,
+      "tag": "kết thúc"
+    },
+    {
+      "id": "partial",
+      "type": "neutral",
+      "label": "Giao một phần",
+      "sublabel": "phần còn lại sang con",
+      "lane": "terminal",
+      "col": 3,
+      "tag": "kết thúc"
+    },
+    {
+      "id": "redeliver",
+      "type": "neutral",
+      "label": "Chờ giao lại",
+      "sublabel": "toàn bộ sang con",
+      "lane": "terminal",
+      "col": 4,
+      "tag": "kết thúc"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "plan",
+      "to": "waitship",
+      "label": "sinh chính thức"
+    },
+    {
+      "from": "waitship",
+      "to": "shipped",
+      "label": "CSV xuất hàng"
+    },
+    {
+      "from": "shipped",
+      "to": "received",
+      "label": "tài xế nhận"
+    },
+    {
+      "from": "received",
+      "to": "delivered",
+      "label": "giao đủ"
+    },
+    {
+      "from": "shipped",
+      "to": "delivered",
+      "variant": "dashed",
+      "label": "batch 06:00"
+    },
+    {
+      "from": "waitship",
+      "to": "cancelled",
+      "variant": "security",
+      "label": "không xuất được"
+    },
+    {
+      "from": "shipped",
+      "to": "stopped",
+      "variant": "security",
+      "label": "không giao được"
+    },
+    {
+      "from": "received",
+      "to": "stopped",
+      "variant": "security"
+    },
+    {
+      "from": "received",
+      "to": "partial",
+      "variant": "security",
+      "label": "giao một phần"
+    },
+    {
+      "from": "received",
+      "to": "redeliver",
+      "variant": "security",
+      "label": "giao lại"
+    },
+    {
+      "from": "partial",
+      "to": "confirming",
+      "variant": "dashed",
+      "label": "tạo con"
+    },
+    {
+      "from": "redeliver",
+      "to": "confirming",
+      "variant": "dashed",
+      "label": "tạo con"
+    },
+    {
+      "from": "confirming",
+      "to": "waitship",
+      "label": "chốt ngày · SL"
+    },
+    {
+      "from": "confirming",
+      "to": "cancelled",
+      "variant": "security",
+      "label": "không gửi lại"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Đường giao hàng chính",
+      "items": [
+        "Kế hoạch (draft) chưa có delivery status; khi sinh chính thức thì thành Chờ xuất hàng",
+        "Đã xuất hàng khi nhập CSV thực tích xuất hàng hoặc CSV vận đơn; Đã nhận chỉ vào được từ ứng dụng tài xế ES",
+        "Nếu chặng cuối do công ty vận tải giao, batch 06:00 hôm sau xem là Đã giao (presumed)",
+        "Nguồn: Giao_hàng_04 §7-7"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Kết thúc ngoài đường chính",
+      "items": [
+        "Chỉ bộ phận vận hành mới chuyển sang Hủy, Dừng, Chờ giao lại; tài xế và công ty ủy thác chỉ báo cáo",
+        "Hủy là chưa xuất khỏi kho; Dừng là đã xuất mà không giao được; cả hai thực tích 0 và không thanh toán",
+        "Giao một phần và Chờ giao lại là trạng thái cuối của bản ghi đó; Đã xuất hàng cũng có thể sang Giao một phần, Chờ giao lại (cùng bảng chuyển đổi)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Bản ghi con và sự cố",
+      "items": [
+        "Giao một phần, Chờ giao lại sinh bản ghi con bắt đầu từ Đang xác nhận; bản cha không đổi trạng thái",
+        "Con chỉ sang Chờ xuất hàng khi đã chốt ngày và số lượng; hủy chỉ khi chưa xuất kho",
+        "Báo cáo sự cố hay liên hệ sau khi giao không đổi trạng thái bản cha; Đã giao không quay lại Đang xác nhận",
+        "Nguồn: Giao_hàng_04 §7-7 (bảng chuyển đổi)"
+      ]
+    }
+  ]
+}

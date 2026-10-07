@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Vòng đời trạng thái đơn thay đổi (CH-)",
+    "output": "flow/30_Đơn_yêu_cầu/lifecycle-trang-thai-don-20261007-095904/trang-thai-don.html",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "main", "label": "Xử lý đơn" },
+    { "id": "terminal", "label": "Trạng thái kết thúc" }
+  ],
+  "states": [
+    { "id": "pending", "type": "start", "label": "Chờ phê duyệt", "sublabel": "đã gửi・chưa xử lý", "lane": "main", "col": 0 },
+    { "id": "processing", "type": "active", "label": "Đang xử lý n/N", "sublabel": "còn cơ sở chờ PD", "lane": "main", "col": 2 },
+    { "id": "withdrawn", "type": "neutral", "label": "Đã rút lại", "sublabel": "ghi ngày giờ", "lane": "terminal", "col": 0 },
+    { "id": "approved", "type": "success", "label": "Đã phê duyệt", "sublabel": "mọi cơ sở được PD", "lane": "terminal", "col": 1 },
+    { "id": "partial", "type": "waiting", "label": "PD một phần", "sublabel": "lẫn PD và từ chối", "lane": "terminal", "col": 2 },
+    { "id": "rejected", "type": "failure", "label": "Từ chối", "sublabel": "từ chối mọi cơ sở", "lane": "terminal", "col": 3 }
+  ],
+  "transitions": [
+    { "from": "pending", "to": "processing", "label": "xử lý 1 cơ sở" },
+    { "from": "pending", "to": "withdrawn", "label": "rút lại", "variant": "dashed" },
+    { "from": "processing", "to": "approved", "label": "PD tất cả", "variant": "emphasis" },
+    { "from": "processing", "to": "partial", "label": "lẫn PD+từ chối" },
+    { "from": "processing", "to": "rejected", "label": "từ chối tất cả", "variant": "security" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Quy tắc trạng thái (§3-2)", "items": ["Còn cơ sở chờ PD = đang xử lý (hiển thị số đã xử lý/tổng, ví dụ 1/3)", "Mọi cơ sở PD = đã PD; lẫn PD và từ chối = PD một phần; từ chối tất cả = từ chối", "Trạng thái cơ sở trong chi tiết đơn: chờ PD / đã PD / từ chối / đã rút lại"] },
+    { "dot": "amber", "title": "Rút lại・từ chối (§3-4・§3-5)", "items": ["Chỉ rút lại được cơ sở chưa xử lý, do tài khoản đã gửi hoặc tài khoản doanh nghiệp", "Từ chối bắt buộc lý do, không có luồng trả lại để sửa (đăng ký lại)", "Đã PD thì chỉ để xem, muốn sửa gửi đơn mới; không có Làm lại"] },
+    { "dot": "rose", "title": "Điểm suy luận / chưa rõ", "items": ["Đơn 1 cơ sở: chuyển thẳng từ Chờ PD sang Đã PD / Từ chối không được tài liệu mô tả rõ, sơ đồ chỉ vẽ đường qua Đang xử lý", "Rút lại một phần khi đã xử lý 1 số cơ sở: tài liệu không nêu trạng thái đơn", "§3-2 ghi khó phân biệt Đang xử lý và PD một phần, đang chờ chốt tên (§13)"] }
+  ]
+}
