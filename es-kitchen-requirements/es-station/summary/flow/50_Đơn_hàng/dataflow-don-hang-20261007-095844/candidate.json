@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Luồng dữ liệu đơn hàng hằng tháng",
+    "output": "flow/50_Đơn_hàng/dataflow-don-hang-20261007-095844/don-hang.html",
+    "viewBox": [
+      1080,
+      560
+    ],
+    "quality_profile": "showcase"
+  },
+  "stages": [
+    {
+      "label": "Đầu vào"
+    },
+    {
+      "label": "Tạo đơn"
+    },
+    {
+      "label": "Kiểm tra"
+    },
+    {
+      "label": "Lưu trữ"
+    },
+    {
+      "label": "Sử dụng"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "past",
+      "type": "database",
+      "label": "Dữ liệu quá khứ",
+      "sublabel": "ĐH・tỷ lệ hủy・tồn kho",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "menu",
+      "type": "database",
+      "label": "Menu・Gói",
+      "sublabel": "ngày mở・hạn chốt",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "std",
+      "type": "backend",
+      "label": "SL tiêu chuẩn",
+      "sublabel": "Vận hành nhập trọng số",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "ai",
+      "type": "backend",
+      "label": "AI đề xuất",
+      "sublabel": "xem trước",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "cust",
+      "type": "frontend",
+      "label": "Web doanh nghiệp",
+      "sublabel": "nhập tay・CSV",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "dflt",
+      "type": "backend",
+      "label": "ĐH mặc định",
+      "sublabel": "chưa đăng ký đến hạn",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "rules",
+      "type": "security",
+      "label": "Kiểm tra SL",
+      "sublabel": "tổng・±1・giới hạn",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "order",
+      "type": "database",
+      "label": "Đơn hàng cơ sở",
+      "sublabel": "1 cơ sở = 1 ĐH/tháng",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "hist",
+      "type": "database",
+      "label": "Lịch sử thay đổi",
+      "sublabel": "ai・khi nào",
+      "stage": 3,
+      "row": 2
+    },
+    {
+      "id": "ops",
+      "type": "frontend",
+      "label": "Web Vận hành",
+      "sublabel": "sửa mọi lúc",
+      "stage": 4,
+      "row": 1
+    },
+    {
+      "id": "buy",
+      "type": "external",
+      "label": "Đặt hàng (55_)",
+      "sublabel": "SL đặt hàng",
+      "stage": 4,
+      "row": 0
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-past",
+      "from": "past",
+      "to": "ai",
+      "label": "SL quá khứ",
+      "route": "straight"
+    },
+    {
+      "id": "f-menu",
+      "from": "menu",
+      "to": "cust",
+      "label": "menu・hạn chốt",
+      "route": "straight"
+    },
+    {
+      "id": "f-std",
+      "from": "std",
+      "to": "dflt",
+      "label": "SL chuẩn",
+      "route": "straight",
+      "variant": "dashed"
+    },
+    {
+      "id": "f-ai",
+      "from": "ai",
+      "to": "cust",
+      "label": "Xác nhận",
+      "route": "straight",
+      "variant": "emphasis",
+      "labelAt": [
+        315,
+        201
+      ]
+    },
+    {
+      "id": "f-reg",
+      "from": "cust",
+      "to": "rules",
+      "label": "Đăng ký",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-dflt",
+      "from": "dflt",
+      "to": "rules",
+      "label": "chốt mặc định",
+      "variant": "dashed"
+    },
+    {
+      "id": "f-order",
+      "from": "rules",
+      "to": "order",
+      "label": "ghi đơn",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-hist",
+      "from": "order",
+      "to": "hist",
+      "label": "ghi lịch sử",
+      "route": "straight",
+      "labelAt": [
+        745,
+        315
+      ]
+    },
+    {
+      "id": "f-ops",
+      "from": "ops",
+      "to": "order",
+      "label": "ES sửa",
+      "route": "straight",
+      "labelAt": [
+        879,
+        262
+      ]
+    },
+    {
+      "id": "f-buy",
+      "from": "order",
+      "to": "buy",
+      "label": "SL đặt hàng",
+      "variant": "dashed",
+      "labelAt": [
+        852,
+        190
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Đường chính (Đơn_hàng.md §1・§3・§4)",
+      "items": [
+        "Menu giữ ngày mở và hạn chốt; doanh nghiệp nhập theo từng lần giao hàng hoặc CSV, \"Đăng ký\" chính là đơn hàng (không có bản nháp・phê duyệt)",
+        "AI có 3 cách: phân bổ đều / tham chiếu dữ liệu quá khứ / chat; xem trước → \"Xác nhận\" → vào màn hình đơn hàng, sau đó \"Đăng ký\" mới thành đơn",
+        "Đầu vào của AI: đơn hàng quá khứ, tỷ lệ hủy (hủy ÷ (tồn kho lần trước + giao hàng)), tồn kho đã xác định"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Kiểm tra số lượng (§2)",
+      "items": [
+        "Lỗi không đăng ký được: tổng = số lượng của gói; chênh lệch giữa các chuyến trong ±1; mỗi nhóm nhiệt độ nằm trong giới hạn dưới–trên",
+        "Chỉ cảnh báo: vượt số lượng chứa cột máy bán hàng tự động, vượt sức chứa băng tải, vượt sức chứa tủ đông",
+        "Đề xuất của AI và đơn mặc định cũng tuân thủ các quy định này"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Đơn mặc định (§1-4・§4-7・§4-8)",
+      "items": [
+        "Đến hạn chốt chưa đăng ký → xác định bằng đơn mặc định",
+        "\"Áp dụng cho các lần sau\" BẬT → bản nháp của AI; TẮT → số lượng tiêu chuẩn của Vận hành × cài đặt mặc định của cơ sở (§5)",
+        "Luồng nét đứt = nhánh mặc định / bàn giao sang chủ đề khác"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Vận hành và suy luận",
+      "items": [
+        "ES Kitchen sửa được bất cứ lúc nào (§1-6); mọi thay đổi ghi vào lịch sử thay đổi (§1-5), Web Vận hành xem theo khách hàng・sản phẩm・vật tư (§10-1)",
+        "Liên kết sang \"Đặt hàng (55_Đặt_hàng_Nhập_mua_Nhập_kho)\" lấy từ bảng §0 (đơn hàng → số lượng đặt hàng); chi tiết nằm ngoài tài liệu này",
+        "Suy luận: gộp thành khối \"Kiểm tra SL\" để vẽ; tài liệu không mô tả tên thành phần kỹ thuật. Đơn dùng thử・đơn vật tư・phê duyệt đổi hợp đồng không vẽ trong sơ đồ này"
+      ]
+    }
+  ]
+}

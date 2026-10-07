@@ -12,7 +12,7 @@ Bộ đặc tả giao diện ES Kitchen Phase 2 nằm ở `.claude/designer-agen
 **How to apply:**
 - Mỗi lần kích hoạt Designer Agent: LEARNING `design-spec/README.md` + `00-foundation.md` → hỏi platform bằng `AskUserQuestion` (Bước 0.2 trong `agents/designer-agent.md`) → đọc file spec platform + ảnh refs.
 - Primary đã đo (nguồn sự thật = Figma Phase 2, KHÔNG phải artifact): Admin `#0969DA` · Company `#F4860C` · Supplier `#6639BA` · Công ty vận chuyển E05 (tên cũ Logistic) `#1A7F37` · Mobile/ES_QR gradient vàng `#FAC215→#FFC562` chữ tối · Driver `#0969DA` + COOL `#5A3AE9`.
-- **Bẫy đặt tên:** library Figma `company/*` = BLUE (dùng cho Admin/Driver), `admin/*` = ORANGE (dùng cho Company), `app/*` = YELLOW. Button `theme=Company` → Admin portal; `theme=Admin` → Company portal.
+- **Bẫy đặt tên:** library Figma `company/*` = BLUE (dùng cho Admin/Driver), `admin/*` = ORANGE (dùng cho Company), `app/*` = YELLOW. Button (set `1e134ad8…`): **`theme=primary` = xanh `#0969DA`** → Admin/Driver; `theme=Company` = **CAM** `#FAA51D` (đo lại 2026-09-30 khi vẽ AI_Generate_Tồn Kho — ghi chú cũ "Company → Admin" là SAI). Input: `In Valied=Yes` = viền thường, `No` = viền đỏ (tên ngược).
 - **Ngoại lệ bẫy:** component `Tabs` (set `10217:95468`) `Color=Company` = CAM → Admin dùng `Color=Default` (xanh). Local `Search Buttons` = cam → Admin dùng 2 Button `theme=primary`. `Table/Data Cell/Text` không nhận text qua prop `label#8455:0` → ghi thẳng vào TEXT node. Luôn đọc lại màu fill sau khi đặt variant.
 - Viewport: desktop 1440 (sider 210 + container 1230, header 54, page header 94, table header 55/row 54); mobile & webapp **390×844** (đã sửa từ 375×812).
 - Link trong bảng mọi portal = blue `#0969DA`. Font duy nhất Noto Sans JP; icon Phosphor Regular.

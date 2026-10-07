@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "e5644569-ce40-4478-a5b5-0b0a83f2a429",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/lifecycle-yeu-cau-dang-ky-20261007-095856/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/lifecycle-yeu-cau-dang-ky-20261007-095856/yeu-cau-dang-ky.html",
+  "specification": {
+    "sha256": "5cafe1c62db8aba1ecb2bfdb0e57aa9ffeab5d924702b48204dd50257b20f584",
+    "bytes": 3604
+  },
+  "artifact": {
+    "sha256": "b5b34fa5fa1ac9d639f0ed4add26a34f8df5d2c51bd89c981d7db3f8611f2beb",
+    "bytes": 755548
+  }
+}

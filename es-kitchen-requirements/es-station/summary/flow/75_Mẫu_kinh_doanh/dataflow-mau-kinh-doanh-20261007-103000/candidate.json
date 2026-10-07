@@ -1,0 +1,192 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Luồng dữ liệu Mẫu kinh doanh",
+  "output": "flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261007-103000/mau-kinh-doanh.html",
+  "viewBox": [
+   900,
+   520
+  ],
+  "quality_profile": "showcase"
+ },
+ "stages": [
+  {
+   "label": "Đầu vào"
+  },
+  {
+   "label": "Đăng ký"
+  },
+  {
+   "label": "Quy tắc"
+  },
+  {
+   "label": "Đầu ra"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "menu",
+   "type": "frontend",
+   "label": "Tạo menu",
+   "sublabel": "SL mẫu theo menu",
+   "stage": 0,
+   "row": 0
+  },
+  {
+   "id": "ops",
+   "type": "frontend",
+   "label": "Web Vận hành",
+   "sublabel": "nhập địa chỉ nhận",
+   "stage": 0,
+   "row": 2
+  },
+  {
+   "id": "reg",
+   "type": "backend",
+   "label": "Đăng ký mẫu",
+   "sublabel": "1 mẫu = 1 địa chỉ",
+   "stage": 1,
+   "row": 1
+  },
+  {
+   "id": "date",
+   "type": "backend",
+   "label": "Ngày xuất hàng",
+   "sublabel": "lead time, dịch ngày",
+   "stage": 2,
+   "row": 0
+  },
+  {
+   "id": "wh",
+   "type": "backend",
+   "label": "Chọn kho",
+   "sublabel": "1 kho: tự dùng",
+   "stage": 2,
+   "row": 1
+  },
+  {
+   "id": "hist",
+   "type": "database",
+   "label": "Lịch sử mẫu",
+   "sublabel": "theo địa chỉ nhận",
+   "stage": 2,
+   "row": 2
+  },
+  {
+   "id": "csv",
+   "type": "external",
+   "label": "Danh sách/CSV",
+   "sublabel": "xuất từ lịch sử",
+   "stage": 3,
+   "row": 2
+  },
+  {
+   "id": "ship",
+   "type": "external",
+   "label": "Chỉ thị xuất",
+   "sublabel": "kho picking",
+   "stage": 3,
+   "row": 0
+  },
+  {
+   "id": "order",
+   "type": "backend",
+   "label": "Đặt hàng NCC",
+   "sublabel": "tính vào SL cần",
+   "stage": 3,
+   "row": 1
+  }
+ ],
+ "flows": [
+  {
+   "id": "f1",
+   "from": "menu",
+   "to": "reg",
+   "label": "SL mẫu/menu"
+  },
+  {
+   "id": "f2",
+   "from": "ops",
+   "to": "reg",
+   "label": "địa chỉ nhận"
+  },
+  {
+   "id": "f3",
+   "from": "reg",
+   "to": "date",
+   "label": "ngày giao",
+   "labelDy": -12
+  },
+  {
+   "id": "f4",
+   "from": "reg",
+   "to": "wh",
+   "label": "sản phẩm",
+   "labelDy": 14
+  },
+  {
+   "id": "f5",
+   "from": "reg",
+   "to": "hist",
+   "label": "lưu"
+  },
+  {
+   "id": "f6",
+   "from": "hist",
+   "to": "csv",
+   "label": "CSV",
+   "route": "straight",
+   "labelDx": -27
+  },
+  {
+   "id": "f7",
+   "from": "date",
+   "to": "ship",
+   "label": "ngày picking",
+   "route": "straight"
+  },
+  {
+   "id": "f8",
+   "from": "wh",
+   "to": "ship",
+   "label": "kho xử lý"
+  },
+  {
+   "id": "f9",
+   "from": "hist",
+   "to": "order",
+   "label": "SL cần đặt",
+   "labelDy": 12
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "Luồng chính",
+   "items": [
+    "Nguồn: Mẫu_kinh_doanh.md §2-1..2-4: đăng ký đơn giản trên Web Vận hành, chỉ nhập địa chỉ nhận, không tạo doanh nghiệp/cơ sở/hợp đồng",
+    "SL mẫu đặt theo từng menu (mặc định 60/tháng), sửa được đến khi menu công khai (§2-2)",
+    "Không liên kết doanh nghiệp, thông tin biết sau ghi vào ô ghi chú (§2-8b)"
+   ]
+  },
+  {
+   "dot": "orange",
+   "title": "Quy tắc ngày và kho",
+   "items": [
+    "Ngày giao tính ngược từ lead time; rơi ngày không picking được thì đẩy sớm và ngày giao dịch đúng số ngày đó (§2-5)",
+    "Nhiều kho: bộ phận vận hành chọn; sản phẩm chỉ có ở một kho thì tách theo kho (§2-6)",
+    "Lead time là giá trị tạm do vận hành nhập (§2-7, U2)"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "Sau khi chốt",
+   "items": [
+    "Thêm sau chốt vẫn được nhưng không tạo chỉ thị xuất hàng (§2-9)",
+    "Phần dư trả về ES bằng chỉ thị xuất hàng hoàn kho (§2-10), không vẽ thành luồng vì nguồn chỉ nêu tham chiếu",
+    "Suy luận: mũi tên lịch sử → Đặt hàng NCC thể hiện §2-11 (SL cần = hợp đồng + dùng thử + mẫu); nguồn không nêu rõ lịch sử là nơi cấp số liệu"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,953 @@
+No,Trường hợp sử dụng/ TH sử dụng ,Người gửi,Đối tượng gửi/ ,Mẫu email/ Mail Template,,,,,,,,,,,,,,,,,,,,,,
+,,Gửi từ email,,Tiêu đề/ Title,Nội dung email/ Nội dung ,Nội dung email/ Nội dung Updated: 2026/07/16,,,,,,,,,,,,,,,,,,,,
+1,Gửi email hướng dẫn sau khi đăng ký mới tài khoản quản trị viên vận hành,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Quản trị viên vận hành (gửi tới địa chỉ email đã nhập),[ES Station] Thông báo hoàn tất đăng ký tài khoản,"Cảm ơn quý khách đã sử dụng ES Station.
+Bằng email này, chúng tôi xin thông báo rằng quản trị viên đã tạo tài khoản.
+
+Việc đăng ký tài khoản đã hoàn tất với nội dung dưới đây.
+
+・Tên người dùng：{{user name}}
+・Địa chỉ email：{{sample@sample.com}}
+
+[Thông tin đăng nhập]
+・ID đăng nhập：{{sample@sample.com}}
+・Mật khẩu ban đầu：{{Abc12345}}
+
+▼ URL đăng nhập
+{{https://example.com/login}}
+
+※ Vì lý do bảo mật, vui lòng đổi mật khẩu sau lần đăng nhập đầu tiên.
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{cs@es-station.co.jp}}
+","Cảm ơn quý khách đã sử dụng ES Station.
+Bằng email này, chúng tôi xin thông báo rằng quản trị viên đã tạo tài khoản.
+
+Việc đăng ký tài khoản đã hoàn tất với nội dung dưới đây.
+
+・Tên người dùng：{{user name}}
+・Địa chỉ email：{{sample@sample.com}}
+
+[Thông tin đăng nhập]
+・ID đăng nhập：{{sample@sample.com}}
+・Mật khẩu ban đầu：{{Abc12345}}
+
+▼ URL đăng nhập
+{{https://example.com/login}}
+
+※ Vì lý do bảo mật, vui lòng đổi mật khẩu sau lần đăng nhập đầu tiên.
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}
+",,,,,,,,,,,,,,,,,,,,
+2,Gửi email hướng dẫn sau khi đăng ký mới tài khoản quản trị viên doanh nghiệp,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Quản trị viên doanh nghiệp (gửi tới địa chỉ email đã nhập),[ES Station] Thông báo hoàn tất đăng ký tài khoản doanh nghiệp,"Cảm ơn quý khách đã sử dụng ES Kitchen.
+Bằng email này, chúng tôi xin thông báo rằng tài khoản ES Station mới đã được tạo.
+
+Việc đăng ký tài khoản cơ sở đã hoàn tất với nội dung dưới đây.
+
+・ID cơ sở：{{CU00001}}
+・Tên cơ sở：{{Công ty cổ phần Mirai Technology}}
+
+[Thông tin đăng nhập]
+・ID đăng nhập：{{CU00001}}
+・Mật khẩu ban đầu：{{Abc12345}}
+・Tài khoản này là tài khoản dùng chung của cơ sở, vui lòng chia sẻ và sử dụng trong nội bộ công ty.
+
+▼ URL đăng nhập
+{{https://example.com/login}}
+
+※ Vì lý do bảo mật, vui lòng đổi mật khẩu sau lần đăng nhập đầu tiên.
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+※ Do ES Station mới vẫn đang trong quá trình phát triển, quý khách vui lòng tiếp tục sử dụng từ URL cũ (https://es-station.es-kitchen.jp/).
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{cs@es-station.co.jp}}
+","Cảm ơn quý khách đã sử dụng ES Kitchen.
+Bằng email này, chúng tôi xin thông báo rằng tài khoản ES Station mới đã được tạo.
+
+Việc đăng ký tài khoản cơ sở đã hoàn tất với nội dung dưới đây.
+
+・ID cơ sở：{{CU00001}}
+・Tên cơ sở：{{Công ty cổ phần Mirai Technology}}
+
+[Thông tin đăng nhập]
+・ID đăng nhập：{{CU00001}}
+・Mật khẩu ban đầu：{{Abc12345}}
+・Tài khoản này là tài khoản dùng chung của cơ sở, vui lòng chia sẻ và sử dụng trong nội bộ công ty.
+
+▼ URL đăng nhập
+{{https://example.com/login}}
+
+※ Vì lý do bảo mật, vui lòng đổi mật khẩu sau lần đăng nhập đầu tiên.
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+※ Do ES Station mới vẫn đang trong quá trình phát triển, quý khách vui lòng tiếp tục sử dụng từ URL cũ (https://es-station.es-kitchen.jp/).
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",,,,,,,,,,,,,,,,,,,,
+3,Email trong trường hợp quên mật khẩu,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp","・Quản trị viên vận hành
+・Quản trị viên doanh nghiệp
+・Người dùng",[ES Station] Hướng dẫn mã xác thực đặt lại mật khẩu,"Cảm ơn quý khách đã sử dụng ES Station.
+Email này được gửi tự động theo yêu cầu đặt lại mật khẩu.
+
+Vui lòng nhập mã xác thực dưới đây để đặt lại mật khẩu.
+
+■ Mã xác thực
+【 {{7 8 3 8}} 】
+
+※ Mã xác thực có hiệu lực trong 5 phút.
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{cs@es-station.co.jp}}
+","Cảm ơn quý khách đã sử dụng ES Station.
+Email này được gửi tự động theo yêu cầu đặt lại mật khẩu.
+
+Vui lòng nhập mã xác thực dưới đây để đặt lại mật khẩu.
+
+■ Mã xác thực
+【 {{7 8 3 8}} 】
+
+※ Mã xác thực có hiệu lực trong 5 phút.
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",,,,,,,,,,,,,,,,,,,,
+4,Cơ sở đã hoàn tất đặt lại mật khẩu,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Toàn bộ người phụ trách thuộc quản trị viên doanh nghiệp,[ES Station] Thông báo đặt lại mật khẩu,"Cảm ơn quý khách đã sử dụng ES Station.
+Email này được gửi tự động theo yêu cầu đặt lại mật khẩu.
+
+Đối với tài khoản dưới đây,
+yêu cầu đặt lại mật khẩu đã được thực hiện.
+
+■ ID đăng nhập
+{{login_id}}
+
+■ Địa chỉ email thực hiện yêu cầu đặt lại
+{{request_email}}
+
+※ Email này được gửi tới địa chỉ email của người phụ trách đã đăng ký cho cơ sở.
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{cs@es-station.co.jp}}
+","Cảm ơn quý khách đã sử dụng ES Station.
+Email này được gửi tự động theo yêu cầu đặt lại mật khẩu.
+
+Đối với tài khoản dưới đây,
+yêu cầu đặt lại mật khẩu đã được thực hiện.
+
+■ ID đăng nhập
+{{login_id}}
+
+■ Địa chỉ email thực hiện yêu cầu đặt lại
+{{request_email}}
+
+※ Email này được gửi tới địa chỉ email của người phụ trách đã đăng ký cho cơ sở.
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}
+",,,,,,,,,,,,,,,,,,,,
+5,Email mã xác thực sau khi đăng ký thành viên,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Người dùng,[ES Station] Hướng dẫn mã xác thực,"Cảm ơn quý khách đã sử dụng ES Station.
+Email này được gửi tự động theo thủ tục đăng ký tài khoản.
+
+Vui lòng nhập mã xác thực dưới đây để hoàn tất đăng ký tài khoản.
+
+■ Mã xác thực
+【 {{7 8 3 8}} 】
+
+※ Mã xác thực có hiệu lực trong 5 phút.
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{cs@es-station.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Email này được gửi tự động theo thủ tục đăng ký tài khoản.
+
+Vui lòng nhập mã xác thực dưới đây để hoàn tất đăng ký tài khoản.
+
+■ Mã xác thực
+【 {{7 8 3 8}} 】
+
+※ Mã xác thực có hiệu lực trong 5 phút.
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",,,,,,,,,,,,,,,,,,,,
+6,Phase 2: Xác nhận đã tiếp nhận đơn đăng ký mới,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Người đăng ký và người phụ trách chính (nếu là cùng một người thì gửi 1 email),[ES Station] Thông báo tiếp nhận đơn đăng ký (Số tiếp nhận：{{AP-20261005-0001}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Email này thông báo rằng chúng tôi đã tiếp nhận đơn đăng ký sử dụng ES Station của quý khách.
+
+Bộ phận vận hành sẽ kiểm tra nội dung và liên hệ với quý khách trong vòng 2〜3 ngày làm việc.
+
+■ Số tiếp nhận：{{AP-20261005-0001}}
+■ Ngày đăng ký：{{2026/10/05}}
+■ Loại hợp đồng：{{Triển khai chính thức／Chiến dịch dùng thử}}
+■ Tên doanh nghiệp：{{Công ty cổ phần Sample}}
+■ Nơi giao hàng：{{Công ty cổ phần Sample - Chi nhánh Osaka}} và {{1}} cơ sở khác
+■ Thời điểm mong muốn bắt đầu sử dụng：từ chu kỳ {{tháng 11/2026}}
+
+Khi liên hệ, vui lòng cho biết số tiếp nhận.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Email này thông báo rằng chúng tôi đã tiếp nhận đơn đăng ký sử dụng ES Station của quý khách.
+
+Bộ phận vận hành sẽ kiểm tra nội dung và liên hệ với quý khách trong vòng 2〜3 ngày làm việc.
+
+■ Số tiếp nhận：{{AP-20261005-0001}}
+■ Ngày đăng ký：{{2026/10/05}}
+■ Loại hợp đồng：{{Triển khai chính thức／Chiến dịch dùng thử}}
+■ Tên doanh nghiệp：{{Công ty cổ phần Sample}}
+■ Nơi giao hàng：{{Công ty cổ phần Sample - Chi nhánh Osaka}} và {{1}} cơ sở khác
+■ Thời điểm mong muốn bắt đầu sử dụng：từ chu kỳ {{tháng 11/2026}}
+
+Khi liên hệ, vui lòng cho biết số tiếp nhận.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",,,,,,,,,,,,,,,,,,,,
+7,Phase 2: Hướng dẫn đăng nhập (thay đổi người nhận và thời điểm gửi của No.2),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp","Toàn bộ người phụ trách chính, phụ và thanh toán của cơ sở + người đăng ký (nếu không phải người phụ trách)",(Giống No.2) [ES Station] Thông báo hoàn tất đăng ký tài khoản doanh nghiệp,"Nội dung giữ nguyên như No.2 (ID cơ sở, mật khẩu ban đầu, ""Vui lòng đổi mật khẩu sau lần đăng nhập đầu tiên"").
+Những điểm thay đổi ở Phase 2 chỉ gồm 2 điểm sau:
+・Thời điểm gửi: khi đăng ký tạm (ô chọn ""Cấp tài khoản"" của vận hành mặc định là ON). Nếu chuyển sang OFF thì gửi khi đăng ký chính thức
+・Người nhận: toàn bộ người phụ trách chính, phụ và thanh toán của cơ sở + người đăng ký (nếu không nằm trong số người phụ trách) (Quyết định 28-139)
+・Có thể gửi lại từ màn hình chi tiết đơn đăng ký của vận hành
+※ Anh Long xác nhận ngày 2026/10/01: thống nhất theo nội dung của Phase 1","Nội dung giữ nguyên như No.2 (ID cơ sở, mật khẩu ban đầu, ""Vui lòng đổi mật khẩu sau lần đăng nhập đầu tiên"").
+Những điểm thay đổi ở Phase 2 chỉ gồm 2 điểm sau:
+・Thời điểm gửi: khi đăng ký tạm (ô chọn ""Cấp tài khoản"" của vận hành mặc định là ON). Nếu chuyển sang OFF thì gửi khi đăng ký chính thức
+・Người nhận: toàn bộ người phụ trách chính, phụ và thanh toán của cơ sở + người đăng ký (nếu không nằm trong số người phụ trách) (Quyết định 28-139)
+・Có thể gửi lại từ màn hình chi tiết đơn đăng ký của vận hành
+※ Anh Long xác nhận ngày 2026/10/01: thống nhất theo nội dung của Phase 1",,,,,,,,,,,,,,,,,,,,
+8,Phase 2: Thông báo chuyển từ dùng thử sang triển khai chính thức,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp","Người phụ trách của cơ sở (ô chọn ""Gửi email thông báo chuyển đổi cho người phụ trách cơ sở"" của vận hành, mặc định ON)",[ES Station] Thông báo chuyển sang triển khai chính thức ({{Công ty cổ phần Sample - Văn phòng kinh doanh Yokohama}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Chân thành cảm ơn quý khách đã sử dụng chiến dịch dùng thử.
+Chúng tôi xin thông báo rằng đang tiến hành thủ tục chuyển sang triển khai chính thức.
+
+■ Tên cơ sở：{{Công ty cổ phần Sample - Văn phòng kinh doanh Yokohama}}
+■ Số hợp đồng：{{CP0000011}}
+■ Bắt đầu triển khai chính thức：từ chu kỳ {{tháng 12/2026}}
+■ Lần thanh toán đầu tiên：hóa đơn {{tháng 12/2026}} (dự kiến phát hành {{2026/12/01}})
+
+Thiết bị đã lắp đặt trong thời gian dùng thử có thể tiếp tục sử dụng nguyên trạng. Thời gian sử dụng tối thiểu của thiết bị được tính từ ngày bắt đầu triển khai chính thức.
+ID đăng nhập và mật khẩu giống như thời gian dùng thử.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Chân thành cảm ơn quý khách đã sử dụng chiến dịch dùng thử.
+Chúng tôi xin thông báo rằng đang tiến hành thủ tục chuyển sang triển khai chính thức.
+
+■ Tên cơ sở：{{Công ty cổ phần Sample - Văn phòng kinh doanh Yokohama}}
+■ Số hợp đồng：{{CP0000011}}
+■ Bắt đầu triển khai chính thức：từ chu kỳ {{tháng 12/2026}}
+■ Lần thanh toán đầu tiên：hóa đơn {{tháng 12/2026}} (dự kiến phát hành {{2026/12/01}})
+
+Thiết bị đã lắp đặt trong thời gian dùng thử có thể tiếp tục sử dụng nguyên trạng. Thời gian sử dụng tối thiểu của thiết bị được tính từ ngày bắt đầu triển khai chính thức.
+ID đăng nhập và mật khẩu giống như thời gian dùng thử.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",,,,,,,,,,,,,,,,,,,,
+9,Phase 2: Xác nhận đã tiếp nhận yêu cầu thay đổi (8 loại),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Người gửi yêu cầu (địa chỉ email của tài khoản đang đăng nhập). Trường hợp vận hành nhập hộ thì gửi tới người phụ trách chính của cơ sở (cần xác nhận),[ES Station] Thông báo tiếp nhận đơn đăng ký {{Thay đổi gói}} (Số tiếp nhận：{{CH-20261005-0091}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Chúng tôi đã tiếp nhận đơn đăng ký dưới đây. Bộ phận vận hành sẽ kiểm tra nội dung và liên hệ với quý khách trong vòng 2〜3 ngày làm việc.
+Cho đến khi việc kiểm tra hoàn tất, cơ sở này không thể gửi đơn đăng ký mới.
+
+■ Số tiếp nhận：{{CH-20261005-0091}}
+■ Tên cơ sở：{{Công ty cổ phần Sample - Chi nhánh Osaka}}
+■ Loại đơn đăng ký：{{Thay đổi gói}}
+■ Tháng chu kỳ muốn bắt đầu：chu kỳ {{tháng 11/2026}}
+■ Nội dung：{{Gói 50 (ES Lite) → Gói 100 (ES Standard)}}
+
+Quý khách có thể kiểm tra tình trạng đơn đăng ký tại mục ""Đơn đăng ký/yêu cầu"" trên Web doanh nghiệp.
+▼ URL đăng nhập
+{{https://example.com/login}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Chúng tôi đã tiếp nhận đơn đăng ký dưới đây. Bộ phận vận hành sẽ kiểm tra nội dung và liên hệ với quý khách trong vòng 2〜3 ngày làm việc.
+Cho đến khi việc kiểm tra hoàn tất, cơ sở này không thể gửi đơn đăng ký mới.
+
+■ Số tiếp nhận：{{CH-20261005-0091}}
+■ Tên cơ sở：{{Công ty cổ phần Sample - Chi nhánh Osaka}}
+■ Loại đơn đăng ký：{{Thay đổi gói}}
+■ Tháng chu kỳ muốn bắt đầu：chu kỳ {{tháng 11/2026}}
+■ Nội dung：{{Gói 50 (ES Lite) → Gói 100 (ES Standard)}}
+
+Quý khách có thể kiểm tra tình trạng đơn đăng ký tại mục ""Đơn đăng ký/yêu cầu"" trên Web doanh nghiệp.
+▼ URL đăng nhập
+{{https://example.com/login}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",,,,,,,,,,,,,,,,,,,,
+10,Phase 2: Phê duyệt yêu cầu thay đổi,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Đơn của cơ sở: người phụ trách chính của cơ sở và người gửi yêu cầu / Thay đổi thông tin doanh nghiệp: người phụ trách chính của doanh nghiệp (1 email cho mỗi doanh nghiệp),[ES Station] Thông báo phê duyệt đơn đăng ký {{Thay đổi gói}} (Số tiếp nhận：{{CH-20261005-0091}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Chúng tôi đã phê duyệt đơn đăng ký dưới đây và phản ánh vào hợp đồng.
+
+■ Số tiếp nhận：{{CH-20261005-0091}}
+■ Tên cơ sở：{{Công ty cổ phần Sample - Chi nhánh Osaka}}
+■ Nội dung：{{Gói 50 (ES Lite)}} → {{Gói 100 (ES Standard)}}
+■ Chu kỳ áp dụng：từ chu kỳ {{tháng 11/2026}}
+■ Ảnh hưởng đến thanh toán：{{Chuyển thành ¥49,500/tháng (chưa gồm thuế)}}
+
+{{[Trường hợp hủy hợp đồng] Ngày hủy hợp đồng là 2026/12/06 (ngày cuối của chu kỳ). Lần thanh toán cuối cùng là 1 hóa đơn của tháng sau tháng hủy (tháng 1/2027) (quyết toán thực tế lần cuối, tiền phạt vi phạm, mua lại sản phẩm còn lại). Quý khách có thể đăng nhập ở chế độ chỉ xem cho đến hạn thanh toán của lần thanh toán cuối cùng (2027/01/27), và tài khoản sẽ bị tạm ngừng vào ngày hôm sau.}}
+{{[Trường hợp tạm ngưng] Thời gian tạm ngưng là các chu kỳ từ tháng 12/2026 đến tháng 2/2027. Dự kiến tiếp tục vào chu kỳ tháng 3/2027. Không tính phí gói trong các tháng tạm ngưng. Quyết toán thực tế trong thời gian tạm ngưng sẽ được thanh toán gộp khi tiếp tục hoặc hủy hợp đồng.}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Chúng tôi đã phê duyệt đơn đăng ký dưới đây và phản ánh vào hợp đồng.
+
+■ Số tiếp nhận：{{CH-20261005-0091}}
+■ Tên cơ sở：{{Công ty cổ phần Sample - Chi nhánh Osaka}}
+■ Nội dung：{{Gói 50 (ES Lite)}} → {{Gói 100 (ES Standard)}}
+■ Chu kỳ áp dụng：từ chu kỳ {{tháng 11/2026}}
+■ Ảnh hưởng đến thanh toán：{{Chuyển thành ¥49,500/tháng (chưa gồm thuế)}}
+
+{{[Trường hợp hủy hợp đồng] Ngày hủy hợp đồng là 2026/12/06 (ngày cuối của chu kỳ). Lần thanh toán cuối cùng là 1 hóa đơn của tháng sau tháng hủy (tháng 1/2027) (quyết toán thực tế lần cuối, tiền phạt vi phạm, mua lại sản phẩm còn lại). Quý khách có thể đăng nhập ở chế độ chỉ xem cho đến hạn thanh toán của lần thanh toán cuối cùng (2027/01/27), và tài khoản sẽ bị tạm ngừng vào ngày hôm sau.}}
+{{[Trường hợp tạm ngưng] Thời gian tạm ngưng là các chu kỳ từ tháng 12/2026 đến tháng 2/2027. Dự kiến tiếp tục vào chu kỳ tháng 3/2027. Không tính phí gói trong các tháng tạm ngưng. Quyết toán thực tế trong thời gian tạm ngưng sẽ được thanh toán gộp khi tiếp tục hoặc hủy hợp đồng.}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",,,,,,,,,,,,,,,,,,,,
+11,Phase 2: Thông báo từ chối yêu cầu thay đổi (từ chối),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Giống email phê duyệt,[ES Station] Về đơn đăng ký {{Thay đổi gói}} (Số tiếp nhận：{{CH-20261005-0091}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Rất tiếc, chúng tôi không thể chấp nhận đơn đăng ký dưới đây.
+
+■ Số tiếp nhận：{{CH-20261005-0091}}
+■ Tên cơ sở：{{Công ty cổ phần Sample - Chi nhánh Osaka}}
+■ Nội dung đăng ký：{{Thêm Thứ Tư vào các thứ không giao hàng được}}
+■ Lý do：{{Vì chỉ với các thứ quý khách mong muốn thì số lần giao hàng sẽ không đủ}}
+
+Quý khách có thể thay đổi nội dung và đăng ký lại. Nếu có điểm nào chưa rõ, vui lòng liên hệ bộ phận hỗ trợ.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Rất tiếc, chúng tôi không thể chấp nhận đơn đăng ký dưới đây.
+
+■ Số tiếp nhận：{{CH-20261005-0091}}
+■ Tên cơ sở：{{Công ty cổ phần Sample - Chi nhánh Osaka}}
+■ Nội dung đăng ký：{{Thêm Thứ Tư vào các thứ không giao hàng được}}
+■ Lý do：{{Vì chỉ với các thứ quý khách mong muốn thì số lần giao hàng sẽ không đủ}}
+
+Quý khách có thể thay đổi nội dung và đăng ký lại. Nếu có điểm nào chưa rõ, vui lòng liên hệ bộ phận hỗ trợ.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",,,,,,,,,,,,,,,,,,,,
+12,Phase 2: Rút lại đơn đăng ký (cần xác nhận: có gửi hay không),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Người rút lại đơn,[ES Station] Thông báo rút lại đơn đăng ký (Số tiếp nhận：{{CH-20261005-0091}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Đơn đăng ký dưới đây đã được rút lại.
+
+■ Số tiếp nhận：{{CH-20261005-0091}}
+■ Tên cơ sở：{{Công ty cổ phần Sample - Chi nhánh Osaka}}
+■ Loại đơn đăng ký：{{Thay đổi gói}}
+■ Ngày giờ rút lại：{{2026/10/06 10:15}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Đơn đăng ký dưới đây đã được rút lại.
+
+■ Số tiếp nhận：{{CH-20261005-0091}}
+■ Tên cơ sở：{{Công ty cổ phần Sample - Chi nhánh Osaka}}
+■ Loại đơn đăng ký：{{Thay đổi gói}}
+■ Ngày giờ rút lại：{{2026/10/06 10:15}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",,,,,,,,,,,,,,,,,,,,
+13,"Phase 2: Thay đổi người phụ trách, tên doanh nghiệp, v.v. (gửi tới vận hành)","[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Vận hành (luôn thông báo khi thay đổi người phụ trách chính hoặc người phụ trách thanh toán). Có gửi cả bằng email hay không cần xác nhận (thông báo trên màn hình luôn được hiển thị),[ES Station] Nội dung đăng ký của {{Công ty cổ phần Sample}} đã được thay đổi,"Trên Web doanh nghiệp đã có thay đổi sau (đã được phản ánh mà không cần phê duyệt).
+
+■ Doanh nghiệp・Cơ sở：{{Công ty cổ phần Sample}} {{Công ty cổ phần Sample - Chi nhánh Osaka}}
+■ Nội dung thay đổi：{{Người phụ trách chính Nakamura Rina → Ogawa Sho}}
+■ Người thay đổi：{{Nakamura Rina (tài khoản cơ sở)}}
+■ Ngày giờ thay đổi：{{2026/10/05 14:20}}
+
+▼ Màn hình quản trị vận hành
+{{https://example.com/admin}}","Trên Web doanh nghiệp đã có thay đổi sau (đã được phản ánh mà không cần phê duyệt).
+
+■ Doanh nghiệp・Cơ sở：{{Công ty cổ phần Sample}} {{Công ty cổ phần Sample - Chi nhánh Osaka}}
+■ Nội dung thay đổi：{{Người phụ trách chính Nakamura Rina → Ogawa Sho}}
+■ Người thay đổi：{{Nakamura Rina (tài khoản cơ sở)}}
+■ Ngày giờ thay đổi：{{2026/10/05 14:20}}
+
+▼ Màn hình quản trị vận hành
+{{https://example.com/admin}}",,,,,,,,,,,,,,,,,,,,
+14,Phase 2: Thông báo dừng giao hàng do hủy hợp đồng (gửi tới công ty giao hàng ủy thác・REQ-CT-289),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Công ty giao hàng (công ty giao hàng ②) được đăng ký trong tuyến giao hàng (hợp đồng con) của cơ sở đó. Không gửi cho cơ sở chỉ dùng xe nội bộ (thông báo trên màn hình cho bộ phận giao hàng nội bộ),[ES Station] Thông báo dừng giao hàng ({{Công ty cổ phần Sample - Văn phòng kinh doanh Nagoya}}／{{CU00902}}),"Kính gửi người phụ trách {{Công ty cổ phần vận tải 〇〇}}
+
+Xin chân thành cảm ơn sự hợp tác của quý công ty. Đây là bộ phận vận hành ES Kitchen.
+Hợp đồng của cơ sở dưới đây sắp kết thúc nên chúng tôi xin thông báo dừng giao hàng.
+
+■ Tên cơ sở：{{Công ty cổ phần Sample - Văn phòng kinh doanh Nagoya}} ({{Công ty cổ phần Sample}})／{{CU00902}}／{{CP0000003}}
+■ Ngày giao hàng cuối cùng：{{2026/12/01}}
+■ Giao hàng sau đó：dừng lại. Toàn bộ lịch giao hàng sau ngày giao hàng cuối cùng đã bị xóa và sẽ không tạo dữ liệu giao hàng.
+
+Xin trân trọng cảm ơn.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}","Kính gửi người phụ trách {{Công ty cổ phần vận tải 〇〇}}
+
+Xin chân thành cảm ơn sự hợp tác của quý công ty. Đây là bộ phận vận hành ES Kitchen.
+Hợp đồng của cơ sở dưới đây sắp kết thúc nên chúng tôi xin thông báo dừng giao hàng.
+
+■ Tên cơ sở：{{Công ty cổ phần Sample - Văn phòng kinh doanh Nagoya}} ({{Công ty cổ phần Sample}})／{{CU00902}}／{{CP0000003}}
+■ Ngày giao hàng cuối cùng：{{2026/12/01}}
+■ Giao hàng sau đó：dừng lại. Toàn bộ lịch giao hàng sau ngày giao hàng cuối cùng đã bị xóa và sẽ không tạo dữ liệu giao hàng.
+
+Xin trân trọng cảm ơn.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",,,,,,,,,,,,,,,,,,,,
+15,Phase 2: Đặt lại mật khẩu (dùng nguyên No.3・No.4),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp",Giống No.3・No.4,(Giống No.3・No.4),"Việc đặt lại mật khẩu của Web doanh nghiệp, Web vận hành, công ty giao hàng ủy thác và nhà cung cấp ở Phase 2 cũng sử dụng No.3 (mã xác thực・5 phút) và No.4 (thông báo đặt lại・toàn bộ người phụ trách của cơ sở).
+※ Anh Long xác nhận ngày 2026/10/01: thống nhất theo Phase 1 (không dùng phương thức liên kết)","Việc đặt lại mật khẩu của Web doanh nghiệp, Web vận hành, công ty giao hàng ủy thác và nhà cung cấp ở Phase 2 cũng sử dụng No.3 (mã xác thực・5 phút) và No.4 (thông báo đặt lại・toàn bộ người phụ trách của cơ sở).
+※ Anh Long xác nhận ngày 2026/10/01: thống nhất theo Phase 1 (không dùng phương thức liên kết)",,,,,,,,,,,,,,,,,,,,
+16,Phase 2: Thông báo tạm ngừng tài khoản (cơ sở đã hủy hợp đồng),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp","Toàn bộ người phụ trách chính, phụ và thanh toán của cơ sở (giống 28-139)",[ES Station] Thông báo tạm ngừng tài khoản ({{Công ty cổ phần Sample - Văn phòng kinh doanh Nagoya}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Do hợp đồng đã được hủy, chúng tôi đã tạm ngừng tài khoản của cơ sở dưới đây.
+
+■ Tên cơ sở：{{Công ty cổ phần Sample - Văn phòng kinh doanh Nagoya}} ({{CU00902}})
+■ Ngày hủy hợp đồng：{{2026/12/06}}
+■ Ngày tạm ngừng：{{2027/01/28}} (ngày hôm sau hạn thanh toán của lần thanh toán cuối cùng)
+
+Chân thành cảm ơn quý khách đã sử dụng dịch vụ đến nay.
+Sau khi tạm ngừng, quý khách sẽ không thể đăng nhập. Quý khách có thể xem hóa đơn trên Bill One.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Do hợp đồng đã được hủy, chúng tôi đã tạm ngừng tài khoản của cơ sở dưới đây.
+
+■ Tên cơ sở：{{Công ty cổ phần Sample - Văn phòng kinh doanh Nagoya}} ({{CU00902}})
+■ Ngày hủy hợp đồng：{{2026/12/06}}
+■ Ngày tạm ngừng：{{2027/01/28}} (ngày hôm sau hạn thanh toán của lần thanh toán cuối cùng)
+
+Chân thành cảm ơn quý khách đã sử dụng dịch vụ đến nay.
+Sau khi tạm ngừng, quý khách sẽ không thể đăng nhập. Quý khách có thể xem hóa đơn trên Bill One.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+Nhóm Customer Success
+E-mail：{{info@es-kitchen.co.jp}}",Anh Long quyết định ngày 2026/10/01: vẫn gửi (S4-3. Thông báo trước về việc tạm ngừng được ghi trong nội dung hủy hợp đồng của email phê duyệt No.10). Thời điểm gửi: khi tạm ngừng tài khoản vào ngày hôm sau hạn thanh toán của hóa đơn cuối cùng (tự động),,,,,,,,,,,,,,,,,,,
+17,Phase 2: S1 Thông báo đặt hàng tạm,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Toàn bộ người phụ trách chính và phụ của nhà cung cấp (cả hai phương thức đặt hàng ES Station và email. Không gửi cho bên ngoài [cần xác nhận]),[ES Station] Thông báo đặt hàng tạm ({{PO-202611-M004-U01}} và {{n}} đơn khác),"Cảm ơn quý khách đã sử dụng ES Station.
+Chúng tôi đặt hàng tạm như dưới đây. Vui lòng phản hồi ngày dự kiến xuất hàng (thời hạn giao).
+
+■ Số đơn đặt hàng：{{PO-202611-M004-U01}}
+■ Sản phẩm：{{Thịt heo xào gừng}} (mã hàng {{M004}})
+■ Số lượng：{{360}} {{cái}}
+■ Ngày mong muốn nhập kho：{{2026/11/07}}〜{{2026/11/13}}
+■ Kho giao hàng：{{Kho Kanto}} ({{Địa chỉ}})
+(Từ 2 đơn trở lên sẽ được liệt kê tiếp theo cùng định dạng)
+
+※ Nếu không thể nhận đơn, vui lòng cho biết lý do và phương án thay thế.
+※ Về giao hàng chia đợt, chúng tôi chấp nhận tối đa {{3}} đợt, với ngày giao của mỗi đợt nằm trong khoảng đến ngày mong muốn nhập kho đầu tiên.
+※ Nếu có kế hoạch ngừng bán hoặc thay đổi quy cách, vui lòng thông báo cùng lúc.
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Chúng tôi đặt hàng tạm như dưới đây. Vui lòng phản hồi ngày dự kiến xuất hàng (thời hạn giao).
+
+■ Số đơn đặt hàng：{{PO-202611-M004-U01}}
+■ Sản phẩm：{{Thịt heo xào gừng}} (mã hàng {{M004}})
+■ Số lượng：{{360}} {{cái}}
+■ Ngày mong muốn nhập kho：{{2026/11/07}}〜{{2026/11/13}}
+■ Kho giao hàng：{{Kho Kanto}} ({{Địa chỉ}})
+(Từ 2 đơn trở lên sẽ được liệt kê tiếp theo cùng định dạng)
+
+※ Nếu không thể nhận đơn, vui lòng cho biết lý do và phương án thay thế.
+※ Về giao hàng chia đợt, chúng tôi chấp nhận tối đa {{3}} đợt, với ngày giao của mỗi đợt nằm trong khoảng đến ngày mong muốn nhập kho đầu tiên.
+※ Nếu có kế hoạch ngừng bán hoặc thay đổi quy cách, vui lòng thông báo cùng lúc.
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}",STEP6 Q2・C2・C3. Cần xác nhận có gộp thành 1 email cho mỗi thao tác hay không. Không ghi số tiền (DR-4). Tên sản phẩm là tên tại thời điểm nhập mua (R12),,,,,,,,,,,,,,,,,,,
+18,Phase 2: S2 Thay đổi số lượng đặt hàng tạm (đề nghị phản hồi lại),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Toàn bộ người phụ trách chính và phụ của nhà cung cấp (cả hai phương thức đặt hàng ES Station và email. Không gửi cho bên ngoài [cần xác nhận]),[ES Station] Số lượng đặt hàng tạm đã thay đổi ({{PO-202611-M004-U01}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Nội dung đặt hàng tạm đã thay đổi. Vui lòng phản hồi lại ngày dự kiến xuất hàng.
+
+■ Số đơn đặt hàng：{{PO-202611-M004-U01}}
+■ Số lượng：{{360}} → {{384}} {{cái}}
+■ Ngày mong muốn nhập kho：{{2026/11/07}}〜{{2026/11/13}}
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Nội dung đặt hàng tạm đã thay đổi. Vui lòng phản hồi lại ngày dự kiến xuất hàng.
+
+■ Số đơn đặt hàng：{{PO-202611-M004-U01}}
+■ Số lượng：{{360}} → {{384}} {{cái}}
+■ Ngày mong muốn nhập kho：{{2026/11/07}}〜{{2026/11/13}}
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}",REQ-PO-304 (chỉnh sửa đặt hàng tạm),,,,,,,,,,,,,,,,,,,
+19,Phase 2: S3 Thông báo đặt hàng chính thức (đề nghị phê duyệt),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Toàn bộ người phụ trách chính và phụ của nhà cung cấp (cả hai phương thức đặt hàng ES Station và email. Không gửi cho bên ngoài [cần xác nhận]),[ES Station] Thông báo đặt hàng chính thức (đề nghị phê duyệt),"Cảm ơn quý khách đã sử dụng ES Station.
+Đơn đặt hàng chính thức đã được chốt. Vui lòng phản hồi ngày giao hàng (ngày hàng đến kho) và số thùng nhập kho, sau đó phê duyệt đơn đặt hàng chính thức.
+Sau khi phê duyệt, không thể thay đổi số lượng.
+
+■ Số đơn đặt hàng：{{PO-202610-M004-U01}}
+■ Sản phẩm：{{Thịt heo xào gừng}}
+■ Số lượng đặt hàng chính thức：{{300}} {{cái}} (trường hợp thay đổi so với đặt hàng tạm：{{288}} → {{300}})
+■ Ngày dự kiến xuất hàng (đã phản hồi)：{{2026/10/09}}
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Đơn đặt hàng chính thức đã được chốt. Vui lòng phản hồi ngày giao hàng (ngày hàng đến kho) và số thùng nhập kho, sau đó phê duyệt đơn đặt hàng chính thức.
+Sau khi phê duyệt, không thể thay đổi số lượng.
+
+■ Số đơn đặt hàng：{{PO-202610-M004-U01}}
+■ Sản phẩm：{{Thịt heo xào gừng}}
+■ Số lượng đặt hàng chính thức：{{300}} {{cái}} (trường hợp thay đổi so với đặt hàng tạm：{{288}} → {{300}})
+■ Ngày dự kiến xuất hàng (đã phản hồi)：{{2026/10/09}}
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","REQ-PO-302・606, STEP6 Q2・R1",,,,,,,,,,,,,,,,,,,
+20,Phase 2: S4 Thay đổi số lượng đặt hàng chính thức (trước khi phê duyệt・đề nghị phê duyệt lại),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Toàn bộ người phụ trách chính và phụ của nhà cung cấp (cả hai phương thức đặt hàng ES Station và email. Không gửi cho bên ngoài [cần xác nhận]),[ES Station] Số lượng đặt hàng chính thức đã thay đổi ({{PO-202610-M004-U05}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Số lượng đặt hàng chính thức đã thay đổi. Vui lòng kiểm tra nội dung và phê duyệt lại đơn đặt hàng chính thức.
+
+■ Số đơn đặt hàng：{{PO-202610-M004-U05}}
+■ Số lượng đặt hàng chính thức：{{24}} → {{30}} {{cái}}
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Số lượng đặt hàng chính thức đã thay đổi. Vui lòng kiểm tra nội dung và phê duyệt lại đơn đặt hàng chính thức.
+
+■ Số đơn đặt hàng：{{PO-202610-M004-U05}}
+■ Số lượng đặt hàng chính thức：{{24}} → {{30}} {{cái}}
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}",STEP6 R1・C1 (chỉ có thể sửa cho đến khi phê duyệt),,,,,,,,,,,,,,,,,,,
+21,Phase 2: S5 Cảnh báo đặt hàng chính thức chưa xử lý (mỗi 24 giờ),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Toàn bộ người phụ trách chính và phụ của nhà cung cấp (cả hai phương thức đặt hàng ES Station và email. Không gửi cho bên ngoài [cần xác nhận]),[ES Station] Đơn đặt hàng chính thức vẫn chưa được phê duyệt ({{PO-202610-M004-U05}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Việc phê duyệt đơn đặt hàng chính thức vẫn chưa hoàn tất.
+
+■ Số đơn đặt hàng：{{PO-202610-M004-U05}} (đặt hàng chính thức：{{2026/10/01 09:10}})
+
+Chúng tôi thông báo mỗi 24 giờ làm việc kể từ khi đặt hàng chính thức. Việc này sẽ lặp lại cho đến khi hoàn tất phê duyệt.
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Việc phê duyệt đơn đặt hàng chính thức vẫn chưa hoàn tất.
+
+■ Số đơn đặt hàng：{{PO-202610-M004-U05}} (đặt hàng chính thức：{{2026/10/01 09:10}})
+
+Chúng tôi thông báo mỗi 24 giờ làm việc kể từ khi đặt hàng chính thức. Việc này sẽ lặp lại cho đến khi hoàn tất phê duyệt.
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","REQ-PO-302・604 (có tính thứ Bảy, Chủ nhật, ngày lễ là ngày làm việc hay không). Thông báo cho vận hành trên màn hình (WEB No.77)",,,,,,,,,,,,,,,,,,,
+22,Phase 2: S6 Thông báo đặt hàng bổ sung,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Toàn bộ người phụ trách chính và phụ của nhà cung cấp (cả hai phương thức đặt hàng ES Station và email. Không gửi cho bên ngoài [cần xác nhận]),[ES Station] Thông báo đặt hàng bổ sung ({{PO-202610-M004-U06}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Chúng tôi đặt hàng bổ sung như dưới đây. Vui lòng phản hồi ngày dự kiến xuất hàng, ngày giao hàng và số thùng nhập kho, sau đó phê duyệt.
+
+■ Số đơn đặt hàng：{{PO-202610-M004-U06}} (đặt hàng bổ sung)
+■ Sản phẩm：{{Thịt heo xào gừng}}
+■ Số lượng：{{12}} {{cái}}
+■ Ngày mong muốn nhập kho：{{2026/10/10}}
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Chúng tôi đặt hàng bổ sung như dưới đây. Vui lòng phản hồi ngày dự kiến xuất hàng, ngày giao hàng và số thùng nhập kho, sau đó phê duyệt.
+
+■ Số đơn đặt hàng：{{PO-202610-M004-U06}} (đặt hàng bổ sung)
+■ Sản phẩm：{{Thịt heo xào gừng}}
+■ Số lượng：{{12}} {{cái}}
+■ Ngày mong muốn nhập kho：{{2026/10/10}}
+
+■ Cách phản hồi
+・Với quý khách sử dụng trang nhà cung cấp: vui lòng đăng nhập và phản hồi từ ""Danh sách đơn đặt hàng"".
+　{{URL trang nhà cung cấp}}
+・Với quý khách phản hồi bằng email: vui lòng trả lời tới đầu mối đặt hàng dưới đây. Bộ phận vận hành sẽ nhập thay.
+　Địa chỉ phản hồi：Đầu mối đặt hàng ES Kitchen {{order@es-kitchen.co.jp}} (cần xác nhận)
+※ Email này không có liên kết để phản hồi.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","REQ-PO-608, STEP6 Q5・C1, STEP5 T1 (ngày chốt đặt hàng B7・D7)",,,,,,,,,,,,,,,,,,,
+23,Phase 2: S7 Thông báo hủy đơn đặt hàng,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Toàn bộ người phụ trách chính và phụ của nhà cung cấp (cả hai phương thức đặt hàng ES Station và email. Không gửi cho bên ngoài [cần xác nhận]),[ES Station] Thông báo hủy đơn đặt hàng ({{PO-202611-M004-U02}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Đơn đặt hàng dưới đây đã bị hủy. Vui lòng không xuất hàng.
+
+■ Số đơn đặt hàng：{{PO-202611-M004-U02}}
+■ Lý do：{{Do thay đổi menu nên không còn cần đặt hàng cho kho này}}
+
+Quý khách có thể xem lịch sử tại tab ""Hủy"" của trang nhà cung cấp.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Đơn đặt hàng dưới đây đã bị hủy. Vui lòng không xuất hàng.
+
+■ Số đơn đặt hàng：{{PO-202611-M004-U02}}
+■ Lý do：{{Do thay đổi menu nên không còn cần đặt hàng cho kho này}}
+
+Quý khách có thể xem lịch sử tại tab ""Hủy"" của trang nhà cung cấp.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}",REQ-PO-112、STEP6 C1,,,,,,,,,,,,,,,,,,,
+24,Phase 2: S8 Kết quả kiểm tra nhập kho (NG／ES cần xác nhận),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Toàn bộ người phụ trách chính và phụ của nhà cung cấp (cả hai phương thức đặt hàng ES Station và email. Không gửi cho bên ngoài [cần xác nhận]),[ES Station] Thông báo kết quả kiểm tra nhập kho ({{PO-…}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Khi kiểm tra nhập kho tại kho, số lượng khác với báo cáo xuất hàng. Bộ phận vận hành sẽ liên hệ lại với quý khách.
+
+■ Số đơn đặt hàng：{{PO-…}}
+■ Sản phẩm：{{Sandwich hỗn hợp}}
+■ Báo cáo：{{6}} thùng・{{72}} {{cái}} → Kiểm tra tại kho：{{6}} thùng・{{71}} {{cái}}
+■ Ô ghi chú của kho：{{Nhập kho 71 cái (thiếu 1 cái)}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Khi kiểm tra nhập kho tại kho, số lượng khác với báo cáo xuất hàng. Bộ phận vận hành sẽ liên hệ lại với quý khách.
+
+■ Số đơn đặt hàng：{{PO-…}}
+■ Sản phẩm：{{Sandwich hỗn hợp}}
+■ Báo cáo：{{6}} thùng・{{72}} {{cái}} → Kiểm tra tại kho：{{6}} thùng・{{71}} {{cái}}
+■ Ô ghi chú của kho：{{Nhập kho 71 cái (thiếu 1 cái)}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+
+──────────────────────────
+Công ty cổ phần ES Kitchen - Quản lý sản phẩm (đầu mối đặt hàng)
+E-mail：{{order@es-kitchen.co.jp}}","REQ-PO-615, STEP6 W4. Thời điểm gửi (ngay sau khi kho lưu／sau khi vận hành xác nhận) cần xác nhận",,,,,,,,,,,,,,,,,,,
+25,Phase 2: S9 Xác nhận đã tiếp nhận đơn đăng ký giao dịch của nhà cung cấp,"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Người phụ trách ghi trong biểu mẫu đăng ký,[ES Station] Đã tiếp nhận đơn đăng ký giao dịch (Số tiếp nhận {{SA-20261005-0004}}),"Cảm ơn quý khách đã sử dụng ES Station.
+Cảm ơn quý khách đã đăng ký giao dịch. Chúng tôi đã tiếp nhận với nội dung dưới đây. Bộ phận vận hành sẽ kiểm tra nội dung và thông báo kết quả cho quý khách.
+
+■ Số tiếp nhận：{{SA-20261005-0004}}
+■ Tên công ty：{{Công ty cổ phần Sample Foods}}
+■ Ngày đăng ký：{{2026/10/05}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+E-mail：{{info@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Cảm ơn quý khách đã đăng ký giao dịch. Chúng tôi đã tiếp nhận với nội dung dưới đây. Bộ phận vận hành sẽ kiểm tra nội dung và thông báo kết quả cho quý khách.
+
+■ Số tiếp nhận：{{SA-20261005-0004}}
+■ Tên công ty：{{Công ty cổ phần Sample Foods}}
+■ Ngày đăng ký：{{2026/10/05}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+E-mail：{{info@es-kitchen.co.jp}}",REQ-PO-301,,,,,,,,,,,,,,,,,,,
+26,Phase 2: S10 Cấp tài khoản nhà cung cấp (phê duyệt),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Người phụ trách ghi trong biểu mẫu đăng ký,[ES Station] Thông báo cấp tài khoản,"Cảm ơn quý khách đã sử dụng ES Station.
+Đơn đăng ký đã được phê duyệt và tài khoản đã được cấp.
+
+■ ID đăng nhập：{{SP00010}}
+■ Màn hình đăng nhập：{{URL trang nhà cung cấp}}
+
+Vui lòng thiết lập mật khẩu khi đăng nhập lần đầu.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+E-mail：{{info@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Đơn đăng ký đã được phê duyệt và tài khoản đã được cấp.
+
+■ ID đăng nhập：{{SP00010}}
+■ Màn hình đăng nhập：{{URL trang nhà cung cấp}}
+
+Vui lòng thiết lập mật khẩu khi đăng nhập lần đầu.
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+E-mail：{{info@es-kitchen.co.jp}}",REQ-PO-613、STEP6 R7,,,,,,,,,,,,,,,,,,,
+27,Phase 2: S11 Kết quả đơn đăng ký của nhà cung cấp (từ chối),"[ES Station] Vận hành ES Kitchen
+no-reply@es-kitchen.co.jp
+(Địa chỉ phản hồi: đầu mối đặt hàng [cần xác nhận])",Người phụ trách ghi trong biểu mẫu đăng ký,[ES Station] Thông báo kết quả đơn đăng ký,"Cảm ơn quý khách đã sử dụng ES Station.
+Chúng tôi đã xem xét nội dung đăng ký nhưng rất tiếc lần này chúng tôi xin phép hoãn việc bắt đầu giao dịch.
+
+■ Lý do：{{Do phân loại sản phẩm kinh doanh không phù hợp với điều kiện tuyển chọn hiện tại}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+E-mail：{{info@es-kitchen.co.jp}}","Cảm ơn quý khách đã sử dụng ES Station.
+Chúng tôi đã xem xét nội dung đăng ký nhưng rất tiếc lần này chúng tôi xin phép hoãn việc bắt đầu giao dịch.
+
+■ Lý do：{{Do phân loại sản phẩm kinh doanh không phù hợp với điều kiện tuyển chọn hiện tại}}
+
+※ Nếu quý khách không có thông tin về email này, vui lòng hủy email này.
+※ Email này chỉ dùng để gửi đi nên không thể phản hồi.
+
+──────────────────────────
+Bộ phận hỗ trợ ES Kitchen
+Công ty cổ phần ES Kitchen
+E-mail：{{info@es-kitchen.co.jp}}",REQ-PO-613、STEP6 R7,,,,,,,,,,,,,,,,,,,

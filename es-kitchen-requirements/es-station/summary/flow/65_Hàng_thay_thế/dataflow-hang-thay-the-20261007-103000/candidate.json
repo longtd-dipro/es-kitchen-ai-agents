@@ -1,0 +1,260 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Luồng dữ liệu Hàng thay thế",
+  "output": "flow/65_Hàng_thay_thế/dataflow-hang-thay-the-20261007-103000/hang-thay-the.html",
+  "viewBox": [
+   1080,
+   696
+  ],
+  "quality_profile": "showcase"
+ },
+ "stages": [
+  {
+   "label": "Kích hoạt"
+  },
+  {
+   "label": "Thiết lập"
+  },
+  {
+   "label": "Lưu / xác định"
+  },
+  {
+   "label": "Hạ nguồn"
+  },
+  {
+   "label": "Người dùng"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "defect",
+   "type": "external",
+   "label": "Sản phẩm lỗi",
+   "sublabel": "lô lỗi / lỗi sản phẩm",
+   "stage": 0,
+   "row": 1
+  },
+  {
+   "id": "shortage",
+   "type": "external",
+   "label": "Nhập kho thiếu",
+   "sublabel": "chọn xử lý hàng thay",
+   "stage": 0,
+   "row": 3
+  },
+  {
+   "id": "setup",
+   "type": "frontend",
+   "label": "Thiết lập",
+   "sublabel": "quản lý menu, lưu nháp",
+   "stage": 1,
+   "row": 2
+  },
+  {
+   "id": "confirm",
+   "type": "backend",
+   "label": "Xác định",
+   "sublabel": "3 cách xử lý ①②③",
+   "stage": 2,
+   "row": 2
+  },
+  {
+   "id": "notice",
+   "type": "messagebus",
+   "label": "Thông báo",
+   "sublabel": "Email X17 + Web",
+   "stage": 2,
+   "row": 0
+  },
+  {
+   "id": "orders",
+   "type": "database",
+   "label": "Đơn hàng・TT",
+   "sublabel": "chi tiết, dòng 8%/0 yên",
+   "stage": 3,
+   "row": 1
+  },
+  {
+   "id": "ship",
+   "type": "messagebus",
+   "label": "Chỉ thị xuất hàng",
+   "sublabel": "nâng phiên bản, gửi lại",
+   "stage": 3,
+   "row": 2
+  },
+  {
+   "id": "po",
+   "type": "database",
+   "label": "Đặt hàng",
+   "sublabel": "+thay thế, -sản phẩm lỗi",
+   "stage": 3,
+   "row": 3
+  },
+  {
+   "id": "stock",
+   "type": "database",
+   "label": "Tồn kho cơ sở",
+   "sublabel": "ghi nhận hủy",
+   "stage": 3,
+   "row": 4,
+   "yOffset": -22
+  },
+  {
+   "id": "customer",
+   "type": "external",
+   "label": "Khách hàng",
+   "sublabel": "web DN, phiếu giao",
+   "stage": 4,
+   "row": 1
+  },
+  {
+   "id": "driver",
+   "type": "external",
+   "label": "Tài xế / nơi giao",
+   "sublabel": "app tài xế, thu hồi",
+   "stage": 4,
+   "row": 3
+  }
+ ],
+ "flows": [
+  {
+   "id": "f1",
+   "from": "defect",
+   "to": "setup",
+   "label": "phát hiện lỗi"
+  },
+  {
+   "id": "f2",
+   "from": "shortage",
+   "to": "setup",
+   "label": "nhập thiếu"
+  },
+  {
+   "id": "f3",
+   "from": "setup",
+   "to": "confirm",
+   "label": "xác định",
+   "route": "straight"
+  },
+  {
+   "id": "f4",
+   "from": "confirm",
+   "to": "notice",
+   "label": "mặc định gửi",
+   "route": "straight"
+  },
+  {
+   "id": "f5",
+   "from": "confirm",
+   "to": "orders",
+   "label": "sửa đơn",
+   "labelAt": [
+    637,
+    328
+   ]
+  },
+  {
+   "id": "f6",
+   "from": "confirm",
+   "to": "ship",
+   "label": "gửi",
+   "route": "straight",
+   "labelAt": [
+    666,
+    372
+   ]
+  },
+  {
+   "id": "f7",
+   "from": "confirm",
+   "to": "po",
+   "label": "đặt",
+   "labelAt": [
+    666,
+    487
+   ]
+  },
+  {
+   "id": "f8",
+   "from": "confirm",
+   "to": "stock",
+   "label": "hủy kho",
+   "labelAt": [
+    637,
+    560
+   ]
+  },
+  {
+   "id": "f10",
+   "from": "notice",
+   "to": "customer",
+   "label": "thông báo",
+   "fromSide": "right",
+   "toSide": "top",
+   "via": [
+    [
+     960,
+     157
+    ]
+   ],
+   "labelAt": [
+    800,
+    145
+   ]
+  },
+  {
+   "id": "f11",
+   "from": "orders",
+   "to": "customer",
+   "label": "hàng TT",
+   "route": "straight",
+   "labelAt": [
+    852,
+    258
+   ]
+  },
+  {
+   "id": "f12",
+   "from": "ship",
+   "to": "driver",
+   "label": "chỉ thị"
+  },
+  {
+   "id": "f13",
+   "from": "stock",
+   "to": "driver",
+   "label": "thu hồi・hủy"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "Luồng chính",
+   "items": [
+    "Nguồn: Hàng_thay_thế.md §1 (khi dùng), §3 (thiết lập), §4 (sửa hạ nguồn)",
+    "Thiết lập tách lưu nháp và xác định (REQ-PO-220); khi lưu hiển thị danh sách phản ánh xuống hạ nguồn"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Cách xử lý (§2)",
+   "items": [
+    "① Thay thế: tính theo đơn giá sản phẩm gốc",
+    "② Bồi thường: không tính phí, để dòng 0 yên",
+    "③ Chỉ loại trừ: không tính phí",
+    "Không gửi cho khách đã kết thúc hợp đồng (REQ-ALT-603)"
+   ]
+  },
+  {
+   "dot": "violet",
+   "title": "Điểm suy luận",
+   "items": [
+    "Gộp 6 nơi hạ nguồn của §4 thành các node; hướng 'thu hồi・hủy → tài xế' lấy từ REQ-ALT-705/709",
+    "Thanh toán (dòng 8%, dòng 0 yên ở ②③) gộp vào node Đơn hàng vì giới hạn hàng của sơ đồ; §4 liệt kê riêng",
+    "Bước kiểm tra tồn kho thay thế (§3-3) và đặt hàng bổ sung chỉ nêu trong thẻ, không vẽ"
+   ]
+  }
+ ]
+}

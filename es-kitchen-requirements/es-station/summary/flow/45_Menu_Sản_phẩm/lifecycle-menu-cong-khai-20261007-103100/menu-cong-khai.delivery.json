@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "a5a36485-45dc-4d56-b45a-8999501edac1",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/45_Menu_Sản_phẩm/lifecycle-menu-cong-khai-20261007-103100/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/45_Menu_Sản_phẩm/lifecycle-menu-cong-khai-20261007-103100/menu-cong-khai.html",
+  "specification": {
+    "sha256": "896c37a231b7212f14bec4d046dac35ecdd6ba313c66e529ee8eb8834825f81a",
+    "bytes": 2825
+  },
+  "artifact": {
+    "sha256": "ee10222088a954d9b5c6ca2d8d9d08498edb5d10f0ea9ed1648cf21553373cea",
+    "bytes": 754112
+  }
+}

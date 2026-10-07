@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Luồng dữ liệu đăng ký mới và thêm cơ sở",
+    "output": "flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261007-095856/dang-ky-moi.html",
+    "viewBox": [
+      1080,
+      560
+    ],
+    "quality_profile": "showcase"
+  },
+  "stages": [
+    {
+      "label": "Lối vào"
+    },
+    {
+      "label": "Tiếp nhận"
+    },
+    {
+      "label": "Đăng ký tạm"
+    },
+    {
+      "label": "Lưu trữ"
+    },
+    {
+      "label": "Sử dụng"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "webnew",
+      "type": "frontend",
+      "label": "Web DN đăng ký",
+      "sublabel": "không đăng nhập",
+      "stage": 0,
+      "row": 0,
+      "tag": "3 bước"
+    },
+    {
+      "id": "webadd",
+      "type": "frontend",
+      "label": "Thêm cơ sở",
+      "sublabel": "đã đăng nhập",
+      "stage": 0,
+      "row": 1,
+      "tag": "2 bước"
+    },
+    {
+      "id": "opsin",
+      "type": "external",
+      "label": "Vận hành nhập",
+      "sublabel": "nhập thay・CSV",
+      "stage": 0,
+      "row": 2,
+      "tag": "kênh"
+    },
+    {
+      "id": "req",
+      "type": "backend",
+      "label": "Yêu cầu AP-",
+      "sublabel": "Đang tiếp nhận",
+      "stage": 1,
+      "row": 1,
+      "tag": "M1"
+    },
+    {
+      "id": "prov",
+      "type": "backend",
+      "label": "Đăng ký tạm",
+      "sublabel": "xác nhận nội dung",
+      "stage": 2,
+      "row": 1,
+      "tag": "vận hành"
+    },
+    {
+      "id": "ents",
+      "type": "database",
+      "label": "DN・cơ sở・HĐ",
+      "sublabel": "HĐ cha・HĐ con",
+      "stage": 3,
+      "row": 0,
+      "tag": "tạm"
+    },
+    {
+      "id": "orders",
+      "type": "database",
+      "label": "Đơn hàng",
+      "sublabel": "bộ khởi tạo vật tư",
+      "stage": 3,
+      "row": 1,
+      "tag": "tự tạo"
+    },
+    {
+      "id": "accts",
+      "type": "security",
+      "label": "Tài khoản",
+      "sublabel": "doanh nghiệp・cơ sở",
+      "stage": 3,
+      "row": 2,
+      "tag": "mặc định ON"
+    },
+    {
+      "id": "final",
+      "type": "backend",
+      "label": "Đăng ký chính thức",
+      "sublabel": "từng cơ sở",
+      "stage": 4,
+      "row": 0,
+      "tag": "xác định"
+    },
+    {
+      "id": "mail",
+      "type": "external",
+      "label": "Email M2",
+      "sublabel": "hướng dẫn đăng nhập",
+      "stage": 4,
+      "row": 2,
+      "tag": "người phụ trách"
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "webnew",
+      "to": "req",
+      "label": "đăng ký mới",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f2",
+      "from": "webadd",
+      "to": "req",
+      "label": "thêm CS",
+      "route": "straight",
+      "variant": "emphasis",
+      "labelAt": [
+        238,
+        233
+      ]
+    },
+    {
+      "id": "f3",
+      "from": "opsin",
+      "to": "req",
+      "label": "nhập thay",
+      "variant": "default"
+    },
+    {
+      "id": "f4",
+      "from": "req",
+      "to": "prov",
+      "label": "xác nhận xong",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f5",
+      "from": "prov",
+      "to": "ents",
+      "label": "tạo DN・CS",
+      "variant": "emphasis",
+      "labelSegment": 1
+    },
+    {
+      "id": "f6",
+      "from": "prov",
+      "to": "orders",
+      "label": "tạo đơn",
+      "route": "straight",
+      "variant": "default",
+      "labelAt": [
+        608,
+        238
+      ]
+    },
+    {
+      "id": "f7",
+      "from": "prov",
+      "to": "accts",
+      "label": "cấp TK",
+      "variant": "security",
+      "labelSegment": 1
+    },
+    {
+      "id": "f8",
+      "from": "ents",
+      "to": "final",
+      "label": "xác định cơ sở",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f9",
+      "from": "orders",
+      "to": "final",
+      "label": "dữ liệu GH",
+      "variant": "dashed"
+    },
+    {
+      "id": "f10",
+      "from": "accts",
+      "to": "mail",
+      "label": "M2 đăng nhập",
+      "route": "straight",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Lối vào (Form_đăng_ký.md §1・§2)",
+      "items": [
+        "Đăng ký mới (không đăng nhập), Thêm cơ sở (đã đăng nhập), vận hành nhập thay và CSV hàng loạt đều dồn vào cùng một yêu cầu AP-YYYYMMDD-NNNN",
+        "Con đường để vận hành tạo cơ sở・hợp đồng chỉ có một: đăng ký (nhập thay) → tiếp nhận",
+        "Email M1 gửi người đăng ký và người phụ trách chính khi tiếp nhận (§7)"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Đăng ký tạm tạo gì (§10-2・§13)",
+      "items": [
+        "Doanh nghiệp (khi mới), cơ sở, hợp đồng cha, hợp đồng con chu kỳ đầu, tài khoản doanh nghiệp・cơ sở",
+        "Đơn hàng (chính thức: doanh nghiệp nhập được; dùng thử: tự động chia tỷ lệ) và bộ khởi tạo vật tư",
+        "Ô 'Cấp tài khoản' mặc định ON; nếu OFF thì cấp ở bước đăng ký chính thức"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Đăng ký chính thức (§10-2・§13)",
+      "items": [
+        "Bấm 'Xác định cơ sở này' theo từng cơ sở khi mục bắt buộc đã đủ",
+        "Tạo hợp đồng con・lịch dự kiến・dữ liệu giao hàng (kể cả của bộ khởi tạo); hợp đồng cha có hiệu lực",
+        "Suy luận trong sơ đồ: mũi tên dữ liệu GH từ Đơn hàng sang Đăng ký chính thức biểu diễn dữ liệu giao hàng của bộ khởi tạo"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Từ chối・rút lại (§10-7) — không vẽ thành luồng",
+      "items": [
+        "Hủy đơn hàng・bộ khởi tạo; cơ sở・hợp đồng cha・hợp đồng con・doanh nghiệp mới = Hủy bỏ; tài khoản tạm dừng",
+        "Xem sơ đồ lifecycle của yêu cầu"
+      ]
+    }
+  ]
+}

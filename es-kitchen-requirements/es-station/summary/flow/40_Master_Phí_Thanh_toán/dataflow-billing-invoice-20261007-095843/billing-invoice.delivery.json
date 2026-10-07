@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "f4b3bd3e-78ad-41db-84b7-da40ea8b4491",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/40_Master_Phí_Thanh_toán/dataflow-billing-invoice-20261007-095843/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/40_Master_Phí_Thanh_toán/dataflow-billing-invoice-20261007-095843/billing-invoice.html",
+  "specification": {
+    "sha256": "19a36fe4219ad279b2dccee84dfa2327c510c09d6b1b0190b97b9549a41e8b8c",
+    "bytes": 3855
+  },
+  "artifact": {
+    "sha256": "fcf804046c69abb24ad625efaed8c46ccdac4a2cc7698cab90d6e8e80306776c",
+    "bytes": 758198
+  }
+}

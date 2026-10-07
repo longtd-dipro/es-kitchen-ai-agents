@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "40301de4-fc12-44aa-a452-6e7a553834ec",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/80_Màn_hình_vận_hành_và_doanh_nghiệp/dataflow-contact-notification-20261007-104500/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/80_Màn_hình_vận_hành_và_doanh_nghiệp/dataflow-contact-notification-20261007-104500/contact-notification.html",
+  "specification": {
+    "sha256": "a022bfb6865b3b5ebd84c7ab9a1c7dda93a0b9338c5e49bac7e938c9203c97c8",
+    "bytes": 3738
+  },
+  "artifact": {
+    "sha256": "96c040b0ea2703fc72c04324ee0209637dfb7525687a11e5c7276699caa0bdb3",
+    "bytes": 759762
+  }
+}

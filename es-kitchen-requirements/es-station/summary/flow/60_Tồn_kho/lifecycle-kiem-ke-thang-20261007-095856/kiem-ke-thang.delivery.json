@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "67aac516-6d7d-489a-b721-a4d40f938e18",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/60_Tồn_kho/lifecycle-kiem-ke-thang-20261007-095856/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/60_Tồn_kho/lifecycle-kiem-ke-thang-20261007-095856/kiem-ke-thang.html",
+  "specification": {
+    "sha256": "b0e78ee0325b8e6b1e2ffe17aca3e27c6196343d784239392282ba6edf63ad56",
+    "bytes": 2782
+  },
+  "artifact": {
+    "sha256": "340616a8337aa1f9df8043b007892b95f53ffc9a4086ee4a85feb6941ab3cd25",
+    "bytes": 756690
+  }
+}

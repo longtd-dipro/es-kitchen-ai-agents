@@ -133,7 +133,8 @@ Library "ES Kitchen" đặt tên theme **ngược** với tên portal:
 
 | Tên variable/variant trong Figma | Thực chất là màu | Dùng cho portal |
 |---|---|---|
-| `company/*` (company/500 `#0969DA`) · Button `theme=Company` | **Blue** | **Admin E03**, Driver E06, link, info |
+| `company/*` (company/500 `#0969DA`) · Button **`theme=primary`** | **Blue** | **Admin E03**, Driver E06, link, info |
+| ⚠️ Button `theme=Company` (set `1e134ad8…`) | **Orange** — đo 2026-09-30: solid `#FAA51D`, outline `#F4860C` (ngược với tên variable `company/*`) | KHÔNG dùng cho Admin/Driver. Set Button chỉ có `theme=primary/neutral/secondary/Company` — không có `Admin`/`App` |
 | `admin/*` (admin/500 `#F4860C`, admin/50 `#FFF9EB`, admin/200 `#FDDA8A`) · Button `theme=Admin` | **Orange** | **Company E02** (và nút "メンテナンス終了" ở Admin) |
 | `app/*` / `App - primary/*` (app/500 `#EAB308`, app/200 `#FEE28A`, 400 `#FECE3C`, 600 `#CA9A04`) · Button `theme=App` | **Yellow** | Mobile E01, ES_QR |
 | (chưa có theme) | Purple `#6639BA` | Supplier E04 → override fill |

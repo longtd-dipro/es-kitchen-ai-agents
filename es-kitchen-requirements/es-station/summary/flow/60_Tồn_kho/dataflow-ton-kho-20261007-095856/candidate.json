@@ -1,0 +1,259 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Luồng dữ liệu tồn kho cơ sở",
+  "output": "flow/60_Tồn_kho/dataflow-ton-kho-20261007-095856/ton-kho.html",
+  "viewBox": [
+   1060,
+   640
+  ],
+  "quality_profile": "showcase"
+ },
+ "stages": [
+  {
+   "label": "Nguồn sự kiện"
+  },
+  {
+   "label": "Xử lý"
+  },
+  {
+   "label": "Lưu・tính toán"
+  },
+  {
+   "label": "Sử dụng"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "ops",
+   "type": "security",
+   "label": "Vận hành",
+   "sublabel": "điều chỉnh・di chuyển",
+   "stage": 0,
+   "row": 2
+  },
+  {
+   "id": "delivery",
+   "type": "external",
+   "label": "Giao hàng",
+   "sublabel": "cộng dồn theo chuyến",
+   "stage": 0,
+   "row": 1
+  },
+  {
+   "id": "purchase",
+   "type": "frontend",
+   "label": "Mua app・ESQR",
+   "sublabel": "giỏ hàng → thanh toán",
+   "stage": 0,
+   "row": 0
+  },
+  {
+   "id": "count",
+   "type": "frontend",
+   "label": "Báo cáo kiểm kê",
+   "sublabel": "khách・tài xế・vận hành",
+   "stage": 0,
+   "row": 3
+  },
+  {
+   "id": "hold",
+   "type": "backend",
+   "label": "Giữ tạm",
+   "sublabel": "chờ thanh toán 30 phút",
+   "stage": 1,
+   "row": 0
+  },
+  {
+   "id": "close",
+   "type": "backend",
+   "label": "Chốt kiểm kê",
+   "sublabel": "ghi đè lý thuyết = thực",
+   "stage": 1,
+   "row": 3
+  },
+  {
+   "id": "theory",
+   "type": "database",
+   "label": "Tồn kho lý thuyết",
+   "sublabel": "theo cơ sở・được âm",
+   "stage": 1,
+   "row": 1
+  },
+  {
+   "id": "avail",
+   "type": "backend",
+   "label": "Tồn kho khả dụng",
+   "sublabel": "lý thuyết − giữ tạm",
+   "stage": 2,
+   "row": 1
+  },
+  {
+   "id": "loss",
+   "type": "backend",
+   "label": "Hao hụt quản lý",
+   "sublabel": "vượt miễn trừ → TT",
+   "stage": 2,
+   "row": 3
+  },
+  {
+   "id": "snapshot",
+   "type": "database",
+   "label": "Bản sao theo tháng",
+   "sublabel": "lưu khi chốt",
+   "stage": 2,
+   "row": 2
+  },
+  {
+   "id": "app",
+   "type": "frontend",
+   "label": "Hiển thị app",
+   "sublabel": "ẩn・sắp hết・mua được",
+   "stage": 3,
+   "row": 1
+  },
+  {
+   "id": "settle",
+   "type": "backend",
+   "label": "Chốt thực tích",
+   "sublabel": "3 hạng mục",
+   "stage": 3,
+   "row": 3
+  },
+  {
+   "id": "opsview",
+   "type": "frontend",
+   "label": "Quản lý tồn kho",
+   "sublabel": "danh sách・chi tiết",
+   "stage": 3,
+   "row": 2
+  }
+ ],
+ "flows": [
+  {
+   "id": "f-ops",
+   "from": "ops",
+   "to": "theory",
+   "label": "± điều chỉnh",
+   "variant": "security"
+  },
+  {
+   "id": "f-delivery",
+   "from": "delivery",
+   "to": "theory",
+   "label": "+ giao hàng",
+   "variant": "emphasis",
+   "route": "straight"
+  },
+  {
+   "id": "f-order",
+   "from": "purchase",
+   "to": "hold",
+   "label": "đơn hàng",
+   "route": "straight"
+  },
+  {
+   "id": "f-paid",
+   "from": "hold",
+   "to": "theory",
+   "label": "TT xong: −",
+   "variant": "emphasis",
+   "route": "straight",
+   "labelAt": [
+    315,
+    201
+   ]
+  },
+  {
+   "id": "f-count",
+   "from": "count",
+   "to": "close",
+   "label": "tồn kho thực",
+   "route": "straight"
+  },
+  {
+   "id": "f-overwrite",
+   "from": "close",
+   "to": "theory",
+   "label": "ghi đè",
+   "variant": "emphasis",
+   "route": "straight"
+  },
+  {
+   "id": "f-loss",
+   "from": "close",
+   "to": "loss",
+   "label": "chênh lệch",
+   "route": "straight",
+   "labelAt": [
+    422,
+    522
+   ]
+  },
+  {
+   "id": "f-snap",
+   "from": "close",
+   "to": "snapshot",
+   "label": "bản sao",
+   "variant": "dashed"
+  },
+  {
+   "id": "f-avail",
+   "from": "theory",
+   "to": "avail",
+   "label": "lý thuyết"
+  },
+  {
+   "id": "f-app",
+   "from": "avail",
+   "to": "app",
+   "label": "số khả dụng",
+   "route": "straight"
+  },
+  {
+   "id": "f-settle",
+   "from": "loss",
+   "to": "settle",
+   "label": "quy ra tiền",
+   "route": "straight"
+  },
+  {
+   "id": "f-view",
+   "from": "snapshot",
+   "to": "opsview",
+   "label": "tháng cũ",
+   "variant": "dashed",
+   "route": "straight"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "Tăng giảm tồn kho lý thuyết",
+   "items": [
+    "Tăng: giao hàng (cộng dồn theo chuyến), di chuyển vào, điều chỉnh (+)",
+    "Giảm: mua hoàn tất thanh toán, đăng ký hủy bỏ, di chuyển ra, điều chỉnh (−)",
+    "Nguồn: Tồn_kho.md §3, §4-1"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Chu kỳ kiểm kê",
+   "items": [
+    "Kỳ 21 → 20 tháng sau; sau chốt, tồn thực ghi đè tồn lý thuyết (§3, §5)",
+    "Hao hụt = lý thuyết − thực, quy theo giá chuẩn (§6-1)",
+    "Khi chốt lưu bản sao theo tháng; tháng cũ chỉ tham chiếu (§6-5)"
+   ]
+  },
+  {
+   "dot": "slate",
+   "title": "Ghi chú diễn giải",
+   "items": [
+    "Mua bằng quét không giữ tạm, không kiểm tra tồn kho (§4-5); sơ đồ chỉ vẽ đường mua qua giỏ hàng",
+    "Tồn khả dụng = lý thuyết − giữ tạm (§1); nhánh 'giữ tạm → khả dụng' là suy ra từ định nghĩa này",
+    "Tồn kho kho hàng (§2) không vẽ: chủ đề tồn kho cơ sở"
+   ]
+  }
+ ]
+}

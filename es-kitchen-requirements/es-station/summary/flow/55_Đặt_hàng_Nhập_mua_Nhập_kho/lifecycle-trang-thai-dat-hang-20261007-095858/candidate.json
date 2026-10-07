@@ -1,0 +1,43 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Vòng đời trạng thái Đặt hàng NCC",
+    "output": "flow/55_Đặt_hàng_Nhập_mua_Nhập_kho/lifecycle-trang-thai-dat-hang-20261007-095858/trang-thai-dat-hang.html",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "main", "label": "Luồng chính" },
+    { "id": "recv", "label": "Nhập kho" },
+    { "id": "exc", "label": "Ngoại lệ" },
+    { "id": "terminal", "label": "Kết thúc" }
+  ],
+  "states": [
+    { "id": "tam", "type": "start", "label": "Đặt hàng tạm", "sublabel": "chờ phản hồi ngày giao", "lane": "main", "col": 0 },
+    { "id": "phanhoi", "type": "active", "label": "Đã phản hồi ngày", "sublabel": "NCC phản hồi", "lane": "main", "col": 1 },
+    { "id": "chopd", "type": "waiting", "label": "Chờ phê duyệt", "sublabel": "đặt hàng chính", "lane": "main", "col": 2 },
+    { "id": "dapd", "type": "active", "label": "Đã phê duyệt", "sublabel": "đặt hàng chính", "lane": "main", "col": 3 },
+    { "id": "daxuat", "type": "active", "label": "Đã xuất hàng", "sublabel": "NCC báo cáo xuất", "lane": "main", "col": 4 },
+    { "id": "danhap", "type": "success", "label": "Đã nhập kho", "sublabel": "tồn kho tăng", "lane": "recv", "col": 4 },
+    { "id": "chenh", "type": "waiting", "label": "Có chênh lệch", "sublabel": "chờ xử lý", "lane": "exc", "col": 4 },
+    { "id": "khongnhan", "type": "failure", "label": "Không nhận đơn", "sublabel": "NCC từ chối + lý do", "lane": "exc", "col": 2 },
+    { "id": "huy", "type": "failure", "label": "Hủy", "sublabel": "VH hủy, không xóa", "lane": "terminal", "col": 3 }
+  ],
+  "transitions": [
+    { "from": "tam", "to": "phanhoi", "label": "NCC phản hồi" },
+    { "from": "phanhoi", "to": "chopd", "label": "VH đặt chính" },
+    { "from": "chopd", "to": "dapd", "label": "NCC duyệt" },
+    { "from": "dapd", "to": "daxuat", "label": "báo cáo xuất" },
+    { "from": "daxuat", "to": "danhap", "label": "SL khớp" },
+    { "from": "daxuat", "to": "chenh", "label": "SL khác", "variant": "security" },
+    { "from": "chenh", "to": "danhap", "label": "xử lý xong", "variant": "dashed" },
+    { "from": "chopd", "to": "khongnhan", "label": "NCC từ chối", "variant": "security" },
+    { "from": "khongnhan", "to": "huy", "label": "VH hủy", "variant": "security" },
+    { "from": "dapd", "to": "huy", "label": "VH hủy", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Nguồn", "items": ["Đặt_hàng_Nhập_mua_Nhập_kho.md §3 (bảng trạng thái), §8 (chênh lệch)", "Chuỗi §3 còn trạng thái Đặt hàng chính giữa Đã phản hồi và Chờ phê duyệt; bảng chuyển đổi bỏ qua nên sơ đồ gộp vào VH đặt chính"] },
+    { "dot": "amber", "title": "Suy luận / lược", "items": ["Chuyển Có chênh lệch -> Đã nhập kho (xử lý xong) là suy luận: tài liệu chỉ nêu 3 cách xử lý (chờ giao từng phần, hàng thay thế, chấp nhận thiếu hụt)", "Không nhận đơn: NCC có thể từ chối cả ở Chờ phản hồi ngày giao; chỉ vẽ từ Chờ phê duyệt", "Hủy: VH hủy được từ bất kỳ trạng thái; chỉ vẽ 2 mũi tên đại diện (§3 dòng cuối)", "Không nhận đơn: VH sắp xếp NCC khác hoặc hủy; chỉ vẽ nhánh hủy"] },
+    { "dot": "rose", "title": "Quy tắc sửa (§4)", "items": ["VH sửa SL được đến khi NCC phê duyệt đặt hàng chính", "Sau duyệt: tăng = đặt hàng bổ sung, giảm = hủy rồi đặt lại", "Thiếu hàng khi nhập kho: không tự giảm, VH chọn cách xử lý"] }
+  ]
+}

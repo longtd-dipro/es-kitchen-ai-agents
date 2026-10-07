@@ -12,7 +12,7 @@
 | hover | `#0550AE` | `company/600` |
 | subtle (sub-menu active, hover outline) | `#E5F6FF` | `info/50` / `company/50` |
 | muted | `#CEEDFF` | `company/100` |
-| Button theme variant | `theme=Company` | (tên ngược — xem foundation §8) |
+| Button theme variant | `theme=primary` | ⚠️ KHÔNG dùng `theme=Company` — đo 2026-09-30 ra cam `#FAA51D` (xem foundation §8) |
 | Login wash | `#61B3FF` | `company/300` |
 
 **Màu phụ đặc thù Admin:** orange `admin/500 #F4860C` chỉ cho hành động/trạng thái "bảo trì" (nút 「メンテナンス終了」, pill 「メンテナンス中」, card Android đang bảo trì nền `admin/50 #FFF9EB` viền `admin/200 #FDDA8A`). Không dùng orange làm primary.

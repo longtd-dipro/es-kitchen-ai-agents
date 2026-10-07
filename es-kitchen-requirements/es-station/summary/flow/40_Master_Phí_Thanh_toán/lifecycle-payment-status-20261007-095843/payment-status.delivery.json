@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "ee2a9a80-691a-4a13-a00a-c397fe35489d",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/40_Master_Phí_Thanh_toán/lifecycle-payment-status-20261007-095843/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/40_Master_Phí_Thanh_toán/lifecycle-payment-status-20261007-095843/payment-status.html",
+  "specification": {
+    "sha256": "a718edbcfcf17feafe0ed1ef02cf662e99e26ee31acae4a44be3db3c3c67e503",
+    "bytes": 2901
+  },
+  "artifact": {
+    "sha256": "9459f0a45fdd1cea373ffdb62571df3d6d9498cbca6338a2493b865d93bb39f1",
+    "bytes": 758718
+  }
+}

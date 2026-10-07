@@ -81,3 +81,4 @@ Nhiều platform → đọc hợp các file. `tokens.json` → lấy block theme
 | 2026-09-29 | v1.1 — user confirm: Logistic = E05 (đổi tên Công ty vận chuyển Web) · ES_QR = WebApp mới · badge solid/soft **dùng chung** mọi platform (C3, C6, C8 resolved) |
 | 2026-09-30 | v1.3 — thêm Bước 0.0 kiểm tra đầu vào design system (AskUserQuestion khi thiếu) · Bước 0.2b hỏi ngôn ngữ group/section/screen name · foundation §12 naming đa ngôn ngữ xuống dòng (đề xuất vi-ja-en) |
 | 2026-09-30 | v1.4 — thêm Bước 0.I: AskUserQuestion hỏi input (prototype HTML · tài liệu khác · Figma output · tên output tự đặt / agent đề xuất) |
+| 2026-09-30 | v1.5 — đo lại Button: `theme=Company` = CAM (`#FAA51D`), Admin/Driver dùng `theme=primary` (xanh). Sửa foundation §8, 11-web-admin, tokens.json `buttonTheme`, memory. Phát hiện khi vẽ AI_Generate_Tồn Kho |

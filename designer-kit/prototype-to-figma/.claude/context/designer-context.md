@@ -378,7 +378,7 @@ slotFrame.appendChild(iconNode);
 
 | Component | Key | Variants chính | Dùng cho |
 |---|---|---|---|
-| **Button** | `1e134ad8aa99dc4e294a79bf087b2342c4a3a3a1` | `theme=Company/Admin/App`, `variant=outline/filled`, `state=enable/disabled/hover`, `size=sm/md/lg` | Buttons toàn dự án — theme Company = blue E03/E06; Admin = orange E02; App = yellow E01. **E04 purple** chưa có theme variant → override fill |
+| **Button** | `1e134ad8aa99dc4e294a79bf087b2342c4a3a3a1` | `theme=Company/Admin/App`, `variant=outline/filled`, `state=enable/disabled/hover`, `size=sm/md/lg` | Buttons toàn dự án — ⚠️ đo 2026-09-30: `theme=primary` = blue (E03/E06), `theme=Company` = ORANGE; set chỉ có primary/neutral/secondary/Company. **E04 purple** chưa có theme variant → override fill |
 | **Input** | `c2b2d367691d1cbb014c2f2537e5234d0d31e51d` | `Size=medium/small`, `State=normal/error`, `Filled=true/false` | Text input |
 | **Input (variant)** | `dd4368aee92ddaa1d5c9d1f6edee56a606b2bfc0` | `Property 1=Default`, `Size=S/M/L`, `Filled=Yes/No`, `State`, `In Valied=Yes/No` | Form input alt |
 | **Select** | `1a9a2d8e82f78a52529f5c9fa90ea9b65b054e18` | `Size=medium`, `Filled`, `MultiSelect`, `Disabled`, `Open`, `Hovering` | Dropdown |
