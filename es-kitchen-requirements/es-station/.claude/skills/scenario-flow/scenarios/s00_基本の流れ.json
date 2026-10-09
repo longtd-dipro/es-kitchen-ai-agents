@@ -1,0 +1,30 @@
+{
+  "id": "s00",
+  "title": ["基本の流れ（マスタ → 子契約 → 月次注文 → 発注 → 配送 → 精算）", "Luồng cơ bản (master → HĐ con → order tháng → đặt hàng NCC → giao → quyết toán)"],
+  "goal": ["大阪支店（CU00871）の11月サイクルを、プランから請求までたどる", "Theo chu kỳ tháng 11 của chi nhánh Osaka (CU00871) từ gói tới hóa đơn"],
+  "source": "00_確認してほしい/シナリオ実行チェックリスト_20261003.md ⓪",
+  "steps": [
+    {"site": "ops", "url": "/ops/masters/plans/ES000003",
+     "cap": ["50プランの中身（月次提供上限・価格世代・料金）を見る", "Xem gói 50 (giới hạn suất/tháng, thế hệ giá, giá)"],
+     "look": ["text=月次提供上限", "main h1", "main"], "watch": ["ES000003"]},
+    {"site": "ops", "url": "/ops/contracts/CP0000002-202611",
+     "cap": ["大阪支店の11月の子契約。プランの料金がここに写って固まる", "HĐ con tháng 11 của Osaka. Giá gói được sao chép và cố định ở đây"],
+     "look": ["text=前払い", "main h1", "main"], "watch": ["CP0000002-202611"]},
+    {"site": "corp", "url": "/corp/login",
+     "cap": ["大阪支店のアカウントで法人Web にログイン", "Đăng nhập Web DN bằng tài khoản chi nhánh Osaka"],
+     "fill": [{"sel": "input[autocomplete=username]", "value": "CU00871"}, {"sel": "input[type=password]", "value": "demo"}],
+     "click": ["button[type=submit]:has-text('ログイン')", "button:has-text('ログイン')"]},
+    {"site": "corp", "url": "/corp/order",
+     "cap": ["11月の月次注文を登録（2便に分けて届く）", "Đăng ký order tháng 11 (giao chia 2 chuyến)"],
+     "click": ["button:has-text('登録')"], "expect_change": ["月次注文が保存される", "Order tháng được lưu"]},
+    {"site": "ops", "url": "/ops/purchasing/orders",
+     "cap": ["注文をもとに仕入先へ発注（仮発注 → 本発注）", "Từ order, đặt hàng nhà cung cấp (tạm → chính thức)"],
+     "look": ["main table", "main"]},
+    {"site": "ops", "url": "/ops/delivery/schedule",
+     "cap": ["11月の配送スケジュール（A1＝11/09 から）", "Lịch giao tháng 11 (A1 = 09/11)"],
+     "look": ["main table", "main"]},
+    {"site": "ops", "url": "/ops/billing/actuals",
+     "cap": ["月末の棚卸から実績精算 → 請求書へ", "Kiểm kho cuối tháng → quyết toán thực tế → hóa đơn"],
+     "look": ["main table", "main"]}
+  ]
+}

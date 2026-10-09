@@ -1,0 +1,311 @@
+/*
+ * 請求（在庫管理・実績精算・請求の確定・請求書）の見た目。元は 02_デモ/部品/15_運営_請求.html の CSS
+ * （ES Kitchen デザインシステムの es-* 部品と、請求デモの補足 bl-*）。.ops-billing の中だけに効く。
+ * 元の :root のトークンは .ops-billing に、body の指定は外した。
+ */
+.ops-billing{--brand-orange:#FAA51D;--brand-red:#EE1F23;--primary-50:#E5F6FF;--primary-100:#CEEDFF;--primary-200:#97D3FF;--primary-300:#61B3FF;--primary-400:#218BFF;--primary-500:#0969DA;--primary-600:#0550AE;--primary-700:#033D8B;--primary-800:#0A3069;--primary-900:#002155;--primary:#0969DA;--primary-hover:#0550AE;--primary-active:#033D8B;--primary-subtle:#E5F6FF;--primary-muted:#CEEDFF;--primary-text:#0969DA;--on-primary:#FFFFFF;--login-wash:#61B3FF;--neutral-50:#F6F8FA;--neutral-100:#EAEEF2;--neutral-200:#D0D7DE;--neutral-300:#AFB8C1;--neutral-400:#8C959F;--neutral-500:#6E7781;--neutral-600:#57606A;--neutral-700:#424A53;--neutral-800:#32383F;--neutral-900:#24292F;--white:#FFFFFF;--page-bg:#F0F2F5;--surface:#FFFFFF;--surface-subtle:#F6F8FA;--surface-disabled:#EAEEF2;--divider-low:#EAEEF2;--divider-middle:#D0D7DE;--divider-high:#AFB8C1;--text-high:#24292F;--text-middle:#424A53;--text-low:#6E7781;--success-50:#EDFDF0;--success-100:#C5F7D0;--success-500:#1A7F37;--success-700:#044F1E;--info-50:#E5F6FF;--info-100:#CEEDFF;--info-500:#0969DA;--info-700:#033D8B;--warning-50:#FEF9E8;--warning-100:#FEF0C3;--warning-400:#FAC215;--warning-800:#854D0E;--negative-50:#FFF6F5;--negative-100:#FFE5E4;--negative-500:#CF222E;--negative-600:#A40E26;--focus-ring:#096CDC;--overlay-scrim:rgba(0,0,0,0.45);--space-0:0px;--space-2:2px;--space-4:0.285714rem;--space-6:0.428571rem;--space-8:0.571429rem;--space-12:0.857143rem;--space-16:1.142857rem;--space-20:1.428571rem;--space-24:1.714286rem;--space-32:2.285714rem;--space-40:2.857143rem;--space-48:3.428571rem;--space-56:4rem;--space-72:5.142857rem;--space-88:6.285714rem;--space-104:7.428571rem;--space-120:8.571429rem;--radius-none:0px;--radius-xs:2px;--radius-sm:4px;--radius-md:6px;--radius-lg:8px;--radius-xl:12px;--radius-2xl:16px;--radius-3xl:24px;--radius-full:9999px;--shadow-flat:0 1px 0 0 rgba(0,0,0,0.05);--shadow-raise:0 1px 2px 0 rgba(0,0,0,0.05);--shadow-stick:0 1px 2px -1px rgba(0,0,0,0.10), 0 1px 3px 0 rgba(0,0,0,0.10);--shadow-float:0 2px 4px -2px rgba(0,0,0,0.10), 0 4px 6px -1px rgba(0,0,0,0.10);--shadow-popout:0 4px 6px -4px rgba(0,0,0,0.10), 0 10px 15px -3px rgba(0,0,0,0.10);--shadow-focus:0 0 0 2px #FFFFFF, 0 0 0 4px #096CDC;--header-height:3.857143rem;--sidebar-width:15rem;--sidebar-collapsed:5.714286rem;--nav-item-height:3.428571rem;--control-sm:2.285714rem;--control-md:2.857143rem;--control-lg:3.428571rem;--table-header-height:3.928571rem;--table-row-height:3.857143rem;--modal-width:32.142857rem;--content-max:91.428571rem;--font-sans:"Noto Sans JP", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;--font-mono:"BIZ UDGothic", "Noto Sans Mono", ui-monospace, monospace;;font-family:var(--font-sans);color:var(--text-high);font-size:1rem;line-height:1.714286rem;display:flex;flex-direction:column;gap:var(--space-16);padding-bottom:5.142857rem}
+.ops-billing .es-icon{flex:none;display:inline-block;vertical-align:middle}
+.ops-billing .es-mono{font-family:var(--font-mono)}
+.ops-billing .es-num{font-variant-numeric:tabular-nums}
+.ops-billing .es-link{color:var(--primary-text);font-size:0.857143rem;line-height:1.428571rem;text-decoration:none}
+.ops-billing .es-link:hover{text-decoration:underline}
+.ops-billing :where(.es-btn,.es-page,.es-tab,.es-navitem,.es-subitem,.es-profile,.es-input input,.es-input select,.es-check input,.es-radio input,.es-switch input):focus-visible{outline:none;box-shadow:var(--shadow-focus)}
+
+/* Spinner */
+.ops-billing .es-spinner{display:inline-block;border-radius:var(--radius-full);border:2px solid currentColor;border-right-color:transparent;animation:es-spin .8s linear infinite}
+@keyframes es-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.ops-billing .es-spinner{animation-duration:2.4s}}
+
+/* Button — Sparkle: sm 32 / md 40 / lg 48, radius action 6 */
+.ops-billing .es-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-8);border:1px solid transparent;border-radius:var(--radius-md);font:inherit;font-weight:700;cursor:pointer;white-space:nowrap;transition:background-color .12s,border-color .12s,color .12s}
+.ops-billing .es-btn--sm{height:var(--control-sm);padding:0 var(--space-12);font-size:1rem}
+.ops-billing .es-btn--md{height:var(--control-md);padding:0 var(--space-16);font-size:1.142857rem}
+.ops-billing .es-btn--lg{height:var(--control-lg);padding:0 var(--space-24);font-size:1.142857rem}
+.ops-billing .es-btn--icon.es-btn--sm{width:var(--control-sm);padding:0}
+.ops-billing .es-btn--icon.es-btn--md{width:var(--control-md);padding:0}
+.ops-billing .es-btn--icon.es-btn--lg{width:var(--control-lg);padding:0}
+.ops-billing .es-btn--block{width:100%}
+.ops-billing .es-btn--solid.es-btn--primary{background:var(--primary);color:var(--on-primary)}
+.ops-billing .es-btn--solid.es-btn--primary:hover:not(:disabled){background:var(--primary-hover)}
+.ops-billing .es-btn--solid.es-btn--primary:active:not(:disabled){background:var(--primary-active)}
+.ops-billing .es-btn--outline.es-btn--primary{background:var(--surface);border-color:var(--primary);color:var(--primary-text)}
+.ops-billing .es-btn--ghost.es-btn--primary{background:transparent;color:var(--primary-text)}
+.ops-billing .es-btn--outline.es-btn--primary:hover:not(:disabled),.ops-billing .es-btn--ghost.es-btn--primary:hover:not(:disabled){background:var(--primary-subtle)}
+.ops-billing .es-btn--solid.es-btn--neutral{background:var(--neutral-700);color:var(--white)}
+.ops-billing .es-btn--solid.es-btn--neutral:hover:not(:disabled){background:var(--neutral-800)}
+.ops-billing .es-btn--outline.es-btn--neutral{background:var(--surface);border-color:var(--divider-middle);color:var(--text-middle)}
+.ops-billing .es-btn--ghost.es-btn--neutral{background:transparent;color:var(--text-middle)}
+.ops-billing .es-btn--outline.es-btn--neutral:hover:not(:disabled),.ops-billing .es-btn--ghost.es-btn--neutral:hover:not(:disabled){background:var(--surface-subtle)}
+.ops-billing .es-btn--solid.es-btn--negative{background:var(--negative-500);color:var(--white)}
+.ops-billing .es-btn--solid.es-btn--negative:hover:not(:disabled){background:var(--negative-600)}
+.ops-billing .es-btn--outline.es-btn--negative{background:var(--surface);border-color:var(--negative-500);color:var(--negative-500)}
+.ops-billing .es-btn--ghost.es-btn--negative{background:transparent;color:var(--negative-500)}
+.ops-billing .es-btn--outline.es-btn--negative:hover:not(:disabled),.ops-billing .es-btn--ghost.es-btn--negative:hover:not(:disabled){background:var(--negative-50)}
+.ops-billing .es-btn:disabled{cursor:not-allowed}
+.ops-billing .es-btn:disabled:not([aria-busy]){background:var(--surface-disabled);border-color:var(--surface-disabled);color:var(--text-low)}
+.ops-billing .es-btn[aria-busy]{opacity:.85;cursor:progress}
+
+/* Field + inputs — md 40, border divider-middle, radius 6 */
+.ops-billing .es-field{display:flex;flex-direction:column;gap:var(--space-4);min-width:0}
+.ops-billing .es-field__label{font-size:1rem;line-height:1.714286rem;font-weight:700;color:var(--text-middle)}
+.ops-billing .es-field__req{color:var(--negative-500);margin-left:var(--space-2)}
+.ops-billing .es-field__msg{margin:0;font-size:0.857143rem;line-height:1.428571rem;color:var(--text-low)}
+.ops-billing .es-field__msg--error{color:var(--negative-500)}
+.ops-billing .es-input{box-sizing:border-box;display:flex;align-items:center;gap:var(--space-8);background:var(--surface);border:1px solid var(--divider-middle);border-radius:var(--radius-md);padding:0 var(--space-12);color:var(--text-low);position:relative}
+.ops-billing .es-input:hover{border-color:var(--divider-high)}
+.ops-billing .es-input:focus-within{border-color:var(--primary-text);box-shadow:0 0 0 3px var(--primary-muted)}
+.ops-billing .es-input--sm{height:var(--control-sm)}.ops-billing .es-input--md{height:var(--control-md)}.ops-billing .es-input--lg{height:var(--control-lg)}
+.ops-billing .es-input input,.ops-billing .es-input select{flex:1;min-width:0;height:100%;border:0;background:transparent;font:inherit;font-size:1rem;color:var(--text-high);outline:none;appearance:none;-webkit-appearance:none;padding:0}
+.ops-billing .es-input input::placeholder{color:var(--text-low)}
+.ops-billing .es-input--disabled{background:var(--surface-disabled);border-color:var(--surface-disabled)}
+.ops-billing .es-input--disabled input,.ops-billing .es-input--disabled select{color:var(--text-low)}
+.ops-billing .es-input--readonly{background:var(--surface-subtle)}
+.ops-billing .es-field--error .es-input{border-color:var(--negative-500)}
+.ops-billing .es-field--error .es-input:focus-within{box-shadow:0 0 0 3px var(--negative-100)}
+.ops-billing .es-select select{cursor:pointer;padding-right:var(--space-24)}
+.ops-billing .es-select .es-icon{position:absolute;right:var(--space-12);pointer-events:none;color:var(--text-middle)}
+.ops-billing .es-input__suffix{color:var(--text-low);font-size:1rem}
+
+/* Checkbox / Radio / Switch */
+.ops-billing .es-check,.ops-billing .es-radio,.ops-billing .es-switch{display:inline-flex;align-items:center;gap:var(--space-8);font-size:1rem;color:var(--text-middle);cursor:pointer;position:relative}
+.ops-billing .es-check input,.ops-billing .es-radio input,.ops-billing .es-switch input{position:absolute;opacity:0;width:1.428571rem;height:1.428571rem;margin:0}
+.ops-billing .es-check__box{width:1.428571rem;height:1.428571rem;border:1.5px solid var(--neutral-500);border-radius:var(--radius-xs);background:var(--surface);display:grid;place-items:center}
+.ops-billing .es-check input:checked+.es-check__box,.ops-billing .es-check input:indeterminate+.es-check__box{background:var(--primary);border-color:var(--primary)}
+.ops-billing .es-check input:checked+.es-check__box::after{content:"";width:0.714286rem;height:0.357143rem;border:2px solid var(--on-primary);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.ops-billing .es-check input:indeterminate+.es-check__box::after{content:"";width:0.714286rem;height:2px;background:var(--on-primary)}
+.ops-billing .es-radio__dot{width:1.428571rem;height:1.428571rem;border:1.5px solid var(--neutral-500);border-radius:var(--radius-full);background:var(--surface);display:grid;place-items:center}
+.ops-billing .es-radio input:checked+.es-radio__dot{border-color:var(--primary)}
+.ops-billing .es-radio input:checked+.es-radio__dot::after{content:"";width:0.714286rem;height:0.714286rem;border-radius:var(--radius-full);background:var(--primary)}
+.ops-billing .es-switch input{width:2.857143rem}
+.ops-billing .es-switch__track{width:2.857143rem;height:1.714286rem;border-radius:var(--radius-full);background:var(--neutral-300);position:relative;transition:background-color .15s}
+.ops-billing .es-switch__track::after{content:"";position:absolute;top:2px;left:2px;width:1.428571rem;height:1.428571rem;border-radius:var(--radius-full);background:var(--white);box-shadow:var(--shadow-raise);transition:transform .15s}
+.ops-billing .es-switch input:checked+.es-switch__track{background:var(--primary)}
+.ops-billing .es-switch input:checked+.es-switch__track::after{transform:translateX(16px)}
+.ops-billing .es-check input:focus-visible+span,.ops-billing .es-radio input:focus-visible+span,.ops-billing .es-switch input:focus-visible+span{box-shadow:var(--shadow-focus)}
+.ops-billing .is-disabled{cursor:not-allowed;color:var(--text-low)}
+.ops-billing .is-disabled .es-check__box,.ops-billing .is-disabled .es-radio__dot{background:var(--surface-disabled);border-color:var(--divider-middle)}
+.ops-billing .is-disabled .es-switch__track{background:var(--neutral-200)}
+
+/* Badge — radius notice 4 */
+.ops-billing .es-badge{display:inline-flex;align-items:center;gap:var(--space-4);height:1.714286rem;padding:0 var(--space-8);border-radius:var(--radius-sm);font-size:0.857143rem;line-height:1.428571rem;font-weight:700;white-space:nowrap}
+.ops-billing .es-badge__dot{width:0.428571rem;height:0.428571rem;border-radius:var(--radius-full);background:currentColor}
+.ops-billing .es-badge--neutral{background:var(--neutral-100);color:var(--text-middle)}
+.ops-billing .es-badge--success{background:var(--success-100);color:var(--success-700)}
+.ops-billing .es-badge--info{background:var(--info-100);color:var(--info-700)}
+.ops-billing .es-badge--warning{background:var(--warning-100);color:var(--warning-800)}
+.ops-billing .es-badge--negative{background:var(--negative-100);color:var(--negative-600)}
+.ops-billing .es-badge--primary{background:var(--primary-subtle);color:var(--primary-text)}
+.ops-billing .es-badge--outline{background:var(--surface);box-shadow:inset 0 0 0 1px currentColor}
+
+/* Tabs — line style, active = primary underline */
+.ops-billing .es-tabs{display:flex;gap:var(--space-4);border-bottom:1px solid var(--divider-middle);overflow-x:auto}
+.ops-billing .es-tab{appearance:none;border:0;background:none;font:inherit;font-size:1.142857rem;line-height:1.714286rem;color:var(--text-middle);padding:var(--space-8) var(--space-16);border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;white-space:nowrap;display:inline-flex;gap:var(--space-4);align-items:center}
+.ops-billing .es-tab:hover{color:var(--text-high);background:var(--surface-subtle)}
+.ops-billing .es-tab.is-active{color:var(--primary-text);border-bottom-color:var(--primary);font-weight:700}
+.ops-billing .es-tab__count{font-size:0.857143rem;line-height:1.428571rem;padding:0 0.428571rem;border-radius:var(--radius-full);background:var(--neutral-100);color:var(--text-middle)}
+
+/* Breadcrumb + Page header */
+.ops-billing .es-breadcrumb{display:flex;flex-wrap:wrap;gap:var(--space-8);font-size:0.857143rem;line-height:1.428571rem;color:var(--text-low)}
+.ops-billing .es-breadcrumb a{color:var(--text-middle);text-decoration:none}
+.ops-billing .es-breadcrumb a:hover{color:var(--primary-text);text-decoration:underline}
+.ops-billing .es-breadcrumb__sep{color:var(--divider-high)}
+.ops-billing .es-breadcrumb__cur{color:var(--text-low)}
+.ops-billing .es-pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-12);flex-wrap:wrap;padding:var(--space-20) var(--space-24)}
+.ops-billing .es-pagehead__text{display:flex;flex-direction:column;gap:var(--space-4)}
+.ops-billing .es-pagehead__title{margin:0;font-size:1.714286rem;line-height:2.571429rem;font-weight:700;color:var(--text-high)}
+.ops-billing .es-pagehead__actions{display:flex;gap:var(--space-8);flex-wrap:wrap}
+
+/* Card + Section title (gray band, 3px primary bar at left — Phase 1) */
+.ops-billing .es-card{background:var(--surface);border-radius:var(--radius-lg);padding:var(--space-16);display:flex;flex-direction:column;gap:var(--space-16)}
+.ops-billing .es-section-title{display:flex;align-items:center;justify-content:space-between;gap:var(--space-8);background:var(--surface-subtle);border-left:3px solid var(--primary);padding:var(--space-8) var(--space-20);min-height:3.428571rem}
+.ops-billing .es-section-title h2{margin:0;font-size:1.285714rem;line-height:2rem;font-weight:700;color:var(--text-high)}
+
+/* Table — header 55 on surface-subtle, row 54 */
+.ops-billing .es-table-wrap{overflow-x:auto;border:1px solid var(--divider-low);border-radius:var(--radius-none)}
+.ops-billing .es-table{width:100%;border-collapse:collapse;font-size:1rem;line-height:1.714286rem}
+.ops-billing .es-table th{height:var(--table-header-height);background:var(--surface-subtle);color:var(--text-high);font-weight:700;text-align:left;padding:0 var(--space-16);white-space:nowrap;border-bottom:1px solid var(--divider-low)}
+.ops-billing .es-table th .es-icon{margin-left:var(--space-4);color:var(--text-low)}
+.ops-billing .es-table td{height:var(--table-row-height);padding:0 var(--space-16);color:var(--text-middle);border-bottom:1px solid var(--divider-low);white-space:nowrap}
+.ops-billing .es-table tbody tr:hover td{background:var(--surface-subtle)}
+.ops-billing .es-table tr.is-selected td{background:var(--primary-subtle)}
+.ops-billing .es-table tr.is-deleted td{background:var(--surface-disabled);color:var(--text-low)}
+.ops-billing .es-table td a{color:var(--primary-text);text-decoration:none}
+.ops-billing .es-table td a:hover{text-decoration:underline}
+
+/* Pagination */
+.ops-billing .es-pagination{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-8);flex-wrap:wrap;font-size:1rem}
+.ops-billing .es-pagination__meta{color:var(--text-middle);margin-right:var(--space-8)}
+.ops-billing .es-page{min-width:2.285714rem;height:2.285714rem;padding:0 var(--space-8);border:1px solid var(--divider-middle);border-radius:var(--radius-md);background:var(--surface);color:var(--text-middle);font:inherit;font-size:1rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.ops-billing .es-page:hover:not(:disabled){border-color:var(--primary);color:var(--primary-text)}
+.ops-billing .es-page.is-current{border-color:var(--primary);color:var(--primary-text);font-weight:700}
+.ops-billing .es-page:disabled{color:var(--divider-high);cursor:not-allowed}
+.ops-billing .es-page--gap{border-color:transparent;cursor:default}
+.ops-billing .es-pagination__per{width:9.142857rem}
+
+/* Inline message / Toast */
+.ops-billing .es-inline{display:flex;gap:var(--space-8);padding:var(--space-12) var(--space-16);border-radius:var(--radius-sm);border:1px solid;font-size:1rem;line-height:1.714286rem}
+.ops-billing .es-inline strong{display:block}
+.ops-billing .es-inline .es-icon{margin-top:0.214286rem}
+.ops-billing .es-inline--info{background:var(--info-50);border-color:var(--info-100);color:var(--info-700)}
+.ops-billing .es-inline--success{background:var(--success-50);border-color:var(--success-100);color:var(--success-700)}
+.ops-billing .es-inline--warning{background:var(--warning-50);border-color:var(--warning-100);color:var(--warning-800)}
+.ops-billing .es-inline--negative{background:var(--negative-50);border-color:var(--negative-100);color:var(--negative-600)}
+.ops-billing .es-toast{display:inline-flex;align-items:center;gap:var(--space-8);min-width:20rem;max-width:100%;padding:var(--space-12) var(--space-16);border-radius:var(--radius-lg);background:var(--surface);color:var(--text-high);box-shadow:var(--shadow-popout);border:1px solid var(--divider-low);font-size:1rem}
+.ops-billing .es-toast--success .es-icon:first-child{color:var(--success-500)}
+.ops-billing .es-toast--negative .es-icon:first-child{color:var(--negative-500)}
+.ops-billing .es-toast__close{margin-left:auto;border:0;background:none;color:var(--text-low);cursor:pointer;padding:var(--space-4);display:grid}
+
+/* Modal — 450 wide, radius modal 12 */
+.ops-billing .es-modal{position:fixed;inset:0;display:grid;place-items:center;z-index:50;padding:var(--space-16)}
+.ops-billing .es-modal--inline{position:relative;inset:auto;padding:0}
+.ops-billing .es-modal__scrim{position:absolute;inset:0;background:var(--overlay-scrim)}
+.ops-billing .es-modal__panel{position:relative;width:var(--modal-width);max-width:100%;background:var(--surface);border-radius:var(--radius-xl);box-shadow:var(--shadow-popout);padding:var(--space-24);display:flex;flex-direction:column;align-items:center;gap:var(--space-16);text-align:center}
+.ops-billing .es-modal__close{position:absolute;top:var(--space-12);right:var(--space-12);border:0;background:none;color:var(--text-low);cursor:pointer;padding:var(--space-4);display:grid;border-radius:var(--radius-md)}
+.ops-billing .es-modal__mark{width:5.142857rem;height:5.142857rem;border-radius:var(--radius-full);display:grid;place-items:center;font-size:2.857143rem;font-weight:700}
+.ops-billing .es-modal__mark--warning,.ops-billing .es-modal__mark--negative{background:var(--warning-100);color:var(--negative-500)}
+.ops-billing .es-modal__mark--success{background:var(--success-100);color:var(--success-700)}
+.ops-billing .es-modal__mark--info{background:var(--info-100);color:var(--info-700)}
+.ops-billing .es-modal__title{margin:0;font-size:1.428571rem;line-height:2.285714rem;font-weight:700;color:var(--text-high)}
+.ops-billing .es-modal__body{font-size:1rem;line-height:1.714286rem;color:var(--text-middle)}
+.ops-billing .es-modal__actions{display:flex;gap:var(--space-8);width:100%}
+
+/* Search panel — one wrapping flow. Fields take only the width they need; the actions sit at the right
+   and drop below the fields when the panel is narrow. Collapsed = first line of fields only. */
+.ops-billing .es-search{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--space-12) var(--space-16);background:var(--surface-subtle);border-left:3px solid var(--primary);padding:var(--space-12) var(--space-16);container-type:inline-size}
+.ops-billing .es-search__toggle{flex:none;width:2.285714rem;height:2.285714rem;margin-top:0.285714rem;border-radius:var(--radius-full);border:0;background:var(--surface);color:var(--text-middle);box-shadow:var(--shadow-raise);display:grid;place-items:center;cursor:pointer}
+.ops-billing .es-search__toggle:hover{color:var(--primary-text);background:var(--primary-subtle)}
+.ops-billing .es-search__toggle:focus-visible{outline:none;box-shadow:var(--shadow-focus)}
+.ops-billing .es-search__left{flex:1 1 25.714286rem;min-width:0;display:flex;align-items:flex-start;gap:var(--space-12)}
+.ops-billing .es-search__fields{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-content:flex-start;gap:var(--space-12)}
+.ops-billing .es-search.is-collapsed .es-search__fields{max-height:var(--control-md);overflow:hidden}
+/* intrinsic widths: a select needs ~12 chars, a free-text search ~20; they may grow a little to fill a line */
+.ops-billing .es-search__fields>*{flex:1 1 12.571429rem;max-width:17.142857rem;min-width:0}
+.ops-billing .es-search__fields>.es-grow{flex:2 1 17.142857rem;max-width:31.428571rem}
+.ops-billing .es-search__fields>.es-wide{flex:1 1 17.142857rem;max-width:25.714286rem}
+.ops-billing .es-search__actions{flex:0 0 auto;display:flex;flex-direction:column;gap:var(--space-12);margin-left:auto}
+.ops-billing .es-search__main{display:flex;gap:var(--space-8)}
+.ops-billing .es-search__main>*{min-width:7.428571rem}
+.ops-billing .es-search__extra{display:flex;flex-direction:column;gap:var(--space-8)}
+.ops-billing .es-search .es-field__label:empty{display:none}
+@container (max-width:45.714286rem){.ops-billing .es-search__actions{flex:1 1 100%}.ops-billing .es-search__main>*{flex:1}.ops-billing .es-search__fields>*,.ops-billing .es-search__fields>.es-grow{max-width:none}}
+.ops-billing .es-sortbtn{justify-content:space-between}
+
+/* Row actions (操作列) */
+.ops-billing .es-rowactions{display:inline-flex;gap:var(--space-4)}
+.ops-billing .es-table td .es-rowactions .es-btn{height:2.285714rem;width:2.285714rem}
+/* Mode label chip used in page titles (詳細／編集／新規登録) */
+.ops-billing .es-formgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-16) var(--space-32)}
+@media (max-width:45em){.ops-billing .es-formgrid{grid-template-columns:1fr}}
+
+/* CSV取込 / CSV出力 — one style everywhere: white, 1px primary-300 border, primary label + line icon, lg 48 */
+.ops-billing .es-btn--csv{background:var(--surface);border-color:var(--primary-300);color:var(--primary-text);gap:0.714286rem}
+.ops-billing .es-btn--csv.es-btn--lg{padding:0 var(--space-20)}
+.ops-billing .es-btn--csv:hover:not(:disabled){background:var(--primary-subtle);border-color:var(--primary)}
+.ops-billing .es-btn--csv:active:not(:disabled){background:var(--primary-muted)}
+
+/* ==== 配送管理（スケジュール・配送データ）コンポーネント ==== */
+
+
+/* 週の色（A〜D）：チップ・カレンダーのサイクル枠・凡例で同じ色 */
+.ops-billing .es-wk--a{color:var(--info-700)}
+.ops-billing .es-wk--b{color:var(--success-700)}
+.ops-billing .es-wk--c{color:var(--warning-800)}
+.ops-billing .es-wk--d{color:#512A97}
+
+/* SegmentedControl */
+.ops-billing .es-seg{display:inline-flex;flex-shrink:0;background:var(--surface-disabled);border-radius:var(--radius-md);padding:2px;gap:2px}
+.ops-billing .es-seg__item{appearance:none;border:0;background:none;font:inherit;height:2.571429rem;min-width:4.571429rem;padding:0 var(--space-16);display:inline-flex;align-items:center;justify-content:center;font-size:1.071429rem;font-weight:700;color:var(--text-middle);border-radius:5px;cursor:pointer;white-space:nowrap}
+.ops-billing .es-seg__item:hover{color:var(--text-high)}
+.ops-billing .es-seg__item:focus-visible{outline:none;box-shadow:var(--shadow-focus)}
+.ops-billing .es-seg__item.is-on{background:var(--primary);color:var(--on-primary)}
+.ops-billing .es-seg__item:disabled{color:var(--text-low);cursor:default}
+.ops-billing .es-seg--sm .es-seg__item{height:2.285714rem;min-width:0;font-size:1rem;padding:0 var(--space-12)}
+.ops-billing .es-seg--sm .es-seg__item.is-on{background:var(--surface);color:var(--text-high);box-shadow:var(--shadow-raise)}
+
+/* StageIndicator */
+.ops-billing .es-stage{flex:0 1 auto;min-width:0;max-width:100%;box-sizing:border-box;border:1px solid var(--divider-middle);border-radius:var(--radius-lg);padding:var(--space-8) var(--space-12);display:flex;flex-direction:column;gap:0.428571rem;background:var(--surface-subtle)}
+.ops-billing .es-stage__row{display:flex;align-items:center;gap:0.714286rem;font-size:1rem;white-space:nowrap;min-width:0}
+.ops-billing .es-stage__title{flex-shrink:0;font-weight:700}
+.ops-billing .es-stage__mode{flex-shrink:0;background:var(--neutral-600);color:var(--white);font-weight:700;font-size:0.928571rem;line-height:1.428571rem;padding:1px var(--space-8);border-radius:var(--radius-sm)}
+.ops-billing .es-stage__mode--edit{background:var(--primary);color:var(--on-primary)}
+.ops-billing .es-stage__detail{flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:0.857143rem;color:var(--text-low)}
+.ops-billing .es-stage__steps{display:flex;align-items:center;gap:0.428571rem;flex-wrap:wrap;font-size:0.857143rem;line-height:1.285714rem;color:var(--text-middle)}
+.ops-billing .es-stage__step{padding:1px var(--space-8);border-radius:var(--radius-sm);white-space:nowrap;border:1px solid transparent}
+.ops-billing .es-stage__step--done{background:var(--primary-subtle);color:var(--primary-text);font-weight:700}
+.ops-billing .es-stage__step--current{background:var(--primary-800);color:var(--white);font-weight:700}
+.ops-billing .es-stage__step--future{background:var(--surface);color:var(--text-low);border-color:var(--divider-middle)}
+.ops-billing .es-stage__arrow{color:var(--text-low);font-size:0.714286rem}
+
+/* SelectionBar */
+.ops-billing .es-selbar{display:flex;align-items:center;gap:var(--space-12);padding:0.714286rem var(--space-16);background:var(--neutral-800);border-radius:var(--radius-lg);box-shadow:var(--shadow-popout);color:var(--white)}
+.ops-billing .es-selbar--floating{position:absolute;left:calc(var(--sidebar-width) + var(--space-24));right:var(--space-24);bottom:var(--space-20);z-index:10}
+.ops-billing .es-selbar__count{font-size:1.142857rem;white-space:nowrap}
+.ops-billing .es-selbar__clear{appearance:none;border:0;background:none;font:inherit;font-size:1rem;color:var(--neutral-300);cursor:pointer;text-decoration:underline;white-space:nowrap}
+.ops-billing .es-selbar__actions{margin-left:auto;display:flex;align-items:center;gap:var(--space-8)}
+.ops-billing .es-selbar .es-btn--outline{background:var(--surface)}
+
+/* 請求 運営デモ：DS に置き換えた画面の補足（トークンだけを使う）2026/09/29 */
+.ops-billing .bl-meta{display:flex;gap:var(--space-8);align-items:center;flex-wrap:wrap;margin-top:calc(-1 * var(--space-8));font-size:0.857143rem;line-height:1.428571rem;color:var(--text-middle)}
+.ops-billing .bl-meta .small{font-size:0.857143rem;color:var(--text-middle)}
+.ops-billing .bl-lead{margin:calc(-1 * var(--space-8)) 0 var(--space-16);font-size:0.857143rem;color:var(--text-middle)}
+.ops-billing .es-card>.es-table-wrap,.ops-billing .es-card>.es-inline{margin:0}
+.ops-billing .bl-sact{display:flex;gap:var(--space-8);align-items:center;flex-wrap:wrap;font-size:0.857143rem;font-weight:400;color:var(--text-low)}
+.ops-billing .es-section-title h2 .small,.ops-billing .es-section-title h2 .es-badge{margin-left:var(--space-8)}
+.ops-billing .es-table td,.ops-billing .es-table th{height:auto;padding-top:var(--space-12);padding-bottom:var(--space-12)}
+.ops-billing .es-table th.r,.ops-billing .es-table td.r{text-align:right}.ops-billing .es-table th.c,.ops-billing .es-table td.c{text-align:center}
+.ops-billing .es-table tfoot td{background:var(--surface-subtle);font-weight:700;color:var(--text-high);border-top:1px solid var(--divider-middle)}
+.ops-billing .es-table td .es-btn+.es-btn,.ops-billing .es-table td .es-btn+.es-badge{margin-left:var(--space-8)}
+.ops-billing .es-table div.small,.ops-billing .es-table span.small{display:block;font-size:0.857143rem;line-height:1.428571rem;color:var(--text-low)}
+.ops-billing .es-table tr.dim td{color:var(--text-low)}
+.ops-billing .small{font-size:0.857143rem;line-height:1.428571rem;color:var(--text-low)}.ops-billing .es-table td.small{font-size:0.857143rem;color:var(--text-middle)}.ops-billing .dim{color:var(--text-low)}
+.ops-billing .pad{padding:0}
+.ops-billing .foot{display:flex;justify-content:space-between;align-items:center;gap:var(--space-12);flex-wrap:wrap;padding:var(--space-12) 0 0;border-top:1px solid var(--divider-low);background:none}
+.ops-billing .es-roval{height:auto!important;min-height:var(--control-md);padding:0.571429rem 0.857143rem!important;color:var(--text-high)!important;font-size:1rem;line-height:1.571429rem;flex-wrap:wrap;gap:0.428571rem}
+.ops-billing .bl-sumgrid{gap:var(--space-16)}
+.ops-billing .bl-sumgrid .es-roval b{font-size:1.285714rem;line-height:2rem}
+.ops-billing .es-textarea{width:100%;box-sizing:border-box;border:1px solid var(--divider-middle);border-radius:var(--radius-md);padding:0.571429rem 0.857143rem;font:inherit;font-size:1rem;color:var(--text-high);background:var(--surface);resize:vertical}
+.ops-billing .es-input--sm input[type=number],.ops-billing .es-input--num input{text-align:right}
+/* 率が基準を超えたセル（在庫差額率・廃棄率） */
+.ops-billing .es-table td.hot{background:var(--negative-50);color:var(--negative-500);font-weight:700}
+.ops-billing .es-tabs{margin-bottom:var(--space-16)}
+.ops-billing .es-inline .es-btn{margin-top:var(--space-8)}
+.ops-billing a.es-mono{color:var(--primary-text);text-decoration:none;cursor:pointer}.ops-billing a.es-mono:hover{text-decoration:underline}
+.ops-billing .es-input input,.ops-billing .es-input select{border:0!important;min-height:0!important;padding:0!important;box-shadow:none!important;background:transparent!important;border-radius:0!important}
+.ops-billing .es-input--disabled input,.ops-billing .es-input--disabled select{color:var(--text-low)!important}
+.ops-billing input[type=number]{width:auto}
+.ops-billing .bl-sf{max-height:none!important;overflow:visible!important}
+.ops-billing .es-selbar--floating{position:fixed!important;left:var(--space-24)!important;right:var(--space-24)!important;bottom:var(--space-20)}
+.ops-billing .es-table th .es-check,.ops-billing .es-table td .es-check{vertical-align:middle}
+
+/* v1.1（2026/09/29 28-140）請求の確定・請求書：今月の作業の3ステップ */
+.ops-billing .bl-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-12,0.857143rem);margin:0 0 var(--space-16,1.142857rem)}
+.ops-billing .bl-step{display:flex;gap:var(--space-12,0.857143rem);align-items:flex-start;text-align:left;padding:var(--space-12,0.857143rem) var(--space-16,1.142857rem);border:1px solid var(--divider-middle);border-radius:var(--radius-lg,8px);background:var(--surface);cursor:pointer;font:inherit;color:var(--text-high)}
+.ops-billing .bl-step:hover{border-color:var(--primary)}
+.ops-billing .bl-step.is-current{border:2px solid var(--primary);background:var(--primary-subtle)}
+.ops-billing .bl-step.is-done{background:var(--surface-subtle)}
+.ops-billing .bl-step__no{flex:0 0 2rem;height:2rem;border-radius:var(--radius-full,999px);display:inline-flex;align-items:center;justify-content:center;font-weight:700;background:var(--neutral-100);color:var(--text-middle)}
+.ops-billing .bl-step.is-current .bl-step__no{background:var(--primary);color:var(--on-primary,#fff)}
+.ops-billing .bl-step.is-done .bl-step__no{background:var(--success-100);color:var(--success-700)}
+.ops-billing .bl-step__body{display:flex;flex-direction:column;gap:0.285714rem;min-width:0}
+.ops-billing .bl-step__t{font-weight:700;font-size:1.071429rem}
+.ops-billing .bl-step__cnt{display:flex;align-items:baseline;gap:0.714286rem}
+.ops-billing .bl-step__cnt b{font-size:1.428571rem}
+.ops-billing .bl-step__dl{font-size:0.857143rem;color:var(--text-low)}
+.ops-billing .bl-step__how{font-size:0.857143rem;line-height:1.285714rem;color:var(--text-middle)}
+
+/* v1.3（2026/09/29 28-142）先月から変わった行 */
+.ops-billing tr.bl-chg > td{background:var(--warning-50,#FFF8E6)}
+
+/* 運営Web の枠（app/ops/layout.tsx）の中に置くための上書き */
+.ops-billing .es-pagehead{padding:0}
+.ops-billing .es-pagehead + .bl-meta{margin-top:calc(-1 * var(--space-8))}
+.ops-billing .es-inline > div{flex:1;min-width:0}
+.ops-billing .bl-steps{margin:0}
+.ops-billing .es-tabs{margin-bottom:0}
+.ops-billing .bl-lead{margin:calc(-1 * var(--space-8)) 0 0}
+/* 選択バー：外枠のサイドメニュー（210px）の右に出す */
+.ops-billing .es-selbar--floating{left:calc(15rem + var(--space-24))!important}
+@media (max-width:56.25em){.ops-billing .es-selbar--floating{left:var(--space-16)!important;right:var(--space-16)!important}}
+.ops-billing .es-roval__none{color:var(--text-low)}
+.ops-billing .bl-num-in{width:6.857143rem}
+.ops-billing .bl-red{color:var(--negative-500)}

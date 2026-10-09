@@ -1,0 +1,119 @@
+/*
+ * 拠点管理・契約の申請・法人情報（部品/22_法人_拠点管理.html の CSS のうち、この画面で使うもの）。.corp-sites の中だけに効く。
+ * 元は iframe の中の AppShell の .es-shell__content（左右 24px・下 24px・間 16px）に入っていたので、同じ余白にする。
+ */
+.corp-sites{padding:0 var(--space-24) var(--space-24);display:flex;flex-direction:column;gap:var(--space-16);min-width:0}
+
+/* ---- ページ ---- */
+.corp-sites .page-h{padding:1.428571rem 0 0.285714rem}
+.corp-sites .stat{display:flex;align-items:center;gap:0.571429rem;font-size:0.928571rem;color:var(--text-middle);flex-wrap:wrap}
+.corp-sites .stat .k{margin-left:0.571429rem}
+.corp-sites .sub{display:block;font-size:0.857143rem;line-height:1.285714rem;color:var(--text-low);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.corp-sites .note{font-size:0.857143rem;line-height:1.357143rem;color:var(--text-middle);margin:0}
+.corp-sites .muted{color:var(--text-low)}
+.corp-sites .ro{background:var(--surface-subtle);border:1px solid var(--divider-middle);border-radius:6px;padding:0.571429rem 0.857143rem;font-size:1rem;line-height:1.571429rem;color:var(--text-high)}
+.corp-sites .legend{display:flex;flex-wrap:wrap;gap:0.571429rem 1.285714rem;font-size:0.857143rem;color:var(--text-middle)}
+.corp-sites .legend span{display:inline-flex;align-items:center;gap:0.428571rem;white-space:nowrap}
+.corp-sites .es-check{gap:0.428571rem}
+
+/* ---- 表 ---- */
+.corp-sites .es-table td{max-width:22.857143rem;overflow:hidden;text-overflow:ellipsis}
+.corp-sites .es-table td.w{white-space:nowrap;line-height:1.285714rem;padding-top:0.428571rem;padding-bottom:0.428571rem}
+.corp-sites .es-table td.w b{display:block;font-weight:700;color:var(--text-high);overflow:hidden;text-overflow:ellipsis}
+.corp-sites .es-table td.c,.corp-sites .es-table th.c{text-align:center}
+.corp-sites .es-table td.r,.corp-sites .es-table th.r{text-align:right}
+.corp-sites .es-table tr.att td{background:var(--warning-50)}
+.corp-sites .es-table tr.dis td{color:var(--text-low)}
+.corp-sites .es-table.compact{font-size:0.928571rem}
+.corp-sites .es-table.compact th,.corp-sites .es-table.compact td{padding:0 0.714286rem}
+.corp-sites .tools{display:flex;align-items:center;justify-content:space-between;gap:0.857143rem;font-size:1rem;color:var(--text-middle);margin-bottom:0.571429rem}
+.corp-sites .files{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.857143rem}
+
+/* ---- 拠点管理デモだけの並べ方（色・形は ES Kitchen のトークンと部品のまま） ---- */
+.corp-sites .cb-stack{display:flex;flex-direction:column;gap:1.142857rem;min-width:0}
+.corp-sites .cb-tabcard{padding:0 1.142857rem}
+.corp-sites .cb-tabcard .es-tabs{border-bottom:0}
+.corp-sites .cb-g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.corp-sites .cb-g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.corp-sites .cb-act{font-size:1rem;font-weight:700;color:var(--primary-text);text-decoration:none;white-space:nowrap}
+.corp-sites .cb-act:hover{text-decoration:underline}
+.corp-sites .cb-band{white-space:normal!important;max-width:none!important;line-height:1.571429rem;padding-top:0.714286rem!important;padding-bottom:0.714286rem!important}
+.corp-sites .cb-band b{margin:0 0.571429rem 0 0.285714rem;color:var(--text-high)}
+.corp-sites .cb-band span{color:var(--text-middle);font-size:0.928571rem}
+.corp-sites .cb-dlg{display:flex;flex-direction:column;gap:1rem;font-size:1rem;line-height:1.571429rem;color:var(--text-middle)}
+.corp-sites .cb-dlg p{margin:0}
+.corp-sites .cb-procs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.714286rem}
+.corp-sites .cb-proc{appearance:none;font:inherit;text-align:left;display:flex;gap:0.714286rem;align-items:flex-start;padding:0.857143rem 1rem;border:1px solid var(--divider-middle);border-radius:var(--radius-lg);background:var(--surface);cursor:pointer;color:var(--text-middle)}
+.corp-sites .cb-proc:hover{border-color:var(--divider-high)}
+.corp-sites .cb-proc.is-on{border-color:var(--primary);box-shadow:inset 0 0 0 1px var(--primary);background:var(--primary-subtle)}
+.corp-sites .cb-proc.is-off{opacity:.55;cursor:not-allowed}
+.corp-sites .cb-proc:focus-visible{outline:none;box-shadow:var(--shadow-focus)}
+.corp-sites .cb-dot{flex:0 0 auto;margin-top:0.214286rem}
+.corp-sites .cb-proc.is-on .cb-dot{border-color:var(--primary);box-shadow:inset 0 0 0 4px var(--primary)}
+.corp-sites .cb-proc__t{display:flex;flex-direction:column;gap:2px;font-size:0.928571rem;line-height:1.428571rem}
+.corp-sites .cb-proc__t b{font-size:1rem;color:var(--text-high)}
+.corp-sites .cb-proc__t i{font-style:normal;font-size:0.857143rem;color:var(--primary-text);font-weight:700}
+.corp-sites .cb-proc__t em{font-style:normal;font-size:0.857143rem;color:var(--negative-600)}
+.corp-sites .es-dialog__foot{justify-content:space-between}
+.corp-sites .es-formgrid .es-span-2{grid-column:span 2}
+.corp-sites .es-formgrid .es-span-3{grid-column:1/-1}
+.corp-sites .cb-appr{display:inline-flex;align-items:center;margin-left:0.571429rem;padding:0 0.428571rem;height:1.285714rem;border-radius:var(--radius-sm);background:var(--info-100);color:var(--info-700);font-size:0.785714rem;font-weight:700;vertical-align:middle;white-space:nowrap}
+.corp-sites .cb-appr.imm{background:var(--success-50);color:var(--success-700)}
+.corp-sites .cb-appr.ntf{background:var(--warning-50);color:var(--warning-800)}
+.corp-sites .cb-appr.ref{background:var(--neutral-100);color:var(--text-middle)}
+.corp-sites .cb-changed .es-input{border-color:var(--primary)}
+.corp-sites .cb-changed .es-field__msg{color:var(--primary-text)}
+.corp-sites .cb-badges{display:inline-flex;gap:0.428571rem;align-items:center;flex-wrap:nowrap}
+.corp-sites .cb-checks{display:flex;flex-wrap:wrap;gap:0.571429rem 1.285714rem;min-height:2.857143rem;align-items:center}
+.corp-sites .cb-mh{display:block;color:var(--text-high);margin-bottom:0.285714rem}
+.corp-sites .cb-ul{margin:0;padding-left:1.428571rem}
+.corp-sites .cb-radios{display:flex;flex-direction:column;gap:0.571429rem;margin-top:0.428571rem}
+.corp-sites .cb-whorow{cursor:pointer}
+.corp-sites .cb-whorow:hover td{background:var(--surface-subtle)}
+.corp-sites .cb-whorow.is-on td{background:var(--primary-subtle)}
+.corp-sites .cb-whorow .es-radio{justify-content:center}
+.corp-sites .mcode{font-family:var(--font-mono);font-size:0.785714rem;padding:1px 0.428571rem;border-radius:4px;background:var(--primary-subtle,#eef2ff);color:var(--primary-text,#1e3a8a);margin-right:0.428571rem;white-space:nowrap}
+
+/* 停止後（ログインできない）：元の .cb-public の画面 */
+.corp-sites.cb-public{padding:0;gap:0;min-height:100%;background:var(--page-bg)}
+.corp-sites .cb-pubhead{height:4.571429rem;display:flex;align-items:center;gap:1.142857rem;padding:0 1.714286rem;background:var(--surface);border-bottom:1px solid var(--divider-low)}
+.corp-sites .cb-pubhead img{height:2.428571rem}
+.corp-sites .cb-pubname{font-size:1rem;font-weight:700;color:var(--text-middle);padding-left:0.857143rem;border-left:1px solid var(--divider-middle)}
+
+/* 変更のお申し込み（申込フォームの変更のお申し込み）の段階 */
+.corp-sites .cb-steps{display:flex;gap:0.571429rem;flex-wrap:wrap}
+.corp-sites .cb-step{flex:1 1 10rem;display:flex;flex-direction:column;gap:2px;padding:0.571429rem 0.857143rem;border-radius:var(--radius-md);background:var(--surface);border:1px solid var(--divider-middle);font-size:0.928571rem;color:var(--text-low)}
+.corp-sites .cb-step b{color:var(--text-middle)}
+.corp-sites .cb-step.now{border-color:var(--primary);background:var(--primary-subtle)}
+.corp-sites .cb-step.now b{color:var(--text-high)}
+.corp-sites .cb-step.done b{color:var(--success-700)}
+.corp-sites .cb-bsel{display:flex;gap:0.857143rem;align-items:flex-start;padding:0.857143rem 1rem;border:1px solid var(--divider-middle);border-radius:var(--radius-lg);background:var(--surface);cursor:pointer}
+.corp-sites .cb-bsel.is-on{border-color:var(--primary);background:var(--primary-subtle)}
+.corp-sites .cb-bsel.is-off{cursor:not-allowed;background:var(--surface-subtle);color:var(--text-low)}
+.corp-sites .cb-bsel .t2{display:flex;gap:1.142857rem;flex-wrap:wrap;font-size:0.857143rem;color:var(--text-middle)}
+.corp-sites .cb-bsel .t3{font-size:0.857143rem;color:var(--negative-600)}
+.corp-sites .cb-foot{display:flex;align-items:center;justify-content:space-between;gap:0.857143rem;flex-wrap:wrap}
+
+/* RV-CORP-20261002 C-a：入力チェックの赤枠（表の中の入力） */
+.corp-sites .es-input.es-input--error{border-color:var(--negative-500)}
+
+@media (max-width:47.5em){
+  .corp-sites .es-dialog{padding:1.142857rem}
+  .corp-sites .es-dialog__panel{width:100%!important;max-width:calc(100vw - 2.285714rem)!important;max-height:calc(100vh - 2.285714rem)!important}
+  .corp-sites .es-dialog__body .es-formgrid,.corp-sites .es-dialog__body .cb-g2,.corp-sites .es-dialog__body .cb-g4,.corp-sites .es-dialog__body .cb-procs{grid-template-columns:minmax(0,1fr)!important}
+  .corp-sites .es-dialog__body .es-formgrid>*{grid-column:auto!important}
+  .corp-sites .es-dialog__foot{flex-wrap:wrap}
+  .corp-sites .es-pagehead{flex-wrap:wrap!important}
+  .corp-sites .es-pagehead__text{min-width:0;max-width:100%}
+  .corp-sites .legend>span{white-space:normal}
+  .corp-sites .tools{flex-wrap:wrap}
+}
+@media (max-width:40em){
+  .corp-sites{padding:0 1.142857rem 1.142857rem}
+  .corp-sites .cb-stack .es-formgrid,.corp-sites .cb-g4{grid-template-columns:1fr !important}
+  .corp-sites .files{grid-template-columns:1fr 1fr}
+}
+
+/* 表の上の絞り込み（貸出ステータス／適用の状態：台帳 F 2026-10-05 共通・P-LIST。旧：トグル「回収済も表示」「終了分も表示」） */
+.corp-sites .tfilter{display:inline-flex;align-items:center;gap:0.428571rem;font-size:0.928571rem;color:var(--text-middle,#5b6773)}
+.corp-sites .tfilter select{height:2.285714rem;border:1px solid var(--line,#cbd5e1);border-radius:6px;padding:0 0.571429rem;font:inherit;background:#fff;color:var(--text-high,#1f2937)}

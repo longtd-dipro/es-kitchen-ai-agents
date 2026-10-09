@@ -1,0 +1,74 @@
+/* 商品マスタ（一覧・詳細・編集・新規登録）。色・大きさは ops.css の変数に合わせる */
+.pm-card{margin-top:1.142857rem}
+.pm .fg.pm-c1{grid-template-columns:minmax(0,1fr)}
+.pm .fg.pm-c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.pm .fg.pm-c5{grid-template-columns:repeat(5,minmax(0,1fr));margin:1rem 0}
+.pm .fg.pm-c1+.fg.pm-c1{margin-top:1rem}
+.pm .pm-top{margin-bottom:1.142857rem}
+.pm .sec-b .fg+.tbl-wrap{margin-top:1rem}
+.pm textarea.inp{height:auto;padding:0.714286rem 0.857143rem;line-height:1.6;resize:vertical}
+@media (max-width:68.75em){.pm .fg.pm-c5,.pm .fg.pm-c4{grid-template-columns:repeat(2,minmax(0,1fr))}.pm .pm-sp{display:none}}
+
+/* 単位つきの入力（円・g・kcal） */
+.pm-u{position:relative}
+.pm-u .inp{padding-right:3.428571rem}
+.pm-u span{position:absolute;right:0.857143rem;top:50%;transform:translateY(-50%);color:var(--fg-3);font-size:0.928571rem;pointer-events:none}
+.pm-life{display:grid;grid-template-columns:minmax(0,1fr) 8.571429rem;gap:0.857143rem}
+
+/* 商品写真（複数・メイン） */
+.pm-photos{display:flex;gap:0.571429rem;flex-wrap:wrap;align-items:flex-start}
+.pm-ph{display:flex;flex-direction:column;align-items:center;gap:0.428571rem;width:6.857143rem}
+.pm-ph label{display:inline-flex;align-items:center;gap:0.428571rem;font-size:0.928571rem;color:var(--fg-2);cursor:pointer}
+.pm-ph input[type=radio]{accent-color:var(--accent)}
+.pm-img{position:relative;width:6.857143rem;height:6.857143rem;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--mute-soft);display:grid;place-items:center}
+.pm-ph.main .pm-img{border:2px solid var(--accent)}
+.pm-img img{width:100%;height:100%;object-fit:cover;display:block}
+.pm-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.714286rem;background:rgba(0,0,0,.45);opacity:0;transition:opacity .15s}
+.pm-img:hover .pm-ov,.pm-img:focus-within .pm-ov{opacity:1}
+.pm-ov button{border:0;background:none;color:#fff;cursor:pointer;padding:2px;display:grid;place-items:center}
+.pm-ov svg{width:1.428571rem;height:1.428571rem}
+.pm-addph{cursor:pointer}
+.pm-addph .pm-img{border:1px dashed var(--accent-300);background:var(--surface);color:var(--accent);display:flex;flex-direction:column;justify-content:center;gap:0.285714rem;font-size:0.857143rem}
+.pm-addph .pm-img svg{width:1.571429rem;height:1.571429rem}
+.pm-preview{display:block;max-width:100%;margin:0 auto;border-radius:6px}
+
+/* 選ぶドロップダウン（.pm-drop-sel など）は ops.css に移した（税率のドロップダウンを全画面で使うため） */
+
+/* 仕入先の表 */
+.pm-sup td .sel,.pm-sup td .inp{height:2.428571rem}
+.pm-sup td .sel{min-width:14.285714rem}
+.pm-sup td.num .pm-u{width:8.5rem;margin-left:auto}
+.pm-sup td input[type=radio]{width:1.285714rem;height:1.285714rem;accent-color:var(--accent)}
+.pm-err{color:var(--ng);font-size:0.857143rem;margin:0.571429rem 0 0}
+.pm-addrow{margin-top:0.714286rem}
+.pm-note{margin:0.571429rem 0 0.285714rem}
+
+/* CSV取込（仮） */
+.pm-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.571429rem;border:1px dashed var(--accent-300);border-radius:8px;padding:2rem 1.142857rem;margin-top:0.857143rem;color:var(--accent);cursor:pointer;text-align:center}
+.pm-drop svg{width:2rem;height:2rem}
+
+/* 表示の直し（D1〜D8）：一覧の検索欄は1行ぶん広げる／並べ替えは選択肢が切れない幅／仕入先の表の仕入先名・備考／短消費期限のラジオは押す場所を 24px 以上 */
+.pm-list{display:contents}
+.pm-list .filter .es-search__fields>.search{flex:1 1 100%;max-width:none}
+.pm-list .filter .es-search__fields>*:not(.search):not(.delchk){flex-basis:15.5rem;max-width:22rem}
+.pm-sup td .sel{min-width:18.5rem}
+.pm-sup .pm-sup-memo td{border-top:1px solid var(--line)}
+.pm-sup label.pm-sup-note{display:flex;align-items:center;gap:0.857143rem}
+.pm-sup label.pm-sup-note b{flex:none;font-weight:700}
+.pm-sup label.pm-sup-note .inp{flex:1}
+.pm-sup th{white-space:normal}
+.pm .radios input{width:1.714286rem;height:1.714286rem}
+
+/* 保存できないときの枠（P-FORMBOX：見出しの下に1行だけ）・エラーのあるタブの赤い印（受付簿 #265・確認メモ R-H4） */
+.pm .notice.err{background:#fff1f3;border-color:#e0364f;color:#a3122a}
+.pm .notice.err svg{color:#e0364f}
+.pm .tabs [role=tab].err{color:#a3122a}
+.pm .tabs [role=tab].err::after{content:"";display:inline-block;width:8px;height:8px;margin-left:6px;border-radius:50%;background:#e0364f;vertical-align:middle}
+.pm-sup td .emsg{display:block;margin-top:0.285714rem;font-size:0.857143rem;color:var(--ng);text-align:left}
+.pm-sup th .req{color:var(--ng);margin-left:2px}
+.pm textarea.inp{min-height:5.5rem}
+/* 一覧の商品名（英語）は長いので折り返す（省略して切らない：表示の確認 D3） */
+.pm-list .tbl td:nth-child(4){white-space:normal;min-width:11rem;max-width:16rem}
+
+/* 一覧の見出しは折り返す（列が多いので幅をおさえる：表示の確認 D4） */
+.pm-list .tbl th{white-space:normal}
