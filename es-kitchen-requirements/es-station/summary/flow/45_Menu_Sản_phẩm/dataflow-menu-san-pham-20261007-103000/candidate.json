@@ -1,0 +1,192 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Luồng dữ liệu Menu tháng / Sản phẩm",
+  "output": "flow/45_Menu_Sản_phẩm/dataflow-menu-san-pham-20261007-103000/menu-san-pham.html",
+  "viewBox": [
+   1080,
+   560
+  ],
+  "quality_profile": "showcase"
+ },
+ "stages": [
+  {
+   "label": "Nguồn nhập"
+  },
+  {
+   "label": "Master"
+  },
+  {
+   "label": "Menu tháng"
+  },
+  {
+   "label": "Kiểm tra CK"
+  },
+  {
+   "label": "Sử dụng"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "csv",
+   "type": "external",
+   "label": "CSV template",
+   "sublabel": "theo mã sản phẩm",
+   "stage": 0,
+   "row": 0
+  },
+  {
+   "id": "ops",
+   "type": "frontend",
+   "label": "Màn vận hành",
+   "sublabel": "tạo / sửa menu",
+   "stage": 0,
+   "row": 1
+  },
+  {
+   "id": "pdf",
+   "type": "external",
+   "label": "PDF menu",
+   "sublabel": "Light / Standard",
+   "stage": 0,
+   "row": 2
+  },
+  {
+   "id": "master",
+   "type": "database",
+   "label": "Master SP",
+   "sublabel": "4 tên, giá bán, course",
+   "stage": 1,
+   "row": 0
+  },
+  {
+   "id": "std",
+   "type": "backend",
+   "label": "Số đơn chuẩn",
+   "sublabel": "3 loại, mỗi loại = 50",
+   "stage": 2,
+   "row": 0
+  },
+  {
+   "id": "menu",
+   "type": "database",
+   "label": "Menu tháng",
+   "sublabel": "1 menu / tháng",
+   "stage": 2,
+   "row": 1
+  },
+  {
+   "id": "gate",
+   "type": "security",
+   "label": "Điều kiện CK",
+   "sublabel": "SP, PDF, đặt tạm",
+   "stage": 3,
+   "row": 1
+  },
+  {
+   "id": "temp",
+   "type": "external",
+   "label": "Đặt hàng tạm",
+   "sublabel": "đã được phê duyệt",
+   "stage": 3,
+   "row": 2
+  },
+  {
+   "id": "biz",
+   "type": "frontend",
+   "label": "Doanh nghiệp",
+   "sublabel": "đặt hàng theo menu",
+   "stage": 4,
+   "row": 1
+  }
+ ],
+ "flows": [
+  {
+   "id": "csv-master",
+   "from": "csv",
+   "to": "master",
+   "label": "nhập CSV",
+   "route": "straight"
+  },
+  {
+   "id": "ops-menu",
+   "from": "ops",
+   "to": "menu",
+   "label": "tạo / sửa",
+   "route": "straight"
+  },
+  {
+   "id": "pdf-menu",
+   "from": "pdf",
+   "to": "menu",
+   "label": "PDF ≤ 5MB"
+  },
+  {
+   "id": "master-menu",
+   "from": "master",
+   "to": "menu",
+   "label": "SP, giá bán"
+  },
+  {
+   "id": "menu-std",
+   "from": "menu",
+   "to": "std",
+   "label": "số chuẩn",
+   "route": "straight"
+  },
+  {
+   "id": "menu-gate",
+   "from": "menu",
+   "to": "gate",
+   "label": "yêu cầu CK",
+   "route": "straight",
+   "variant": "emphasis"
+  },
+  {
+   "id": "temp-gate",
+   "from": "temp",
+   "to": "gate",
+   "label": "phê duyệt",
+   "route": "straight",
+   "variant": "security"
+  },
+  {
+   "id": "gate-biz",
+   "from": "gate",
+   "to": "biz",
+   "label": "công khai + báo",
+   "route": "straight",
+   "variant": "emphasis"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "Căn cứ (Master_Menu_Sản_phẩm.md)",
+   "items": [
+    "§2 8-1..8-23: Master sản phẩm, nhập CSV (7-1, 7-2: Master trước Menu)",
+    "§1-2 2-3: giá bán lấy từ master, không sửa ở menu",
+    "§1-4 4-1..4-4: số đơn chuẩn, mỗi loại tổng = 50 mới lưu được"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "Điều kiện công khai (§1-3 3-2)",
+   "items": [
+    "Tất cả sản phẩm có thể công khai",
+    "Có PDF menu",
+    "Đặt hàng tạm của tháng đó đã được phê duyệt"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Suy luận / lưu ý",
+   "items": [
+    "Vị trí cột, thứ tự dòng là cách trình bày, không phải thứ tự xử lý trong tài liệu",
+    "Thông báo cho doanh nghiệp khi công khai (§1-3 3-6) gộp vào luồng 'công khai + báo', không vẽ node riêng",
+    "Thứ tự sắp xếp menu = thứ tự khi doanh nghiệp đặt hàng (2-6)"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "7dc0e2e6-059a-4552-a2c9-ec2f7250a213",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/30_Đơn_yêu_cầu/dataflow-don-yeu-cau-20261007-095903/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/30_Đơn_yêu_cầu/dataflow-don-yeu-cau-20261007-095903/dataflow-don-yeu-cau.html",
+  "specification": {
+    "sha256": "7782a6c9fbc5f6dd0725c788a5dee3b525b5e34a48eecab8e9285ef910968e95",
+    "bytes": 5782
+  },
+  "artifact": {
+    "sha256": "1992b0be0dc7ac1fd67b7e8cb2fbcd3a4a9086a867bed8165ad624bcd8516b82",
+    "bytes": 763869
+  }
+}

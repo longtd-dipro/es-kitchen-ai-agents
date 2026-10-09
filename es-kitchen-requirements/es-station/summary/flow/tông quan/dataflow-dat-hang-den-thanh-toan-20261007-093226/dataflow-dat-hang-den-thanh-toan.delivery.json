@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "d2a33019-9b5d-4e85-8a8e-1b6bb99484e0",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/.archify/dataflow-dat-hang-den-thanh-toan-20261007-093226/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/.archify/dataflow-dat-hang-den-thanh-toan-20261007-093226/dataflow-dat-hang-den-thanh-toan.html",
+  "specification": {
+    "sha256": "26c1bf7b09b137b0009d2ed27741f0c82b075f930520a1129b37f8e7b0f2f643",
+    "bytes": 6858
+  },
+  "artifact": {
+    "sha256": "d8739e5fcc75aa066ea85d35e2df0dfe285ac013f15e492d1edfe0d41e937798",
+    "bytes": 768523
+  }
+}

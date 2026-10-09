@@ -1,0 +1,275 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Luồng dữ liệu Đặt hàng - Nhà cung cấp - Nhập kho",
+  "output": "flow/55_Đặt_hàng_Nhập_mua_Nhập_kho/dataflow-dat-hang-nhap-kho-20261007-095858/dat-hang-nhap-kho.html",
+  "viewBox": [
+   1080,
+   680
+  ],
+  "quality_profile": "showcase"
+ },
+ "stages": [
+  {
+   "label": "Nguồn nhu cầu"
+  },
+  {
+   "label": "Vận hành ES"
+  },
+  {
+   "label": "Nhà cung cấp"
+  },
+  {
+   "label": "Nhập kho"
+  },
+  {
+   "label": "Kết quả"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "need",
+   "type": "external",
+   "label": "Số lượng cần",
+   "sublabel": "HĐ + dùng thử + mẫu KD",
+   "stage": 0,
+   "row": 1
+  },
+  {
+   "id": "hist",
+   "type": "database",
+   "label": "Lịch sử đặt",
+   "sublabel": "2-3 lần gần nhất",
+   "stage": 1,
+   "row": 0
+  },
+  {
+   "id": "op",
+   "type": "backend",
+   "label": "Đặt hàng (VH)",
+   "sublabel": "theo từng kho",
+   "stage": 1,
+   "row": 1
+  },
+  {
+   "id": "thomas",
+   "type": "external",
+   "label": "THOMAS",
+   "sublabel": "CSV chỉ thị nhập kho",
+   "stage": 1,
+   "row": 2
+  },
+  {
+   "id": "st",
+   "type": "frontend",
+   "label": "ES Station",
+   "sublabel": "NCC đăng nhập",
+   "stage": 2,
+   "row": 0
+  },
+  {
+   "id": "em",
+   "type": "external",
+   "label": "NCC qua Email",
+   "sublabel": "VH nhập thay",
+   "stage": 2,
+   "row": 1
+  },
+  {
+   "id": "ext",
+   "type": "external",
+   "label": "NCC bên ngoài",
+   "sublabel": "VH nhập thay",
+   "stage": 2,
+   "row": 2
+  },
+  {
+   "id": "recv",
+   "type": "backend",
+   "label": "Ghi nhận nhập",
+   "sublabel": "nhập tay SL + hạn",
+   "stage": 3,
+   "row": 1
+  },
+  {
+   "id": "inv",
+   "type": "database",
+   "label": "Tồn kho kho",
+   "sublabel": "tăng khi nhập",
+   "stage": 4,
+   "row": 0
+  },
+  {
+   "id": "diff",
+   "type": "security",
+   "label": "Có chênh lệch",
+   "sublabel": "chờ xử lý",
+   "stage": 4,
+   "row": 2
+  },
+  {
+   "id": "notif",
+   "type": "messagebus",
+   "label": "Dải thông báo",
+   "sublabel": "TOP / danh sách ĐH",
+   "stage": 4,
+   "row": 3
+  }
+ ],
+ "flows": [
+  {
+   "id": "f1",
+   "from": "need",
+   "to": "op",
+   "label": "số lượng cần",
+   "route": "straight"
+  },
+  {
+   "id": "f2",
+   "from": "hist",
+   "to": "op",
+   "label": "SL tham khảo",
+   "route": "straight",
+   "variant": "dashed",
+   "labelAt": [
+    315,
+    214
+   ]
+  },
+  {
+   "id": "f3",
+   "from": "op",
+   "to": "st",
+   "label": "ĐH tạm/chính"
+  },
+  {
+   "id": "f4",
+   "from": "op",
+   "to": "em",
+   "label": "email",
+   "route": "straight",
+   "labelAt": [
+    452,
+    278
+   ]
+  },
+  {
+   "id": "f5",
+   "from": "op",
+   "to": "ext",
+   "label": "ghi nhận ĐH"
+  },
+  {
+   "id": "f6",
+   "from": "op",
+   "to": "thomas",
+   "label": "CSV chỉ thị",
+   "route": "straight",
+   "labelAt": [
+    315,
+    328
+   ]
+  },
+  {
+   "id": "f7",
+   "from": "st",
+   "to": "recv",
+   "label": "báo cáo xuất",
+   "variant": "emphasis",
+   "fromSide": "right",
+   "toSide": "top",
+   "via": [
+    [
+     745,
+     157
+    ]
+   ]
+  },
+  {
+   "id": "f8",
+   "from": "em",
+   "to": "recv",
+   "label": "VH nhập thay",
+   "route": "straight"
+  },
+  {
+   "id": "f9",
+   "from": "ext",
+   "to": "recv",
+   "label": "VH nhập thay",
+   "fromSide": "right",
+   "toSide": "bottom",
+   "via": [
+    [
+     745,
+     385
+    ]
+   ]
+  },
+  {
+   "id": "f10",
+   "from": "recv",
+   "to": "inv",
+   "label": "SL khớp",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f11",
+   "from": "recv",
+   "to": "diff",
+   "label": "SL khác",
+   "variant": "security"
+  },
+  {
+   "id": "f12",
+   "from": "diff",
+   "to": "notif",
+   "label": "cảnh báo",
+   "variant": "security",
+   "route": "straight",
+   "labelAt": [
+    960,
+    442
+   ]
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "Đường dữ liệu chính",
+   "items": [
+    "Số lượng cần gộp HĐ + dùng thử + mẫu KD, tổng hợp theo kho, VH đặt hàng theo kho (§2-1)",
+    "NCC phản hồi/duyệt/báo cáo xuất trên ES Station (§3, §5)",
+    "Nhập kho: VH hoặc nhân viên kho nhập tay SL và số thùng; tồn kho tăng (§8-2, 8-6)"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Phương thức đặt hàng (§6-3)",
+   "items": [
+    "ES Station: NCC đăng nhập phản hồi",
+    "Email: nhận trả lời/điện thoại rồi VH nhập thay",
+    "Bên ngoài: VH chỉ ghi nhận ĐH + nhập kho, không gửi email nào"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "Chênh lệch",
+   "items": [
+    "SL khác ĐH thì Có chênh lệch - Chờ xử lý, hiển thị TOP và danh sách ĐH (§8-4)",
+    "3 cách: chờ giao từng phần / hàng thay thế / chấp nhận thiếu hụt",
+    "SL khớp là điều kiện tăng tồn kho: suy luận từ §8-3/8-6, tài liệu không nói rõ việc ghi tồn khi có chênh lệch"
+   ]
+  },
+  {
+   "dot": "cyan",
+   "title": "Ghi chú",
+   "items": [
+    "THOMAS: chỉ xuất CSV chỉ thị nhập kho, không nhập CSV kết quả (§8-1)",
+    "Hướng op -> THOMAS là suy luận từ 'xuất CSV chỉ thị'",
+    "Vật tư: chỉ đặt hàng chính, nhận tại văn phòng ES, không liên kết THOMAS (§9) - không vẽ"
+   ]
+  }
+ ]
+}

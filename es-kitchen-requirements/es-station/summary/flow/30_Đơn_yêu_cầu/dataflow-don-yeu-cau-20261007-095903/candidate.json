@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Luồng dữ liệu đơn thay đổi (CH-) và phê duyệt",
+    "output": "flow/30_Đơn_yêu_cầu/dataflow-don-yeu-cau-20261007-095903/dataflow-don-yeu-cau.html",
+    "viewBox": [
+      1080,
+      560
+    ],
+    "quality_profile": "showcase"
+  },
+  "stages": [
+    {
+      "label": "Gửi"
+    },
+    {
+      "label": "Tiếp nhận"
+    },
+    {
+      "label": "Phê duyệt"
+    },
+    {
+      "label": "Phản ánh"
+    },
+    {
+      "label": "Tác động"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "corp",
+      "type": "frontend",
+      "label": "Web doanh nghiệp",
+      "sublabel": "tài khoản DN・cơ sở",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "ops",
+      "type": "frontend",
+      "label": "Vận hành nhập hộ",
+      "sublabel": "điện thoại・email…",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "instant",
+      "type": "backend",
+      "label": "Phản ánh ngay",
+      "sublabel": "chỉ thông báo",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "ch",
+      "type": "database",
+      "label": "Đơn CH-",
+      "sublabel": "CH-YYYYMMDD-NNNN",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "approve",
+      "type": "security",
+      "label": "Phê duyệt VH",
+      "sublabel": "theo từng cơ sở",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "notify",
+      "type": "messagebus",
+      "label": "Thông báo",
+      "sublabel": "email M4-M9・màn hình",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "contract",
+      "type": "database",
+      "label": "Hợp đồng con",
+      "sublabel": "hợp đồng・cho thuê",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "history",
+      "type": "database",
+      "label": "Lịch sử đơn",
+      "sublabel": "người PD・lý do từ chối",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "outsource",
+      "type": "external",
+      "label": "Cty giao ủy thác",
+      "sublabel": "Web + email M9",
+      "stage": 4,
+      "row": 0
+    },
+    {
+      "id": "delivery",
+      "type": "backend",
+      "label": "Giao hàng",
+      "sublabel": "tổ chức lại・hủy",
+      "stage": 4,
+      "row": 1
+    },
+    {
+      "id": "billing",
+      "type": "backend",
+      "label": "Thanh toán",
+      "sublabel": "chi tiết điều chỉnh",
+      "stage": 4,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-submit",
+      "from": "corp",
+      "to": "ch",
+      "label": "gửi đơn"
+    },
+    {
+      "id": "f-proxy",
+      "from": "ops",
+      "to": "ch",
+      "label": "nhập hộ"
+    },
+    {
+      "id": "f-instant",
+      "from": "corp",
+      "to": "instant",
+      "label": "chỉ thông báo",
+      "route": "straight",
+      "variant": "dashed"
+    },
+    {
+      "id": "f-instant-n",
+      "from": "instant",
+      "to": "notify",
+      "label": "báo vận hành",
+      "route": "straight",
+      "variant": "dashed"
+    },
+    {
+      "id": "f-pending",
+      "from": "ch",
+      "to": "approve",
+      "label": "chờ phê duyệt",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-apply",
+      "from": "approve",
+      "to": "contract",
+      "label": "phê duyệt",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-notice",
+      "from": "approve",
+      "to": "notify",
+      "label": "M5・M6",
+      "route": "straight",
+      "labelAt": [
+        530,
+        214
+      ]
+    },
+    {
+      "id": "f-log",
+      "from": "approve",
+      "to": "history",
+      "label": "ghi lịch sử",
+      "route": "straight",
+      "labelAt": [
+        530,
+        328
+      ]
+    },
+    {
+      "id": "f-m9",
+      "from": "notify",
+      "to": "outsource",
+      "label": "M9 hủy HĐ",
+      "route": "straight"
+    },
+    {
+      "id": "f-resched",
+      "from": "contract",
+      "to": "delivery",
+      "label": "tổ chức lại",
+      "route": "straight"
+    },
+    {
+      "id": "f-bill",
+      "from": "contract",
+      "to": "billing",
+      "label": "điều chỉnh"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Đường chính (Đơn_yêu_cầu_và_phê_duyệt.md §1・§3・§5-2)",
+      "items": [
+        "8 loại đơn; bước 5 hoàn tất tạo số CH-YYYYMMDD-NNNN; 1 đơn 1 loại, phê duyệt theo từng cơ sở",
+        "Nhập hộ (§3-8): vận hành lập đơn như Web DN rồi phê duyệt ở cùng màn hình",
+        "Cơ sở đang có đơn chờ phê duyệt bị khóa (§3-3)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Kiểm tra khi phê duyệt (§3-6・§4)",
+      "items": [
+        "Giá trị trước thay đổi khác giá trị hiện tại thì dừng phê duyệt",
+        "Thiết lập trước phê duyệt bắt buộc hoàn tất (ảnh hưởng và thiết lập)",
+        "Sau hạn chốt: vận hành chọn dời sang kỳ sau hoặc đặt hàng hộ"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Tác động sau phê duyệt (§6・§8-1・§10)",
+      "items": [
+        "Hợp đồng con: tạo lại/cập nhật cho thuê theo loại đơn; thanh toán: chi tiết điều chỉnh cho tháng đã thanh toán (§4-4)",
+        "Giao hàng: tổ chức lại/hủy theo loại đơn; hủy hợp đồng thì thông báo Cty giao ủy thác (M9)",
+        "Suy luận: gộp các nơi bị ảnh hưởng (đơn hàng, ứng dụng cá nhân, tài khoản) trong bảng §8-1 vào 4 nút phía phải; mục chỉ thông báo (§2) phản ánh ngay và báo vận hành (M8), việc ghi vào lịch sử không được nêu rõ"
+      ]
+    }
+  ]
+}

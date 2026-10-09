@@ -1,13 +1,12 @@
 ---
-description: Generate React component scaffold theo đúng pattern ESKITCHEN (web-admin E03 hoặc web-company E02). Dùng: /create-component <ComponentName> [admin|company]
+description: Generate React component scaffold theo đúng pattern dự án (xem repo frontend tương ứng trong AGENTS.md). Dùng: /create-component <ComponentName> [variant]
 ---
 
 Generate React component cho: **$ARGUMENTS**
 
 ## Bước 1 — Xác định repo và xem pattern hiện có
 
-Nếu argument chứa "admin" → `es-kitchen-web-admin` (E03)
-Nếu argument chứa "company" → `es-kitchen-web-company` (E02)
+Xác định repo frontend đích từ argument `[variant]` hoặc context hiện tại (xem bảng Ecosystem trong AGENTS.md nếu dự án có nhiều repo frontend).
 Nếu không rõ → hỏi user.
 
 ```
@@ -15,7 +14,7 @@ tilth_search(query: "useQuery")   ← xem TanStack Query pattern hiện tại
 tilth_files(pattern: "src/components/**/*.tsx", path: "<repo>/")
 ```
 
-## Bước 2 — Generate theo ESKITCHEN pattern
+## Bước 2 — Generate theo pattern dự án
 
 **Page Component** (nếu là route-level):
 ```tsx
@@ -71,5 +70,5 @@ export const use<Feature> = () => {
 - [ ] Named export (không default export)?
 - [ ] Props interface đặt tên `<Component>Props`?
 - [ ] `App.useApp()` nếu dùng message/modal/notification?
-- [ ] Đúng repo — không lẫn E02/E03 domain logic?
+- [ ] Đúng repo — không lẫn domain logic giữa các repo frontend?
 - [ ] Không hard-code `VITE_*` env variable?

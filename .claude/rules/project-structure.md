@@ -1,18 +1,14 @@
-# Project Structure — ESKITCHEN
+# Project Structure
 
-## 5 Repos (Red Line Rules)
+## Repos (Red Line Rules)
 
-Tất cả source code nằm trong `es-kitchen-repository/`.
+_(điền qua `/init-kit` — đồng bộ với bảng Ecosystem trong `AGENTS.md`)_
 
 | Repo | Epic | Trách nhiệm | Không được làm |
 |---|---|---|---|
-| `es-kitchen-repository/es-kitchen-api` | — | API, business logic, database, auth, integrations | Implement UI logic |
-| `es-kitchen-repository/es-kitchen-payment-app` | E01 | User mobile app — order, menu, delivery, payment | Gọi BE logic trực tiếp không qua API |
-| `es-kitchen-repository/es-kitchen-web-admin` | E03 | System Admin — quản trị toàn hệ thống (160 functions) | Implement business logic của E02/E04 |
-| `es-kitchen-repository/es-kitchen-web-company` | E02 | Company Admin — quản lý company/contract/order (58 functions) | Implement business logic của E03/E04 |
-| `es-kitchen-repository/es-kitchen-web-supplier` | E04 | Supplier Web — quản lý menu, nhận đơn, account | Implement business logic của E02/E03 |
+| _(tên repo)_ | _(epic code)_ | _(mô tả)_ | _(business logic của repo khác)_ |
 
-> **E02 ≠ E03 ≠ E04** — lỗi phổ biến nhất. Luôn xác nhận repo trước khi code.
+> Luôn xác nhận đúng repo trước khi code — nhầm domain giữa 2 repo tương tự là lỗi phổ biến nhất trong dự án nhiều repo.
 
 ## NestJS Module Structure
 
@@ -42,21 +38,20 @@ src/
 
 ## Doc Structure (BMAD)
 
-> Path duy nhất cho mọi feature — `docs/features/<feature-name>/`. Folder `docs/epics/` đã bị bỏ. Single-actor (1 repo) hay cross-repo (N repos) chỉ khác nhau ở số subfolder repo bên trong.
+> Path duy nhất cho mọi feature — `<DOCS_ROOT>/features/<feature-name>/`. Single-actor (1 repo) hay cross-repo (N repos) chỉ khác nhau ở số subfolder repo bên trong.
 
 ```
-es-kitchen-docs/docs/features/<feature>/
+<DOCS_ROOT>/features/<feature>/
 ├── SPEC.md                  ← BA
 ├── PLAN.md                  ← PM
-├── es-kitchen-api/
-│   ├── DESIGN.md            ← Tech Lead
+├── <backend-repo>/
+│   ├── Design-Technical.md            ← Tech Lead
 │   └── tasks/task-X-Y.md
-├── es-kitchen-web-admin/    ← nếu E03 liên quan
-│   ├── DESIGN.md
+├── <web-repo-a>/            ← nếu repo này liên quan
+│   ├── Design-Technical.md
 │   └── tasks/task-X-Y.md
-├── es-kitchen-web-company/  ← nếu E02 liên quan
-├── es-kitchen-web-supplier/ ← nếu E04 liên quan
-└── es-kitchen-payment-app/  ← nếu E01 Mobile liên quan
+├── <web-repo-b>/            ← nếu repo này liên quan
+└── <mobile-repo>/           ← nếu Mobile liên quan
 ```
 
 ## Tilth — Code Analysis Tool

@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "ES Station – Luồng dữ liệu từ hợp đồng đến hóa đơn",
+    "output": ".archify/dataflow-dat-hang-den-thanh-toan-20261007-093226/dataflow-dat-hang-den-thanh-toan.html",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1080,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "Nguồn"
+    },
+    {
+      "label": "Tạo kế hoạch"
+    },
+    {
+      "label": "Dữ liệu & chỉ thị"
+    },
+    {
+      "label": "Thực hiện giao hàng"
+    },
+    {
+      "label": "Thực tích & thanh toán"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "contract",
+      "type": "database",
+      "label": "Hợp đồng",
+      "sublabel": "cơ sở · hợp đồng con",
+      "stage": 0,
+      "row": 0,
+      "tag": "master"
+    },
+    {
+      "id": "weborder",
+      "type": "frontend",
+      "label": "Web doanh nghiệp",
+      "sublabel": "đặt hàng tháng",
+      "stage": 0,
+      "row": 2,
+      "tag": "order_quantities"
+    },
+    {
+      "id": "monthly",
+      "type": "backend",
+      "label": "Tạo hợp đồng con",
+      "sublabel": "monthly_generate",
+      "stage": 1,
+      "row": 0,
+      "tag": "batch"
+    },
+    {
+      "id": "plan",
+      "type": "backend",
+      "label": "plan_rollout",
+      "sublabel": "draft · estimated_qty",
+      "stage": 1,
+      "row": 1,
+      "tag": "batch"
+    },
+    {
+      "id": "finalize",
+      "type": "backend",
+      "label": "order_finalize",
+      "sublabel": "chốt số lượng",
+      "stage": 2,
+      "row": 2,
+      "tag": "batch"
+    },
+    {
+      "id": "shipsend",
+      "type": "backend",
+      "label": "ship_order_send",
+      "sublabel": "gom theo kho · hash",
+      "stage": 2,
+      "row": 0,
+      "tag": "lũy đẳng"
+    },
+    {
+      "id": "deliveries",
+      "type": "database",
+      "label": "Đơn giao hàng",
+      "sublabel": "delivery_materialize",
+      "stage": 2,
+      "row": 1,
+      "tag": "deliveries"
+    },
+    {
+      "id": "thomas",
+      "type": "external",
+      "label": "THOMAS",
+      "sublabel": "kho · chỉ thị xuất hàng",
+      "stage": 3,
+      "row": 0,
+      "tag": "CSV"
+    },
+    {
+      "id": "yamato",
+      "type": "external",
+      "label": "Yamato",
+      "sublabel": "vận đơn",
+      "stage": 3,
+      "row": 1,
+      "tag": "CSV"
+    },
+    {
+      "id": "driver",
+      "type": "frontend",
+      "label": "App tài xế ES",
+      "sublabel": "nhận · giao hàng",
+      "stage": 3,
+      "row": 2,
+      "tag": "app"
+    },
+    {
+      "id": "actual",
+      "type": "database",
+      "label": "Thực tích",
+      "sublabel": "cập nhật delivery status",
+      "stage": 4,
+      "row": 1,
+      "tag": "status"
+    },
+    {
+      "id": "billone",
+      "type": "external",
+      "label": "Bill One",
+      "sublabel": "billing_issue → hóa đơn",
+      "stage": 4,
+      "row": 2,
+      "tag": "hóa đơn"
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-contract-monthly",
+      "from": "contract",
+      "to": "monthly",
+      "label": "còn hiệu lực",
+      "variant": "default"
+    },
+    {
+      "id": "f-monthly-plan",
+      "from": "monthly",
+      "to": "plan",
+      "label": "snapshot",
+      "variant": "default",
+      "route": "straight",
+      "labelAt": [
+        315,
+        214
+      ]
+    },
+    {
+      "id": "f-order-finalize",
+      "from": "weborder",
+      "to": "finalize",
+      "label": "số lượng đặt",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-plan-deliveries",
+      "from": "plan",
+      "to": "deliveries",
+      "label": "sinh chính thức",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-finalize-deliveries",
+      "from": "finalize",
+      "to": "deliveries",
+      "label": "chốt số lượng",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f-deliveries-shipsend",
+      "from": "deliveries",
+      "to": "shipsend",
+      "label": "đủ điều kiện",
+      "variant": "default",
+      "route": "straight"
+    },
+    {
+      "id": "f-shipsend-thomas",
+      "from": "shipsend",
+      "to": "thomas",
+      "label": "CSV chỉ thị",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-deliveries-yamato",
+      "from": "deliveries",
+      "to": "yamato",
+      "label": "CSV vận đơn",
+      "variant": "dashed"
+    },
+    {
+      "id": "f-thomas-actual",
+      "from": "thomas",
+      "to": "actual",
+      "label": "kết quả xuất",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-yamato-actual",
+      "from": "yamato",
+      "to": "actual",
+      "label": "CSV",
+      "variant": "default",
+      "labelAt": [
+        825,
+        262
+      ]
+    },
+    {
+      "id": "f-driver-actual",
+      "from": "driver",
+      "to": "actual",
+      "label": "nhận · giao",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-actual-billone",
+      "from": "actual",
+      "to": "billone",
+      "label": "thực tích",
+      "variant": "security",
+      "route": "straight",
+      "labelAt": [
+        960,
+        328
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Chuỗi job hằng ngày",
+      "items": [
+        "contract_monthly_generate → plan_rollout → delivery_materialize → order_finalize → ship_order_send → plan_recheck",
+        "Mọi batch chạy kiểu catch-up và lũy đẳng; lỗi của một hợp đồng được cô lập, hợp đồng khác vẫn chạy",
+        "Nguồn: Giao_hàng_12 §16.1–16.14"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Dữ liệu quay ngược vào deliveries",
+      "items": [
+        "Kết quả xuất hàng, số vận đơn và thao tác tài xế được nhập lại vào cùng dữ liệu giao hàng (delivery status), không phải một kho riêng",
+        "Gửi chỉ thị xuất hàng thành công lần đầu thì kế hoạch chuyển locked; hủy hoặc sửa gửi bằng phiên bản mới (qty = 0)",
+        "Công ty vận tải là chặng cuối: batch 06:00 hôm sau xem là Đã giao (delivery_presume_complete)",
+        "Nguồn: Giao_hàng_12 §16.6, §16.9, §19.1–19.4"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Thanh toán (không vẽ hết đường vào)",
+      "items": [
+        "billing_issue chọn hợp đồng con đã qua mốc thanh toán, lập hóa đơn theo thực tích từng bản ghi",
+        "Chốt ngày 20, xác nhận ngày 25, phát hành bằng Bill One vào ngày 1 tháng sau; hóa đơn PDF và thông báo gửi từ Bill One",
+        "Hợp đồng con cũng là đầu vào của billing_issue nhưng không vẽ để tránh đường cắt ngang",
+        "Nguồn: Quy_tắc_thanh_toán_Đặc_tả_v1 §1-1, §5; Giao_hàng_12 §16.7"
+      ]
+    }
+  ]
+}

@@ -1,13 +1,13 @@
 ---
 name: task-decomposition
-description: Methodology phân rã DESIGN.md thành task files atomic cho ESKITCHEN — INVEST criteria, dependency detection, parallelism rules, estimation heuristics cho NestJS/React/Flutter. Dùng khi techlead-tasks-agent cần quyết định cắt task ở đâu và estimate bao nhiêu giờ.
+description: Methodology phân rã Design-Technical.md thành task files atomic — INVEST criteria, dependency detection, parallelism rules, estimation heuristics cho NestJS/React/Flutter. Dùng khi techlead-tasks-agent cần quyết định cắt task ở đâu và estimate bao nhiêu giờ.
 metadata:
-  tags: task-decomposition, agile, story-splitting, estimation, ESKITCHEN
+  tags: task-decomposition, agile, story-splitting, estimation
 ---
 
-# Task Decomposition — ESKITCHEN
+# Task Decomposition
 
-> Áp dụng cho: `techlead-tasks-agent` khi phân rã DESIGN.md → task files
+> Áp dụng cho: `techlead-tasks-agent` khi phân rã Design-Technical.md → task files
 
 ---
 
@@ -35,22 +35,22 @@ Mỗi task phải pass đủ 6 tiêu chí:
 
 ---
 
-## 2. Phân rã theo Phase ESKITCHEN
+## 2. Phân rã theo Phase (repo lấy từ bảng Ecosystem trong `AGENTS.md`)
 
 Thứ tự bắt buộc — không được đảo:
 
 ```
-Phase 1 — DB / Migration (es-kitchen-api)
+Phase 1 — DB / Migration (repo vai trò `backend`)
   └─ Tạo entity + migration file
   └─ KHÔNG viết service logic ở phase này
 
-Phase 2 — Service + API (es-kitchen-api)
+Phase 2 — Service + API (repo vai trò `backend`)
   ├─ task-2-1: Service methods + business logic + unit test
   └─ task-2-2: Controller + DTO + endpoint (có thể song song với 2-1 nếu interface đã lock)
 
 Phase 3 — UI (song song nhau)
-  ├─ task-3-x: React component / page (E02/E03/E04)
-  └─ task-3-y: Flutter screen / provider (E01)
+  ├─ task-3-x: React component / page (repo frontend)
+  └─ task-3-y: Flutter screen / provider (repo mobile)
 
 Phase 4 — Integration
   └─ task-4-1: E2E verify + smoke test toàn luồng
@@ -122,11 +122,11 @@ task-2-3 inject MenuService (để add method mới)
 
 ---
 
-## 6. Estimation Heuristics — ESKITCHEN
+## 6. Estimation Heuristics (ví dụ)
 
 > Đây là baseline. Tăng 50% nếu: task cross nhiều entity phức tạp, cần debug DB, hoặc có edge case payment.
 
-### NestJS (`es-kitchen-api`)
+### NestJS (repo vai trò `backend`)
 
 | Loại task | Estimate |
 |---|---|
@@ -140,7 +140,7 @@ task-2-3 inject MenuService (để add method mới)
 | Unit test cho service (~80% coverage) | 1–2h (nếu viết song song với code) |
 | Unit test retro (code đã có) | 2–3h |
 
-### React (`es-kitchen-web-admin` / `es-kitchen-web-company`)
+### React (repo vai trò `frontend`)
 
 | Loại task | Estimate |
 |---|---|
@@ -151,7 +151,7 @@ task-2-3 inject MenuService (để add method mới)
 | Hook + API service call + store integration | 3h |
 | Redux slice mới | 2h |
 
-### Flutter (`es-kitchen-payment-app`)
+### Flutter (repo vai trò `mobile`)
 
 | Loại task | Estimate |
 |---|---|
@@ -160,7 +160,7 @@ task-2-3 inject MenuService (để add method mới)
 | Provider / StateNotifier mới | 3h |
 | Socket.IO event mới + UI update | 3–4h |
 | Retrofit API method + model freezed | 2h |
-| Payment flow (elepay integration) | 5–6h |
+| Payment flow (payment SDK integration) | 5–6h |
 
 ---
 
@@ -184,4 +184,4 @@ task-2-3 inject MenuService (để add method mới)
 - ❌ Estimate "1–2 ngày" — phải quy về giờ cụ thể
 - ❌ Song song 2 tasks cùng modify 1 service file
 - ❌ FE task không có contract lock với BE — dẫn đến làm lại khi API thay đổi
-- ❌ Bỏ qua Non-Regression table — regression bug phổ biến nhất trong ESKITCHEN
+- ❌ Bỏ qua Non-Regression table — regression bug phổ biến nhất trong dự án

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "c80b3577-0b44-4f37-92bb-6001114ebb34",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/65_Hàng_thay_thế/dataflow-hang-thay-the-20261007-103000/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/65_Hàng_thay_thế/dataflow-hang-thay-the-20261007-103000/hang-thay-the.html",
+  "specification": {
+    "sha256": "0c16f6a1d459e2a3cb603d5175b726124a3a50fcd7f9d0a6c9f19fa550baed96",
+    "bytes": 4883
+  },
+  "artifact": {
+    "sha256": "a0d96c24204bf3dbf086699df3001964cd11439e110e7a3701493cfc7851820b",
+    "bytes": 763709
+  }
+}

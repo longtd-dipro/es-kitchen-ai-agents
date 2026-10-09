@@ -1,0 +1,25 @@
+---
+name: project-designer-design-system
+description: Designer Agent memory — ES Kitchen Phase 2 design spec location, platform colors đã đo, bẫy đặt tên theme Figma, mâu thuẫn chưa confirm
+metadata:
+  type: project
+---
+
+Bộ đặc tả giao diện ES Kitchen Phase 2 nằm ở `.claude/designer-agent/design-spec/` (README + 00-foundation + 10..14 web + 20..22 mobile + tokens.json + refs/*.png). Phân tích ngày 2026-09-29 từ Figma `VKAAOyoSPvgoB3H2qdeeV3` (7 node thực tế) + Design System artifact `claude.ai/artifact/ModdSpJmnWd9yA4onTCtpp`.
+
+**Why:** Designer Agent trước đây vẽ theo kit default / artifact Phase 1 → lệch màu primary và viewport so với Figma Phase 2 thật.
+
+**How to apply:**
+- Mỗi lần kích hoạt Designer Agent: LEARNING `design-spec/README.md` + `00-foundation.md` → hỏi platform bằng `AskUserQuestion` (Bước 0.2 trong `agents/designer-agent.md`) → đọc file spec platform + ảnh refs.
+- Primary đã đo (nguồn sự thật = Figma Phase 2, KHÔNG phải artifact): Admin `#0969DA` · Company `#F4860C` · Supplier `#6639BA` · Công ty vận chuyển E05 (tên cũ Logistic) `#1A7F37` · Mobile/ES_QR gradient vàng `#FAC215→#FFC562` chữ tối · Driver `#0969DA` + COOL `#5A3AE9`.
+- **Bẫy đặt tên:** library Figma `company/*` = BLUE (dùng cho Admin/Driver), `admin/*` = ORANGE (dùng cho Company), `app/*` = YELLOW. Button (set `1e134ad8…`): **`theme=primary` = xanh `#0969DA`** → Admin/Driver; `theme=Company` = **CAM** `#FAA51D` (đo lại 2026-09-30 khi vẽ AI_Generate_Tồn Kho — ghi chú cũ "Company → Admin" là SAI). Input: `In Valied=Yes` = viền thường, `No` = viền đỏ (tên ngược).
+- **Ngoại lệ bẫy:** component `Tabs` (set `10217:95468`) `Color=Company` = CAM → Admin dùng `Color=Default` (xanh). Local `Search Buttons` = cam → Admin dùng 2 Button `theme=primary`. `Table/Data Cell/Text` không nhận text qua prop `label#8455:0` → ghi thẳng vào TEXT node. Luôn đọc lại màu fill sau khi đặt variant.
+- Viewport: desktop 1440 (sider 210 + container 1230, header 54, page header 94, table header 55/row 54); mobile & webapp **390×844** (đã sửa từ 375×812).
+- Link trong bảng mọi portal = blue `#0969DA`. Font duy nhất Noto Sans JP; icon Phosphor Regular.
+- User confirm 2026-09-29: Logistic Web = **E05** `es-kitchen-web-outsource-web-private`, đổi tên **Công ty vận chuyển Web**; ES_QR = **WebApp mới** (chưa có repo); badge solid + soft **dùng chung** mọi platform (solid = tiến trình, soft = bản ghi).
+- Bước 0.I (chạy đầu tiên): AskUserQuestion hỏi input — prototype HTML ở đâu · tài liệu khác (SPEC, Figma BA, REQ) · Figma output ở đâu (mặc định Section mới trong ES-Kitchen-phase-2) · tên output (agent đề xuất `AI_Generate_<tính năng>`, chờ duyệt). Bỏ câu nào user đã đưa trong lệnh.
+- Bước 0.0: kiểm tra đầu vào design system D1–D4 (design-spec, tokens.json, design_rule §10–11, Figma library); thiếu → AskUserQuestion hỏi nguồn, không tự fallback.
+- Bước 0.2b: AskUserQuestion hỏi ngôn ngữ group_name / section_name / screen_name; đề xuất **vi + ja + en** (thứ tự vi→ja→en). Đa ngữ → layer name 1 dòng nối ` | ` + text label nhiều dòng `textAutoResize=HEIGHT` để không bị cắt (foundation §12).
+- Còn mở: C7 Driver Phosphor vs Lucide → ghi `[Design]` vào SPEC Open Questions khi gặp.
+
+Liên quan: [[feedback-ba-agent-04092026]]

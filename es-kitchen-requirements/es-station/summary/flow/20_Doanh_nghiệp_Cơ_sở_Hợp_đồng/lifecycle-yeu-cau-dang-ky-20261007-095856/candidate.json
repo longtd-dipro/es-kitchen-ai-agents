@@ -1,0 +1,125 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Vòng đời trạng thái yêu cầu đăng ký mới",
+    "output": "flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/lifecycle-yeu-cau-dang-ky-20261007-095856/yeu-cau-dang-ky.html",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "Tiến trình chính"
+    },
+    {
+      "id": "terminal",
+      "label": "Kết thúc không thành"
+    }
+  ],
+  "states": [
+    {
+      "id": "receiving",
+      "type": "start",
+      "label": "Đang tiếp nhận",
+      "sublabel": "xác nhận nội dung",
+      "lane": "main",
+      "col": 0,
+      "step": "01"
+    },
+    {
+      "id": "setup",
+      "type": "active",
+      "label": "Đang thiết lập HĐ",
+      "sublabel": "đăng ký tạm",
+      "lane": "main",
+      "col": 2,
+      "step": "02"
+    },
+    {
+      "id": "done",
+      "type": "success",
+      "label": "Hoàn tất",
+      "sublabel": "mọi cơ sở xác định",
+      "lane": "main",
+      "col": 4,
+      "step": "03"
+    },
+    {
+      "id": "rejected",
+      "type": "failure",
+      "label": "Từ chối",
+      "sublabel": "bắt buộc lý do",
+      "lane": "terminal",
+      "col": 1,
+      "tag": "kết thúc"
+    },
+    {
+      "id": "withdrawn",
+      "type": "neutral",
+      "label": "Đã rút lại",
+      "sublabel": "rút lại đăng ký",
+      "lane": "terminal",
+      "col": 3,
+      "tag": "kết thúc"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "receiving",
+      "to": "setup",
+      "label": "đăng ký tạm",
+      "variant": "emphasis"
+    },
+    {
+      "from": "setup",
+      "to": "done",
+      "label": "xác định hết cơ sở",
+      "variant": "emphasis"
+    },
+    {
+      "from": "receiving",
+      "to": "rejected",
+      "label": "từ chối",
+      "variant": "security"
+    },
+    {
+      "from": "setup",
+      "to": "rejected",
+      "label": "từ chối",
+      "variant": "security"
+    },
+    {
+      "from": "setup",
+      "to": "withdrawn",
+      "label": "rút lại",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Căn cứ (Form_đăng_ký.md §1・§10-1・§10-2)",
+      "items": [
+        "Trạng thái: Đang tiếp nhận／Đang thiết lập hợp đồng／Hoàn tất／Từ chối／Đã rút lại [28-63]",
+        "Hoàn tất xác nhận nội dung đăng ký = đăng ký tạm: chuyển sang thiết lập hợp đồng",
+        "Khi xác định tất cả cơ sở ('Xác định cơ sở này' từng cơ sở) thì đăng ký thành Hoàn tất"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Từ chối・rút lại (§10-7・§13)",
+      "items": [
+        "Từ chối bắt buộc lý do (lựa chọn định sẵn + tự do ghi), thông báo doanh nghiệp, không trả lại; muốn sửa thì đăng ký lại",
+        "Sau đăng ký tạm: hủy đơn hàng・bộ khởi tạo; cơ sở・hợp đồng cha・hợp đồng con・doanh nghiệp mới = Hủy bỏ; tài khoản tạm dừng"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Điểm suy luận / không rõ",
+      "items": [
+        "Tài liệu chỉ ghi 'Đã rút lại' là một trạng thái, không nêu điều kiện; sơ đồ §1 đặt 'từ chối／rút lại' sau giai đoạn thiết lập nên mũi tên rút lại chỉ vẽ từ Đang thiết lập HĐ",
+        "Từ chối từ Đang thiết lập HĐ suy ra từ §10-7 ('từ chối・rút lại sau đăng ký tạm')"
+      ]
+    }
+  ]
+}

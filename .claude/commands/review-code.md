@@ -10,13 +10,13 @@ Nếu `$ARGUMENTS` là file path cụ thể → đọc file đó.
 Nếu không có argument → lấy git diff: `git diff HEAD` hoặc `git diff main...HEAD`.
 
 Xác định repo đang review:
-- Có `@Module()`, `@Injectable()`, `TypeORM` → **es-kitchen-api** (NestJS)
-- Có `useQuery`, `createSlice`, `antd` → **es-kitchen-web-admin** hoặc **es-kitchen-web-company** (React)
-- Có `@Riverpod`, `@freezed`, `Dio` → **es-kitchen-payment-app** (Flutter)
+- Có `@Module()`, `@Injectable()`, `TypeORM` → **repo backend** (NestJS)
+- Có `useQuery`, `createSlice`, `antd` → **repo frontend** (React)
+- Có `@Riverpod`, `@freezed`, `Dio` → **repo mobile** (Flutter)
 
 ## Bước 2 — Áp dụng checklist theo repo
 
-**NestJS (es-kitchen-api):**
+**NestJS (repo backend):**
 - [ ] Column naming snake_case trong entity?
 - [ ] Migration có `up()` và `down()`?
 - [ ] Không N+1 query (check leftJoin thay vì loop)?
@@ -26,8 +26,8 @@ Xác định repo đang review:
 - [ ] Không hard-code secret/key?
 - [ ] `orderBy` dùng whitelist map?
 
-**React (web-admin / web-company):**
-- [ ] Đúng repo — E02 ≠ E03 business logic?
+**React (repo frontend):**
+- [ ] Đúng repo — không lẫn domain logic giữa các repo frontend?
 - [ ] TanStack Query v5 object syntax `{ queryKey, queryFn }`?
 - [ ] Redux chỉ cho client state (không cache server data)?
 - [ ] `invalidateQueries` sau mutation?
@@ -35,7 +35,7 @@ Xác định repo đang review:
 - [ ] `useEffect` deps đầy đủ?
 - [ ] Không `as any` không có lý do?
 
-**Flutter (payment-app):**
+**Flutter (repo mobile):**
 - [ ] `hooks_riverpod` — không Provider/BLoC?
 - [ ] Retrofit `@RestApi()` — không gọi Dio trực tiếp?
 - [ ] Socket cleanup `off()` trong dispose?

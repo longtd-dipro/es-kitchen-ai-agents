@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Luồng dữ liệu phí giới thiệu đại lý",
+    "output": "flow/70_Đại_lý/dataflow-agency-referral-20261007-103000/agency-referral.html",
+    "viewBox": [
+      1080,
+      520
+    ],
+    "quality_profile": "showcase",
+    "locale": "en"
+  },
+  "stages": [
+    {
+      "label": "Đầu vào"
+    },
+    {
+      "label": "Thiết lập"
+    },
+    {
+      "label": "Tính phí"
+    },
+    {
+      "label": "Lưu trữ"
+    },
+    {
+      "label": "Màn Vận hành"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "form",
+      "type": "frontend",
+      "label": "Form đăng ký",
+      "sublabel": "mã đại lý (tùy chọn)",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "ops",
+      "type": "external",
+      "label": "Vận hành",
+      "sublabel": "xác nhận · tiếp nhận",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "discount",
+      "type": "database",
+      "label": "Master giảm giá",
+      "sublabel": "mã giảm giá",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "bind",
+      "type": "backend",
+      "label": "Gắn đại lý",
+      "sublabel": "1 doanh nghiệp = 1",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "agent",
+      "type": "database",
+      "label": "Master đại lý",
+      "sublabel": "mẫu phí A/B/C/D",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "contract",
+      "type": "database",
+      "label": "Hợp đồng cơ sở",
+      "sublabel": "cố định chưa thuế",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "calc",
+      "type": "backend",
+      "label": "Tính số tiền",
+      "sublabel": "tự động, sửa tay được",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "refdata",
+      "type": "database",
+      "label": "Dữ liệu giới thiệu",
+      "sublabel": "theo từng tháng",
+      "stage": 3,
+      "row": 0
+    },
+    {
+      "id": "paydata",
+      "type": "database",
+      "label": "Dữ liệu thanh toán",
+      "sublabel": "đại lý × tháng",
+      "stage": 3,
+      "row": 2
+    },
+    {
+      "id": "listscr",
+      "type": "frontend",
+      "label": "DS giới thiệu",
+      "sublabel": "xuất CSV",
+      "stage": 4,
+      "row": 0
+    },
+    {
+      "id": "payscr",
+      "type": "frontend",
+      "label": "Quản lý thanh toán",
+      "sublabel": "Chưa/Đã xác nhận",
+      "stage": 4,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "form",
+      "to": "bind",
+      "label": "mã đại lý",
+      "route": "straight"
+    },
+    {
+      "id": "f2",
+      "from": "ops",
+      "to": "bind",
+      "label": "xác nhận"
+    },
+    {
+      "id": "f3",
+      "from": "ops",
+      "to": "agent",
+      "route": "straight",
+      "label": "mẫu",
+      "labelDx": 22,
+      "labelDy": -4
+    },
+    {
+      "id": "f4",
+      "from": "discount",
+      "to": "contract",
+      "label": "điều kiện GG",
+      "route": "straight"
+    },
+    {
+      "id": "f5",
+      "from": "bind",
+      "to": "calc",
+      "label": "đại lý của DN",
+      "toSide": "top",
+      "fromSide": "right",
+      "via": [
+        [
+          530,
+          157
+        ]
+      ]
+    },
+    {
+      "id": "f6",
+      "from": "agent",
+      "to": "calc",
+      "route": "straight",
+      "label": "mẫu",
+      "labelDx": 0,
+      "labelDy": -4
+    },
+    {
+      "id": "f7",
+      "from": "contract",
+      "to": "calc",
+      "label": "số tiền cơ sở",
+      "toSide": "bottom",
+      "fromSide": "right",
+      "via": [
+        [
+          530,
+          385
+        ]
+      ]
+    },
+    {
+      "id": "f8",
+      "from": "calc",
+      "to": "refdata",
+      "label": "tiền chi trả"
+    },
+    {
+      "id": "f9",
+      "from": "calc",
+      "to": "paydata",
+      "label": "lịch thanh toán"
+    },
+    {
+      "id": "f10",
+      "from": "refdata",
+      "to": "listscr",
+      "label": "xem · CSV",
+      "route": "straight"
+    },
+    {
+      "id": "f11",
+      "from": "paydata",
+      "to": "payscr",
+      "label": "xem · sửa",
+      "route": "straight"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Luồng chính",
+      "items": [
+        "Mã đại lý ở form đăng ký + Vận hành xác nhận quyết định người giới thiệu (Đại_lý_và_giới_thiệu.md §5)",
+        "Gắn đại lý theo doanh nghiệp, cơ sở mới lấy đại lý của doanh nghiệp làm mặc định (§1-3, §1-4)",
+        "Số tiền cơ sở = số tiền cố định chưa thuế sau giảm giá (trả trước); không tính phần trả sau, không tính thời gian dùng thử (§2-1)"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Tính phí",
+      "items": [
+        "A: 33,000 yên 1 lần; B: 1 lần theo số lượng [tạm]; C: 10% tối đa 36 tháng; D: 7% suốt thời gian còn tiếp tục (§2)",
+        "Số tiền tính tự động, sau đó có thể chỉnh sửa thủ công (§2-2)",
+        "Đổi gói giữa chừng không tính lại; tạo dữ liệu mới theo từng tháng, không ghi đè (§4)"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Suy luận và điểm chưa chốt",
+      "items": [
+        "Suy luận: các node lưu trữ và mũi tên giữa chúng là cách trình bày; tài liệu chỉ nêu màn hình, dữ liệu theo đại lý/tháng và trường hợp tính (§6)",
+        "Việc Vận hành sửa trạng thái/ngày thanh toán từ danh sách (§6) không vẽ riêng, nằm ở nhãn 'xem · sửa'",
+        "Chưa quyết: cách tính cuối cùng U1, số tiền mẫu B U2, thời điểm thanh toán U3, điều kiện khi thêm cơ sở U4 (§7)"
+      ]
+    }
+  ]
+}

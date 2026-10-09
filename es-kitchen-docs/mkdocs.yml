@@ -59,6 +59,8 @@ nav:
       - Structure: mobile/es-kitchen-payment-app/overview/structure.md
       - Patterns: mobile/es-kitchen-payment-app/overview/patterns.md
 
+- ES-STATION: requirements/es-station/index.md
+
 - Features:
   - DOCUMENT OVERVIEW: features/index.md
   - BA TODOs (Client Questions): features/BA_TODO_for_client.md
@@ -131,6 +133,18 @@ nav:
     - Specification: features/authentication/SPEC.md
   - Contract & Delivery Authentication:
     - API Design: features/contract-delivery-authentication/es-kitchen-api/DESIGN.md
+  - Delivery Driver:
+    - Open Questions: features/delivery-driver/OPEN-QUESTIONS.md
+    - Test Cases - Driver App: features/delivery-driver/test-cases/driver-app/test-cases.md
+    - Test Cases - Analysis: features/delivery-driver/test-cases/driver-app/analysis.md
+    - Test Cases - Plan: features/delivery-driver/test-cases/driver-app/plan-tcs.md
+  - Delivery Partner:
+    - Figma Analysis: features/delivery-partner/Figma-Analysis.md
+    - Tasks Overview: features/delivery-partner/tasks-overview.md
+    - API Design: features/delivery-partner/es-kitchen-api/Design-Technical.md
+    - Web Outsource Design: features/delivery-partner/es-kitchen-web-outsource-web-private/Design-Technical.md
+    - Test Cases - Auth & Dashboard: features/delivery-partner/test-cases/auth-dashboard/test-cases.md
+    - Test Cases - Delivery Ops: features/delivery-partner/test-cases/delivery-ops/test-cases.md
   - Driver Authentication:
     - API Design: features/driver-authentication/es-kitchen-api/DESIGN.md
   - Guest Mode:
@@ -171,10 +185,6 @@ nav:
     - Web Admin Design: features/maintain-management/es-kitchen-web-admin/DESIGN.md
   - Notification Management:
     - Specification: features/notification-management/SPEC.md
-    - API Design: features/notification-management/es-kitchen-api/DESIGN.md
-    - Web Admin Design: features/notification-management/es-kitchen-web-admin/DESIGN.md
-    - Web Company Design: features/notification-management/es-kitchen-web-company/DESIGN.md
-    - Mobile Design: features/notification-management/es-kitchen-payment-app/DESIGN.md
   - Version Management:
     - Specification: features/version-management/SPEC.md
   - Webapp Payment (One QR):

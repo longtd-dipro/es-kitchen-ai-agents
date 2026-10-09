@@ -28,7 +28,7 @@ skills:
 
 ## Output path
 
-`es-kitchen-docs/docs/features/<feature>/test-cases/checklist_<release>.md`
+`docs/features/<feature>/test-cases/checklist_<release>.md`
 
 ## Các bước
 

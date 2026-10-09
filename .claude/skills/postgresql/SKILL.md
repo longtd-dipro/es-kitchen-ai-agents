@@ -1,13 +1,13 @@
 ---
 name: postgresql
-description: PostgreSQL + TypeORM best practices cho es-kitchen-api. Schema design, migration, indexing, query optimization, N+1 prevention, transactions, Redis cache phối hợp. Dùng khi tạo/sửa schema, viết migration, tối ưu query, hoặc thiết kế caching layer.
+description: PostgreSQL + TypeORM best practices cho repo backend. Schema design, migration, indexing, query optimization, N+1 prevention, transactions, Redis cache phối hợp. Dùng khi tạo/sửa schema, viết migration, tối ưu query, hoặc thiết kế caching layer.
 metadata:
   tags: postgresql, typeorm, database, migration, indexing
 ---
 
-# PostgreSQL — ESKITCHEN
+# PostgreSQL
 
-> Áp dụng cho: `es-kitchen-api` (TypeORM 0.3.x + PostgreSQL)
+> Áp dụng cho: repo có vai trò `backend` trong bảng Ecosystem (`AGENTS.md`) — TypeORM 0.3.x + PostgreSQL
 
 ## Khi nào dùng skill này
 

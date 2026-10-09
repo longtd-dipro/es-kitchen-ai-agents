@@ -1,6 +1,6 @@
 # Workflow: Bug Fix
 
-Quy trình điều tra và fix bug trong ESKITCHEN — từ report đến verified.
+Quy trình điều tra và fix bug — từ report đến verified.
 
 ---
 
@@ -34,7 +34,7 @@ Xác định trước khi bắt đầu:
 | Câu hỏi | Trả lời cần có |
 |---|---|
 | Bug xảy ra ở env nào? | DEV / STG / PROD |
-| Repo liên quan? | `es-kitchen-api` / `web-admin` / `web-company` / `payment-app` |
+| Repo liên quan? | xem bảng Ecosystem trong `AGENTS.md` |
 | Severity? | Critical (PROD down) / Major / Minor |
 | Có thể reproduce không? | Steps to reproduce cụ thể |
 
@@ -54,7 +54,7 @@ Chạy lại bug với steps cụ thể. Ghi lại:
 
 ## Bước 3 — Tìm root cause
 
-**Agent theo repo:** `backend-agent` / `frontend-agent` / `mobile-agent`
+**Agent theo vai trò repo:** `backend-agent` / `frontend-agent` / `mobile-agent`
 
 ```bash
 # Tìm điểm bắt đầu của lỗi
@@ -68,8 +68,7 @@ tilth_deps(path: "<file sẽ thay đổi>")
 ```
 
 **Kiểm tra DB nếu cần (backend):**
-- DEV: `.claude/workflows/db-connect-dev.md`
-- Staging: `.claude/workflows/db-connect-staging.md`
+- Hỏi Lead/DevOps để lấy hướng dẫn kết nối DB DEV/Staging của dự án.
 
 ---
 

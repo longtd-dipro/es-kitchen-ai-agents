@@ -13,7 +13,7 @@ Tất cả source code nằm trong thư mục **`es-kitchen-repository/`**.
 | `es-kitchen-web-company` | `es-kitchen-repository/es-kitchen-web-company` | Company Admin Web (E02) — 58 functions | React 19 / Vite 7 / Redux Toolkit |
 | `es-kitchen-web-admin` | `es-kitchen-repository/es-kitchen-web-admin` | System Admin Web (E03) — 160 functions | React 19 / Vite 7 / Redux Toolkit |
 | `es-kitchen-web-supplier` | `es-kitchen-repository/es-kitchen-web-supplier` | Supplier Web (E04) — quản lý menu, nhận đơn | React 19 / Vite 8 / Redux Toolkit |
-| `es-kitchen-web-outsource-web-private` | `es-kitchen-repository/es-kitchen-web-outsource-web-private` | Outsource / Internal Private Admin Web (E05) — operation tool quản lý account & sales | React 19 / Vite 8 / Redux Toolkit |
+| `es-kitchen-web-outsource-web-private` | `es-kitchen-repository/es-kitchen-web-outsource-web-private` | **Công ty vận chuyển Web** (E05 · 委託配送会社Web — tên cũ: Outsource / Logistic Web) | React 19 / Vite 8 / Redux Toolkit |
 | `es-kitchen-webapp-driver` | `es-kitchen-repository/es-kitchen-webapp-driver` | Driver Web App (E06) — nhận order, cập nhật trạng thái giao hàng | React 19 / Vite 8 / Ant Design |
 
 **Docs:** `es-kitchen-docs/docs/features/` — **single long-memory** chứa SPEC, DESIGN, PLAN, tasks, test-cases. Folder `docs/epics/` cũ đã bị bỏ — mọi feature đặt cùng path. Chi tiết → `.claude/context/doc-structure.md`.
@@ -31,7 +31,7 @@ Tất cả source code nằm trong thư mục **`es-kitchen-repository/`**.
 > **AI behavior policy chung** (không đoán mò · stack constraints · permission per persona · ...) → xem `./POLICIES.md` (always-loaded). Dưới đây chỉ liệt kê rules **đặc thù project ESKITCHEN** mà POLICIES.md không cover.
 
 1. **Không nhầm E02 ↔ E03** — `web-company` = Company Admin (E02), `web-admin` = System Admin (E03). Đây là bug phổ biến nhất.
-2. **Không nhầm E04 ↔ E05** — `web-supplier` = Supplier domain (E04, public-facing), `web-outsource-web-private` = internal operation tool (E05).
+2. **Không nhầm E04 ↔ E05** — `web-supplier` = Supplier domain (E04, public-facing), `web-outsource-web-private` = Công ty vận chuyển Web (E05, 委託配送会社 — tên cũ Outsource/Logistic).
 3. **Context files đọc đúng theo role** — xem cột "Ai đọc" trong bảng Context (section `<agent_architecture>` bên dưới). Không đọc rộng ra ngoài role.
 4. **Doc location single path:** mọi feature docs đặt trong `es-kitchen-docs/docs/features/<feature>/`. Folder `docs/epics/` cũ đã bị bỏ.
 5. **Memory Update Gate** sau mỗi dev task (xem section `<memory_update_gate>` bên dưới) — không skip.
@@ -93,7 +93,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 
 | Agent | Vai trò | Trigger khi | Slash command |
 |---|---|---|---|
-| `ba-agent.md` | Business Analyst | Phân tích yêu cầu, tạo SPEC.md | `/create-spec` |
+| `ba-agent.md` | Business Analyst | Phân tích yêu cầu → **5 outputs bắt buộc**: SPEC.md (14 sections) + 3 Figma frames (Flow Tổng Quan · Screen Flow · Screens+Items) + HTML Prototype. Workflow chi tiết tách ra `.claude/ba-agent/` (xem bảng bên dưới) | `/create-spec` |
 | `techlead-design-agent.md` | Tech Lead Design | Đọc SPEC → tạo DESIGN.md per repo | `/create-design` |
 | `techlead-tasks-agent.md` | Tech Lead Tasks | Đọc DESIGN → phân rã task files | `/create-tasks` |
 | `pm-agent.md` | Project Manager | Tạo PLAN.md, phase-gate, timeline | `/create-plan` |
@@ -106,6 +106,47 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | `qc-automation-agent.md` | QC Automation Tester | **Sau khi Dev deploy lên DEV** — đọc SPEC.md + Figma URL, sinh Playwright `.spec.ts`, chạy E2E test **có headed mode** (browser hiển thị để quan sát), xuất execution report | `"Hãy là QC Automation, test feature: <feature-path>, Figma: <url>"` (+ `testcases: <path>` nếu có TC file) |
 
 > **QC vs QA vs QC-Automation:** `qc-agent` = manual tester sinh/thực thi TC (artifact `.md`); `qa-agent` = post-dev verify unit test + coverage (QA Report per task); `qc-automation-agent` = E2E test tự động trên browser sau khi website chạy (`.spec.ts` + execution report). Ba agent bổ sung nhau, không thay thế.
+
+### BA Agent workflow files — `.claude/ba-agent/` (đọc on-demand)
+
+> `ba-agent.md` là canonical entry point; chi tiết quy trình tách thành các file dưới đây để agent Read đúng lúc cần. **Sửa quy trình BA → sửa file tương ứng ở đây, không sửa `/create-spec`.**
+
+| File | Nội dung | ba-agent Read khi |
+|---|---|---|
+| `preflight-questions.md` | 7 câu preflight (0.4 Scope · 0 Platform · 0.5 Figma URL · 0.8 Tech stack · 0.9 Granularity · 0.10 Actors · 0.11 Ngôn ngữ) + 10 câu chuẩn + template **Discovery Brief** | Bước 2b — trước mọi câu hỏi |
+| `clarify-ambiguity.md` | Template trình 2-3 diễn giải khi request mơ hồ | Bước 2a khi trigger ambiguity |
+| `granularity-principles.md` | Nguyên tắc granularity chung cho Flow + Screen (chống flow quá thô/quá vụn) + **⛔ GATE FR COVERAGE** — mốc đếm phải là DÒNG CHỨC NĂNG GỐC, không phải nhóm do BA tự gom | Bước 4 + Bước 5 Output 1 |
+| `spec-template.md` | Template 14 sections SPEC.md + rule phân loại Non-Happy theo mức hiển thị (Inline/Toast · Modal · Full screen → Screen Code riêng) + **cột `FR No.` bắt buộc** trong bảng `## Screens` khi nguồn đánh số được | Bước 4 — trước khi viết SPEC |
+| `versioning.md` | Rule snapshot `versions/v<N>_<DDMMYYYY>/` — không overwrite version cũ | Bước 3 |
+| `recheck.md` | **9 tiêu chí** — visual + **Tiêu chí 7 quét bbox** + **Tiêu chí 8 FR Coverage scan** (phép trừ tập hợp về tài liệu nguồn) + **Tiêu chí 9 node phải nằm trong biên frame** (chạy TRƯỚC tiêu chí 7) | Bước 5.5 Quality Gate |
+| `self-feedback.md` | Template self-feedback theo `POLICIES.md §4.5` | Bước 5.6 |
+| `post-meeting-workflow.md` | Quy trình cập nhật SPEC sau meeting với khách | Khi user trigger |
+| `template-ba.md` | Template BA tổng hợp | Bước 4 |
+| `figma-outputs/shared-rules.md` | Sequential Rule · **Gate Rules (Light/Strict Mode)** · state machine `WAITING_APPROVAL`/`APPROVED`/`STALE` · GATE ẢNH MẪU · Post-Delivery `## BA Deliverables` | Bước 5 — trước mọi `use_figma` |
+| `figma-outputs/code-patterns.md` | JS pattern cho Figma Design / FigJam + **rule toạ độ**: `node.x` là TƯƠNG ĐỐI FRAME, cấm cộng `absoluteBoundingBox` | Bước 5 |
+| `figma-outputs/output-1-flow.md` … `output-5-mkdocs.md` | Spec chi tiết từng output | Bước 5 — đúng output đang vẽ |
+
+**5 rule cứng khi vẽ Figma (không được vi phạm):**
+
+| Rule | Nội dung | File gốc |
+|---|---|---|
+| ⛔ **Gate ảnh mẫu** | Trước MỌI `use_figma`: mở ảnh mẫu trong `.claude/skills/ba-figma-output/examples/` **và mô tả lại bố cục bằng lời của mình**. Đọc rule dạng chữ mà không xem ảnh → vẽ sai bố cục | `figma-outputs/shared-rules.md` |
+| 🔗 **Connector thật** | Mọi screen node phải nối nhau bằng arrow vẽ thật (`hl`/`vl`/`arrowHead`). Liệt kê chip/card rời rạc không mũi tên → **FAIL** | `agents/ba-agent.md` |
+| 📊 **Đếm màn lỗi** | `Toast` · `Modal` · `Popup` · `Banner` · `Full screen` · `Empty state` **ĐỀU tính là màn hình** trong thống kê tổng. Non-Happy bắt buộc dạng **bảng 4 cột** có message thật, cấm văn xuôi | `ba-agent/spec-template.md` |
+| 📐 **Quét bbox** | Kết luận "không chồng đè" phải bằng **script quét toạ độ**, không bằng mắt nhìn screenshot | `ba-agent/recheck.md` Tiêu chí 7 |
+| 🔢 **FR Coverage** | Khi nguồn có danh sách chức năng đánh số: phải chạy **phép trừ tập hợp** `set(FR nguồn) − set(FR trong artifact) = ∅`. So *số lượng* thay vì so *tập hợp* → gate PASS giả, đã làm 3 chức năng biến mất khỏi SPEC lẫn Figma | `ba-agent/granularity-principles.md` § GATE FR COVERAGE · `recheck.md` Tiêu chí 8 |
+
+**⚠️ Kit sync exceptions — ngoại lệ so với `ba-kit/requirement-to-flow` (giữ nguyên khi sync lại):**
+
+| # | Ngoại lệ | Lý do | Chốt ngày |
+|---|---|---|---|
+| 1 | Khối **"Bước tiếp theo" + HANDOVER RULE** cuối `agents/ba-agent.md` | Kit là bản generic, không có pipeline ESKITCHEN. Khối này trỏ tới `/create-ui-design` và `/test/analyze-req → plan-tcs → gen-tcs` — **copy đè kit sẽ mất** | 21/09/2026 |
+| 2 | **Bước 5.7 Prototype Quality Gate (Playwright) KHÔNG áp dụng.** Không đưa `figma-outputs/output-4-verify.md` và `skills/business-analyst/scripts/verify-prototype.js` vào dự án | Dự án không cài Playwright cho nhánh BA. Output 4 kiểm thủ công theo Rule P4–P8 của `output-4-html.md` | 22/09/2026 |
+| 3 | `.claude/context/backlog-workflow.md` giữ bản dự án, **không** lấy bản kit (kit 324 dòng vs dự án 229) | Quyết định của PM — ảnh hưởng cả PM/QC/TL, không chỉ BA | 22/09/2026 |
+
+> Mọi file BA workflow khác trong `.claude/ba-agent/`, `.claude/skills/ba-figma-output/`, `.claude/skills/business-analyst/` **khớp 1-1 với kit** — sync bằng cách copy đè là an toàn.
+
+**Verdict 3 mức** thay PASS/FAIL nhị phân ở Quality Gate: ✅ `Complete` → gate kế tiếp · ⚠️ `Needs Revision` → BA tự sửa rồi rerun · ❌ `Critical Gaps` (thiếu dữ liệu nguồn) → **DỪNG hỏi user**, không tự bịa.
 
 ### Slash Commands — `.claude/commands/`
 
@@ -125,6 +166,7 @@ Danh sách đầy đủ (skill → repo → khi nào dùng) → `.claude/skills/
 | `technical.md` | Tech stack, CI/CD, known bugs | `techlead-design-agent`, `backend-agent` |
 | `backlog-workflow.md` | Quy tắc tạo issue/task, status workflow | `techlead-tasks-agent`, `pm-agent`, `backend-agent`, `frontend-agent`, `mobile-agent` |
 | `doc-structure.md` | Cấu trúc SPEC/DESIGN/PLAN theo feature type | `ba-agent`, `techlead-design-agent`, `techlead-tasks-agent`, `designer-agent` |
+| `../designer-agent/design-spec/` | **Design Spec Phase 2** — token đã đo, font/size, shell + pattern từng trang cho 7 platform (Admin/Company/Supplier/Công ty vận chuyển E05 web · User App · ES_QR mới · Driver), `tokens.json`, ảnh `refs/`. LEARNING bắt buộc ở Bước 0 | `designer-agent` (BẮT BUỘC, trước mọi bước) |
 | `designer-context.md` | UI components catalog (30+ Base*) per repo, theme thực tế, conflicts (E04 color), sample data tiếng Nhật. Auto-extracted từ source code es-kitchen-repository/. | `designer-agent` (BẮT BUỘC mỗi lần chạy) |
 | `business-flows/README.md` | Index 15 domain + map repo→domain (long-term business memory, nguồn `function_list.xlsx`) | `ba-agent`, `techlead-design-agent`, `pm-agent` |
 | `business-flows/business-flow-index.md` | 23 nghiệp vụ + Target + Backlog ID + FigJam link | `ba-agent` (lookup domain), `pm-agent` (scope) |
@@ -152,7 +194,7 @@ Danh sách đầy đủ (skill → repo → khi nào dùng) → `.claude/skills/
 
 | Bước | Command | Output | Agent | Phase |
 |---|---|---|---|---|
-| 1 | `/create-spec <feature>` | `SPEC.md` | `ba-agent` | Discovery |
+| 1 | `/create-spec <feature>` | `SPEC.md` + 3 Figma frames + `prototype/index.html` (5 outputs — xem `## BA Deliverables` trong SPEC.md) | `ba-agent` | Discovery |
 | 2a | `/create-design <SPEC.md>` | `DESIGN.md` per repo | `techlead-design-agent` | Design |
 | 2b | `/test/generate_manual_testcases_rbt` (parallel) | `test-cases/tc_*.md` | `qc-agent` | Design |
 | 2c | `/create-ui-design <SPEC.md>` (parallel) | Figma frames + URL điền vào SPEC.md ## Screens | `designer-agent` | Design |

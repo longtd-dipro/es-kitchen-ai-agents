@@ -1,30 +1,23 @@
 ---
 name: frontend-review
 description: >-
-  Code review chuyên sâu cho 2 frontend repo ESKITCHEN: es-kitchen-web-admin (E03 System Admin)
-  và es-kitchen-web-company (E02 Company Admin). Cùng stack: React 19, Vite 7, Redux Toolkit v2,
+  Code review chuyên sâu cho frontend repo React. Stack: React 19, Vite 7, Redux Toolkit v2,
   TanStack Query v5, Ant Design v6, react-router-dom v7, TailwindCSS v4.
   Trigger khi review code frontend/React/TypeScript, hỏi "code này đúng không",
-  "review giúp mình", hoặc muốn check component/hook/store ESKITCHEN.
+  "review giúp mình", hoặc muốn check component/hook/store.
 ---
 
-# ESKITCHEN — Frontend Code Review
+# Frontend Code Review
 
 ## Mục tiêu
 
-Review code React/TypeScript theo **đúng stack và domain** của từng repo ESKITCHEN.
+Review code React/TypeScript theo **đúng stack và domain** của repo đang xét.
 
 ---
 
 ## Bước 1: Xác định repo và domain
 
-| Repo | Epic | Domain | Stack |
-|---|---|---|---|
-| `es-kitchen-web-admin` | E03 | System Admin — quản trị toàn hệ thống (160 functions) | React 19 / Vite 7 / RTK v2 / TanStack v5 / AntD v6 |
-| `es-kitchen-web-company` | E02 | Company Admin — quản lý company, contract, order | React 19 / Vite 7 / RTK v2 / TanStack v5 / AntD v6 |
-
-> **Cả hai repo CÙNG stack** — nhưng **khác nhau hoàn toàn về domain logic và routes**.
-> Lỗi phổ biến: implement business logic của E03 System Admin vào E02 Company Admin và ngược lại.
+Áp dụng cho MỌI repo có vai trò `frontend` trong bảng Ecosystem (`AGENTS.md`) — các repo này cùng stack (React 19/Vite/RTK v2/TanStack v5/AntD v6) nhưng có thể khác domain/route hoàn toàn. Luôn xác nhận đang review đúng repo (đọc `AGENTS.md`) trước khi áp business logic.
 
 ---
 
@@ -32,9 +25,9 @@ Review code React/TypeScript theo **đúng stack và domain** của từng repo 
 
 ### 1. Domain Boundary (KIỂM TRA ĐẦU TIÊN)
 
-- [ ] Code ở đúng repo (E02 company ≠ E03 system)?
+- [ ] Code ở đúng repo theo domain của feature?
 - [ ] Route path phù hợp với domain của repo?
-- [ ] Không import business logic từ repo kia?
+- [ ] Không import business logic từ repo khác?
 
 ### 2. State Management
 
@@ -202,7 +195,7 @@ className={twMerge('px-4 py-2', isActive && 'bg-blue-500')}
 
 ```
 📋 FRONTEND REVIEW — [file/component]
-Repo: es-kitchen-web-admin / es-kitchen-web-company | Epic: E03 / E02
+Repo: <tên repo> | Domain: <domain>
 
 🔴 Critical:
   - [Line X] Vấn đề → Fix cụ thể

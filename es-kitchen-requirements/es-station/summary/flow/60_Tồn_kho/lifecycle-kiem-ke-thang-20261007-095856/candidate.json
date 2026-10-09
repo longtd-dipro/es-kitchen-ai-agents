@@ -1,0 +1,34 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Vòng đời báo cáo kiểm kê tháng của cơ sở",
+    "output": "flow/60_Tồn_kho/lifecycle-kiem-ke-thang-20261007-095856/kiem-ke-thang.html",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "main", "label": "Khách hàng / tài xế" },
+    { "id": "ops", "label": "Vận hành (21〜25)" },
+    { "id": "terminal", "label": "Kết cục" }
+  ],
+  "states": [
+    { "id": "pending", "type": "start", "label": "Chưa khai báo", "sublabel": "kỳ ngày 21〜20", "lane": "main", "col": 0 },
+    { "id": "declared", "type": "active", "label": "Đã khai báo", "sublabel": "sửa lại đến ngày 20", "lane": "main", "col": 1 },
+    { "id": "closed", "type": "decision", "label": "Chốt kiểm kê", "sublabel": "ngày 25・thực ghi đè", "lane": "main", "col": 3 },
+    { "id": "settled", "type": "success", "label": "Chốt thực tích", "sublabel": "3 hạng mục", "lane": "main", "col": 4 },
+    { "id": "opsentry", "type": "waiting", "label": "Vận hành nhập", "sublabel": "thêm・sửa thay", "lane": "ops", "col": 1 },
+    { "id": "fee", "type": "failure", "label": "Phí thủ tục ¥3,000", "sublabel": "ngày 25 vẫn trống", "lane": "terminal", "col": 0 }
+  ],
+  "transitions": [
+    { "from": "pending", "to": "declared", "label": "khai báo" },
+    { "from": "pending", "to": "opsentry", "label": "từ ngày 21", "variant": "security" },
+    { "from": "pending", "to": "fee", "label": "ngày 25 trống", "variant": "dashed" },
+    { "from": "declared", "to": "closed", "label": "ngày 25" },
+    { "from": "opsentry", "to": "closed", "label": "nhập xong", "variant": "security" },
+    { "from": "closed", "to": "settled", "label": "chốt QT", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Căn cứ (Tồn_kho.md §5, §6)", "items": ["§5-3: khách khai báo lại nhiều lần đến ngày 20, bản cuối có hiệu lực; từ ngày 21 vận hành thêm・sửa thay", "§5-7: phán định ngày 25; không cộng phí cho cơ sở vận hành đã nhập trong 21〜25", "§6-3: chốt quyết toán thực tích gồm hao hụt quản lý・chênh lệch thu tiền mặt・chênh lệch điều chỉnh giá"] },
+    { "dot": "amber", "title": "Điểm suy luận", "items": ["Tên trạng thái do sơ đồ đặt; tài liệu không định nghĩa enum trạng thái", "Chuyển 'Chốt kiểm kê → Chốt thực tích' là gộp §3 (ghi đè tồn thực) và §6-3", "Cơ sở không kiểm kê (§5-9) và mua đứt món ăn kèm (§5-10) nằm ngoài vòng đời này", "Chi tiết kiểm kê màn hình vận hành có 'trạng thái' (§7-1) nhưng không liệt kê giá trị"] }
+  ]
+}

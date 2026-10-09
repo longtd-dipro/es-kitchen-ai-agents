@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Vòng đời trạng thái công khai của Menu tháng",
+    "output": "flow/45_Menu_Sản_phẩm/lifecycle-menu-cong-khai-20261007-103100/menu-cong-khai.html",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "main", "label": "Trạng thái công khai" },
+    { "id": "waiting", "label": "Đặt lịch" },
+    { "id": "terminal", "label": "Kết thúc" }
+  ],
+  "states": [
+    { "id": "private", "type": "start", "label": "Không công khai", "sublabel": "mặc định khi lưu", "lane": "main", "col": 0 },
+    { "id": "public", "type": "success", "label": "Công khai", "sublabel": "dành cho doanh nghiệp", "lane": "main", "col": 2 },
+    { "id": "ended", "type": "neutral", "label": "Kết thúc", "sublabel": "chỉ danh sách vận hành", "lane": "main", "col": 4 },
+    { "id": "scheduled", "type": "waiting", "label": "Tự động công khai", "sublabel": "đã đặt ngày", "lane": "waiting", "col": 1 },
+    { "id": "deleted", "type": "neutral", "label": "Đã xóa", "sublabel": "tạo lại được cùng tháng", "lane": "terminal", "col": 0 }
+  ],
+  "transitions": [
+    { "from": "private", "to": "public", "label": "CK thủ công", "variant": "emphasis" },
+    { "from": "private", "to": "scheduled", "label": "đặt ngày" },
+    { "from": "scheduled", "to": "public", "label": "đến ngày, đủ ĐK", "variant": "emphasis" },
+    { "from": "public", "to": "ended", "label": "sau D7", "variant": "dashed" },
+    { "from": "private", "to": "deleted", "label": "xóa", "variant": "security" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Căn cứ (Master_Menu_Sản_phẩm.md)", "items": ["§1-3 3-1: Không công khai / Công khai / Tự động công khai (+ Đã xóa)", "§1-3 3-2: chỉ công khai khi đủ điều kiện (SP có thể công khai, có PDF, đặt tạm đã duyệt)", "§1-3 3-4: tự động công khai, đến ngày nếu đủ điều kiện; cảnh báo từ 3 ngày trước", "§1-3 3-7: ngày hôm sau D7 đặt 'Kết thúc' (chỉ danh sách vận hành)", "§1-2 2-10: chỉ màn hình chỉnh sửa mới đổi được trạng thái công khai", "§1-2 2-12: xóa được, sau xóa tạo lại menu cùng năm tháng"] },
+    { "dot": "amber", "title": "Suy luận / không chắc", "items": ["Tài liệu không nói rõ 'xóa' được từ những trạng thái nào; sơ đồ chỉ vẽ từ Không công khai", "Tài liệu không nêu chuyển ngược Công khai → Không công khai, nên không vẽ", "Không nêu việc Tự động công khai bị hủy / chưa đủ ĐK thì về trạng thái nào (chỉ có cảnh báo)", "Vị trí 'sau D7' theo §3-7: 'ngày hôm sau D7'; D7 chưa được định nghĩa trong file này"] }
+  ]
+}

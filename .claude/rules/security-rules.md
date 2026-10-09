@@ -1,4 +1,6 @@
-# Security Rules — ESKITCHEN
+# Security Rules
+
+> **Enforcement:** Rule "không hard-code secret" được enforce cứng bằng hook **H05** (`.claude/hooks/detect-hardcoded-secret.js`) — chặn Write/Edit khi content chứa AWS key, API key (sk-/pk-/ghp_/gho_/xox), JWT literal, connection string với password, hoặc private key block. Vi phạm → tool call bị chặn ngay.
 
 ## Secret Management
 
@@ -37,7 +39,8 @@ const apiKey = this.configService.get<string>('PAYMENT_API_KEY');
 - Không log payment data, token, user PII
 - elepay SDK: không lưu card data locally
 
-## Payment (elepay)
+## Payment (điền qua /init-kit)
 
-- Không xử lý card number trực tiếp — delegate hoàn toàn cho elepay SDK
-- Không dùng Stripe, PayPal hay bất kỳ payment gateway nào khác
+- Không xử lý card number trực tiếp — delegate hoàn toàn cho payment gateway SDK
+- Không dùng gateway ngoài danh sách đã chọn của dự án
+- (Ví dụ kit: elepay · Alipay · WeChat Pay — thay bằng gateway thật khi `/init-kit`)

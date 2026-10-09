@@ -1,6 +1,6 @@
 ---
 name: nestjs-best-practices
-description: NestJS best practices cho es-kitchen-api — architecture, DI, security, performance, TypeORM/PostgreSQL, Redis. Dùng khi viết, review hoặc refactor NestJS code trong ESKITCHEN.
+description: NestJS best practices cho repo backend — architecture, DI, security, performance, TypeORM/PostgreSQL, Redis. Dùng khi viết, review hoặc refactor NestJS code.
 license: MIT
 metadata:
   author: Kadajett
