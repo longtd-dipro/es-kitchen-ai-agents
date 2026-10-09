@@ -1,0 +1,857 @@
+/*
+ * 法人・契約管理（法人一覧・拠点一覧・子契約一覧・詳細）の CSS。
+ * 元：02_デモ/部品/12_運営_法人拠点契約.html の CSS（デモの CSS ＋ ES Kitchen の bundle.css）。
+ * .ops-contracts の中だけに効くようにした（:root・body の指定は .ops-contracts に移した）。
+ * 運営Web の枠と重なるもの（サイドメニュー・トースト・ベトナム語・機種マスタの自販機レイアウトなど）は外した。
+ * app/ops/{corps,branches,contracts}/layout.tsx で読み込む。
+ */
+
+/* ---- デモの CSS ---- */
+
+.ops-contracts{--bg:#f4f6f9;--card:#fff;--line:#e5e9ef;--ink:#1f2933;--dim:#69737f;--mut:#8a949e;
+--blue:#1f5fb8;--ok:#0d7a55;--warn:#8a5a00;--red:#c02339;--pur:#6b3fa0}
+.ops-contracts *{box-sizing:border-box}
+.ops-contracts{margin:0;background:var(--bg);color:var(--ink);font:0.928571rem/1.65 -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ops-contracts .banner{border:1px solid #cfe0f5;background:#f2f8ff;border-radius:8px;padding:0.571429rem 0.857143rem;font-size:0.857143rem;margin-bottom:0.714286rem}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ops-contracts .screen{display:block}.ops-contracts .hide{display:none!important}
+.ops-contracts .phead{padding:0.714286rem 0 0.857143rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1.142857rem}
+.ops-contracts .phead .phl{min-width:0;flex:1}
+.ops-contracts .phead .pbtn{flex-shrink:0;padding-top:1.285714rem}
+.ops-contracts .crumb{font-size:0.785714rem;color:var(--mut)}
+.ops-contracts .phead h2{margin:2px 0 0;font-size:1.285714rem}
+.ops-contracts .pid{font-weight:400;color:#55616e;font-size:1.142857rem;margin-left:0.285714rem}
+.ops-contracts .pbtn{display:flex;gap:0.571429rem;padding:0.357143rem 2px 0.428571rem}
+.ops-contracts .pbtn button{border-radius:6px;padding:0.571429rem 1.571429rem;font:inherit;font-size:0.928571rem;font-weight:700;cursor:pointer}
+.ops-contracts .pbtn .cancel{border:1px solid #cbd3dd;background:#fff;color:#33404d}
+.ops-contracts .pbtn .save{border:1px solid var(--blue);background:var(--blue);color:#fff}
+
+/* 画面の要約（項目値の一部を上部に出すだけ。配色は既存のまま） */
+.ops-contracts .sumbar{display:flex;flex-wrap:wrap;gap:0.428571rem 0.642857rem;margin-top:0.642857rem}
+.ops-contracts .sumbar .s{display:flex;gap:0.428571rem;align-items:baseline;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0.214286rem 0.785714rem;font-size:0.821429rem}
+.ops-contracts .sumbar .s i{font-style:normal;color:var(--dim);font-size:0.75rem}
+.ops-contracts .sumbar .s b{font-weight:700}
+
+/* 固定ツールバー（タブ・保存・検索・目次） */
+.ops-contracts .stick{position:sticky;top:0;z-index:30;background:#fff;border-radius:10px 10px 0 0}
+.ops-contracts .tabrow{display:flex;align-items:center;gap:0.714286rem;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--line);border-radius:10px 10px 0 0;padding:0.285714rem 0.428571rem 0}
+.ops-contracts .tabs{display:flex;gap:2px;flex-wrap:wrap;flex:1 1 22.857143rem;min-width:0}
+.ops-contracts .tabs button{border:0;border-bottom:2px solid transparent;background:transparent;color:#5b6773;padding:0.642857rem 1rem;cursor:pointer;font:inherit;font-size:0.892857rem;font-weight:700;white-space:nowrap}
+.ops-contracts .tabs button.on{color:var(--blue);border-bottom-color:var(--blue)}
+.ops-contracts .tools{display:flex;align-items:center;gap:0.571429rem 1rem;padding:0.5rem 0.714286rem;flex-wrap:wrap;background:#fff;border-bottom:1px solid var(--line);font-size:0.821429rem;color:var(--dim)}
+.ops-contracts .tools label{display:inline-flex;gap:0.357143rem;align-items:center;cursor:pointer;white-space:nowrap}
+.ops-contracts .srch{position:relative;flex:0 1 17.857143rem;min-width:12.142857rem}
+.ops-contracts .srch input{width:100%;border:1px solid #d4dae2;border-radius:5px;padding:0.357143rem 1.714286rem 0.357143rem 1.857143rem;font:inherit;font-size:0.857143rem;background:#fff}
+.ops-contracts .srch .ic{position:absolute;left:0.571429rem;top:50%;transform:translateY(-50%);font-size:0.785714rem;color:var(--mut);pointer-events:none}
+.ops-contracts .srch .clr{position:absolute;right:0.285714rem;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--mut);cursor:pointer;font:inherit;font-size:1rem;line-height:1;padding:2px 0.285714rem}
+.ops-contracts .hits{white-space:nowrap}
+.ops-contracts .linkbtn{border:0;background:transparent;color:var(--blue);cursor:pointer;font:inherit;font-size:0.821429rem;font-weight:700;padding:2px 0}
+.ops-contracts .idx{display:flex;gap:0.357143rem;overflow-x:auto;padding:0.5rem 0.714286rem;background:#fff;border-bottom:1px solid var(--line)}
+.ops-contracts .idx button{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:#4a5563;border-radius:999px;padding:0.214286rem 0.785714rem;font:inherit;font-size:0.785714rem;cursor:pointer;white-space:nowrap}
+.ops-contracts .idx button b{font-weight:700;color:var(--mut);margin-left:0.357143rem}
+
+.ops-contracts .pane{background:#fff;border:1px solid var(--line);border-top:0;border-radius:0 0 10px 10px;padding:1rem}
+.ops-contracts .empty{padding:1.857143rem 0.714286rem;text-align:center;color:var(--mut);font-size:0.857143rem}
+.ops-contracts .card{border:1px solid var(--line);border-radius:8px;margin-bottom:1rem;overflow:hidden;scroll-margin-top:11.428571rem}
+.ops-contracts .ch{background:#f7f9fb;border:0;border-left:3px solid var(--blue);width:100%;text-align:left;padding:0.642857rem 0.928571rem;font:inherit;font-weight:700;font-size:0.928571rem;color:var(--ink);display:flex;align-items:center;gap:0.642857rem;cursor:pointer}
+.ops-contracts .ch .chev{margin-left:auto;color:#9aa5b1;font-size:0.785714rem}
+.ops-contracts .ownchip{font-size:0.714286rem;font-weight:700;background:#eef4fc;color:var(--blue);border-radius:999px;padding:1px 0.571429rem}
+.ops-contracts .cb{padding:0.928571rem}
+.ops-contracts .cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(21.428571rem,1fr));gap:0.857143rem}
+.ops-contracts .f{border:1px solid #eef1f4;border-radius:7px;padding:0.571429rem 0.714286rem;background:#fcfdfe}
+.ops-contracts .f.hit{border-color:#9fc0e8;box-shadow:0 0 0 2px #e6f0fb}
+.ops-contracts .f[data-na="1"]{opacity:.72}
+.ops-contracts .f[data-na="1"] label::after{content:" 🔒";font-size:0.678571rem}
+.ops-contracts .f label{display:block;font-size:0.821429rem;font-weight:700;margin-bottom:0.285714rem}
+.ops-contracts .req{color:var(--red);margin-left:2px}.ops-contracts .cond{color:var(--warn);margin-left:2px;font-size:0.714286rem}
+.ops-contracts .ctl input,.ops-contracts .ctl select,.ops-contracts .ctl textarea{width:100%;border:1px solid #d4dae2;border-radius:5px;padding:0.357143rem 0.571429rem;font:inherit;font-size:0.892857rem;background:#fff}
+.ops-contracts .ctl input[readonly],.ops-contracts .ctl textarea[readonly],.ops-contracts .ctl select:disabled{background:#f1f3f6;color:#5b6773}
+.ops-contracts .file{display:flex;gap:0.428571rem;align-items:center;flex-wrap:wrap;border:1px dashed #cbd3dd;border-radius:5px;padding:0.357143rem 0.571429rem;background:#fff}
+.ops-contracts .fn{font-size:0.821429rem;flex:1 1 9.285714rem;word-break:break-all}
+.ops-contracts .mini{border:1px solid #cbd3dd;background:#fff;border-radius:5px;padding:0.214286rem 0.714286rem;font:inherit;font-size:0.785714rem;cursor:pointer}
+.ops-contracts .mini.add{color:var(--blue);border-color:#9fc0e8;font-weight:700}
+.ops-contracts .mini.act{color:var(--blue);border-color:#9fc0e8}
+.ops-contracts .mini.zip{color:var(--blue);border-color:#9fc0e8}
+.ops-contracts .note-s{font-size:0.75rem;color:var(--dim);margin-top:0.285714rem;display:none}
+.ops-contracts .scroll{overflow-x:auto;margin-top:0.857143rem}
+.ops-contracts table{border-collapse:collapse;width:100%;font-size:0.857143rem;min-width:45.714286rem}
+.ops-contracts th,.ops-contracts td{border-bottom:1px solid #eef0f3;padding:0.428571rem 0.642857rem;text-align:left;white-space:nowrap}
+.ops-contracts thead th{background:#f7f9fb;color:#4a5563;font-size:0.785714rem;font-weight:700}
+.ops-contracts td input,.ops-contracts td select{width:100%;min-width:6.428571rem;border:1px solid #d4dae2;border-radius:5px;padding:0.285714rem 0.5rem;font:inherit;font-size:0.857143rem;background:#fff}
+.ops-contracts td input[readonly],.ops-contracts td select:disabled{background:#f1f3f6;color:#5b6773}
+.ops-contracts td select{width:auto;max-width:22.857143rem}
+.ops-contracts .cyc{display:flex;gap:0.285714rem}.ops-contracts .cyc select{min-width:4.571429rem;width:auto}
+.ops-contracts .chk{display:flex;flex-wrap:wrap;gap:0.285714rem 1rem;padding:0.214286rem 0}.ops-contracts .f .chk label{display:inline-flex;align-items:center;gap:0.285714rem;font-weight:400;font-size:0.892857rem;margin:0}
+.ops-contracts .chk input{width:auto}.ops-contracts .f[data-na="1"] .chk label::after{content:none}
+.ops-contracts .stack{display:grid;gap:0.428571rem}.ops-contracts .stack .lbl{min-width:6.857143rem}.ops-contracts .stack select{flex:1 1 auto;min-width:0}
+.ops-contracts td.c{text-align:center}.ops-contracts .del{color:var(--red);cursor:pointer}
+.ops-contracts .pad{padding:0.642857rem 0 0}
+@media(max-width:40em){.ops-contracts .cols{grid-template-columns:1fr}}
+.ops-contracts .num{display:flex;align-items:center;gap:0.571429rem}
+.ops-contracts .num .mini{white-space:nowrap;flex:0 0 auto}
+.ops-contracts .num input{flex:1 1 auto;min-width:0}
+/* 金額の入力は右寄せ（input.r／es-input--num） */
+.ops-contracts input.r,.ops-contracts .es-input--num input{text-align:right}
+.ops-contracts .num .unit{font-size:0.857143rem;color:#64748b;white-space:nowrap}
+.ops-contracts .ovl{position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:1.142857rem}
+.ops-contracts .dlg{background:#fff;border-radius:10px;width:min(37.142857rem,100%);box-shadow:0 12px 40px rgba(0,0,0,.25);overflow:hidden}
+.ops-contracts .dlg h3{margin:0;padding:1rem 1.285714rem;font-size:1rem;border-bottom:1px solid var(--line)}
+.ops-contracts .dlg .bd{padding:1.142857rem 1.285714rem}
+.ops-contracts .dlg .op{display:block;border:1px solid var(--line);border-radius:8px;padding:0.714286rem 0.857143rem;margin-bottom:0.571429rem;cursor:pointer}
+.ops-contracts .dlg .op:has(input:checked){border-color:var(--blue);background:#f2f7fd}
+.ops-contracts .dlg .op b{display:block;font-size:0.928571rem;margin-bottom:2px}
+.ops-contracts .dlg .op span{font-size:0.821429rem;color:#64748b;line-height:1.6}
+.ops-contracts .dlg .ft{display:flex;justify-content:flex-end;gap:0.571429rem;padding:0.857143rem 1.285714rem;border-top:1px solid var(--line);background:#fafbfc}
+.ops-contracts .dlg .ft button{border-radius:6px;padding:0.5rem 1.142857rem;font:inherit;font-size:0.928571rem;border:1px solid var(--line);background:#fff;cursor:pointer}
+.ops-contracts .dlg .ft .ok{border-color:var(--blue);background:var(--blue);color:#fff}
+.ops-contracts .dlg.wide{width:min(50rem,100%)}
+.ops-contracts .dlg .lead{font-size:0.857143rem;color:#4a5563;background:#f2f8ff;border:1px solid #cfe0f5;border-radius:8px;padding:0.571429rem 0.714286rem;margin:0 0 0.857143rem;line-height:1.7}
+.ops-contracts .dlg .row{display:flex;align-items:center;gap:0.714286rem;margin-bottom:0.714286rem;font-size:0.892857rem}
+.ops-contracts .dlg .row b{min-width:8.428571rem}
+.ops-contracts .dlg .row select{border:1px solid #d4dae2;border-radius:5px;padding:0.357143rem 0.571429rem;font:inherit;font-size:0.892857rem;background:#fff}
+.ops-contracts .dlg .gpv{max-height:16.428571rem;overflow:auto;border:1px solid var(--line);border-radius:8px}
+.ops-contracts .dlg .gpv table{min-width:0}
+.ops-contracts .dlg .memo{font-size:0.821429rem;color:#64748b;margin-top:0.571429rem;line-height:1.6}
+.ops-contracts tr.gen td{background:#f2f7fd}
+.ops-contracts tr.band td{background:#fff8e6;border-top:1px dashed #e0b44c;border-bottom:1px dashed #e0b44c;color:#5b4a1f;padding:0.571429rem 0.714286rem}
+.ops-contracts tr.band .bst{display:inline-block;background:#f5c451;color:#4a3700;border-radius:10px;padding:1px 0.642857rem;font-weight:700;margin-right:0.714286rem}
+.ops-contracts tr.band .bl{color:#8a7440;margin:0 0.285714rem 0 0.857143rem}
+.ops-contracts tr.band .bl:first-of-type{margin-left:0}
+.ops-contracts tr.band .bn{color:#8a7440;margin-left:1rem;font-size:0.785714rem}
+.ops-contracts a.lnk{color:var(--blue)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ops-contracts .scroll:has(.vmgrid){margin-top:0}
+
+
+/* ===== 2026/09/28 マスタの一覧（ES Kitchen の部品 es-*）。運営管理デモ（ops_combined）では本物の bundle.css が上書きする。
+   単体のデモ用に、ES Kitchen と同じ形をこのデモの色で最小限そろえる ===== */
+.ops-contracts .mlist .es-icon{flex:none;display:inline-block;vertical-align:middle}
+.ops-contracts .mlist .es-mono{font-family:var(--font-mono,ui-monospace,monospace)}
+.ops-contracts .es-pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:0.857143rem;flex-wrap:wrap;padding:1.428571rem 0 0.857143rem}
+.ops-contracts .es-pagehead__text{display:flex;flex-direction:column;gap:0.285714rem}
+.ops-contracts .es-pagehead__title{margin:0;font-size:1.571429rem;line-height:2.285714rem;font-weight:700}
+.ops-contracts .es-pagehead__actions{display:flex;gap:0.571429rem;flex-wrap:wrap}
+.ops-contracts .es-breadcrumb{display:flex;gap:0.571429rem;font-size:0.785714rem;color:var(--mut)}
+.ops-contracts .es-breadcrumb a{color:var(--dim);text-decoration:none}
+.ops-contracts .es-btn{display:inline-flex;align-items:center;justify-content:center;gap:0.571429rem;border:1px solid transparent;border-radius:6px;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap;background:#fff}
+.ops-contracts .es-btn--sm{height:2.285714rem;padding:0 0.857143rem;font-size:0.928571rem}.ops-contracts .es-btn--md{height:2.714286rem;padding:0 1.142857rem;font-size:0.928571rem}.ops-contracts .es-btn--lg{height:3rem;padding:0 1.428571rem;font-size:1rem}
+.ops-contracts .es-btn--icon.es-btn--sm{width:2.285714rem;padding:0}
+.ops-contracts .es-btn--solid.es-btn--primary{background:var(--blue);color:#fff}
+.ops-contracts .es-btn--outline.es-btn--primary,.ops-contracts .es-btn--csv{border-color:var(--blue);color:var(--blue)}
+.ops-contracts .es-btn--ghost{background:transparent}.ops-contracts .es-btn--ghost.es-btn--neutral{color:var(--dim)}.ops-contracts .es-btn--ghost.es-btn--negative{color:var(--red)}
+.ops-contracts .es-btn--solid.es-btn--negative{background:var(--red);color:#fff}.ops-contracts .es-btn--outline.es-btn--negative{border-color:var(--red);color:var(--red)}
+.ops-contracts .es-card{background:#fff;border-radius:10px;padding:1.142857rem;display:flex;flex-direction:column;gap:1.142857rem}
+.ops-contracts .es-search{display:flex;flex-wrap:wrap;gap:0.857143rem 1.142857rem;background:#f7f9fb;border-left:3px solid var(--blue);padding:0.857143rem 1.142857rem}
+.ops-contracts .es-search__left{flex:1 1 25.714286rem;min-width:0;display:flex;gap:0.857143rem;align-items:flex-start}
+.ops-contracts .es-search__fields{flex:1;display:flex;flex-wrap:wrap;gap:0.857143rem}
+.ops-contracts .es-search__fields>*{flex:1 1 12.571429rem;max-width:17.142857rem;min-width:0}.ops-contracts .es-search__fields>.es-grow{flex:2 1 17.142857rem;max-width:31.428571rem}
+.ops-contracts .es-search.is-collapsed .es-search__fields{max-height:2.714286rem;overflow:hidden}
+.ops-contracts .es-search__toggle{flex:none;width:2.285714rem;height:2.285714rem;margin-top:0.214286rem;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer}
+.ops-contracts .es-search.is-collapsed .es-search__toggle .es-icon{transform:rotate(180deg)}
+.ops-contracts .es-search__actions{margin-left:auto}.ops-contracts .es-search__main{display:flex;gap:0.571429rem}
+.ops-contracts .es-input{display:flex;align-items:center;gap:0.571429rem;background:#fff;border:1px solid #d4dae2;border-radius:6px;padding:0 0.714286rem;position:relative;color:var(--mut)}
+.ops-contracts .es-input--md{height:2.714286rem}.ops-contracts .es-input--sm{height:2.285714rem}
+.ops-contracts .es-input input,.ops-contracts .es-input select{flex:1;min-width:0;height:100%;border:0;background:transparent;font:inherit;font-size:0.928571rem;color:var(--ink);outline:none;appearance:none;-webkit-appearance:none}
+.ops-contracts .es-select .es-icon{position:absolute;right:0.714286rem;pointer-events:none}
+.ops-contracts .es-table-wrap{overflow-x:auto;border:1px solid var(--line)}
+.ops-contracts .es-table{width:100%;border-collapse:collapse;min-width:0}
+.ops-contracts .es-table th{height:3.428571rem;background:#f7f9fb;white-space:nowrap;padding:0 1rem}
+.ops-contracts .es-table td{height:3.428571rem;padding:0 1rem;white-space:nowrap}
+.ops-contracts .es-table td a{color:var(--blue);text-decoration:none}
+.ops-contracts .es-table th.r,.ops-contracts .es-table td.r{text-align:right}
+.ops-contracts .es-table tr.is-deleted td{background:#f1f3f6;color:var(--mut)}
+.ops-contracts .es-table tr.is-hit td{background:#f2f7fd}
+.ops-contracts .es-badge{display:inline-flex;align-items:center;height:1.571429rem;padding:0 0.571429rem;border-radius:4px;font-size:0.821429rem;font-weight:700}
+.ops-contracts .es-badge--success{background:#dcfce7;color:#166534}.ops-contracts .es-badge--neutral{background:#eef1f5;color:#4a5563}
+.ops-contracts .es-rowactions{display:inline-flex;gap:0.285714rem}
+.ops-contracts .es-pagination{display:flex;align-items:center;justify-content:flex-end;gap:0.571429rem;flex-wrap:wrap}
+.ops-contracts .es-pagination__meta{color:var(--dim);margin-right:0.571429rem}
+.ops-contracts .es-page{min-width:2.285714rem;height:2.285714rem;border:1px solid #d4dae2;border-radius:6px;background:#fff;font:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.ops-contracts .es-page.is-current{border-color:var(--blue);color:var(--blue);font-weight:700}
+.ops-contracts .es-pagination__per{width:9.142857rem}
+.ops-contracts .es-shell__content{display:flex;flex-direction:column;gap:1.142857rem}
+.ops-contracts .es-modal{position:fixed;inset:0;display:grid;place-items:center;z-index:80;padding:1.142857rem}
+.ops-contracts .es-modal__scrim{position:absolute;inset:0;background:rgba(15,23,42,.45)}
+.ops-contracts .es-modal__panel{position:relative;width:32.142857rem;max-width:100%;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:1.714286rem;display:flex;flex-direction:column;align-items:center;gap:1.142857rem;text-align:center}
+.ops-contracts .es-modal__mark{width:5.142857rem;height:5.142857rem;border-radius:50%;display:grid;place-items:center;font-size:2.857143rem;font-weight:700;background:#fff2d6;color:var(--red)}
+.ops-contracts .es-modal__title{margin:0;font-size:1.285714rem;font-weight:700}.ops-contracts .es-modal__body{font-size:0.928571rem;color:var(--dim)}
+.ops-contracts .es-modal__actions{display:flex;gap:0.571429rem;width:100%}.ops-contracts .es-modal__actions .es-btn{flex:1}
+.ops-contracts .tbar{display:flex;flex-wrap:wrap;align-items:center;gap:0.571429rem;margin:2px 0 0.571429rem}
+.ops-contracts .tbar .tsum{margin-left:auto;display:inline-flex;gap:0.571429rem;align-items:baseline;font-size:0.892857rem}.ops-contracts .tbar .tsum i{font-style:normal;color:#5b6773}.ops-contracts .tbar .tsum b{font-size:0.964286rem}
+.ops-contracts .aonly-off{display:none!important}
+.ops-contracts .tnote{font-size:0.857143rem;color:#5b6773;margin:0 0 0.571429rem}
+.ops-contracts .pbtn .del{border:1px solid var(--red);background:#fff;color:var(--red)}
+/* 横にスクロールしても「操作」列（鉛筆・ゴミ箱）は右端に残す */
+.ops-contracts .mlist .es-table th:last-child,.ops-contracts .mlist .es-table td:last-child{position:sticky;right:0;z-index:1;background:var(--surface,#fff);box-shadow:inset 1px 0 0 var(--divider-low,#eef0f3)}
+.ops-contracts .mlist .es-table thead th:last-child{background:var(--surface-subtle,#f7f9fb)}
+.ops-contracts .mlist .es-table tr.is-deleted td:last-child{background:var(--surface-disabled,#f1f3f6)}
+.ops-contracts .mlist .es-table tbody tr:hover td:last-child{background:var(--surface-subtle,#f7f9fb)}
+/* RV-OPS-20261002 O-e：右端の操作列は右に固定し、ボタンを折り返さない。下に隠れる列があることが分かるよう左に影 */
+.ops-contracts .mlist .es-table th:last-child,.ops-contracts .mlist .es-table td:last-child{white-space:nowrap;width:1%;box-shadow:inset 1px 0 0 var(--divider-low,#eef0f3),-10px 0 10px -6px rgba(15,23,42,.28)}
+.ops-contracts .mlist .es-table .es-rowactions{flex-wrap:nowrap;white-space:nowrap}
+.ops-contracts .mlist .es-table .es-rowactions .es-btn[data-act="apedit"]{width:auto;min-width:0;padding:0 0.714286rem;white-space:nowrap}
+.ops-contracts .mlist .es-table td.es-num,.ops-contracts .mlist .es-table td.r,.ops-contracts .mlist .es-table th{white-space:nowrap}
+.ops-contracts .mlist .es-table td.es-num{min-width:6rem}
+.ops-contracts .mlist .es-table td[data-k="course"]{white-space:normal;min-width:10.714286rem;max-width:15.714286rem}
+.ops-contracts .delchk{display:inline-flex;align-items:center;gap:0.428571rem;font-size:0.928571rem;color:var(--text-middle,#55616e);white-space:nowrap;margin-left:0.285714rem}
+.ops-contracts .pendmsg{margin-top:0.285714rem;padding:0.285714rem 0.571429rem;border:1px solid #f0d48a;background:#fff6e0;border-radius:6px;color:#7a5200;font-size:0.857143rem}
+.ops-contracts .hide{display:none!important}
+.ops-contracts .provbar{margin:0 0 0.857143rem;padding:0.714286rem 1rem;border:1px solid #b9d4f5;background:#eef5fe;border-radius:8px;font-size:0.928571rem;line-height:1.6;color:#1f3a5f}
+
+
+
+/* ---- ES Kitchen（bundle.css） ---- */
+
+.ops-contracts{--brand-orange:#FAA51D;--brand-red:#EE1F23;--primary-50:#E5F6FF;--primary-100:#CEEDFF;--primary-200:#97D3FF;--primary-300:#61B3FF;--primary-400:#218BFF;--primary-500:#0969DA;--primary-600:#0550AE;--primary-700:#033D8B;--primary-800:#0A3069;--primary-900:#002155;--primary:#0969DA;--primary-hover:#0550AE;--primary-active:#033D8B;--primary-subtle:#E5F6FF;--primary-muted:#CEEDFF;--primary-text:#0969DA;--on-primary:#FFFFFF;--login-wash:#61B3FF;--neutral-50:#F6F8FA;--neutral-100:#EAEEF2;--neutral-200:#D0D7DE;--neutral-300:#AFB8C1;--neutral-400:#8C959F;--neutral-500:#6E7781;--neutral-600:#57606A;--neutral-700:#424A53;--neutral-800:#32383F;--neutral-900:#24292F;--white:#FFFFFF;--page-bg:#F0F2F5;--surface:#FFFFFF;--surface-subtle:#F6F8FA;--surface-disabled:#EAEEF2;--divider-low:#EAEEF2;--divider-middle:#D0D7DE;--divider-high:#AFB8C1;--text-high:#24292F;--text-middle:#424A53;--text-low:#6E7781;--success-50:#EDFDF0;--success-100:#C5F7D0;--success-500:#1A7F37;--success-700:#044F1E;--info-50:#E5F6FF;--info-100:#CEEDFF;--info-500:#0969DA;--info-700:#033D8B;--warning-50:#FEF9E8;--warning-100:#FEF0C3;--warning-400:#FAC215;--warning-800:#854D0E;--negative-50:#FFF6F5;--negative-100:#FFE5E4;--negative-500:#CF222E;--negative-600:#A40E26;--focus-ring:#096CDC;--overlay-scrim:rgba(0,0,0,0.45);--space-0:0px;--space-2:2px;--space-4:0.285714rem;--space-6:0.428571rem;--space-8:0.571429rem;--space-12:0.857143rem;--space-16:1.142857rem;--space-20:1.428571rem;--space-24:1.714286rem;--space-32:2.285714rem;--space-40:2.857143rem;--space-48:3.428571rem;--space-56:4rem;--space-72:5.142857rem;--space-88:6.285714rem;--space-104:7.428571rem;--space-120:8.571429rem;--radius-none:0px;--radius-xs:2px;--radius-sm:4px;--radius-md:6px;--radius-lg:8px;--radius-xl:12px;--radius-2xl:16px;--radius-3xl:24px;--radius-full:9999px;--shadow-flat:0 1px 0 0 rgba(0,0,0,0.05);--shadow-raise:0 1px 2px 0 rgba(0,0,0,0.05);--shadow-stick:0 1px 2px -1px rgba(0,0,0,0.10), 0 1px 3px 0 rgba(0,0,0,0.10);--shadow-float:0 2px 4px -2px rgba(0,0,0,0.10), 0 4px 6px -1px rgba(0,0,0,0.10);--shadow-popout:0 4px 6px -4px rgba(0,0,0,0.10), 0 10px 15px -3px rgba(0,0,0,0.10);--shadow-focus:0 0 0 2px #FFFFFF, 0 0 0 4px #096CDC;--header-height:3.857143rem;--sidebar-width:15rem;--sidebar-collapsed:5.714286rem;--nav-item-height:3.428571rem;--control-sm:2.285714rem;--control-md:2.857143rem;--control-lg:3.428571rem;--table-header-height:3.928571rem;--table-row-height:3.857143rem;--modal-width:32.142857rem;--content-max:91.428571rem;--font-sans:"Noto Sans JP", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;--font-mono:"BIZ UDGothic", "Noto Sans Mono", ui-monospace, monospace;}.ops-contracts .dsi-ReadCvLogo{--m:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath transform=%22translate%284.0 2.0%29%22 d=%22M22.35 2.91 L6.07 0.03 C5.54 -0.06 5.01 0.06 4.57 0.36 C4.14 0.67 3.84 1.13 3.75 1.65 L0.03 22.78 C-0.02 23.04 -0.01 23.30 0.05 23.56 C0.10 23.81 0.21 24.06 0.36 24.27 C0.51 24.49 0.71 24.67 0.93 24.81 C1.15 24.95 1.40 25.05 1.66 25.09 L17.94 27.97 C18.20 28.01 18.46 28.01 18.72 27.95 C18.97 27.89 19.22 27.79 19.43 27.64 C19.65 27.49 19.83 27.29 19.97 27.07 C20.11 26.85 20.21 26.60 20.25 26.34 L23.97 5.22 C24.06 4.70 23.94 4.16 23.64 3.73 C23.33 3.29 22.87 3.00 22.35 2.91 Z M18.28 26.00 L2.00 23.12 L5.72 2.00 L22.00 4.87 L18.28 26.00 Z M7.17 5.30 C7.21 5.04 7.36 4.81 7.58 4.66 C7.80 4.50 8.06 4.45 8.33 4.49 L18.70 6.32 C18.95 6.37 19.17 6.50 19.32 6.70 C19.47 6.90 19.55 7.15 19.52 7.39 C19.50 7.64 19.39 7.88 19.20 8.05 C19.02 8.21 18.78 8.31 18.53 8.31 C18.47 8.31 18.41 8.30 18.35 8.29 L7.98 6.46 C7.72 6.41 7.48 6.27 7.33 6.05 C7.18 5.83 7.12 5.56 7.17 5.30 Z M6.47 9.24 C6.50 9.11 6.54 8.99 6.62 8.88 C6.69 8.77 6.78 8.67 6.89 8.60 C6.99 8.52 7.11 8.47 7.24 8.44 C7.37 8.41 7.50 8.41 7.63 8.43 L18.01 10.26 C18.26 10.30 18.48 10.44 18.63 10.64 C18.79 10.84 18.86 11.09 18.84 11.34 C18.82 11.59 18.70 11.82 18.51 11.99 C18.33 12.16 18.08 12.25 17.83 12.25 C17.77 12.25 17.71 12.24 17.66 12.23 L7.28 10.40 C7.02 10.35 6.79 10.21 6.64 9.99 C6.49 9.77 6.43 9.50 6.47 9.24 Z M5.78 13.18 C5.83 12.92 5.98 12.69 6.19 12.54 C6.41 12.39 6.68 12.33 6.94 12.37 L12.12 13.29 C12.37 13.33 12.59 13.46 12.74 13.66 C12.90 13.86 12.97 14.11 12.95 14.36 C12.93 14.61 12.81 14.84 12.63 15.01 C12.44 15.18 12.20 15.27 11.95 15.27 C11.89 15.27 11.83 15.27 11.78 15.26 L6.59 14.34 C6.33 14.29 6.10 14.14 5.94 13.93 C5.79 13.71 5.73 13.44 5.78 13.18 Z%22 fill=%22%23000%22/%3E%3C/svg%3E")}.ops-contracts .dsi-UserCircle{--m:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath transform=%22translate%283.0 3.0%29%22 d=%22M13.00 0.00 C10.43 0.00 7.92 0.76 5.78 2.19 C3.64 3.62 1.97 5.65 0.99 8.03 C0.01 10.40 -0.25 13.01 0.25 15.54 C0.75 18.06 1.99 20.37 3.81 22.19 C5.63 24.01 7.94 25.25 10.46 25.75 C12.99 26.25 15.60 25.99 17.97 25.01 C20.35 24.03 22.38 22.36 23.81 20.22 C25.24 18.08 26.00 15.57 26.00 13.00 C26.00 9.55 24.63 6.25 22.19 3.81 C19.75 1.37 16.45 0.00 13.00 0.00 Z M6.26 21.69 C6.98 20.56 7.98 19.63 9.16 18.98 C10.34 18.34 11.66 18.00 13.00 18.00 C14.34 18.00 15.66 18.34 16.84 18.98 C18.02 19.63 19.02 20.56 19.74 21.69 C17.81 23.19 15.44 24.00 13.00 24.00 C10.56 24.00 8.19 23.19 6.26 21.69 Z M9.00 12.00 C9.00 11.21 9.23 10.44 9.67 9.78 C10.11 9.12 10.74 8.61 11.47 8.30 C12.20 8.00 13.00 7.92 13.78 8.08 C14.56 8.23 15.27 8.61 15.83 9.17 C16.39 9.73 16.77 10.44 16.92 11.22 C17.08 12.00 17.00 12.80 16.70 13.53 C16.39 14.26 15.88 14.89 15.22 15.33 C14.56 15.77 13.79 16.00 13.00 16.00 C11.94 16.00 10.92 15.58 10.17 14.83 C9.42 14.08 9.00 13.06 9.00 12.00 Z M21.22 20.30 C20.10 18.69 18.54 17.43 16.71 16.71 C17.69 15.94 18.41 14.88 18.76 13.68 C19.11 12.48 19.08 11.21 18.67 10.03 C18.26 8.85 17.50 7.83 16.48 7.11 C15.46 6.38 14.25 5.99 13.00 5.99 C11.75 5.99 10.54 6.38 9.52 7.11 C8.50 7.83 7.74 8.85 7.33 10.03 C6.92 11.21 6.89 12.48 7.24 13.68 C7.59 14.88 8.31 15.94 9.29 16.71 C7.46 17.43 5.90 18.69 4.78 20.30 C3.37 18.72 2.45 16.76 2.13 14.66 C1.81 12.57 2.10 10.42 2.96 8.49 C3.83 6.55 5.24 4.91 7.02 3.76 C8.80 2.60 10.88 1.99 13.00 1.99 C15.12 1.99 17.20 2.60 18.98 3.76 C20.76 4.91 22.17 6.55 23.04 8.49 C23.90 10.42 24.19 12.57 23.87 14.66 C23.55 16.76 22.63 18.72 21.22 20.30 Z%22 fill=%22%23000%22/%3E%3C/svg%3E")}.ops-contracts .dsi-ClockCountdown{--m:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath transform=%22translate%283.02 3.0%29%22 d=%22M25.98 14.09 C25.77 16.56 24.86 18.91 23.35 20.88 C21.84 22.85 19.80 24.35 17.48 25.20 C15.15 26.05 12.62 26.21 10.20 25.68 C7.78 25.14 5.56 23.93 3.81 22.17 C2.06 20.42 0.84 18.20 0.31 15.78 C-0.23 13.36 -0.06 10.84 0.79 8.51 C1.64 6.18 3.13 4.14 5.10 2.64 C7.07 1.13 9.43 0.22 11.90 0.00 C12.03 -0.01 12.16 0.01 12.29 0.05 C12.41 0.09 12.53 0.15 12.63 0.24 C12.73 0.32 12.81 0.43 12.87 0.54 C12.93 0.66 12.97 0.79 12.98 0.92 C12.99 1.05 12.98 1.18 12.94 1.31 C12.90 1.44 12.83 1.55 12.75 1.65 C12.66 1.75 12.56 1.84 12.44 1.90 C12.32 1.96 12.20 1.99 12.06 2.00 C9.97 2.18 7.98 2.96 6.31 4.23 C4.65 5.51 3.38 7.23 2.66 9.20 C1.94 11.17 1.80 13.31 2.25 15.36 C2.71 17.41 3.74 19.28 5.22 20.77 C6.70 22.25 8.58 23.28 10.63 23.73 C12.68 24.19 14.81 24.04 16.78 23.33 C18.75 22.61 20.48 21.34 21.75 19.67 C23.03 18.01 23.80 16.01 23.98 13.92 C24.00 13.66 24.13 13.41 24.33 13.24 C24.54 13.07 24.80 12.98 25.06 13.00 C25.33 13.03 25.58 13.15 25.75 13.35 C25.92 13.56 26.00 13.82 25.98 14.09 Z M11.98 6.00 L11.98 13.00 C11.98 13.27 12.09 13.52 12.28 13.71 C12.46 13.90 12.72 14.00 12.98 14.00 L19.98 14.00 C20.25 14.00 20.50 13.90 20.69 13.71 C20.88 13.52 20.98 13.27 20.98 13.00 C20.98 12.74 20.88 12.48 20.69 12.30 C20.50 12.11 20.25 12.00 19.98 12.00 L13.98 12.00 L13.98 6.00 C13.98 5.74 13.88 5.48 13.69 5.30 C13.50 5.11 13.25 5.00 12.98 5.00 C12.72 5.00 12.46 5.11 12.28 5.30 C12.09 5.48 11.98 5.74 11.98 6.00 Z M16.98 3.00 C17.28 3.00 17.57 2.92 17.82 2.75 C18.06 2.59 18.25 2.35 18.37 2.08 C18.48 1.80 18.51 1.50 18.45 1.21 C18.40 0.92 18.25 0.65 18.04 0.44 C17.83 0.23 17.57 0.09 17.27 0.03 C16.98 -0.03 16.68 0.00 16.41 0.12 C16.13 0.23 15.90 0.42 15.73 0.67 C15.57 0.92 15.48 1.21 15.48 1.50 C15.48 1.90 15.64 2.28 15.92 2.56 C16.20 2.85 16.58 3.00 16.98 3.00 Z M21.48 6.00 C21.78 6.00 22.07 5.92 22.32 5.75 C22.56 5.59 22.75 5.35 22.87 5.08 C22.98 4.80 23.01 4.50 22.95 4.21 C22.90 3.92 22.75 3.65 22.54 3.44 C22.33 3.23 22.07 3.09 21.77 3.03 C21.48 2.97 21.18 3.00 20.91 3.12 C20.63 3.23 20.40 3.42 20.23 3.67 C20.07 3.92 19.98 4.21 19.98 4.50 C19.98 4.90 20.14 5.28 20.42 5.56 C20.70 5.85 21.08 6.00 21.48 6.00 Z M24.48 10.50 C24.78 10.50 25.07 10.42 25.32 10.25 C25.56 10.09 25.75 9.85 25.87 9.58 C25.98 9.30 26.01 9.00 25.95 8.71 C25.90 8.42 25.75 8.15 25.54 7.94 C25.33 7.73 25.07 7.59 24.77 7.53 C24.48 7.47 24.18 7.50 23.91 7.62 C23.63 7.73 23.40 7.92 23.23 8.17 C23.07 8.42 22.98 8.71 22.98 9.00 C22.98 9.40 23.14 9.78 23.42 10.06 C23.70 10.35 24.08 10.50 24.48 10.50 Z%22 fill=%22%23000%22/%3E%3C/svg%3E")}.ops-contracts .dsi-Checks{--m:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath transform=%22translate%281.0 9.0%29%22 d=%22M17.70 1.71 L6.50 12.71 C6.31 12.90 6.06 13.00 5.80 13.00 C5.54 13.00 5.29 12.90 5.10 12.71 L0.30 8.00 C0.21 7.91 0.13 7.80 0.08 7.68 C0.03 7.56 0.00 7.43 0.00 7.30 C-0.00 7.16 0.02 7.03 0.07 6.91 C0.12 6.79 0.19 6.68 0.29 6.59 C0.38 6.49 0.49 6.42 0.61 6.37 C0.73 6.32 0.86 6.29 0.99 6.29 C1.12 6.29 1.25 6.31 1.38 6.36 C1.50 6.41 1.61 6.48 1.70 6.57 L5.80 10.60 L16.30 0.29 C16.49 0.10 16.74 -0.00 17.01 0.00 C17.14 0.00 17.27 0.03 17.39 0.08 C17.51 0.13 17.62 0.21 17.72 0.30 C17.81 0.39 17.88 0.50 17.93 0.63 C17.98 0.75 18.00 0.88 18.00 1.01 C18.00 1.14 17.97 1.27 17.92 1.39 C17.87 1.51 17.80 1.62 17.70 1.71 L17.70 1.71 Z M29.71 0.30 C29.62 0.21 29.51 0.13 29.39 0.08 C29.27 0.03 29.14 0.00 29.01 0.00 C28.88 -0.00 28.75 0.02 28.63 0.07 C28.50 0.12 28.39 0.19 28.30 0.29 L17.80 10.60 L15.45 8.29 C15.26 8.10 15.00 8.00 14.74 8.00 C14.47 8.00 14.22 8.11 14.03 8.30 C13.84 8.49 13.74 8.74 13.74 9.01 C13.75 9.28 13.85 9.53 14.04 9.71 L17.10 12.71 C17.28 12.90 17.54 13.00 17.80 13.00 C18.06 13.00 18.31 12.90 18.50 12.71 L29.70 1.71 C29.79 1.62 29.87 1.51 29.92 1.39 C29.97 1.27 30.00 1.14 30.00 1.01 C30.00 0.88 29.98 0.75 29.93 0.63 C29.88 0.50 29.81 0.39 29.71 0.30 Z%22 fill=%22%23000%22/%3E%3C/svg%3E")}.ops-contracts .dsi-Money{--m:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath transform=%22translate%281.0 7.0%29%22 d=%22M15.00 4.00 C14.01 4.00 13.04 4.29 12.22 4.84 C11.40 5.39 10.76 6.17 10.38 7.09 C10.00 8.00 9.90 9.01 10.10 9.98 C10.29 10.95 10.77 11.84 11.46 12.54 C12.16 13.23 13.05 13.71 14.02 13.90 C14.99 14.10 16.00 14.00 16.91 13.62 C17.83 13.24 18.61 12.60 19.16 11.78 C19.71 10.96 20.00 9.99 20.00 9.00 C20.00 7.67 19.47 6.40 18.54 5.46 C17.60 4.53 16.33 4.00 15.00 4.00 Z M15.00 12.00 C14.41 12.00 13.83 11.82 13.33 11.49 C12.84 11.16 12.46 10.70 12.23 10.15 C12.00 9.60 11.94 9.00 12.06 8.41 C12.17 7.83 12.46 7.30 12.88 6.88 C13.30 6.46 13.83 6.17 14.41 6.06 C15.00 5.94 15.60 6.00 16.15 6.23 C16.70 6.46 17.16 6.84 17.49 7.33 C17.82 7.83 18.00 8.41 18.00 9.00 C18.00 9.80 17.68 10.56 17.12 11.12 C16.56 11.68 15.80 12.00 15.00 12.00 Z M29.00 0.00 L1.00 0.00 C0.73 0.00 0.48 0.11 0.29 0.29 C0.11 0.48 0.00 0.73 0.00 1.00 L0.00 17.00 C0.00 17.27 0.11 17.52 0.29 17.71 C0.48 17.89 0.73 18.00 1.00 18.00 L29.00 18.00 C29.27 18.00 29.52 17.89 29.71 17.71 C29.89 17.52 30.00 17.27 30.00 17.00 L30.00 1.00 C30.00 0.73 29.89 0.48 29.71 0.29 C29.52 0.11 29.27 0.00 29.00 0.00 Z M23.21 16.00 L6.79 16.00 C6.46 14.86 5.84 13.83 5.01 12.99 C4.17 12.16 3.14 11.54 2.00 11.21 L2.00 6.79 C3.14 6.46 4.17 5.84 5.01 5.01 C5.84 4.17 6.46 3.14 6.79 2.00 L23.21 2.00 C23.54 3.14 24.16 4.17 24.99 5.01 C25.83 5.84 26.86 6.46 28.00 6.79 L28.00 11.21 C26.86 11.54 25.83 12.16 24.99 12.99 C24.16 13.83 23.54 14.86 23.21 16.00 Z M28.00 4.67 C26.80 4.16 25.84 3.20 25.33 2.00 L28.00 2.00 L28.00 4.67 Z M4.67 2.00 C4.16 3.20 3.20 4.16 2.00 4.67 L2.00 2.00 L4.67 2.00 Z M2.00 13.33 C3.20 13.84 4.16 14.80 4.67 16.00 L2.00 16.00 L2.00 13.33 Z M25.33 16.00 C25.84 14.80 26.80 13.84 28.00 13.33 L28.00 16.00 L25.33 16.00 Z%22 fill=%22%23000%22/%3E%3C/svg%3E")}.ops-contracts .dsi-EnvelopeSimple{--m:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath transform=%22translate%283.0 6.0%29%22 d=%22M25.00 0.00 L1.00 0.00 C0.73 0.00 0.48 0.11 0.29 0.29 C0.11 0.48 0.00 0.73 0.00 1.00 L0.00 18.00 C0.00 18.53 0.21 19.04 0.59 19.41 C0.96 19.79 1.47 20.00 2.00 20.00 L24.00 20.00 C24.53 20.00 25.04 19.79 25.41 19.41 C25.79 19.04 26.00 18.53 26.00 18.00 L26.00 1.00 C26.00 0.73 25.89 0.48 25.71 0.29 C25.52 0.11 25.27 0.00 25.00 0.00 Z M22.43 2.00 L13.00 10.64 L3.57 2.00 L22.43 2.00 Z M24.00 18.00 L2.00 18.00 L2.00 3.27 L12.32 12.74 C12.51 12.91 12.75 13.00 13.00 13.00 C13.25 13.00 13.49 12.91 13.68 12.74 L24.00 3.27 L24.00 18.00 Z%22 fill=%22%23000%22/%3E%3C/svg%3E")}.ops-contracts .dsi-Trash{--m:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath transform=%22translate%284.0 2.0%29%22 d=%22M23.00 4.00 L18.00 4.00 L18.00 3.00 C18.00 2.20 17.68 1.44 17.12 0.88 C16.56 0.32 15.80 0.00 15.00 0.00 L9.00 0.00 C8.20 0.00 7.44 0.32 6.88 0.88 C6.32 1.44 6.00 2.20 6.00 3.00 L6.00 4.00 L1.00 4.00 C0.73 4.00 0.48 4.11 0.29 4.29 C0.11 4.48 0.00 4.73 0.00 5.00 C0.00 5.27 0.11 5.52 0.29 5.71 C0.48 5.89 0.73 6.00 1.00 6.00 L2.00 6.00 L2.00 24.00 C2.00 24.53 2.21 25.04 2.59 25.41 C2.96 25.79 3.47 26.00 4.00 26.00 L20.00 26.00 C20.53 26.00 21.04 25.79 21.41 25.41 C21.79 25.04 22.00 24.53 22.00 24.00 L22.00 6.00 L23.00 6.00 C23.27 6.00 23.52 5.89 23.71 5.71 C23.89 5.52 24.00 5.27 24.00 5.00 C24.00 4.73 23.89 4.48 23.71 4.29 C23.52 4.11 23.27 4.00 23.00 4.00 Z M8.00 3.00 C8.00 2.73 8.11 2.48 8.29 2.29 C8.48 2.11 8.73 2.00 9.00 2.00 L15.00 2.00 C15.27 2.00 15.52 2.11 15.71 2.29 C15.89 2.48 16.00 2.73 16.00 3.00 L16.00 4.00 L8.00 4.00 L8.00 3.00 Z M20.00 24.00 L4.00 24.00 L4.00 6.00 L20.00 6.00 L20.00 24.00 Z M10.00 11.00 L10.00 19.00 C10.00 19.27 9.89 19.52 9.71 19.71 C9.52 19.89 9.27 20.00 9.00 20.00 C8.73 20.00 8.48 19.89 8.29 19.71 C8.11 19.52 8.00 19.27 8.00 19.00 L8.00 11.00 C8.00 10.73 8.11 10.48 8.29 10.29 C8.48 10.11 8.73 10.00 9.00 10.00 C9.27 10.00 9.52 10.11 9.71 10.29 C9.89 10.48 10.00 10.73 10.00 11.00 Z M16.00 11.00 L16.00 19.00 C16.00 19.27 15.89 19.52 15.71 19.71 C15.52 19.89 15.27 20.00 15.00 20.00 C14.73 20.00 14.48 19.89 14.29 19.71 C14.11 19.52 14.00 19.27 14.00 19.00 L14.00 11.00 C14.00 10.73 14.11 10.48 14.29 10.29 C14.48 10.11 14.73 10.00 15.00 10.00 C15.27 10.00 15.52 10.11 15.71 10.29 C15.89 10.48 16.00 10.73 16.00 11.00 Z%22 fill=%22%23000%22/%3E%3C/svg%3E")}.ops-contracts [class*="dsi-"]{display:inline-block;width:1.285714rem;height:1.285714rem;vertical-align:-0.214286rem;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}.ops-contracts{--m-caret:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath transform=%22translate%285.0 11.0%29%22 d=%22M21.71 1.71 L11.71 11.71 C11.62 11.80 11.50 11.87 11.38 11.93 C11.26 11.98 11.13 12.00 11.00 12.00 C10.87 12.00 10.74 11.98 10.62 11.93 C10.50 11.87 10.39 11.80 10.29 11.71 L0.29 1.71 C0.11 1.52 0.00 1.27 0.00 1.00 C0.00 0.74 0.11 0.48 0.29 0.29 C0.48 0.11 0.74 0.00 1.00 0.00 C1.27 0.00 1.52 0.11 1.71 0.29 L11.00 9.59 L20.29 0.29 C20.39 0.20 20.50 0.13 20.62 0.08 C20.74 0.03 20.87 0.00 21.00 0.00 C21.13 0.00 21.26 0.03 21.38 0.08 C21.50 0.13 21.62 0.20 21.71 0.29 C21.80 0.39 21.87 0.50 21.92 0.62 C21.98 0.74 22.00 0.87 22.00 1.00 C22.00 1.13 21.98 1.26 21.92 1.38 C21.87 1.50 21.80 1.62 21.71 1.71 Z%22 fill=%22%23000%22/%3E%3C/svg%3E");--m-search:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath transform=%22translate%282.97 2.97%29%22 d=%22M25.74 24.32 L19.48 18.06 C21.29 15.88 22.19 13.09 22.00 10.26 C21.81 7.44 20.53 4.79 18.44 2.88 C16.35 0.97 13.60 -0.06 10.76 0.00 C7.93 0.07 5.23 1.22 3.23 3.23 C1.22 5.23 0.07 7.93 0.00 10.76 C-0.06 13.60 0.97 16.35 2.88 18.44 C4.79 20.53 7.44 21.81 10.26 22.00 C13.09 22.19 15.88 21.29 18.06 19.48 L24.32 25.74 C24.41 25.83 24.52 25.90 24.64 25.95 C24.77 26.00 24.90 26.03 25.03 26.03 C25.16 26.03 25.29 26.00 25.41 25.95 C25.53 25.90 25.64 25.83 25.74 25.74 C25.83 25.64 25.90 25.53 25.95 25.41 C26.00 25.29 26.03 25.16 26.03 25.03 C26.03 24.90 26.00 24.77 25.95 24.64 C25.90 24.52 25.83 24.41 25.74 24.32 Z M2.03 11.03 C2.03 9.25 2.56 7.51 3.54 6.03 C4.53 4.55 5.94 3.39 7.58 2.71 C9.23 2.03 11.04 1.85 12.78 2.20 C14.53 2.55 16.13 3.40 17.39 4.66 C18.65 5.92 19.51 7.53 19.85 9.27 C20.20 11.02 20.02 12.83 19.34 14.47 C18.66 16.12 17.51 17.52 16.03 18.51 C14.55 19.50 12.81 20.03 11.03 20.03 C8.64 20.02 6.35 19.08 4.67 17.39 C2.98 15.70 2.03 13.41 2.03 11.03 Z%22 fill=%22%23000%22/%3E%3C/svg%3E")}/* ES Kitchen — component styles. Every color/size comes from tokens.css. Portal = [data-theme]. */
+.ops-contracts .es-icon{flex:none;display:inline-block;vertical-align:middle}
+.ops-contracts .es-mono{font-family:var(--font-mono)}
+.ops-contracts .es-num{font-variant-numeric:tabular-nums}
+.ops-contracts{font-family:var(--font-sans);color:var(--text-high);font-size:1rem;line-height:1.714286rem}
+.ops-contracts .es-link{color:var(--primary-text);font-size:0.857143rem;line-height:1.428571rem;text-decoration:none}
+.ops-contracts .es-link:hover{text-decoration:underline}
+.ops-contracts :where(.es-btn,.es-page,.es-tab,.es-navitem,.es-subitem,.es-profile,.es-input input,.es-input select,.es-check input,.es-radio input,.es-switch input):focus-visible{outline:none;box-shadow:var(--shadow-focus)}
+
+/* Spinner */
+.ops-contracts .es-spinner{display:inline-block;border-radius:var(--radius-full);border:2px solid currentColor;border-right-color:transparent;animation:es-spin .8s linear infinite}
+@keyframes es-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.ops-contracts .es-spinner{animation-duration:2.4s}}
+
+/* Button — Sparkle: sm 32 / md 40 / lg 48, radius action 6 */
+.ops-contracts .es-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-8);border:1px solid transparent;border-radius:var(--radius-md);font:inherit;font-weight:700;cursor:pointer;white-space:nowrap;transition:background-color .12s,border-color .12s,color .12s}
+.ops-contracts .es-btn--sm{height:var(--control-sm);padding:0 var(--space-12);font-size:1rem}
+.ops-contracts .es-btn--md{height:var(--control-md);padding:0 var(--space-16);font-size:1.142857rem}
+.ops-contracts .es-btn--lg{height:var(--control-lg);padding:0 var(--space-24);font-size:1.142857rem}
+.ops-contracts .es-btn--icon.es-btn--sm{width:var(--control-sm);padding:0}
+.ops-contracts .es-btn--icon.es-btn--md{width:var(--control-md);padding:0}
+.ops-contracts .es-btn--icon.es-btn--lg{width:var(--control-lg);padding:0}
+.ops-contracts .es-btn--block{width:100%}
+.ops-contracts .es-btn--solid.es-btn--primary{background:var(--primary);color:var(--on-primary)}
+.ops-contracts .es-btn--solid.es-btn--primary:hover:not(:disabled){background:var(--primary-hover)}
+.ops-contracts .es-btn--solid.es-btn--primary:active:not(:disabled){background:var(--primary-active)}
+.ops-contracts .es-btn--outline.es-btn--primary{background:var(--surface);border-color:var(--primary);color:var(--primary-text)}
+.ops-contracts .es-btn--ghost.es-btn--primary{background:transparent;color:var(--primary-text)}
+.ops-contracts .es-btn--outline.es-btn--primary:hover:not(:disabled),.ops-contracts .es-btn--ghost.es-btn--primary:hover:not(:disabled){background:var(--primary-subtle)}
+.ops-contracts .es-btn--solid.es-btn--neutral{background:var(--neutral-700);color:var(--white)}
+.ops-contracts .es-btn--solid.es-btn--neutral:hover:not(:disabled){background:var(--neutral-800)}
+.ops-contracts .es-btn--outline.es-btn--neutral{background:var(--surface);border-color:var(--divider-middle);color:var(--text-middle)}
+.ops-contracts .es-btn--ghost.es-btn--neutral{background:transparent;color:var(--text-middle)}
+.ops-contracts .es-btn--outline.es-btn--neutral:hover:not(:disabled),.ops-contracts .es-btn--ghost.es-btn--neutral:hover:not(:disabled){background:var(--surface-subtle)}
+.ops-contracts .es-btn--solid.es-btn--negative{background:var(--negative-500);color:var(--white)}
+.ops-contracts .es-btn--solid.es-btn--negative:hover:not(:disabled){background:var(--negative-600)}
+.ops-contracts .es-btn--outline.es-btn--negative{background:var(--surface);border-color:var(--negative-500);color:var(--negative-500)}
+.ops-contracts .es-btn--ghost.es-btn--negative{background:transparent;color:var(--negative-500)}
+.ops-contracts .es-btn--outline.es-btn--negative:hover:not(:disabled),.ops-contracts .es-btn--ghost.es-btn--negative:hover:not(:disabled){background:var(--negative-50)}
+.ops-contracts .es-btn:disabled{cursor:not-allowed}
+.ops-contracts .es-btn:disabled:not([aria-busy]){background:var(--surface-disabled);border-color:var(--surface-disabled);color:var(--text-low)}
+.ops-contracts .es-btn[aria-busy]{opacity:.85;cursor:progress}
+
+/* Field + inputs — md 40, border divider-middle, radius 6 */
+.ops-contracts .es-field{display:flex;flex-direction:column;gap:var(--space-4);min-width:0}
+.ops-contracts .es-field__label{font-size:1rem;line-height:1.714286rem;font-weight:700;color:var(--text-middle)}
+.ops-contracts .es-field__req{color:var(--negative-500);margin-left:var(--space-2)}
+.ops-contracts .es-field__msg{margin:0;font-size:0.857143rem;line-height:1.428571rem;color:var(--text-low)}
+.ops-contracts .es-field__msg--error{color:var(--negative-500)}
+.ops-contracts .es-input{box-sizing:border-box;display:flex;align-items:center;gap:var(--space-8);background:var(--surface);border:1px solid var(--divider-middle);border-radius:var(--radius-md);padding:0 var(--space-12);color:var(--text-low);position:relative}
+.ops-contracts .es-input:hover{border-color:var(--divider-high)}
+.ops-contracts .es-input:focus-within{border-color:var(--primary-text);box-shadow:0 0 0 3px var(--primary-muted)}
+.ops-contracts .es-input--sm{height:var(--control-sm)}.ops-contracts .es-input--md{height:var(--control-md)}.ops-contracts .es-input--lg{height:var(--control-lg)}
+.ops-contracts .es-input input,.ops-contracts .es-input select{flex:1;min-width:0;height:100%;border:0;background:transparent;font:inherit;font-size:1rem;color:var(--text-high);outline:none;appearance:none;-webkit-appearance:none;padding:0}
+.ops-contracts .es-input input::placeholder{color:var(--text-low)}
+.ops-contracts .es-input--disabled{background:var(--surface-disabled);border-color:var(--surface-disabled)}
+.ops-contracts .es-input--disabled input,.ops-contracts .es-input--disabled select{color:var(--text-low)}
+.ops-contracts .es-input--readonly{background:var(--surface-subtle)}
+.ops-contracts .es-field--error .es-input{border-color:var(--negative-500)}
+.ops-contracts .es-field--error .es-input:focus-within{box-shadow:0 0 0 3px var(--negative-100)}
+.ops-contracts .es-select select{cursor:pointer;padding-right:var(--space-24)}
+.ops-contracts .es-select .es-icon{position:absolute;right:var(--space-12);pointer-events:none;color:var(--text-middle)}
+.ops-contracts .es-input__suffix{color:var(--text-low);font-size:1rem}
+
+/* Checkbox / Radio / Switch */
+.ops-contracts .es-check,.ops-contracts .es-radio,.ops-contracts .es-switch{display:inline-flex;align-items:center;gap:var(--space-8);font-size:1rem;color:var(--text-middle);cursor:pointer;position:relative}
+.ops-contracts .es-check input,.ops-contracts .es-radio input,.ops-contracts .es-switch input{position:absolute;opacity:0;width:1.428571rem;height:1.428571rem;margin:0}
+.ops-contracts .es-check__box{width:1.428571rem;height:1.428571rem;border:1.5px solid var(--neutral-500);border-radius:var(--radius-xs);background:var(--surface);display:grid;place-items:center}
+.ops-contracts .es-check input:checked+.es-check__box,.ops-contracts .es-check input:indeterminate+.es-check__box{background:var(--primary);border-color:var(--primary)}
+.ops-contracts .es-check input:checked+.es-check__box::after{content:"";width:0.714286rem;height:0.357143rem;border:2px solid var(--on-primary);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.ops-contracts .es-check input:indeterminate+.es-check__box::after{content:"";width:0.714286rem;height:2px;background:var(--on-primary)}
+.ops-contracts .es-radio__dot{width:1.428571rem;height:1.428571rem;border:1.5px solid var(--neutral-500);border-radius:var(--radius-full);background:var(--surface);display:grid;place-items:center}
+.ops-contracts .es-radio input:checked+.es-radio__dot{border-color:var(--primary)}
+.ops-contracts .es-radio input:checked+.es-radio__dot::after{content:"";width:0.714286rem;height:0.714286rem;border-radius:var(--radius-full);background:var(--primary)}
+.ops-contracts .es-switch input{width:2.857143rem}
+.ops-contracts .es-switch__track{width:2.857143rem;height:1.714286rem;border-radius:var(--radius-full);background:var(--neutral-300);position:relative;transition:background-color .15s}
+.ops-contracts .es-switch__track::after{content:"";position:absolute;top:2px;left:2px;width:1.428571rem;height:1.428571rem;border-radius:var(--radius-full);background:var(--white);box-shadow:var(--shadow-raise);transition:transform .15s}
+.ops-contracts .es-switch input:checked+.es-switch__track{background:var(--primary)}
+.ops-contracts .es-switch input:checked+.es-switch__track::after{transform:translateX(16px)}
+.ops-contracts .es-check input:focus-visible+span,.ops-contracts .es-radio input:focus-visible+span,.ops-contracts .es-switch input:focus-visible+span{box-shadow:var(--shadow-focus)}
+.ops-contracts .is-disabled{cursor:not-allowed;color:var(--text-low)}
+.ops-contracts .is-disabled .es-check__box,.ops-contracts .is-disabled .es-radio__dot{background:var(--surface-disabled);border-color:var(--divider-middle)}
+.ops-contracts .is-disabled .es-switch__track{background:var(--neutral-200)}
+
+/* Badge — radius notice 4 */
+.ops-contracts .es-badge{display:inline-flex;align-items:center;gap:var(--space-4);height:1.714286rem;padding:0 var(--space-8);border-radius:var(--radius-sm);font-size:0.857143rem;line-height:1.428571rem;font-weight:700;white-space:nowrap}
+.ops-contracts .es-badge__dot{width:0.428571rem;height:0.428571rem;border-radius:var(--radius-full);background:currentColor}
+.ops-contracts .es-badge--neutral{background:var(--neutral-100);color:var(--text-middle)}
+.ops-contracts .es-badge--success{background:var(--success-100);color:var(--success-700)}
+.ops-contracts .es-badge--info{background:var(--info-100);color:var(--info-700)}
+.ops-contracts .es-badge--warning{background:var(--warning-100);color:var(--warning-800)}
+.ops-contracts .es-badge--negative{background:var(--negative-100);color:var(--negative-600)}
+.ops-contracts .es-badge--primary{background:var(--primary-subtle);color:var(--primary-text)}
+.ops-contracts .es-badge--outline{background:var(--surface);box-shadow:inset 0 0 0 1px currentColor}
+
+/* Tabs — line style, active = primary underline */
+.ops-contracts .es-tabs{display:flex;gap:var(--space-4);border-bottom:1px solid var(--divider-middle);overflow-x:auto}
+.ops-contracts .es-tab{appearance:none;border:0;background:none;font:inherit;font-size:1.142857rem;line-height:1.714286rem;color:var(--text-middle);padding:var(--space-8) var(--space-16);border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;white-space:nowrap;display:inline-flex;gap:var(--space-4);align-items:center}
+.ops-contracts .es-tab:hover{color:var(--text-high);background:var(--surface-subtle)}
+.ops-contracts .es-tab.is-active{color:var(--primary-text);border-bottom-color:var(--primary);font-weight:700}
+.ops-contracts .es-tab__count{font-size:0.857143rem;line-height:1.428571rem;padding:0 0.428571rem;border-radius:var(--radius-full);background:var(--neutral-100);color:var(--text-middle)}
+
+/* Breadcrumb + Page header */
+.ops-contracts .es-breadcrumb{display:flex;flex-wrap:wrap;gap:var(--space-8);font-size:0.857143rem;line-height:1.428571rem;color:var(--text-low)}
+.ops-contracts .es-breadcrumb a{color:var(--text-middle);text-decoration:none}
+.ops-contracts .es-breadcrumb a:hover{color:var(--primary-text);text-decoration:underline}
+.ops-contracts .es-breadcrumb__sep{color:var(--divider-high)}
+.ops-contracts .es-breadcrumb__cur{color:var(--text-low)}
+.ops-contracts .es-pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-12);flex-wrap:wrap;padding:var(--space-20) var(--space-24)}
+.ops-contracts .es-pagehead__text{display:flex;flex-direction:column;gap:var(--space-4)}
+.ops-contracts .es-pagehead__title{margin:0;font-size:1.714286rem;line-height:2.571429rem;font-weight:700;color:var(--text-high)}
+.ops-contracts .es-pagehead__actions{display:flex;gap:var(--space-8);flex-wrap:wrap}
+
+/* Card + Section title (gray band, 3px primary bar at left — Phase 1) */
+.ops-contracts .es-card{background:var(--surface);border-radius:var(--radius-lg);padding:var(--space-16);display:flex;flex-direction:column;gap:var(--space-16)}
+.ops-contracts .es-section-title{display:flex;align-items:center;justify-content:space-between;gap:var(--space-8);background:var(--surface-subtle);border-left:3px solid var(--primary);padding:var(--space-8) var(--space-20);min-height:3.428571rem}
+.ops-contracts .es-section-title h2{margin:0;font-size:1.285714rem;line-height:2rem;font-weight:700;color:var(--text-high)}
+
+/* Table — header 55 on surface-subtle, row 54 */
+.ops-contracts .es-table-wrap{overflow-x:auto;border:1px solid var(--divider-low);border-radius:var(--radius-none)}
+.ops-contracts .es-table{width:100%;border-collapse:collapse;font-size:1rem;line-height:1.714286rem}
+.ops-contracts .es-table th{height:var(--table-header-height);background:var(--surface-subtle);color:var(--text-high);font-weight:700;text-align:left;padding:0 var(--space-16);white-space:nowrap;border-bottom:1px solid var(--divider-low)}
+.ops-contracts .es-table th .es-icon{margin-left:var(--space-4);color:var(--text-low)}
+.ops-contracts .es-table td{height:var(--table-row-height);padding:0 var(--space-16);color:var(--text-middle);border-bottom:1px solid var(--divider-low);white-space:nowrap}
+.ops-contracts .es-table tbody tr:hover td{background:var(--surface-subtle)}
+.ops-contracts .es-table tr.is-selected td{background:var(--primary-subtle)}
+.ops-contracts .es-table tr.is-deleted td{background:var(--surface-disabled);color:var(--text-low)}
+.ops-contracts .es-table td a{color:var(--primary-text);text-decoration:none}
+.ops-contracts .es-table td a:hover{text-decoration:underline}
+
+/* Pagination */
+.ops-contracts .es-pagination{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-8);flex-wrap:wrap;font-size:1rem}
+.ops-contracts .es-pagination__meta{color:var(--text-middle);margin-right:var(--space-8)}
+.ops-contracts .es-page{min-width:2.285714rem;height:2.285714rem;padding:0 var(--space-8);border:1px solid var(--divider-middle);border-radius:var(--radius-md);background:var(--surface);color:var(--text-middle);font:inherit;font-size:1rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.ops-contracts .es-page:hover:not(:disabled){border-color:var(--primary);color:var(--primary-text)}
+.ops-contracts .es-page.is-current{border-color:var(--primary);color:var(--primary-text);font-weight:700}
+.ops-contracts .es-page:disabled{color:var(--divider-high);cursor:not-allowed}
+.ops-contracts .es-page--gap{border-color:transparent;cursor:default}
+.ops-contracts .es-pagination__per{width:9.142857rem}
+
+/* Side navigation — 210 / 80, item 48, radius 8, active = primary fill */
+.ops-contracts .es-sidenav{width:var(--sidebar-width);flex:none;background:var(--surface);display:flex;flex-direction:column;box-shadow:var(--shadow-stick);min-height:100%;position:relative;z-index:5;transition:width .18s ease}
+@media (prefers-reduced-motion:reduce){.ops-contracts .es-sidenav{transition:none}}
+.ops-contracts .es-sidenav.is-collapsed{width:var(--sidebar-collapsed)}
+.ops-contracts .es-sidenav__logo{height:var(--header-height);display:flex;align-items:center;padding:0 var(--space-12);border-bottom:1px solid var(--divider-low)}
+.ops-contracts .es-sidenav__logo{overflow:hidden;flex:none}
+.ops-contracts .es-sidenav__logo img{height:2.571429rem;max-width:none;width:auto;display:block}
+.ops-contracts .is-collapsed .es-sidenav__logo{padding:0 0 0 1.214286rem}
+.ops-contracts .is-collapsed .es-sidenav__logo img{height:2.571429rem;clip-path:inset(0 calc(100% - 46px) 0 0)}
+.ops-contracts .es-sidenav__wordmark{font-weight:700;letter-spacing:.04em;color:var(--brand-red)}
+.ops-contracts .es-sidenav__menu{display:flex;flex-direction:column;gap:var(--space-8);padding:var(--space-16) 0.928571rem}
+.ops-contracts .es-navitem{width:100%;height:var(--nav-item-height);display:flex;align-items:center;gap:var(--space-8);padding:0 var(--space-12);border:0;border-radius:var(--radius-lg);background:transparent;color:var(--text-middle);font:inherit;font-size:1.142857rem;text-align:left;cursor:pointer}
+.ops-contracts .es-navitem__label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ops-contracts .es-navitem:hover{background:var(--surface-subtle);color:var(--text-high)}
+.ops-contracts .es-navitem.is-active{background:var(--primary);color:var(--on-primary);font-weight:700}
+.ops-contracts .es-navitem.is-active:hover{background:var(--primary-hover)}
+.ops-contracts .is-collapsed .es-navitem{justify-content:center;padding:0}
+.ops-contracts .es-subnav{display:flex;flex-direction:column;margin-top:var(--space-4)}
+.ops-contracts .es-subitem{height:var(--nav-item-height);border:0;border-radius:var(--radius-lg);background:transparent;padding:0 var(--space-16) 0 3.285714rem;text-align:left;font:inherit;font-size:1rem;color:var(--text-middle);cursor:pointer}
+.ops-contracts .es-subitem:hover{background:var(--surface-subtle)}
+.ops-contracts .es-subitem.is-active{background:var(--primary-subtle);color:var(--primary-text);font-weight:700}
+
+/* App header — 54 */
+.ops-contracts .es-appheader{height:var(--header-height);background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:0 var(--space-16);border-bottom:1px solid var(--divider-low)}
+.ops-contracts .es-appheader__greet{display:flex;align-items:center;gap:var(--space-8);font-size:1.142857rem;font-weight:500;color:var(--text-high)}
+.ops-contracts .es-appheader__sun{width:2rem;height:2rem;border-radius:var(--radius-full);background:var(--brand-orange)}
+.ops-contracts .es-appheader__right{display:flex;align-items:center;gap:var(--space-12)}
+.ops-contracts .es-profile{display:flex;align-items:center;gap:var(--space-8);border:0;background:none;font:inherit;font-size:1.142857rem;color:var(--text-high);cursor:pointer;padding:var(--space-4);border-radius:var(--radius-md)}
+.ops-contracts .es-avatar{width:2.571429rem;height:2.571429rem;border-radius:var(--radius-full);background:var(--primary-muted);color:var(--primary-text);display:grid;place-items:center;font-weight:700}
+
+/* Inline message / Toast */
+.ops-contracts .es-inline{display:flex;gap:var(--space-8);padding:var(--space-12) var(--space-16);border-radius:var(--radius-sm);border:1px solid;font-size:1rem;line-height:1.714286rem}
+.ops-contracts .es-inline strong{display:block}
+.ops-contracts .es-inline .es-icon{margin-top:0.214286rem}
+.ops-contracts .es-inline--info{background:var(--info-50);border-color:var(--info-100);color:var(--info-700)}
+.ops-contracts .es-inline--success{background:var(--success-50);border-color:var(--success-100);color:var(--success-700)}
+.ops-contracts .es-inline--warning{background:var(--warning-50);border-color:var(--warning-100);color:var(--warning-800)}
+.ops-contracts .es-inline--negative{background:var(--negative-50);border-color:var(--negative-100);color:var(--negative-600)}
+.ops-contracts .es-toast{display:inline-flex;align-items:center;gap:var(--space-8);min-width:20rem;max-width:100%;padding:var(--space-12) var(--space-16);border-radius:var(--radius-lg);background:var(--surface);color:var(--text-high);box-shadow:var(--shadow-popout);border:1px solid var(--divider-low);font-size:1rem}
+.ops-contracts .es-toast--success .es-icon:first-child{color:var(--success-500)}
+.ops-contracts .es-toast--negative .es-icon:first-child{color:var(--negative-500)}
+.ops-contracts .es-toast__close{margin-left:auto;border:0;background:none;color:var(--text-low);cursor:pointer;padding:var(--space-4);display:grid}
+
+/* Modal — 450 wide, radius modal 12 */
+.ops-contracts .es-modal{position:fixed;inset:0;display:grid;place-items:center;z-index:50;padding:var(--space-16)}
+.ops-contracts .es-modal--inline{position:relative;inset:auto;padding:0}
+.ops-contracts .es-modal__scrim{position:absolute;inset:0;background:var(--overlay-scrim)}
+.ops-contracts .es-modal__panel{position:relative;width:var(--modal-width);max-width:100%;background:var(--surface);border-radius:var(--radius-xl);box-shadow:var(--shadow-popout);padding:var(--space-24);display:flex;flex-direction:column;align-items:center;gap:var(--space-16);text-align:center}
+.ops-contracts .es-modal__close{position:absolute;top:var(--space-12);right:var(--space-12);border:0;background:none;color:var(--text-low);cursor:pointer;padding:var(--space-4);display:grid;border-radius:var(--radius-md)}
+.ops-contracts .es-modal__mark{width:5.142857rem;height:5.142857rem;border-radius:var(--radius-full);display:grid;place-items:center;font-size:2.857143rem;font-weight:700}
+.ops-contracts .es-modal__mark--warning,.ops-contracts .es-modal__mark--negative{background:var(--warning-100);color:var(--negative-500)}
+.ops-contracts .es-modal__mark--success{background:var(--success-100);color:var(--success-700)}
+.ops-contracts .es-modal__mark--info{background:var(--info-100);color:var(--info-700)}
+.ops-contracts .es-modal__title{margin:0;font-size:1.428571rem;line-height:2.285714rem;font-weight:700;color:var(--text-high)}
+.ops-contracts .es-modal__body{font-size:1rem;line-height:1.714286rem;color:var(--text-middle)}
+.ops-contracts .es-modal__actions{display:flex;gap:var(--space-8);width:100%}
+
+/* Login */
+.ops-contracts .es-login{min-height:100%;display:grid;place-items:center;padding:var(--space-40) var(--space-16);background:linear-gradient(180deg,var(--login-wash) 0%,var(--primary-100) 55%,var(--white) 55%)}
+.ops-contracts .es-login__card{width:33.142857rem;max-width:100%;background:var(--surface);border-radius:var(--radius-3xl);box-shadow:var(--shadow-popout);padding:var(--space-48) var(--space-32) var(--space-24);display:flex;flex-direction:column;gap:var(--space-16)}
+.ops-contracts .es-login__logo{height:4rem;object-fit:contain;align-self:center}
+.ops-contracts .es-login__title{margin:0;text-align:center;font-size:1.714286rem;line-height:2.571429rem;font-weight:700}
+.ops-contracts .es-login__forgot{align-self:center}
+
+/* Shell */
+.ops-contracts .es-shell{display:flex;min-height:100%;background:var(--page-bg)}
+.ops-contracts .es-shell__main{flex:1;min-width:0;display:flex;flex-direction:column}
+.ops-contracts .es-shell__content{padding:0 var(--space-24) var(--space-24);display:flex;flex-direction:column;gap:var(--space-16)}
+
+/* Search panel — one wrapping flow. Fields take only the width they need; the actions sit at the right
+   and drop below the fields when the panel is narrow. Collapsed = first line of fields only. */
+.ops-contracts .es-search{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--space-12) var(--space-16);background:var(--surface-subtle);border-left:3px solid var(--primary);padding:var(--space-12) var(--space-16);container-type:inline-size}
+.ops-contracts .es-search__toggle{flex:none;width:2.285714rem;height:2.285714rem;margin-top:0.285714rem;border-radius:var(--radius-full);border:0;background:var(--surface);color:var(--text-middle);box-shadow:var(--shadow-raise);display:grid;place-items:center;cursor:pointer}
+.ops-contracts .es-search__toggle:hover{color:var(--primary-text);background:var(--primary-subtle)}
+.ops-contracts .es-search__toggle:focus-visible{outline:none;box-shadow:var(--shadow-focus)}
+.ops-contracts .es-search__left{flex:1 1 25.714286rem;min-width:0;display:flex;align-items:flex-start;gap:var(--space-12)}
+.ops-contracts .es-search__fields{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-content:flex-start;gap:var(--space-12)}
+.ops-contracts .es-search.is-collapsed .es-search__fields{max-height:var(--control-md);overflow:hidden}
+/* intrinsic widths: a select needs ~12 chars, a free-text search ~20; they may grow a little to fill a line */
+.ops-contracts .es-search__fields>*{flex:1 1 12.571429rem;max-width:17.142857rem;min-width:0}
+.ops-contracts .es-search__fields>.es-grow{flex:2 1 17.142857rem;max-width:31.428571rem}
+.ops-contracts .es-search__fields>.es-wide{flex:1 1 17.142857rem;max-width:25.714286rem}
+.ops-contracts .es-search__actions{flex:0 0 auto;display:flex;flex-direction:column;gap:var(--space-12);margin-left:auto}
+.ops-contracts .es-search__main{display:flex;gap:var(--space-8)}
+.ops-contracts .es-search__main>*{min-width:7.428571rem}
+.ops-contracts .es-search__extra{display:flex;flex-direction:column;gap:var(--space-8)}
+.ops-contracts .es-search .es-field__label:empty{display:none}
+@container (max-width:45.714286rem){.es-search__actions{flex:1 1 100%}.es-search__main>*{flex:1}.es-search__fields>*,.es-search__fields>.es-grow{max-width:none}}
+.ops-contracts .es-sortbtn{justify-content:space-between}
+
+/* Row actions (操作列) */
+.ops-contracts .es-rowactions{display:inline-flex;gap:var(--space-4)}
+.ops-contracts .es-table td .es-rowactions .es-btn{height:2.285714rem;width:2.285714rem}
+/* Mode label chip used in page titles (詳細／編集／新規登録) */
+.ops-contracts .es-formgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-16) var(--space-32)}
+@media (max-width:45em){.ops-contracts .es-formgrid{grid-template-columns:1fr}}
+.ops-contracts .es-toast-host{position:fixed;top:4.857143rem;right:var(--space-16);z-index:130;max-width:calc(100% - 2.285714rem)}
+
+/* CSV取込 / CSV出力 — one style everywhere: white, 1px primary-300 border, primary label + line icon, lg 48 */
+.ops-contracts .es-btn--csv{background:var(--surface);border-color:var(--primary-300);color:var(--primary-text);gap:0.714286rem}
+.ops-contracts .es-btn--csv.es-btn--lg{padding:0 var(--space-20)}
+.ops-contracts .es-btn--csv:hover:not(:disabled){background:var(--primary-subtle);border-color:var(--primary)}
+.ops-contracts .es-btn--csv:active:not(:disabled){background:var(--primary-muted)}
+
+/* ==== 配送管理（スケジュール・配送データ）コンポーネント ==== */
+.ops-contracts .es-seg,.ops-contracts .es-stage,.ops-contracts .es-cal,.ops-contracts .es-monthtabs,.ops-contracts .es-slotgrid,.ops-contracts .es-selbar,.ops-contracts .es-dialog,.ops-contracts .es-empty,.ops-contracts .es-checklist,.ops-contracts .es-timeline,.ops-contracts .es-filecard{--ship:#B3410A;--deliver:var(--success-700);--wk-d-bg:#ECD8FF;--wk-d-fg:#512A97}
+
+/* 週の色（A〜D）：チップ・カレンダーのサイクル枠・凡例で同じ色 */
+.ops-contracts .es-wk--a{color:var(--info-700)}
+.ops-contracts .es-wk--b{color:var(--success-700)}
+.ops-contracts .es-wk--c{color:var(--warning-800)}
+.ops-contracts .es-wk--d{color:#512A97}
+
+/* SegmentedControl */
+.ops-contracts .es-seg{display:inline-flex;flex-shrink:0;background:var(--surface-disabled);border-radius:var(--radius-md);padding:2px;gap:2px}
+.ops-contracts .es-seg__item{appearance:none;border:0;background:none;font:inherit;height:2.571429rem;min-width:4.571429rem;padding:0 var(--space-16);display:inline-flex;align-items:center;justify-content:center;font-size:1.071429rem;font-weight:700;color:var(--text-middle);border-radius:5px;cursor:pointer;white-space:nowrap}
+.ops-contracts .es-seg__item:hover{color:var(--text-high)}
+.ops-contracts .es-seg__item:focus-visible{outline:none;box-shadow:var(--shadow-focus)}
+.ops-contracts .es-seg__item.is-on{background:var(--primary);color:var(--on-primary)}
+.ops-contracts .es-seg__item:disabled{color:var(--text-low);cursor:default}
+.ops-contracts .es-seg--sm .es-seg__item{height:2.285714rem;min-width:0;font-size:1rem;padding:0 var(--space-12)}
+.ops-contracts .es-seg--sm .es-seg__item.is-on{background:var(--surface);color:var(--text-high);box-shadow:var(--shadow-raise)}
+
+/* StageIndicator */
+.ops-contracts .es-stage{flex:0 1 auto;min-width:0;max-width:100%;box-sizing:border-box;border:1px solid var(--divider-middle);border-radius:var(--radius-lg);padding:var(--space-8) var(--space-12);display:flex;flex-direction:column;gap:0.428571rem;background:var(--surface-subtle)}
+.ops-contracts .es-stage__row{display:flex;align-items:center;gap:0.714286rem;font-size:1rem;white-space:nowrap;min-width:0}
+.ops-contracts .es-stage__title{flex-shrink:0;font-weight:700}
+.ops-contracts .es-stage__mode{flex-shrink:0;background:var(--neutral-600);color:var(--white);font-weight:700;font-size:0.928571rem;line-height:1.428571rem;padding:1px var(--space-8);border-radius:var(--radius-sm)}
+.ops-contracts .es-stage__mode--edit{background:var(--primary);color:var(--on-primary)}
+.ops-contracts .es-stage__detail{flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:0.857143rem;color:var(--text-low)}
+.ops-contracts .es-stage__steps{display:flex;align-items:center;gap:0.428571rem;flex-wrap:wrap;font-size:0.857143rem;line-height:1.285714rem;color:var(--text-middle)}
+.ops-contracts .es-stage__step{padding:1px var(--space-8);border-radius:var(--radius-sm);white-space:nowrap;border:1px solid transparent}
+.ops-contracts .es-stage__step--done{background:var(--primary-subtle);color:var(--primary-text);font-weight:700}
+.ops-contracts .es-stage__step--current{background:var(--primary-800);color:var(--white);font-weight:700}
+.ops-contracts .es-stage__step--future{background:var(--surface);color:var(--text-low);border-color:var(--divider-middle)}
+.ops-contracts .es-stage__arrow{color:var(--text-low);font-size:0.714286rem}
+
+/* TempTag */
+.ops-contracts .es-temptag{flex-shrink:0;display:inline-flex;align-items:center;height:1.428571rem;padding:0 0.428571rem;border-radius:var(--radius-sm);font-size:0.785714rem;font-weight:700;white-space:nowrap;vertical-align:middle}
+.ops-contracts .es-temptag--frozen{background:var(--info-500);color:var(--white)}
+.ops-contracts .es-temptag--chilled,.ops-contracts .es-temptag--mixed{background:var(--info-100);color:var(--info-700)}
+.ops-contracts .es-temptag--ambient{background:var(--warning-100);color:var(--warning-800)}
+.ops-contracts .es-temptag--material{background:var(--neutral-100);color:var(--text-middle)}
+
+/* CalendarGrid / CalendarCell */
+.ops-contracts .es-cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0.428571rem}
+.ops-contracts .es-cal__wd{height:2.142857rem;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--text-middle)}
+.ops-contracts .es-calcell{position:relative;min-height:7.714286rem;min-width:0;box-sizing:border-box;padding:0.428571rem var(--space-8);display:flex;flex-direction:column;gap:2px;background:var(--surface);border:1px solid var(--divider-middle);border-radius:var(--radius-md);font-size:0.857143rem;line-height:1.285714rem;color:var(--text-high)}
+.ops-contracts .es-cal--tall .es-calcell{min-height:9.714286rem}
+.ops-contracts .es-calcell>div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ops-contracts .es-calcell__top{display:flex;justify-content:space-between;align-items:center;gap:0.285714rem;min-height:1.714286rem}
+.ops-contracts .es-calcell__date{font-size:1rem;font-weight:500;flex-shrink:0}
+.ops-contracts .es-calcell.is-today .es-calcell__date{display:inline-flex;align-items:center;justify-content:center;min-width:1.714286rem;height:1.714286rem;padding:0 0.285714rem;box-sizing:border-box;border-radius:var(--radius-full);background:var(--primary);color:var(--on-primary);font-weight:700;font-size:0.928571rem}
+.ops-contracts .es-calcell__hol{font-size:0.785714rem;font-weight:700;color:var(--negative-600);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ops-contracts .es-calcell__cycle{color:var(--text-middle)}
+.ops-contracts .es-calcell__slot{font-family:var(--font-mono);font-weight:700;margin-left:0.285714rem}
+.ops-contracts .es-calcell__line{font-variant-numeric:tabular-nums}
+.ops-contracts .es-calcell__v{font-weight:700}
+.ops-contracts .es-calcell__v--ship{color:var(--ship)}
+.ops-contracts .es-calcell__v--deliver{color:var(--deliver)}
+.ops-contracts .es-calcell__v--over{color:var(--negative-600)}
+.ops-contracts .es-calcell__v--plan{color:var(--text-middle);font-weight:400}
+.ops-contracts .es-calcell__v--plain{font-weight:400}
+.ops-contracts .es-calcell__badges{display:flex;flex-wrap:wrap;gap:0.285714rem;margin-top:auto;overflow:hidden;max-height:3.714286rem}
+.ops-contracts .es-calcell.is-today{border:2px solid var(--primary);padding:0.357143rem 0.5rem}
+.ops-contracts .es-calcell.is-selected{box-shadow:0 0 0 2px var(--primary)}
+.ops-contracts .es-calcell.is-clickable{cursor:pointer}
+.ops-contracts .es-calcell.is-clickable:hover{border-color:var(--divider-high)}
+.ops-contracts .es-calcell--out{background:var(--neutral-100)}
+.ops-contracts .es-calcell--out .es-calcell__date{color:var(--text-low)}
+.ops-contracts .es-calcell--pause{background:var(--negative-50);border-color:var(--negative-100)}
+.ops-contracts .es-calcell--pause .es-calcell__cycle{color:var(--negative-600);font-weight:700}
+.ops-contracts .es-calcell--out.es-calcell--pause{background:var(--neutral-100)}
+.ops-contracts .es-calcell--holiday{border-color:var(--negative-100)}
+.ops-contracts .es-calcell--first{box-shadow:inset 3px 0 0 var(--primary)}
+.ops-contracts .es-calcell--draft{border-style:dashed;border-color:var(--neutral-400)}
+.ops-contracts .es-calcell--over{border:2px solid var(--negative-500);padding:0.357143rem 0.5rem}
+
+/* MonthTabs（件数つきの月タブ） */
+.ops-contracts .es-monthtabs{display:flex;border-bottom:1px solid var(--divider-middle);overflow-x:auto}
+.ops-contracts .es-monthtabs__tab{appearance:none;border:0;background:none;padding:var(--space-8) 1rem;text-align:left;border-bottom:2px solid transparent;margin-bottom:-1px;font:inherit;cursor:pointer;white-space:nowrap}
+.ops-contracts .es-monthtabs__tab b{display:block;font-size:1.071429rem;line-height:1.571429rem;color:var(--text-middle)}
+.ops-contracts .es-monthtabs__tab.is-active{border-bottom-color:var(--primary)}
+.ops-contracts .es-monthtabs__tab.is-active b{color:var(--primary-text);font-weight:700}
+.ops-contracts .es-monthtabs__tab:focus-visible{outline:none;box-shadow:var(--shadow-focus)}
+.ops-contracts .es-monthtabs__meta{display:block;font-size:0.785714rem;line-height:1.142857rem;font-weight:700}
+.ops-contracts .es-monthtabs__meta--ship{color:var(--ship)}
+.ops-contracts .es-monthtabs__meta--deliver{color:var(--deliver)}
+.ops-contracts .es-monthtabs__meta--negative{color:var(--negative-600)}
+.ops-contracts .es-monthtabs__meta--plain{color:var(--text-low);font-weight:400}
+
+/* SlotChip / SlotGrid（サイクル枠 A1〜D7） */
+.ops-contracts .es-slot{appearance:none;height:2.285714rem;min-width:2.857143rem;box-sizing:border-box;border-radius:var(--radius-md);border:1px solid var(--divider-middle);background:var(--surface);font-family:var(--font-mono);font-size:0.928571rem;color:var(--text-middle);cursor:pointer;padding:0 0.285714rem;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;line-height:1rem;white-space:nowrap}
+.ops-contracts .es-slot small{font-family:var(--font-sans);font-size:0.714286rem;font-weight:700}
+.ops-contracts .es-slot--lg{height:2.714286rem}
+.ops-contracts .es-slot:hover{border-color:var(--divider-high)}
+.ops-contracts .es-slot:focus-visible{outline:none;box-shadow:var(--shadow-focus)}
+.ops-contracts .es-slot--on{background:var(--neutral-800);border-color:var(--neutral-800);color:var(--white);font-weight:700}
+.ops-contracts .es-slot--pick{background:var(--primary);border-color:var(--primary);color:var(--on-primary);font-weight:700}
+.ops-contracts .es-slot--dis,.ops-contracts .es-slot:disabled{background:var(--surface-disabled);border-color:var(--surface-disabled);color:var(--text-low);cursor:default}
+.ops-contracts .es-slotgrid{display:grid;gap:0.428571rem;align-items:center;font-size:0.857143rem}
+.ops-contracts .es-slotgrid__wd{text-align:center;font-weight:700;color:var(--text-middle)}
+.ops-contracts .es-slotgrid__wk{font-family:var(--font-mono);font-weight:700;text-align:center}
+
+/* SelectionBar */
+.ops-contracts .es-selbar{display:flex;align-items:center;gap:var(--space-12);padding:0.714286rem var(--space-16);background:var(--neutral-800);border-radius:var(--radius-lg);box-shadow:var(--shadow-popout);color:var(--white)}
+.ops-contracts .es-selbar--floating{position:absolute;left:calc(var(--sidebar-width) + var(--space-24));right:var(--space-24);bottom:var(--space-20);z-index:10}
+.ops-contracts .es-selbar__count{font-size:1.142857rem;white-space:nowrap}
+.ops-contracts .es-selbar__clear{appearance:none;border:0;background:none;font:inherit;font-size:1rem;color:var(--neutral-300);cursor:pointer;text-decoration:underline;white-space:nowrap}
+.ops-contracts .es-selbar__actions{margin-left:auto;display:flex;align-items:center;gap:var(--space-8)}
+.ops-contracts .es-selbar .es-btn--outline{background:var(--surface)}
+
+/* Dialog（大きいモーダル：一覧・移動・一括承認） */
+.ops-contracts .es-dialog{position:fixed;inset:0;display:grid;place-items:center;z-index:50;padding:var(--space-24)}
+.ops-contracts .es-dialog--inline{position:relative;inset:auto;padding:0;display:block}
+.ops-contracts .es-dialog__scrim{position:absolute;inset:0;background:var(--overlay-scrim)}
+.ops-contracts .es-dialog__panel{position:relative;max-width:100%;max-height:100%;box-sizing:border-box;background:var(--surface);border-radius:var(--radius-xl);box-shadow:var(--shadow-popout);display:flex;flex-direction:column;overflow:hidden;color:var(--text-high)}
+.ops-contracts .es-dialog__head{display:flex;align-items:center;gap:var(--space-12);padding:1.285714rem var(--space-24);border-bottom:1px solid var(--divider-low)}
+.ops-contracts .es-dialog__head h2{margin:0;font-size:1.428571rem;line-height:2.285714rem;font-weight:700;white-space:nowrap;flex-grow:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.ops-contracts .es-dialog__id{margin-left:var(--space-8);font-size:1.142857rem;font-weight:400;color:var(--text-middle)}
+.ops-contracts .es-dialog__close{appearance:none;border:0;background:none;color:var(--text-low);cursor:pointer;padding:var(--space-4);display:grid;border-radius:var(--radius-md)}
+.ops-contracts .es-dialog__close:hover{background:var(--surface-subtle);color:var(--text-high)}
+.ops-contracts .es-dialog__toolbar{display:flex;align-items:center;gap:1.428571rem;padding:var(--space-12) var(--space-24);font-size:1.071429rem;white-space:nowrap;border-bottom:1px solid var(--divider-low)}
+.ops-contracts .es-dialog__body{padding:var(--space-16) var(--space-24);display:flex;flex-direction:column;gap:1rem;overflow:auto;min-height:0}
+.ops-contracts .es-dialog__body--flush{padding:0;gap:0}
+.ops-contracts .es-dialog__foot{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-12);padding:1rem var(--space-24);border-top:1px solid var(--divider-low)}
+.ops-contracts .es-dialog__foot>b{flex-grow:1;font-size:1.142857rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ops-contracts .es-dialog__sec{display:flex;align-items:center;gap:0.714286rem;padding:0.714286rem var(--space-24);background:var(--surface-subtle);font-size:1.071429rem;font-weight:700;white-space:nowrap}
+.ops-contracts .es-dialog__sec small{font-size:0.857143rem;font-weight:400;color:var(--text-middle);white-space:normal}
+.ops-contracts .es-dialog__secact{margin-left:auto}
+
+/* EmptyState */
+.ops-contracts .es-empty{display:flex;flex-direction:column;align-items:center;gap:var(--space-8);padding:var(--space-32) var(--space-16);color:var(--text-middle);font-size:1rem;line-height:1.571429rem;text-align:center}
+.ops-contracts .es-empty--compact{padding:var(--space-16)}
+.ops-contracts .es-empty__icon{width:4rem;height:4rem;border-radius:var(--radius-full);display:grid;place-items:center;background:var(--surface-subtle);color:var(--text-low)}
+.ops-contracts .es-empty--negative .es-empty__icon{background:var(--negative-50);color:var(--negative-600)}
+.ops-contracts .es-empty--warning .es-empty__icon{background:var(--warning-50);color:var(--warning-800)}
+.ops-contracts .es-empty>b{font-size:1.142857rem;line-height:1.714286rem;color:var(--text-high)}
+.ops-contracts .es-empty__act{margin-top:var(--space-4);display:flex;gap:var(--space-8)}
+
+/* Skeleton */
+@keyframes es-skel{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.ops-contracts .es-skel{display:block;height:1rem;border-radius:var(--radius-sm);background:linear-gradient(90deg,var(--neutral-100),var(--neutral-50),var(--neutral-100));background-size:200% 100%;animation:es-skel 1.4s linear infinite}
+.ops-contracts .es-skel-lines{display:flex;flex-direction:column;gap:0.714286rem}
+.ops-contracts .es-skel-rows{display:flex;flex-direction:column}
+.ops-contracts .es-skel-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:var(--space-16);align-items:center;height:3.142857rem;border-bottom:1px solid var(--divider-low);padding:0 var(--space-8)}
+
+/* CheckList（承認前チェック・実績の確認） */
+.ops-contracts .es-checklist{display:flex;flex-direction:column}
+.ops-contracts .es-checklist__item{display:flex;align-items:center;gap:0.714286rem;padding:var(--space-8) 0;border-bottom:1px solid var(--divider-low);font-size:1rem;line-height:1.571429rem;white-space:nowrap;min-width:0}
+.ops-contracts .es-checklist__mark{width:1.571429rem;height:1.571429rem;border-radius:var(--radius-full);display:inline-flex;align-items:center;justify-content:center;font-size:0.928571rem;font-weight:700;flex-shrink:0}
+.ops-contracts .es-checklist__item--ok .es-checklist__mark{background:var(--success-100);color:var(--success-700)}
+.ops-contracts .es-checklist__item--ng .es-checklist__mark{background:var(--negative-100);color:var(--negative-600)}
+.ops-contracts .es-checklist__item--warn .es-checklist__mark{background:var(--warning-100);color:var(--warning-800)}
+.ops-contracts .es-checklist__item--na .es-checklist__mark{background:var(--neutral-100);color:var(--text-low)}
+.ops-contracts .es-checklist__label{flex-shrink:0}
+.ops-contracts .es-checklist__item--ng .es-checklist__label{font-weight:700}
+.ops-contracts .es-checklist__why{margin-left:auto;padding-left:var(--space-12);font-size:0.857143rem;color:var(--text-low);overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ops-contracts .es-checklist__item--ng .es-checklist__why{color:var(--negative-600)}
+
+/* Timeline（変更履歴・申請の履歴） */
+.ops-contracts .es-timeline{display:flex;flex-direction:column}
+.ops-contracts .es-timeline__ev{display:grid;grid-template-columns:10.714286rem 10rem minmax(0,1fr);gap:var(--space-12);padding:0.714286rem 0;border-bottom:1px solid var(--divider-low);font-size:0.928571rem;line-height:1.428571rem}
+.ops-contracts .es-timeline--compact .es-timeline__ev{grid-template-columns:6.857143rem minmax(0,1fr);row-gap:0}
+.ops-contracts .es-timeline--compact .es-timeline__who{grid-column:2}
+.ops-contracts .es-timeline--compact .es-timeline__what{grid-column:2}
+.ops-contracts .es-timeline__t{font-family:var(--font-mono);font-size:0.857143rem;color:var(--text-low);white-space:nowrap}
+.ops-contracts .es-timeline__who{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ops-contracts .es-timeline__what{color:var(--text-middle)}
+.ops-contracts .es-timeline__what s{color:var(--text-low)}
+.ops-contracts .es-timeline__what b{color:var(--text-high)}
+
+/* FileCard（添付資料） */
+.ops-contracts .es-filecard{border:1px solid var(--divider-middle);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);min-width:0;display:flex;flex-direction:column}
+.ops-contracts .es-filecard__thumb{height:7.857143rem;background:repeating-linear-gradient(45deg,var(--neutral-100),var(--neutral-100) 0.571429rem,var(--neutral-50) 0.571429rem,var(--neutral-50) 1.142857rem);display:flex;align-items:center;justify-content:center;color:var(--text-low);font-size:0.857143rem}
+.ops-contracts .es-filecard__thumb img{width:100%;height:100%;object-fit:cover}
+.ops-contracts .es-filecard--missing{border-style:dashed}
+.ops-contracts .es-filecard--missing .es-filecard__thumb{background:var(--surface-subtle)}
+.ops-contracts .es-filecard__body{padding:var(--space-8) 0.714286rem;display:flex;flex-direction:column;gap:0.285714rem;font-size:0.857143rem;line-height:1.285714rem;min-width:0}
+.ops-contracts .es-filecard__body b{font-size:0.928571rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ops-contracts .es-filecard__meta{color:var(--text-low);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* SearchPanel columns=N（配送データ・スケジュールの検索条件）：列をそろえた格子。1行目の最後の列に クリア／検索 */
+.ops-contracts .es-search--grid{flex-wrap:nowrap;gap:var(--space-12)}
+.ops-contracts .es-search__gutter{flex:0 0 2.285714rem;padding-top:calc(var(--control-md) + var(--space-12))}
+.ops-contracts .es-search__gutter .es-search__toggle{margin-top:0.285714rem}
+.ops-contracts .es-search__grid{flex:1;min-width:0;display:grid;grid-template-columns:repeat(var(--search-cols,6),minmax(0,1fr));gap:var(--space-12)}
+.ops-contracts .es-search__grid>*{min-width:0;width:auto;max-width:none}
+.ops-contracts .es-search__grid .es-span-2{grid-column:span 2}
+.ops-contracts .es-search__grid .es-span-3{grid-column:span 3}
+.ops-contracts .es-search__grid .es-field{min-width:0}
+.ops-contracts .es-search__grid .es-seg{display:flex;box-sizing:border-box;height:var(--control-md);width:100%}
+.ops-contracts .es-search__grid .es-seg__item{flex:1 1 0;min-width:0;height:auto;padding:0 var(--space-8)}
+.ops-contracts .es-search__gridact{display:flex;gap:var(--space-8)}
+.ops-contracts .es-search__gridact>*{flex:1 1 0;min-width:0;padding-left:var(--space-8);padding-right:var(--space-8)}
+
+/* Side nav — collapsed extras: flyout for parents with children, bottom toggle */
+.ops-contracts .es-sidenav__menu{flex:1}
+.ops-contracts .is-collapsed .es-sidenav__menu{padding:var(--space-16) var(--space-16)}
+.ops-contracts .es-navgroup{position:relative}
+.ops-contracts .es-flyout{position:absolute;left:calc(100% + var(--space-12));top:0;min-width:14.285714rem;background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-float);border:1px solid var(--divider-low);padding:var(--space-8);z-index:20}
+.ops-contracts .es-flyout__title{font-size:0.857143rem;line-height:1.428571rem;font-weight:700;color:var(--text-low);padding:var(--space-4) var(--space-8) var(--space-8)}
+.ops-contracts .es-flyout__list{display:flex;flex-direction:column}
+.ops-contracts .es-flyout .es-subitem{padding:0 var(--space-12);height:2.857143rem;text-align:left}
+.ops-contracts .es-sidenav__toggle{display:flex;align-items:center;gap:var(--space-8);height:2.857143rem;margin:var(--space-8) 0.928571rem var(--space-16);padding:0 var(--space-12);border:0;border-radius:var(--radius-lg);background:transparent;color:var(--text-low);font:inherit;font-size:1rem;cursor:pointer}
+.ops-contracts .es-sidenav__toggle:hover{background:var(--surface-subtle);color:var(--text-high)}
+.ops-contracts .is-collapsed .es-sidenav__toggle{justify-content:center;padding:0;margin:var(--space-8) var(--space-16) var(--space-16)}
+/* ===== ES Kitchen（System admin）を法人・拠点・契約デモ（12_運営_法人拠点契約.html）の既存クラスに当てる上書き。2026/09/28 ===== */
+.ops-contracts{--bg:var(--page-bg);--card:var(--surface);--line:var(--divider-low);--ink:var(--text-high);--dim:var(--text-middle);--mut:var(--text-low);
+  --blue:var(--primary-text);--ok:var(--success-700);--warn:var(--warning-800);--red:var(--negative-600);--pur:var(--primary-text)}
+.ops-contracts{background:var(--page-bg);color:var(--text-high);font:1rem/1.714286rem var(--font-sans)}
+
+
+.ops-contracts code,.ops-contracts .meta code{font-family:var(--font-mono)}
+
+/* 説明（畳む） */
+.ops-contracts .banner{background:var(--info-50);border:1px solid var(--info-100);color:var(--info-700);border-radius:var(--radius-sm);font-size:1rem;line-height:1.714286rem;padding:var(--space-12) var(--space-16)}
+
+
+
+
+/* ページ見出し（PageHeader） */
+.ops-contracts .phead{padding:var(--space-20) 0 var(--space-12);display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-16)}
+.ops-contracts .phead .phl{min-width:0;flex:1}
+.ops-contracts .phead .pbtn{flex-shrink:0;padding-top:var(--space-24);display:flex;gap:var(--space-8)}
+.ops-contracts .crumb{font-size:0.857143rem;line-height:1.428571rem;color:var(--text-low)}
+.ops-contracts .phead h2{font-size:1.714286rem;line-height:2.571429rem;font-weight:700;margin:0.285714rem 0 0;color:var(--text-high)}
+.ops-contracts .pid{font-family:var(--font-mono);font-size:1.285714rem;color:var(--text-middle)}
+.ops-contracts .sumbar .s{border:0;border-radius:var(--radius-sm);background:var(--surface);font-size:0.857143rem;padding:2px 0.714286rem}
+.ops-contracts .sumbar .s i{color:var(--text-low);font-size:0.857143rem}
+.ops-contracts .sumbar .s b{color:var(--text-high)}
+
+/* 保存・キャンセル（Button md） */
+.ops-contracts .pbtn button{height:var(--control-md);padding:0 var(--space-24);border-radius:var(--radius-md);font-size:1.142857rem;font-weight:700}
+.ops-contracts .pbtn .cancel{border:1px solid var(--primary);background:var(--surface);color:var(--primary-text)}
+.ops-contracts .pbtn .cancel:hover{background:var(--primary-subtle)}
+.ops-contracts .pbtn .save{border:1px solid var(--primary);background:var(--primary);color:var(--on-primary)}
+.ops-contracts .pbtn .save:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+
+/* タブ（Tabs：線・primary の下線） */
+.ops-contracts .stick{border-radius:var(--radius-lg) var(--radius-lg) 0 0;background:var(--surface)}
+.ops-contracts .tabrow{border-bottom:1px solid var(--divider-middle);border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:var(--space-4) var(--space-16) 0}
+.ops-contracts .tabs{gap:var(--space-4)}
+.ops-contracts .tabs button{font-size:1.142857rem;line-height:1.714286rem;font-weight:400;color:var(--text-middle);padding:var(--space-8) var(--space-16);border-bottom:2px solid transparent;margin-bottom:-1px}
+.ops-contracts .tabs button:hover{background:var(--surface-subtle);color:var(--text-high)}
+.ops-contracts .tabs button.on{color:var(--primary-text);border-bottom-color:var(--primary);font-weight:700}
+.ops-contracts .tools{background:var(--surface-subtle);border-left:3px solid var(--primary);border-bottom:0;font-size:0.857143rem;color:var(--text-middle);padding:var(--space-12) var(--space-16)}
+.ops-contracts .srch input{height:var(--control-md);border:1px solid var(--divider-middle);border-radius:var(--radius-md);font-size:1rem;padding:0 2rem 0 2.428571rem}
+.ops-contracts .srch input:focus{outline:none;border-color:var(--primary-text);box-shadow:0 0 0 3px var(--primary-muted)}
+.ops-contracts .srch .ic{font-size:0;left:0.857143rem;width:1.142857rem;height:1.142857rem;background:var(--text-low);-webkit-mask:var(--m-search) center/contain no-repeat;mask:var(--m-search) center/contain no-repeat}
+.ops-contracts .linkbtn{color:var(--primary-text);font-size:0.857143rem}
+.ops-contracts .idx{background:var(--surface);border-bottom:1px solid var(--divider-low);padding:var(--space-8) var(--space-16)}
+.ops-contracts .idx button{border-color:var(--divider-middle);color:var(--text-middle);border-radius:var(--radius-full);font-size:0.857143rem}
+.ops-contracts .idx button b{color:var(--text-low)}
+.ops-contracts .pane{border:0;border-radius:0 0 var(--radius-lg) var(--radius-lg);padding:var(--space-16)}
+
+/* セクション（Card の中の SectionTitle：灰色の帯＋左に3px の primary） */
+.ops-contracts .card{border:1px solid var(--divider-low);border-radius:var(--radius-lg)}
+.ops-contracts .ch{background:var(--surface-subtle);border-left:3px solid var(--primary);min-height:3.428571rem;padding:var(--space-8) var(--space-20);font-size:1.285714rem;line-height:2rem;font-weight:700;color:var(--text-high)}
+.ops-contracts .ch .chev{color:var(--text-low)}
+.ops-contracts .ownchip{background:var(--primary-subtle);color:var(--primary-text);border-radius:var(--radius-sm);font-size:0.857143rem;padding:0 var(--space-8)}
+.ops-contracts .cb{padding:var(--space-16)}
+.ops-contracts .cols{gap:var(--space-16) var(--space-32)}
+
+/* 項目（Field：太字ラベル＋md 40 の入力。参照は灰色の値ボックス） */
+.ops-contracts .f{border:0;background:transparent;padding:0;border-radius:0}
+.ops-contracts .f.hit{box-shadow:0 0 0 2px var(--primary-muted);border-radius:var(--radius-md)}
+.ops-contracts .f label{font-size:1rem;line-height:1.714286rem;font-weight:700;color:var(--text-middle)}
+.ops-contracts .f[data-na="1"] label::after{content:none}
+.ops-contracts .req{color:var(--negative-500)}
+.ops-contracts .cond{color:var(--warning-800);font-size:0.857143rem}
+.ops-contracts .ctl input,.ops-contracts .ctl select,.ops-contracts .ctl textarea,.ops-contracts td input,.ops-contracts td select,.ops-contracts .dlg .row select{height:var(--control-md);border:1px solid var(--divider-middle);border-radius:var(--radius-md);padding:0 var(--space-12);font-size:1rem;color:var(--text-high);background:var(--surface)}
+.ops-contracts td input,.ops-contracts td select{height:var(--control-sm);padding:0 var(--space-8)}
+.ops-contracts .ctl textarea{height:auto;min-height:5.714286rem;padding:var(--space-8) var(--space-12)}
+.ops-contracts .ctl input:focus,.ops-contracts .ctl select:focus,.ops-contracts .ctl textarea:focus,.ops-contracts td input:focus,.ops-contracts td select:focus{outline:none;border-color:var(--primary-text);box-shadow:0 0 0 3px var(--primary-muted)}
+.ops-contracts .ctl input[readonly],.ops-contracts .ctl textarea[readonly],.ops-contracts .ctl select:disabled,.ops-contracts td input[readonly],.ops-contracts td select:disabled{background:var(--surface-subtle);color:var(--text-high)}
+.ops-contracts .file{border:1px dashed var(--divider-high);border-radius:var(--radius-md);min-height:var(--control-md)}
+.ops-contracts .mini{height:var(--control-sm);border:1px solid var(--divider-middle);border-radius:var(--radius-md);padding:0 var(--space-12);font-size:1rem;font-weight:700;color:var(--text-middle);background:var(--surface)}
+.ops-contracts .mini.add,.ops-contracts .mini.act,.ops-contracts .mini.zip{color:var(--primary-text);border-color:var(--primary)}
+.ops-contracts .mini:hover{background:var(--surface-subtle)}
+.ops-contracts .mini.add:hover,.ops-contracts .mini.act:hover,.ops-contracts .mini.zip:hover{background:var(--primary-subtle)}
+.ops-contracts .note-s{font-size:0.857143rem;line-height:1.428571rem;color:var(--text-low)}
+
+/* 凡例タグ（Badge：角丸4） */
+
+/* 表（Table） */
+.ops-contracts table{font-size:1rem;line-height:1.714286rem}
+.ops-contracts th,.ops-contracts td{border-bottom:1px solid var(--divider-low);padding:var(--space-12) var(--space-16);color:var(--text-middle)}
+.ops-contracts thead th{height:var(--table-header-height);background:var(--surface-subtle);color:var(--text-high);font-size:1rem;font-weight:700;padding:0 var(--space-16)}
+.ops-contracts tbody tr:hover td{background:var(--surface-subtle)}
+.ops-contracts .scroll{border:1px solid var(--divider-low)}
+.ops-contracts tr.gen td{background:var(--primary-subtle)}
+.ops-contracts tr.band td{background:var(--warning-50);border-top:1px dashed var(--warning-400);border-bottom:1px dashed var(--warning-400);color:var(--warning-800)}
+.ops-contracts tr.band .bst{background:var(--warning-100);color:var(--warning-800);border-radius:var(--radius-sm)}
+.ops-contracts tr.band .bl,.ops-contracts tr.band .bn{color:var(--warning-800)}
+.ops-contracts a.lnk{color:var(--primary-text)}
+.ops-contracts .del{color:var(--negative-500)}
+
+
+
+
+
+
+
+
+
+/* ダイアログ（Modal）／トースト（Toast） */
+.ops-contracts .ovl{background:var(--overlay-scrim)}
+.ops-contracts .dlg{border-radius:var(--radius-xl);box-shadow:var(--shadow-popout)}
+.ops-contracts .dlg h3{font-size:1.428571rem;line-height:2.285714rem;padding:var(--space-16) var(--space-24);border-bottom:1px solid var(--divider-low)}
+.ops-contracts .dlg .bd{padding:var(--space-16) var(--space-24)}
+.ops-contracts .dlg .op{border-color:var(--divider-middle);border-radius:var(--radius-lg)}
+.ops-contracts .dlg .op:has(input:checked){border-color:var(--primary);background:var(--primary-subtle)}
+.ops-contracts .dlg .op span,.ops-contracts .dlg .memo{font-size:0.857143rem;color:var(--text-middle)}
+.ops-contracts .dlg .lead{background:var(--info-50);border-color:var(--info-100);color:var(--info-700);border-radius:var(--radius-sm);font-size:1rem}
+.ops-contracts .dlg .ft{background:var(--surface);border-top:1px solid var(--divider-low);padding:var(--space-16) var(--space-24)}
+.ops-contracts .dlg .ft button{height:var(--control-md);padding:0 var(--space-16);border-radius:var(--radius-md);font-size:1rem;font-weight:700;border-color:var(--divider-middle);color:var(--text-middle)}
+.ops-contracts .dlg .ft .ok{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+
+.ops-contracts input[type=checkbox],.ops-contracts input[type=radio]{accent-color:var(--primary)}
+
+.ops-contracts .dsi{display:inline-block;width:1.285714rem;height:1.285714rem;vertical-align:-0.214286rem;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+/* 2026/09/28 マスタの一覧（es-*）：外側の余白は .wrap が持つので二重にしない */
+.ops-contracts .mlist .es-pagehead{padding:var(--space-20) 0 var(--space-12)}
+.ops-contracts .mlist .es-shell__content{padding:0}
+.ops-contracts .mlist .es-table td{color:var(--text-middle)}
+
+.ops-contracts .mlist .es-pagination__per{width:11.142857rem}
+
+/* ---------- 運営Web の枠（ops.css）の .card・.crumb などと重なるところを元に戻す ---------- */
+.ops-contracts .card{padding:0;background:transparent;min-width:0}
+.ops-contracts .pane .card{background:#fff}
+.ops-contracts .crumb{display:block}
+.ops-contracts .crumb span+span::before{content:none}
+.ops-contracts .ch .chev{display:inline}
+.ops-contracts{background:transparent}
+/* 項目定義（説明・物理名）を出す */
+/* 自販機の配送区分の固定の説明は、項目定義を出していなくても見せる */
+.ops-contracts .f .note-s.vmfix{display:block}
+.ops-contracts .f .emsg{display:block;color:var(--red);font-size:0.785714rem;margin-top:0.285714rem}
+.ops-contracts .f.err .ctl input,.ops-contracts .f.err .ctl select,.ops-contracts .f.err .ctl textarea{border-color:var(--red)}
+/* 運営Web の上のヘッダー（54px・sticky）の下で止める */
+.ops-contracts .stick{top:3.857143rem}
+.ops-contracts .mini:disabled{opacity:.5;cursor:default}
+
+/* ---------- CSV取込の画面（法人・拠点。_ui/CsvImportScreen。.card・.crumb を運営Web の枠の形に戻す） ---------- */
+.ops-contracts .csvpage{padding:0 1.714286rem 2.285714rem}
+.ops-contracts .csvpage .csvph{display:flex;align-items:flex-end;justify-content:space-between;gap:1.142857rem;flex-wrap:wrap;padding:0.714286rem 0 1.142857rem}
+.ops-contracts .csvpage .csvph h1{font-size:1.714286rem;line-height:2.571429rem;font-weight:700;margin:0.285714rem 0 0}
+.ops-contracts .csvpage .csvph .btns{display:flex;gap:0.857143rem;flex-wrap:wrap}
+.ops-contracts .csvpage .crumb{display:flex;gap:0.571429rem;flex-wrap:wrap}
+.ops-contracts .csvpage .crumb span+span::before{content:"/";margin-right:0.571429rem;color:var(--line-high)}
+.ops-contracts .csvpage .steps{justify-content:center;margin:0 0 1.142857rem}
+.ops-contracts .csvpage .card{background:var(--surface);border-radius:8px;padding:1.142857rem}
+.ops-contracts .csvpage #sec-csv .ch{font-weight:700;font-size:1.142857rem;margin-bottom:0.857143rem}
+.ops-contracts .csvpage #sec-csv .cb>div>div[style*="dashed"]{padding:2.857143rem 1.142857rem!important}
+.ops-contracts .csvpage .btn{height:2.857143rem;padding:0 1.142857rem;font-size:1rem}
+
+/* 別操作（付け替え・切替）の無効の理由・付け替え／切替の確認・契約種別の履歴の「現在」（UX 点検 2026/10/06） */
+.ops-contracts .f .note-s.opwhy{display:block;color:var(--text-middle,#4a5563)}
+.ops-contracts .nowbadge{display:inline-block;margin-left:0.571429rem;padding:0 0.571429rem;border-radius:4px;background:var(--primary-subtle,#eef4fc);color:var(--primary-text,var(--blue));font-size:0.857143rem;font-weight:700;line-height:1.571429rem}
+.ops-contracts .opdlg{width:100%;text-align:left}
+.ops-contracts .opdlg .lead{margin:0 0 0.857143rem;line-height:1.7}
+.ops-contracts .opdlg .row{display:flex;align-items:center;gap:0.714286rem;margin-bottom:0.714286rem;font-size:0.928571rem}
+.ops-contracts .opdlg .row b{min-width:8rem;flex:none}
+.ops-contracts .opdlg .row input,.ops-contracts .opdlg .row select{flex:1;min-width:0;height:2.285714rem;border:1px solid #d4dae2;border-radius:5px;padding:0 0.571429rem;font:inherit;background:#fff}
+.ops-contracts .opdlg .memo{font-size:0.857143rem;color:var(--text-low,#64748b);line-height:1.6}
+.ops-contracts .opdlg .cnt{font-size:0.857143rem;color:var(--text-low,#64748b);margin:-0.285714rem 0 0.714286rem 8.714286rem}

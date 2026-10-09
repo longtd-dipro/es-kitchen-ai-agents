@@ -1,0 +1,2408 @@
+diff --git a/app/ops/_ui/OpsLogin.tsx b/app/ops/_ui/OpsLogin.tsx
+index 0872aee..659cf3e 100644
+--- a/app/ops/_ui/OpsLogin.tsx
++++ b/app/ops/_ui/OpsLogin.tsx
+@@ -7,7 +7,7 @@ import { useOps, type OtpWait } from './OpsProvider';
+ /**
+  * 運営Web のログイン（運営のアカウント：dm.account・site＝ops）。開発中はパスワードを確かめない（空でなければよい・ほかのサイトと同じ）。
+  * ログインすると、API は役割（フル権限・マスタ管理者・配送担当 …）の権限で動く（lib/server/access.ts）。
+- * IP ホワイトリスト外からのログインは、登録メールに送った認証コード（6桁・10分）を入れて完了する（台帳 E・受付簿 #61）。DEMO はコードをトーストで見せる
++ * IP ホワイトリスト外からのログインは、登録メールに送った認証コード（4桁・5分）を入れて完了する（台帳 E・受付簿 #61）。DEMO はコードをトーストで見せる
+  */
+ export function OpsLogin() {
+   const { login, verifyOtp, toast } = useOps();
+@@ -56,10 +56,10 @@ export function OpsLogin() {
+           </>
+         ) : (
+           <>
+-            <div className="notice" role="status"><span>登録されていない接続元からのログインです。<b>{otp.sentTo}</b> に送った認証コード（6桁・{otp.minutes}分間有効）を入れてください。</span></div>
++            <div className="notice" role="status"><span>登録されていない接続元からのログインです。<b>{otp.sentTo}</b> に送った認証コード（4桁・{otp.minutes}分間有効）を入れてください。</span></div>
+             <div className="fld">
+               <label htmlFor="ops-login-otp">認証コード</label>
+-              <input id="ops-login-otp" className="inp" inputMode="numeric" autoComplete="one-time-code" maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} placeholder="例 123456" autoFocus />
++              <input id="ops-login-otp" className="inp" inputMode="numeric" autoComplete="one-time-code" maxLength={4} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} placeholder="例 1234" autoFocus />
+               {err && <span className="emsg" role="alert">{err}</span>}
+             </div>
+             <button className="btn pri lg" type="submit" disabled={busy || code.length !== 6}>認証コードでログイン</button>
+diff --git a/app/ops/_ui/OpsProvider.tsx b/app/ops/_ui/OpsProvider.tsx
+index 4aa0b73..71b8a07 100644
+--- a/app/ops/_ui/OpsProvider.tsx
++++ b/app/ops/_ui/OpsProvider.tsx
+@@ -1,5 +1,6 @@
+ 'use client';
+ 
++import { keepLoginClear, keepLoginGet, keepLoginSet } from '@/lib/api/keepLogin';
+ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+ import { ApiError, errorMessage } from '@/lib/api/errors';
+ import { listenUnauthorized, serverLogout } from '@/lib/api/site';
+@@ -56,7 +57,7 @@ export function OpsProvider({ children }: { children: ReactNode }) {
+   }, []);
+   useEffect(() => {
+     try {
+-      const raw = sessionStorage.getItem(KEY);
++      const raw = keepLoginGet(KEY);
+       if (raw) setAccount(JSON.parse(raw) as OpsAccount);
+     } catch {
+       /* 使えないときはログインからやり直す */
+@@ -67,7 +68,7 @@ export function OpsProvider({ children }: { children: ReactNode }) {
+   /* サーバーのログインが切れた（ログインのあとに呼んだ API が 401）：ログイン画面に戻す */
+   const loginAt = useRef(0);
+   useEffect(() => listenUnauthorized(() => loginAt.current, () => {
+-      try { sessionStorage.removeItem(KEY); } catch { /* 無視 */ }
++      keepLoginClear(KEY);
+       setAccount(null);
+   }), []);
+ 
+@@ -86,21 +87,21 @@ export function OpsProvider({ children }: { children: ReactNode }) {
+       }
+       loginAt.current = Date.now();
+       const a: OpsAccount = { id: res.account.id, name: res.account.name, roleIds: res.account.roleIds, perms: res.perms, grants: res.grants, readOnly: res.readOnly };
+-      try { sessionStorage.setItem(KEY, JSON.stringify(a)); } catch { /* 無視 */ }
++      keepLoginSet(KEY, JSON.stringify(a));
+       setAccount(a);
+       return undefined;
+     },
+     async verifyOtp(loginId, code) {
+-      if (!/^\d{6}$/.test(code.trim())) throw new ApiError('認証コード（6桁の数字）を入れてください', 400);
++      if (!/^\d{4}$/.test(code.trim())) throw new ApiError('認証コード（4桁の数字）を入れてください', 400);
+       const res = await accountApi.action('verifyOtp', { site: 'ops', loginId, code: code.trim() });
+       if (!res.ok) throw new ApiError(res.message, 401);
+       loginAt.current = Date.now();
+       const a: OpsAccount = { id: res.account.id, name: res.account.name, roleIds: res.account.roleIds, perms: res.perms, grants: res.grants, readOnly: res.readOnly };
+-      try { sessionStorage.setItem(KEY, JSON.stringify(a)); } catch { /* 無視 */ }
++      keepLoginSet(KEY, JSON.stringify(a));
+       setAccount(a);
+     },
+     logout() {
+-      try { sessionStorage.removeItem(KEY); } catch { /* 無視 */ }
++      keepLoginClear(KEY);
+       setAccount(null);
+       setLive(null);
+       serverLogout();
+diff --git a/app/ops/_ui/editingNotice.tsx b/app/ops/_ui/editingNotice.tsx
+new file mode 100644
+index 0000000..8ebff01
+--- /dev/null
++++ b/app/ops/_ui/editingNotice.tsx
+@@ -0,0 +1,38 @@
++'use client';
++
++import { useEffect, useRef, useState } from 'react';
++
++/*
++ * 「〇〇さんが編集中です」の知らせ（I02・台帳 K「同時に編集」：ロックしない・先に知らせる）。
++ * 編集画面を開いている間、beat を 30秒ごとに呼ぶ（サーバーは 90秒知らせがなければ編集中でなくす）。離れるときは leave を知らせる。
++ * beat(false)＝自分の編集中を知らせて、ほかの人の編集中を受け取る。beat(true)＝離れたことを知らせる。
++ */
++export type Editor = { name: string; since: number };
++const BEAT_MS = 30_000;
++
++export function useEditingNotice(active: boolean, beat: (leave: boolean) => Promise<Editor[]>): Editor[] {
++  const [others, setOthers] = useState<Editor[]>([]);
++  const fn = useRef(beat);
++  useEffect(() => { fn.current = beat; });
++  useEffect(() => {
++    if (!active) { setOthers([]); return; }
++    let on = true;
++    const tick = () => { fn.current(false).then((r) => { if (on) setOthers(r); }).catch(() => { /* 知らせが届かなくても編集は止めない */ }); };
++    tick();
++    const t = setInterval(tick, BEAT_MS);
++    return () => { on = false; clearInterval(t); fn.current(true).catch(() => {}); };
++  }, [active]);
++  return others;
++}
++
++const hhmm = (ms: number) => { const d = new Date(ms); return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
++
++/** I02：ページ上部の情報（人ごとに1行） */
++export function EditingNotice({ others, className }: { others: Editor[]; className?: string }) {
++  if (!others.length) return null;
++  return (
++    <div role="status" className={className}>
++      {others.map((o) => <div key={o.name + o.since}>{o.name}さんが編集中です（{hhmm(o.since)}〜）。同時に保存すると、あとから保存した方がエラーになります。</div>)}
++    </div>
++  );
++}
+diff --git a/app/ops/applications/_components/ds.tsx b/app/ops/applications/_components/ds.tsx
+index 63e3500..505c636 100644
+--- a/app/ops/applications/_components/ds.tsx
++++ b/app/ops/applications/_components/ds.tsx
+@@ -263,14 +263,19 @@ export function Table({ head, children, cls }: { head: Head[]; children: ReactNo
+   );
+ }
+ /** ページ送り（見本は1ページだけ） */
+-export function Pagination({ total, per = 10 }: { total: number; per?: number }) {
+-  const to = Math.min(per, total);
++export function Pagination({ total, per = 10, page = 1, onPage, onPer }: { total: number; per?: number; page?: number; onPage?: (n: number) => void; onPer?: (n: number) => void }) {
++  const pages = Math.max(1, Math.ceil(total / per));
++  const cur = Math.min(page, pages);
+   return (
+     <div className="es-pagination">
+-      <span className="es-pagination__meta">{total}件中 {total ? 1 : 0}–{to}件</span>
+-      <button className="es-page" disabled aria-label="前へ"><DsIcon n="CaretLeft" s={14} /></button>
+-      <button className="es-page is-current" aria-current="page">1</button>
+-      <button className="es-page" disabled aria-label="次へ"><DsIcon n="CaretRight" s={14} /></button>
++      <span className="es-pagination__meta">{total}件中 {total ? (cur - 1) * per + 1 : 0}–{Math.min(cur * per, total)}件</span>
++      <button type="button" className="es-page" disabled={cur <= 1} aria-label="前へ" onClick={() => onPage?.(cur - 1)}><DsIcon n="CaretLeft" s={14} /></button>
++      {Array.from({ length: pages }, (_, i) => i + 1).map((n) => <button key={n} type="button" className={`es-page${n === cur ? ' is-current' : ''}`} aria-current={n === cur ? 'page' : undefined} onClick={() => onPage?.(n)}>{n}</button>)}
++      <button type="button" className="es-page" disabled={cur >= pages} aria-label="次へ" onClick={() => onPage?.(cur + 1)}><DsIcon n="CaretRight" s={14} /></button>
++      <div className="es-input es-select es-input--sm es-pagination__per">
++        <select value={per} aria-label="表示件数" onChange={(e) => onPer?.(+e.target.value)}>{[10, 20, 50].map((n) => <option key={n} value={n}>{n}件/ページ</option>)}</select>
++        <DsIcon n="CaretDown" s={14} />
++      </div>
+     </div>
+   );
+ }
+diff --git a/app/ops/applications/applications.css b/app/ops/applications/applications.css
+index 5550280..877b637 100644
+--- a/app/ops/applications/applications.css
++++ b/app/ops/applications/applications.css
+@@ -1094,7 +1094,7 @@
+ .ops-applications #app .vtabs{border-radius:var(--radius-lg) 0 0 var(--radius-lg)}
+ .ops-applications #app .vsave{border-top:1px solid var(--border)}
+ .ops-applications #app .vmeta{color:var(--text-muted)}
+-.ops-applications .fixfoot,.ops-applications #foot,.ops-applications #steps,.ops-applications .steps,.ops-applications #side,.ops-applications .side,.ops-applications .apx-stick{display:none!important}
++.ops-applications .fixfoot,.ops-applications #foot,.ops-applications #steps,.ops-applications div.steps,.ops-applications #side,.ops-applications .side,.ops-applications .apx-stick{display:none!important}
+ .ops-applications .cols{display:block!important}
+ .ops-applications .page{padding:0 1.714286rem 3.428571rem!important}
+ .ops-applications #phead.phead{display:block;padding:0;margin:0 -1.714286rem}
+@@ -1729,3 +1729,11 @@
+ .ops-applications .page{padding:0 0 3.428571rem}
+ .ops-applications #apxbody>.es-pagehead,.ops-applications #phead.phead{margin:0}
+ .ops-applications .es-pagehead{padding-left:0;padding-right:0}
++
++/* CSV取込の手順（ol.steps：1 ファイルを選ぶ → 2 確認・登録）は出す（旧デモの div.steps だけ隠す） */
++.ops-applications ol.steps{display:flex!important;list-style:none;gap:0.571429rem;flex-wrap:wrap;background:none;border:0;box-shadow:none;padding:0;margin:0 0 1.142857rem;overflow:visible}
++.ops-applications ol.steps li{display:flex;align-items:center;gap:0.428571rem;font-size:0.928571rem;color:var(--text-middle);padding:0.428571rem 0.857143rem;border-radius:999px;background:var(--surface-2,#f3f5f7)}
++.ops-applications ol.steps li i{font-style:normal;width:1.428571rem;height:1.428571rem;border-radius:50%;display:grid;place-items:center;background:#9aa5b1;color:#fff;font-size:0.785714rem;font-weight:700}
++.ops-applications ol.steps li.done i{background:#1A7F37}
++.ops-applications ol.steps li.cur{font-weight:700;color:var(--primary-600,#0b6bcb)}
++.ops-applications ol.steps li.cur i{background:var(--primary-600,#0b6bcb)}
+diff --git a/app/ops/applications/page.tsx b/app/ops/applications/page.tsx
+index 8477edf..58ff749 100644
+--- a/app/ops/applications/page.tsx
++++ b/app/ops/applications/page.tsx
+@@ -12,11 +12,13 @@ import { today } from '@/lib/supplier/dates';
+ import { OpsCsvImport, useOpsCsvExport } from '../_ui/csv';
+ import { useOps } from '../_ui/OpsProvider';
+ import { useCanAct, useScreenCan } from '../_ui/perm';
+-import { sameConds, UnappliedMark } from '../_general/list';
+ import { api, getFilter, setFilter, tabFilter } from './_components/api';
+ import { Badge, Bg, Btn, Dialog, Input, Pagination, PageHead, Ro, Select, Table, Tabs } from './_components/ds';
+ import { fmtDate, fmtDatesIn } from '@/lib/format/date';
+ 
++const NEW_SORTS: [string, string][] = [['no', '申請ID'], ['kubun', '契約区分'], ['company', '法人名'], ['plan', 'プラン'], ['course', 'コース'], ['eq', '設備区分'], ['ship', '配送区分'], ['cnt', '納品回数'], ['acct', 'アカウント状態'], ['es', 'ES営業担当'], ['st', 'ステータス'], ['date', '申請日']];
++const CHG_SORTS: [string, string][] = [['no', '申請ID'], ['kind', '申請の種類'], ['company', '法人名'], ['head', '変更の内容'], ['start', '開始サイクル月'], ['dl', 'オーダー締切'], ['es', 'ES営業担当'], ['st', 'ステータス'], ['date', '申請日']];
++
+ /*
+  * 契約申請管理（一覧）。元：11_運営_申請受付.html の APX.list（2026/09/28：実画面「契約申請管理」の内容に合わせた）。
+  * タブ：新規契約（申込の受付）／契約変更・休止・解約（法人Webからの変更申請の承認）。申請IDを押すと申請詳細を開く。
+@@ -30,6 +32,8 @@ export default function ApplicationsListPage() {
+   const [f, setF] = useState<ListFilter>(getFilter);
+   const [q, setQ] = useState(f.q);
+   const [closed, setClosed] = useState<IntakeRow | null>(null);
++  const [page, setPage] = useState(1);
++  const [per, setPer] = useState(10);
+ 
+   const put = (nf: ListFilter) => { setF(nf); setFilter(nf); };
+   /* 条件は手元（d・q）に持ち、「検索」か Enter で一覧に効かせる（2026/10/03 決定）。タブを切り替えたときは、そのタブの条件に戻る */
+@@ -37,8 +41,6 @@ export default function ApplicationsListPage() {
+   useEffect(() => { setD(f); setQ(f.q); }, [f]);
+   const filt = (k: keyof ListFilter, v: string) => setD({ ...d, [k]: v });
+   const applyQ = () => put({ ...d, q });
+-  const strs = (x: ListFilter) => Object.fromEntries(Object.entries(x).map(([k, v]) => [k, String(v ?? '')]));
+-  const dirty = !sameConds(strs({ ...d, q }), strs(f));
+ 
+   const td = today();
+   const intakes = useMemo(() => data?.intakes ?? [], [data]);
+@@ -50,6 +52,11 @@ export default function ApplicationsListPage() {
+   const tabAll = rowsAll.filter((r) => r.tab === tab);
+   const chgRows = useMemo(() => filterChanges(rowsAll, f), [rowsAll, f]);
+   const n = tab === 'new' ? newRows.length : chgRows.length;
++  /* 検索条件・タブが変わったら 1 ページ目へ */
++  useEffect(() => { setPage(1); }, [f]);
++  const pageNew = useMemo(() => newRows.slice((page - 1) * per, page * per), [newRows, page, per]);
++  const pageChg = useMemo(() => chgRows.slice((page - 1) * per, page * per), [chgRows, page, per]);
++  const base = (page - 1) * per;
+   const split = pendingSplit(intakes, changes);
+ 
+   /** 新規契約の行：却下・取り下げ済みは受付画面を開かず、理由と日時だけを出す（2026/09/29） */
+@@ -85,6 +92,17 @@ export default function ApplicationsListPage() {
+   const sel = (key: keyof ListFilter, opts: string[], ph: string) => (
+     <div><Select value={String(d[key] ?? '')} opts={opts} ph={ph} onChange={(v) => filt(key, v)} /></div>
+   );
++  /* 並べ替え：一覧の全列から選ぶ＋昇順／降順（台帳 K「一覧の決まり」） */
++  const sortSel = (opts: [string, string][]) => {
++    const key = d.sort === 'id' ? 'no' : d.sort;
++    const dir = d.dir ?? (key === 'date' ? 'desc' : 'asc');
++    return (
++      <>
++        <div><Select value={key} opts={opts.map(([v, t]) => ({ v, t: `並び：${t}` }))} onChange={(v) => setD({ ...d, sort: v, dir: undefined })} /></div>
++        <div><Select value={dir} opts={[{ v: 'asc', t: '昇順' }, { v: 'desc', t: '降順' }]} onChange={(v) => setD({ ...d, dir: v as 'asc' | 'desc' })} /></div>
++      </>
++    );
++  };
+   const search = <Input value={q} icon="Search" ph="申請ID・法人名・拠点名・担当者名" onChange={setQ} onEnter={applyQ} />;
+ 
+   return (
+@@ -126,33 +144,32 @@ export default function ApplicationsListPage() {
+                     {sel('eq', uniq(intakes.map((x) => x.eq)), '設備区分')}
+                     {sel('es', uniq(intakes.map((x) => x.es)), 'ES営業担当')}
+                     {sel('st', INTAKE_STATUSES, 'ステータス')}
+-                    <div><Select value={d.sort === 'date' ? 'date' : 'id'} opts={[{ v: 'id', t: '並び：申請ID' }, { v: 'date', t: '並び：申請日' }]} onChange={(v) => filt('sort', v)} /></div>
++                    {sortSel(NEW_SORTS)}
+                   </>
+                 ) : (
+                   <>
+                     {sel('kind', uniq(tabAll.map((r) => r.kind)), '申請の種類')}
+                     {sel('br', uniq(tabAll.flatMap((r) => r.brs)), '拠点')}
+                     {sel('st2', CHANGE_STATUSES, 'ステータス')}
+-                    <div><Select value={d.sort === 'id' ? 'id' : 'date'} opts={[{ v: 'date', t: '並び：申請日' }, { v: 'id', t: '並び：申請ID' }]} onChange={(v) => filt('sort', v)} /></div>
++                    {sortSel(CHG_SORTS)}
+                   </>
+                 )}
+               </div>
+             </div>
+             <div className="es-search__actions">
+               <div className="es-search__main">
+-                <Btn variant="outline" onClick={() => { setQ(''); put({ tab, q: '', sort: tab === 'new' ? 'id' : 'date' }); }}>クリア</Btn>
+-                <UnappliedMark es show={dirty} />
++                <Btn variant="outline" onClick={() => { setQ(''); put({ tab, q: '', sort: tab === 'new' ? 'no' : 'date' }); }}>クリア</Btn>
+                 <Btn onClick={applyQ}>検索</Btn>
+               </div>
+             </div>
+           </div>
+           {tab === 'new' ? (
+             <Table cls="apx-list" head={['No', '申請ID', '契約区分', '法人名／拠点名', 'プラン', 'コース', '設備区分', '配送区分', '納品回数', 'アカウント状態', 'ES営業担当', 'ステータス', '申請日']}>
+-              {!data ? null : n ? newRows.map((x, k) => {
++              {!data ? null : n ? pageNew.map((x, k) => {
+                 const m = String(x.cnt).match(/^(.*?)（(.+)）$/);
+                 return (
+                   <tr key={x.no} className={x.fresh ? 'is-selected' : ''}>
+-                    <td>{k + 1}</td>
++                    <td>{base + k + 1}</td>
+                     <td>
+                       <a href="#" className="idlink" onClick={(e) => { e.preventDefault(); openIntake(x); }}>{x.no}</a>
+                       {x.route && <div className="mm"><Badge>代理入力</Badge> {x.route}</div>}
+@@ -171,9 +188,9 @@ export default function ApplicationsListPage() {
+             </Table>
+           ) : (
+             <Table cls="apx-list" head={['No', '申請ID', '申請の種類', '法人名／拠点名', '変更の内容', '開始サイクル月', 'オーダー締切', 'ES営業担当', 'ステータス', '申請日']}>
+-              {!data ? null : n ? chgRows.map((r, k) => (
++              {!data ? null : n ? pageChg.map((r, k) => (
+                 <tr key={r.no}>
+-                  <td>{k + 1}</td>
++                  <td>{base + k + 1}</td>
+                   <td>
+                     <Link href={`/ops/applications/${r.no}`} className="idlink">{r.no}</Link>
+                     {r.a.proxy && <div className="mm"><Badge>代理入力</Badge></div>}
+@@ -192,7 +209,7 @@ export default function ApplicationsListPage() {
+               )) : <tr><td colSpan={10} style={{ textAlign: 'center', color: 'var(--text-low)' }}>条件に合う申請はありません</td></tr>}
+             </Table>
+           )}
+-          <Pagination total={n} />
++          <Pagination total={n} per={per} page={page} onPage={setPage} onPer={(v) => { setPer(v); setPage(1); }} />
+         </section>
+         {DEMO && (
+           <details className="apx-memo">
+diff --git a/app/ops/billing/actuals/[id]/ActualDetail.tsx b/app/ops/billing/actuals/[id]/ActualDetail.tsx
+index cea7898..9108b7d 100644
+--- a/app/ops/billing/actuals/[id]/ActualDetail.tsx
++++ b/app/ops/billing/actuals/[id]/ActualDetail.tsx
+@@ -129,7 +129,7 @@ function ActualNow({ L, b: b0, edit }: { L: BillingLogic; b: Br; edit: boolean }
+             <label className="es-field__label">棚卸の申告（当月の棚卸）</label>
+             <label className={`es-check${dis ? ' is-disabled' : ''}`} style={{ minHeight: '2.857143rem' }}>
+               <input type="checkbox" checked={b.filed} disabled={dis} onChange={(e) => setFiled(e.target.checked)} /><span className="es-check__box" />
+-              <span>{b.filed ? `申告済（${fmtDate(b.stockDay)} ／ ${b.by}）` : <span style={{ color: 'var(--negative-500)' }}>未申告 → 請求留保</span>}</span>
++              <span>{b.filed ? `申告済（${fmtDate(b.stockDay)} ／ ${b.by}）` : <span style={{ color: 'var(--negative-500)' }}>未申告（請求は保留しません。25日になっても未報告なら事務手数料）</span>}</span>
+             </label>
+           </div>
+           {!b.filed && !b.noCheck && can('remind') && <div><Btn sm onClick={() => run('remind', { id: b.id })}>督促を送る</Btn></div>}
+@@ -165,7 +165,7 @@ function ActualNow({ L, b: b0, edit }: { L: BillingLogic; b: Br; edit: boolean }
+           <thead>
+             <tr><th rowSpan={2}>商品</th><th colSpan={3} className="c" style={{ borderLeft: BL }}>販売単価（税込）</th><th colSpan={6} className="c" style={{ borderLeft: BL }}>数量の内訳</th><th colSpan={2} className="c" style={{ borderLeft: BL }}>管理ロス</th><th rowSpan={2} className="r" style={{ borderLeft: BL }}>価格調整差額<div className="small">税込／税抜</div></th></tr>
+             <tr><th className="r" style={{ borderLeft: BL }}>定価</th><th className="c">価格調整</th><th className="r">販売単価<div className="small">利用者が支払う</div></th>
+-              <th className="r" style={{ borderLeft: BL }}>納品</th><th className="r">販売</th><th className="r">廃棄</th><th className="r">承認調整</th><th className="r">計算在庫</th><th className="r">点検申告</th>
++              <th className="r" style={{ borderLeft: BL }}>納品</th><th className="r">販売</th><th className="r">廃棄</th><th className="r">承認調整</th><th className="r">計算在庫</th><th className="r">棚卸報告</th>
+               <th className="r" style={{ borderLeft: BL }}>数量</th><th className="r">金額<div className="small">税込／税抜</div></th></tr>
+           </thead>
+           <tbody>
+@@ -210,7 +210,7 @@ function ActualNow({ L, b: b0, edit }: { L: BillingLogic; b: Br; edit: boolean }
+             <tr><td><b>この拠点の後払い分</b><div className="small">（請求書の明細の合計。税込／税抜は行ごとの税率で出した合計）</div></td><td className="r es-num"><ArrTot L={L} b={b} /></td></tr>
+           </tfoot>
+         </Table>
+-        <Foot><div className="small">{b.filed ? '確定すると計算在庫を点検申告値へ書き換え、精算差額が確定します' : L.penaltyOn(b) ? '棚卸が未申告です。請求は保留せず、確定すると事務手数料が載ります' : '棚卸が未申告です（この拠点は事務手数料はかかりません）'}</div></Foot>
++        <Foot><div className="small">{b.filed ? '確定すると計算在庫を棚卸報告値へ書き換え、精算差額が確定します' : L.penaltyOn(b) ? '棚卸が未申告です。請求は保留せず、確定すると事務手数料が載ります' : '棚卸が未申告です（この拠点は事務手数料はかかりません）'}</div></Foot>
+       </Card>
+ 
+       {(b.altRows ?? []).length > 0 && (
+diff --git a/app/ops/billing/actuals/page.tsx b/app/ops/billing/actuals/page.tsx
+index 6d71278..76b4734 100644
+--- a/app/ops/billing/actuals/page.tsx
++++ b/app/ops/billing/actuals/page.tsx
+@@ -121,7 +121,7 @@ function Actuals() {
+           <tfoot><tr><td colSpan={6}>合計</td><td className="r es-num"><TaxYen v={T.mg} rate={R8} /></td><td className="r es-num"><TaxYen v={T.over} rate={R8} /></td><td className="r es-num"><TaxYen v={T.sales} rate={RC} signed /></td><td className="r es-num"><TaxYen v={T.adjD} rate={R8} /></td><td className="r es-num"><TaxYen v={T.bill} rate={R8} /></td><td colSpan={2} /></tr></tfoot>
+         </Table>
+         <Pagination {...pageOf(pager, rows).props} />
+-        <Foot><div className="small"><b>差分率</b>＝(理論 − 申告) ÷ 理論、<b>廃棄率</b>＝廃棄 ÷ (前回 ＋ 納品)。<b>どちらかが10%以上の子契約は赤</b>で、まとめて確定できません（詳細で確かめて確定）。アラートのない子契約は選んでまとめて確定できます。計算在庫 ＝ 前回の点検申告 ＋ 納品 − 販売（アプリ） − 廃棄 ± 在庫調整。アプリで決済済みの支払いは実績精算に出しません。<b>アプリで現金を選んだ分は、回収予定額とドライバーの回収額の差だけ</b>を載せます。金額は上が税込（販売単価（税込）から出した額）、下が税抜（軽減8%で割り戻し・1円未満四捨五入）</div></Foot>
++        <Foot><div className="small"><b>差分率</b>＝(理論 − 申告) ÷ 理論、<b>廃棄率</b>＝廃棄 ÷ (前回 ＋ 納品)。<b>どちらかが10%以上の子契約は赤</b>で、まとめて確定できません（詳細で確かめて確定）。アラートのない子契約は選んでまとめて確定できます。計算在庫 ＝ 前回の棚卸報告 ＋ 納品 − 販売（アプリ） − 廃棄 ± 在庫調整。アプリで決済済みの支払いは実績精算に出しません。<b>アプリで現金を選んだ分は、回収予定額とドライバーの回収額の差だけ</b>を載せます。金額は上が税込（販売単価（税込）から出した額）、下が税抜（軽減8%で割り戻し・1円未満四捨五入）</div></Foot>
+       </Card>
+       {/* 権限がなければ出さない */}
+       {!past && <SelBar n={ids.length} onClear={() => setSel({})}>{canOp('bulkAct') && <Btn kind="pri" onClick={bulk}>まとめて確定</Btn>}</SelBar>}
+diff --git a/app/ops/billing/stock/[id]/StockDetail.tsx b/app/ops/billing/stock/[id]/StockDetail.tsx
+index 0e6f400..7e161c6 100644
+--- a/app/ops/billing/stock/[id]/StockDetail.tsx
++++ b/app/ops/billing/stock/[id]/StockDetail.tsx
+@@ -61,11 +61,11 @@ export default function StockDetail({ edit }: { edit: boolean }) {
+         <Tag>対象期間 {fmtDatesIn(actPeriod(m))}</Tag>{b.actOK && <Tag c="ok">実績精算 確定済</Tag>}
+         <RateTags L={L} b={b} />
+       </Meta>
+-      {b.noCheck && <Inline>この拠点は<b>棚卸なし</b>です（拠点の設定）。管理ロスは出さず、点検の督促・事務手数料もありません。</Inline>}
++      {b.noCheck && <Inline>この拠点は<b>棚卸なし</b>です（拠点の設定）。管理ロスは出さず、棚卸の督促・事務手数料もありません。</Inline>}
+       {L.firstWait(b) && <Inline tone="warning"><b>最初の棚卸報告がまだです。</b>切り替えのあとの最初の棚卸報告までは、始まりの数がないため管理ロスは出しません（実績精算に管理ロスの行は作りません）。最初の棚卸報告で、理論在庫は実在庫に置き換わります。</Inline>}
+       {past ? <Inline>{pLabel(m, L.month)}は確定済みです。確定したときの記録を表示しています（参照のみ）。</Inline>
+-        : after ? <Inline tone="warning"><b>当月の棚卸は済んでいます（申告 {fmtDate(b.stockDay)} ／ {b.by}）。</b>ここで在庫調整を入れると、計算在庫と点検申告の差（<b>管理ロス</b>）が変わり、実績精算の金額（免責超過）に効きます。</Inline>
+-          : <Inline><b>当月の棚卸はまだです。</b>いまの計算在庫（前回の点検申告 ＋ 納品 − 販売 − 廃棄 ± 在庫調整）を表示しています。在庫調整を入れると計算在庫が変わり、棚卸のときの基準になります。管理ロスは棚卸のあとに出ます。</Inline>}
++        : after ? <Inline tone="warning"><b>当月の棚卸は済んでいます（申告 {fmtDate(b.stockDay)} ／ {b.by}）。</b>ここで在庫調整を入れると、計算在庫と棚卸報告の差（<b>管理ロス</b>）が変わり、実績精算の金額（免責超過）に効きます。</Inline>
++          : <Inline><b>当月の棚卸はまだです。</b>いまの計算在庫（前回の棚卸報告 ＋ 納品 − 販売 − 廃棄 ± 在庫調整）を表示しています。在庫調整を入れると計算在庫が変わり、棚卸のときの基準になります。管理ロスは棚卸のあとに出ます。</Inline>}
+       {!past && !can && <Inline tone="negative">実績精算が確定済みのため編集できません。確定後に見つかった誤りは、<b>翌月の実績精算の中の調整</b>（翌月の請求詳細の「③ 調整」）で相殺します。</Inline>}
+       {ed && <Inline>調整したい商品の行に、数量（＋増やす／−減らす）と理由を入れて「保存」してください。<b>保存するとすぐ計算在庫に反映</b>されます（申請・承認はありません）。理由は監査ログに残ります。</Inline>}
+ 
+@@ -76,15 +76,15 @@ export default function StockDetail({ edit }: { edit: boolean }) {
+           <Ro label="申告者">{b.filed ? b.by : '—'}</Ro>
+           <Ro label="申告の方法">{b.filed ? how : '—'}</Ro>
+           <Ro label="申告の締め">{m.replace('-', '/') + '/20（対象期間の最終日）'}</Ro>
+-          <Ro label="商品ごとの実数">{b.filed ? '下の表の「点検申告」' : '申告されると下の表に出ます'}</Ro>
++          <Ro label="商品ごとの実数">{b.filed ? '下の表の「棚卸報告」' : '申告されると下の表に出ます'}</Ro>
+         </div>
+         {!b.filed && !b.noCheck && <Foot><div className="small">お客様の入力は20日まで。25日までに申告がない（運営の代理入力も含む）と、事務手数料（{yen(L.S.cfg.penalty)}・税抜）がかかります（請求は保留しません）</div>{canOp('remind') && <Btn sm onClick={() => run('remind', { id: b.id })}>督促を送る</Btn>}</Foot>}
+       </Card>
+ 
+-      <Card title={after ? '計算在庫と点検申告（管理ロス）' : 'いまの計算在庫'}>
++      <Card title={after ? '計算在庫と棚卸報告（管理ロス）' : 'いまの計算在庫'}>
+         <Table>
+-          <thead><tr><th>商品</th><th className="r">前回の点検申告</th><th className="r">＋ 納品</th><th className="r">− 販売</th><th className="r">− 廃棄</th><th className="r">± 在庫調整</th><th className="r">＝ 計算在庫</th>
+-            {after && <><th className="r">点検申告</th><th className="r">差（管理ロス）</th><th className="r">差分率</th></>}<th className="r">廃棄率</th>{ed && <th className="c">在庫調整を入力（数量・理由）</th>}</tr></thead>
++          <thead><tr><th>商品</th><th className="r">前回の棚卸報告</th><th className="r">＋ 納品</th><th className="r">− 販売</th><th className="r">− 廃棄</th><th className="r">± 在庫調整</th><th className="r">＝ 計算在庫</th>
++            {after && <><th className="r">棚卸報告</th><th className="r">差（管理ロス）</th><th className="r">差分率</th></>}<th className="r">廃棄率</th>{ed && <th className="c">在庫調整を入力（数量・理由）</th>}</tr></thead>
+           <tbody>
+             {rows.map((r) => {
+               const t = theoR(r), d = after ? t - r.real : null, e = bad.includes(r.id);
+diff --git a/app/ops/branches/page.tsx b/app/ops/branches/page.tsx
+index 10cd57c..df8bbf8 100644
+--- a/app/ops/branches/page.tsx
++++ b/app/ops/branches/page.tsx
+@@ -37,19 +37,21 @@ export default function BranchesPage() {
+       ]}
+       cols={[
+         { label: '拠点ID', mono: true, cell: () => null },
+-        { label: '拠点名', cell: (r) => r.name },
+-        { label: '所属法人', cell: (r) => r.corpName },
+-        { label: '拠点ステータス', cell: (r) => <EsBadge v={r.status} tone={tone(r.status)} /> },
+-        { label: '親契約番号', cell: (r) => r.parentNo },
+-        { label: '契約ステータス', cell: (r) => <EsBadge v={r.contractStatus} tone={tone(r.contractStatus)} /> },
+-        { label: '契約種別', cell: (r) => r.contractKind },
+-        { label: '現在のプラン', cell: (r) => r.plan },
+-        { label: '当初契約開始年月', cell: (r) => r.startYm },
+-        { label: '継続年月', cell: (r) => r.duration },
+-        { label: '請求先', cell: (r) => r.billTo },
+-        { label: '住所', cell: (r) => r.addr },
+-        { label: '登録日時', cell: (r) => r.registeredAt },
++        { label: '拠点名', sort: (r) => r.name, cell: (r) => r.name },
++        { label: '所属法人', sort: (r) => r.corpName, cell: (r) => r.corpName },
++        { label: '拠点ステータス', sort: (r) => r.status, cell: (r) => <EsBadge v={r.status} tone={tone(r.status)} /> },
++        { label: '親契約番号', sort: (r) => r.parentNo, cell: (r) => r.parentNo },
++        { label: '契約ステータス', sort: (r) => r.contractStatus, cell: (r) => <EsBadge v={r.contractStatus} tone={tone(r.contractStatus)} /> },
++        { label: '契約種別', sort: (r) => r.contractKind, cell: (r) => r.contractKind },
++        { label: '現在のプラン', sort: (r) => r.plan, cell: (r) => r.plan },
++        { label: '当初契約開始年月', sort: (r) => r.startYm, cell: (r) => r.startYm },
++        { label: '継続年月', sort: (r) => r.duration, cell: (r) => r.duration },
++        { label: '請求先', sort: (r) => r.billTo, cell: (r) => r.billTo },
++        { label: '住所', sort: (r) => r.addr, cell: (r) => r.addr },
++        { label: '登録日時', sort: (r) => r.registeredAt, cell: (r) => r.registeredAt },
++        { label: '更新日時', sort: (r) => r.updatedAt, cell: (r) => r.updatedAt },
+       ]}
++      defaultSort={{ label: '更新日時', dir: 'desc' }}
+       rows={rows} rowId={(r) => r.id} name={(r) => r.name} apNo={(r) => r.apNo} text={text}
+       href={(id) => `/ops/branches/${id}`}
+       csv={{ entity: 'branches', importHref: '/ops/branches/import' }}
+diff --git a/app/ops/contracts/page.tsx b/app/ops/contracts/page.tsx
+index 8df6d5c..97892a7 100644
+--- a/app/ops/contracts/page.tsx
++++ b/app/ops/contracts/page.tsx
+@@ -35,17 +35,19 @@ export default function ContractsPage() {
+       ]}
+       cols={[
+         { label: '子契約ID', mono: true, cell: (r) => (r.apNo ? <> <EsBadge v="仮登録" tone="info" /></> : null) },
+-        { label: '契約・サイクル月', cell: (r) => r.month },
+-        { label: '拠点', cell: (r) => r.branchName },
+-        { label: '所属法人', cell: (r) => r.corpName },
+-        { label: '契約種別', cell: (r) => r.kind },
+-        { label: 'プラン', cell: (r) => r.plan },
+-        { label: '配送区分・納品回数', cell: (r) => r.ship },
+-        { label: '請求月（前払い）', cell: (r) => r.billMonth },
+-        { label: '当月請求額（税抜）', cell: (r) => r.amount, num: true },
+-        { label: '請求ステータス', cell: (r) => r.billStatus },
+-        { label: '生成方法', cell: (r) => r.gen },
++        { label: '契約・サイクル月', sort: (r) => r.month, cell: (r) => r.month },
++        { label: '拠点', sort: (r) => r.branchName, cell: (r) => r.branchName },
++        { label: '所属法人', sort: (r) => r.corpName, cell: (r) => r.corpName },
++        { label: '契約種別', sort: (r) => r.kind, cell: (r) => r.kind },
++        { label: 'プラン', sort: (r) => r.plan, cell: (r) => r.plan },
++        { label: '配送区分・納品回数', sort: (r) => r.ship, cell: (r) => r.ship },
++        { label: '請求月（前払い）', sort: (r) => r.billMonth, cell: (r) => r.billMonth },
++        { label: '当月請求額（税抜）', sort: (r) => r.amountYen, cell: (r) => r.amount, num: true },
++        { label: '請求ステータス', sort: (r) => r.billStatus, cell: (r) => r.billStatus },
++        { label: '生成方法', sort: (r) => r.gen, cell: (r) => r.gen },
++        { label: '更新日時', sort: (r) => r.updatedAt, cell: (r) => r.updatedAt },
+       ]}
++      defaultSort={{ label: '更新日時', dir: 'desc' }}
+       rows={rows} rowId={(r) => r.id} name={(r) => r.branchName} apNo={(r) => r.apNo} text={text}
+       href={(id) => `/ops/contracts/${id}`}
+       /* 価格世代の一括切替は契約の側から（プラン・価格の世代を条件に未確定の子契約に当てる。台帳 F・受付簿 #96） */
+diff --git a/app/ops/corps/_components/DetailScreen.tsx b/app/ops/corps/_components/DetailScreen.tsx
+index 78d78bd..cff8fa2 100644
+--- a/app/ops/corps/_components/DetailScreen.tsx
++++ b/app/ops/corps/_components/DetailScreen.tsx
+@@ -3,7 +3,7 @@
+ import { useOpsLeaveGuard } from '@/app/ops/_ui/leaveGuard';
+ import { useRouter } from 'next/navigation';
+ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+-import { errorMessage } from '@/lib/api/errors';
++import { errorMessage, isStale } from '@/lib/api/errors';
+ import { DEMO } from '@/lib/demo';
+ import contracts from '@/lib/ops/areas/contracts';
+ import { areaApi, useQuery } from '@/lib/ops/core/client';
+@@ -15,6 +15,7 @@ import {
+ import type { Branch, CardDef, Cell, Entity, FieldDef, FormVal, SelOpt, TableRow } from '@/lib/ops/contracts/types';
+ import { today } from '@/lib/supplier/dates';
+ import { useOps } from '../../_ui/OpsProvider';
++import { EditingNotice, useEditingNotice } from '../../_ui/editingNotice';
+ import { useCanAct, useScreenCan } from '../../_ui/perm';
+ import { AskDialog, BulkBillToDialog, EsConfirm, GenDialog, genToast, ScopeDialog, TrialExtendDialog } from './dialogs';
+ import { backToStored, fmtAuto, fmtAutoNode, fmtDatesIn } from '@/lib/format/date';
+@@ -47,11 +48,13 @@ type Data = {
+   sum: { k: string; v: string }[];
+   later?: { cyc: string; later: unknown[]; fixed: number; open: number; span: string };
+   pending?: Branch['pending'] | null;
++  /** 保存の版（同時更新の検知・E31） */
++  version?: string;
+ };
+ 
+ function Screen({ entity, id, mode: mode0, tab: tab0, from, data }: { entity: Entity; id: string; mode: 'detail' | 'edit'; tab?: string; from?: string; data: Data }) {
+   const router = useRouter();
+-  const { toast, toastError, can } = useOps();
++  const { toast, toastError, can, account } = useOps();
+   const canAct = useCanAct();
+   const screenCan = useScreenCan();
+   const def = FORMS[entity];
+@@ -118,10 +121,17 @@ function Screen({ entity, id, mode: mode0, tab: tab0, from, data }: { entity: En
+   };
+ 
+   /* ---------- 保存 ---------- */
+-  const doSave = async (scope?: 'only' | 'after') => {
++  const baseVer = useRef(data.version);
++  /* 編集していないあいだは、読み直した最新の版を基準にする（他の人が保存したあとに開いたままの画面が、読み直した内容で保存できるように） */
++  // eslint-disable-next-line react-hooks/exhaustive-deps
++  useEffect(() => { if (!dirty) baseVer.current = data.version; }, [data.version]);
++  /* I02：同じ画面を編集中のほかの人を、先に知らせる（ロックはしない） */
++  const editors = useEditingNotice(edit && !!account, (leave) => api.query('presence', { entity, id, accountId: account!.id, name: account!.name, leave }));
++  const doSave = async (scope?: 'only' | 'after', force = false) => {
+     setBusy(true);
+     try {
+-      const r = await api.action('save', { entity, id, values: shown, tables, scope });
++      const r = await api.action('save', { entity, id, values: shown, tables, scope, baseVersion: baseVer.current, ...(force ? { force: true } : {}) });
++      baseVer.current = r.version;
+       setDirty(false);
+       if (entity === 'child') {
+         const l = data.later!;
+@@ -130,7 +140,11 @@ function Screen({ entity, id, mode: mode0, tab: tab0, from, data }: { entity: En
+           : scope === 'after' ? `保存しました。未確定の子契約 ${r.extra || l.open}件も直しました。変更履歴の適用範囲：${l.cyc} 以降すべて` : `保存しました。変更履歴の適用範囲：${l.cyc} のみ`);
+       } else toast('保存しました');
+       router.push(detailHref);
+-    } catch (e) { toastError(e); } finally { setBusy(false); }
++    } catch (e) {
++      /* 他のユーザーが先に保存していた（E31）：「上書きして保存」は force で送り直す */
++      if (isStale(e)) setLayer(<EsConfirm title="内容が更新されています" body="他のユーザーにより内容が更新されています。上書きすると保存されます。" ok="上書きして保存" onClose={close} onOk={() => { void doSave(scope, true); }} />);
++      else toastError(e);
++    } finally { setBusy(false); }
+   };
+   const save = () => {
+     const e = validate(entity, shown, locked);
+@@ -403,6 +417,7 @@ function Screen({ entity, id, mode: mode0, tab: tab0, from, data }: { entity: En
+       </div>
+       {prov && <div className="provbar"><b>仮登録中です（申請 <span className="es-mono">{row.apNo}</span> の詳細情報設定中）。</b>仮登録の間は、この画面では編集できません。編集は <b>契約申請管理 ＞ 申請詳細</b> で行います。拠点を確定（本登録）すると、この画面で編集できるようになります。</div>}
+       {pending && <div className="provbar pendnote"><b>承認待ちの申請 <span className="es-mono">{pending.no}</span>（{pending.kind}）があります。</b>申請の対象の項目（{pending.fields.join('・')}）は、承認後に変えられます（承認すると申請の内容で書き換わります）。</div>}
++      <EditingNotice others={editors} className="provbar pendnote" />
+       {entity === 'corp' && !edit && <CorpReminder id={id} />}
+       <div className="stick">
+         <div className="tabrow"><div className="tabs" role="tablist">
+diff --git a/app/ops/corps/_components/MasterList.tsx b/app/ops/corps/_components/MasterList.tsx
+index e3fbd3e..5c6b243 100644
+--- a/app/ops/corps/_components/MasterList.tsx
++++ b/app/ops/corps/_components/MasterList.tsx
+@@ -26,7 +26,12 @@ export const uniq = (xs: (string | undefined)[]) => [...new Set(xs.filter((x): x
+ /** 表の件数の選択肢（決定 STEP7 L-1。全部の一覧で 10／20／50） */
+ const PER = [10, 20, 50];
+ const RANGE_SEP = '|';
+-export type ColDef<R> = { label: string; key?: string; cell: (r: R) => ReactNode; mono?: boolean; /** 金額など数値（右寄せ） */ num?: boolean };
++export type ColDef<R> = {
++  label: string; key?: string; cell: (r: R) => ReactNode; mono?: boolean; /** 金額など数値（右寄せ） */ num?: boolean;
++  /** 並べ替えに使う値（省くと ID の列は rowId、ほかは検索の文字 text(r, key)）。全列で並べ替えできる（台帳 K「一覧の決まり」） */
++  sort?: (r: R) => string | number;
++};
++export type SortDir = 'asc' | 'desc';
+ 
+ type Props<R> = {
+   title: string;
+@@ -49,6 +54,8 @@ type Props<R> = {
+   csv: { entity: string; key?: (r: R) => string; importHref?: string };
+   /** 見出しの右に足すボタン（子契約一覧の「価格世代を一括切替」など） */
+   actions?: ReactNode;
++  /** 初期の並び（列の見出しの文字と向き。法人・拠点・子契約＝更新日時の降順（台帳 一覧の初期の並び）。確認メモ_AW_運営A H1） */
++  defaultSort?: { label: string; dir: SortDir };
+ };
+ 
+ export default function MasterList<R>(p: Props<R>) {
+@@ -91,7 +98,26 @@ export default function MasterList<R>(p: Props<R>) {
+     if (s.t === 'select') return p.text(r, s.key).startsWith(v);
+     return s.keys.some((k) => p.text(r, k).toLowerCase().includes(v.toLowerCase()));
+   });
+-  const shown = (p.rows ?? []).filter(hit);
++  const [sort, setSort] = useState<{ label: string; dir: SortDir } | null>(null);
++  const sortNow = sort ?? p.defaultSort ?? null;
++  const sortVal = (c: ColDef<R>, r: R): string | number => (c.sort ? c.sort(r) : c.key ? p.text(r, c.key) : p.rowId(r));
++  const shown = (() => {
++    const rows = (p.rows ?? []).filter(hit);
++    const col = p.cols.find((c) => c.label === sortNow?.label);
++    if (!col || !sortNow) return rows;
++    const sign = sortNow.dir === 'desc' ? -1 : 1;
++    /* 空（—）は向きに関わらず最後。同じ値は ID の昇順 */
++    const cmp = (a: R, b: R) => {
++      const x = sortVal(col, a), y = sortVal(col, b);
++      const ex = x === '' || x === '—', ey = y === '' || y === '—';
++      if (ex !== ey) return ex ? 1 : -1;
++      const c = typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y), 'ja', { numeric: true });
++      return c ? c * sign : p.rowId(a).localeCompare(p.rowId(b));
++    };
++    return [...rows].sort(cmp);
++  })();
++  /* 見出しを押すと、その列の昇順 → 降順 → …（選んだ列が変わったら昇順から） */
++  const pickSort = (label: string, dir?: SortDir) => { setSort({ label, dir: dir ?? (sortNow?.label === label && sortNow.dir === 'asc' ? 'desc' : 'asc') }); setPage(1); };
+   const [per, setPer] = useState(10);
+   const [page, setPage] = useState(1);
+   const pages = Math.max(1, Math.ceil(shown.length / per));
+@@ -153,11 +179,33 @@ export default function MasterList<R>(p: Props<R>) {
+               <button type="button" className="es-btn es-btn--outline es-btn--primary es-btn--md" onClick={clear}>クリア</button>
+               <UnappliedMark es show={dirty} />
+               <button type="submit" className="es-btn es-btn--solid es-btn--primary es-btn--md"><EsIcon name="search" /><span>検索</span></button>
+-            </div></div>
++            </div>
++              {/* 並べ替え（項目・昇順／降順。押したときに効く＝検索と別。台帳 K「一覧の決まり」） */}
++              <div className="es-search__extra">
++                <div className="es-input es-input--md es-select">
++                  <select aria-label="並べ替え" value={sortNow?.label ?? ''} onChange={(e) => e.target.value && pickSort(e.target.value, sortNow?.dir ?? 'asc')}>
++                    {!sortNow && <option value="">並べ替え：初期の並び</option>}
++                    {p.cols.map((c) => <option key={c.label} value={c.label}>並べ替え：{c.label}</option>)}
++                  </select>
++                  <EsIcon name="caret" size={16} />
++                </div>
++                <div className="es-input es-input--md es-select">
++                  <select aria-label="昇順／降順" value={sortNow?.dir ?? 'asc'} disabled={!sortNow} onChange={(e) => sortNow && pickSort(sortNow.label, e.target.value as SortDir)}>
++                    <option value="asc">昇順</option>
++                    <option value="desc">降順</option>
++                  </select>
++                  <EsIcon name="caret" size={16} />
++                </div>
++              </div>
++            </div>
+           </form>
+           <div className="es-table-wrap">
+             <table className="es-table">
+-              <thead><tr>{p.cols.map((c) => <th key={c.label} className={c.num ? 'r' : undefined}>{c.label}</th>)}<th>操作</th></tr></thead>
++              <thead><tr>{p.cols.map((c) => (
++                <th key={c.label} className={c.num ? 'r' : undefined} aria-sort={sortNow?.label === c.label ? (sortNow.dir === 'asc' ? 'ascending' : 'descending') : undefined}>
++                  <button type="button" className="es-sorth" title="押すと並べ替え（昇順 ⇄ 降順）" onClick={() => pickSort(c.label)}>{c.label}{sortNow?.label === c.label ? (sortNow.dir === 'asc' ? ' ▲' : ' ▼') : ''}</button>
++                </th>
++              ))}<th>操作</th></tr></thead>
+               <tbody>
+                 {p.rows === undefined && <tr><td colSpan={p.cols.length + 1} style={{ textAlign: 'center', color: '#8a96a3' }}>読み込み中…</td></tr>}
+                 {pageRows.map((r) => {
+diff --git a/app/ops/corps/_components/dialogs.tsx b/app/ops/corps/_components/dialogs.tsx
+index e2a185e..b2c6376 100644
+--- a/app/ops/corps/_components/dialogs.tsx
++++ b/app/ops/corps/_components/dialogs.tsx
+@@ -138,7 +138,7 @@ export function TrialExtendDialog({ info, onOk, onClose }: { info: TrialInfo; on
+       <div className="dlg wide" role="dialog" aria-modal="true">
+         <h3>お試しを延長する</h3>
+         <div className="bd">
+-          <p className="lead">お試しの最後の子契約と同じ中身で、次のサイクルから子契約を作ります。延長の月は <b>お試しキャンペーン割引（DC000013）で無料</b>・請求は未確定です。法人へ通知・メールでお知らせし、法人Web の拠点詳細「お試し期間」に延長が出ます。</p>
++          <p className="lead">お試しの最後の子契約と同じ中身で、次のサイクルから子契約を作ります。延長の月は <b>割引しません（プラン料金を請求）</b>・請求は未確定です。法人へ通知・メールでお知らせし、法人Web の拠点詳細「お試し期間」に延長が出ます。</p>
+           <div className="row"><b>いまのお試し期間</b><span>{info.from} 〜 {info.to}（{info.months}ヶ月{info.ext.length ? `・延長 ${info.ext.length}回` : ''}）</span></div>
+           <div className="row"><b>延長する月数</b>
+             <input className="r" style={{ width: '5rem' }} inputMode="numeric" value={n} onChange={(e) => setN(e.target.value)} autoFocus /><span className="unit">ヶ月</span>
+@@ -146,7 +146,7 @@ export function TrialExtendDialog({ info, onOk, onClose }: { info: TrialInfo; on
+           <div className="row"><b>メモ（社内）</b><input style={{ flex: 1 }} value={note} placeholder="例）法人のご希望（検討期間の延長）" onChange={(e) => setNote(e.target.value)} /></div>
+           {list.length > 0 && (
+             <div className="gpv"><table><thead><tr><th>子契約ID</th><th>サイクル月</th><th>種別</th><th>ご請求</th></tr></thead>
+-              <tbody>{list.map((m) => <tr key={m}><td>{info.contractId}-{m.replace('-', '')}</td><td>{m}</td><td>お試しキャンペーン</td><td>無料（DC000013）</td></tr>)}</tbody></table></div>
++              <tbody>{list.map((m) => <tr key={m}><td>{info.contractId}-{m.replace('-', '')}</td><td>{m}</td><td>お試しキャンペーン</td><td>プラン料金（割引なし）</td></tr>)}</tbody></table></div>
+           )}
+           <div className="memo">延長後のお試し期間：{info.from} 〜 {list.length ? list[list.length - 1] : info.to}。{info.ext.length ? <><br />これまでの延長：{info.ext.map((e) => `${fmtDate(e.at.slice(0, 10))} ${e.fromCycle}〜${e.toCycle}（${e.months}ヶ月）`).join('・')}</> : null}</div>
+         </div>
+diff --git a/app/ops/corps/contracts.css b/app/ops/corps/contracts.css
+index db2dd8c..3aa5dfd 100644
+--- a/app/ops/corps/contracts.css
++++ b/app/ops/corps/contracts.css
+@@ -858,3 +858,8 @@
+ /* 運営Web の上のヘッダー（54px・sticky）の下で止める */
+ .ops-contracts .stick{top:3.857143rem}
+ .ops-contracts .mini:disabled{opacity:.5;cursor:default}
++
++/* 一覧の見出しの並べ替え（押すと 昇順 ⇄ 降順） */
++.ops-contracts .es-sorth{all:unset;cursor:pointer;font:inherit;color:inherit;white-space:nowrap}
++.ops-contracts .es-sorth:hover{text-decoration:underline}
++.ops-contracts .es-sorth:focus-visible{outline:2px solid var(--primary,#1a73e8);outline-offset:2px}
+diff --git a/app/ops/corps/page.tsx b/app/ops/corps/page.tsx
+index beb1fb7..63d5b71 100644
+--- a/app/ops/corps/page.tsx
++++ b/app/ops/corps/page.tsx
+@@ -28,14 +28,16 @@ export default function CorpsPage() {
+       ]}
+       cols={[
+         { label: '法人ID', mono: true, cell: () => null },
+-        { label: '法人名', cell: (r) => r.name },
+-        { label: '法人ステータス', cell: (r) => <EsBadge v={r.status} tone={tone(r.status)} /> },
+-        { label: '請求書の発行単位', cell: (r) => r.invoiceUnit },
+-        { label: '配下の拠点', cell: (r) => r.branchLabel },
+-        { label: '請求書発行リードタイム', cell: (r) => r.invoiceLead },
+-        { label: 'ES営業担当', cell: (r) => r.salesRep },
+-        { label: '登録日時', cell: (r) => r.registeredAt },
++        { label: '法人名', sort: (r) => r.name, cell: (r) => r.name },
++        { label: '法人ステータス', sort: (r) => r.status, cell: (r) => <EsBadge v={r.status} tone={tone(r.status)} /> },
++        { label: '請求書の発行単位', sort: (r) => r.invoiceUnit, cell: (r) => r.invoiceUnit },
++        { label: '配下の拠点', sort: (r) => r.branchLabel, cell: (r) => r.branchLabel },
++        { label: '請求書発行リードタイム', sort: (r) => r.invoiceLead, cell: (r) => r.invoiceLead },
++        { label: 'ES営業担当', sort: (r) => r.salesRep, cell: (r) => r.salesRep },
++        { label: '登録日時', sort: (r) => r.registeredAt, cell: (r) => r.registeredAt },
++        { label: '更新日時', sort: (r) => r.updatedAt, cell: (r) => r.updatedAt },
+       ]}
++      defaultSort={{ label: '更新日時', dir: 'desc' }}
+       rows={rows} rowId={(r) => r.id} name={(r) => r.name} apNo={(r) => r.apNo} text={text}
+       href={(id) => `/ops/corps/${id}`}
+       csv={{ entity: 'corps', importHref: '/ops/corps/import' }}
+diff --git a/app/ops/delivery/_components/DeliveryDetail.tsx b/app/ops/delivery/_components/DeliveryDetail.tsx
+index b603467..0b2aa86 100644
+--- a/app/ops/delivery/_components/DeliveryDetail.tsx
++++ b/app/ops/delivery/_components/DeliveryDetail.tsx
+@@ -160,7 +160,7 @@ function Overview({ r, edit, f, setF, err, dateAlt, openCr }: { r: Rec; edit: bo
+   const canAct = useCanAct();
+   const [memo, setMemo] = useState('');
+   const [memoErr, setMemoErr] = useState('');
+-  const [childDate, setChildDate] = useState('2026-10-08');
++  const [childDate, setChildDate] = useState('');
+   const { data: parent } = useQuery(api, 'delivery', { id: r.parent ?? '' });
+   const parentOpen = !!r.parent && !!parent?.trbOpen;
+   const addMemo = async () => {
+@@ -168,6 +168,7 @@ function Overview({ r, edit, f, setF, err, dateAlt, openCr }: { r: Rec; edit: bo
+     try { await api.action('addMemo', { id: r.id, text: memo }); setMemo(''); setMemoErr(''); toast('メモを追加しました'); } catch (x) { toastError(x); }
+   };
+   const confirmChild = async () => {
++    if (!childDate) { toastError(new Error('納品日を入力してください')); return; }
+     try { await api.action('confirmChild', { id: r.id, date: childDate }); toast('子を確定して出荷待にしました'); } catch (x) { toastError(x); }
+   };
+   const crPast = r.crs.filter((c) => c.st !== '申請中');
+@@ -210,7 +211,6 @@ function Overview({ r, edit, f, setF, err, dateAlt, openCr }: { r: Rec; edit: bo
+         <TextField label="納品日" value={r.dlv} readOnly disabled={edit} helper={edit ? '下の「日付の変更」で選びます（出荷日の前日まで）' : ''} />
+         <TextField label="出荷日（ピッキング日）" value={r.pick} readOnly disabled={edit} helper={r.leadHelper} />
+         <TextField label="配達時間帯" value={edit ? f.time : r.time} readOnly={!edit} onChange={(time) => setF({ ...f, time })} />
+-        <TextField label="到着予定（ドライバー共有）" value={r.eta} readOnly />
+         <TextField label="配送区分" value={r.temp} readOnly />
+         <TextField label="便種別" value={r.svc} readOnly />
+         <TextField label="出荷指示" value={r.so} readOnly helper={r.soHelper} />
+@@ -244,7 +244,7 @@ function Overview({ r, edit, f, setF, err, dateAlt, openCr }: { r: Rec; edit: bo
+           )}
+           <SectionTitle>この配送だけ変更する</SectionTitle>
+           <div className="es-formgrid">
+-            <Select label="配送会社（2次）" options={['みどり便', '栄成ロジ', '佐川急便', 'ヤマト運輸', '自社便']} value={f.carrier2} onChange={(carrier2) => setF({ ...f, carrier2 })} helper="変更すると出荷指示を再送します" />
++            <Select label="配送会社（2次）" options={[...new Set([r.carrier2, 'みどり便', '栄成ロジ', '佐川急便', 'ヤマト運輸', '自社便'].filter((x) => x && x !== '—'))]} value={f.carrier2} onChange={(carrier2) => setF({ ...f, carrier2 })} helper="変更すると出荷指示を再送します" />
+             <Select label="配送スタッフ（1次・栄成ロジ）" options={['山口 健', '佐々木 大地', '中村 亮']} value={f.staff} onChange={(staff) => setF({ ...f, staff })} helper="委託・自社が運ぶ区間は1次でも割り当てます" />
+             <TextField label="納品先の住所" value={f.addr} onChange={(addr) => setF({ ...f, addr })} helper="変更すると送り状を取り直します（新しい版で再送）" />
+             <TextField label="変更理由" req placeholder="例）拠点の依頼で納品日を 10/22 に変更／受取担当者の依頼で当日のスタッフを変更" value={f.reason} onChange={(reason) => setF({ ...f, reason })} helper="日付の変更も、この理由で変更履歴に残します" error={err.reason} />
+diff --git a/app/ops/delivery/_components/DetailModals.tsx b/app/ops/delivery/_components/DetailModals.tsx
+index 7de1cdd..f80c8c1 100644
+--- a/app/ops/delivery/_components/DetailModals.tsx
++++ b/app/ops/delivery/_components/DetailModals.tsx
+@@ -20,7 +20,7 @@ const num = (s: string) => parseInt(s, 10) || 0;
+ /** 配送データの取消 */
+ export function CancelModal({ r, onClose, onAlt }: P & { onAlt: () => void }) {
+   const { toast, toastError } = useOps();
+-  const [f, setF] = useState({ why: '倉庫の設備故障', detail: '関東倉庫の冷蔵庫故障。関西倉庫から出す', alt: true });
++  const [f, setF] = useState({ why: '', detail: '', alt: true });
+   const [err, setErr] = useState<Errors>({});
+   const submit = async () => {
+     const e = checkCancel(f);
+@@ -44,7 +44,6 @@ export function CancelModal({ r, onClose, onAlt }: P & { onAlt: () => void }) {
+             <tr className="sub"><td>送信済みなら数量0の新しい版で再送して打ち消します。ピッキング開始後は倉庫へ電話でも連絡します</td><td className="n"></td></tr>
+             <tr><td>送り状</td><td className="n">{r.invoices.length}件</td></tr>
+             <tr><td>請求</td><td className="n">対象外（実績0）</td></tr>
+-            <tr><td>法人Webの表示</td><td className="n">配送日調整中</td></tr>
+             <tr className="sub"><td>代わりの便を作らないときは「お届け中止」</td><td className="n"></td></tr>
+           </tbody>
+         </table>
+@@ -52,8 +51,8 @@ export function CancelModal({ r, onClose, onAlt }: P & { onAlt: () => void }) {
+       <DialogSection title="理由" />
+       <div className="mdl-b">
+         <div className="two">
+-          <Select label="理由" req options={CANCEL_REASONS} value={f.why} onChange={(why) => setF({ ...f, why })} error={err.why} />
+-          <TextField label="理由の詳細" req value={f.detail} onChange={(detail) => setF({ ...f, detail })} error={err.detail} />
++          <Select label="理由" req placeholder="選んでください" options={CANCEL_REASONS} value={f.why} onChange={(why) => setF({ ...f, why })} error={err.why} />
++          <TextField label="理由の詳細" req placeholder="例：倉庫の設備故障のため、関西倉庫から出す" value={f.detail} onChange={(detail) => setF({ ...f, detail })} error={err.detail} />
+         </div>
+         <Checkbox label="続けて代わりの便を複製で作る（代替便）" checked={f.alt} onChange={(alt) => setF({ ...f, alt })} />
+         <div className="note">取消した配送データは消さずに残し、変更履歴に理由と操作者を記録します。</div>
+@@ -67,14 +66,16 @@ export function DuplicateModal({ r, onClose, initial = 'return' }: P & { initial
+   const { toast, toastError } = useOps();
+   const [kind, setKind] = useState(initial);
+   const d = DUP_KINDS.find((k) => k.v === kind)!;
+-  const [f, setF] = useState({ reason: d.reason, date: '2026-10-08', dest: '本社（東京・港区）', wh: '関西倉庫 WH00002' });
+-  const [qty, setQty] = useState<string[]>(d.qty);
++  const [f, setF] = useState({ reason: '', date: '', dest: '', wh: '' });
++  /* 子の数量の初期値：再配送・代替便は元の確定数量（全量）、ほかは 0（残数・返送数は運営が入れる） */
++  const fullQty = (v: string) => (v === 'redelivery' || v === 'alternative' ? r.qty.slice(0, 3).map((q) => String(num(q.f) || num(q.p))) : ['0', '0', '0']);
++  const [qty, setQty] = useState<string[]>(fullQty(initial));
+   const [err, setErr] = useState<Errors>({});
+-  const pick = (v: string) => { const k = DUP_KINDS.find((x) => x.v === v)!; setKind(v); setF({ ...f, reason: k.reason }); setQty(k.qty); setErr({}); };
++  const pick = (v: string) => { setKind(v); setQty(fullQty(v)); setErr({}); };
+   let n = 1; while (r.children.includes(`${r.id}-${n}`)) n++;
+   const products = r.qty.slice(0, 3), done = r.sample === 'done';
+   const submit = async () => {
+-    const e = checkDuplicate(f);
++    const e = checkDuplicate({ ...f, kind });
+     setErr(e);
+     if (Object.keys(e).length) return;
+     try {
+@@ -92,15 +93,15 @@ export function DuplicateModal({ r, onClose, initial = 'return' }: P & { initial
+           {DUP_KINDS.map((o) => <Radio key={o.v} name="dr" label={o.label} checked={kind === o.v} onChange={() => pick(o.v)} />)}
+         </div>
+         <div className="note">{d.desc}</div>
+-        <TextField label="理由の詳細" req value={f.reason} onChange={(reason) => setF({ ...f, reason })} error={err.reason} />
++        <TextField label="理由の詳細" req placeholder="例：不在のため全量を再配送" value={f.reason} onChange={(reason) => setF({ ...f, reason })} error={err.reason} />
+       </div>
+       <DialogSection title="行き先と日付" />
+       <div className="mdl-b">
+         <div className="es-formgrid">
+           {kind === 'return'
+-            ? <Select label="返送先" req options={['本社（東京・港区）', '関西事務所（大阪・北区）']} value={f.dest} onChange={(dest) => setF({ ...f, dest })} helper="倉庫マスタの区分「返送先」から選びます。納品先を替えられるのは返送だけです" />
++            ? <Select label="返送先" req placeholder="選んでください" options={['本社（東京・港区）', '関西事務所（大阪・北区）']} value={f.dest} onChange={(dest) => setF({ ...f, dest })} error={err.dest} helper="倉庫マスタの区分「返送先」から選びます。納品先を替えられるのは返送だけです" />
+             : <TextField label="納品先" value={`${r.site}（元の配送からコピー）`} readOnly />}
+-          {kind === 'alternative' && <Select label="ピッキング倉庫" options={['関東倉庫 WH00001', '関西倉庫 WH00002']} value={f.wh} onChange={(wh) => setF({ ...f, wh })} helper="移動先の倉庫で扱えない商品は選び直します" />}
++          {kind === 'alternative' && <Select label="ピッキング倉庫" placeholder="元の配送と同じ" options={['関東倉庫 WH00001', '関西倉庫 WH00002']} value={f.wh} onChange={(wh) => setF({ ...f, wh })} helper="移動先の倉庫で扱えない商品は選び直します" error={err.wh} />}
+           <TextField date label="仮の納品日" req icon="CalendarBlank" value={f.date} onChange={(date) => setF({ ...f, date })} error={err.date} helper="ピッキング日はリードタイムを保って決まります" />
+         </div>
+       </div>
+@@ -134,7 +135,7 @@ export function DuplicateModal({ r, onClose, initial = 'return' }: P & { initial
+ /** トラブルの代理登録 */
+ export function TroubleReportModal({ r, onClose }: P) {
+   const { toast, toastError } = useOps();
+-  const [f, setF] = useState({ from: '法人・拠点', who: '総務部 森 ・ 06-0000-0000', at: '2026-09-28 09:40', kind: '不在・受け取り不可', text: '9/25 の冷凍便が届いていない。受付にも荷物がない' });
++  const [f, setF] = useState({ from: '', who: '', at: '', kind: '', text: '' });
+   const [asked, setAsked] = useState(true);
+   const [err, setErr] = useState<Errors>({});
+   const auto = TROUBLE_AUTO_CHILD.includes(f.kind);
+@@ -154,19 +155,19 @@ export function TroubleReportModal({ r, onClose }: P) {
+       <DialogSection title="連絡の内容" note="法人・拠点・配送会社からの連絡を運営が代わりに登録します。登録しても配送データの状態は変えません。" />
+       <div className="mdl-b">
+         <div className="es-formgrid">
+-          <Select label="連絡元" req options={TROUBLE_FROM} value={f.from} onChange={(from) => setF({ ...f, from })} error={err.from} />
+-          <TextField label="連絡者" value={f.who} onChange={(who) => setF({ ...f, who })} />
+-          <TextField label="連絡を受けた日時" icon="CalendarBlank" value={f.at} onChange={(at) => setF({ ...f, at })} />
+-          <Select label="種別（6区分）" req options={TROUBLE_KINDS} value={f.kind} onChange={(kind) => setF({ ...f, kind })} error={err.kind} />
++          <Select label="連絡元" req placeholder="選んでください" options={TROUBLE_FROM} value={f.from} onChange={(from) => setF({ ...f, from })} error={err.from} />
++          <TextField label="連絡者" placeholder="例：総務部 森 ・ 電話番号" value={f.who} onChange={(who) => setF({ ...f, who })} />
++          <TextField label="連絡を受けた日時" placeholder="yyyy-mm-dd hh:mm" icon="CalendarBlank" value={f.at} onChange={(at) => setF({ ...f, at })} />
++          <Select label="種別（6区分）" req placeholder="選んでください" options={TROUBLE_KINDS} value={f.kind} onChange={(kind) => setF({ ...f, kind })} error={err.kind} />
+         </div>
+-        <TextField label="内容" req value={f.text} onChange={(text) => setF({ ...f, text })} error={err.text} />
++        <TextField label="内容" req placeholder="例：9/25 の冷凍便が届いていない" value={f.text} onChange={(text) => setF({ ...f, text })} error={err.text} />
+         <div className="row between">
+           <span className="note">写真・資料は「この配送の資料」に付きます。</span>
+           <Button variant="outline" size="sm" icon="Plus" onClick={() => toast('写真を追加しました')}>写真を追加</Button>
+         </div>
+-        <InlineMessage tone={auto ? 'info' : 'warning'} title={auto ? '登録と同時に、送り直し用の子を1件作ります' : 'この種別では子を作りません'}>
+-          {auto ? `子 ${r.id}-1（確認中・仮の日付と数量）を作ります。解決で使い回すか取消にします。確定するまで出荷指示・割当・請求の対象外です。` : '未解決のトラブル報告として要確認に残ります。送るかどうかは「対応を決める」で選びます。'}
+-        </InlineMessage>
++        {f.kind && <InlineMessage tone={auto ? 'info' : 'warning'} title={auto ? '登録と同時に、送り直し用の子を1件作ります' : 'この種別では子を作りません'}>
++          {auto ? `子（確認中・仮の日付と数量）を作ります。解決で使い回すか取消にします。確定するまで出荷指示・割当・請求の対象外です。` : '未解決のトラブル報告として要確認に残ります。送るかどうかは「対応を決める」で選びます。'}
++        </InlineMessage>}
+         <details style={{ marginTop: '0.571429rem' }}>
+           <summary style={{ cursor: 'pointer', fontSize: '0.928571rem', color: 'var(--primary-text)' }}>種別の決め方：ドライバーアプリの選択肢との対応表（2026-10-01 決定 A3）</summary>
+           <table className="trmap">
+@@ -185,8 +186,8 @@ export function TroubleReportModal({ r, onClose }: P) {
+       </div>
+       <DialogSection title="みなし完了の配送" note="運送会社が直接配達した配送は、納品日の翌朝に納品済（みなし）になっています。" />
+       <div className="mdl-b">
+-        <Checkbox label="ヤマト運輸へ調査を依頼した（送り状 3512-0923-0031・0032）" checked={asked} onChange={setAsked} />
+-        <div className="note">調査で紛失・未配達と分かったら、「対応を決める」で 再配送待（送り直す）または 中止 を選べます（みなし完了の納品済だけ）。請求が確定済みなら翌月の調整で直します。</div>
++        <Checkbox label={`ヤマト運輸へ調査を依頼した${r.invoices.length ? `（送り状 ${r.invoices.map((x) => x.no).join('・')}）` : ''}`} checked={asked} onChange={setAsked} />
++        <div className="note">調査で紛失・未配達と分かったら、「対応を決める」で 再配達待（送り直す）または 中止 を選べます（みなし完了の納品済だけ）。請求が確定済みなら翌月の調整で直します。</div>
+       </div>
+     </Dialog>
+   );
+@@ -200,30 +201,33 @@ export function TroubleResolveModal({ r, onClose }: P) {
+   const sel = RESOLVE_OPTS.find((o) => o.v === cur)!;
+   const open = r.trb.filter((t) => t.st === '未解決');
+   const needKind = open.some((t) => t.kind === '種別未定');
+-  const [kind2, setKind2] = useState('数量相違（不足・過剰）');
+-  const [reason, setReason] = useState(sel.reason);
++  const [kind2, setKind2] = useState('');
++  const [reason, setReason] = useState('');
+   const [freight, setFreight] = useState('請求しない');
+-  const [childDate, setChildDate] = useState('2026-10-08');
++  const [childDate, setChildDate] = useState('');
+   const [err, setErr] = useState<Errors>({});
+-  const products = r.qty.map((q) => ({ n: q.n, f: num(q.f) || num(q.p) }));
+-  const last = products.length - 1;
+-  const got = (i: number) => (cur === 'full' ? products[i].f : i === last ? Math.max(products[i].f - 2, 0) : products[i].f);
++  const products = r.qty.map((q) => ({ n: q.n, id: q.id ?? '', f: num(q.f) || num(q.p) }));
++  /* 納品できた数（商品ごとの入力。対応を選び直したら初期値に戻す） */
++  const [qtys, setQtys] = useState<Record<string, string>>({});
++  const got0 = (i: number) => products[i].f;
++  const got = (i: number) => (qtys[cur + i] !== undefined ? Math.min(Math.max(num(qtys[cur + i]), 0), products[i].f) : got0(i));
+   const resend = products.reduce((a, p, i) => a + (p.f - got(i)), 0), total = products.reduce((a, p) => a + p.f, 0);
+-  const pick = (v: string) => { setCur(v); setReason(RESOLVE_OPTS.find((o) => o.v === v)!.reason); };
++  const pick = (v: string) => setCur(v);
++  const hasQty = cur === 'full' || cur === 'partial' || cur === 'partial_no_resend';
+   const hasChild = cur === 'partial' || cur === 'redelivery', hasFreight = cur === 'redelivery' || cur === 'stop';
+   const submit = async () => {
+-    const e = checkTroubleResolve({ reason });
++    const e = checkTroubleResolve({ reason, needKind, kind2 });
+     setErr(e);
+     if (Object.keys(e).length) return;
+     try {
+-      await api.action('resolveTrouble', { id: r.id, option: cur, kind2: needKind ? kind2 : undefined, reason, freight: hasFreight ? freight : undefined, childDate: hasChild ? childDate : undefined });
++      await api.action('resolveTrouble', { id: r.id, option: cur, kind2: needKind ? kind2 : undefined, qty: hasQty ? products.map((p, i) => ({ id: p.id, qty: got(i) })) : undefined, reason, freight: hasFreight ? freight : undefined, childDate: hasChild ? childDate : undefined });
+       onClose();
+       toast('トラブルを解決しました');
+     } catch (x) { toastError(x); }
+   };
+   const stepCls = (n: number) => 'es-stage__step es-stage__step--' + (n === step ? 'current' : n < step ? 'done' : 'future');
+   const steps = <div className="trs-steps"><span className={stepCls(1)}>1. 対応を選ぶ</span><span className="es-stage__arrow" aria-hidden="true">▶</span><span className={stepCls(2)}>2. 数量・子・理由を入れる</span></div>;
+-  const qtyInput = (v: number) => <TextField size="sm" suffix="食" defaultValue={String(v)} style={{ width: '7.142857rem' }} />;
++  const qtyInput = (i: number) => <TextField size="sm" suffix="食" value={qtys[cur + i] ?? String(got0(i))} onChange={(v) => setQtys({ ...qtys, [cur + i]: v })} style={{ width: '7.142857rem' }} />;
+   return (
+     <Dialog m="TroubleResolve" title="トラブルの対応を決める" id={r.id} toolbar={steps} footerNote={foot(r)} onClose={onClose}
+       footer={step === 1
+@@ -238,7 +242,7 @@ export function TroubleResolveModal({ r, onClose }: P) {
+             </div>
+             {needKind && (
+               <div className="es-formgrid">
+-                <Select label={`報告${open.findIndex((t) => t.kind === '種別未定') + 1}の種別`} req options={['数量相違（不足・過剰）', '誤配送']} value={kind2} onChange={setKind2} helper={`アプリの選択肢：${open.find((t) => t.kind === '種別未定')?.raw ?? ''}`} />
++                <Select label={`報告${open.findIndex((t) => t.kind === '種別未定') + 1}の種別`} req placeholder="選んでください" error={err.kind2} options={['数量相違（不足・過剰）', '誤配送']} value={kind2} onChange={setKind2} helper={`アプリの選択肢：${open.find((t) => t.kind === '種別未定')?.raw ?? ''}`} />
+               </div>
+             )}
+           </div>
+@@ -267,8 +271,8 @@ export function TroubleResolveModal({ r, onClose }: P) {
+                     <tbody>
+                       {products.map((p, i) => (
+                         <tr key={p.n + cur}>
+-                          <td>{p.n}</td><td className="r es-num">{p.f}</td><td>{qtyInput(got(i))}</td>
+-                          {cur === 'full' && <td>{i === last ? <Select size="sm" placeholder="代替なし" options={['冷凍 ドリア（代替）']} style={{ width: '12.857143rem' }} /> : <span className="muted">—</span>}</td>}
++                          <td>{p.n}</td><td className="r es-num">{p.f}</td><td>{qtyInput(i)}</td>
++                          {cur === 'full' && <td><span className="muted">—</span></td>}
+                           {cur === 'partial' && <td className="r es-num">{p.f - got(i)}</td>}
+                         </tr>
+                       ))}
+@@ -293,7 +297,7 @@ export function TroubleResolveModal({ r, onClose }: P) {
+           <DialogSection title={hasFreight ? '運賃・理由' : '理由'} />
+           <div className="mdl-b">
+             {hasFreight && <div className="es-formgrid"><Select label="運賃" options={['請求しない', '請求する']} value={freight} onChange={setFreight} helper="「請求する」は理由必須" /></div>}
+-            <TextField label="理由" req value={reason} onChange={setReason} error={err.reason} />
++            <TextField label="理由" req placeholder="例：拠点が不在のため全量を持ち戻り。再配送することを拠点と合意" value={reason} onChange={setReason} error={err.reason} />
+             <InlineMessage tone="info">{sel.result}</InlineMessage>
+           </div>
+         </>
+diff --git a/app/ops/delivery/_components/kit.tsx b/app/ops/delivery/_components/kit.tsx
+index 2c2286b..1dda819 100644
+--- a/app/ops/delivery/_components/kit.tsx
++++ b/app/ops/delivery/_components/kit.tsx
+@@ -4,7 +4,7 @@ import Link from 'next/link';
+ import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+ import type { CalCell as CalCellT, StageStep, TempKind, Tone } from '@/lib/ops/delivery/types';
+ import { DateInput } from '@/components/DateInput';
+-import { UnappliedMark, useUnapplied } from '../../_general/list';
++import { useUnapplied } from '../../_general/list';
+ import { fmtAuto, fmtDatesIn } from '@/lib/format/date';
+ import { PER_OPTIONS } from '@/lib/ui/paging';
+ import { ES_ICONS, ES_STROKE } from './esIcons';
+@@ -486,12 +486,11 @@ export function FileCard({ name, placeholder, meta, badge }: { name: string; pla
+ }
+ 
+ /** 検索条件（ESKitchen.SearchPanel）。columns があれば格子（1行目の最後の列に クリア／検索）、なければ折り返し */
+-export function SearchPanel({ columns, first, more, onSearch, onClear, sig, children }: { columns?: number; first?: number; more?: ReactNode[]; onSearch: () => void; onClear: () => void; /** 手元の条件を文字にしたもの。渡すと、変えたまま検索していないとき「未適用」を出す（2026/10/03 決定） */ sig?: string; children: ReactNode[] }) {
++export function SearchPanel({ columns, first, more, onSearch, onClear, sig, children }: { columns?: number; first?: number; more?: ReactNode[]; onSearch: () => void; onClear: () => void; /** 手元の条件を文字にしたもの。（「未適用」の印は出さない：台帳 F 2026-10-05） */ sig?: string; children: ReactNode[] }) {
+   const [open, setOpen] = useState(true);
+   const u = useUnapplied(sig ?? '');
+   const actions = [
+     <Button key="clear" variant="outline" onClick={() => { u.onClear(); onClear(); }}>クリア</Button>,
+-    <UnappliedMark key="unap" es show={sig !== undefined && u.dirty} />,
+     <Button key="search" type="submit">検索</Button>,
+   ];
+   const submit = (e: React.FormEvent) => { e.preventDefault(); u.onSearch(); onSearch(); };
+diff --git a/app/ops/delivery/inquiries/page.tsx b/app/ops/delivery/inquiries/page.tsx
+index 24b6f28..1fac7b9 100644
+--- a/app/ops/delivery/inquiries/page.tsx
++++ b/app/ops/delivery/inquiries/page.tsx
+@@ -95,12 +95,14 @@ function Reverse() {
+   const { data: hubs } = useQuery(api, 'hubs');
+   const { data: inq } = useQuery(api, 'inquiries');
+   /* 中継先・キーワードは手元（huD・input）に持ち、「検索」か Enter で効かせる */
+-  const [hu, setHu] = useState('HU00124');
+-  const [huD, setHuD] = useState('HU00124');
++  const [huA, setHu] = useState('');
++  const [huDraft, setHuD] = useState('');
+   const [input, setInput] = useState('');
+   const [q, setQ] = useState('');
+-  const applyQ = () => { setHu(huD); setQ(input.trim()); };
++  const applyQ = () => { setHu(huDraft || huA); setQ(input.trim()); };
+   const huList = hubs ?? [];
++  const hu = huA || huList[0]?.id || '';
++  const huD = huDraft || hu;
+   const cur = huList.find((w) => w.id === hu);
+   const huOf = (id: string) => huList.find((w) => w.id === id) ?? { id, name: '（中継先マスタにない）', addr: '' };
+   const list = (inq ?? []).filter((r) => (q ? (r.dl.includes(q) || r.inv.some((x) => x.replace(/-/g, '').includes(q.replace(/-/g, ''))) || r.name.includes(q) || r.site.includes(q)) : r.hu === hu));
+@@ -114,7 +116,7 @@ function Reverse() {
+             <input className="inp" id="dlq-q" value={input} placeholder="例：3512-0928-0021 ／ DL-261005-0007 ／ 夢の扉" onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') applyQ(); }} />
+             <UnappliedMark show={huD !== hu || input.trim() !== q} />
+             <button className="btn pri" onClick={applyQ}>検索</button>
+-            <button className="btn out" onClick={() => { setQ(''); setInput(''); setHu('HU00124'); setHuD('HU00124'); }}>クリア</button>
++            <button className="btn out" onClick={() => { setQ(''); setInput(''); setHu(''); setHuD(''); }}>クリア</button>
+           </div>
+         </Field>
+       </div>
+diff --git a/app/ops/delivery/material-summary/page.tsx b/app/ops/delivery/material-summary/page.tsx
+index 904b55a..6555120 100644
+--- a/app/ops/delivery/material-summary/page.tsx
++++ b/app/ops/delivery/material-summary/page.tsx
+@@ -13,6 +13,7 @@ import { Field, PageHead } from '../../_ui/ui';
+ import { api } from '../_components/api';
+ import { downloadCsv } from '../_components/csv';
+ import { fmtAuto, fmtDateW } from '@/lib/format/date';
++import { todayIso } from '@/lib/ops/general/logic';
+ 
+ /*
+  * 資材の集計（本体 main_script2.js の renderMatSum）。資材は ES事務所でピッキングしてヤマト運輸で直送する（THOMAS 連携なし・2026/10/01 A2）。
+@@ -24,8 +25,12 @@ export default function Page() {
+   const { data } = useQuery(api, 'matShipments');
+   const all = data ?? [];
+   /* 出荷日は手元（dateD）で選び、「検索」で効かせる（2026/10/03 決定） */
+-  const [date, setDate] = useState('2026-10-06');
+-  const [dateD, setDateD] = useState('2026-10-06');
++  const [dateA, setDate] = useState('');
++  const [dateDraft, setDateD] = useState('');
++  const dates0 = [...new Set(all.map((x) => x.date))].sort();
++  /* 初期値は今日以降で一番近い出荷日（なければ最初の日） */
++  const date = dateA || (dates0.find((d) => d >= todayIso()) ?? dates0[0] ?? '');
++  const dateD = dateDraft || date;
+   const list = all.filter((x) => x.date === date);
+   const tot: Record<string, { mm: Material; q: number; n: number }> = {};
+   list.forEach((x) => x.lines.forEach(([mm, q]) => { tot[mm.id] ??= { mm, q: 0, n: 0 }; tot[mm.id].q += q; tot[mm.id].n++; }));
+@@ -55,7 +60,7 @@ export default function Page() {
+         </div>
+         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '0.571429rem', marginBottom: '0.857143rem' }}>
+           <UnappliedMark show={dateD !== date} />
+-          <button className="btn out" onClick={() => { setDate('2026-10-06'); setDateD('2026-10-06'); }}>クリア</button>
++          <button className="btn out" onClick={() => { setDate(''); setDateD(''); }}>クリア</button>
+           <button className="btn pri" onClick={() => setDate(dateD)}>検索</button>
+         </div>
+         <div className="sec-h" style={{ marginBottom: '0.571429rem' }}><h2>資材の合計（{list.length}件の配送）</h2></div>
+diff --git a/app/ops/delivery/review/[id]/page.tsx b/app/ops/delivery/review/[id]/page.tsx
+index 558df4b..f0571ad 100644
+--- a/app/ops/delivery/review/[id]/page.tsx
++++ b/app/ops/delivery/review/[id]/page.tsx
+@@ -35,8 +35,8 @@ function Detail({ r }: { r: ReviewItem }) {
+   const shelf = r.kind === '消費期限の注意';
+   const isMain = r.no === '#142';
+   const [how, setHow] = useState(shelf ? 'split' : 'date');
+-  const [date, setDate] = useState(shelf ? '2026-11-18' : '2026-12-11');
+-  const [reason, setReason] = useState(shelf ? '手作りサンドの期限に合わせ、関東倉庫から同じ日に届ける' : '拠点の倉庫移転（〜12/10）に合わせ、移転後の最初の納品可能日に納品。法人と合意済み');
++  const [date, setDate] = useState('');
++  const [reason, setReason] = useState('');
+   const [keep, setKeep] = useState(true);
+   const [err, setErr] = useState<Errors>({});
+   const open = r.state === '未対応';
+@@ -124,7 +124,7 @@ function Detail({ r }: { r: ReviewItem }) {
+                 </Field>
+                 <div className="es-formgrid">
+                   <TextField date label={shelf ? '別の便（関東倉庫）の納品日' : '納品日'} req icon="CalendarBlank" value={date} onChange={setDate} error={err.date}
+-                    helper={shelf ? '出荷 11/17（関東倉庫・リードタイム 1日）' : 'ピッキング日はリードタイムを保って 12/10 に決まります'} />
++                    helper={shelf ? '出荷日は納品日からリードタイムを引いて決まります' : 'ピッキング日はリードタイムを保って決まります'} />
+                   <TextField label="理由" req value={reason} onChange={setReason} error={err.reason} />
+                   {!shelf && <Field label="法人への連絡"><Checkbox label="申請履歴と配送カレンダーに理由を残す" checked={keep} onChange={setKeep} /></Field>}
+                 </div>
+diff --git a/app/ops/delivery/schedule/page.tsx b/app/ops/delivery/schedule/page.tsx
+index 604ffe7..447c9a4 100644
+--- a/app/ops/delivery/schedule/page.tsx
++++ b/app/ops/delivery/schedule/page.tsx
+@@ -2,7 +2,7 @@
+ 
+ import Link from 'next/link';
+ import { useRouter, useSearchParams } from 'next/navigation';
+-import { Suspense, useMemo, useState, type ReactNode } from 'react';
++import { Suspense, useState, type ReactNode } from 'react';
+ import { DEMO } from '@/lib/demo';
+ import { useQuery } from '@/lib/ops/core/client';
+ import { SCHEDULE_OPTS } from '@/lib/ops/delivery/constants';
+@@ -158,8 +158,8 @@ function useSearch() {
+ /* ---------------- 月 ---------------- */
+ 
+ function MonthPart({ id, draft, drawer, setDrawer, switchView, today, go, toast }: PartProps & { drawer: boolean; setDrawer: (v: boolean) => void }) {
+-  const { data: m } = useQuery(api, 'scheduleMonth', { id });
+   const s = useSearch();
++  const { data: m } = useQuery(api, 'scheduleMonth', { id, f: s.args });
+   const prev = () => (draft ? go('month', DEF.month.fixed) : toast(dm('前の月はこのデモでは省略しています', '前の月の予定はありません')));
+   const next = () => (draft ? toast(dm('12月以降の予定はこのデモでは省略しています', '12月以降の予定はまだありません')) : go('month', DEF.month.draft));
+   /* 日付のマス → その日を含む週の週表示 */
+@@ -232,9 +232,9 @@ function ReviewDrawer({ onClose }: { onClose: () => void }) {
+ /* ---------------- 週 ---------------- */
+ 
+ function WeekPart({ id, draft, switchView, today, go, toast }: PartProps) {
+-  const { data: w } = useQuery(api, 'scheduleWeek', { id });
+   const [basis, setBasis] = useState<'ship' | 'dlv'>('ship');
+   const s = useSearch();
++  const { data: w } = useQuery(api, 'scheduleWeek', { id, f: s.args });
+   const prev = () => toast(dm('前の週はこのデモでは省略しています', '前の週のデータはありません'));
+   const next = () => toast(draft ? dm('次の週はこのデモでは省略しています', '次の週のデータはありません') : dm('10/05〜の週（確定）はこのデモでは省略しています。予定の週は 月表示 → 次の月（11月）から', '次の週のデータはありません。予定の週は 月表示 → 次の月（11月）から'));
+   const seg = draft
+@@ -254,7 +254,7 @@ function WeekPart({ id, draft, switchView, today, go, toast }: PartProps) {
+         <SearchPanel columns={6} first={3} sig={JSON.stringify([s.sig, basis])} onSearch={s.search} onClear={s.clear}>
+           {[seg, s.sq1('es-span-2'), s.sq2, s.sq3, ...s.selects, s.s10]}
+         </SearchPanel>
+-        {w && (draft ? <WeekEdit w={w} q={s.args.sq1} go={go} /> : <WeekFixed days={(basis === 'ship' ? w.ship : w.dlv) ?? []} label={w.cycleLabel} q={s.args.sq1} />)}
++        {w && (draft ? <WeekEdit w={w} go={go} /> : <WeekFixed days={(basis === 'ship' ? w.ship : w.dlv) ?? []} label={w.cycleLabel} />)}
+         {w && !draft && (
+           <div className="legend">
+             <span><i className="sw" style={{ background: 'var(--info-50)', boxShadow: 'inset 3px 0 0 var(--info-500)' }}></i>確定後に変更したもの（分納・代替便・配送スタッフの変更など）</span>
+@@ -276,7 +276,7 @@ function useSel() {
+   return { sel, toggle, toggleAll, clear: () => setSel(new Set()), has: (id?: string) => !!id && sel.has(id) };
+ }
+ 
+-function WeekFixed({ days, label, q }: { days: WeekDay[]; label: string; q: string }) {
++function WeekFixed({ days, label }: { days: WeekDay[]; label: string }) {
+   const s = useSel();
+   const canAct = useCanAct();
+   const [move, setMove] = useState(false);
+@@ -284,7 +284,7 @@ function WeekFixed({ days, label, q }: { days: WeekDay[]; label: string; q: stri
+     <>
+       <div className="week">
+         {days.map((c, i) => {
+-          const items = c.items.filter((it) => !q || it.nm.includes(q));
++          const items = c.items;
+           const ids = c.ids ?? [];
+           return (
+             <div key={i} className={'col' + (c.today ? ' today' : '') + (c.off ? ' off' : '')}>
+@@ -324,7 +324,7 @@ function WeekFixed({ days, label, q }: { days: WeekDay[]; label: string; q: stri
+   );
+ }
+ 
+-function WeekEdit({ w, q, go }: { w: WeekView; q: string; go: (v: View, d: string) => void }) {
++function WeekEdit({ w, go }: { w: WeekView; go: (v: View, d: string) => void }) {
+   const s = useSel();
+   const canAct = useCanAct();
+   const [move, setMove] = useState(false);
+@@ -343,7 +343,6 @@ function WeekEdit({ w, q, go }: { w: WeekView; q: string; go: (v: View, d: strin
+               <>
+                 <label className="all"><Checkbox checked={!!c.ids?.length && c.ids.every((x) => s.sel.has(x))} onChange={() => s.toggleAll(c.ids ?? [])} ariaLabel="全て選択" />全て選択（{c.ids?.length ?? c.n}件）</label>
+                 {c.items.map((it, k) => {
+-                  if (q && !it.nm.includes(q)) return null;
+                   const on = s.has(it.dl);
+                   const can = !!it.dl && (c.ids ?? []).includes(it.dl);
+                   return (
+@@ -374,8 +373,8 @@ function WeekEdit({ w, q, go }: { w: WeekView; q: string; go: (v: View, d: strin
+ /* ---------------- 日 ---------------- */
+ 
+ function DayPart({ id, draft, switchView, today, toast }: PartProps) {
+-  const { data: v } = useQuery(api, 'scheduleDay', { id });
+   const s = useSearch();
++  const { data: v } = useQuery(api, 'scheduleDay', { id, f: s.args });
+   const step = (dir: string) => toast(dm(`${dir}はこのデモでは省略しています`, `${dir}のデータはありません`));
+   return (
+     <Card>
+@@ -389,7 +388,7 @@ function DayPart({ id, draft, switchView, today, toast }: PartProps) {
+         {[<SegmentedControl key="b" size="sm" items={BASIS_ITEMS} value="ship" onChange={() => {}} label="基準" />, s.sq1('es-span-2'), s.sq2, s.sq3, ...s.selects, s.s10]}
+       </SearchPanel>
+       {v && <DayHead v={v} />}
+-      {v && (draft ? <DayPlan v={v} q={s.args.sq1} /> : <DayFixed v={v} f={s.args} />)}
++      {v && (draft ? <DayPlan v={v} /> : <DayFixed v={v} />)}
+     </Card>
+   );
+ }
+@@ -408,8 +407,8 @@ function DayHead({ v }: { v: DayView }) {
+   );
+ }
+ 
+-function DayFixed({ v, f }: { v: DayView; f: { sq1: string; s2: string; s5: string } }) {
+-  const rows = useMemo(() => (v.rows ?? []).filter((r) => (!f.sq1 || (r.id + ' ' + r.site).includes(f.sq1)) && (!f.s2 || r.st === f.s2) && (!f.s5 || r.svc === f.s5)), [v, f]);
++function DayFixed({ v }: { v: DayView }) {
++  const rows = v.rows ?? [];
+   const s = useSel();
+   const canAct = useCanAct();
+   const pg = usePaging(rows);
+@@ -460,9 +459,9 @@ function DayFixed({ v, f }: { v: DayView; f: { sq1: string; s2: string; s5: stri
+   );
+ }
+ 
+-function DayPlan({ v, q }: { v: DayView; q: string }) {
++function DayPlan({ v }: { v: DayView }) {
+   const plans = v.plans ?? [];
+-  const shown = plans.filter((r) => !q || (r.plan + ' ' + r.site).includes(q));
++  const shown = plans;
+   const pg = usePaging(shown);
+   const s = useSel();
+   const canAct = useCanAct();
+diff --git a/app/ops/masters/_masters/MasterDetail.tsx b/app/ops/masters/_masters/MasterDetail.tsx
+index a77f782..197daa4 100644
+--- a/app/ops/masters/_masters/MasterDetail.tsx
++++ b/app/ops/masters/_masters/MasterDetail.tsx
+@@ -15,6 +15,7 @@ import { toCSV } from '@/lib/ops/masters/planCsv';
+ import { today } from '@/lib/supplier/dates';
+ import type { Block, Card, MasterKind, MasterRec, V, VmGrid, VmLayout } from '@/lib/ops/masters/types';
+ import { useOps } from '../../_ui/OpsProvider';
++import { EditingNotice, useEditingNotice } from '../../_ui/editingNotice';
+ import { DemoTop } from './DemoTop';
+ import { download, EsModal, FieldView, isRadioCell, Pager, PHOTOS, setCell, TableView, vmCapacity, VmBox, vmGenerate, type PartCtx } from './parts';
+ import { EMPTY_MATERIALS, hasMaterials, materialsArgs, materialsOf, PlanMaterials, type PlanMaterialsValue } from './PlanMaterials';
+@@ -63,9 +64,11 @@ export default function MasterDetail({ kind, id, mode }: { kind: MasterKind; id?
+   const spec = specOf(kind);
+   const d = spec.detail;
+   const router = useRouter();
+-  const { toast, toastError, openModal } = useOps();
++  const { toast, toastError, openModal, account } = useOps();
+   const canAct = useCanAct();
+   const { data, loading } = useQuery(api, 'get', { kind, id: id ?? '' });
++  /* I02：同じマスタを編集中のほかの人を、先に知らせる（ロックしない。新規登録はまだ ID がないので対象外） */
++  const editors = useEditingNotice(mode === 'edit' && !!id && !!account, (leave) => api.query('presence', { kind, id: id!, accountId: account!.id, name: account!.name, leave }));
+   const vmId = kind === 'devices' && id && /^VM/.test(id) ? id : '';
+   /* プラン：初期備品・プランに含む資材（共通データ dm.master.plans）。画面の 登録／保存 で一緒に保存する（受付簿 #101） */
+   const { data: domPlans } = useDomainQuery(masterApi, 'list', { kind: kind === 'plans' ? 'plans' : 'taxRates' });
+@@ -473,6 +476,7 @@ export default function MasterDetail({ kind, id, mode }: { kind: MasterKind; id?
+             )}
+           </div>
+         </div>
++        <EditingNotice others={editors} className="provbar" />
+         {check && check.errs.length > 0 && (
+           /* エラーの一覧は出さない（項目の下の文言と二重になる）。1行だけ・エラーのあるタブに赤い印（hong 2026/10/05 A 案・受付簿 #83） */
+           <div className="vbox" role="alert"><b>保存できません（{Math.max(check.errs.length, check.bad.length)}件）。</b>赤い項目を確認してください。</div>
+diff --git a/app/ops/menu/_components/es.tsx b/app/ops/menu/_components/es.tsx
+index 1ea50af..20ae8d4 100644
+--- a/app/ops/menu/_components/es.tsx
++++ b/app/ops/menu/_components/es.tsx
+@@ -2,7 +2,7 @@
+ 
+ import { Children, cloneElement, type ComponentProps, isValidElement, useLayoutEffect, useRef, useState, type ChangeEvent, type CSSProperties, type InputHTMLAttributes, type ReactElement, type ReactNode, type SelectHTMLAttributes } from 'react';
+ import { DateInput } from '@/components/DateInput';
+-import { UnappliedMark, useUnapplied } from '../../_general/list';
++import { useUnapplied } from '../../_general/list';
+ import { ES_ICONS } from './esIcons';
+ import { fmtAutoNode } from '@/lib/format/date';
+ import { esTone } from '@/lib/format/status';
+@@ -306,7 +306,6 @@ export function SearchPanel({ children, more, onSearch, onClear, sig }: { childr
+       <div className="es-search__actions">
+         <div className="es-search__main">
+           <Button variant="outline" onClick={() => { u.onClear(); onClear(); }}>クリア</Button>
+-          <UnappliedMark es show={sig !== undefined && u.dirty} />
+           <Button type="submit">検索</Button>
+         </div>
+       </div>
+diff --git a/app/ops/sales/page.tsx b/app/ops/sales/page.tsx
+index 22e3569..bab51a4 100644
+--- a/app/ops/sales/page.tsx
++++ b/app/ops/sales/page.tsx
+@@ -207,7 +207,7 @@ function UserTab({ d, cond, setCond, lv, onShown }: { d: Data; onShown: Shown }
+   return (
+     <>
+       <div style={{ display: 'flex', gap: '0.857143rem', flexWrap: 'wrap', margin: '0.285714rem 0 0.857143rem' }}>
+-        {kpi('購入総個数（返金済みを除く）', paid.length * 2, '個')}{kpi('ユーザー総数', new Set(paid.map((r) => r.uid)).size, '人')}{kpi('合計支払金額（返金済みを除く）', paid.reduce((a, r) => a + r.amt, 0).toLocaleString(), '円')}
++        {kpi('購入総個数（返金済みを除く）', paid.reduce((a, r) => a + r.qty, 0).toLocaleString(), '個')}{kpi('ユーザー総数', new Set(paid.map((r) => r.uid)).size, '人')}{kpi('合計支払金額（返金済みを除く）', paid.reduce((a, r) => a + r.amt, 0).toLocaleString(), '円')}
+       </div>
+       <ListView {...lv} list={list} statusKey="st" filters={[{ t: 'search', ph: '購入番号・ユーザーID', span: 2, keys: ['no', 'uid'] }, { t: 'select', ph: 'ステータス', col: 'st', opts: ['支払済み', '返金中', '返金済み'] }, { t: 'select', ph: '決済方法', col: 'pay', opts: d.pay }]} cols={cols} rows={d.users} foot={foot} rowKey={(r) => r.no} extra={<SalesCond d={d} cond={cond} setCond={setCond} />} />
+       <p className="muted" style={{ fontSize: '0.857143rem' }}>返金処理は過去3ヶ月分まで対応できます（それより前はボタンが押せません）。Phase2 は現金の決済がないため、現金の返金はありません。</p>
+diff --git a/lib/corp/delivery/fromDomain.ts b/lib/corp/delivery/fromDomain.ts
+index 59a234a..fc574f3 100644
+--- a/lib/corp/delivery/fromDomain.ts
++++ b/lib/corp/delivery/fromDomain.ts
+@@ -116,7 +116,7 @@ export function deliveryFor(r: DocRepo, d: Delivery): CorpDelivery {
+   return {
+     id: d.id, site: d.branchId, cycle: cycleLabel(d.cycleMonth), st, tone, dateIso: iso(d.deliverOn), plan,
+     deadline: plan && cyc ? cyc.orderCloseOn : undefined, window, cycleRange,
+-    svc: corpTerm(d.serviceForm), temp: d.temp, kindText: `${d.temp} ・ ${corpTerm(d.serviceForm)}${d.regime === 'parcel_carrier' ? '' : '（陳列まで）'}`,
++    svc: corpTerm(d.serviceForm), temp: d.temp, kindText: `${d.temp} ・ ${corpTerm(d.serviceForm)}${d.serviceForm === 'ES配送便' ? '（陳列まで）' : ''}`,
+     /* 納品書（PDF）：確定（出荷待）以降の便。予定の便・資材便には出さない（版1.1・CW_DLV No.17） */
+     canPdf: !plan && d.status !== '取消' && d.temp !== '資材', msg,
+     corpName: corp?.name ?? '', address: `${ad.zip ? `〒${ad.zip} ` : ''}${ad.pref}${ad.city}${ad.addr1}${ad.addr2}`,
+diff --git a/lib/domain/alt.ts b/lib/domain/alt.ts
+index 8f7d25b..af3907e 100644
+--- a/lib/domain/alt.ts
++++ b/lib/domain/alt.ts
+@@ -357,7 +357,7 @@ export function applyAlt(r: DocRepo, a: AltArgs) {
+   };
+   const disposals: AltDisposal[] = plans.filter((p) => p.pattern === '② 補償').map((p) => {
+     const d = r.get<Delivery>('dm.delivery.deliveries', p.deliveryId)!;
+-    const cool = d.serviceForm === 'COOL便' || d.regime === 'parcel_carrier';
++    const cool = d.serviceForm === 'COOL便';
+     return { branchId: p.branchId, productId: def.id, qty: p.qty, how: cool ? '法人が廃棄して棚卸報告で申告' : 'ドライバーが回収・廃棄', deliveryId: cool ? d.id : p.toDeliveryId };
+   });
+   const setting: AltSetting = {
+diff --git a/lib/domain/areas/delivery.ts b/lib/domain/areas/delivery.ts
+index 25d3819..fda1233 100644
+--- a/lib/domain/areas/delivery.ts
++++ b/lib/domain/areas/delivery.ts
+@@ -6,7 +6,7 @@ import { materialLeadDays } from '../materialLead';
+ import { canDeliver, canPick, slotDate, slotOf, WEEKS } from '../calendar';
+ import { buildChildContracts, buildDeliveries, CYCLES, HOLIDAYS } from '../seed/delivery';
+ import type { Branch, Carrier, ChangeRequest, Cycle, Delivery, DeliveryLine, Driver, Holiday, Leg, MaterialOrder, Tracking, Trouble, TroubleType, Warehouse } from '../types';
+-import { altLabel, disposalsFor, disposalText, excludedFor } from '../alt';
++import { altLabel, disposalsFor, disposalText, excludedFor, instructionSent } from '../alt';
+ import { DELIVERED, lineName, stampDelivered } from '../snapshot';
+ import { isYamato, isYamatoNo, trackingDigits, trackingUrlOf } from '../tracking';
+ import { deliveryRequestCheck, hasTracking } from '../mails';
+@@ -213,6 +213,36 @@ function copyChildParts(r: DocRepo, parentId: string, id: string, qty?: LineQty[
+   return lines.reduce((s, l) => s + l.plannedQty, 0);
+ }
+ 
++/**
++ * トラブルの自動子（確認中）を作る。親子は1階層まで：子でトラブルが起きたら、子からは複製せず親の次の枝番を作る（中身はトラブルが起きた子から・決定v2.3 #28）。
++ * 枝番は9まで。数量は明細の合計（全量）。日付・数量は運営が確定するまで 確認中のまま
++ */
++function makeAutoChild(r: DocRepo, d: Delivery, typeName: string, troubleId: string) {
++  const root = d.parentId || d.id;
++  let n = 1;
++  while (r.get('dm.delivery.deliveries', `${root}-${n}`) && n <= 9) n++;
++  if (n > 9) throw new ApiError('枝番は最大9までです', 409);
++  const id = `${root}-${n}`;
++  const qty = copyChildParts(r, d.id, id);
++  r.put<Delivery>('dm.delivery.deliveries', id, { ...d, id, parentId: root, status: '確認中', plannedQty: qty, shippedOn: undefined, deliveredQty: null, deliveredAt: '', completion: '', changeState: '変更不可', internalMemo: `${typeName}の自動の子（${troubleId}）` });
++  return id;
++}
++
++/** 一部納品の残数を子の明細へ（親の行ごとに 予定 − 納品できた数。0 の行は子から外す）。子の配送の数量（残数の合計）を返す。残りが無ければ null（子はそのまま） */
++function partialRest(r: DocRepo, parentId: string, childId: string): number | null {
++  const src = linesOf(r, parentId);
++  const rest = src.map((l) => ({ l, q: l.plannedQty - (l.deliveredQty ?? l.plannedQty) }));
++  const total = rest.reduce((n, x) => n + x.q, 0);
++  if (total <= 0) return null;
++  for (const { l, q } of rest) {
++    const id = childLineId(l, parentId, childId);
++    const cl = r.get<DeliveryLine>('dm.delivery.lines', id);
++    if (q > 0) r.put('dm.delivery.lines', id, { ...(cl ?? { ...l, id, deliveryId: childId, deliveredQty: null }), plannedQty: q });
++    else if (cl) r.remove('dm.delivery.lines', id);
++  }
++  return total;
++}
++
+ /** トラブルの解決のあとの親の状態（当日中の再訪は変えない） */
+ const RESOLVED_STATUS: Partial<Record<Trouble['resolution'], Delivery['status']>> = {
+   full: '納品済', partial: '一部納品済', partial_no_resend: '一部納品済', redelivery: '再配達待', stop: '中止',
+@@ -422,10 +452,7 @@ export default defineArea({
+       const id = nextNo(r, 'dm.delivery.troubles', `TR-${d.deliverOn.slice(2).replace(/\//g, '')}`);
+       let childDeliveryId = '';
+       if (type.autoChild && !all(r).some((x) => x.parentId === d.id && x.status === '確認中')) {
+-        const n = all(r).filter((x) => x.parentId === d.id).length + 1;
+-        childDeliveryId = `${d.id}-${n}`;
+-        r.put<Delivery>('dm.delivery.deliveries', childDeliveryId, { ...d, id: childDeliveryId, parentId: d.id, status: '確認中', deliveredQty: null, deliveredAt: '', completion: '', changeState: '変更不可', internalMemo: `${type.name}の自動の子（${id}）` });
+-        copyChildParts(r, d.id, childDeliveryId);
++        childDeliveryId = makeAutoChild(r, d, type.name, id);
+       }
+       const t: Trouble = { id, deliveryId: d.id, typeId: a.typeId, reportedBy: { site: a.site, accountId: a.accountId }, reportedAt: nowStamp(), note: a.note, resolution: '', resolvedAt: '', childDeliveryId };
+       r.put('dm.delivery.troubles', id, t);
+@@ -443,22 +470,43 @@ export default defineArea({
+       return next;
+     },
+     /** 運営：トラブルの解決（配送ごとに、開いている報告をまとめて閉じる） */
+-    resolveTrouble(r, a: { deliveryId: string; resolution: Exclude<Trouble['resolution'], ''>; reason?: string; childDate?: string }) {
++    resolveTrouble(r, a: { deliveryId: string; resolution: Exclude<Trouble['resolution'], ''>; reason?: string; childDate?: string; lines?: LineQty[]; typeId?: Trouble['typeId'] }) {
+       const open = r.list<Trouble>('dm.delivery.troubles').filter((t) => t.deliveryId === a.deliveryId && !t.resolution);
+       if (!open.length) throw new ApiError('開いているトラブルがありません', 409);
+-      open.forEach((t) => r.put('dm.delivery.troubles', t.id, { ...t, resolution: a.resolution, resolvedAt: nowStamp() }));
++      /* 納品できた数（商品ごと。納品済・一部納品済にするときだけ）：明細の届けた数と配送の合計に残す */
++      let qtyNote = '';
++      if (a.lines?.length && ['full', 'partial', 'partial_no_resend'].includes(a.resolution)) {
++        const ls = linesOf(r, a.deliveryId);
++        const qs = lineQtys(ls, a.lines, (l) => l.deliveredQty ?? l.plannedQty, (l, max) => `${l.productId} の納品できた数は 0〜${max} で入れてください`);
++        let total = 0;
++        for (const l of ls) { const q = qs.get(l.id)!; total += q; r.put('dm.delivery.lines', l.id, { ...l, deliveredQty: q }); }
++        r.put('dm.delivery.deliveries', a.deliveryId, { ...get(r, a.deliveryId), deliveredQty: total });
++        qtyNote = `・納品できた数 ${total}`;
++      }
++      /* 種別未定の報告には、解決のときに運営が6区分の種別を付ける（typeId） */
++      open.forEach((t) => r.put('dm.delivery.troubles', t.id, { ...t, ...(a.typeId && t.typeId === 'undecided' ? { typeId: a.typeId } : {}), resolution: a.resolution, resolvedAt: nowStamp() }));
+       const d = get(r, a.deliveryId);
+-      audit(r, d, `トラブル解決：${a.resolution}${a.reason ? `（${a.reason}）` : ''}`);
++      audit(r, d, `トラブル解決：${a.resolution}${qtyNote}${a.reason ? `（${a.reason}）` : ''}`);
+       /* 解決のあとの親の状態（当日中の再訪は受取済のまま） */
+       const st = RESOLVED_STATUS[a.resolution];
+       if (st) r.put('dm.delivery.deliveries', d.id, { ...get(r, d.id), status: st });
+       if (st === '納品済' || st === '一部納品済') stampDelivered(r, d.id);
+       /* 子：送り直す（再配送・当日の再訪・一部の残り）は出荷待（日付を指定できる）、ほかは取消 */
+-      for (const c of all(r).filter((x) => x.parentId === d.id && x.status === '確認中')) {
++      /* 種別未定の報告に「作る」種別を付けて、送り直す解決にするときは、その時点で自動子を作る（配送_07 §13-2） */
++      if (a.typeId && open.some((t) => t.typeId === 'undecided') && r.get<TroubleType>('dm.master.troubleTypes', a.typeId)?.autoChild
++        && ['redelivery', 'same_day_revisit', 'partial'].includes(a.resolution) && !all(r).some((x) => x.parentId === d.id && x.status === '確認中')) {
++        const cid = makeAutoChild(r, d, r.get<TroubleType>('dm.master.troubleTypes', a.typeId)!.name, open[0].id);
++        open.forEach((t) => r.put('dm.delivery.troubles', t.id, { ...(r.get<Trouble>('dm.delivery.troubles', t.id) ?? t), childDeliveryId: t.childDeliveryId || cid }));
++      }
++      const openIds = new Set(open.map((t) => t.id));
++      const autoIds = new Set(r.list<Trouble>('dm.delivery.troubles').filter((t) => openIds.has(t.id)).map((t) => t.childDeliveryId).filter(Boolean));
++      for (const c of all(r).filter((x) => x.status === '確認中' && (x.parentId === d.id || autoIds.has(x.id)))) {
+         const keep = ['redelivery', 'same_day_revisit', 'partial'].includes(a.resolution);
+         const lead = Math.round((new Date(c.deliverOn).getTime() - new Date(c.shipOn).getTime()) / 86400000);
+         const dates = keep && a.childDate ? { deliverOn: a.childDate, shipOn: addDays(a.childDate, -lead) } : {};
+-        r.put('dm.delivery.deliveries', c.id, { ...c, ...dates, status: keep ? '出荷待' : '取消' });
++        /* 分納（partial）：子の数量＝まだ届いていない数（親の予定 − 納品できた数）。配送_07 §13-2（自動の子も「数量・明細＝残数」で使い回す） */
++        const rest = a.resolution === 'partial' ? partialRest(r, d.id, c.id) : null;
++        r.put('dm.delivery.deliveries', c.id, { ...c, ...dates, ...(rest !== null ? { plannedQty: rest } : {}), status: keep ? '出荷待' : '取消' });
+       }
+       return { closed: open.length };
+     },
+@@ -485,7 +533,7 @@ export default defineArea({
+       const qty = copyChildParts(r, d.id, id, a.qty, a.warehouseId);
+       r.put<Delivery>('dm.delivery.deliveries', id, {
+         ...d, id, parentId: d.id, status: '確認中', deliverOn: a.deliverOn, shipOn: addDays(a.deliverOn, -lead), slot: slotOf(cycles(r), a.deliverOn)?.slot ?? d.slot,
+-        warehouseId: a.warehouseId || d.warehouseId, plannedQty: qty, deliveredQty: null, deliveredAt: '', completion: '', changeState: '変更不可', internalMemo: `${a.kind}（${a.reason}）`,
++        warehouseId: a.warehouseId || d.warehouseId, plannedQty: qty, shippedOn: undefined, deliveredQty: null, deliveredAt: '', completion: '', changeState: '変更不可', internalMemo: `${a.kind}（${a.reason}）`,
+       });
+       return get(r, id);
+     },
+@@ -499,7 +547,7 @@ export default defineArea({
+       return get(r, a.id);
+     },
+     /** 運営：この配送だけの変更（受取の時間帯・お届け日。お届け日は同じサイクルの同じ半分で、出荷の前だけ）。理由は運営のメモに残す */
+-    editDelivery(r, a: { id: string; reason: string; windows?: { from: string; to: string }[]; deliverOn?: string; note?: string }) {
++    editDelivery(r, a: { id: string; reason: string; windows?: { from: string; to: string }[]; deliverOn?: string; note?: string; carrierId?: string; address?: { pref: string; city: string; addr1: string; addr2: string } }) {
+       const d = get(r, a.id);
+       if (!a.reason?.trim()) throw new ApiError('変更理由を入れてください', 400);
+       if (['納品済', '一部納品済', '中止', '取消'].includes(d.status)) throw new ApiError(`この配送は変更できません（${d.status}）`, 409);
+@@ -517,6 +565,30 @@ export default defineArea({
+         what.push(`お届け日 ${d.deliverOn} → ${a.deliverOn}（出荷 ${ship}）`);
+         notifyBranch(r, d.branchId, { templateId: 'date_change', title: 'お届け日を変更しました', body: `${d.deliverOn} の便を ${a.deliverOn} にお届けします。理由：${a.reason}`, link: { type: 'delivery', id: d.id } });
+       }
++      /* 配送会社②・納品先の住所（配送_08 §15-13）：出荷指示を送ったあとなら版を上げて再送。住所は送り状を無効にして取り直す */
++      const sent = instructionSent(r, d, today());
++      let resend = false;
++      if (a.carrierId) {
++        const ca = r.get<Carrier>('dm.master.carriers', a.carrierId);
++        const fin = legs(r).filter((l) => l.deliveryId === d.id).sort((x, y) => y.legNo - x.legNo)[0];
++        if (!ca || !fin) throw new ApiError('配送会社が見つかりません', 400);
++        if (fin.carrierId !== ca.id) {
++          const regime: Leg['regime'] = ca.kind === '自社' ? 'self' : ca.kind === '路線' ? 'parcel_carrier' : 'partner_driver';
++          r.put<Leg>('dm.delivery.legs', fin.id, { ...fin, carrierId: ca.id, regime, driverId: '', assignScope: regime === 'partner_driver' ? 'carrier' : 'ops', feeYen: undefined });
++          /* 配送全体の運び手も最終区間に合わせる。配送区分（ES配送便／COOL便）は変えない。路線便でなくなったら送り状は無効にする */
++          next.regime = regime;
++          if (regime !== 'parcel_carrier') r.list<Tracking>('dm.delivery.tracking').filter((t) => t.deliveryId === d.id && t.status === 'active').forEach((t) => r.put<Tracking>('dm.delivery.tracking', t.id, { ...t, status: 'voided' }));
++          what.push(`配送会社② ${r.get<Carrier>('dm.master.carriers', fin.carrierId)?.name ?? fin.carrierId} → ${ca.name}`);
++          resend = true;
++        }
++      }
++      if (a.address) {
++        next.destination = { ...(next.destination), address: { ...d.destination.address, ...a.address } };
++        what.push(`納品先の住所 → ${a.address.pref}${a.address.city}${a.address.addr1}${a.address.addr2 ? ' ' + a.address.addr2 : ''}`);
++        r.list<Tracking>('dm.delivery.tracking').filter((t) => t.deliveryId === d.id && t.status === 'active').forEach((t) => r.put<Tracking>('dm.delivery.tracking', t.id, { ...t, status: 'voided' }));
++        resend = true;
++      }
++      if (resend && sent) { next.shipRev = (d.shipRev ?? 1) + 1; what.push(`出荷指示を再送（rev${next.shipRev}）`); }
+       audit(r, next, `変更：${what.join('、') || '変更なし'}（理由：${a.reason}）`);
+       return get(r, a.id);
+     },
+diff --git a/lib/domain/calendar.ts b/lib/domain/calendar.ts
+index 6f39858..b9dbe50 100644
+--- a/lib/domain/calendar.ts
++++ b/lib/domain/calendar.ts
+@@ -28,10 +28,18 @@ export function slotOf(cycles: Cycle[], date: string) {
+   return null;
+ }
+ 
++/** その枠が出荷不可か。倉庫ごとの出荷不可枠（Cycle.ngSlots）があればそれ、なければ既定。倉庫を渡さないときは全倉庫が不可の枠だけ */
++export function slotNoPick(c: Cycle, slot: string, warehouseId?: string) {
++  const m = c.ngSlots;
++  if (!m || !Object.keys(m).length) return NO_PICKING_SLOTS.includes(slot);
++  if (warehouseId) return (m[warehouseId] ?? NO_PICKING_SLOTS).includes(slot);
++  return Object.values(m).every((l) => l.includes(slot));
++}
++
+ /** その日に出荷（ピッキング）できるか。warehouseId を渡すと、その倉庫だけの出荷禁止日も見る（課題 4-10。渡さないときは全倉庫の日だけ） */
+ export function canPick(cycles: Cycle[], holidays: Holiday[], date: string, warehouseId?: string) {
+   const s = slotOf(cycles, date);
+-  return !!s && !NO_PICKING_SLOTS.includes(s.slot) && !holidays.some((h) => h.date === date && h.noPicking && (!h.warehouseIds?.length || (!!warehouseId && h.warehouseIds.includes(warehouseId))));
++  return !!s && !slotNoPick(s.cycle, s.slot, warehouseId) && !holidays.some((h) => h.date === date && h.noPicking && (!h.warehouseIds?.length || (!!warehouseId && h.warehouseIds.includes(warehouseId))));
+ }
+ 
+ /** その日にお届けできるか（枠の 1 と祝日はお届けしない） */
+diff --git a/lib/domain/checkMove.ts b/lib/domain/checkMove.ts
+index cda39a8..e16f250 100644
+--- a/lib/domain/checkMove.ts
++++ b/lib/domain/checkMove.ts
+@@ -69,7 +69,8 @@ export function moveProblems(r: DocRepo): string[] {
+   for (const x of r.list<DeliveryReport>('dm.report.deliveryReports')) {
+     const d = byId.get(x.deliveryId);
+     if (!d) continue;
+-    if (x.status === '完了' && d.deliveredQty !== null && x.inspection.length) need(x.inspection.reduce((a, l) => a + l.qty, 0) === d.deliveredQty, `報告 ${x.id} の検品の数が配送の届けた数（${d.deliveredQty}）と違う`);
++    /* 運営がトラブルの解決で「納品できた数」を直した配送は、ドライバーの検品の数と違ってよい */
++    if (x.status === '完了' && d.deliveredQty !== null && x.inspection.length && !troubles.some((t) => t.deliveryId === d.id && t.resolution)) need(x.inspection.reduce((a, l) => a + l.qty, 0) === d.deliveredQty, `報告 ${x.id} の検品の数が配送の届けた数（${d.deliveredQty}）と違う`);
+     /* 検品の行（lineId）はこの配送の明細・同じ行は1回（B1） */
+     const lids = x.inspection.map((l) => l.lineId).filter(Boolean) as string[];
+     need(new Set(lids).size === lids.length, `報告 ${x.id} の検品に同じ明細の行が2つ以上ある`);
+diff --git a/lib/format/status.ts b/lib/format/status.ts
+index 5415db7..f3db94a 100644
+--- a/lib/format/status.ts
++++ b/lib/format/status.ts
+@@ -34,7 +34,7 @@ export const STATUS_GROUPS: Record<StatusGroup, readonly string[]> = {
+   ],
+   pending: [
+     '申請中', '申込中', '受付中', '承認待ち', '本発注の承認待ち', '未承認', '回答待ち', '未回答', '再確認待ち', '依頼中', '提案中', '別の日のご提案',
+-    '確認中', '再配達待', '再配送待', '未受取', '未送信', '差異あり・対応待ち', '分納待ち', '納期回答待ち', '一部仮発注',
++    '確認中', '再配達待', '未受取', '未送信', '差異あり・対応待ち', '分納待ち', '納期回答待ち', '一部仮発注',
+     '未確定', '未払い', '未発行', '免許未登録', '仮登録', '未手続き', '手続き中', '入力中', '編集中', '契約設定中', '対応中', '一部承認',
+     '到着済み（未処理）', '未照合', 'ESキッチンが確認中', '配送日調整中', '未返却', '再送待ち', '対応中', '要確認', '未保存', '設定中',
+     '解約手続き中', 'デフォルト', '返金中', '締め後追加', 'メンテナンス中', '契約前', '利用休止', '休止中',
+diff --git a/lib/ops/apiPerm.ts b/lib/ops/apiPerm.ts
+index 7cdbaff..b2c89a5 100644
+--- a/lib/ops/apiPerm.ts
++++ b/lib/ops/apiPerm.ts
+@@ -120,7 +120,7 @@ function kindOf(key: string, args: Record<string, unknown>): string | null {
+     return m[kind] ?? null;
+   }
+   /* 法人・拠点・子契約の保存（contracts.save の entity） */
+-  if (key === 'ops:contracts.save') return ({ corp: 'corps', branch: 'branches', child: 'contracts', contract: 'contracts' } as Record<string, string>)[String(args.entity ?? '')] ?? 'corps';
++  if (key === 'ops:contracts.save' || key === 'ops:contracts.presence') return ({ corp: 'corps', branch: 'branches', child: 'contracts', contract: 'contracts' } as Record<string, string>)[String(args.entity ?? '')] ?? 'corps';
+   /* 運営のマスタ（機種・プラン・オプション・値引き） */
+   if (key.startsWith('ops:masters.')) return kind === 'devices' ? 'devices' : kind ? 'plans' : null;
+   /* 一覧だけの画面（general.genList・deleteRow）の key */
+diff --git a/lib/ops/applications/logic.ts b/lib/ops/applications/logic.ts
+index 09a56cf..b709d3c 100644
+--- a/lib/ops/applications/logic.ts
++++ b/lib/ops/applications/logic.ts
+@@ -65,6 +65,14 @@ export function chRows(list: ChangeApp[], todayStr: string): ChangeListRow[] {
+     };
+   });
+ }
++/** 並べ替えの比べ方（列の値で。向きの既定：申請ID・申請の種類などの文字＝昇順、申請日＝降順） */
++function cmpBy<T>(f: ListFilter, get: (x: T) => unknown, p: T, q: T): number {
++  const a = get(p), b = get(q);
++  const key = f.sort === 'id' ? 'no' : f.sort;
++  const dir = f.dir ?? (key === 'date' ? 'desc' : 'asc');
++  const c = typeof a === 'number' && typeof b === 'number' ? a - b : String(a ?? '').localeCompare(String(b ?? ''), 'ja');
++  return dir === 'desc' ? -c : c;
++}
+ /** 新規契約タブの絞り込み・並び（登録したばかりの行は先頭） */
+ export function filterIntakes(rows: IntakeRow[], f: ListFilter): IntakeRow[] {
+   return rows.filter((x) => {
+@@ -78,7 +86,7 @@ export function filterIntakes(rows: IntakeRow[], f: ListFilter): IntakeRow[] {
+     return true;
+   }).sort((p, q) => {
+     if (!!p.fresh !== !!q.fresh) return p.fresh ? -1 : 1;
+-    return f.sort === 'date' ? (p.date < q.date ? 1 : p.date > q.date ? -1 : 0) : (p.no < q.no ? -1 : 1);
++    return cmpBy(f, (x: IntakeRow) => (x as unknown as Record<string, unknown>)[f.sort === 'id' ? 'no' : f.sort], p, q) || (p.no < q.no ? -1 : 1);
+   });
+ }
+ /** 契約変更・休止・解約タブの絞り込み・並び */
+@@ -90,7 +98,7 @@ export function filterChanges(rows: ChangeListRow[], f: ListFilter): ChangeListR
+     /* 「対応中」は n/m が付くので頭で合わせる */
+     if (f.st2 && r.st.t !== f.st2 && !(f.st2 === '対応中' && r.st.k === 'part')) return false;
+     return true;
+-  }).sort((p, q) => (f.sort === 'id' ? (p.no < q.no ? -1 : 1) : (p.date < q.date ? 1 : p.date > q.date ? -1 : (p.a.seq ?? 0) - (q.a.seq ?? 0))));
++  }).sort((p, q) => cmpBy(f, (r: ChangeListRow) => (f.sort === 'dl' ? (r.dl ? r.dl.d : 1e9) : f.sort === 'st' ? r.st.t : (r as unknown as Record<string, unknown>)[f.sort === 'id' ? 'no' : f.sort]), p, q) || (p.date < q.date ? 1 : p.date > q.date ? -1 : (p.a.seq ?? 0) - (q.a.seq ?? 0)));
+ }
+ export const uniq = (arr: (string | undefined)[]) => arr.filter((x, i): x is string => !!x && arr.indexOf(x) === i);
+ 
+diff --git a/lib/ops/applications/types.ts b/lib/ops/applications/types.ts
+index 1234ec3..26a40f4 100644
+--- a/lib/ops/applications/types.ts
++++ b/lib/ops/applications/types.ts
+@@ -241,7 +241,10 @@ export type Discount = { id: string; n: string; g: string; c: 'fixed' | 'rate';
+ export type ListFilter = {
+   tab: ApTab;
+   q: string;
+-  sort: 'id' | 'date';
++  /** 並べ替えの項目（一覧の列：新規＝no・kubun・company・plan・course・eq・ship・cnt・acct・es・st・date／変更＝no・kind・company・head・start・dl・es・st・date） */
++  sort: string;
++  /** 並びの向き（なければ 申請ID＝昇順・それ以外＝降順） */
++  dir?: 'asc' | 'desc';
+   kubun?: string;
+   plan?: string;
+   course?: string;
+diff --git a/lib/ops/areas/contracts.ts b/lib/ops/areas/contracts.ts
+index 1b0b93d..f01ad01 100644
+--- a/lib/ops/areas/contracts.ts
++++ b/lib/ops/areas/contracts.ts
+@@ -1,3 +1,4 @@
++import { assertFresh } from '../core/concurrency';
+ import { ApiError } from '@/lib/api/errors';
+ import { nowStamp } from '@/lib/supplier/dates';
+ import { toNum } from '@/lib/format/money';
+@@ -7,13 +8,14 @@ import domainOrder from '@/lib/domain/areas/order';
+ import { childLocked, methodOf, pricesAt, publicGenOf, publicPricesOf, yenOf } from '@/lib/domain/snapshot';
+ import type { Branch as DBranch, ChildContract as DChild, Contract, Corp as DCorp } from '@/lib/domain/types';
+ import { defineArea, type DocRepo } from '../core/area';
++import { touchPresence, PRESENCE_BEAT_MS, PRESENCE_TTL_MS, type PresenceRow } from '../core/presence';
+ import {
+   applyDeps, baseFill, cellText, CHILD_TABLE, FORMS, genPlan, laterOf,
+   sumOf, tablesFor, validate, valuesOf,
+ } from '../contracts/logic';
+ import {
+   addressOf, billingOf, branchFill, branchRow, channelsFromRows, slotRoutesFromRows, childFill, childRow, contactsFromRows, corpFill, corpRow,
+-  currentOf, extraOf, leadOfOpt, load, putExtra, thisMonth, type Ctx,
++  bumpVer, currentOf, extraOf, leadOfOpt, load, putExtra, verOf, thisMonth, type Ctx,
+ } from '../contracts/fromDomain';
+ import type {
+   Branch, ChildContract, Corp, DetailData, Entity, FormFill, FormVal, TableRow,
+@@ -31,7 +33,10 @@ import { SLOT_ROUTE_TABLE } from '../contracts/forms';
+  *   contracts.extra     詳細画面の、共通データにない項目を運営が直した値（id＝<entity>:<ID>）
+  *   contracts.routeRuns 配送ルートの一括変更の履歴（廃止した画面のもの。一括変更の履歴はいまは dm.bulk.changes）
+  */
+-export const K = { extra: 'contracts.extra', routeRuns: 'contracts.routeRuns' } as const;
++export const K = { extra: 'contracts.extra', routeRuns: 'contracts.routeRuns', presence: 'contracts.presence' } as const;
++
++/** 編集中の知らせ（I02・台帳 K「同時に編集」：ロックしない・先に知らせる）。画面は PRESENCE_BEAT_MS ごとに送り、PRESENCE_TTL_MS 音沙汰がなければ編集中でなくなる */
++export { PRESENCE_BEAT_MS, PRESENCE_TTL_MS, type PresenceRow };
+ 
+ type Row = Corp | Branch | ChildContract;
+ const NOUN: Record<Entity, string> = { corp: '法人', branch: '拠点', child: '子契約' };
+@@ -230,13 +235,19 @@ export default defineArea({
+       const cx = load(repo);
+       return cx.children.filter((k) => !a?.parentNo || k.contractId === a.parentNo).map((k) => childRow(repo, cx, k));
+     },
+-    corp: (repo: DocRepo, a: { id: string }) => { const r = findRow(repo, load(repo), 'corp', a.id) as Corp | undefined; return r ? detailOf('corp', r) : null; },
+-    branch: (repo: DocRepo, a: { id: string }) => { const r = findRow(repo, load(repo), 'branch', a.id) as Branch | undefined; return r ? detailOf('branch', r) : null; },
++    corp: (repo: DocRepo, a: { id: string }) => { const r = findRow(repo, load(repo), 'corp', a.id) as Corp | undefined; return r ? { ...detailOf('corp', r), version: verOf(repo, 'corp', a.id) } : null; },
++    branch: (repo: DocRepo, a: { id: string }) => { const r = findRow(repo, load(repo), 'branch', a.id) as Branch | undefined; return r ? { ...detailOf('branch', r), version: verOf(repo, 'branch', a.id) } : null; },
+     child: (repo: DocRepo, a: { id: string }) => {
+       const cx = load(repo);
+       const r = findRow(repo, cx, 'child', a.id) as ChildContract | undefined;
+-      return r ? { ...detailOf('child', r), ...childCtx(repo, cx, r) } : null;
++      return r ? { ...detailOf('child', r), ...childCtx(repo, cx, r), version: verOf(repo, 'child', a.id) } : null;
+     },
++    /**
++     * 編集中の知らせ。編集画面を開いている間、30秒ごとに呼ぶ（leave＝true で画面を離れたことを知らせる）。
++     * 自分の分を記録して、ほかの人の編集中（90秒以内に知らせがあった人）を返す。ロックはしない。
++     * 読み取りだが記録を書く（書き換えの action にしない：action にすると開いている全画面が読み直す）。時刻は実時間（エポックミリ秒）
++     */
++    presence: (repo: DocRepo, a: { entity: Entity; id: string; accountId: string; name: string; leave?: boolean; now?: number }) => touchPresence(repo, K.presence, a),
+     /** 親契約番号 → 拠点ID（親契約は拠点の「契約」タブ） */
+     parent: (repo: DocRepo, a: { no: string }) => branchOfContract(load(repo), a.no)?.id ?? null,
+     /** 拠点の「子契約で変更する」：今のサイクル月の子契約（なければいちばん新しいもの） */
+@@ -258,11 +269,13 @@ export default defineArea({
+      * 共通データにある項目は共通データの action で書き、ない項目は contracts.extra に見本と違う値だけ残す。
+      * 子契約で scope='after' のときは、未確定の後ろの子契約にも、直した項目を写す。
+      */
+-    save: (repo: DocRepo, a: { entity: Entity; id: string; values: Record<string, FormVal>; tables: Record<string, TableRow[]>; scope?: 'only' | 'after' }) => {
++    save: (repo: DocRepo, a: { entity: Entity; id: string; values: Record<string, FormVal>; tables: Record<string, TableRow[]>; scope?: 'only' | 'after'; baseVersion?: string; force?: boolean }) => {
+       const cx = load(repo);
+       const row = findRow(repo, cx, a.entity, a.id);
+       if (!row) throw notFound(a.entity, a.id);
+       if (row.apNo) throw new ApiError('仮登録の間は、契約申請管理の申請詳細で編集してください', 409);
++      /* 同時更新（E31）：読み込んだ版と違えば 409 STALE。force＝上書きして保存 */
++      assertFresh(verOf(repo, a.entity, a.id), a.baseVersion, a.force);
+       const def = FORMS[a.entity];
+       const fill = baseFill(a.entity, row);
+       const before = applyDeps(a.entity, valuesOf(def, fill)).values;   /* 画面と同じく、非活性の項目は「—」にしてから比べる */
+@@ -300,7 +313,7 @@ export default defineArea({
+         }
+         more = String(n);
+       }
+-      return { changed: Object.keys(changed).length + Object.keys(tChanged).length, extra: more };
++      return { changed: Object.keys(changed).length + Object.keys(tChanged).length, extra: more, version: bumpVer(repo, a.entity, a.id) };
+     },
+ 
+     /** 法人アカウントの操作（S7C-20261001）。pw・resend は案内を送るだけ。stop・resume はアカウントの状態を変える（dm.account） */
+diff --git a/lib/ops/areas/delivery.ts b/lib/ops/areas/delivery.ts
+index 8b22b17..16940a6 100644
+--- a/lib/ops/areas/delivery.ts
++++ b/lib/ops/areas/delivery.ts
+@@ -3,18 +3,17 @@ import { addDays, nowStamp } from '@/lib/supplier/dates';
+ import { defineArea, toDocs, type DocRepo } from '../core/area';
+ import domainCarrier from '@/lib/domain/areas/carrier';
+ import domainDelivery from '@/lib/domain/areas/delivery';
+-import { NO_PICKING_SLOTS } from '@/lib/domain/calendar';
+ import { orderDeadlineWarnings, unfitCycles } from '@/lib/domain/move';
+ import { deliveryRequestCheck } from '@/lib/domain/mails';
+-import type { ChangeRequest as DCr, Delivery, Driver } from '@/lib/domain/types';
++import type { ChangeRequest as DCr, Cycle, Delivery, Driver } from '@/lib/domain/types';
+ import { DUP_KINDS, REVIEW_GROUPS, TROUBLE_KINDS } from '../delivery/constants';
+ import {
+   checkCancel, checkCrProcess, checkCycleSettings, checkDeliveryEdit, checkDuplicate, checkMemo, checkQuoteForm, type QuoteForm, checkTroubleReport, checkTroubleResolve,
+   filterList, filterReviews, isValidDate, type Errors, type ListFilter, type ReviewFilter,
+ } from '../delivery/logic';
+ import {
+-  altDate, consignees, crAltDates, crProcess, crView, ctxOf, cycleImpact, cycleSettings, dateAlt, dayView, deliveryRecord, esInvoices, holidaysFrom, hubs, inquiries,
+-  judgeOf, listOpts, listRows, matShipments, monthView, quoteTemp, RESOLUTION, reviewItems, shipOrders, thomasCsv, TROUBLE_TYPE, weekView, type ReviewState,
++  altDate, consignees, crAltDates, crProcess, crView, ctxOf, cycleImpact, cycleSettings, dateAlt, dayView, deliveryRecord, esInvoices, holidaysFrom, hubs, inquiries, NG_TABS,
++  judgeOf, listOpts, listRows, matShipments, monthView, quoteTemp, RESOLUTION, reviewItems, scheduleCtx, shipOrders, thomasCsv, TROUBLE_TYPE, weekView, type ReviewState, type ScheduleFilter,
+ } from '../delivery/fromDomain';
+ import { importLogs } from '../delivery/seed';
+ import type { CycleSettings, DeliveryDetail, ImportLog } from '../delivery/types';
+@@ -30,7 +29,7 @@ import type { CycleSettings, DeliveryDetail, ImportLog } from '../delivery/types
+  *   要確認の対応の状態（delivery.reviewStates。要確認そのものは共通データから毎回見つける）。出荷データの移動の記録は共通データ（dm.delivery.moves）
+  */
+ 
+-const K = { imp: 'delivery.imports', sends: 'delivery.shipOrderSends', reviewState: 'delivery.reviewStates', move: 'delivery.moves' } as const;
++const K = { imp: 'delivery.imports', sends: 'delivery.shipOrderSends', reviewState: 'delivery.reviewStates', move: 'delivery.moves', cfg: 'delivery.cycleConfig' } as const;
+ /** 運営の操作のアカウント（ログインの仕組みができたら差し替える） */
+ const OPS = 'Ad00001';
+ 
+@@ -77,9 +76,9 @@ export default defineArea({
+       return { total: open.length, groups: REVIEW_GROUPS.map((g) => ({ title: g.title, rows: g.rows.map((r) => ({ label: r.label, kinds: r.kinds, count: open.filter((x) => r.kinds.includes(x.kind)).length })) })) };
+     },
+     /** 月（YYYY-MM）・週（その週の月曜 YYYY-MM-DD）・日（出荷日 YYYY-MM-DD） */
+-    scheduleMonth: (repo, a: { id: string }) => monthView(ctxOf(repo), a.id),
+-    scheduleWeek: (repo, a: { id: string }) => weekView(ctxOf(repo), a.id),
+-    scheduleDay: (repo, a: { id: string }) => dayView(ctxOf(repo), a.id),
++    scheduleMonth: (repo, a: { id: string; f?: ScheduleFilter }) => monthView(scheduleCtx(ctxOf(repo), a.f), a.id),
++    scheduleWeek: (repo, a: { id: string; f?: ScheduleFilter }) => weekView(scheduleCtx(ctxOf(repo), a.f), a.id),
++    scheduleDay: (repo, a: { id: string; f?: ScheduleFilter }) => dayView(scheduleCtx(ctxOf(repo), a.f), a.id),
+ 
+     reviewList: (repo, f: ReviewFilter) => {
+       const all = reviews(repo);
+@@ -163,8 +162,26 @@ export default defineArea({
+       fail(checkDeliveryEdit(a));
+       const c = ctxOf(repo), d = deliveryOf(repo, a.id), rec = deliveryRecord(c, d);
+       if (!rec.canEdit) throw new ApiError('この配送データは編集できません', 409);
+-      if (a.carrier2 !== rec.carrier2) throw new ApiError('配送会社の変更は、拠点・契約情報の配送設定（子契約）で行ってください', 400);
+-      if (a.addr !== rec.addr) throw new ApiError('納品先の住所は、拠点の情報で変更してください', 400);
++      /* 配送会社②：最後の区間の運送会社を変える（出荷指示のあとでも可：版を上げて再送・配送_08 §15-13）。表示名の「（引き取り）」は外して照合 */
++      let carrier2Id: string | undefined;
++      if (a.carrier2 !== rec.carrier2) {
++        const nm = a.carrier2.replace(/（引き取り）$/, '');
++        const ca = [...c.carriers.values()].find((x) => x.name === nm || (nm === '自社便' && x.kind === '自社'));
++        if (!ca) throw new ApiError('配送会社を選んでください', 400);
++        carrier2Id = ca.id;
++      }
++      /* 納品先の住所：「都道府県＋市区町村＋番地 建物」の文字から分けて、この配送だけ変える（送り状は無効にして取り直し） */
++      let address: { pref: string; city: string; addr1: string; addr2: string } | undefined;
++      if (a.addr !== rec.addr) {
++        const t = a.addr.trim().replace(/\s+/g, ' ');
++        const pref = t.match(/^(北海道|東京都|大阪府|京都府|.{2,3}県)/)?.[1];
++        if (!pref) throw new ApiError('納品先の住所は 都道府県から入力してください', 400);
++        const rest = t.slice(pref.length);
++        const city = rest.match(/^(.+?郡.+?[町村]|.+?市.+?区|.+?[市区町村])/)?.[1];
++        if (!city) throw new ApiError('納品先の住所は 市区町村まで入力してください', 400);
++        const [addr1, ...r2] = rest.slice(city.length).trim().split(' ');
++        address = { pref, city, addr1: addr1 ?? '', addr2: r2.join(' ') };
++      }
+       const notes: string[] = [];
+       /* 配送スタッフ：最後の区間（委託・自社）に割り当てる */
+       if (a.staff !== rec.staff) {
+@@ -183,7 +200,7 @@ export default defineArea({
+         if (!row || row.dis) throw new ApiError('この日には変えられません（出荷不可・納品不可）', 400);
+         deliverOn = altDate(c, d, a.alt);
+       }
+-      domainDelivery.actions.editDelivery(repo, { id: d.id, reason: a.reason, windows, deliverOn, note: notes.join('、') || undefined });
++      domainDelivery.actions.editDelivery(repo, { id: d.id, reason: a.reason, windows, deliverOn, carrierId: carrier2Id, address, note: notes.join('、') || undefined });
+       return { ok: true };
+     },
+ 
+@@ -211,7 +228,7 @@ export default defineArea({
+     /** トラブルの代理登録（連絡元・連絡者・日時は内容に残す） */
+     reportTrouble: (repo, a: { id: string; from: string; who: string; at: string; kind: string; text: string }) => {
+       fail(checkTroubleReport(a));
+-      const typeId = (Object.keys(TROUBLE_TYPE) as (keyof typeof TROUBLE_TYPE)[]).find((k) => TROUBLE_TYPE[k] === a.kind);
++      const typeId = (Object.keys(TROUBLE_TYPE) as (keyof typeof TROUBLE_TYPE)[]).find((k) => TROUBLE_TYPE[k] === a.kind && TROUBLE_KINDS.includes(a.kind));
+       if (!typeId) throw new ApiError(`種別は ${TROUBLE_KINDS.join('・')} から選んでください`, 400);
+       const t = domainDelivery.actions.reportTrouble(repo, {
+         deliveryId: a.id, typeId, site: 'ops', accountId: OPS,
+@@ -221,12 +238,18 @@ export default defineArea({
+     },
+ 
+     /** トラブルの対応を決める（配送単位でまとめて解決） */
+-    resolveTrouble: (repo, a: { id: string; option: string; kind2?: string; reason: string; freight?: string; childDate?: string }) => {
++    resolveTrouble: (repo, a: { id: string; option: string; kind2?: string; reason: string; freight?: string; childDate?: string; qty?: { id: string; qty: number }[] }) => {
+       fail(checkTroubleResolve(a));
+       const resolution = RESOLUTION[a.option];
+       if (!resolution) throw new ApiError('対応を選んでください', 400);
+       const reason = a.reason + (a.freight === '請求する' ? '・運賃を請求する' : '');
+-      domainDelivery.actions.resolveTrouble(repo, { deliveryId: a.id, resolution, reason, childDate: a.childDate && isValidDate(a.childDate) ? slash(a.childDate) : undefined });
++      /* 種別未定の付け直し（6区分の名前 → 種類。種別未定の報告があるときに適用）。数量は商品ごとの納品できた数 */
++      const typeId = a.kind2 ? (Object.keys(TROUBLE_TYPE) as (keyof typeof TROUBLE_TYPE)[]).find((k) => TROUBLE_TYPE[k] === a.kind2 && TROUBLE_KINDS.includes(a.kind2!)) : undefined;
++      if (a.kind2 && !typeId) throw new ApiError(`種別は ${TROUBLE_KINDS.join('・')} から選んでください`, 400);
++      /* 区分を付けて解決するまで、種別未定の報告は未解決のまま残る（配送_07 §13-1） */
++      if (!typeId && repo.list<{ deliveryId: string; typeId: string; resolution: string }>('dm.delivery.troubles').some((t) => t.deliveryId === a.id && !t.resolution && t.typeId === 'undecided')) throw new ApiError('種別未定の報告があります。種別を選んでください', 400);
++      const lines = (a.qty ?? []).map((x) => ({ productId: x.id, qty: Number(x.qty) }));
++      domainDelivery.actions.resolveTrouble(repo, { deliveryId: a.id, resolution, reason, childDate: a.childDate && isValidDate(a.childDate) ? slash(a.childDate) : undefined, lines, typeId });
+       return { ok: true, st: deliveryRecord(ctxOf(repo), deliveryOf(repo, a.id)).st };
+     },
+ 
+@@ -286,9 +309,11 @@ export default defineArea({
+         domainDelivery.actions.setCycleA1(repo, { cycleMonth: ym, a1: slash(a1) });
+         moved.push(ym);
+       }
+-      if (a.settings.pauses.length) throw new ApiError('サイクル休止は共通データにまだありません（祝日・出荷不可日で設定してください）', 400);
+-      const ng = Object.values(a.settings.ngSlots).some((x) => [...x].sort().join() !== [...NO_PICKING_SLOTS].sort().join());
+-      if (ng) throw new ApiError('出荷不可の枠は全社共通の決まりです（日付は出荷不可日で設定してください）', 400);
++      /* サイクル休止・倉庫ごとの出荷不可枠は、運営の設定として保存する（配送_02 §4-5・§4-6） */
++      repo.put(K.cfg, 'pauses', { id: 'pauses', items: a.settings.pauses });
++      /* 倉庫ごとの出荷不可枠は暦（Cycle.ngSlots）だけに持つ（出荷日の判定 canPick もここを読む）。全サイクルへ書くので、あとで足したサイクルも次の保存で揃う */
++      const bySlots = Object.fromEntries(Object.entries(NG_TABS).map(([k, wh]) => [wh, a.settings.ngSlots[k] ?? []]));
++      for (const cy of repo.list<Cycle>('dm.delivery.cycles')) repo.put<Cycle>('dm.delivery.cycles', cy.id, { ...cy, ngSlots: bySlots });
+       domainDelivery.actions.setHolidays(repo, { holidays: holidaysFrom(a.settings) });
+       return { ok: true, warnings: moved.length ? orderDeadlineWarnings(repo, moved, before) : [] };
+     },
+diff --git a/lib/ops/areas/general.ts b/lib/ops/areas/general.ts
+index 0b208b7..ad416fc 100644
+--- a/lib/ops/areas/general.ts
++++ b/lib/ops/areas/general.ts
+@@ -27,6 +27,7 @@ import type { Product as DProduct } from '@/lib/domain/types';
+ import type { AgencyRow, DashFavArgs, DashLineArgs, FeePlan, GenKey, GenRow, MaintState, NoticeDetail, NoticeForm, SupplierApp } from '../general/types';
+ import { yen } from '@/lib/format/money';
+ import { allSuppliers } from '@/mocks/supplier/suppliers';
++import { withMainContact } from '@/lib/supplier/view';
+ import { applyOf, getSupplierRec, listSuppliers, SUPPLIERS, supplierRow, type SupplierRec } from '../general/suppliers';
+ import { taxRateOpts } from '@/lib/domain/tax';
+ 
+@@ -211,7 +212,7 @@ export default defineArea({
+       /* 共通 DB の仕入先（仕入先サイトが読む suppliers）を本登録にする＝運営が作った仕入先と同じ置き場・同じ ID でログインできる（課題 11） */
+       const s = getSupplierRec(repo, id);
+       if (!s) throw new ApiError('仕入先が見つかりません', 404);
+-      repo.put<SupplierRec>(SUPPLIERS, id, { ...s, status: '本登録', since: s.since || today() });
++      repo.put<SupplierRec>(SUPPLIERS, id, withMainContact({ ...s, status: '本登録', since: s.since || today() }));
+       /* 仕入先サイトのアカウントを共通データに発行する（もうあれば何もしない） */
+       if (!repo.get<Account>('dm.account.accounts', id)) {
+         account.actions.create(repo, {
+@@ -258,7 +259,7 @@ export default defineArea({
+           });
+         } catch (e) { skipped.push({ id, name, reason: e instanceof ApiError ? e.message : String(e) }); continue; }
+         /* 仕入先は本登録に（アカウントがある＝仕入先サイトにログインできる） */
+-        if (key === 'supplier') { const s = getSupplierRec(repo, id)!; repo.put<SupplierRec>(SUPPLIERS, id, { ...s, status: '本登録', since: s.since || today() }); }
++        if (key === 'supplier') { const s = getSupplierRec(repo, id)!; repo.put<SupplierRec>(SUPPLIERS, id, withMainContact({ ...s, status: '本登録', since: s.since || today() })); }
+         notify(repo, {
+           ...partnerTo(repo, site, id), templateId: 'account_issued', link: { type: '', id: '' },
+           title: 'ES Station のアカウントを発行しました（ログインのご案内）',
+diff --git a/lib/ops/areas/masters.ts b/lib/ops/areas/masters.ts
+index 691cf7a..a71b4e0 100644
+--- a/lib/ops/areas/masters.ts
++++ b/lib/ops/areas/masters.ts
+@@ -12,6 +12,7 @@ import { DM, domainOf, extraOf, genName, gensFromTables, idsOf, putExtra, recOne
+ import { priceGenUse } from '@/lib/domain/bulk';
+ import type { MasterKind, MasterRec, VmLayout } from '../masters/types';
+ import { taxIdByLabel } from '@/lib/domain/tax';
++import { touchPresence } from '../core/presence';
+ import { assertFresh, nextVersion, versionOf } from '../core/concurrency';
+ 
+ /*
+@@ -108,6 +109,9 @@ export default defineArea({
+   /* マスタ・自販機の列の構成は共通データ（dm.master.*） */
+   seed: () => ({}),
+   queries: {
++    /** 編集中の知らせ（I02）。編集・新規でない詳細画面では呼ばない。読み取りだが記録を書く（lib/ops/core/presence.ts） */
++    presence: (repo, a: { kind: MasterKind; id: string; accountId: string; name: string; leave?: boolean; now?: number }) =>
++      touchPresence(repo, 'masters.presence', { entity: assertKind(a.kind), id: a.id, accountId: a.accountId, name: a.name, leave: a.leave, now: a.now }),
+     /** 一覧。q＝検索条件（data-keys → 値）、hideDeleted＝削除済みを表示しない、sort＝並べ替え（省くと初期の並び。受付簿 #87） */
+     list: (repo, a: { kind: MasterKind; q?: Record<string, string>; hideDeleted?: boolean; sort?: SortKey | null }) => {
+       const kind = assertKind(a.kind);
+diff --git a/lib/ops/billing/logic.ts b/lib/ops/billing/logic.ts
+index 60e65c7..125a7ab 100644
+--- a/lib/ops/billing/logic.ts
++++ b/lib/ops/billing/logic.ts
+@@ -233,7 +233,7 @@ export function billingLogic(S: BillingState, log: (who: string, what: string) =
+       const m = b.prices?.[r.id] !== undefined ? { ...m0, list: b.prices[r.id] } : m0;
+       const price = Math.max(0, m.list + d);            // 商品単価（定価 ± 価格調整）
+       const sell = free ? 0 : price;                    // 利用者がアプリで支払う販売価格
+-      const unit = price;                               // ロス換算は商品単価ベース
++      const unit = m.list;                              // ロス換算は価格調整の前の標準価格（在庫.md §6-1・REQ-PO-415）
+       const calcStock = r.prev + r.deliv - r.sold - r.waste + r.appr;   // 計算在庫
+       const realV = b.filed && !b.noCheck ? r.real : null;   // 点検申告値（棚卸なしの拠点・最初の棚卸報告の前の拠点は管理ロスを出さない：未申告なら null）
+       const mgQty = realV === null ? 0 : calcStock - realV;             // 管理ロス数量
+@@ -804,7 +804,14 @@ export function billingLogic(S: BillingState, log: (who: string, what: string) =
+   function saveInvoice(id: string, names: Record<number, string>, note: string) {
+     const i = S.invoices.find((x) => x.id === id); if (!i) throw new ApiError('請求書が見つかりません', 404);
+     if (i.status !== 'REGISTERED') throw new ApiError('発行済み（または取消済み）の請求書は編集できません', 400);
+-    Object.entries(names).forEach(([n, v]) => { const l = i.lines[+n]; if (l) l.n = v; });
++    /* 入力チェック：品名は必須・60文字まで（契約_06 #3）、備考は500文字まで（input_standard） */
++    for (const [n, v] of Object.entries(names)) {
++      if (!i.lines[+n]) continue;
++      if (!v.trim()) throw new ApiError(`${+n + 1}行目の品名を入力してください`, 400);
++      if ([...v.trim()].length > 60) throw new ApiError(`${+n + 1}行目の品名は60文字以内で入力してください`, 400);
++    }
++    if ([...note].length > 500) throw new ApiError('備考は500文字以内で入力してください', 400);
++    Object.entries(names).forEach(([n, v]) => { const l = i.lines[+n]; if (l) l.n = v.trim(); });
+     i.note = note;
+     log('佐藤', `${i.id} の請求書を保存`);
+     return '保存しました';
+diff --git a/lib/ops/contracts/forms.ts b/lib/ops/contracts/forms.ts
+index 43c6147..e6021db 100644
+--- a/lib/ops/contracts/forms.ts
++++ b/lib/ops/contracts/forms.ts
+@@ -116,7 +116,7 @@ export const BRANCH_FORM: FormDef = {
+           { name: "当初契約開始年月", mark: "cond", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "only", "text": "法人に出さない"}], phase: "new", rop: false, input: true, note: "最初に契約した日。【2026/09/30 要件シート行107】データ移行では旧ESの契約開始日を取り込む（移行した日ではない。親契約の契約開始日は移行時点の日付になるため・28-175）。プラン変更・移行でリセットしない。拠点一覧の「契約開始年月」「継続年月」はこの日から計算する。運営だけが直せる", meta: {"code": "original_start_on", "type": "date"}, ctl: { t: "input", v: "2026/02/23" } },
+           { name: "拠点ステータス", mark: "req", tags: [{"cls": "pv", "text": "P1→P2変"}, {"cls": "ro", "text": "法人は参照のみ"}], phase: "chg", rop: false, input: true, note: "仮登録／本登録／休止中／閉鎖予定／閉鎖。【申請の承認で動く（2026/09/29 決定）】休止＝休止の開始サイクルから「休止中」／再開＝再開のサイクルから「本登録」／解約＝承認と同時に「閉鎖予定」、解約日に「閉鎖」【2026/09/29 決定 28-146：仮登録の間は、法人・契約の画面では編集できない（参照だけ）。編集は契約申請管理の申請詳細（詳細情報設定）で行い、拠点を確定（本登録）したあとはこの画面で編集する】", meta: {"code": "status", "type": "varchar(20)"}, ctl: { t: "select", v: "本登録", opts: ["仮登録", "本登録", "休止中", "閉鎖予定", "閉鎖"] } },
+           { name: "備考", mark: "cond", tags: [{"cls": "p1", "text": "P1"}], rop: false, input: true, note: "お客様要望など", meta: {"code": "note", "type": "text"}, ctl: { t: "textarea", v: "8F 社員食堂横に設置", rows: 2 } },
+-          { name: "在庫点検", mark: "cond", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "only", "text": "法人に出さない"}], phase: "new", rop: false, input: true, note: "棚卸をしない拠点は「なし（棚卸なし）」。管理ロスを出さない・点検の督促（未申告・事務手数料）を出さない。請求の在庫管理・実績精算では差分率の代わりに「棚卸なし」と出る【2026/10/02 決定 課題 2-1：拠点ごと】", meta: {"code": "no_stock_check", "type": "boolean"}, ctl: { t: "select", v: "あり", opts: ["あり", "なし（棚卸なし）"] } },
++          { name: "在庫点検", label: "棚卸", mark: "cond", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "only", "text": "法人に出さない"}], phase: "new", rop: false, input: true, note: "棚卸をしない拠点は「なし（棚卸なし）」。管理ロスを出さない・棚卸の督促（未申告・事務手数料）を出さない。請求の在庫管理・実績精算では差分率の代わりに「棚卸なし」と出る【2026/10/02 決定 課題 2-1：拠点ごと】", meta: {"code": "no_stock_check", "type": "boolean"}, ctl: { t: "select", v: "あり", opts: ["あり", "なし（棚卸なし）"] } },
+           { name: "基準数のパターン", mark: "cond", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "ro", "text": "法人は参照のみ"}], phase: "new", rop: false, input: true, note: "通常／短消費期限なし。短消費期限なしの拠点は、消費期限の短い商品をデフォルト注文に入れず「短消費期限なし基準注文数」を使う。料金は変わらない。【2026/10/02 決定 REQ-CT-300：契約（申込）の時に決め、変更は運営だけ。法人Web の注文の設定では変えられない】自販機（ESライト（自販機））は自販機の基準数を使うため、この値は使わない", meta: {"code": "order_pref.allow_short_life", "type": "boolean"}, ctl: { t: "select", v: "通常", opts: ["通常", "短消費期限なし"] } },
+           { name: "拠点ID", mark: "req", tags: [{"cls": "pv", "text": "P1→P2変"}], phase: "chg", rop: true, note: "CU ＋ 連番（例：CU00643）。桁は固定せず伸びてよい。QR運用はこの拠点IDから生成する", meta: {"code": "branch_id / branch_code", "type": "bigserial / varchar(20)"}, ctl: { t: "input", v: "CU00643" } },
+           { name: "旧ES ユーザーID", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "only", "text": "法人に出さない"}], phase: "new", rop: true, note: "フェーズ1（旧ESステーション）のユーザーID（例：ES000001）。移行時に取り込み、画面では参照のみ。拠点一覧で検索でき、CSV出力に含める。【表示ラベルは必ず「旧ES ユーザーID」とし、新しいプランID（ES＋6桁）と区別する】経理の金額照合に使う。【2026/09/30 要件シート行161】", meta: {"code": "legacy_user_id", "type": "varchar(20)"}, ctl: { t: "input", v: "—（フェーズ2から新規のお客様のため なし）" } },
+@@ -157,7 +157,7 @@ export const BRANCH_FORM: FormDef = {
+           { name: "開始サイクル月", mark: "req", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "ro", "text": "法人は参照のみ"}], phase: "new", rop: false, input: true, note: "最初のサイクル月を選ぶ（例：2026年10月（A1 2026/10/12））。【2026/09/30 要件シート行159：選べる月はオーダー締切に連動（締切前の申込は翌月以降・締切後は翌々月以降。法人の申込フォームの「契約開始希望年月」も同じ）】子契約・請求・配送はこのサイクル月から始まる。機種変更・追加があっても変えない。【2026/09/29：契約開始日（日付）の入力から変更】", meta: {"code": "start_cycle_month", "type": "char(7)"}, ctl: { t: "select", v: "2026年3月（A1 2026/02/23）", opts: ["2026年2月（A1 2026/01/26）", "2026年3月（A1 2026/02/23）", "2026年4月（A1 2026/03/23）"] } },
+           { name: "契約終了日", mark: "cond", tags: [{"cls": "p1", "text": "P1"}, {"cls": "ro", "text": "法人は参照のみ"}], rop: false, input: true, note: "解約が確定したときに入る。納品の最後の月を指す。【解約・休止を承認すると、適用月以降の未請求（未確定）の先行子契約を取り消す。取消件数を承認画面に出す】", meta: {"code": "end_on", "type": "date"}, ctl: { t: "input", v: "—（解約の申し出なし）" } },
+           { name: "お試し期間（月数）", mark: "cond", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "ro", "text": "法人は参照のみ"}], phase: "new", rop: true, input: true, na: true, note: "契約種別＝お試しキャンペーンのときだけ活性。既定は1ヶ月。顧客は編集できない（運営のみ）。この月数ぶんだけ子契約を作る", meta: {"code": "trial_months", "type": "smallint"}, ctl: { t: "select", v: "—（本導入のため）", opts: ["—（本導入のため）", "1ヶ月", "2ヶ月", "3ヶ月"] } },
+-          { name: "お試しの延長", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "only", "text": "運営だけ"}], phase: "new", rop: false, input: true, note: "【2026/10/03 決定】お試しの延長は運営だけ（法人Web からはできない）。お試しキャンペーンの契約のとき、延長する月数（今のところ上限なし）を選んで延長する。お試しの最後の子契約と同じ中身で次のサイクルから子契約を作る（お試し・お試しキャンペーン割引 DC000013 で無料・請求は未確定）。延長は履歴に残し、法人へ通知・メール（お試し期間の延長）。法人Web の拠点詳細「お試し期間」に期間と延長が出る（T3）", meta: {"code": "trial_ext", "type": "jsonb（親契約の延長の記録）"}, ctl: { t: "buttons", items: [{"label": "お試しを延長する"}] } },
++          { name: "お試しの延長", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "only", "text": "運営だけ"}], phase: "new", rop: false, input: true, note: "【2026/10/03 決定】お試しの延長は運営だけ（法人Web からはできない）。お試しキャンペーンの契約のとき、延長する月数（今のところ上限なし）を選んで延長する。お試しの最後の子契約と同じ中身で次のサイクルから子契約を作る（延長分は割引しない＝プラン料金を請求・請求は未確定。台帳 B K1）。延長は履歴に残し、法人へ通知・メール（お試し期間の延長）。法人Web の拠点詳細「お試し期間」に期間と延長が出る（T3）", meta: {"code": "trial_ext", "type": "jsonb（親契約の延長の記録）"}, ctl: { t: "buttons", items: [{"label": "お試しを延長する"}] } },
+           { name: "代理店コード（紹介有無）", mark: "cond", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "only", "text": "法人に出さない"}], phase: "new", rop: false, input: true, note: "代理店マスタからドロップダウンで選ぶ（先頭は「（紹介なし）」）。【紹介は契約単位で発生するため、契約が持つ。法人には持たせない】【法人Webには出さない】", meta: {"code": "agent_code", "type": "varchar(20)"}, ctl: { t: "select", v: "AG00021 株式会社パートナーズ", opts: ["（紹介なし）", "AG00001 株式会社フューチャーブリッジ", "AG00002 株式会社スマートコネクト", "AG00003 株式会社ビジネスリンク", "AG00004 株式会社アーバンネットワーク", "AG00005 グローバルサポート株式会社", "AG00006 ライフデザインパートナーズ株式会社", "AG00008 ネクストパートナーズ株式会社", "AG00010 東和ソリューションズ株式会社", "AG00011 株式会社サンライズエージェント", "AG00012 株式会社ブリッジワークス", "AG00021 株式会社パートナーズ", "AG00034 株式会社リンクアップ", "AG00102 ESパートナー西日本（特別代理店）"] } },
+           { name: "請求時備考（社内）", tags: [{"cls": "pn", "text": "P2新"}, {"cls": "only", "text": "法人に出さない"}], phase: "new", rop: false, input: true, note: "請求のときに社内で共有する備考（旧ESのプラン詳細の「請求時備考」）。請求画面でも表示・編集できる。【法人Webには出さない】請求書にも印字しない。【2026/09/30 要件シート行186：行150「請求書に反映されない社内メモ欄」もこの項目で兼ねる】", meta: {"code": "billing_note_internal", "type": "text"}, ctl: { t: "textarea", v: "", rows: 2 } },
+           { name: "親契約番号（契約ID）", mark: "req", tags: [{"cls": "pn", "text": "P2新"}], phase: "new", rop: true, note: "CP ＋ 連番（例：CP000001・最小6桁）。契約変更・休止・再開をしても変わらない", meta: {"code": "contract_id / contract_no", "type": "bigserial / varchar(20)"}, ctl: { t: "input", v: "CP0000001" } },
+diff --git a/lib/ops/contracts/fromDomain.ts b/lib/ops/contracts/fromDomain.ts
+index 62ca266..8781e5b 100644
+--- a/lib/ops/contracts/fromDomain.ts
++++ b/lib/ops/contracts/fromDomain.ts
+@@ -2,6 +2,7 @@ import { trialMonthsLabel } from '@/lib/domain/trial';
+ import { invoiceTotals, taxTotal } from '@/lib/domain/invoiceTax';
+ import { today } from '@/lib/supplier/dates';
+ import type { DocRepo } from '../core/area';
++import { bumpEntityVer } from '../core/versioned';
+ import type {
+   Account, Agency, Application, AuditLog, Billing, Branch as DBranch, Carrier, Channel, ChildContract as DChild, Contact, Contract, Corp as DCorp,
+   Discount, Invoice, Loan, Model, Option, OrderPref, Pause, Plan, Warehouse,
+@@ -22,9 +23,14 @@ import type { Branch, Cell, ChildContract, Corp, Entity, FormFill, FormVal, Rout
+ 
+ /** 運営だけの値（共通データにない項目）。id＝<entity>:<ID> */
+ export const EXTRA = 'contracts.extra';
+-type Extra = { id: string; form: FormFill };
++type Extra = { id: string; form: FormFill; /** 保存の版（同時更新の検知・E31） */ ver?: string; /** 更新日時（core/versioned.ts が版と一緒に進める） */ updatedAt?: string };
+ export const extraOf = (r: DocRepo, e: Entity, id: string): FormFill => r.get<Extra>(EXTRA, `${e}:${id}`)?.form ?? {};
+-export const putExtra = (r: DocRepo, e: Entity, id: string, form: FormFill) => r.put<Extra>(EXTRA, `${e}:${id}`, { id: `${e}:${id}`, form });
++export const putExtra = (r: DocRepo, e: Entity, id: string, form: FormFill) => r.put<Extra>(EXTRA, `${e}:${id}`, { id: `${e}:${id}`, form, ver: r.get<Extra>(EXTRA, `${e}:${id}`)?.ver, updatedAt: r.get<Extra>(EXTRA, `${e}:${id}`)?.updatedAt });
++/** 更新日時（一覧の初期の並び）。一度も書き換えていなければ fallback（登録日時など） */
++export const updatedAtOf = (r: DocRepo, e: Entity, id: string, fallback: string) => r.get<Extra>(EXTRA, `${e}:${id}`)?.updatedAt ?? fallback;
++/** 保存の版（法人・拠点・子契約の同時更新の検知。保存のたびに進める） */
++export const verOf = (r: DocRepo, e: Entity, id: string) => r.get<Extra>(EXTRA, `${e}:${id}`)?.ver ?? '0';
++export const bumpVer = bumpEntityVer;
+ 
+ /** 今のサイクル月（今日が属する月。YYYY-MM） */
+ export const thisMonth = () => today().slice(0, 7).replace('/', '-');
+@@ -200,7 +206,7 @@ export function corpFill(cx: Ctx, c: DCorp): FormFill {
+ export function corpRow(r: DocRepo, cx: Ctx, c: DCorp): Corp {
+   return {
+     id: c.id, name: c.name, status: c.status, invoiceUnit: c.billing.invoiceUnit, branchLabel: `${cx.branches.filter((b) => b.corpId === c.id).length}拠点`,
+-    invoiceLead: leadList(c.billing.lead), salesRep: byId(cx.accounts, c.salesRepId)?.name ?? '', registeredAt: c.registeredAt,
++    invoiceLead: leadList(c.billing.lead), salesRep: byId(cx.accounts, c.salesRepId)?.name ?? '', registeredAt: c.registeredAt, updatedAt: updatedAtOf(r, 'corp', c.id, c.registeredAt),
+     apNo: c.status === '仮登録' ? apNoOf(cx, c.id) : undefined, form: { ...corpFill(cx, c), ...extraOf(r, 'corp', c.id) },
+   };
+ }
+@@ -308,7 +314,7 @@ export function branchRow(r: DocRepo, cx: Ctx, b: DBranch): Branch {
+     contractStatus: ct?.status ?? '—', contractKind: ct?.kind ?? '—',
+     plan: ct?.status === '利用休止' ? '—（休止中）' : cur ? `${cur.planId} ${planName(cx, cur.planId)}` : '—',
+     startYm: start.replace('-', '/') || '—', duration: start ? `${Math.floor(Math.max(0, months) / 12)}年${Math.max(0, months) % 12}ヶ月` : '—',
+-    billTo: ct?.billTo ?? '法人', addr: b.address.pref + b.address.city, registeredAt: b.registeredAt,
++    billTo: ct?.billTo ?? '法人', addr: b.address.pref + b.address.city, registeredAt: b.registeredAt, updatedAt: updatedAtOf(r, 'branch', b.id, b.registeredAt),
+     apNo: b.status === '仮登録' ? apNoOf(cx, b.corpId, b.id) : undefined, pending: pendingOf(cx, b.id),
+     form: { ...branchFill(cx, b), ...extraOf(r, 'branch', b.id) },
+   };
+@@ -465,7 +471,7 @@ export function childRow(r: DocRepo, cx: Ctx, k: DChild): ChildContract {
+   return {
+     id: k.id, parentNo: k.contractId, branchId: k.branchId, month: k.cycleMonth, branchName: b?.name ?? k.branchId, corpName: corp?.name ?? '（法人なし）',
+     kind: k.kind, plan: `${k.planId} ${planName(cx, k.planId)}`, ship, billMonth: addM(k.cycleMonth, -1), amount: yen(k.monthlyYen), amountYen: k.monthlyYen,
+-    billStatus: `${k.billStatus} ／ —`, gen: k.gen, apNo: ct?.status === '仮登録' && b ? apNoOf(cx, b.corpId, b.id) : undefined,
++    billStatus: `${k.billStatus} ／ —`, gen: k.gen, updatedAt: updatedAtOf(r, 'child', k.id, b?.registeredAt ?? ''), apNo: ct?.status === '仮登録' && b ? apNoOf(cx, b.corpId, b.id) : undefined,
+     form: { ...childFill(cx, k), ...extraOf(r, 'child', k.id) },
+   };
+ }
+diff --git a/lib/ops/contracts/logic.ts b/lib/ops/contracts/logic.ts
+index 7957926..759ab87 100644
+--- a/lib/ops/contracts/logic.ts
++++ b/lib/ops/contracts/logic.ts
+@@ -276,6 +276,9 @@ export function validate(entity: Entity, values: Record<string, FormVal>, locked
+     if (typeof v !== 'string') continue;
+     const s = v.trim();
+     if (f.mark === 'req' && (f.ctl.t === 'input' || f.ctl.t === 'textarea' || f.ctl.t === 'zip') && !s) { errs[f.name] = `${f.label ?? f.name}を入力してください`; continue; }
++    /* 文字数の上限（E04）：項目の型 varchar(n) があればその数、複数行の入力は 500（input_standard） */
++    const lim = f.ctl.t === 'textarea' ? 500 : f.ctl.t === 'input' ? Number(/^varchar\((\d+)\)$/.exec(f.meta?.type ?? '')?.[1]) || 0 : 0;
++    if (lim && [...s].length > lim) { errs[f.name] = `${f.label ?? f.name}は${lim}文字以内で入力してください`; continue; }
+     if (f.ctl.t === 'zip' && s && !/^\d{3}-?\d{4}$/.test(s)) errs[f.name] = '郵便番号は 123-4567 の形で入力してください';
+     if (['従業員数', '1日上限数（1人あたり）', '1ヶ月上限金額（1人あたり）'].includes(f.name) && s && !/^\d+$/.test(s)) errs[f.name] = '半角の数字で入力してください';
+     if (/^(電話番号|FAX番号)/.test(f.name) && s && !/^[\d-]+$/.test(s)) errs[f.name] = '半角の数字とハイフンで入力してください';
+diff --git a/lib/ops/contracts/types.ts b/lib/ops/contracts/types.ts
+index 7c0c899..76967e4 100644
+--- a/lib/ops/contracts/types.ts
++++ b/lib/ops/contracts/types.ts
+@@ -50,6 +50,7 @@ export type Corp = {
+   invoiceLead: string;        // 請求書発行リードタイム（一覧の表示。例 1ヶ月前請求）
+   salesRep: string;           // ES営業担当
+   registeredAt: string;       // 登録日時 YYYY/MM/DD HH:mm
++  updatedAt: string;          // 更新日時 YYYY/MM/DD HH:mm（書き換えるたびに進む。一覧の初期の並び）
+   /** 仮登録の間の申請番号（契約申請管理の申請詳細で編集する） */
+   apNo?: string;
+   form: FormFill;
+@@ -72,6 +73,7 @@ export type Branch = {
+   billTo: '法人' | 'この拠点';  // 請求先
+   addr: string;               // 住所（一覧の表示。東京都港区）
+   registeredAt: string;
++  updatedAt: string;          // 更新日時 YYYY/MM/DD HH:mm
+   apNo?: string;
+   /** 承認待ちの変更申請。子契約の、申請の対象の項目は承認後に変えられる（決定 TL-1） */
+   pending?: { no: string; kind: string; fields: string[] };
+@@ -94,6 +96,7 @@ export type ChildContract = {
+   amountYen: number;          // 当月請求額（円）
+   billStatus: string;         // 請求ステータス（前払い ／ 後払い）
+   gen: string;                // 生成方法（日次バッチ・手動生成・年一括）
++  updatedAt: string;          // 更新日時 YYYY/MM/DD HH:mm（書き換えるたびに進む。まだなら所属拠点の登録日時（サイクル月は未来の月があるので使わない））
+   apNo?: string;
+   form: FormFill;
+ };
+diff --git a/lib/ops/core/memoryRepo.ts b/lib/ops/core/memoryRepo.ts
+index 09a5487..83bdd6b 100644
+--- a/lib/ops/core/memoryRepo.ts
++++ b/lib/ops/core/memoryRepo.ts
+@@ -1,4 +1,5 @@
+ import type { DocRepo, Seed } from './area';
++import { versioned } from './versioned';
+ 
+ /** ブラウザのメモリに置く DocRepo（mock のとき）。version は書き換えのたびに増える */
+ export function memoryRepo(seed: Seed): DocRepo & { version(): number; bump(): void } {
+@@ -7,7 +8,7 @@ export function memoryRepo(seed: Seed): DocRepo & { version(): number; bump(): v
+   for (const [kind, rows] of Object.entries(seed)) kinds.set(kind, new Map(rows.map((r) => [r.id, structuredClone(r.data)])));
+   let ver = 1;
+   const k = (kind: string) => kinds.get(kind) ?? kinds.set(kind, new Map()).get(kind)!;
+-  return {
++  return versioned({
+     list: <T,>(kind: string) => [...k(kind).values()] as T[],
+     get: <T,>(kind: string, id: string) => k(kind).get(id) as T | undefined,
+     put: (kind, id, data) => { k(kind).set(id, structuredClone(data)); },
+@@ -15,5 +16,5 @@ export function memoryRepo(seed: Seed): DocRepo & { version(): number; bump(): v
+     nextSeq: (key) => { const n = (seqs.get(key) ?? 0) + 1; seqs.set(key, n); return n; },
+     version: () => ver,
+     bump: () => { ver++; },
+-  };
++  });
+ }
+diff --git a/lib/ops/core/presence.ts b/lib/ops/core/presence.ts
+new file mode 100644
+index 0000000..a313643
+--- /dev/null
++++ b/lib/ops/core/presence.ts
+@@ -0,0 +1,26 @@
++import type { DocRepo } from './area';
++
++/*
++ * 「〇〇さんが編集中です」の記録（I02・台帳 K「同時に編集」：ロックしない・先に知らせる）。法人・拠点・子契約（contracts）とマスタ（masters）で共通。
++ * 画面は PRESENCE_BEAT_MS ごとに送り、PRESENCE_TTL_MS 音沙汰がなければ編集中でなくなる。時刻は実時間（エポックミリ秒）
++ */
++export const PRESENCE_BEAT_MS = 30_000;
++export const PRESENCE_TTL_MS = 90_000;
++export type PresenceRow = { id: string; entity: string; targetId: string; accountId: string; name: string; since: number; at: number };
++
++/** 自分の分を記録（leave なら消す）して、ほかの人の編集中（TTL 以内）を返す。期限切れは片づける */
++export function touchPresence(
++  repo: DocRepo, collection: string,
++  a: { entity: string; id: string; accountId: string; name: string; leave?: boolean; now?: number },
++) {
++  const now = a.now ?? Date.now();
++  const rows = repo.list<PresenceRow>(collection);
++  for (const r of rows) if (now - r.at > PRESENCE_TTL_MS) repo.remove(collection, r.id);
++  const key = `${a.entity}:${a.id}:${a.accountId}`;
++  const mine = rows.find((r) => r.id === key && now - r.at <= PRESENCE_TTL_MS);
++  if (a.leave) repo.remove(collection, key);
++  else repo.put<PresenceRow>(collection, key, { id: key, entity: a.entity, targetId: a.id, accountId: a.accountId, name: a.name, since: mine?.since ?? now, at: now });
++  return rows
++    .filter((r) => r.entity === a.entity && r.targetId === a.id && r.accountId !== a.accountId && now - r.at <= PRESENCE_TTL_MS)
++    .map((r) => ({ accountId: r.accountId, name: r.name, since: r.since }));
++}
+diff --git a/lib/ops/core/versioned.ts b/lib/ops/core/versioned.ts
+new file mode 100644
+index 0000000..f275908
+--- /dev/null
++++ b/lib/ops/core/versioned.ts
+@@ -0,0 +1,68 @@
++import type { DocRepo } from './area';
++import { nowStamp } from '@/lib/supplier/dates';
++import { nextVersion } from './concurrency';
++
++/*
++ * 法人・拠点・子契約の「版」（同時更新の検知 E31）を、書き込みの口で一元的に進める。
++ * 画面の「保存」（contracts.save）だけでなく、申請の承認・却下／CSV取込／価格世代の一括切替／休止・復元／アカウントの停止・再開 など
++ * どの経路でこれらのデータを書いても、その法人・拠点・子契約の版が進む。開いたままの古い画面で保存すると E31（409）になる。
++ * 中身が変わらない書き込み（同じ値の put）では進めない。版は contracts.extra の ver に持つ（lib/ops/contracts/fromDomain.ts の verOf と同じ）。
++ * sqliteDocRepo と memoryRepo の出口に被せる（どの経路もここを通る）。
++ */
++export const EXTRA = 'contracts.extra';
++type Entity = 'corp' | 'branch' | 'child';
++type Extra = { id: string; form: Record<string, unknown>; ver?: string; /** 更新日時 YYYY/MM/DD HH:mm（一覧の初期の並び。台帳 一覧の初期の並び＝更新日時の降順）。版を進めるたびに更新。ない間は登録日時（子契約はサイクル月の初日）を使う */ updatedAt?: string };
++type Ref = [Entity, string];
++
++/** 版を1つ進める（進めた版を返す） */
++export function bumpEntityVer(r: DocRepo, e: Entity, id: string): string {
++  const cur = r.get<Extra>(EXTRA, `${e}:${id}`);
++  const ver = nextVersion(cur?.ver);
++  r.put<Extra>(EXTRA, `${e}:${id}`, { id: `${e}:${id}`, form: cur?.form ?? {}, ver, updatedAt: nowStamp() });
++  return ver;
++}
++
++/** 書いたデータが、どの法人・拠点・子契約の画面に影響するか */
++function affected(r: DocRepo, kind: string, id: string, data: unknown): Ref[] {
++  const d = (data ?? {}) as Record<string, unknown>;
++  const s = (v: unknown) => (typeof v === 'string' && v ? v : '');
++  switch (kind) {
++    case 'dm.org.corps': return [['corp', id]];
++    case 'dm.org.branches': return [['branch', id]];
++    case 'dm.org.childContracts': return [['child', id]];
++    case 'dm.org.contracts':
++    case 'dm.org.loans': return s(d.branchId) ? [['branch', s(d.branchId)]] : [];
++    case 'dm.org.pauses': {
++      const ct = r.get<{ branchId?: string }>('dm.org.contracts', s(d.contractId));
++      return ct?.branchId ? [['branch', ct.branchId]] : [];
++    }
++    case 'dm.org.contacts': {
++      const o = d.owner as { type?: string; id?: string } | undefined;
++      return o?.id && (o.type === 'corp' || o.type === 'branch') ? [[o.type, o.id]] : [];
++    }
++    case 'dm.account.accounts': return d.site === 'corp' ? [['corp', id]] : [];
++    default: return [];
++  }
++}
++const TRACKED = new Set(['dm.org.corps', 'dm.org.branches', 'dm.org.childContracts', 'dm.org.contracts', 'dm.org.loans', 'dm.org.pauses', 'dm.org.contacts', 'dm.account.accounts']);
++const uniq = (refs: Ref[]) => [...new Map(refs.map((x) => [x.join('|'), x])).values()];
++
++/** put／remove のたびに、影響する法人・拠点・子契約の版を進める DocRepo にする */
++export function versioned<R extends DocRepo>(base: R): R {
++  const bump = (refs: Ref[]) => { for (const [e, id] of uniq(refs)) bumpEntityVer(base, e, id); };
++  return {
++    ...base,
++    put<T>(kind: string, id: string, data: T) {
++      if (!TRACKED.has(kind)) { base.put<T>(kind, id, data); return; }
++      const prev = base.get<unknown>(kind, id);
++      base.put<T>(kind, id, data);
++      if (JSON.stringify(prev) !== JSON.stringify(data)) bump(affected(base, kind, id, data));
++    },
++    remove(kind: string, id: string) {
++      if (!TRACKED.has(kind)) { base.remove(kind, id); return; }
++      const prev = base.get<unknown>(kind, id);
++      base.remove(kind, id);
++      if (prev !== undefined) bump(affected(base, kind, id, prev));
++    },
++  };
++}
+diff --git a/lib/ops/delivery/constants.ts b/lib/ops/delivery/constants.ts
+index ada0378..76444d3 100644
+--- a/lib/ops/delivery/constants.ts
++++ b/lib/ops/delivery/constants.ts
+@@ -3,7 +3,7 @@
+ /** スケジュールの検索条件の選択肢 */
+ export const SCHEDULE_OPTS = {
+   course: ['ESスタンダード', 'ESライト（冷蔵庫）', 'ESライト（自販機）'],
+-  status: ['予定', '出荷待', '出荷済', '受取済', '納品済', '一部納品済', '再配送待', '確認中', '中止', '取消'],
++  status: ['予定', '出荷待', '出荷済', '受取済', '納品済', '一部納品済', '再配達待', '確認中', '中止', '取消'],
+   vending: ['自販機あり', '自販機なし'],
+   pattern: ['サイクル', '個別指定', '都度配送'],
+   method: ['ES配送便', 'COOL便', '資材便'],
+@@ -17,7 +17,7 @@ export const SCHEDULE_OPTS = {
+ /** 出荷・配送管理の検索条件の選択肢 */
+ export const LIST_OPTS = {
+   ...SCHEDULE_OPTS,
+-  status: ['出荷待', '出荷済', '受取済', '納品済', '一部納品済', '再配送待', '確認中', '中止', '取消'],
++  status: ['出荷待', '出荷済', '受取済', '納品済', '一部納品済', '再配達待', '確認中', '中止', '取消'],
+   trouble: ['トラブル未解決あり', '確認中の子あり'],
+   carrier: ['ヤマト運輸', '佐川急便', '栄成ロジ', 'みどり便', '福山通運'],
+   hub: ['ヤマト 渋谷営業所 HU00123', 'ヤマト 品川営業所 HU00124', '佐川 江東営業所 HU00210', '栄成ロジ 越谷デポ HU00301'],
+@@ -63,29 +63,29 @@ export const CR_JUDGE_TONE = { '問題なし': 'success', '希望日なし': 'wa
+ /** 一覧の状態の色（出荷・配送管理・配送データ詳細） */
+ export const ST_TONE: Record<string, 'neutral' | 'success' | 'info' | 'warning' | 'negative' | 'primary'> = {
+   '予定': 'neutral', '出荷待': 'info', '出荷済': 'success', '受取済': 'info', '納品済': 'success', '一部納品済': 'warning',
+-  '再配送待': 'warning', '確認中': 'warning', '中止': 'neutral', '取消': 'neutral',
++  '再配達待': 'warning', '確認中': 'warning', '中止': 'neutral', '取消': 'neutral',
+ };
+ 
+ /** 取消の理由 */
+ export const CANCEL_REASONS = ['倉庫の設備故障', '車両を手配できない', '天候（大雪など）', '法人からの依頼（締切後・システム外で調整）', 'その他'];
+ 
+-/** 複製の理由（→ 説明・理由の初期値・数量の初期値・数量の注記） */
+-export const DUP_KINDS: { v: string; label: string; desc: string; reason: string; qty: [string, string, string]; qtyNote: string }[] = [
+-  { v: 'remainder', label: '分納', desc: '納品できた分で元を確定し、残りを子で送ります（元は一部納品済）。', reason: '残り 2食を 10/08 に送る', qty: ['2', '0', '0'], qtyNote: '残数が初期値です' },
+-  { v: 'redelivery', label: '再配送', desc: '届かなかった分を子で送り直します（元は再配送待）。', reason: '不在のため全量を再配送', qty: ['42', '30', '12'], qtyNote: '全量が初期値です' },
+-  { v: 'alternative', label: '代替便', desc: '出荷前に元を取消し、全量を別の倉庫・配送会社で出します。', reason: '関東倉庫の設備故障のため関西倉庫から出す', qty: ['42', '30', '12'], qtyNote: '全量が初期値です' },
+-  { v: 'return', label: '返送', desc: '中止・一部納品で残った商品を本社などの返送先へ送ります。請求はしません。', reason: '中止で残った商品を本社へ返送', qty: ['2', '0', '0'], qtyNote: '残った数を入れます（請求の対象外）' },
+-  { v: 'other', label: 'その他', desc: '上のどれにも当たらないときに使います。理由の詳細は必須です。', reason: '', qty: ['0', '0', '0'], qtyNote: '数量を入れます' },
++/** 複製の理由（→ 説明・数量の注記。フォームの初期値は空か標準値で、見本の文は入れない：確認メモ 運営D H29） */
++export const DUP_KINDS: { v: string; label: string; desc: string; qtyNote: string }[] = [
++  { v: 'remainder', label: '分納', desc: '納品できた分で元を確定し、残りを子で送ります（元は一部納品済）。', qtyNote: '残数を入れます' },
++  { v: 'redelivery', label: '再配送', desc: '届かなかった分を子で送り直します（元は再配達待）。', qtyNote: '全量が初期値です（変えられます）' },
++  { v: 'alternative', label: '代替便', desc: '出荷前に元を取消し、全量を別の倉庫・配送会社で出します。', qtyNote: '全量が初期値です（変えられます）' },
++  { v: 'return', label: '返送', desc: '中止・一部納品で残った商品を本社などの返送先へ送ります。請求はしません。', qtyNote: '残った数を入れます（請求の対象外）' },
++  { v: 'other', label: 'その他', desc: '上のどれにも当たらないときに使います。理由の詳細は必須です。', qtyNote: '数量を入れます' },
+ ];
+ 
+ /** トラブルの対応（6つ）。→ の後は、解決したときの状態 */
+-export const RESOLVE_OPTS: { v: string; label: string; desc: string; st: string; reason: string; result: string }[] = [
+-  { v: 'full', label: '全量を納品できた（代替品を含む）', desc: '→ 納品済', st: '納品済', reason: '箱2の不足は数え間違い。全量を納品したことを拠点に確認', result: '解決すると：親は納品済、自動子は取消。トラブル報告2件と要確認をまとめて閉じます。' },
+-  { v: 'partial', label: '一部を納品し、残りを後日送る', desc: '→ 一部納品済 ＋ 子（残数）', st: '一部納品済', reason: 'グラタン 2食が不足。残りは後日送ることを拠点と合意', result: '解決すると：親は一部納品済（34食）、自動子を分納の子（残り 2食）にします。子の画面で日付と数量を確定すると出荷待になります。' },
+-  { v: 'partial_no_resend', label: '一部を納品し、残りは送らない', desc: '→ 一部納品済', st: '一部納品済', reason: 'グラタン 2食が不足。拠点から不要との連絡', result: '解決すると：親は一部納品済（34食）。自動子は取消。納品しなかった 2食は請求しません。' },
+-  { v: 'redelivery', label: '納品ゼロで送り直す', desc: '→ 再配送待 ＋ 子（全量）', st: '再配送待', reason: '拠点が不在のため全量を持ち戻り。10/08 の午後に再配送することを拠点と合意', result: '解決すると：親は再配送待、自動子を再配送の子（全量 36食）にします。子の画面で日付と数量を確定すると出荷待になります。' },
+-  { v: 'same_day', label: '当日中に再訪する', desc: '→ 受取済のまま', st: '受取済', reason: '拠点の担当者が 15時に戻るため、当日中に再訪', result: '解決すると：状態は受取済のまま。自動子は取消。当日中に納品報告が入れば納品済になります。' },
+-  { v: 'stop', label: '納品せずに終了する', desc: '→ 中止（実績0・請求しない）', st: '中止', reason: '拠点の都合で今回のお届けは不要との連絡', result: '解決すると：親は中止（実績0・請求しない）。自動子は取消。残った商品は複製の「返送」で本社へ送れます。' },
++export const RESOLVE_OPTS: { v: string; label: string; desc: string; st: string; result: string }[] = [
++  { v: 'full', label: '全量を納品できた（代替品を含む）', desc: '→ 納品済', st: '納品済', result: '解決すると：親は納品済、自動子は取消。トラブル報告2件と要確認をまとめて閉じます。' },
++  { v: 'partial', label: '一部を納品し、残りを後日送る', desc: '→ 一部納品済 ＋ 子（残数）', st: '一部納品済', result: '解決すると：親は一部納品済（34食）、自動子を分納の子（残り 2食）にします。子の画面で日付と数量を確定すると出荷待になります。' },
++  { v: 'partial_no_resend', label: '一部を納品し、残りは送らない', desc: '→ 一部納品済', st: '一部納品済', result: '解決すると：親は一部納品済（34食）。自動子は取消。納品しなかった 2食は請求しません。' },
++  { v: 'redelivery', label: '納品ゼロで送り直す', desc: '→ 再配達待 ＋ 子（全量）', st: '再配達待', result: '解決すると：親は再配達待、自動子を再配送の子（全量 36食）にします。子の画面で日付と数量を確定すると出荷待になります。' },
++  { v: 'same_day', label: '当日中に再訪する', desc: '→ 受取済のまま', st: '受取済', result: '解決すると：状態は受取済のまま。自動子は取消。当日中に納品報告が入れば納品済になります。' },
++  { v: 'stop', label: '納品せずに終了する', desc: '→ 中止（実績0・請求しない）', st: '中止', result: '解決すると：親は中止（実績0・請求しない）。自動子は取消。残った商品は複製の「返送」で本社へ送れます。' },
+ ];
+ 
+ /** トラブルの6区分と、子を自動で作る区分 */
+diff --git a/lib/ops/delivery/fromDomain.ts b/lib/ops/delivery/fromDomain.ts
+index 0eb2810..b08e6f8 100644
+--- a/lib/ops/delivery/fromDomain.ts
++++ b/lib/ops/delivery/fromDomain.ts
+@@ -13,7 +13,7 @@ import type {
+   DeliveryReport, Material as DMaterial, MaterialOrder, Option, Plan, Product, Tracking, Trouble, TroubleType, Warehouse,
+ } from '@/lib/domain/types';
+ import { RESOLVE_OPTS, ST_TONE, TROUBLE_KINDS } from './constants';
+-import { slashW } from './logic';
++import { addDaysIso, pauseSpan, slashW } from './logic';
+ import { fmtMd, fmtMdW } from '@/lib/format/date';
+ import type {
+   CalCell, CalLine, ChangeRequest, Consignee, CrJudge, CycleBand, CycleSettings, DayRow, DayView, DeliveryRecord, EsInvoice, HistItem, Hub, Inquiry, ListRow,
+@@ -65,12 +65,12 @@ const leadOf = (d: Delivery) => Math.round((new Date(d.deliverOn).getTime() - ne
+ const addrText = (a?: { pref: string; city: string; addr1: string; addr2: string }) => (a ? `${a.pref}${a.city}${a.addr1}${a.addr2 ? ' ' + a.addr2 : ''}` : '');
+ const windowsText = (d: Delivery) => d.destination.windows.map((w) => `${w.from}〜${w.to}`).join('・') || '—';
+ export const tpKind = (t: string): TempKind => (t === '冷凍' ? 'frozen' : t === '常温' ? 'ambient' : t === '資材' ? 'material' : 'chilled');
+-/** 運営の画面の状態の言い方（共通データの「再配達待」は運営の画面では「再配送待」） */
+-export const stLabel = (s: Delivery['status']) => (s === '再配達待' ? '再配送待' : s);
++/** 運営の画面の状態の言い方（共通データの状態名と同じ「再配達待」） */
++export const stLabel = (s: Delivery['status']) => s as string;
+ const stTone = (s: Delivery['status']): Tone => ST_TONE[stLabel(s)] ?? 'neutral';
+ /** 共通データのトラブルの種類 → 運営の6区分 */
+ export const TROUBLE_TYPE: Record<TroubleType['id'], string> = {
+-  qty_diff: TROUBLE_KINDS[0], wrong_delivery: TROUBLE_KINDS[1], damage: TROUBLE_KINDS[2], absent: TROUBLE_KINDS[3], delay: TROUBLE_KINDS[4], other: TROUBLE_KINDS[5],
++  qty_diff: TROUBLE_KINDS[0], wrong_delivery: TROUBLE_KINDS[1], damage: TROUBLE_KINDS[2], absent: TROUBLE_KINDS[3], delay: TROUBLE_KINDS[4], other: TROUBLE_KINDS[5], undecided: '種別未定',
+ };
+ /** 運営の「対応を決める」の選択肢 → 共通データの解決 */
+ export const RESOLUTION: Record<string, Exclude<Trouble['resolution'], ''>> = {
+@@ -332,6 +332,39 @@ function filterKeys(c: Ctx, d: Delivery): ListRow['fq'] {
+   };
+ }
+ 
++/** スケジュールの検索条件（月・週・日で共通。sq1＝法人・拠点・契約、sq2＝住所・電話、sq3＝送り状、s1〜s10＝選ぶ条件） */
++export type ScheduleFilter = Partial<Record<'sq1' | 'sq2' | 'sq3' | 's1' | 's2' | 's3' | 's4' | 's5' | 's6' | 's7' | 's8' | 's9' | 's10', string>>;
++
++/**
++ * 検索条件に合う配送だけにした Ctx（月・週・日の集計は、条件で絞ってからまとめる）。
++ * 配送パターン：資材＝都度配送、それ以外＝サイクル（個別指定は配送に持っていないので当たらない）。配送回数＝その子契約・温度帯の便の枠の数
++ */
++export function scheduleCtx(c: Ctx, f?: ScheduleFilter): Ctx {
++  if (!f || !Object.values(f).some((v) => v && v.trim())) return c;
++  const q1 = (f.sq1 ?? '').trim(), q2 = (f.sq2 ?? '').trim(), q3 = (f.sq3 ?? '').trim();
++  const deliveries = c.deliveries.filter((d) => {
++    const k = filterKeys(c, d);
++    if (q1 && !(d.id + ' ' + siteOf(c, d) + ' ' + k.who).includes(q1)) return false;
++    if (q2 && !k.addr.includes(q2)) return false;
++    if (q3 && !k.slips.some((x) => x.includes(q3))) return false;
++    if (f.s1 && k.course !== f.s1) return false;
++    if (f.s2 && stLabel(d.status) !== f.s2) return false;
++    if (f.s3 && (k.course === 'ESライト（自販機）') !== (f.s3 === '自販機あり')) return false;
++    if (f.s4 && (d.temp === '資材' ? '都度配送' : 'サイクル') !== f.s4) return false;
++    if (f.s5 && d.serviceForm !== f.s5) return false;
++    if (f.s6) {
++      const n = c.children.get(d.childContractId)?.channels.find((x) => x.temp === d.temp)?.slots.length ?? 0;
++      if (`${n}回` !== f.s6) return false;
++    }
++    if (f.s7 && k.wh !== f.s7) return false;
++    if (f.s8 && !k.carriers.includes(f.s8)) return false;
++    if (f.s9 && !k.hubs.includes(f.s9)) return false;
++    if (f.s10 && !k.staffs.includes(f.s10)) return false;
++    return true;
++  });
++  return { ...c, deliveries, byId: new Map(deliveries.map((d) => [d.id, d])) };
++}
++
+ export function listRows(c: Ctx): ListRow[] {
+   return c.deliveries.filter((d) => d.status !== '予定').map((d) => {
+     const st = staffText(c, d);
+@@ -445,7 +478,7 @@ export function deliveryRecord(c: Ctx, d: Delivery): DeliveryRecord & { children
+     pkg: d.temp === '資材' ? '資材' : `${d.temp} 惣菜セット`, cycle: cy ? `${cycleLabel(cy)} ・ ${d.slot}` : '資材（サイクルなし）',
+     dlv: isoW(d.deliverOn) + (d.status === '確認中' ? '（仮）' : ''), pick: isoW(d.shipOn) + (d.status === '確認中' ? '（仮）' : ''), shipped: d.shippedOn ? isoW(d.shippedOn) : '—（まだ出荷していない）',
+     park: ((ps) => ps.length ? `${ps.reduce((a, p) => a + p.feeYen, 0).toLocaleString('ja-JP')}円（${ps.map((p) => p.receiptFile).join('・')}）` : '—')(c.r.list<ParkingReport>('dm.report.parking').filter((p) => p.deliveryId === d.id)),
+-    leadHelper: `リードタイム ${lead}日`, time: windowsText(d), eta: d.deliveredAt ? `${d.deliveredAt.slice(11)}（完了）` : '—（納品日当日にドライバーが共有）', svc: d.serviceForm,
++    leadHelper: `リードタイム ${lead}日`, time: windowsText(d), svc: d.serviceForm,
+     so: !so ? '対象外' : sent || (d.shipRev ?? 1) > 1 ? `送信済 rev${d.shipRev ?? 1}` : '未送信', soHelper: !so ? (d.temp === '資材' ? '資材は ES事務所から出荷（THOMAS 連携なし）' : '確定して出荷待になるまで出荷指示に含めません') : sent ? `${md(addDays(d.shipOn, -3))} 16:00 に送信` : `${md(addDays(d.shipOn, -3))} に送信予定`,
+     cp: d.contractId, child: d.childContractId || '—',
+     kindLabel: mo ? '資材の注文' : d.parentId ? '子の種類' : 'オーダーID', kind: mo ? mo.id : d.parentId ? (d.internalMemo.split('\n')[0] || '子の配送') : `O-${d.cycleMonth.replace('-', '')}-${d.branchId}`,
+@@ -466,7 +499,7 @@ export function deliveryRecord(c: Ctx, d: Delivery): DeliveryRecord & { children
+     hasResult: d.deliveredQty !== null, ...(d.deliveredQty !== null ? { result: resultOf(c, d) } : {}), noResultText: d.status === '確認中' ? '確認中の子です。確定して出荷されると実績が入ります。' : `納品日（${isoW(d.deliverOn)}）の当日、${d.regime === 'parcel_carrier' ? '翌朝にみなし完了で' : 'ドライバーの報告で'}登録されます。`,
+     trbOpen: open.length > 0, trbDone: trs.length > 0 && !open.length, trbCount: open.length, autoChild,
+     trb: trs.map((t, i) => ({
+-      no: i + 1, kind: TROUBLE_TYPE[t.typeId], tone: t.resolution ? 'warning' : 'negative', raw: c.troubleTypes.get(t.typeId)?.name ?? t.typeId,
++      no: i + 1, kind: TROUBLE_TYPE[t.typeId], tone: t.resolution ? 'warning' : 'negative', raw: t.typeId === 'undecided' ? t.note.split('：')[0] : c.troubleTypes.get(t.typeId)?.name ?? t.typeId,
+       who: t.reportedBy.site === 'driver' ? `${c.drivers.get(t.reportedBy.accountId)?.name ?? t.reportedBy.accountId}（ドライバー）` : t.reportedBy.site === 'carrier' ? `${carrierName(c, t.reportedBy.accountId)}（委託配送先）` : '運営（代理登録）',
+       at: md(t.reportedAt) + t.reportedAt.slice(10), note: t.note, photo: '—', child: t.childDeliveryId || '—', st: t.resolution ? '解決済' : '未解決', stTone: t.resolution ? 'success' : 'negative',
+     })),
+@@ -731,23 +764,28 @@ export function cycleBand(c: Ctx): CycleBand {
+ 
+ export function cycleSettings(c: Ctx): CycleSettings {
+   const f = c.cycles[0], l = c.cycles[c.cycles.length - 1];
++  const ngByWarehouse = [...c.cycles].reverse().find((x) => x.ngSlots && Object.keys(x.ngSlots).length)?.ngSlots ?? {};
+   /* 出荷しない日（お届けはする・ピッキングしない日）：全倉庫の日は両方のタブ、倉庫だけの日はその倉庫のタブ */
+-  const ng = (wh: string) => c.holidays.filter((h) => !h.noDelivery && h.noPicking && (!h.warehouseIds?.length || h.warehouseIds.includes(wh))).map((h) => ({ id: h.id, d: iso(h.date), why: h.name }));
++  const ng = (wh: string) => c.holidays.filter((h) => !isPauseHoliday(h) && !h.noDelivery && h.noPicking && (!h.warehouseIds?.length || h.warehouseIds.includes(wh))).map((h) => ({ id: h.id, d: iso(h.date), why: h.name }));
+   return {
+     /* 参照のみ＝当月・メニュー公開済み・オーダー期間が始まった月・配送データを作った月（A1 を変えられない・課題 4-10・2026/10/03） */
+     periodFrom: f?.id ?? '', periodTo: l?.id ?? '', a1: f ? iso(f.a1) : '', readOnly: c.cycles.filter((x) => cycleLockReason(c.r, x.id, c.today)).map((x) => x.id),
+     lockReasons: Object.fromEntries(c.cycles.map((x) => [x.id, cycleLockReason(c.r, x.id, c.today)]).filter(([, w]) => w)),
+     band: cycleBand(c),
+     a1s: Object.fromEntries(c.cycles.map((x) => [x.id, iso(x.a1)])),
+-    holidays: c.holidays.filter((h) => h.noDelivery).map((h) => ({ id: h.id, n: h.name, d: iso(h.date), s: h.noPicking, v: true })),
+-    /* サイクル休止は共通データにない（A1 を後ろへ動かしたときの間はサイクルなし） */
+-    pauses: [],
+-    ngSlots: { wh1: [...NO_PICKING_SLOTS], wh2: [...NO_PICKING_SLOTS] },
++    holidays: c.holidays.filter((h) => h.noDelivery && !isPauseHoliday(h)).map((h) => ({ id: h.id, n: h.name, d: iso(h.date), s: h.noPicking, v: true })),
++    /* サイクル休止は運営の設定として保存したもの（なければ空）。倉庫ごとの出荷不可枠の持ち主は暦（Cycle.ngSlots）だけ（なければ標準の枠） */
++    pauses: c.r.get<{ id: string; items: CycleSettings['pauses'] }>('delivery.cycleConfig', 'pauses')?.items ?? [],
++    ngSlots: Object.fromEntries(Object.entries(NG_TABS).map(([k, wh]) => [k, [...(ngByWarehouse[wh] ?? NO_PICKING_SLOTS)]])),
+     ngDates: Object.fromEntries(Object.entries(NG_TABS).map(([k, wh]) => [k, ng(wh)])),
+   };
+ }
+ 
+ /** 画面の設定 → 共通データの祝日（祝日・臨休＋出荷不可日。日付ごとに1つ。出荷不可日が片方の倉庫のタブだけなら、その倉庫だけの日） */
++/** サイクル休止の日として自動で作った祝日（画面の祝日・出荷しない日には出さない） */
++const PAUSE_ID = 'PAUSE-';
++const isPauseHoliday = (h: DHoliday) => h.id.startsWith(PAUSE_ID);
++
+ export function holidaysFrom(st: CycleSettings): DHoliday[] {
+   const m = new Map<string, DHoliday>();
+   for (const h of st.holidays) m.set(h.d, { id: h.d.replace(/-/g, ''), date: slash(h.d), name: h.n, noDelivery: h.v, noPicking: h.s });
+@@ -761,6 +799,16 @@ export function holidaysFrom(st: CycleSettings): DHoliday[] {
+     const whs = on.length === tabs.length ? undefined : on.map((k) => NG_TABS[k]);
+     m.set(d, { id: d.replace(/-/g, ''), date: slash(d), name: why, noDelivery: false, noPicking: true, ...(whs ? { warehouseIds: whs } : {}) });
+   }
++  /* サイクル休止：休止のあいだ（7日にそろえる調整日を含む）はお届けしない。出荷も止めるのは p.ship のとき（配送_02 §4-5）。
++     保存した休止が暦に効くように、日ごとの祝日（PAUSE-…）として共通データへ渡す */
++  for (const p of st.pauses) {
++    const sp = pauseSpan(p);
++    for (let d = sp.start; d <= sp.end; d = addDaysIso(d, 1)) {
++      const h = m.get(d);
++      if (h) m.set(d, { ...h, noDelivery: true, noPicking: h.noPicking || p.ship });
++      else m.set(d, { id: PAUSE_ID + d.replace(/-/g, ''), date: slash(d), name: p.name || 'サイクル休止', noDelivery: true, noPicking: p.ship });
++    }
++  }
+   return [...m.values()].sort((a, b) => a.date.localeCompare(b.date));
+ }
+ 
+diff --git a/lib/ops/delivery/logic.ts b/lib/ops/delivery/logic.ts
+index aec48fb..a0183d1 100644
+--- a/lib/ops/delivery/logic.ts
++++ b/lib/ops/delivery/logic.ts
+@@ -184,8 +184,9 @@ export function checkCancel(x: { why: string; detail: string }): Errors {
+   if (!x.detail.trim()) e.detail = '理由の詳細を入力してください';
+   return e;
+ }
+-export function checkDuplicate(x: { reason: string; date: string }): Errors {
++export function checkDuplicate(x: { reason: string; date: string; kind?: string; dest?: string }): Errors {
+   const e: Errors = {};
++  if (x.kind === 'return' && !x.dest) e.dest = '返送先を選んでください';
+   if (!x.reason.trim()) e.reason = '理由の詳細を入力してください';
+   if (!x.date.trim()) e.date = '仮の納品日を入力してください';
+   else if (!isValidDate(x.date)) e.date = '日付は yyyy-mm-dd で入力してください';
+@@ -198,8 +199,11 @@ export function checkTroubleReport(x: { from: string; kind: string; text: string
+   if (!x.text.trim()) e.text = '内容を入力してください';
+   return e;
+ }
+-export function checkTroubleResolve(x: { reason: string; freight?: string }): Errors {
+-  return x.reason.trim() ? {} : { reason: '理由を入力してください' };
++export function checkTroubleResolve(x: { reason: string; freight?: string; needKind?: boolean; kind2?: string }): Errors {
++  const e: Errors = {};
++  if (x.needKind && !x.kind2) e.kind2 = '種別を選んでください';
++  if (!x.reason.trim()) e.reason = '理由を入力してください';
++  return e;
+ }
+ /** 変更申請の確認：別日の提案・否認では理由が必須 */
+ export function checkCrProcess(x: { decision: 'approve' | 'reject'; pick: string; reason: string }): Errors {
+diff --git a/lib/ops/delivery/types.ts b/lib/ops/delivery/types.ts
+index 5bdcce8..7780021 100644
+--- a/lib/ops/delivery/types.ts
++++ b/lib/ops/delivery/types.ts
+@@ -235,7 +235,6 @@ export type DeliveryRecord = {
+   park: string;
+   leadHelper: string;
+   time: string;
+-  eta: string;
+   svc: string;
+   so: string;
+   soHelper: string;
+diff --git a/lib/ops/general/sales.ts b/lib/ops/general/sales.ts
+index 7555bcc..565320e 100644
+--- a/lib/ops/general/sales.ts
++++ b/lib/ops/general/sales.ts
+@@ -75,7 +75,7 @@ export function salesOf(r: DocRepo, a: SalesArgs = {}) {
+     pid: x.key, name: product(r, x.key)?.name ?? x.key, menu: lastYm(x.key), cnt: x.qty, amt: x.amountYen, ord: x.count, fav: fav.get(x.key) ?? 0,
+   })).sort((a, b) => a.pid.localeCompare(b.pid));
+   const users: SalesUser[] = ps.map((p: AppPurchase) => ({
+-    uid: p.userId, no: p.id, site: p.branchId, sname: nameOf(r, p.branchId), amt: p.amountYen, pay: p.payMethod, st: p.status, reason: p.refundReason, at: p.at,
++    uid: p.userId, no: p.id, site: p.branchId, sname: nameOf(r, p.branchId), amt: p.amountYen, qty: p.qty, pay: p.payMethod, st: p.status, reason: p.refundReason, at: p.at,
+   }));
+   return { sites, items, users, rank: rankOf(r), pay: APP_PAY_METHODS, corps, branches: brs, cats, genders: APP_GENDERS, ageGroups: APP_AGES };
+ }
+diff --git a/lib/ops/general/types.ts b/lib/ops/general/types.ts
+index 09a5067..129e736 100644
+--- a/lib/ops/general/types.ts
++++ b/lib/ops/general/types.ts
+@@ -55,7 +55,7 @@ export type SupplierApp = { no: string; at: string; rep: string; zip: string; ad
+ /* ---------- 売上・お気に入り・ダッシュボード ---------- */
+ export type SalesSite = { id: string; name: string; cnt: number; amt: number; payN: number; refN: number; refAmt: number; cl: number; pay: number[] };
+ export type SalesItem = { pid: string; name: string; menu: string; cnt: number; amt: number; ord: number; fav: number };
+-export type SalesUser = { uid: string; no: string; site: string; sname: string; amt: number; pay: string; st: string; reason: string; at: string };
++export type SalesUser = { uid: string; no: string; site: string; sname: string; amt: number; /** 購入の個数 */ qty: number; pay: string; st: string; reason: string; at: string };
+ export type RankRow = { pid: string; name: string; cat: string; order: number; q: number; amt: number };
+ export type FavRow = { pid: string; name: string; last: string; n: number; cat: string; tot: number; m: number; f: number; [age: string]: string | number };
+ /** ダッシュボードのグラフの条件の選択肢（購入の月・法人・拠点・カテゴリ） */
+diff --git a/lib/server/docs.ts b/lib/server/docs.ts
+index 8afee5d..ac04694 100644
+--- a/lib/server/docs.ts
++++ b/lib/server/docs.ts
+@@ -1,6 +1,7 @@
+ import type Database from 'better-sqlite3';
+ import type { DocRepo, Seed } from '@/lib/ops/core/area';
+ import type { GenRow, SupplierApp } from '@/lib/ops/general/types';
++import { versioned } from '@/lib/ops/core/versioned';
+ import { fromOld } from '@/lib/ops/general/suppliers';
+ 
+ /* 共通 DB の文書テーブル（運営Web などの領域のデータ）。テーブルは db.ts の SCHEMA で作る */
+@@ -49,7 +50,7 @@ export function ensureSuppliers(db: Database.Database) {
+ }
+ 
+ export function sqliteDocRepo(db: Database.Database): DocRepo {
+-  return {
++  return versioned({
+     list: <T,>(kind: string) => {
+       if (kind === DB_SUPPLIERS) { ensureSuppliers(db); return (db.prepare('SELECT data FROM suppliers ORDER BY id').all() as { data: string }[]).map((r) => JSON.parse(r.data) as T); }
+       return (kind === DB_ORDERS
+@@ -83,7 +84,7 @@ export function sqliteDocRepo(db: Database.Database): DocRepo {
+       db.prepare('INSERT INTO seqs (key, value) VALUES (?, 1) ON CONFLICT (key) DO UPDATE SET value = value + 1').run(key);
+       return (db.prepare('SELECT value FROM seqs WHERE key = ?').get(key) as { value: number }).value;
+     },
+-  };
++  });
+ }
+ 
+ /** 全領域の見本データを入れ直す（db.ts の seed から呼ぶ） */
+diff --git a/lib/domain/types.ts b/lib/domain/types.ts
+index 741bf2b..1bfabf7 100644
+--- a/lib/domain/types.ts
++++ b/lib/domain/types.ts
+@@ -113,7 +113,7 @@ export type Contract = {
+   billing: Billing | null;
+   /**
+    * お試しの延長の記録（古い順・運営だけが延長できる。2026/10/03 決定）。お試しの期間（開始・終了のサイクル月）は お試しの子契約 から決まる。
+-   * 延長の月の子契約は お試し・お試しキャンペーン割引（DC000013）で無料（lib/domain/trial.ts）
++   * 延長の月の子契約は お試しキャンペーン割引（DC000013）を付けない＝プラン料金を請求（台帳 K1・lib/domain/trial.ts）
+    */
+   trialExt?: TrialExtension[];
+   /** データの出どころ（'移行'＝移行 CSV） */
+diff --git a/lib/domain/seed/master.ts b/lib/domain/seed/master.ts
+index aeb1a1c..f6ddb2a 100644
+--- a/lib/domain/seed/master.ts
++++ b/lib/domain/seed/master.ts
+@@ -218,7 +218,7 @@ export const DISCOUNTS: Discount[] = [
+   { id: 'DC000006', name: '夏季キャンペーン', target: 'プラン料金', status: '削除済', calcKind: 'rate', ratePct: 10, trigger: 'manual', auto: 'manual', note: '過去の例（削除済）' },
+   { id: 'DC000013', name: 'お試しキャンペーン割引', mgmtName: 'お試しキャンペーン割引', target: 'プラン料金', status: '使用中', calcKind: 'refPlan', refPlanId: 'ES000003', refCourse: LIGHT_FRIDGE, maxPerCorp: 1,
+     autoCondition: '契約種別＝お試しキャンペーン', trigger: 'event.trialChild', auto: 'auto', months: null,
+-    note: '50プラン ESライト（冷蔵庫）の料金分。請求額を超えない。法人ごとに1回（同じ月に1拠点だけ）。延長の月も無料' },
++    note: '50プラン ESライト（冷蔵庫）の料金分。請求額を超えない。法人ごとに1回（同じ月に1拠点だけ）。延長の月は割引しない（プラン料金を請求）' },
+   /* 7-2：今のライトのお客様がスタンダードに上げるとき、基本料金をライト（冷蔵庫）の価格のままにする。冷凍庫は機種マスタの月額をいただく */
+   { id: 'DC000021', name: '旧ライト→スタンダード移行割', mgmtName: '旧ライト→スタンダード移行割', target: 'プラン料金', status: '使用中', rule: 'liteBase', calcKind: 'liteBase', months: null, acceptFrom: '', acceptTo: '',
+     autoCondition: 'プランの変更（ライト→スタンダード）の承認', trigger: 'event.planUpMigrate', auto: 'auto',

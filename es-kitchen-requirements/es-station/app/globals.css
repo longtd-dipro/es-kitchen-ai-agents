@@ -1,0 +1,28 @@
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+/* 文字の大きさの基準：ブラウザの既定 16px × 87.5% ＝ 14px（rem の 1）。ブラウザの「フォントサイズ」設定を変えると全体が一緒に大きくなる */
+html{font-size:87.5%;color-scheme:light}
+body{font-family:"Noto Sans JP","Hiragino Sans","Yu Gothic",system-ui,sans-serif;font-size:1rem;line-height:1.7;color:#24292F;background:#F0F2F5}
+/* デモの帯（components/DemoBar.tsx。NEXT_PUBLIC_DEMO=1 のときだけ出る） */
+.es-demo-bar{display:flex;align-items:center;gap:0.714286rem;flex-wrap:wrap;font-size:0.857143rem;color:#424A53;background:#fff;border-bottom:1px dashed #D0D7DE;padding:0.428571rem 1.142857rem;font-family:"Noto Sans JP",system-ui,sans-serif;line-height:1.428571rem;position:relative;z-index:40}
+.es-demo-tag{background:#FEF0C3;color:#854D0E;border-radius:4px;padding:1px 0.571429rem;font-weight:700}
+.es-demo-bar select,.es-demo-bar button,.es-demo-bar input[type=date]{height:2rem;border:1px solid #D0D7DE;border-radius:6px;background:#fff;font:inherit;font-size:0.857143rem;padding:0 0.571429rem;cursor:pointer}
+/* スマホの幅で選択欄がはみ出さないように */
+.es-demo-bar label{display:inline-flex;align-items:center;gap:0.285714rem;max-width:100%;min-width:0}
+.es-demo-bar select{max-width:min(22.857143rem,calc(100vw - 6.857143rem));min-width:0}
+/* 大きい画面：入力欄と文章が横に伸びすぎないように最大幅をつける（表の中は除く・表は全幅）。:where で強さ 0（各画面の指定が優先） */
+:where(input:not([type=checkbox],[type=radio],[type=hidden],[type=range]),select,textarea){max-width:70rem}
+:where(p){max-width:80rem}
+:where(.fg,.es-formgrid){max-width:70rem}
+:where(td,th) :where(input,select,textarea,p){max-width:none}
+
+/* 並べ替え（components/SortMenu.tsx。ボタン1つ＋メニュー。全サイト共通） */
+.es-sortmenu{position:relative;min-width:12rem}
+.es-sortmenu .es-sortbtn{width:100%;justify-content:space-between;gap:var(--space-8,0.571429rem);white-space:nowrap}
+.es-sortmenu .es-sortbtn span{overflow:hidden;text-overflow:ellipsis}
+.es-sortmenu__list{position:absolute;right:0;top:calc(100% + 0.285714rem);z-index:30;min-width:100%;max-height:22rem;overflow:auto;display:flex;flex-direction:column;gap:2px;padding:var(--space-8,0.571429rem);background:var(--surface,#fff);border:1px solid var(--divider-low,#d9dde3);border-radius:var(--radius-lg,8px);box-shadow:0 6px 20px rgba(16,24,40,.12)}
+.es-sortmenu__list button{border:0;background:none;text-align:left;font:inherit;font-size:1rem;color:var(--text-middle,#344054);padding:var(--space-8,0.571429rem) var(--space-12,0.857143rem);border-radius:var(--radius-md,6px);cursor:pointer;white-space:nowrap}
+.es-sortmenu__list button:hover{background:var(--surface-subtle,#f2f4f7)}
+.es-sortmenu__list button.on{color:var(--primary-text,#175cd3);font-weight:700;background:var(--primary-subtle,#eff8ff)}
+.es-sortmenu__dirs{display:flex;gap:0.285714rem;padding-bottom:var(--space-8,0.571429rem);margin-bottom:0.285714rem;border-bottom:1px solid var(--divider-low,#d9dde3)}
+.es-sortmenu__dirs button{flex:1;text-align:center;border:1px solid var(--divider-low,#d9dde3)!important}

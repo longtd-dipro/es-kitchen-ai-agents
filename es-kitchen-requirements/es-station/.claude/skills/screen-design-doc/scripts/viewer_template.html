@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>画面設計書</title>
+<style>
+:root{
+  --bg:#F3F5F8; --panel:#FFFFFF; --ink:#18212B; --ink2:#55616E; --ink3:#8A95A1; --line:#DFE4EA; --line2:#C9D1DA;
+  --navy:#16324F; --blue:#1D4ED8; --blue-s:#EAF0FD; --pink:#D6246E; --pink-s:#FCEAF2; --amber:#B45309; --amber-s:#FEF3C7;
+  --green:#047857; --green-s:#E3F5EE; --red:#B42318; --red-s:#FDECEA; --sel:#F59E0B;
+  --f:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP","Meiryo",sans-serif;
+  --fm:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:13px/1.55 var(--f);display:flex;flex-direction:column;overflow:hidden}
+button{font:inherit;cursor:pointer}
+/* top bar */
+.top{height:50px;flex:0 0 50px;background:var(--navy);color:#fff;display:flex;align-items:center;gap:14px;padding:0 16px}
+.top .ttl{font-weight:800;font-size:14px;white-space:nowrap}
+.top .sub{color:#B8C7D6;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .sp{flex:1}
+.seg{display:flex;background:#0F2338;border-radius:8px;padding:3px}
+.seg button{border:0;background:transparent;color:#C5D3E0;padding:4px 11px;border-radius:6px;font-size:12px;font-weight:600}
+.seg button.on{background:#fff;color:var(--navy)}
+.tg{display:flex;align-items:center;gap:6px;font-size:12px;color:#DCE6EF;white-space:nowrap}
+/* layout */
+.main{flex:1;display:grid;grid-template-columns:232px minmax(0,1fr) 460px;min-height:0}
+.nav{background:var(--panel);border-right:1px solid var(--line);overflow:auto;padding:12px 0}
+.nav h4{margin:14px 16px 6px;font-size:11px;letter-spacing:.06em;color:var(--ink3);font-weight:700}
+.nav .grp{margin:8px 10px 2px;padding:6px 8px 4px;font-size:11.5px;font-weight:700;color:var(--ink2)}
+.nav .grp code{font:600 10.5px var(--fm);color:var(--blue);display:block}
+.nav a{display:grid;grid-template-columns:1fr auto auto;column-gap:6px;align-items:center;margin:1px 10px;padding:6px 10px;border-radius:8px;color:var(--ink);text-decoration:none;cursor:pointer;font-size:12.5px;line-height:1.4}
+.nav a .id{grid-column:1/-1;line-height:1.3}
+.nav a.ls{display:flex}
+.nav a:hover{background:#F1F4F8}
+.nav a.on{background:var(--blue-s);color:var(--blue);font-weight:700}
+.nav a .id{font:600 10px var(--fm);color:var(--ink3)}
+.nav a.on .id{color:var(--blue)}
+.nav a .n{margin-left:auto;font-size:10.5px;color:var(--ink3)}
+.nav a .w{margin-left:4px;background:var(--amber-s);color:var(--amber);border-radius:9px;padding:0 6px;font-size:10.5px;font-weight:700}
+/* center */
+.ctr{display:flex;flex-direction:column;min-width:0;min-height:0}
+.ch{padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:flex-start}
+.ch .t1{font:600 11px var(--fm);color:var(--blue)}
+.ch .t2{font-size:15px;font-weight:800;margin-top:1px}
+.ch .t3{font-size:12px;color:var(--ink2);margin-top:2px}
+.ch .btns{margin-left:auto;display:flex;gap:6px;flex-shrink:0}
+.btn{border:1px solid var(--line2);background:#fff;border-radius:7px;padding:5px 10px;font-size:12px;color:var(--ink)}
+.btn:hover{background:#F5F7FA}
+.stage{flex:1;position:relative;overflow:hidden;background:#E7EBF0}
+.stage iframe{position:absolute;left:0;top:0;border:0;background:#fff;transform-origin:0 0}
+.legend{position:absolute;right:12px;bottom:10px;background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--ink2);display:flex;gap:12px;z-index:3}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:6px;vertical-align:-2px;margin-right:4px}
+.loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink2);font-size:13px;background:#E7EBF0;z-index:2}
+/* right */
+.side{background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.sh{padding:10px 14px 8px;border-bottom:1px solid var(--line)}
+.sh .row{display:flex;gap:8px;align-items:center}
+.sh h3{margin:0;font-size:14px}
+.sh .cnt{color:var(--ink3);font-size:12px}
+.sh input{width:100%;margin-top:8px;border:1px solid var(--line2);border-radius:7px;padding:6px 9px;font:inherit}
+.chips{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.chips button{border:1px solid var(--line2);background:#fff;border-radius:14px;padding:2px 10px;font-size:11.5px;color:var(--ink2)}
+.chips button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.list{flex:1;overflow:auto;padding:8px 10px 40px}
+.note{margin:2px 4px 10px;padding:8px 10px;border-radius:8px;background:#F4F6F9;color:var(--ink2);font-size:12px}
+.it{border:1px solid var(--line);border-radius:10px;margin:0 0 7px;background:#fff;transition:box-shadow .15s}
+.it.l1{margin-left:16px}
+.it.on{border-color:var(--sel);box-shadow:0 0 0 3px rgba(245,158,11,.22)}
+.it .hd{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;cursor:pointer}
+.bdg{flex:0 0 auto;min-width:24px;height:22px;padding:0 6px;border-radius:11px;color:#fff;font:700 11.5px/22px var(--f);text-align:center}
+.bdg.area{background:var(--blue)} .bdg.leaf{background:var(--pink)}
+.it .nm{font-weight:700;font-size:13px;line-height:1.4;padding-top:2px}
+.it .meta{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
+.tag{font-size:10.5px;border-radius:5px;padding:0 6px;background:#EEF1F5;color:var(--ink2);line-height:18px}
+.tag.req{background:var(--red-s);color:var(--red);font-weight:700}
+.tag.cnd{background:var(--amber-s);color:var(--amber);font-weight:700}
+.tag.chk{background:var(--amber-s);color:var(--amber)}
+.tag.miss{background:#333;color:#fff}
+.it .one{color:var(--ink2);font-size:12px;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.it.open .one{display:none}
+.it .bd{display:none;border-top:1px solid var(--line);padding:8px 10px 10px}
+.it.open .bd{display:block}
+dl{margin:0;display:grid;grid-template-columns:104px 1fr;gap:5px 10px;font-size:12px}
+dt{color:var(--ink3);font-weight:600}
+dd{margin:0;white-space:pre-wrap;word-break:break-word}
+dd .em{display:block;padding:3px 7px;margin:0 0 3px;border-radius:6px;background:var(--red-s);color:#7A1B12;cursor:pointer}
+dd .em:hover{outline:1px solid #E7A39B}
+dd.warn{background:var(--amber-s);color:#6B3A04;border-radius:6px;padding:4px 7px}
+dd.demo{font-size:11.5px;color:var(--ink2)}
+.sel{font:11px var(--fm);color:var(--ink3)}
+/* tables in side */
+table.t{width:100%;border-collapse:collapse;font-size:12px}
+table.t th{text-align:left;background:#F2F5F8;color:var(--ink2);font-weight:700;padding:6px 7px;border-bottom:1px solid var(--line);position:sticky;top:0}
+table.t td{padding:6px 7px;border-bottom:1px solid var(--line);vertical-align:top}
+table.t tr.on td{background:#FFF7E6}
+table.t tr.go{cursor:pointer} table.t tr.go:hover td{background:#F6F9FD}
+.mid{font:700 11.5px var(--fm);color:var(--pink)}
+.diff{color:#6B3A04;background:var(--amber-s);border-radius:5px;padding:2px 6px;display:inline-block;margin-top:3px}
+.about p{margin:0 0 10px} .about b{color:var(--navy)}
+@media (max-width:1180px){.main{grid-template-columns:200px minmax(0,1fr) 380px}}
+@media (max-width:900px){body{overflow:auto}.main{grid-template-columns:1fr;grid-template-rows:auto 70vh auto}.nav{max-height:220px}.side{min-height:60vh}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="ttl" id="ttl">画面設計書</div>
+  <div class="sub" id="sub"></div>
+  <div class="sp"></div>
+  <label class="tg"><input type="checkbox" id="boxTg" checked> <span data-t="box">枠を表示</span></label>
+  <div class="seg" id="lang"><button data-l="ja" class="on">日本語</button><button data-l="vi">Tiếng Việt</button></div>
+</div>
+<div class="main">
+  <nav class="nav" id="nav"></nav>
+  <section class="ctr">
+    <div class="ch">
+      <div style="min-width:0">
+        <div class="t1" id="vCode"></div>
+        <div class="t2" id="vName"></div>
+        <div class="t3" id="vState"></div>
+      </div>
+      <div class="btns">
+        <button class="btn" id="reset" data-t="reset">最初の状態に戻す</button>
+        <button class="btn" id="zoom" data-t="zoomFit">画面に合わせる</button>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="loading" id="loading" data-t="loading">デモを読み込んでいます…</div>
+      <iframe id="fr" title="demo"></iframe>
+      <div class="legend"><span><i style="background:#1D4ED8"></i><span data-t="lgArea">エリア（大項目）</span></span><span><i style="background:#D6246E"></i><span data-t="lgLeaf">項目</span></span><span><i style="background:#F59E0B"></i><span data-t="lgSel">選択中</span></span></div>
+    </div>
+  </section>
+  <aside class="side">
+    <div class="sh" id="sh"></div>
+    <div class="list" id="list"></div>
+  </aside>
+</div>
+<script>/*__DATA__*/</script>
+<script>/*__OVERLAY__*/</script>
+<script>/*__DEMO__*/</script>
+<script>
+(function(){
+var D = window.KD_DATA, LANG = 'ja', VIEW = null, PANEL = 'items', SELNO = null, FILTER = 'all', Q = '', ZOOMFIT = true, OPEN = {};
+var UI = {
+  ja:{box:'枠を表示',reset:'最初の状態に戻す',zoomFit:'画面に合わせる',zoom100:'実寸で見る',loading:'デモを読み込んでいます…',lgArea:'エリア（大項目）',lgLeaf:'項目',lgSel:'選択中',
+      screens:'画面と状態',lists:'一覧',sheets:'追加のシート（初期データなど）',msgs:'メッセージ一覧',mails:'メール',issues:'OPEN（お客様確認待ち）',about:'この資料について',items:'項目定義',search:'項目名・内容で探す',
+      all:'すべて',chk:'OPEN あり',inp:'入力項目',kind:'種類',req:'必須',len:'型・桁数',init:'初期値',ex:'データ例',detail:'詳細',cond:'表示・活性の条件',trig:'トリガー',valid:'バリデーション',err:'エラーメッセージ',
+      chkL:'OPEN',demo:'デモの定義（自動取得）',sel:'デモの場所',must:'必須',cnd:'条件付き',miss:'画面にない',count:'件',noteL:'補足',type:'種類',where:'出す場所',text:'文言',ml:'Message List',diff:'違い・要確認',used:'使う項目',
+      src:'出どころ',content:'内容',view:'画面',to:'宛先',state:'状態'},
+  vi:{box:'Hiện khung',reset:'Về trạng thái ban đầu',zoomFit:'Vừa màn hình',zoom100:'Kích thước thật',loading:'Đang tải demo…',lgArea:'Khu vực (mục lớn)',lgLeaf:'Mục',lgSel:'Đang chọn',
+      screens:'Màn hình & trạng thái',lists:'Danh sách',sheets:'Sheet bổ sung (dữ liệu mặc định…)',msgs:'Danh sách thông báo',mails:'Email',issues:'OPEN (chờ khách xác nhận)',about:'Về tài liệu này',items:'Định nghĩa mục',search:'Tìm theo tên, nội dung',
+      all:'Tất cả',chk:'Cần xác nhận',inp:'Mục nhập',kind:'Loại',req:'Bắt buộc',len:'Kiểu / độ dài',init:'Giá trị mặc định',ex:'Dữ liệu ví dụ',detail:'Chi tiết',cond:'Điều kiện hiển thị',trig:'Trigger',valid:'Validation',err:'Error message',
+      chkL:'OPEN',demo:'Định nghĩa từ demo (tự động)',sel:'Vị trí trên demo',must:'Bắt buộc',cnd:'Có điều kiện',miss:'Không có trên màn hình',count:'mục',noteL:'Ghi chú',type:'Loại',where:'Vị trí hiển thị',text:'Nội dung',ml:'Message List',diff:'Khác biệt',used:'Dùng ở mục',
+      src:'Nguồn',content:'Nội dung',view:'Màn hình',to:'Người nhận',state:'Trạng thái'}
+};
+function t(k){ return (UI[LANG]||UI.ja)[k]||k; }
+function L(p){ return Array.isArray(p) ? (LANG==='vi' ? (p[1]||p[0]) : p[0]) : (p||''); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+var $ = function(id){ return document.getElementById(id); };
+var fr = $('fr'), W = null, READY = false;
+/* 本物の Web を元にしたとき：状態ごとの静止した HTML（KD_DEMOS）。デモのときは 1 ファイル（KD_DEMO）＋ setup */
+var DEMOS = window.KD_DEMOS || null, LOADED = null, LOADING = null;
+/* スナップショットの共通 CSS（<!--KDCSS:n-->）を元に戻す（kd_build.dedupe_styles） */
+function snapHtml(id){
+  var h = DEMOS[id]; if(!h) return '<p style="padding:2rem">(no snapshot)</p>';
+  return h.replace(/<!--KDCSS:(\d+)-->/g, function(m, n){ return (window.KD_CSS || [])[+n] || ''; });
+}
+
+/* ---------------- nav ---------------- */
+function renderNav(){
+  var h = '<h4>'+t('screens')+'</h4>', last = null;
+  D.views.forEach(function(v){
+    if(v.code!==last){ last = v.code; h += '<div class="grp"><code>'+esc(v.code)+'</code>'+esc(L(v.screen))+'</div>'; }
+    var w = D.issues.filter(function(x){ return x.view===v.id; }).length;
+    h += '<a data-v="'+v.id+'" class="'+(PANEL==='items'&&VIEW&&VIEW.id===v.id?'on':'')+'"><span class="id">'+esc(v.id)+'</span><span>'+esc(L(v.state))+'</span>'+
+         '<span class="n">'+v.rows.length+'</span>'+(w?'<span class="w">'+w+'</span>':'')+'</a>';
+  });
+  h += '<h4>'+t('lists')+'</h4>';
+  var lists = [['msgs',D.messages.length],['mails',D.mails.length],['issues',D.issues.length]];
+  if((D.sheets||[]).length) lists.push(['sheets',D.sheets.length]);
+  lists.push(['about','']);
+  lists.forEach(function(p){
+    h += '<a data-p="'+p[0]+'" class="ls '+(PANEL===p[0]?'on':'')+'"><span>'+t(p[0])+'</span><span class="n">'+p[1]+'</span></a>';
+  });
+  $('nav').innerHTML = h;
+}
+$('nav').addEventListener('click', function(e){
+  var a = e.target.closest('a'); if(!a) return;
+  if(a.dataset.v){ PANEL='items'; showView(a.dataset.v); }
+  else { PANEL = a.dataset.p; renderNav(); renderSide(); }
+});
+
+/* ---------------- iframe ---------------- */
+function fit(){
+  /* 画面の幅は撮影の幅（データの VIEWPORT。PC は 1440、スマホのアプリは 390）。狭いときは真ん中に置く */
+  var VW = D.vw || 1440;
+  var st = $('stage'), w = st.clientWidth, h = st.clientHeight, s = ZOOMFIT ? Math.min(1, w/VW) : 1;
+  fr.style.width = VW+'px'; fr.style.height = (h/s)+'px'; fr.style.transform = 'scale('+s+')';
+  fr.style.left = Math.max(0, (w - VW*s)/2)+'px';
+  $('stage').style.overflow = ZOOMFIT ? 'hidden' : 'auto';
+}
+window.addEventListener('resize', fit);
+$('zoom').onclick = function(){ ZOOMFIT = !ZOOMFIT; this.textContent = ZOOMFIT ? t('zoomFit') : t('zoom100'); fit(); };
+function boot(){
+  fr.onload = function(){
+    W = fr.contentWindow;
+    var s = W.document.createElement('script'); s.textContent = window.KD_OVERLAY; W.document.head.appendChild(s);
+    var st = W.document.createElement('style'); st.id='__kd_hide'; W.document.head.appendChild(st);
+    W.__KD.live(); READY = true; $('loading').style.display='none';
+    if(DEMOS){ LOADED = LOADING; LOADING = null; applyView(); if(SELNO) setTimeout(function(){ scrollCard(SELNO); }, 400); return; }
+    var keep = SELNO; showView(VIEW ? VIEW.id : D.views[0].id, keep);
+    if(keep) setTimeout(function(){ scrollCard(keep); }, 400);
+  };
+  if(DEMOS) showView(D.views[0].id); else fr.srcdoc = window.KD_DEMO;
+  fit();
+}
+function applyView(){
+  if(!VIEW) return;
+  if(DEMOS && LOADED !== VIEW.id){
+    if(LOADING !== VIEW.id){ LOADING = VIEW.id; READY = false; $('loading').style.display=''; fr.srcdoc = snapHtml(VIEW.id); }
+    return;
+  }
+  if(!READY) return;
+  if(!DEMOS){ try { W.eval(VIEW.setup); } catch(e){ console.warn('setup', e); } }
+  W.document.getElementById('__kd_hide').textContent = D.hideAlways.concat(VIEW.hide||[]).join(',')+'{display:none!important}'+(D.viewerCss||'');
+  setTimeout(function(){
+    W.__KD.set(VIEW.rows.map(function(r){ return {no:r.no, sel:r.sel, kind:r.kindKey, ja:r.ja}; }), function(no){ pick(no, false, true); });
+    W.__KD.box($('boxTg').checked);
+    if(SELNO) W.__KD.select(SELNO, true);
+    W.scrollTo(0,0);
+  }, 250);
+}
+$('reset').onclick = function(){ SELNO = null; if(DEMOS) LOADED = null; applyView(); renderSide(); };
+$('boxTg').onchange = function(){ if(W && W.__KD) W.__KD.box(this.checked); };
+
+function showView(id, no){
+  VIEW = D.views.filter(function(v){ return v.id===id; })[0];
+  SELNO = no || null; OPEN = {}; if(no) OPEN[no] = true;
+  $('vCode').textContent = VIEW.code+'　/　'+VIEW.id;
+  $('vName').textContent = L(VIEW.screen);
+  $('vState').textContent = t('state')+'：'+L(VIEW.state);
+  renderNav(); renderSide(); applyView();
+}
+
+/* ---------------- side ---------------- */
+function rowMatch(r){
+  if(FILTER==='chk' && !(r.chk[0] || r.auto.length)) return false;
+  if(FILTER==='inp' && ['text','textarea','select','check','radio','month','file','card'].indexOf(r.kindKey)<0) return false;
+  if(!Q) return true;
+  var s = [r.no, r.ja, r.vi, r.detail[0], r.detail[1], r.valid[0], r.len].join(' ').toLowerCase();
+  return s.indexOf(Q.toLowerCase())>=0;
+}
+function itemHtml(r){
+  var area = r.lvl===0 && ['area','modal','table'].indexOf(r.kindKey)>=0;
+  var hasChk = r.chk[0] || r.auto.length;
+  var tags = '<span class="tag">'+esc(L(r.kind))+'</span>'+
+    (r.req==='○'?'<span class="tag req">'+t('must')+'</span>':'')+(r.req==='条件付き'?'<span class="tag cnd">'+t('cnd')+'</span>':'')+
+    (hasChk?'<span class="tag chk">'+t('chkL')+'</span>':'')+(!r.found?'<span class="tag miss">'+t('miss')+'</span>':'');
+  var rows = [];
+  function add(k, v, cls){ if(v) rows.push('<dt>'+t(k)+'</dt><dd'+(cls?' class="'+cls+'"':'')+'>'+v+'</dd>'); }
+  add('detail', esc(L(r.detail)));
+  add('len', esc(L(r.len))); add('init', esc(L(r.init)));
+  if(r.ex && r.ex[0]) add('ex', esc(LANG==='vi' ? r.ex.filter(Boolean).join(' → ') : r.ex[0])); add('cond', esc(L(r.cond)));
+  add('trig', esc(L(r.trig))); add('valid', esc(L(r.valid)));
+  if(r.err.length) add('err', r.err.map(function(e, i){ return '<span class="em" data-m="'+esc(r.errCodes[i])+'">'+esc(L(e))+'</span>'; }).join(''));
+  var ck = [];
+  if(r.chk[0]) ck.push(esc(L(r.chk)));
+  r.auto.forEach(function(a){ ck.push('【'+(LANG==='vi'?'Tự động':'自動')+'】'+esc(L(a))); });
+  add('chkL', ck.join('\n'), 'warn');
+  add('demo', esc(L(r.demo)), 'demo');
+  add('sel', '<span class="sel">'+esc(r.sel)+'</span>');
+  return '<div class="it '+(r.lvl?'l1':'')+(SELNO===r.no?' on':'')+(OPEN[r.no]?' open':'')+'" data-no="'+esc(r.no)+'">'+
+    '<div class="hd"><span class="bdg '+(area?'area':'leaf')+'">'+esc(r.no)+'</span><div style="min-width:0;flex:1">'+
+    '<div class="nm">'+esc(LANG==='vi'?r.vi:r.ja)+'</div><div class="meta">'+tags+'</div>'+
+    (L(r.detail)?'<div class="one">'+esc(L(r.detail))+'</div>':'')+'</div></div>'+
+    '<div class="bd"><dl>'+rows.join('')+'</dl></div></div>';
+}
+function renderSide(){
+  var sh = $('sh'), li = $('list');
+  if(PANEL==='items'){
+    var rows = VIEW.rows.filter(rowMatch);
+    sh.innerHTML = '<div class="row"><h3>'+t('items')+'</h3><span class="cnt">'+rows.length+' / '+VIEW.rows.length+' '+t('count')+'</span></div>'+
+      '<input id="q" placeholder="'+t('search')+'" value="'+esc(Q)+'">'+
+      '<div class="chips">'+['all','chk','inp'].map(function(f){ return '<button data-f="'+f+'" class="'+(FILTER===f?'on':'')+'">'+t(f)+'</button>'; }).join('')+'</div>';
+    li.innerHTML = (L(VIEW.note)?'<div class="note"><b>'+t('noteL')+'：</b>'+esc(L(VIEW.note))+'</div>':'')+rows.map(itemHtml).join('');
+    var q = $('q'); q.oninput = function(){ Q = this.value; var p = this.selectionStart; renderSide(); var n=$('q'); n.focus(); n.setSelectionRange(p,p); };
+    sh.querySelectorAll('[data-f]').forEach(function(b){ b.onclick = function(){ FILTER = b.dataset.f; renderSide(); }; });
+  } else if(PANEL==='msgs'){
+    sh.innerHTML = '<div class="row"><h3>'+t('msgs')+'</h3><span class="cnt">'+D.messages.length+' '+t('count')+'</span></div>';
+    var used = {};
+    D.views.forEach(function(v){ v.rows.forEach(function(r){ r.errCodes.forEach(function(c){ (used[c]=used[c]||[]).push([v.id, r.no]); }); }); });
+    li.innerHTML = '<table class="t"><tr><th>ID</th><th>'+t('text')+'</th></tr>'+D.messages.map(function(m){
+      return '<tr id="m_'+m.id+'" class="'+(m.id===window.__MSEL?'on':'')+'"><td><span class="mid">'+m.id+'</span><div style="color:var(--ink3);font-size:11px">'+esc(m.type)+'</div></td><td>'+
+        '<div>'+esc(LANG==='vi'?m.vi:m.ja)+'</div><div style="color:var(--ink3);font-size:11px;margin-top:2px">'+t('where')+'：'+esc(m.where)+'　'+t('ml')+'：'+esc(m.ml||'—')+(m.mlState?'（'+esc(m.mlState)+'）':'')+'</div>'+
+        ((used[m.id]||[]).length?'<div style="font-size:11px;margin-top:2px">'+t('used')+'：'+used[m.id].map(function(u){ return '<a href="#" data-go="'+u[0]+'|'+u[1]+'">'+u[0]+' No.'+u[1]+'</a>'; }).join('、')+'</div>':'')+
+        (m.diff?'<div class="diff">'+esc(m.diff)+'</div>':'')+'</td></tr>';
+    }).join('')+'</table>';
+    if(window.__MSEL){ var x = $('m_'+window.__MSEL); if(x) x.scrollIntoView({block:'center'}); }
+  } else if(PANEL==='mails'){
+    sh.innerHTML = '<div class="row"><h3>'+t('mails')+'</h3></div>';
+    li.innerHTML = '<table class="t"><tr><th>ID</th><th>'+t('content')+'</th></tr>'+D.mails.map(function(m){
+      return '<tr><td><span class="mid">'+m.id+'</span></td><td>'+esc(LANG==='vi'?m.vi:m.ja)+'<div style="color:var(--ink3);font-size:11px">'+t('to')+'：'+esc(m.to)+'</div></td></tr>'; }).join('')+'</table>'+
+      '<div class="note" style="margin-top:10px">'+(LANG==='vi'?'Nội dung chính thức: Message List (Excel) sheet Email.':'文面の正は Message List（Excel）の「メール」シート。送る条件は メール一覧_申込・申請。')+'</div>';
+  } else if(PANEL==='issues'){
+    sh.innerHTML = '<div class="row"><h3>'+t('issues')+'</h3><span class="cnt">'+D.issues.length+' '+t('count')+'</span></div>';
+    li.innerHTML = '<table class="t"><tr><th>'+t('view')+'</th><th>'+t('content')+'</th></tr>'+D.issues.map(function(x){
+      return '<tr class="'+(x.view?'go':'')+'" data-go="'+(x.view?x.view+'|'+x.no:'')+'"><td style="white-space:nowrap"><span class="mid" style="color:var(--blue)">'+esc(x.view||x.code)+'</span><div style="font-size:11px">No.'+esc(x.no)+'</div></td>'+
+        '<td><b>'+esc(LANG==='vi'&&x.vi?x.vi:x.ja)+'</b><div>'+esc(L(x.text))+'</div><div style="color:var(--ink3);font-size:11px">'+esc(x.src)+'</div></td></tr>'; }).join('')+'</table>';
+  } else if(PANEL==='sheets'){
+    sh.innerHTML = '<div class="row"><h3>'+t('sheets')+'</h3></div>';
+    li.innerHTML = (D.sheets||[]).map(function(s){
+      return '<h3 style="margin:6px 0">'+esc(L(s.name))+'</h3>'+(s.note?'<div class="note">'+esc(L(s.note))+'</div>':'')+(s.tables||[]).map(function(tb){
+        return '<h4 style="margin:10px 0 4px">'+esc(L(tb.title))+'</h4>'+(tb.note&&L(tb.note)?'<div class="note">'+esc(L(tb.note))+'</div>':'')+'<div style="overflow:auto"><table class="t" style="font-size:11px;white-space:nowrap"><tr>'+tb.head.map(function(h){ return '<th>'+esc(L(h[0]))+'</th>'; }).join('')+'</tr>'+
+          tb.rows.map(function(r){ return '<tr>'+r.map(function(x){ return '<td style="max-width:360px;white-space:normal">'+esc(Array.isArray(x)?L(x):String(x==null?'':x))+'</td>'; }).join('')+'</tr>'; }).join('')+'</table></div>'; }).join('');
+    }).join('');
+  } else if(PANEL==='about'){
+    sh.innerHTML = '<div class="row"><h3>'+t('about')+'</h3></div>';
+    li.innerHTML = '<div class="about note" style="background:#fff;border:1px solid var(--line)">'+(LANG==='vi'
+      ? '<p><b>Cách dùng</b>: Nhấn số trên màn hình demo để xem định nghĩa; nhấn thẻ bên phải để làm sáng vị trí trên màn hình. Demo vẫn thao tác được.</p><p><b>Nguồn dữ liệu</b>: 05_基本設計/データ/'+esc(D.dataFile)+' là bản chính. HTML và Excel được tạo tự động từ cùng dữ liệu.</p><p><b>Demo</b>: '+esc(D.demo)+'</p>'
+      : '<p><b>使い方</b>：デモ画面の番号を押すと右に定義が出ます。右の項目を押すと画面の場所が光ります。デモはそのまま操作できます（操作すると番号の位置も追いかけます）。</p>'+
+        '<p><b>元データ</b>：05_基本設計/データ/'+esc(D.dataFile)+' が正です。この HTML と Excel は同じデータから自動で作っています。直すときはデータを直して作り直します。</p>'+
+        '<p><b>「自動」の要確認</b>：作るときにデモの入力欄（項目名・必須の表示・選択肢・最大文字数）を読み取り、仕様と違うところを自動で挙げています。</p>'+
+        '<p><b>共通の決まり</b>：基本設計_全体の定義_提案_20261001（メッセージの出し方 §1、入力 §10-1、法人Web の権限 §10-7）。</p>'+
+        '<p><b>元にしたデモ</b>：'+esc(D.demo)+'　<b>作成</b>：'+esc(D.created)+'　'+esc(D.author)+'</p>')+'</div>';
+  }
+}
+$('list').addEventListener('click', function(e){
+  var go = e.target.closest('[data-go]');
+  if(go && go.dataset.go){ e.preventDefault(); var p = go.dataset.go.split('|'); PANEL='items'; FILTER='all'; Q=''; showView(p[0], p[1]); setTimeout(function(){ scrollCard(p[1]); }, 60); return; }
+  var em = e.target.closest('.em');
+  if(em){ window.__MSEL = em.dataset.m; PANEL = D.messages.some(function(m){ return m.id===em.dataset.m; }) ? 'msgs' : 'mails'; renderNav(); renderSide(); return; }
+  var hd = e.target.closest('.hd');
+  if(hd){ var no = hd.parentNode.dataset.no; OPEN[no] = !(OPEN[no] && SELNO===no) ; pick(no, true, false); }
+});
+function scrollCard(no){ var c = document.querySelector('.it[data-no="'+no+'"]'); if(c) c.scrollIntoView({block:'center', behavior:'smooth'}); }
+function pick(no, scrollFrame, scrollList){
+  SELNO = no; if(scrollList) OPEN[no] = true;
+  if(PANEL!=='items'){ PANEL='items'; renderNav(); }
+  if(FILTER!=='all' || Q){ var r = VIEW.rows.filter(function(x){ return x.no===no; })[0]; if(r && !rowMatch(r)){ FILTER='all'; Q=''; } }
+  renderSide();
+  if(W && W.__KD) W.__KD.select(no, scrollFrame);
+  if(scrollList) scrollCard(no);
+}
+$('lang').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return; LANG = b.dataset.l;
+  document.querySelectorAll('#lang button').forEach(function(x){ x.classList.toggle('on', x===b); });
+  document.querySelectorAll('[data-t]').forEach(function(x){ x.textContent = t(x.dataset.t); });
+  $('zoom').textContent = ZOOMFIT ? t('zoomFit') : t('zoom100');
+  document.documentElement.lang = LANG;
+  head(); renderNav(); renderSide(); if(VIEW){ $('vName').textContent = L(VIEW.screen); $('vState').textContent = t('state')+'：'+L(VIEW.state); }
+});
+function head(){
+  $('ttl').textContent = LANG==='vi' ? 'Thiết kế màn hình' : '画面設計書';
+  $('sub').textContent = L([D.system.ja, D.system.vi])+'　｜　'+(LANG==='vi'?(D.titleVi||D.title):D.title)+'　｜　'+D.created;
+}
+document.title = '画面設計書 '+D.title; head();
+/* #001-4|14.12 のように開くと、その状態・項目から始める（メッセージ一覧からのリンク） */
+var H = decodeURIComponent((location.hash||'').slice(1)).split('|'), HV = D.views.filter(function(v){ return v.id===H[0]; })[0];
+VIEW = HV || D.views[0]; showView(VIEW.id, HV ? H[1] : null); boot();
+})();
+</script>
+</body>
+</html>

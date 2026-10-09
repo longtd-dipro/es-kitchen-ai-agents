@@ -1,0 +1,5996 @@
+{
+ "ver": "1.0",
+ "history": [
+  {
+   "ver": "1.0",
+   "date": "2026-10-08",
+   "files": [
+    "倉庫在庫（AW_WHS）",
+    "資材発注（AW_MPO）",
+    "営業サンプル（AW_SMP）"
+   ]
+  }
+ ],
+ "files": {
+  "画面設計書_AW_WHS_倉庫在庫": {
+   "001:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず「発注・入荷 ＞ 倉庫在庫」。画面名「倉庫在庫」。右上のボタン（CSV出力・CSV取込・在庫戻しの出荷指示・棚卸しを登録）から各画面へ入る（サイドメニューには置かない）。在庫の記録の画面（一覧・追加・CSV取込）は作らない：在庫の調整は商品ごとの詳細（AW_WHS_002）のモーダル「この商品を記録」で行う（AW_WHS_003・004・008 は欠番）。システムの在庫は「倉庫の在庫」と「拠点（お客様）の在庫」の2種類。この画面は倉庫の在庫だけを扱う。倉庫の在庫は THOMAS と連携しない。",
+     "Breadcrumb \"発注・入荷 ＞ 倉庫在庫\". Tên màn hình \"倉庫在庫\". Từ các nút góc phải trên (CSV出力・CSV取込・在庫戻しの出荷指示・棚卸しを登録) vào từng màn hình (không đặt ở menu bên). Không tạo màn hình ghi nhận tồn kho (danh sách・thêm・nhập CSV): việc điều chỉnh tồn kho làm bằng modal \"この商品を記録\" ở chi tiết từng sản phẩm (AW_WHS_002) (AW_WHS_003・004・008 là số bỏ trống). Tồn kho của hệ thống có 2 loại: \"tồn kho kho\" và \"tồn kho điểm (khách hàng)\"; màn hình này chỉ xử lý tồn kho kho. Tồn kho kho không liên kết với THOMAS."
+    ],
+    "trig": "view"
+   },
+   "001:1.1": {
+    "ja": "CSV出力",
+    "vi": "Xuất CSV",
+    "kind": "button",
+    "detail": [
+     "倉庫在庫の一覧の CSV出力（在庫の記録の CSV出力はない）。検索条件のとおりの全件（CSV出力は在庫の一覧）。列：倉庫・品番〜状態（画面の列）・カテゴリ・不足になる日。",
+     "CSV出力 của danh sách tồn kho kho (CSV出力 là danh sách tồn kho; không có CSV出力 của ghi nhận tồn kho). Toàn bộ kết quả theo điều kiện tìm kiếm. Cột: kho, mã hàng 〜 trạng thái (các cột trên màn hình), danh mục, ngày sẽ thiếu."
+    ],
+    "cond": [
+     "倉庫在庫を閲覧できる役割すべて。",
+     "Mọi vai trò xem được tồn kho kho."
+    ],
+    "pattern": "P-CSV-OUT",
+    "trig": "click"
+   },
+   "001:1.2": {
+    "ja": "CSV取込",
+    "vi": "Nhập CSV",
+    "kind": "button",
+    "detail": [
+     "CSV取込の画面（AW_WHS_007）へ。倉庫在庫の CSV取込はこのボタン1か所だけ（取り込めるのは棚卸し〔起点〕の数だけ。在庫の増減の調整は詳細のモーダル「この商品を記録」で行い、CSVでは取り込まない。棚卸し〔起点〕の登録の画面や詳細にはCSVのボタンを置かない）。",
+     "Sang màn hình nhập CSV (AW_WHS_007). Nhập CSV của tồn kho kho chỉ có nút này (chỉ nhập được số kiểm kê [điểm khởi đầu]; việc điều chỉnh tăng/giảm tồn kho làm bằng modal \"この商品を記録\" ở chi tiết, không nhập bằng CSV; không đặt nút CSV ở màn hình đăng ký kiểm kê hay chi tiết)."
+    ],
+    "cond": [
+     "作成（C）の権限（フル権限・商品開発）がある役割だけに出す。物流は閲覧のみ（ボタンを出さない）。",
+     "Chỉ hiện với vai trò có quyền tạo (C) (quyền đầy đủ・phát triển sản phẩm). Logistics chỉ xem (không hiện nút)."
+    ],
+    "pattern": "P-CSV",
+    "trig": "click"
+   },
+   "001:1.3": {
+    "ja": "在庫戻しの出荷指示",
+    "vi": "Lệnh xuất kho trả hàng tồn",
+    "kind": "button",
+    "detail": [
+     "在庫戻しの出荷指示の画面（AW_WHS_005）へ。作成のボタンは画面の中で権限のある役割だけに出す。",
+     "Sang màn hình lệnh xuất kho 在庫戻し (AW_WHS_005). Nút tạo chỉ hiện trong màn hình đó với vai trò có quyền."
+    ],
+    "cond": [
+     "倉庫在庫を閲覧できる役割すべて。",
+     "Mọi vai trò xem được tồn kho kho."
+    ],
+    "trig": "click"
+   },
+   "001:1.4": {
+    "ja": "棚卸しを登録",
+    "vi": "Đăng ký kiểm kê",
+    "kind": "button",
+    "detail": [
+     "棚卸し（起点）の登録の画面（AW_WHS_006）へ。倉庫在庫の起点は、運営が倉庫ごとに登録する棚卸しの数（なければ 0 から）。",
+     "Sang màn hình đăng ký kiểm kê (điểm khởi đầu) (AW_WHS_006). Điểm khởi đầu của tồn kho kho là số kiểm kê do vận hành đăng ký theo từng kho (chưa có thì bắt đầu từ 0)."
+    ],
+    "cond": [
+     "作成（C）の権限（フル権限・商品開発）がある役割だけに出す。物流は閲覧のみ（ボタンを出さない）。",
+     "Chỉ hiện với vai trò có quyền tạo (C) (quyền đầy đủ・phát triển sản phẩm). Logistics chỉ xem (không hiện nút)."
+    ],
+    "trig": "click"
+   },
+   "001:2": {
+    "ja": "見込み在庫についての一言",
+    "vi": "Dòng nhắc về tồn kho dự kiến",
+    "kind": "label",
+    "detail": [
+     "画面の上に1行だけ出す案内（I121）。長い説明は置かない。",
+     "Chỉ hiện 1 dòng hướng dẫn phía trên màn hình (I121). Không đặt mô tả dài."
+    ],
+    "err": [
+     "I121"
+    ],
+    "trig": "view"
+   },
+   "001:3": {
+    "ja": "集計（KPI）",
+    "vi": "Tổng hợp (KPI)",
+    "kind": "area",
+    "detail": [
+     "件数3つ（不足見込み・余り見込み・棚卸し後の在庫の記録）。棚卸し日は1つにまとめない（倉庫ごとの直近の棚卸し日は表の No.5.12）。",
+     "3 số lượng (dự kiến thiếu・dự kiến dư・ghi nhận tồn kho sau kiểm kê). Không gộp ngày kiểm kê thành 1 ngày (ngày kiểm kê gần nhất của từng kho nằm trong bảng, No.5.12)."
+    ],
+    "trig": "view"
+   },
+   "001:3.1": {
+    "ja": "棚卸し（起点）",
+    "vi": "Kiểm kê (điểm khởi đầu)",
+    "kind": "label",
+    "detail": [
+     "全倉庫の直近の棚卸し日を1つの日付に決めて出すことはしない（棚卸し日は倉庫ごとに違うため）。倉庫ごとの直近の棚卸し日は表の「直近の棚卸し日」（No.5.12）、起点の数は「棚卸し在庫」（No.5.6）。登録がない倉庫は 0 から始める。",
+     "Không chọn ra 1 ngày kiểm kê gần nhất cho tất cả các kho (vì ngày kiểm kê khác nhau theo kho). Ngày kiểm kê gần nhất của từng kho nằm ở cột \"直近の棚卸し日\" của bảng (No.5.12), số khởi đầu ở cột \"棚卸し在庫\" (No.5.6). Kho chưa đăng ký thì bắt đầu từ 0."
+    ],
+    "trig": "view"
+   },
+   "001:3.2": {
+    "ja": "不足見込み",
+    "vi": "Dự kiến thiếu",
+    "kind": "button",
+    "detail": [
+     "不足見込みの商品数（0件以外は赤）。押すと状態＝不足見込みで絞り込む（もう一度押すと外す）。",
+     "Số sản phẩm dự kiến thiếu (khác 0 thì màu đỏ). Bấm để lọc theo trạng thái = dự kiến thiếu (bấm lần nữa để bỏ)."
+    ],
+    "trig": "click"
+   },
+   "001:3.3": {
+    "ja": "余り見込み",
+    "vi": "Dự kiến dư",
+    "kind": "button",
+    "detail": [
+     "余り見込みの商品数（在庫戻しの候補）。押すと状態＝余り見込みで絞り込む。",
+     "Số sản phẩm dự kiến dư (ứng viên 在庫戻し). Bấm để lọc theo trạng thái = dự kiến dư."
+    ],
+    "trig": "click"
+   },
+   "001:3.4": {
+    "ja": "棚卸し後の在庫の記録",
+    "vi": "Ghi nhận tồn kho sau kiểm kê",
+    "kind": "label",
+    "detail": [
+     "直近の棚卸し日より後の在庫の記録の件数。表示だけで、押しても移らない（在庫の記録の画面は作らない。記録は商品ごとの詳細の入出庫の表で見る）。",
+     "Số ghi nhận tồn kho sau ngày kiểm kê gần nhất. Chỉ hiển thị, bấm cũng không chuyển màn hình (không tạo màn hình ghi nhận tồn kho; xem ghi nhận ở bảng nhập/xuất trong chi tiết từng sản phẩm)."
+    ],
+    "trig": "view"
+   },
+   "001:4": {
+    "ja": "検索条件",
+    "vi": "Điều kiện tìm kiếm",
+    "kind": "area",
+    "detail": [
+     "初期の並び：状態（不足見込み → 余り見込み → 過不足なし）→ 倉庫 → 品番。並べ替えは全列。この一覧は商品だけ（資材の在庫は資材発注）。",
+     "Thứ tự mặc định: trạng thái (dự kiến thiếu → dự kiến dư → vừa đủ) → kho → mã hàng. Sắp xếp được ở mọi cột. Danh sách này chỉ có sản phẩm (tồn kho vật tư ở đặt hàng vật tư)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:4.1": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（関東倉庫・関西倉庫・中部倉庫）",
+     ""
+    ],
+    "init": [
+     "（すべて）",
+     "（Tất cả）"
+    ],
+    "ex": [
+     "関東倉庫",
+     "Kho picking dùng để lọc (Kanto)."
+    ],
+    "detail": [
+     "ピッキング倉庫で絞る。",
+     "Lọc theo kho picking."
+    ],
+    "trig": "select"
+   },
+   "001:4.2": {
+    "ja": "品番・商品名",
+    "vi": "Mã hàng・tên sản phẩm",
+    "kind": "text",
+    "req": "－",
+    "len": "文字列 60",
+    "ex": [
+     "デミグラスハンバーグ",
+     "Từ khóa tìm kiếm: tên sản phẩm (hamburg sốt demi-glace)."
+    ],
+    "detail": [
+     "品番・商品名の部分一致。",
+     "Khớp một phần mã hàng・tên sản phẩm."
+    ],
+    "trig": "input"
+   },
+   "001:4.3": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（不足見込み／余り見込み／過不足なし）",
+     ""
+    ],
+    "init": [
+     "（すべて）",
+     "（Tất cả）"
+    ],
+    "ex": [
+     "不足見込み",
+     "Giá trị chọn: 不足見込み (dự kiến thiếu)."
+    ],
+    "trig": "select"
+   },
+   "001:4.4": {
+    "ja": "区分",
+    "vi": "Phân loại",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（通常／短消費期限）",
+     ""
+    ],
+    "init": [
+     "（すべて）",
+     "（Tất cả）"
+    ],
+    "ex": [
+     "短消費期限",
+     "Giá trị chọn: 短消費期限 (hạn dùng ngắn)."
+    ],
+    "trig": "select"
+   },
+   "001:4.5": {
+    "ja": "保管方法",
+    "vi": "Cách bảo quản",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（冷蔵／冷凍／常温）",
+     ""
+    ],
+    "init": [
+     "（すべて）",
+     "（Tất cả）"
+    ],
+    "ex": [
+     "冷蔵",
+     "Giá trị chọn: 冷蔵 (bảo quản lạnh)."
+    ],
+    "trig": "select"
+   },
+   "001:4.6": {
+    "ja": "カテゴリ",
+    "vi": "Danh mục",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（商品カテゴリー）",
+     ""
+    ],
+    "init": [
+     "（すべて）",
+     "（Tất cả）"
+    ],
+    "ex": [
+     "主食",
+     "Giá trị chọn: danh mục sản phẩm 主食 (món chính)."
+    ],
+    "trig": "select"
+   },
+   "001:4.7": {
+    "ja": "並べ替え",
+    "vi": "Sắp xếp",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（列）＋昇順／降順",
+     ""
+    ],
+    "init": [
+     "状態の順（不足見込み→余り見込み→過不足なし）→ 倉庫 → 品番",
+     "Theo thứ tự trạng thái (dự kiến thiếu → dự kiến dư → vừa đủ) → kho → mã hàng"
+    ],
+    "ex": [
+     "見込み在庫・昇順",
+     "Cột sắp xếp + chiều: tồn kho dự kiến, tăng dần."
+    ],
+    "trig": "select"
+   },
+   "001:5": {
+    "ja": "倉庫在庫の一覧",
+    "vi": "Danh sách tồn kho kho",
+    "kind": "table",
+    "detail": [
+     "1行＝倉庫×商品。見込み在庫＝棚卸し在庫＋入荷予定−出荷予定±ES記録（参考値。引き当て・出荷の停止はしない）。0件は I01。",
+     "1 dòng = kho × sản phẩm. Tồn kho dự kiến = tồn kho kiểm kê + dự kiến nhập − dự kiến xuất ± ghi nhận ES (giá trị tham khảo; không chặn việc giữ hàng・xuất hàng). 0 kết quả hiện I01."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:5.1": {
+    "ja": "品番",
+    "vi": "Mã hàng",
+    "kind": "label",
+    "detail": [
+     "商品の品番（例 M002）。",
+     "Mã hàng của sản phẩm (ví dụ M002)."
+    ],
+    "trig": "view"
+   },
+   "001:5.2": {
+    "ja": "商品名",
+    "vi": "Tên sản phẩm",
+    "kind": "link",
+    "detail": [
+     "押すと倉庫在庫の詳細（AW_WHS_002）へ。URL は /ops/purchasing/stock/{倉庫ID}|{品番}（例 WH00001|M002。| は %7C）。",
+     "Bấm để sang chi tiết tồn kho kho (AW_WHS_002). URL là /ops/purchasing/stock/{ID kho}|{mã hàng} (ví dụ WH00001|M002; | là %7C)."
+    ],
+    "trig": "click"
+   },
+   "001:5.3": {
+    "ja": "区分",
+    "vi": "Phân loại",
+    "kind": "label",
+    "detail": [
+     "通常／短消費期限（黄のバッジ）。",
+     "通常 (thường) / 短消費期限 (hạn dùng ngắn; badge vàng)."
+    ],
+    "trig": "view"
+   },
+   "001:5.4": {
+    "ja": "保管方法",
+    "vi": "Cách bảo quản",
+    "kind": "label",
+    "detail": [
+     "冷蔵／冷凍／常温。",
+     "Lạnh (冷蔵) / đông (冷凍) / thường (常温)."
+    ],
+    "trig": "view"
+   },
+   "001:5.5": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "label",
+    "detail": [
+     "ピッキング倉庫の名前。",
+     "Tên kho picking."
+    ],
+    "trig": "view"
+   },
+   "001:5.6": {
+    "ja": "棚卸し在庫",
+    "vi": "Tồn kho kiểm kê (棚卸し在庫)",
+    "kind": "label",
+    "detail": [
+     "その倉庫の直近の棚卸し日の数（起点）。登録がないときは 0。右寄せ・個。",
+     "Số của ngày kiểm kê gần nhất của kho đó (điểm xuất phát). Chưa đăng ký thì 0. Căn phải, đơn vị cái."
+    ],
+    "trig": "view"
+   },
+   "001:5.7": {
+    "ja": "入荷予定",
+    "vi": "Dự kiến nhập",
+    "kind": "label",
+    "detail": [
+     "本発注済で入荷が終わっていない発注の残り（予定）。右寄せ・個。",
+     "Phần còn lại (dự kiến) của các đơn đã đặt chính thức nhưng chưa nhập xong. Căn phải, đơn vị cái."
+    ],
+    "trig": "view"
+   },
+   "001:5.8": {
+    "ja": "出荷予定",
+    "vi": "Dự kiến xuất",
+    "kind": "label",
+    "detail": [
+     "便の予定数（出荷日が棚卸し日より後のもの）。マイナスで表示。",
+     "Số lượng dự kiến của các chuyến (ngày xuất sau ngày kiểm kê). Hiển thị số âm."
+    ],
+    "trig": "view"
+   },
+   "001:5.9": {
+    "ja": "ES記録",
+    "vi": "Ghi nhận ES",
+    "kind": "label",
+    "detail": [
+     "棚卸し日より後の在庫の記録の合計（増減）。",
+     "Tổng (tăng/giảm) ghi nhận tồn kho sau ngày kiểm kê."
+    ],
+    "trig": "view"
+   },
+   "001:5.10": {
+    "ja": "見込み在庫",
+    "vi": "Tồn kho dự kiến",
+    "kind": "label",
+    "detail": [
+     "棚卸し在庫＋入荷予定−出荷予定±ES記録。マイナスは赤。",
+     "Tồn kho kiểm kê + dự kiến nhập − dự kiến xuất ± ghi nhận ES. Số âm màu đỏ."
+    ],
+    "trig": "view"
+   },
+   "001:5.11": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "label",
+    "detail": [
+     "不足見込み（赤。その日の出荷で足りなくなる日を「MM/DD〜」で添える）／余り見込み（青）／過不足なし（灰）。色は共通の表（P-STATUS-COLORS）。",
+     "不足見込み (đỏ; kèm ngày bắt đầu thiếu dạng \"MM/DD〜\") / 余り見込み (xanh) / 過不足なし (xám). Màu theo bảng chung (P-STATUS-COLORS)."
+    ],
+    "trig": "view"
+   },
+   "001:5.12": {
+    "ja": "直近の棚卸し日",
+    "vi": "Ngày kiểm kê gần nhất (直近の棚卸し日)",
+    "kind": "label",
+    "detail": [
+     "その倉庫の直近の棚卸し日（yyyy-mm-dd）。倉庫ごとに表に出す（KPI は日付を1つにしない）。登録がない倉庫は「－」。倉庫の列の右に置く。",
+     "Ngày kiểm kê gần nhất của kho đó (yyyy-mm-dd), hiện theo từng kho trong bảng (KPI không gộp thành 1 ngày). Kho chưa đăng ký thì \"－\". Đặt bên phải cột kho."
+    ],
+    "trig": "view"
+   },
+   "001:6": {
+    "ja": "ページ送り",
+    "vi": "Phân trang",
+    "kind": "area",
+    "detail": [
+     "10件ずつ（10／20／50）。",
+     "10 dòng mỗi trang (10/20/50)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "002:4": {
+    "ja": "検索条件",
+    "vi": "Điều kiện tìm kiếm",
+    "kind": "area",
+    "detail": [
+     "初期の並び：状態（不足見込み → 余り見込み → 過不足なし）→ 倉庫 → 品番。並べ替えは全列。この一覧は商品だけ（資材の在庫は資材発注）。",
+     "Thứ tự mặc định: trạng thái (dự kiến thiếu → dự kiến dư → vừa đủ) → kho → mã hàng. Sắp xếp được ở mọi cột. Danh sách này chỉ có sản phẩm (tồn kho vật tư ở đặt hàng vật tư)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "002:4.2": {
+    "ja": "品番・商品名",
+    "vi": "Mã hàng・tên sản phẩm",
+    "kind": "text",
+    "req": "－",
+    "len": "文字列 60",
+    "ex": [
+     "デミグラスハンバーグ",
+     "Từ khóa tìm kiếm: tên sản phẩm (hamburg sốt demi-glace)."
+    ],
+    "detail": [
+     "品番・商品名の部分一致。",
+     "Khớp một phần mã hàng・tên sản phẩm."
+    ],
+    "trig": "input"
+   },
+   "002:5": {
+    "ja": "倉庫在庫の一覧",
+    "vi": "Danh sách tồn kho kho",
+    "kind": "table",
+    "detail": [
+     "1行＝倉庫×商品。見込み在庫＝棚卸し在庫＋入荷予定−出荷予定±ES記録（参考値。引き当て・出荷の停止はしない）。0件は I01。",
+     "1 dòng = kho × sản phẩm. Tồn kho dự kiến = tồn kho kiểm kê + dự kiến nhập − dự kiến xuất ± ghi nhận ES (giá trị tham khảo; không chặn việc giữ hàng・xuất hàng). 0 kết quả hiện I01."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "003:3.2": {
+    "ja": "不足見込み",
+    "vi": "Dự kiến thiếu",
+    "kind": "button",
+    "detail": [
+     "不足見込みの商品数（0件以外は赤）。押すと状態＝不足見込みで絞り込む（もう一度押すと外す）。",
+     "Số sản phẩm dự kiến thiếu (khác 0 thì màu đỏ). Bấm để lọc theo trạng thái = dự kiến thiếu (bấm lần nữa để bỏ)."
+    ],
+    "trig": "click"
+   },
+   "003:4.3": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（不足見込み／余り見込み／過不足なし）",
+     ""
+    ],
+    "init": [
+     "（すべて）",
+     "（Tất cả）"
+    ],
+    "ex": [
+     "不足見込み",
+     "Giá trị chọn: 不足見込み (dự kiến thiếu)."
+    ],
+    "trig": "select"
+   },
+   "003:5": {
+    "ja": "倉庫在庫の一覧",
+    "vi": "Danh sách tồn kho kho",
+    "kind": "table",
+    "detail": [
+     "1行＝倉庫×商品。見込み在庫＝棚卸し在庫＋入荷予定−出荷予定±ES記録（参考値。引き当て・出荷の停止はしない）。0件は I01。",
+     "1 dòng = kho × sản phẩm. Tồn kho dự kiến = tồn kho kiểm kê + dự kiến nhập − dự kiến xuất ± ghi nhận ES (giá trị tham khảo; không chặn việc giữ hàng・xuất hàng). 0 kết quả hiện I01."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "003:5.11": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "label",
+    "detail": [
+     "不足見込み（赤。その日の出荷で足りなくなる日を「MM/DD〜」で添える）／余り見込み（青）／過不足なし（灰）。色は共通の表（P-STATUS-COLORS）。",
+     "不足見込み (đỏ; kèm ngày bắt đầu thiếu dạng \"MM/DD〜\") / 余り見込み (xanh) / 過不足なし (xám). Màu theo bảng chung (P-STATUS-COLORS)."
+    ],
+    "trig": "view"
+   },
+   "004:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず「発注・入荷 ＞ 倉庫在庫（戻るリンク）＞ 倉庫在庫の詳細」。タイトル「{商品名}（{品番}）｜{倉庫} {状態バッジ}」。URL＝/ops/purchasing/stock/{倉庫ID}|{品番}（例 WH00001|M002）。",
+     "Breadcrumb \"発注・入荷 ＞ 倉庫在庫 (link quay lại) ＞ 倉庫在庫の詳細\". Tiêu đề \"{tên sản phẩm} ({mã hàng})｜{kho} {badge trạng thái}\". URL = /ops/purchasing/stock/{ID kho}|{mã hàng} (ví dụ WH00001|M002)."
+    ],
+    "trig": "view"
+   },
+   "004:1.1": {
+    "ja": "この商品を記録",
+    "vi": "Ghi nhận sản phẩm này",
+    "kind": "button",
+    "detail": [
+     "モーダル「この商品を記録」（No.5）を、この画面の倉庫と商品が入った状態で開く。在庫の調整（NG品ロス・棚卸し差異・再送・ES外発注の入荷・その他）はこのモーダルだけで行う（在庫の記録の一覧・追加・CSV取込の画面は作らない。台帳 F 2026-10-08・受付簿 #192）。",
+     "Mở modal \"この商品を記録\" (No.5) với kho và sản phẩm của màn hình này đã điền sẵn. Việc điều chỉnh tồn kho (NG品ロス・棚卸し差異・再送・ES外発注の入荷・その他) chỉ làm bằng modal này (không tạo màn hình danh sách・thêm・nhập CSV của ghi nhận tồn kho. 台帳 F 2026-10-08・受付簿 #192)."
+    ],
+    "cond": [
+     "作成（C）の権限（フル権限・商品開発）がある役割だけに出す。物流は閲覧のみ（ボタンを出さない）。",
+     "Chỉ hiện với vai trò có quyền tạo (C) (quyền đầy đủ・phát triển sản phẩm). Logistics chỉ xem (không hiện nút)."
+    ],
+    "trig": "click"
+   },
+   "004:1.2": {
+    "ja": "発注詳細へ",
+    "vi": "Sang chi tiết đặt hàng",
+    "kind": "button",
+    "detail": [
+     "発注の詳細（C1 の画面）へ。「発注詳細（{月}メニュー）」。",
+     "Sang chi tiết đặt hàng (màn hình C1). \"Chi tiết đặt hàng (menu tháng {tháng})\"."
+    ],
+    "cond": [
+     "その商品が、次の出荷の月のメニューにあるときだけ出す",
+     "Chỉ hiện khi sản phẩm có trong menu của tháng xuất kế tiếp"
+    ],
+    "trig": "click"
+   },
+   "004:2": {
+    "ja": "基本情報",
+    "vi": "Thông tin cơ bản",
+    "kind": "area",
+    "detail": [
+     "商品の基本と、見込み在庫の内訳。読むだけ。",
+     "Thông tin cơ bản của sản phẩm và chi tiết tồn kho dự kiến. Chỉ đọc."
+    ],
+    "trig": "view"
+   },
+   "004:2.1": {
+    "ja": "不足の警告",
+    "vi": "Cảnh báo thiếu",
+    "kind": "label",
+    "detail": [
+     "「{日付} の出荷で在庫が足りなくなる見込みです（いちばん少ない日 {日付}：{n}個）。追加の発注・代替品・調整数で対応してください。出荷は止めません。」",
+     "\"Dự kiến tồn kho không đủ cho đợt xuất ngày {ngày} (ngày thấp nhất {ngày}: {n} cái). Hãy xử lý bằng đặt thêm・sản phẩm thay thế・số điều chỉnh. Không dừng việc xuất hàng.\""
+    ],
+    "cond": [
+     "状態が不足見込みのときだけ",
+     "Chỉ khi trạng thái là dự kiến thiếu"
+    ],
+    "trig": "view"
+   },
+   "004:2.2": {
+    "ja": "品番",
+    "vi": "Mã hàng",
+    "kind": "label",
+    "detail": [
+     "商品の品番。",
+     "Mã hàng của sản phẩm."
+    ],
+    "trig": "view"
+   },
+   "004:2.3": {
+    "ja": "商品名",
+    "vi": "Tên sản phẩm",
+    "kind": "label",
+    "trig": "view"
+   },
+   "004:2.4": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "label",
+    "detail": [
+     "ピッキング倉庫の名前。",
+     "Tên kho picking."
+    ],
+    "trig": "view"
+   },
+   "004:2.5": {
+    "ja": "区分",
+    "vi": "Phân loại",
+    "kind": "label",
+    "detail": [
+     "通常／短消費期限。",
+     "通常 (thường) / 短消費期限 (hạn dùng ngắn)."
+    ],
+    "trig": "view"
+   },
+   "004:2.6": {
+    "ja": "保管方法",
+    "vi": "Cách bảo quản",
+    "kind": "label",
+    "trig": "view"
+   },
+   "004:2.7": {
+    "ja": "仕入先",
+    "vi": "Nhà cung cấp",
+    "kind": "label",
+    "trig": "view"
+   },
+   "004:2.8": {
+    "ja": "発注ロット",
+    "vi": "Lô đặt hàng",
+    "kind": "label",
+    "detail": [
+     "「n個／箱」。短消費期限は「1個単位」。",
+     "\"n cái/thùng\". Hàng hạn dùng ngắn là \"đơn vị 1 cái\"."
+    ],
+    "trig": "view"
+   },
+   "004:2.9": {
+    "ja": "棚卸し在庫",
+    "vi": "Tồn kho kiểm kê (棚卸し在庫)",
+    "kind": "label",
+    "detail": [
+     "見出し「棚卸し在庫（yyyy-mm-dd 棚卸し）」。起点の数（個）。登録がないときは 0。",
+     "Tiêu đề \"棚卸し在庫 (kiểm kê yyyy-mm-dd)\". Số của điểm xuất phát (cái). Chưa đăng ký thì 0."
+    ],
+    "trig": "view"
+   },
+   "004:2.10": {
+    "ja": "入荷予定",
+    "vi": "Dự kiến nhập",
+    "kind": "label",
+    "detail": [
+     "本発注済で入荷が終わっていない分（個）。",
+     "Phần của các đơn đã đặt chính thức nhưng chưa nhập xong (cái)."
+    ],
+    "trig": "view"
+   },
+   "004:2.11": {
+    "ja": "出荷予定",
+    "vi": "Dự kiến xuất",
+    "kind": "label",
+    "detail": [
+     "便の予定数（個）。マイナスで表示。",
+     "Số lượng dự kiến của các chuyến (cái). Hiển thị số âm."
+    ],
+    "trig": "view"
+   },
+   "004:2.12": {
+    "ja": "在庫の記録",
+    "vi": "Ghi nhận tồn kho",
+    "kind": "label",
+    "detail": [
+     "棚卸し日より後の在庫の記録の合計（個）。",
+     "Tổng ghi nhận tồn kho sau ngày kiểm kê (cái)."
+    ],
+    "trig": "view"
+   },
+   "004:2.13": {
+    "ja": "見込み在庫",
+    "vi": "Tồn kho dự kiến",
+    "kind": "label",
+    "detail": [
+     "最終の見込み。マイナスは赤。",
+     "Tồn kho dự kiến cuối cùng. Số âm màu đỏ."
+    ],
+    "trig": "view"
+   },
+   "004:2.14": {
+    "ja": "今日時点の計算在庫",
+    "vi": "Tồn kho tính đến hôm nay",
+    "kind": "label",
+    "detail": [
+     "今日までの入出荷と記録だけで計算した在庫（個）。",
+     "Tồn kho chỉ tính theo nhập/xuất và ghi nhận đến hôm nay (cái)."
+    ],
+    "trig": "view"
+   },
+   "004:2.15": {
+    "ja": "見込み在庫の一言",
+    "vi": "Dòng nhắc về tồn kho dự kiến",
+    "kind": "label",
+    "detail": [
+     "見込み在庫は参考値であることを一言で示す（I121）。",
+     "Cho biết bằng một câu rằng tồn kho dự kiến chỉ là giá trị tham khảo (I121)."
+    ],
+    "err": [
+     "I121"
+    ],
+    "trig": "view"
+   },
+   "004:3": {
+    "ja": "見込みの推移と入出庫の記録",
+    "vi": "Diễn biến dự kiến và ghi nhận nhập xuất kho",
+    "kind": "area",
+    "detail": [
+     "起点（棚卸し）から先の入出庫を日付順に出す。月ごとに区切る。",
+     "Hiện nhập xuất kho từ điểm xuất phát (kiểm kê) trở đi theo thứ tự ngày. Chia theo tháng."
+    ],
+    "trig": "view"
+   },
+   "004:3.1": {
+    "ja": "入出庫の表",
+    "vi": "Bảng nhập xuất kho",
+    "kind": "table",
+    "detail": [
+     "列：日付・区分・発注番号／納品／記録番号・実績／予定・数量・見込み在庫・メモ。先頭の行は「棚卸し（起点）」。見込み在庫がマイナスになる行は赤。この表は「この倉庫のこの商品」の入出庫の記録だけを出す（ほかの商品は出さない。商品をまたぐ検索はない）。「この商品を記録」で登録した記録もこの表に出る（編集・削除の列はない）。",
+     "Cột: ngày, phân loại, số đơn đặt hàng/giao hàng/ghi nhận, thực tế/dự kiến, số lượng, tồn kho dự kiến, ghi chú. Dòng đầu là \"棚卸し（起点）\" (kiểm kê, điểm xuất phát). Dòng có tồn kho dự kiến âm màu đỏ. Bảng này chỉ hiện bản ghi nhập/xuất của \"sản phẩm này tại kho này\" (không hiện sản phẩm khác; không có tìm kiếm xuyên sản phẩm). Bản ghi đã đăng ký bằng \"この商品を記録\" cũng hiện trong bảng này (không có cột sửa・xóa)."
+    ],
+    "trig": "view"
+   },
+   "004:3.2": {
+    "ja": "区分",
+    "vi": "Phân loại",
+    "kind": "label",
+    "detail": [
+     "棚卸し（起点）／入荷／出荷／NG品ロス／棚卸し差異／再送／在庫戻し／ES外発注の入荷／その他（バッジの色：増える＝緑、減る＝赤、出荷＝灰、棚卸し＝青）。在庫戻しは出荷指示の作成で自動で入る。",
+     "棚卸し（起点）(kiểm kê, điểm xuất phát) / nhập hàng / xuất hàng / NG品ロス / 棚卸し差異 / gửi lại (再送) / 在庫戻し / nhập hàng đặt ngoài ES (ES外発注の入荷) / khác (その他) (màu badge: tăng = xanh lá, giảm = đỏ, xuất = xám, kiểm kê = xanh dương). 在庫戻し tự vào khi tạo lệnh xuất kho."
+    ],
+    "trig": "view"
+   },
+   "004:3.3": {
+    "ja": "実績／予定",
+    "vi": "Thực tế/dự kiến",
+    "kind": "label",
+    "detail": [
+     "入荷済み・棚卸し・記録は「実績」、未入荷・未出荷は「予定」。",
+     "Đã nhập・kiểm kê・ghi nhận là \"thực tế\" (実績); chưa nhập・chưa xuất là \"dự kiến\" (予定)."
+    ],
+    "trig": "view"
+   },
+   "004:3.4": {
+    "ja": "入出庫の注記",
+    "vi": "Ghi chú nhập xuất kho",
+    "kind": "label",
+    "detail": [
+     "「入荷日は入荷済みなら入荷日、未入荷なら入荷予定日。赤い行は在庫がマイナスになる日です。」",
+     "\"Ngày nhập là ngày nhập thực tế nếu đã nhập, là ngày dự kiến nhập nếu chưa nhập. Dòng đỏ là ngày tồn kho bị âm.\""
+    ],
+    "trig": "view"
+   },
+   "004:3.5": {
+    "ja": "入出庫なしの案内",
+    "vi": "Thông báo không có nhập xuất kho",
+    "kind": "label",
+    "detail": [
+     "「棚卸し後の入出庫はありません。」表の下に1行。",
+     "\"Không có nhập xuất kho nào sau kiểm kê.\" 1 dòng dưới bảng."
+    ],
+    "cond": [
+     "棚卸しのあとに入出庫が1つもない商品のとき",
+     "Khi sản phẩm không có nhập xuất kho nào sau lần kiểm kê"
+    ],
+    "trig": "view"
+   },
+   "004:3.6": {
+    "ja": "元の画面へのリンク",
+    "vi": "Liên kết sang màn hình gốc",
+    "kind": "link",
+    "detail": [
+     "推移の表（No.3.1）の各行から、その行の元の画面へ移る。発注番号→発注詳細（C1 の画面）／入荷→入荷登録（C1 の画面）／出荷→配送データ詳細（運営D の画面）。記録番号にリンクはない（記録は同じ表に出ていて、移り先の画面がない）。入荷・出荷はほかの画面で行う操作なので、この画面では直さない。棚卸し（起点）の行にはリンクを出さない。",
+     "Từ mỗi dòng của bảng diễn biến (No.3.1) sang màn hình gốc của dòng đó: số đơn đặt hàng → chi tiết đặt hàng (màn hình C1) / nhập hàng → đăng ký nhập hàng (màn hình C1) / xuất hàng → chi tiết dữ liệu giao hàng (màn hình vận hành D). Số bản ghi không có liên kết (bản ghi nằm ngay trong bảng này, không có màn hình đích). Nhập・xuất là thao tác thực hiện ở màn hình khác nên không sửa tại màn hình này. Dòng \"棚卸し（起点）\" không có liên kết."
+    ],
+    "err": [],
+    "trig": "click"
+   },
+   "004:4": {
+    "ja": "日別の見込み在庫",
+    "vi": "Tồn kho dự kiến theo ngày",
+    "kind": "area",
+    "detail": [
+     "日ごとに1行で、その日の動きと残りを出す。起点（棚卸し）の日から、いちばん先の入出庫の日まで。入出庫のない日は出さない。",
+     "Mỗi ngày một dòng, hiện biến động và số còn lại của ngày đó. Từ ngày kiểm kê (điểm xuất phát) đến ngày có nhập/xuất xa nhất. Ngày không có nhập/xuất thì không hiện."
+    ],
+    "trig": "view"
+   },
+   "004:4.1": {
+    "ja": "日別の表",
+    "vi": "Bảng theo ngày",
+    "kind": "table",
+    "detail": [
+     "列：日付（fmtDate の形で表示）・前日の残・入荷・出荷・記録・日末の残（個）。日末の残＝前日の残＋入荷−出荷±記録。日末の残がマイナスの行は赤で塗る。入荷・出荷・記録の数が0の日は「－」。",
+     "Cột: ngày (hiển thị theo dạng fmtDate)・tồn cuối ngày trước・nhập・xuất・ghi nhận・tồn cuối ngày (cái). Tồn cuối ngày = tồn cuối ngày trước + nhập − xuất ± ghi nhận. Dòng có tồn cuối ngày âm tô đỏ. Ngày có nhập/xuất/ghi nhận bằng 0 hiện \"－\"."
+    ],
+    "trig": "view"
+   },
+   "004:4.2": {
+    "ja": "日別の各数のリンク",
+    "vi": "Liên kết ở các số theo ngày",
+    "kind": "link",
+    "detail": [
+     "入荷・出荷の数を押すと元の画面へ移る（No.3.6 と同じ移り先）。記録の数は押しても移らない（推移の表で見る）。1日に複数あるときは、その日の最初の1件の画面へ移り、残りは推移の表（No.3.1）から移る。",
+     "Bấm số nhập・xuất thì sang màn hình gốc (cùng đích với No.3.6); số ghi nhận bấm cũng không chuyển màn hình (xem ở bảng diễn biến). Nếu một ngày có nhiều bản ghi thì sang màn hình của bản ghi đầu tiên trong ngày, các bản ghi còn lại sang từ bảng diễn biến (No.3.1)."
+    ],
+    "trig": "click"
+   },
+   "004:4.3": {
+    "ja": "見込みは保存しない旨の一言",
+    "vi": "Câu nhắc không lưu tồn kho dự kiến",
+    "kind": "label",
+    "detail": [
+     "「日別の見込み在庫は、表示のたびに計算し直した参考値です。仮発注・本発注の時点の在庫は保存していません。」仮発注・本発注の時点の在庫の写しは発注に残さない（その時点の見込みも、見るたびに計算し直す）。",
+     "\"Tồn kho dự kiến theo ngày là giá trị tham khảo được tính lại mỗi lần hiển thị. Không lưu tồn kho tại thời điểm đặt hàng tạm / đặt hàng chính thức.\" Không để lại bản chụp tồn kho tại thời điểm đặt hàng tạm・đặt hàng chính thức trong đơn đặt hàng (số dự kiến của thời điểm đó cũng được tính lại mỗi lần xem)."
+    ],
+    "trig": "view"
+   },
+   "005:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず「発注・入荷 ＞ 倉庫在庫（戻るリンク）＞ 倉庫在庫の詳細」。タイトル「{商品名}（{品番}）｜{倉庫} {状態バッジ}」。URL＝/ops/purchasing/stock/{倉庫ID}|{品番}（例 WH00001|M002）。",
+     "Breadcrumb \"発注・入荷 ＞ 倉庫在庫 (link quay lại) ＞ 倉庫在庫の詳細\". Tiêu đề \"{tên sản phẩm} ({mã hàng})｜{kho} {badge trạng thái}\". URL = /ops/purchasing/stock/{ID kho}|{mã hàng} (ví dụ WH00001|M002)."
+    ],
+    "trig": "view"
+   },
+   "005:2.13": {
+    "ja": "見込み在庫",
+    "vi": "Tồn kho dự kiến",
+    "kind": "label",
+    "detail": [
+     "最終の見込み。マイナスは赤。",
+     "Tồn kho dự kiến cuối cùng. Số âm màu đỏ."
+    ],
+    "trig": "view"
+   },
+   "005:3.1": {
+    "ja": "入出庫の表",
+    "vi": "Bảng nhập xuất kho",
+    "kind": "table",
+    "detail": [
+     "列：日付・区分・発注番号／納品／記録番号・実績／予定・数量・見込み在庫・メモ。先頭の行は「棚卸し（起点）」。見込み在庫がマイナスになる行は赤。この表は「この倉庫のこの商品」の入出庫の記録だけを出す（ほかの商品は出さない。商品をまたぐ検索はない）。「この商品を記録」で登録した記録もこの表に出る（編集・削除の列はない）。",
+     "Cột: ngày, phân loại, số đơn đặt hàng/giao hàng/ghi nhận, thực tế/dự kiến, số lượng, tồn kho dự kiến, ghi chú. Dòng đầu là \"棚卸し（起点）\" (kiểm kê, điểm xuất phát). Dòng có tồn kho dự kiến âm màu đỏ. Bảng này chỉ hiện bản ghi nhập/xuất của \"sản phẩm này tại kho này\" (không hiện sản phẩm khác; không có tìm kiếm xuyên sản phẩm). Bản ghi đã đăng ký bằng \"この商品を記録\" cũng hiện trong bảng này (không có cột sửa・xóa)."
+    ],
+    "trig": "view"
+   },
+   "006:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず「発注・入荷 ＞ 倉庫在庫（戻るリンク）＞ 倉庫在庫の詳細」。タイトル「{商品名}（{品番}）｜{倉庫} {状態バッジ}」。URL＝/ops/purchasing/stock/{倉庫ID}|{品番}（例 WH00001|M002）。",
+     "Breadcrumb \"発注・入荷 ＞ 倉庫在庫 (link quay lại) ＞ 倉庫在庫の詳細\". Tiêu đề \"{tên sản phẩm} ({mã hàng})｜{kho} {badge trạng thái}\". URL = /ops/purchasing/stock/{ID kho}|{mã hàng} (ví dụ WH00001|M002)."
+    ],
+    "trig": "view"
+   },
+   "006:2.13": {
+    "ja": "見込み在庫",
+    "vi": "Tồn kho dự kiến",
+    "kind": "label",
+    "detail": [
+     "最終の見込み。マイナスは赤。",
+     "Tồn kho dự kiến cuối cùng. Số âm màu đỏ."
+    ],
+    "trig": "view"
+   },
+   "006:3.5": {
+    "ja": "入出庫なしの案内",
+    "vi": "Thông báo không có nhập xuất kho",
+    "kind": "label",
+    "detail": [
+     "「棚卸し後の入出庫はありません。」表の下に1行。",
+     "\"Không có nhập xuất kho nào sau kiểm kê.\" 1 dòng dưới bảng."
+    ],
+    "cond": [
+     "棚卸しのあとに入出庫が1つもない商品のとき",
+     "Khi sản phẩm không có nhập xuất kho nào sau lần kiểm kê"
+    ],
+    "trig": "view"
+   },
+   "007:5": {
+    "ja": "この商品を記録（モーダル）",
+    "vi": "Ghi nhận sản phẩm này (modal)",
+    "kind": "modal",
+    "detail": [
+     "詳細の「この商品を記録」（No.1.1）で開く。この画面の倉庫と商品が入った状態。在庫の調整（NG品ロス・棚卸し差異・再送・ES外発注の入荷・その他）はこのモーダルだけで行う（在庫の記録の一覧・追加・CSV取込の画面は作らない。AW_WHS_003・004・008 は欠番）。1回の登録で記録は1件。登録すると S01 を出してモーダルを閉じ、上の入出庫の表（No.3.1）と日別の表（No.4.1）に記録が入る。キャンセルは入力を捨てて閉じる。登録した記録は直せない・消せない（間違いは区分「その他」で打ち消す記録を足す）。棚卸し〔起点〕の数の登録は AW_WHS_006（画面入力）・AW_WHS_007（CSV）。",
+     "Mở bằng \"この商品を記録\" (No.1.1) ở chi tiết. Kho và sản phẩm của màn hình này đã điền sẵn. Việc điều chỉnh tồn kho (NG品ロス・棚卸し差異・再送・ES外発注の入荷・その他) chỉ làm bằng modal này (không tạo màn hình danh sách・thêm・nhập CSV của ghi nhận tồn kho; AW_WHS_003・004・008 là số bỏ trống). Mỗi lần đăng ký 1 bản ghi. Đăng ký xong hiện S01 và đóng modal, bản ghi vào bảng nhập/xuất (No.3.1) và bảng theo ngày (No.4.1) ở trên. Hủy = bỏ nội dung đã nhập và đóng. Ghi nhận đã đăng ký không sửa/xóa được (nhập nhầm thì thêm bản ghi bù trừ với phân loại \"その他\"). Đăng ký số kiểm kê [điểm khởi đầu] làm ở AW_WHS_006 (nhập trên màn hình) và AW_WHS_007 (CSV)."
+    ],
+    "cond": [
+     "作成（C）の権限（フル権限・商品開発）がある役割だけに出す。物流は閲覧のみ（ボタンを出さない）。資材の記録は在庫管理（資材）の作成の権限が要る。",
+     "Chỉ hiện với vai trò có quyền tạo (C) (quyền đầy đủ・phát triển sản phẩm). Logistics chỉ xem (không hiện nút). Ghi nhận vật tư cần quyền tạo của 在庫管理（資材）."
+    ],
+    "err": [
+     "S01"
+    ],
+    "pattern": "P-FORM",
+    "trig": "show"
+   },
+   "007:5.1": {
+    "ja": "棚卸しの数についての一言",
+    "vi": "Dòng nhắc về số kiểm kê",
+    "kind": "label",
+    "detail": [
+     "「棚卸しで登録した数は書き換えません。見込み在庫の計算にだけ使います。登録した記録は直せません・消せません（間違えたときは、区分「その他」で打ち消す記録を足し、理由に元の記録番号を書いてください）。」",
+     "\"Không ghi đè số đã đăng ký ở kiểm kê. Chỉ dùng để tính tồn kho dự kiến. Ghi nhận đã đăng ký không sửa được, không xóa được (khi nhập nhầm, hãy thêm bản ghi bù trừ với phân loại \"その他\" và ghi số bản ghi gốc vào lý do).\""
+    ],
+    "trig": "view"
+   },
+   "007:5.2": {
+    "ja": "対象",
+    "vi": "Đối tượng",
+    "kind": "radio",
+    "req": "○",
+    "len": [
+     "選択（商品／資材）",
+     ""
+    ],
+    "init": [
+     "商品",
+     "Sản phẩm (商品)"
+    ],
+    "ex": [
+     "資材",
+     "Giá trị chọn: 資材 (vật tư)."
+    ],
+    "detail": [
+     "資材を選ぶと、「商品」の欄が「資材」に変わり資材IDで選ぶ。倉庫は ES事務所（資材）を含む全倉庫から選べる。資材の在庫の表は資材発注（AW_MPO）に残る。在庫戻しは商品だけ（棚卸しの登録も商品の数）。",
+     "Khi chọn vật tư, ô \"Sản phẩm\" đổi thành \"Vật tư\" và chọn bằng ID vật tư. Kho chọn được trong mọi kho, kể cả ES事務所（資材）. Bảng tồn kho vật tư vẫn ở đặt hàng vật tư (AW_MPO). 在庫戻し chỉ áp dụng cho sản phẩm (đăng ký kiểm kê cũng là số của sản phẩm)."
+    ],
+    "cond": [
+     "資材を選べるのは、資材の記録の権限（在庫管理（資材）の作成）がある役割だけ",
+     "Chỉ vai trò có quyền ghi nhận vật tư (quyền tạo của 在庫管理（資材）) mới chọn được vật tư"
+    ],
+    "trig": "select"
+   },
+   "007:5.3": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "選択（商品＝ピッキング倉庫／資材＝ES事務所（資材）を含む全倉庫）",
+     ""
+    ],
+    "init": [
+     "関東倉庫",
+     "Kanto (関東倉庫)"
+    ],
+    "ex": [
+     "関東倉庫",
+     "Kho được chọn (Kanto)."
+    ],
+    "detail": [
+     "この詳細から開くので、その倉庫が入っている。",
+     "Vì mở từ chi tiết này nên kho của chi tiết đã được điền sẵn."
+    ],
+    "err": [
+     "E02"
+    ],
+    "trig": "select"
+   },
+   "007:5.4": {
+    "ja": "商品（資材）",
+    "vi": "Sản phẩm (vật tư)",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "選択（品番＋商品名／資材ID＋資材名）",
+     ""
+    ],
+    "init": [
+     "（未選択）",
+     "（Chưa chọn）"
+    ],
+    "ex": [
+     "M002 デミグラスハンバーグ",
+     "Mã hàng + tên sản phẩm (M002 hamburg sốt demi-glace)."
+    ],
+    "detail": [
+     "この詳細から開くので、その商品が入っている。",
+     "Vì mở từ chi tiết này nên sản phẩm của chi tiết đã được điền sẵn."
+    ],
+    "err": [
+     "E02"
+    ],
+    "trig": "select"
+   },
+   "007:5.5": {
+    "ja": "区分",
+    "vi": "Phân loại",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "選択（NG品ロス／棚卸し差異／再送／ES外発注の入荷／その他）",
+     ""
+    ],
+    "init": [
+     "NG品ロス",
+     "NG品ロス (hao hụt hàng NG)"
+    ],
+    "ex": [
+     "棚卸し差異",
+     "Giá trị chọn: 棚卸し差異 (chênh lệch kiểm kê)."
+    ],
+    "detail": [
+     "「在庫戻し」は選択肢に出さない（出荷指示の作成で自動で記録される）。",
+     "Không hiện \"在庫戻し\" trong lựa chọn (tự ghi khi tạo lệnh xuất kho)."
+    ],
+    "err": [
+     "E02"
+    ],
+    "trig": "select"
+   },
+   "007:5.6": {
+    "ja": "日付",
+    "vi": "Ngày",
+    "kind": "date",
+    "req": "○",
+    "len": "日付（yyyy-mm-dd）",
+    "init": [
+     "今日",
+     "Hôm nay"
+    ],
+    "ex": [
+     "2026-10-05",
+     "Ngày xảy ra ghi nhận (yyyy-mm-dd)."
+    ],
+    "valid": [
+     "その倉庫の直近の棚卸し日以前の日付は W123 の警告を出すが、登録はできる（見込み在庫には効かない）。",
+     "Ngày trước hoặc bằng ngày kiểm kê gần nhất của kho đó thì hiện cảnh báo W123 nhưng vẫn đăng ký được (không ảnh hưởng tồn kho dự kiến)."
+    ],
+    "err": [
+     "E01",
+     "W123"
+    ],
+    "trig": "input"
+   },
+   "007:5.7": {
+    "ja": "増減",
+    "vi": "Tăng/giảm",
+    "kind": "radio",
+    "req": "○",
+    "len": [
+     "選択（増える／減る）",
+     ""
+    ],
+    "init": [
+     "減る",
+     "Giảm (減る)"
+    ],
+    "ex": [
+     "増える",
+     "Giá trị chọn: 増える (tăng)."
+    ],
+    "cond": [
+     "区分が NG品ロス・再送のときは「減る」に固定、ES外発注の入荷のときは「増える」に固定（選べない）。棚卸し差異・その他のときだけ選べる。",
+     "Phân loại NG品ロス・再送 thì cố định \"giảm\", ES外発注の入荷 thì cố định \"tăng\" (không chọn được). Chỉ 棚卸し差異・その他 mới chọn được."
+    ],
+    "trig": "select"
+   },
+   "007:5.8": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "text",
+    "req": "○",
+    "len": "整数 0〜999,999",
+    "ex": [
+     "12",
+     "Số nguyên (cái)."
+    ],
+    "valid": [
+     "整数。0〜999,999（入力の共通基準 ⑤）。全角の数字は半角に直す。",
+     "Số nguyên. 0〜999,999 (tiêu chuẩn nhập chung ⑤). Số toàn-chiều rộng được đổi sang nửa-chiều rộng."
+    ],
+    "err": [
+     "E01",
+     "E12"
+    ],
+    "trig": "input"
+   },
+   "007:5.9": {
+    "ja": "理由",
+    "vi": "Lý do",
+    "kind": "textarea",
+    "req": "○",
+    "len": [
+     "文字列 500（複数行）",
+     ""
+    ],
+    "ex": [
+     "ピッキング前の検品で容器の破損（10食）",
+     "Nội dung lý do (container bị vỡ khi kiểm hàng trước picking, 10 suất)."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "007:5.10": {
+    "ja": "キャンセル",
+    "vi": "Hủy",
+    "kind": "button",
+    "detail": [
+     "入力を捨ててモーダルを閉じる。何も登録しない。",
+     "Bỏ nội dung đã nhập và đóng modal. Không đăng ký gì."
+    ],
+    "trig": "click"
+   },
+   "007:5.11": {
+    "ja": "登録",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "全項目をまとめてチェックし、エラーは項目の下にインラインで出す（トーストは出さない）。問題なければ登録し、S01 を出してモーダルを閉じる（詳細の入出庫の表に記録が入る）。1回の登録で記録は1件。",
+     "Kiểm tra tất cả mục cùng lúc, lỗi hiện inline dưới từng mục (không hiện toast). Nếu không có vấn đề thì đăng ký (1 bản ghi mỗi lần), hiện S01 và đóng modal (bản ghi vào bảng nhập/xuất của chi tiết)."
+    ],
+    "err": [
+     "S01",
+     "E01",
+     "E12",
+     "W123"
+    ],
+    "trig": "click"
+   },
+   "008:5.8": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "text",
+    "req": "○",
+    "len": "整数 0〜999,999",
+    "ex": [
+     "12",
+     "Số nguyên (cái)."
+    ],
+    "valid": [
+     "整数。0〜999,999（入力の共通基準 ⑤）。全角の数字は半角に直す。",
+     "Số nguyên. 0〜999,999 (tiêu chuẩn nhập chung ⑤). Số toàn-chiều rộng được đổi sang nửa-chiều rộng."
+    ],
+    "err": [
+     "E01",
+     "E12"
+    ],
+    "trig": "input"
+   },
+   "008:5.9": {
+    "ja": "理由",
+    "vi": "Lý do",
+    "kind": "textarea",
+    "req": "○",
+    "len": [
+     "文字列 500（複数行）",
+     ""
+    ],
+    "ex": [
+     "ピッキング前の検品で容器の破損（10食）",
+     "Nội dung lý do (container bị vỡ khi kiểm hàng trước picking, 10 suất)."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "008:5.11": {
+    "ja": "登録",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "全項目をまとめてチェックし、エラーは項目の下にインラインで出す（トーストは出さない）。問題なければ登録し、S01 を出してモーダルを閉じる（詳細の入出庫の表に記録が入る）。1回の登録で記録は1件。",
+     "Kiểm tra tất cả mục cùng lúc, lỗi hiện inline dưới từng mục (không hiện toast). Nếu không có vấn đề thì đăng ký (1 bản ghi mỗi lần), hiện S01 và đóng modal (bản ghi vào bảng nhập/xuất của chi tiết)."
+    ],
+    "err": [
+     "S01",
+     "E01",
+     "E12",
+     "W123"
+    ],
+    "trig": "click"
+   },
+   "009:5.6": {
+    "ja": "日付",
+    "vi": "Ngày",
+    "kind": "date",
+    "req": "○",
+    "len": "日付（yyyy-mm-dd）",
+    "init": [
+     "今日",
+     "Hôm nay"
+    ],
+    "ex": [
+     "2026-10-05",
+     "Ngày xảy ra ghi nhận (yyyy-mm-dd)."
+    ],
+    "valid": [
+     "その倉庫の直近の棚卸し日以前の日付は W123 の警告を出すが、登録はできる（見込み在庫には効かない）。",
+     "Ngày trước hoặc bằng ngày kiểm kê gần nhất của kho đó thì hiện cảnh báo W123 nhưng vẫn đăng ký được (không ảnh hưởng tồn kho dự kiến)."
+    ],
+    "err": [
+     "E01",
+     "W123"
+    ],
+    "trig": "input"
+   },
+   "010:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず「発注・入荷 ＞ 倉庫在庫（戻るリンク）＞ 在庫戻しの出荷指示」。発注を伴わない出荷指示を作る。",
+     "Breadcrumb \"発注・入荷 ＞ 倉庫在庫 (link quay lại) ＞ 在庫戻しの出荷指示\". Tạo lệnh xuất kho không kèm đặt hàng."
+    ],
+    "trig": "view"
+   },
+   "010:1.1": {
+    "ja": "CSV出力（候補）",
+    "vi": "Xuất CSV (ứng viên)",
+    "kind": "button",
+    "detail": [
+     "検索条件のとおりの候補の全件。列＝画面の列・短消費期限・戻す数（入力中）。",
+     "Toàn bộ ứng viên theo điều kiện tìm kiếm. Cột = các cột trên màn hình・hạn dùng ngắn・số trả (đang nhập)."
+    ],
+    "cond": [
+     "倉庫在庫を閲覧できる役割すべて。",
+     "Mọi vai trò xem được tồn kho kho."
+    ],
+    "pattern": "P-CSV-OUT",
+    "trig": "click"
+   },
+   "010:1.2": {
+    "ja": "出荷指示を作成",
+    "vi": "Tạo lệnh xuất kho",
+    "kind": "button",
+    "detail": [
+     "押すと確認（Q121）。「作成する」で出荷指示 CSV（配送の出荷指示 CSV と同じ形）を出力し、在庫の記録に「在庫戻し」として登録して S121。選択がないときは押せない。作成後の取消・修正はできない（CSV は一覧から再ダウンロードできる。誤りは倉庫在庫の詳細のモーダル「この商品を記録」で打ち消す）。",
+     "Bấm thì hiện xác nhận (Q121). Với \"Tạo\", xuất CSV lệnh xuất kho (cùng định dạng CSV lệnh xuất kho của giao hàng), ghi vào ghi nhận tồn kho là \"在庫戻し\" và hiện S121. Không bấm được khi chưa chọn gì. Không hủy・sửa được sau khi tạo (CSV tải lại được từ danh sách; nếu sai thì bù trừ bằng modal \"この商品を記録\" ở chi tiết tồn kho kho)."
+    ],
+    "cond": [
+     "作成（C）の権限（フル権限・商品開発）がある役割だけに出す。物流は閲覧のみ（ボタンを出さない）。",
+     "Chỉ hiện với vai trò có quyền tạo (C) (quyền đầy đủ・phát triển sản phẩm). Logistics chỉ xem (không hiện nút)."
+    ],
+    "err": [
+     "Q121",
+     "S121",
+     "E143"
+    ],
+    "trig": "click"
+   },
+   "010:2": {
+    "ja": "案内",
+    "vi": "Hướng dẫn",
+    "kind": "label",
+    "detail": [
+     "1行の案内：棚卸し後、次のメニューで使わない商品を返送先へ戻すための出荷指示。発注は伴わない。",
+     "Hướng dẫn 1 dòng: sau kiểm kê, lệnh xuất kho để trả về nơi nhận các sản phẩm không dùng ở menu kế tiếp. Không kèm đặt hàng."
+    ],
+    "trig": "view"
+   },
+   "010:3": {
+    "ja": "出荷日",
+    "vi": "Ngày xuất",
+    "kind": "date",
+    "req": "○",
+    "len": "日付（yyyy-mm-dd）",
+    "init": [
+     "次のピッキング可能日",
+     "Ngày có thể picking kế tiếp"
+    ],
+    "ex": [
+     "2026-10-08",
+     "Ngày xuất (ngày có thể picking kế tiếp)."
+    ],
+    "valid": [
+     "過去の日・ピッキングできない日（倉庫の休みなど）は日付の部品で選べない（理由を出す）。",
+     "Ngày quá khứ・ngày không picking được (kho nghỉ, v.v.) không chọn được ở bộ chọn ngày (hiện lý do)."
+    ],
+    "err": [
+     "E01"
+    ],
+    "trig": "input"
+   },
+   "010:4": {
+    "ja": "送り先（返送先）",
+    "vi": "Nơi nhận (nơi trả)",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "倉庫マスタの返送先（有効なもの）",
+     ""
+    ],
+    "init": [
+     "有効な返送先（1つなら固定）",
+     "Nơi trả hợp lệ (cố định nếu chỉ có 1)"
+    ],
+    "ex": [
+     "WH00005 ES本社",
+     "Nơi trả hợp lệ trong master kho (WH00005 ES本社)."
+    ],
+    "cond": [
+     "有効な返送先が1つなら固定（入力不可）、複数あればドロップダウンで選ぶ。",
+     "Nếu chỉ có 1 nơi trả hợp lệ thì cố định (không nhập được), nhiều nơi thì chọn bằng dropdown."
+    ],
+    "trig": "select"
+   },
+   "010:5": {
+    "ja": "検索条件",
+    "vi": "Điều kiện tìm kiếm",
+    "kind": "area",
+    "detail": [
+     "候補は見込み在庫が余る商品。初期の並び：次のメニューで使わない商品が先。",
+     "Ứng viên là sản phẩm có tồn kho dự kiến dư. Thứ tự mặc định: sản phẩm không dùng ở menu kế tiếp lên trước."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "010:5.1": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（関東倉庫・関西倉庫・中部倉庫）",
+     ""
+    ],
+    "init": [
+     "（すべて）",
+     "（Tất cả）"
+    ],
+    "ex": [
+     "関西倉庫",
+     "Kho dùng để lọc (Kansai)."
+    ],
+    "trig": "select"
+   },
+   "010:5.2": {
+    "ja": "保管方法",
+    "vi": "Cách bảo quản",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（冷蔵／冷凍／常温）",
+     ""
+    ],
+    "init": [
+     "（すべて）",
+     "（Tất cả）"
+    ],
+    "ex": [
+     "冷凍",
+     "Giá trị chọn: 冷凍 (đông lạnh)."
+    ],
+    "trig": "select"
+   },
+   "010:5.3": {
+    "ja": "次のメニュー",
+    "vi": "Menu kế tiếp",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（使わない／使う）",
+     ""
+    ],
+    "init": [
+     "（すべて）",
+     "（Tất cả）"
+    ],
+    "ex": [
+     "使わない",
+     "Giá trị chọn: 使わない (không dùng)."
+    ],
+    "trig": "select"
+   },
+   "010:5.4": {
+    "ja": "品番・商品名",
+    "vi": "Mã hàng・tên sản phẩm",
+    "kind": "text",
+    "req": "－",
+    "len": "文字列 60",
+    "ex": [
+     "M002",
+     "Từ khóa tìm kiếm: mã hàng."
+    ],
+    "trig": "input"
+   },
+   "010:6": {
+    "ja": "戻す商品の候補",
+    "vi": "Ứng viên sản phẩm trả",
+    "kind": "table",
+    "detail": [
+     "余り見込みのある商品。初期値は、次のメニューで使わない商品＝余り全部・選択済み、使う商品＝0・未選択。候補が0件のときは I120。",
+     "Sản phẩm có dự kiến dư. Giá trị mặc định: sản phẩm không dùng ở menu kế tiếp = toàn bộ phần dư・đã chọn, sản phẩm dùng = 0・chưa chọn. 0 ứng viên thì hiện I120."
+    ],
+    "err": [
+     "I120"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "010:6.1": {
+    "ja": "選択",
+    "vi": "Chọn",
+    "kind": "check",
+    "req": "－",
+    "init": [
+     "次のメニューで使わない商品は選択済み",
+     "Sản phẩm không dùng ở menu kế tiếp: đã chọn"
+    ],
+    "ex": [
+     "チェックあり",
+     "Đã đánh dấu."
+    ],
+    "detail": [
+     "戻す商品を選ぶ。",
+     "Chọn sản phẩm cần trả."
+    ],
+    "trig": "check"
+   },
+   "010:6.2": {
+    "ja": "品番",
+    "vi": "Mã hàng",
+    "kind": "label",
+    "trig": "view"
+   },
+   "010:6.3": {
+    "ja": "商品名",
+    "vi": "Tên sản phẩm",
+    "kind": "label",
+    "detail": [
+     "押すと倉庫在庫の詳細（AW_WHS_002）へ。短消費期限は黄のバッジ。",
+     "Bấm để sang chi tiết tồn kho kho (AW_WHS_002). Hàng hạn dùng ngắn có badge vàng."
+    ],
+    "trig": "view"
+   },
+   "010:6.4": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "label",
+    "trig": "view"
+   },
+   "010:6.5": {
+    "ja": "保管方法",
+    "vi": "Cách bảo quản",
+    "kind": "label",
+    "trig": "view"
+   },
+   "010:6.6": {
+    "ja": "見込み在庫（余り）",
+    "vi": "Tồn kho dự kiến (dư)",
+    "kind": "label",
+    "detail": [
+     "戻せる上限（個）。右寄せ。",
+     "Số tối đa có thể trả (cái). Căn phải."
+    ],
+    "trig": "view"
+   },
+   "010:6.7": {
+    "ja": "次のメニュー",
+    "vi": "Menu kế tiếp",
+    "kind": "label",
+    "detail": [
+     "「{月} メニューで使わない」（黄のバッジ）／使うときは「—」。",
+     "\"Không dùng ở menu {tháng}\" (badge vàng) / \"—\" nếu có dùng."
+    ],
+    "trig": "view"
+   },
+   "010:6.8": {
+    "ja": "戻す数",
+    "vi": "Số trả",
+    "kind": "text",
+    "req": "条件付き",
+    "len": [
+     "整数 0〜999,999（余りまで）",
+     ""
+    ],
+    "init": [
+     "使わない商品＝余り全部／使う商品＝0",
+     "Sản phẩm không dùng = toàn bộ phần dư / sản phẩm dùng = 0"
+    ],
+    "ex": [
+     "12",
+     "Số nguyên (cái)."
+    ],
+    "cond": [
+     "選択した商品だけ入力する。",
+     "Chỉ nhập cho sản phẩm đã chọn."
+    ],
+    "valid": [
+     "整数。余り（見込み在庫）まで。0〜999,999。選択した商品が1つもない、または戻す数がすべて0なら E143。",
+     "Số nguyên. Tối đa bằng phần dư (tồn kho dự kiến). 0〜999,999. Nếu không chọn sản phẩm nào hoặc toàn bộ số trả bằng 0 thì E143."
+    ],
+    "err": [
+     "E12",
+     "E142",
+     "E143"
+    ],
+    "trig": "input"
+   },
+   "010:7": {
+    "ja": "選択中の集計",
+    "vi": "Tổng hợp đang chọn",
+    "kind": "label",
+    "detail": [
+     "「n商品・m個を選択中」。",
+     "\"n sản phẩm・m cái đang chọn\"."
+    ],
+    "trig": "view"
+   },
+   "010:8": {
+    "ja": "作成した出荷指示",
+    "vi": "Lệnh xuất kho đã tạo",
+    "kind": "area",
+    "detail": [
+     "列：出荷指示番号・作成日時・出荷日・数量・内容・送り先・CSV。新しいものが上。0件は「まだ出荷指示はありません」。作成後の取消・修正はない。",
+     "Cột: số lệnh xuất kho, ngày giờ tạo, ngày xuất, số lượng, nội dung, nơi nhận, CSV. Mới nhất ở trên. 0 kết quả hiện \"まだ出荷指示はありません\" (chưa có lệnh xuất kho). Không có hủy・sửa sau khi tạo."
+    ],
+    "err": [
+     "I01"
+    ],
+    "trig": "view"
+   },
+   "011:3": {
+    "ja": "出荷日",
+    "vi": "Ngày xuất",
+    "kind": "date",
+    "req": "○",
+    "len": "日付（yyyy-mm-dd）",
+    "init": [
+     "次のピッキング可能日",
+     "Ngày có thể picking kế tiếp"
+    ],
+    "ex": [
+     "2026-10-08",
+     "Ngày xuất (ngày có thể picking kế tiếp)."
+    ],
+    "valid": [
+     "過去の日・ピッキングできない日（倉庫の休みなど）は日付の部品で選べない（理由を出す）。",
+     "Ngày quá khứ・ngày không picking được (kho nghỉ, v.v.) không chọn được ở bộ chọn ngày (hiện lý do)."
+    ],
+    "err": [
+     "E01"
+    ],
+    "trig": "input"
+   },
+   "011:6.8": {
+    "ja": "戻す数",
+    "vi": "Số trả",
+    "kind": "text",
+    "req": "条件付き",
+    "len": [
+     "整数 0〜999,999（余りまで）",
+     ""
+    ],
+    "init": [
+     "使わない商品＝余り全部／使う商品＝0",
+     "Sản phẩm không dùng = toàn bộ phần dư / sản phẩm dùng = 0"
+    ],
+    "ex": [
+     "12",
+     "Số nguyên (cái)."
+    ],
+    "cond": [
+     "選択した商品だけ入力する。",
+     "Chỉ nhập cho sản phẩm đã chọn."
+    ],
+    "valid": [
+     "整数。余り（見込み在庫）まで。0〜999,999。選択した商品が1つもない、または戻す数がすべて0なら E143。",
+     "Số nguyên. Tối đa bằng phần dư (tồn kho dự kiến). 0〜999,999. Nếu không chọn sản phẩm nào hoặc toàn bộ số trả bằng 0 thì E143."
+    ],
+    "err": [
+     "E12",
+     "E142",
+     "E143"
+    ],
+    "trig": "input"
+   },
+   "011:1.2": {
+    "ja": "出荷指示を作成",
+    "vi": "Tạo lệnh xuất kho",
+    "kind": "button",
+    "detail": [
+     "押すと確認（Q121）。「作成する」で出荷指示 CSV（配送の出荷指示 CSV と同じ形）を出力し、在庫の記録に「在庫戻し」として登録して S121。選択がないときは押せない。作成後の取消・修正はできない（CSV は一覧から再ダウンロードできる。誤りは倉庫在庫の詳細のモーダル「この商品を記録」で打ち消す）。",
+     "Bấm thì hiện xác nhận (Q121). Với \"Tạo\", xuất CSV lệnh xuất kho (cùng định dạng CSV lệnh xuất kho của giao hàng), ghi vào ghi nhận tồn kho là \"在庫戻し\" và hiện S121. Không bấm được khi chưa chọn gì. Không hủy・sửa được sau khi tạo (CSV tải lại được từ danh sách; nếu sai thì bù trừ bằng modal \"この商品を記録\" ở chi tiết tồn kho kho)."
+    ],
+    "cond": [
+     "作成（C）の権限（フル権限・商品開発）がある役割だけに出す。物流は閲覧のみ（ボタンを出さない）。",
+     "Chỉ hiện với vai trò có quyền tạo (C) (quyền đầy đủ・phát triển sản phẩm). Logistics chỉ xem (không hiện nút)."
+    ],
+    "err": [
+     "Q121",
+     "S121",
+     "E143"
+    ],
+    "trig": "click"
+   },
+   "012:8": {
+    "ja": "作成した出荷指示",
+    "vi": "Lệnh xuất kho đã tạo",
+    "kind": "area",
+    "detail": [
+     "列：出荷指示番号・作成日時・出荷日・数量・内容・送り先・CSV。新しいものが上。0件は「まだ出荷指示はありません」。作成後の取消・修正はない。",
+     "Cột: số lệnh xuất kho, ngày giờ tạo, ngày xuất, số lượng, nội dung, nơi nhận, CSV. Mới nhất ở trên. 0 kết quả hiện \"まだ出荷指示はありません\" (chưa có lệnh xuất kho). Không có hủy・sửa sau khi tạo."
+    ],
+    "err": [
+     "I01"
+    ],
+    "trig": "view"
+   },
+   "012:8.1": {
+    "ja": "出荷指示番号",
+    "vi": "Số lệnh xuất kho",
+    "kind": "label",
+    "detail": [
+     "システムが採番（入力させない）。",
+     "Hệ thống tự đánh số (không cho nhập)."
+    ],
+    "trig": "view"
+   },
+   "012:8.2": {
+    "ja": "CSV（再ダウンロード）",
+    "vi": "CSV (tải lại)",
+    "kind": "button",
+    "detail": [
+     "出荷指示 CSV を再ダウンロードする。形式は配送で既に出している出荷指示 CSV と同じ（hong 2026-10-08・受付簿 #183）。",
+     "Tải lại CSV lệnh xuất kho. Định dạng giống CSV lệnh xuất kho mà giao hàng đang xuất (hong 2026-10-08・受付簿 #183)."
+    ],
+    "trig": "click"
+   },
+   "013:6": {
+    "ja": "戻す商品の候補",
+    "vi": "Ứng viên sản phẩm trả",
+    "kind": "table",
+    "detail": [
+     "余り見込みのある商品。初期値は、次のメニューで使わない商品＝余り全部・選択済み、使う商品＝0・未選択。候補が0件のときは I120。",
+     "Sản phẩm có dự kiến dư. Giá trị mặc định: sản phẩm không dùng ở menu kế tiếp = toàn bộ phần dư・đã chọn, sản phẩm dùng = 0・chưa chọn. 0 ứng viên thì hiện I120."
+    ],
+    "err": [
+     "I120"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "014:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず「発注・入荷 ＞ 倉庫在庫（戻るリンク）＞ 棚卸し（起点）の登録」。倉庫在庫の「棚卸しを登録」から移る。作成（C）の権限（フル権限・商品開発）がない役割は倉庫在庫へ戻す。倉庫の在庫は外部の倉庫システムと連携しない。起点は運営が倉庫ごとに登録する棚卸しの数で、登録がなければ 0 から始める。",
+     "Breadcrumb \"発注・入荷 ＞ 倉庫在庫 (link quay lại) ＞ 棚卸し（起点）の登録\". Chuyển sang từ \"棚卸しを登録\" ở tồn kho kho. Vai trò không có quyền tạo (C) (quyền đầy đủ・phát triển sản phẩm) thì quay về tồn kho kho. Tồn kho kho không liên kết với hệ thống kho bên ngoài. Điểm khởi đầu là số kiểm kê do vận hành đăng ký theo từng kho; chưa đăng ký thì bắt đầu từ 0."
+    ],
+    "cond": [
+     "作成（C）の権限（フル権限・商品開発）がある役割だけに出す。物流は閲覧のみ（ボタンを出さない）。",
+     "Chỉ hiện với vai trò có quyền tạo (C) (quyền đầy đủ・phát triển sản phẩm). Logistics chỉ xem (không hiện nút)."
+    ],
+    "pattern": "P-FORM",
+    "trig": "view"
+   },
+   "014:1.1": {
+    "ja": "キャンセル",
+    "vi": "Hủy",
+    "kind": "button",
+    "detail": [
+     "倉庫在庫へ戻る。何も登録しない。入力を変えたあとは Q02 で確認する。",
+     "Quay về tồn kho kho. Không đăng ký gì. Nếu đã thay đổi nội dung nhập thì xác nhận bằng Q02."
+    ],
+    "err": [
+     "Q02"
+    ],
+    "trig": "click"
+   },
+   "014:1.2": {
+    "ja": "説明",
+    "vi": "Giải thích",
+    "kind": "label",
+    "detail": [
+     "1〜2行の案内（文言は案）：「倉庫ごとの棚卸しの数を登録します。登録した日が、その倉庫の見込み在庫の起点になります。登録がない倉庫は 0 から始まります。」",
+     "Hướng dẫn 1〜2 dòng (câu chữ là đề xuất): \"Đăng ký số kiểm kê theo từng kho. Ngày đăng ký trở thành điểm xuất phát của tồn kho dự kiến của kho đó. Kho chưa đăng ký bắt đầu từ 0.\""
+    ],
+    "trig": "view"
+   },
+   "014:2": {
+    "ja": "棚卸しの入力",
+    "vi": "Nhập kiểm kê",
+    "kind": "modal",
+    "detail": [
+     "倉庫・棚卸し日・商品ごとの数量を入力して登録する。数量を入れなかった商品は 0 として登録する。登録の前に確認（Q122）、完了は S120。CSV で登録するときは倉庫在庫の一覧の「CSV取込」（AW_WHS_007）から（この画面にCSVのボタンは置かない）。",
+     "Nhập kho・ngày kiểm kê・số lượng theo từng sản phẩm rồi đăng ký. Sản phẩm không nhập số lượng được đăng ký là 0. Trước khi đăng ký có xác nhận (Q122), hoàn tất là S120. Khi đăng ký bằng CSV thì dùng nút \"CSV取込\" ở danh sách tồn kho kho (AW_WHS_007) (màn hình này không đặt nút CSV)."
+    ],
+    "err": [
+     "E01",
+     "E02",
+     "E12",
+     "E140",
+     "E141",
+     "Q122",
+     "S120"
+    ],
+    "pattern": "P-FORM",
+    "trig": "show"
+   },
+   "014:2.1": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "選択（関東倉庫・関西倉庫・中部倉庫）",
+     ""
+    ],
+    "init": [
+     "（未選択）",
+     "（Chưa chọn）"
+    ],
+    "ex": [
+     "関東倉庫",
+     "Kho đăng ký kiểm kê (Kanto)."
+    ],
+    "detail": [
+     "棚卸しを登録する倉庫。1回の登録で1倉庫。選ぶと、その倉庫の前回の登録日（E141 の基準）を使う。",
+     "Kho cần đăng ký kiểm kê. Mỗi lần đăng ký 1 kho. Khi chọn, dùng ngày đăng ký trước của kho đó (chuẩn của E141)."
+    ],
+    "err": [
+     "E02"
+    ],
+    "trig": "select"
+   },
+   "014:2.2": {
+    "ja": "棚卸し日",
+    "vi": "Ngày kiểm kê",
+    "kind": "date",
+    "req": "○",
+    "len": "日付（yyyy-mm-dd）",
+    "init": [
+     "今日",
+     "Hôm nay"
+    ],
+    "ex": [
+     "2026-10-05",
+     "Ngày kiểm kê (yyyy-mm-dd)."
+    ],
+    "valid": [
+     "未来の日付は選べない（E140）。選んだ倉庫の前回の登録日より前の日は選べない（E141。その間の出し入れが消えるため）。",
+     "Không chọn được ngày tương lai (E140). Không chọn được ngày trước ngày đăng ký trước của kho đã chọn (E141; vì nhập/xuất trong khoảng đó sẽ mất)."
+    ],
+    "err": [
+     "E01",
+     "E140",
+     "E141"
+    ],
+    "trig": "input"
+   },
+   "014:2.3": {
+    "ja": "商品ごとの数量の表",
+    "vi": "Bảng số lượng theo sản phẩm",
+    "kind": "table",
+    "detail": [
+     "列：品番・商品名・保管方法・数量。1行＝1商品（有効な商品すべて）。数量を入れなかった商品は 0 として登録する。商品が1つもないときは I01。",
+     "Cột: mã hàng, tên sản phẩm, cách bảo quản, số lượng. 1 dòng = 1 sản phẩm (mọi sản phẩm hợp lệ). Sản phẩm không nhập số lượng được đăng ký là 0. Không có sản phẩm nào thì hiện I01."
+    ],
+    "err": [
+     "E12",
+     "I01"
+    ],
+    "trig": "view"
+   },
+   "014:2.4": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "text",
+    "req": "－",
+    "len": "整数 0〜999,999",
+    "init": [
+     "0",
+     "0"
+    ],
+    "ex": [
+     "12",
+     "Số nguyên (cái)."
+    ],
+    "valid": [
+     "整数。0〜999,999（入力の共通基準 ⑤）。全角の数字は半角に直す。空欄は 0 として扱う。",
+     "Số nguyên. 0〜999,999 (tiêu chuẩn nhập chung ⑤). Số toàn-chiều rộng được đổi sang nửa-chiều rộng. Để trống được coi là 0."
+    ],
+    "err": [
+     "E12"
+    ],
+    "trig": "input"
+   },
+   "014:2.5": {
+    "ja": "登録",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "全項目をまとめてチェックし、エラーは項目の下に出す。問題なければ確認（Q122）を出す。",
+     "Kiểm tra tất cả mục cùng lúc, lỗi hiện dưới từng mục. Nếu không có vấn đề thì hiện xác nhận (Q122)."
+    ],
+    "err": [
+     "E01",
+     "E02",
+     "E12",
+     "E140",
+     "E141",
+     "Q122"
+    ],
+    "trig": "click"
+   },
+   "015:2.6": {
+    "ja": "棚卸し日のエラー",
+    "vi": "Lỗi ngày kiểm kê",
+    "kind": "label",
+    "detail": [
+     "未来の日付は E140、その倉庫の前回の登録日より前は E141。項目の下に出す。",
+     "Ngày tương lai là E140, trước ngày đăng ký trước của kho đó là E141. Hiện dưới mục."
+    ],
+    "err": [
+     "E140",
+     "E141"
+    ],
+    "trig": "view"
+   },
+   "015:2.2": {
+    "ja": "棚卸し日",
+    "vi": "Ngày kiểm kê",
+    "kind": "date",
+    "req": "○",
+    "len": "日付（yyyy-mm-dd）",
+    "init": [
+     "今日",
+     "Hôm nay"
+    ],
+    "ex": [
+     "2026-10-05",
+     "Ngày kiểm kê (yyyy-mm-dd)."
+    ],
+    "valid": [
+     "未来の日付は選べない（E140）。選んだ倉庫の前回の登録日より前の日は選べない（E141。その間の出し入れが消えるため）。",
+     "Không chọn được ngày tương lai (E140). Không chọn được ngày trước ngày đăng ký trước của kho đã chọn (E141; vì nhập/xuất trong khoảng đó sẽ mất)."
+    ],
+    "err": [
+     "E01",
+     "E140",
+     "E141"
+    ],
+    "trig": "input"
+   },
+   "015:2.5": {
+    "ja": "登録",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "全項目をまとめてチェックし、エラーは項目の下に出す。問題なければ確認（Q122）を出す。",
+     "Kiểm tra tất cả mục cùng lúc, lỗi hiện dưới từng mục. Nếu không có vấn đề thì hiện xác nhận (Q122)."
+    ],
+    "err": [
+     "E01",
+     "E02",
+     "E12",
+     "E140",
+     "E141",
+     "Q122"
+    ],
+    "trig": "click"
+   },
+   "016:3": {
+    "ja": "登録の確認",
+    "vi": "Xác nhận đăng ký",
+    "kind": "modal",
+    "detail": [
+     "登録の前の確認（Q122）：「{倉庫}の棚卸し（{日付}）を登録しますか？ {日付}までの在庫の記録は反映済みとなり、見込み在庫の起点が新しくなります。」",
+     "Xác nhận trước khi đăng ký (Q122): \"Đăng ký kiểm kê ({kho}, {ngày})? Bản ghi tồn kho đến {ngày} được coi là đã phản ánh và điểm xuất phát của tồn kho dự kiến được cập nhật.\""
+    ],
+    "err": [
+     "Q122",
+     "S120"
+    ],
+    "trig": "show"
+   },
+   "016:3.1": {
+    "ja": "キャンセル",
+    "vi": "Hủy",
+    "kind": "button",
+    "detail": [
+     "確認を閉じて入力に戻る。何も登録しない。",
+     "Đóng xác nhận và quay lại phần nhập. Không đăng ký gì."
+    ],
+    "trig": "click"
+   },
+   "016:3.2": {
+    "ja": "登録する",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "棚卸し日までの在庫の記録を反映済みにし、その倉庫の見込み在庫の起点を、入力した数に入れ替える。完了は S120（倉庫在庫へ戻る）。",
+     "Coi ghi nhận tồn kho đến ngày kiểm kê là đã phản ánh và thay điểm xuất phát của tồn kho dự kiến của kho đó bằng số đã nhập. Hoàn tất là S120 (quay về tồn kho kho)."
+    ],
+    "err": [
+     "S120"
+    ],
+    "trig": "click"
+   },
+   "017:4": {
+    "ja": "登録の完了",
+    "vi": "Hoàn tất đăng ký",
+    "kind": "toast",
+    "detail": [
+     "S120 のトースト。倉庫在庫の一覧へ戻り、その倉庫の「棚卸し在庫」（起点）と KPI の棚卸し日が新しくなる。",
+     "Toast S120. Quay về danh sách tồn kho kho, cột \"棚卸し在庫\" (điểm xuất phát) của kho đó và ngày kiểm kê ở KPI được cập nhật."
+    ],
+    "err": [
+     "S120"
+    ],
+    "trig": "show"
+   },
+   "018:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず「発注・入荷 ＞ 倉庫在庫（戻るリンク）＞ CSV取込」。倉庫在庫の一覧の「CSV取込」（AW_WHS_001 No.1.2）から移る（モーダルではなく画面）。倉庫在庫の CSV取込はこの画面だけ。作成（C）の権限（フル権限・商品開発）がない役割は倉庫在庫へ戻す。",
+     "Breadcrumb \"発注・入荷 ＞ 倉庫在庫 (link quay lại) ＞ CSV取込\". Chuyển sang từ nút \"CSV取込\" ở danh sách tồn kho kho (AW_WHS_001 No.1.2) (là màn hình, không phải modal). Nhập CSV của tồn kho kho chỉ có màn hình này. Vai trò không có quyền tạo (C) (quyền đầy đủ・phát triển sản phẩm) thì quay về tồn kho kho."
+    ],
+    "cond": [
+     "作成（C）の権限（フル権限・商品開発）がある役割だけに出す。物流は閲覧のみ（ボタンを出さない）。",
+     "Chỉ hiện với vai trò có quyền tạo (C) (quyền đầy đủ・phát triển sản phẩm). Logistics chỉ xem (không hiện nút)."
+    ],
+    "pattern": "P-CSV",
+    "trig": "view"
+   },
+   "018:1.1": {
+    "ja": "キャンセル",
+    "vi": "Hủy",
+    "kind": "button",
+    "detail": [
+     "倉庫在庫の一覧へ戻る。何も取り込まない。",
+     "Quay về danh sách tồn kho kho. Không nhập gì."
+    ],
+    "trig": "click"
+   },
+   "018:1.2": {
+    "ja": "取込の説明",
+    "vi": "Giải thích nhập",
+    "kind": "label",
+    "detail": [
+     "1行＝倉庫×商品（資材）の棚卸し（起点）の数1つ（文言は案）。CSV取込は棚卸し〔起点〕だけで、在庫の増減の調整はここでは行わない（詳細のモーダル「この商品を記録」で行う）。数量はマイナス不可。行エラー（数量がマイナス・倉庫×品番の重複・同じ倉庫で棚卸し日が違う・数量が空欄・ほか）が1つでもあれば全体を取り込まない（E150）。",
+     "1 dòng = 1 số kiểm kê (điểm khởi đầu) của 1 kho × 1 sản phẩm (vật tư) (câu chữ là đề xuất). CSV取込 chỉ dành cho kiểm kê [điểm khởi đầu]; việc điều chỉnh tăng/giảm tồn kho không làm ở đây (làm bằng modal \"この商品を記録\" ở chi tiết). Số lượng không được âm. Dòng lỗi (số lượng âm・trùng kho × mã hàng・ngày kiểm kê lệch trong cùng kho・số lượng trống・v.v.): chỉ cần 1 dòng là không nhập toàn bộ (E150)."
+    ],
+    "trig": "view"
+   },
+   "018:2": {
+    "ja": "CSVの列の定義",
+    "vi": "Định nghĩa cột CSV",
+    "kind": "area",
+    "detail": [
+     "画面には出さない（画面設計書にだけ書く）。ES STATION の形式。UTF-8・5,000行まで。CSV取込は「棚卸し（起点）」だけ（実際に数えた在庫の数を入れる。マイナスの数はない）。列は 倉庫ID・対象（商品／資材）・品番／資材ID・数量・棚卸し日。「区分」「増減」「理由」「日付」の列は持たない。在庫の増減の調整は CSV ではなく詳細のモーダル「この商品を記録」（AW_WHS_002 No.5）で行う。CSV出力（AW_WHS_001 No.1.1）は在庫の一覧。",
+     "Không hiện trên màn hình (chỉ ghi trong tài liệu thiết kế màn hình). Định dạng ES STATION. UTF-8・tối đa 5,000 dòng. CSV取込 chỉ dành cho \"棚卸し（起点）\" (nhập số tồn kho thực tế đã đếm; không có số âm). Các cột: ID kho・đối tượng (sản phẩm/vật tư)・mã hàng/ID vật tư・số lượng・ngày kiểm kê. Không có các cột \"区分\" \"増減\" \"理由\" \"日付\". Điều chỉnh tăng/giảm tồn kho không bằng CSV mà bằng modal \"この商品を記録\" (AW_WHS_002 No.5) ở chi tiết. CSV出力 (AW_WHS_001 No.1.1) là danh sách tồn kho."
+    ],
+    "pattern": "P-CSV",
+    "trig": "view"
+   },
+   "018:2.1": {
+    "ja": "倉庫ID",
+    "vi": "ID kho",
+    "kind": "text",
+    "req": "○",
+    "len": [
+     "選択（WH00001 など。倉庫マスタの有効な倉庫）",
+     ""
+    ],
+    "ex": [
+     "WH00001",
+     "ID kho hợp lệ trong master kho (Kanto)."
+    ],
+    "detail": [
+     "棚卸しをする倉庫。マスタにない ID は行のエラー。対象が資材の行は ES事務所（資材）を含む全倉庫。同じファイルに同じ 倉庫ID×対象×品番／資材ID の行が2つ以上あれば、その行は行のエラー（E150 の一覧に「重複」と出す）。",
+     "Kho thực hiện kiểm kê. ID không có trong master là lỗi dòng. Dòng đối tượng vật tư: gồm mọi kho, kể cả ES事務所（資材）. Trong cùng file có từ 2 dòng trở lên cùng ID kho × đối tượng × mã hàng/ID vật tư thì là lỗi dòng (trùng; hiện \"重複\" trong danh sách E150)."
+    ],
+    "err": [
+     "E02",
+     "E150"
+    ],
+    "trig": "input"
+   },
+   "018:2.2": {
+    "ja": "対象",
+    "vi": "Đối tượng (対象)",
+    "kind": "text",
+    "req": "○",
+    "len": [
+     "選択（商品／資材）",
+     ""
+    ],
+    "ex": [
+     "商品",
+     "Giá trị chọn: 商品 (sản phẩm)."
+    ],
+    "detail": [
+     "棚卸しの対象。「商品」か「資材」。ほかの値は行のエラー。次の列（品番／資材ID）は、商品のときは品番、資材のときは資材ID。",
+     "Đối tượng kiểm kê: \"商品\" (sản phẩm) hoặc \"資材\" (vật tư). Giá trị khác là lỗi dòng. Cột kế tiếp (mã hàng/ID vật tư) là mã hàng nếu là sản phẩm, ID vật tư nếu là vật tư."
+    ],
+    "err": [
+     "E01",
+     "E02",
+     "E150"
+    ],
+    "trig": "input"
+   },
+   "018:2.3": {
+    "ja": "品番／資材ID",
+    "vi": "Mã hàng / ID vật tư",
+    "kind": "text",
+    "req": "○",
+    "len": [
+     "文字列（有効な商品の品番／資材の資材ID）",
+     ""
+    ],
+    "ex": [
+     "M002",
+     "Mã hàng của sản phẩm (M002) hoặc ID vật tư."
+    ],
+    "detail": [
+     "マスタにない品番／資材IDは行のエラー。同じ 倉庫ID×対象×品番／資材ID が同じファイルに2行以上あれば行のエラー（重複）。",
+     "Mã hàng / ID vật tư không có trong master là lỗi dòng. Cùng ID kho × đối tượng × mã hàng/ID vật tư xuất hiện từ 2 dòng trong file là lỗi dòng (trùng)."
+    ],
+    "err": [
+     "E01",
+     "E02",
+     "E150"
+    ],
+    "trig": "input"
+   },
+   "018:2.4": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "text",
+    "req": "○",
+    "len": "整数 0〜999,999",
+    "ex": [
+     "12",
+     "Số nguyên (cái)."
+    ],
+    "detail": [
+     "実際に数えた在庫の数（整数）。0〜999,999（入力の共通基準 ⑤）。マイナスの数はない：マイナス・小数・範囲外は行のエラー（E12）。空欄は行のエラー（E01。画面入力（AW_WHS_006）は空欄＝0 だが、CSV は行ごとに書く）。増減は書けない（増減の調整は詳細のモーダル）。",
+     "Số tồn kho thực tế đã đếm (số nguyên). 0〜999,999 (tiêu chuẩn nhập chung ⑤). Không có số âm: số âm・số thập phân・ngoài phạm vi là lỗi dòng (E12). Để trống là lỗi dòng (E01; khác nhập trên màn hình AW_WHS_006 nơi trống = 0: CSV ghi theo từng dòng). Không ghi được tăng/giảm (điều chỉnh tăng/giảm làm bằng modal ở chi tiết)."
+    ],
+    "err": [
+     "E01",
+     "E12",
+     "E150"
+    ],
+    "trig": "input"
+   },
+   "018:2.5": {
+    "ja": "棚卸し日",
+    "vi": "Ngày kiểm kê (棚卸し日)",
+    "kind": "date",
+    "req": "○",
+    "len": "日付（yyyy-mm-dd）",
+    "ex": [
+     "2026-10-05",
+     "Ngày kiểm kê (yyyy-mm-dd)."
+    ],
+    "detail": [
+     "数えた日。未来の日付は行のエラー（E140）。その倉庫の前回の登録日より前も行のエラー（E141）。棚卸し日は倉庫ごとに1つ：同じ倉庫の行に違う棚卸し日が混ざっていれば、その倉庫の行は行のエラー（日付の不一致）。",
+     "Ngày đã đếm. Ngày tương lai là lỗi dòng (E140); trước ngày đăng ký trước của kho đó cũng là lỗi dòng (E141); mỗi kho chỉ có 1 ngày kiểm kê: nếu các dòng của cùng kho có ngày kiểm kê khác nhau thì các dòng của kho đó là lỗi dòng (ngày không khớp)."
+    ],
+    "err": [
+     "E01",
+     "E140",
+     "E141",
+     "E150"
+    ],
+    "trig": "input"
+   },
+   "018:3": {
+    "ja": "ファイルを選ぶ（ステップ1）",
+    "vi": "Chọn file (bước 1)",
+    "kind": "modal",
+    "detail": [
+     "手順は「1 ファイルを選ぶ → 2 確認・取り込む」。",
+     "Các bước: \"1 Chọn file → 2 Xác nhận・nhập\"."
+    ],
+    "err": [
+     "E51"
+    ],
+    "pattern": "P-CSV",
+    "trig": "show"
+   },
+   "018:3.1": {
+    "ja": "ファイルを選ぶ",
+    "vi": "Chọn file",
+    "kind": "file",
+    "req": "○",
+    "len": [
+     "CSV（UTF-8）5,000行まで",
+     ""
+    ],
+    "ex": [
+     "棚卸し_20261005.csv",
+     "Tên file CSV được chọn."
+    ],
+    "detail": [
+     "ファイルを選ぶか、ドラッグ＆ドロップ。選ぶとすぐ確認のステップへ進む。",
+     "Chọn file hoặc kéo thả. Chọn xong sẽ sang ngay bước xác nhận."
+    ],
+    "err": [
+     "E51"
+    ],
+    "trig": "upload"
+   },
+   "019:4": {
+    "ja": "確認・取り込む（ステップ2）",
+    "vi": "Xác nhận・nhập (bước 2)",
+    "kind": "area",
+    "detail": [
+     "取り込む内容を確認する。倉庫ごとの行数と棚卸し日、行のエラーを出す。",
+     "Xác nhận nội dung sẽ nhập. Hiện số dòng và ngày kiểm kê theo từng kho (mỗi kho 1 ngày), và các dòng lỗi."
+    ],
+    "err": [
+     "E150",
+     "S03",
+     "E34"
+    ],
+    "pattern": "P-CSV",
+    "trig": "view"
+   },
+   "019:4.1": {
+    "ja": "件数",
+    "vi": "Số dòng",
+    "kind": "label",
+    "detail": [
+     "ファイル名・取り込む行数・倉庫ごとの棚卸し日（1倉庫に1つ）・エラーの行数。",
+     "Tên file・số dòng sẽ nhập・ngày kiểm kê theo từng kho・số dòng lỗi."
+    ],
+    "trig": "view"
+   },
+   "019:4.4": {
+    "ja": "取り込む",
+    "vi": "Nhập",
+    "kind": "button",
+    "detail": [
+     "棚卸し日までの在庫の記録を反映済みにし、倉庫ごとの見込み在庫の起点を CSV の数に入れ替える（すべての行が棚卸し〔起点〕）。完了は S03 のトースト（倉庫在庫へ戻る）。行のエラーが1つでもあれば全体を取り込まない（E150。起点が部分的に変わらないため。ほかの CSV取込の「エラーの行だけ取り込まない」の例外）。失敗は E34。",
+     "Coi ghi nhận tồn kho đến ngày kiểm kê là đã phản ánh và thay điểm xuất phát của tồn kho dự kiến từng kho bằng số trong CSV (mọi dòng đều là kiểm kê [điểm khởi đầu]). Hoàn tất là toast S03 (quay về tồn kho kho). Chỉ cần 1 dòng lỗi là không nhập toàn bộ (E150; vì điểm xuất phát không được thay đổi một phần; ngoại lệ so với \"chỉ bỏ dòng lỗi\" ở các CSV khác). Thất bại là E34."
+    ],
+    "cond": [
+     "行のエラーが1つもないときだけ押せる。",
+     "Chỉ bấm được khi không có dòng lỗi nào."
+    ],
+    "err": [
+     "E150",
+     "S03",
+     "E34"
+    ],
+    "trig": "click"
+   },
+   "019:4.5": {
+    "ja": "ファイルを選び直す",
+    "vi": "Chọn lại file",
+    "kind": "button",
+    "detail": [
+     "ステップ1へ戻る。",
+     "Quay về bước 1."
+    ],
+    "trig": "click"
+   },
+   "020:4": {
+    "ja": "確認・取り込む（ステップ2）",
+    "vi": "Xác nhận・nhập (bước 2)",
+    "kind": "area",
+    "detail": [
+     "取り込む内容を確認する。倉庫ごとの行数と棚卸し日、行のエラーを出す。",
+     "Xác nhận nội dung sẽ nhập. Hiện số dòng và ngày kiểm kê theo từng kho (mỗi kho 1 ngày), và các dòng lỗi."
+    ],
+    "err": [
+     "E150",
+     "S03",
+     "E34"
+    ],
+    "pattern": "P-CSV",
+    "trig": "view"
+   },
+   "020:4.1": {
+    "ja": "件数",
+    "vi": "Số dòng",
+    "kind": "label",
+    "detail": [
+     "ファイル名・取り込む行数・倉庫ごとの棚卸し日（1倉庫に1つ）・エラーの行数。",
+     "Tên file・số dòng sẽ nhập・ngày kiểm kê theo từng kho・số dòng lỗi."
+    ],
+    "trig": "view"
+   },
+   "020:4.2": {
+    "ja": "エラーの行の表",
+    "vi": "Bảng dòng lỗi",
+    "kind": "table",
+    "detail": [
+     "列：行番号・キー・列名・内容。先頭50件まで。内容の例：品番／資材IDがマスタにない／対象が「商品」「資材」でない／数量が空欄／数量がマイナス（範囲外）／棚卸し日が未来日／棚卸し日が前回の登録日より前／倉庫ID×対象×品番／資材IDが重複（○行目と同じ）／同じ倉庫で棚卸し日が違う（他の行は yyyy-mm-dd）。種類ごとの専用メッセージ ID はなく、E150 に内容を添える。",
+     "Cột: số dòng, khóa, tên cột, nội dung. Tối đa 50 dòng đầu. Ví dụ nội dung: mã hàng / ID vật tư không có trong master / đối tượng không phải 商品・資材 / số lượng trống / số lượng âm (ngoài phạm vi) / ngày kiểm kê là tương lai / ngày kiểm kê trước lần đăng ký trước / trùng ID kho × đối tượng × mã hàng (giống dòng ○) / cùng kho nhưng ngày kiểm kê khác (các dòng khác là yyyy-mm-dd). Không có ID thông điệp riêng cho từng loại, dùng E150 kèm nội dung."
+    ],
+    "err": [
+     "E150",
+     "E01",
+     "E02",
+     "E12",
+     "E140",
+     "E141"
+    ],
+    "trig": "view"
+   },
+   "020:4.3": {
+    "ja": "エラー一覧CSV",
+    "vi": "CSV danh sách lỗi",
+    "kind": "button",
+    "detail": [
+     "エラーの行を CSV で保存する。",
+     "Lưu các dòng lỗi thành CSV."
+    ],
+    "trig": "click"
+   },
+   "020:4.4": {
+    "ja": "取り込む",
+    "vi": "Nhập",
+    "kind": "button",
+    "detail": [
+     "棚卸し日までの在庫の記録を反映済みにし、倉庫ごとの見込み在庫の起点を CSV の数に入れ替える（すべての行が棚卸し〔起点〕）。完了は S03 のトースト（倉庫在庫へ戻る）。行のエラーが1つでもあれば全体を取り込まない（E150。起点が部分的に変わらないため。ほかの CSV取込の「エラーの行だけ取り込まない」の例外）。失敗は E34。",
+     "Coi ghi nhận tồn kho đến ngày kiểm kê là đã phản ánh và thay điểm xuất phát của tồn kho dự kiến từng kho bằng số trong CSV (mọi dòng đều là kiểm kê [điểm khởi đầu]). Hoàn tất là toast S03 (quay về tồn kho kho). Chỉ cần 1 dòng lỗi là không nhập toàn bộ (E150; vì điểm xuất phát không được thay đổi một phần; ngoại lệ so với \"chỉ bỏ dòng lỗi\" ở các CSV khác). Thất bại là E34."
+    ],
+    "cond": [
+     "行のエラーが1つもないときだけ押せる。",
+     "Chỉ bấm được khi không có dòng lỗi nào."
+    ],
+    "err": [
+     "E150",
+     "S03",
+     "E34"
+    ],
+    "trig": "click"
+   },
+   "020:4.5": {
+    "ja": "ファイルを選び直す",
+    "vi": "Chọn lại file",
+    "kind": "button",
+    "detail": [
+     "ステップ1へ戻る。",
+     "Quay về bước 1."
+    ],
+    "trig": "click"
+   },
+   "021:5": {
+    "ja": "取込の完了",
+    "vi": "Hoàn tất nhập",
+    "kind": "toast",
+    "detail": [
+     "S03 のトースト。倉庫在庫の一覧へ戻り、取り込んだ倉庫の「棚卸し在庫」（起点）が新しくなる。",
+     "Toast S03. Quay về danh sách tồn kho kho, cột \"棚卸し在庫\" (điểm xuất phát) của các kho đã nhập được cập nhật."
+    ],
+    "err": [
+     "S03"
+    ],
+    "trig": "show"
+   },
+   "022:3": {
+    "ja": "見込みの推移と入出庫の記録",
+    "vi": "Diễn biến dự kiến và ghi nhận nhập xuất kho",
+    "kind": "area",
+    "detail": [
+     "起点（棚卸し）から先の入出庫を日付順に出す。月ごとに区切る。",
+     "Hiện nhập xuất kho từ điểm xuất phát (kiểm kê) trở đi theo thứ tự ngày. Chia theo tháng."
+    ],
+    "trig": "view"
+   },
+   "022:3.1": {
+    "ja": "入出庫の表",
+    "vi": "Bảng nhập xuất kho",
+    "kind": "table",
+    "detail": [
+     "列：日付・区分・発注番号／納品／記録番号・実績／予定・数量・見込み在庫・メモ。先頭の行は「棚卸し（起点）」。見込み在庫がマイナスになる行は赤。この表は「この倉庫のこの商品」の入出庫の記録だけを出す（ほかの商品は出さない。商品をまたぐ検索はない）。「この商品を記録」で登録した記録もこの表に出る（編集・削除の列はない）。",
+     "Cột: ngày, phân loại, số đơn đặt hàng/giao hàng/ghi nhận, thực tế/dự kiến, số lượng, tồn kho dự kiến, ghi chú. Dòng đầu là \"棚卸し（起点）\" (kiểm kê, điểm xuất phát). Dòng có tồn kho dự kiến âm màu đỏ. Bảng này chỉ hiện bản ghi nhập/xuất của \"sản phẩm này tại kho này\" (không hiện sản phẩm khác; không có tìm kiếm xuyên sản phẩm). Bản ghi đã đăng ký bằng \"この商品を記録\" cũng hiện trong bảng này (không có cột sửa・xóa)."
+    ],
+    "trig": "view"
+   }
+  },
+  "画面設計書_AW_MPO_資材発注": {
+   "001:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず：発注・入荷 ＞ 資材発注。資材は本発注だけ・随時（仮発注なし）。資材の在庫は倉庫ごとに持ち、足りない分を資材ごとの倉庫へ発注する。資材の在庫の直し方は「在庫の記録」（倉庫在庫・AW_WHS）の「対象：資材」で行う。見られるのは発注管理を閲覧できる役割（フル権限・商品開発・経理・営業・CS・物流・商品管理）。発注できるのはフル権限・商品開発だけ。",
+     "Breadcrumb: 発注・入荷 ＞ 資材発注. Vật tư chỉ đặt chính thức, bất kỳ lúc nào (không có đặt tạm). Tồn kho vật tư được giữ theo từng kho, phần thiếu đặt về kho của từng vật tư. Chỉnh tồn kho vật tư thực hiện ở \"対象：資材\" của \"在庫の記録\" (tồn kho kho, AW_WHS). Vai trò xem được là những vai trò xem được quản lý đặt hàng (toàn quyền, phát triển sản phẩm, kế toán, kinh doanh, CS, logistics, quản lý sản phẩm). Chỉ toàn quyền và phát triển sản phẩm mới đặt hàng được."
+    ],
+    "trig": "view"
+   },
+   "001:1.1": {
+    "ja": "CSV出力",
+    "vi": "Xuất CSV",
+    "kind": "button",
+    "detail": [
+     "ヘッダーの右（タブの外。どのタブでも出る）。「発注」タブの発注表のとおりの全件（資材ごと）。列：資材ID・資材名・規格・仕入先ID・仕入先名・納入先倉庫・倉庫の在庫・受けて未出荷の資材注文・発注中（未入荷）・単位・ロット・発注の目安・状態。在庫表・履歴は出さない（履歴は「発注・入荷履歴」の CSV）。閲覧できる役割すべてに出す。",
+     "Bên phải header (ngoài tab, tab nào cũng hiển thị). Xuất toàn bộ như bảng đặt hàng của tab 「発注」 (theo từng vật tư). Cột: mã vật tư, tên vật tư, quy cách, mã nhà cung cấp, tên nhà cung cấp, kho nhận hàng, tồn kho của kho, đơn vật tư đã nhận chưa xuất, đang đặt (chưa nhập), đơn vị, lô, mức đặt đề xuất, trạng thái. Không xuất bảng tồn kho và lịch sử (lịch sử dùng CSV của \"発注・入荷履歴\"). Hiển thị cho mọi vai trò xem được."
+    ],
+    "pattern": "P-CSV-OUT",
+    "trig": "click"
+   },
+   "001:1.2": {
+    "ja": "一言の説明",
+    "vi": "Lời giải thích ngắn",
+    "kind": "label",
+    "detail": [
+     "「発注」タブの発注表の上に1文だけ：「発注の目安は、倉庫ごとの在庫と受けている資材注文から計算した参考値です。」説明帯（長い説明）は置かない。",
+     "Chỉ một câu phía trên bảng đặt hàng của tab 「発注」: \"発注の目安は、倉庫ごとの在庫と受けている資材注文から計算した参考値です。\" (Mức đặt đề xuất là giá trị tham khảo tính từ tồn kho từng kho và các đơn vật tư đã nhận.) Không đặt dải giải thích dài."
+    ],
+    "trig": "show"
+   },
+   "001:7": {
+    "ja": "タブ",
+    "vi": "Tab",
+    "kind": "tab",
+    "detail": [
+     "ヘッダーの下に「発注」（初期表示）／「資材の在庫」／「発注の履歴」の3つ。選んだタブの中身だけを表示する（「発注」＝発注表（No.3）、「資材の在庫」＝在庫の表（No.2）、「発注の履歴」＝履歴の表（No.4））。タブは URL の ?tab= に持ち（例：?tab=stock／?tab=history。「発注」は付けない）、再読み込み・戻るでも同じタブを開く。入力中（発注数など）にタブを変えても入力は消さない。ヘッダーの CSV出力はどのタブでも「発注」の表（No.1.1）。",
+     "Dưới header có 3 tab: 「発注」 (hiển thị ban đầu) / 「資材の在庫」 / 「発注の履歴」. Chỉ hiển thị nội dung của tab đã chọn (「発注」 = bảng đặt hàng (No.3), 「資材の在庫」 = bảng tồn kho (No.2), 「発注の履歴」 = bảng lịch sử (No.4)). Tab giữ trong URL ?tab= (ví dụ: ?tab=stock / ?tab=history; 「発注」 không gắn), tải lại / Back vẫn mở đúng tab. Đổi tab khi đang nhập (số lượng đặt...) không mất nội dung. CSV出力 ở header ở tab nào cũng là của bảng 「発注」 (No.1.1)."
+    ],
+    "pattern": "P-TAB",
+    "trig": "click"
+   },
+   "001:7.1": {
+    "ja": "タブ名の件数",
+    "vi": "Số đếm trên tên tab",
+    "kind": "label",
+    "detail": [
+     "「発注」の名前の後ろに、要発注の資材の数を出してよい（例：発注 (3)）。0 のときは数を出さない。",
+     "Có thể hiện số vật tư 要発注 (cần đặt) sau tên 「発注」 (ví dụ: 発注 (3)). Bằng 0 thì không hiện số."
+    ],
+    "pattern": "P-TAB",
+    "trig": "view"
+   },
+   "001:3": {
+    "ja": "資材の発注",
+    "vi": "Đặt mua vật tư",
+    "kind": "area",
+    "detail": [
+     "本発注だけ・随時（仮発注なし）。資材は食品のサイクル（A〜D）に属さない。資材ごとに1行。納入先は資材ごとの倉庫（資材マスタの取扱倉庫。ES事務所も倉庫の1つ）で、初期値は取扱倉庫、行ごとに変えられる。在庫・目安は選んだ倉庫の数。検索・ページ送りは付けない（資材の数だけで少ない）。発注できるのは発注管理（フル権限・商品開発）の操作。",
+     "Chỉ đặt chính thức, bất kỳ lúc nào (không có đặt tạm). Vật tư không thuộc chu kỳ thực phẩm (A–D). Mỗi vật tư một dòng. Nơi giao hàng là kho theo từng vật tư (kho phụ trách trong master vật tư; văn phòng ES cũng là một kho), mặc định là kho phụ trách, có thể đổi theo từng dòng. Tồn kho và mức đề xuất là số của kho đã chọn. Không có tìm kiếm và phân trang (chỉ có ít vật tư). Người đặt hàng được làThao tác của quản lý đặt hàng (toàn quyền, phát triển sản phẩm)."
+    ],
+    "trig": "view"
+   },
+   "001:3.1": {
+    "ja": "発注の表",
+    "vi": "Bảng đặt hàng",
+    "kind": "table",
+    "detail": [
+     "並びは資材ID の昇順。0件は I01。目安＝（受けて未出荷の資材注文＋直近28日の1日あたり平均×納期（日）〈資材マスタ。初期値7・運営が直せる〉）−その倉庫の在庫−発注中を、ロットに切り上げた数（0以上）。",
+     "Sắp xếp theo mã vật tư tăng dần. 0 kết quả hiển thị I01. Mức đề xuất = (đơn vật tư đã nhận chưa xuất + trung bình 1 ngày của 28 ngày gần nhất × 納期（日）<master vật tư, mặc định 7, vận hành sửa được>) − tồn kho của kho đó − đang đặt, làm tròn lên theo lô (từ 0 trở lên)."
+    ],
+    "err": [
+     "I01"
+    ],
+    "trig": "view"
+   },
+   "001:3.1.1": {
+    "ja": "資材ID",
+    "vi": "Mã vật tư",
+    "kind": "label",
+    "detail": [
+     "資材マスタの ID（S001 など）。",
+     "ID trong master vật tư (như S001)."
+    ],
+    "trig": "view"
+   },
+   "001:3.1.2": {
+    "ja": "資材名",
+    "vi": "Tên vật tư",
+    "kind": "label",
+    "detail": [
+     "資材名（下に規格）。",
+     "Tên vật tư (bên dưới là quy cách)."
+    ],
+    "trig": "view"
+   },
+   "001:3.1.3": {
+    "ja": "仕入先",
+    "vi": "Nhà cung cấp",
+    "kind": "label",
+    "detail": [
+     "資材マスタの仕入先名。名前の下に、その仕入先の発注方法（ESステーション／メール／外部。仕入先マスタ。No.10）を小さく添える。",
+     "Tên nhà cung cấp trong master vật tư. Bên dưới tên có chữ nhỏ ghi phương thức đặt hàng của nhà cung cấp đó (ESステーション / メール / 外部; master nhà cung cấp; No.10)."
+    ],
+    "trig": "view"
+   },
+   "001:3.1.4": {
+    "ja": "納入先倉庫",
+    "vi": "Kho nhận hàng",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "選択（取扱倉庫の中から）",
+     "Chọn (trong các kho phụ trách)"
+    ],
+    "init": [
+     "資材マスタの取扱倉庫",
+     "Kho phụ trách trong master vật tư"
+    ],
+    "ex": [
+     "関東倉庫",
+     "Tên kho, chọn từ danh sách kho"
+    ],
+    "detail": [
+     "発注の納入先。資材ごとに取扱倉庫が初期値。ES事務所も選べる。選び直すと、その行の「倉庫の在庫」「受けて未出荷」「発注中」「目安」「状態」がその倉庫の数に変わる。確認の小窓の「納入先」と発注番号の納入先になる。ピッキング倉庫の資材は、その倉庫を納入先にして仕入先へ発注して補充する。",
+     "Nơi giao hàng của đơn đặt. Mặc định là kho phụ trách của từng vật tư. Có thể chọn cả văn phòng ES. Khi chọn lại, các cột \"倉庫の在庫\", \"受けて未出荷\", \"発注中\", \"目安\", \"状態\" của dòng đó đổi sang số của kho đó. Trở thành \"納入先\" trong hộp thoại xác nhận và nơi giao hàng của số đơn đặt. Kho picking bổ sung vật tư bằng cách đặt hàng nhà cung cấp với nơi giao hàng là chính kho đó."
+    ],
+    "err": [
+     "E01"
+    ],
+    "trig": "select"
+   },
+   "001:3.1.5": {
+    "ja": "倉庫の在庫",
+    "vi": "Tồn kho của kho",
+    "kind": "label",
+    "detail": [
+     "選んだ納入先倉庫の資材の在庫（資材の単位つき）。",
+     "Tồn kho vật tư của kho nhận hàng đã chọn (kèm đơn vị của vật tư)."
+    ],
+    "trig": "view"
+   },
+   "001:3.1.6": {
+    "ja": "受けて未出荷の資材注文",
+    "vi": "Đơn vật tư đã nhận chưa xuất",
+    "kind": "label",
+    "detail": [
+     "お客様から受けた資材の注文のうち、その倉庫からまだ出していない数。目安の計算に使う（28日の平均×資材マスタの「納期（日）」も加える。納期（日）の初期値は7で、運営が資材マスタで直せる。運営H）。",
+     "Trong các đơn vật tư nhận từ khách hàng, số lượng chưa xuất từ kho đó. Dùng để tính mức đề xuất (cộng thêm trung bình 28 ngày × \"納期（日）\" trong master vật tư; mặc định 7, vận hành sửa được ở master vật tư, vận hành H)."
+    ],
+    "trig": "view"
+   },
+   "001:3.1.7": {
+    "ja": "発注中（未入荷）",
+    "vi": "Đang đặt (chưa nhập)",
+    "kind": "label",
+    "detail": [
+     "選んだ倉庫あての発注のうち、まだ入荷していない数（キャンセルは除く）。なければ「—」。",
+     "Trong các đơn đặt gửi tới kho đã chọn, số lượng chưa nhập hàng (trừ đơn đã hủy). Không có thì hiển thị \"—\"."
+    ],
+    "trig": "view"
+   },
+   "001:3.1.8": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "label",
+    "detail": [
+     "「要発注」（赤）＝在庫＋発注中が見込みに足りない。「足りる」（緑）。しきい値・「在庫不足」・警告は作らない。",
+     "\"要発注\" (cần đặt, đỏ) = tồn kho + đang đặt không đủ so với dự kiến. \"足りる\" (đủ, xanh lá). Không làm ngưỡng, \"在庫不足\" và cảnh báo."
+    ],
+    "trig": "view"
+   },
+   "001:3.1.9": {
+    "ja": "発注の目安",
+    "vi": "Mức đặt đề xuất",
+    "kind": "label",
+    "detail": [
+     "ロットの倍数（0以上）。発注数の初期値にも入る。",
+     "Bội của lô (từ 0 trở lên). Cũng được điền làm giá trị ban đầu của số lượng đặt."
+    ],
+    "trig": "view"
+   },
+   "001:3.2": {
+    "ja": "発注数",
+    "vi": "Số lượng đặt",
+    "kind": "text",
+    "req": "○",
+    "len": [
+     "数値 0〜999,999（ロットの倍数）",
+     "Số 0–999,999 (bội của lô)"
+    ],
+    "init": [
+     "発注の目安（0なら空）",
+     "Mức đặt đề xuất (nếu 0 thì để trống)"
+    ],
+    "ex": [
+     "300",
+     "Số lượng đặt, số nguyên là bội của lô"
+    ],
+    "detail": [
+     "右寄せ・単位は資材の単位（膳・本・枚など）。ロットの倍数で入れる（割り箸100膳なら100・200…）。数量の範囲は共通基準どおり 0〜999,999（範囲外は E12）。ただし 0 は「発注しない」の意味で、発注する（3.3）を押しても通らない（空・0 は E01）。範囲外は E12、倍数でないときは E144（{n}＝ロット）。エラーは入力欄の下に出す。全角の数字は半角に直す。発注する小窓へ進む前に行ごとに確認する。",
+     "Căn phải; đơn vị là đơn vị của vật tư (膳, 本, 枚...). Nhập bội của lô (đũa dùng một lần lô 100 膳 thì nhập 100, 200...). Phạm vi số lượng theo chuẩn chung 0–999,999 (ngoài phạm vi là E12), nhưng 0 nghĩa là \"không đặt\": nhấn \"発注する\" (3.3) cũng không đi tiếp (trống hoặc 0 là E01), không phải bội là E144 ({n} = lô). Lỗi hiển thị bên dưới ô nhập. Số toàn-width được đổi sang half-width. Kiểm tra theo từng dòng trước khi sang hộp thoại đặt hàng."
+    ],
+    "err": [
+     "E01",
+     "E12",
+     "E144"
+    ],
+    "trig": "input"
+   },
+   "001:3.3": {
+    "ja": "発注する",
+    "vi": "Đặt hàng",
+    "kind": "button",
+    "detail": [
+     "押すと発注数を確認し（3.2）、通れば「資材の発注（本発注）」の確認の小窓（No.5）を開く。発注管理（フル権限・商品開発）の操作。",
+     "Khi nhấn sẽ kiểm tra số lượng đặt (3.2), nếu hợp lệ thì mở hộp thoại xác nhận \"資材の発注（本発注）\" (No.5). Thao tác của quản lý đặt hàng (toàn quyền, phát triển sản phẩm)."
+    ],
+    "cond": [
+     "発注管理の発注ができる役割（フル権限・商品開発）だけに出す",
+     "Chỉ hiển thị cho vai trò đặt hàng được trong quản lý đặt hàng (toàn quyền, phát triển sản phẩm)"
+    ],
+    "trig": "click"
+   },
+   "002:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず：発注・入荷 ＞ 資材発注。資材は本発注だけ・随時（仮発注なし）。資材の在庫は倉庫ごとに持ち、足りない分を資材ごとの倉庫へ発注する。資材の在庫の直し方は「在庫の記録」（倉庫在庫・AW_WHS）の「対象：資材」で行う。見られるのは発注管理を閲覧できる役割（フル権限・商品開発・経理・営業・CS・物流・商品管理）。発注できるのはフル権限・商品開発だけ。",
+     "Breadcrumb: 発注・入荷 ＞ 資材発注. Vật tư chỉ đặt chính thức, bất kỳ lúc nào (không có đặt tạm). Tồn kho vật tư được giữ theo từng kho, phần thiếu đặt về kho của từng vật tư. Chỉnh tồn kho vật tư thực hiện ở \"対象：資材\" của \"在庫の記録\" (tồn kho kho, AW_WHS). Vai trò xem được là những vai trò xem được quản lý đặt hàng (toàn quyền, phát triển sản phẩm, kế toán, kinh doanh, CS, logistics, quản lý sản phẩm). Chỉ toàn quyền và phát triển sản phẩm mới đặt hàng được."
+    ],
+    "trig": "view"
+   },
+   "002:7": {
+    "ja": "タブ",
+    "vi": "Tab",
+    "kind": "tab",
+    "detail": [
+     "ヘッダーの下に「発注」（初期表示）／「資材の在庫」／「発注の履歴」の3つ。選んだタブの中身だけを表示する（「発注」＝発注表（No.3）、「資材の在庫」＝在庫の表（No.2）、「発注の履歴」＝履歴の表（No.4））。タブは URL の ?tab= に持ち（例：?tab=stock／?tab=history。「発注」は付けない）、再読み込み・戻るでも同じタブを開く。入力中（発注数など）にタブを変えても入力は消さない。ヘッダーの CSV出力はどのタブでも「発注」の表（No.1.1）。",
+     "Dưới header có 3 tab: 「発注」 (hiển thị ban đầu) / 「資材の在庫」 / 「発注の履歴」. Chỉ hiển thị nội dung của tab đã chọn (「発注」 = bảng đặt hàng (No.3), 「資材の在庫」 = bảng tồn kho (No.2), 「発注の履歴」 = bảng lịch sử (No.4)). Tab giữ trong URL ?tab= (ví dụ: ?tab=stock / ?tab=history; 「発注」 không gắn), tải lại / Back vẫn mở đúng tab. Đổi tab khi đang nhập (số lượng đặt...) không mất nội dung. CSV出力 ở header ở tab nào cũng là của bảng 「発注」 (No.1.1)."
+    ],
+    "pattern": "P-TAB",
+    "trig": "click"
+   },
+   "002:7.1": {
+    "ja": "タブ名の件数",
+    "vi": "Số đếm trên tên tab",
+    "kind": "label",
+    "detail": [
+     "「発注」の名前の後ろに、要発注の資材の数を出してよい（例：発注 (3)）。0 のときは数を出さない。",
+     "Có thể hiện số vật tư 要発注 (cần đặt) sau tên 「発注」 (ví dụ: 発注 (3)). Bằng 0 thì không hiện số."
+    ],
+    "pattern": "P-TAB",
+    "trig": "view"
+   },
+   "002:2": {
+    "ja": "資材の在庫",
+    "vi": "Tồn kho vật tư",
+    "kind": "area",
+    "detail": [
+     "倉庫×資材の在庫表。ES事務所とすべてのピッキング倉庫で持つ。在庫＝棚卸しの数＋入荷（入荷登録）−出荷（資材便）±在庫の記録。資材は食品の便と一緒には送らない（資材便）。在庫を直すときは「在庫の記録」（AW_WHS）の「対象：資材」で記録する（この画面では直さない）。",
+     "Bảng tồn kho kho × vật tư. Văn phòng ES và tất cả kho picking đều giữ tồn kho. Tồn kho = số kiểm kê + nhập hàng (đăng ký nhập hàng) − xuất hàng (chuyến vật tư) ± ghi nhận tồn kho. Vật tư không gửi chung chuyến với thực phẩm (chuyến vật tư). Khi chỉnh tồn kho, ghi nhận ở \"対象：資材\" của \"在庫の記録\" (AW_WHS) (không chỉnh trên màn hình này)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "002:2.1": {
+    "ja": "検索条件（在庫）",
+    "vi": "Điều kiện tìm kiếm (tồn kho)",
+    "kind": "area",
+    "detail": [
+     "倉庫／資材／状態。「検索」か Enter で反映。",
+     "Kho / vật tư / trạng thái. Nhấn \"検索\" (Tìm kiếm) hoặc Enter để áp dụng."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "002:2.1.1": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（すべて／ES事務所（資材）／関東倉庫／関西倉庫／中部倉庫）",
+     "Chọn (Tất cả / Văn phòng ES (vật tư) / Kho Kanto / Kho Kansai / Kho Chubu)"
+    ],
+    "init": [
+     "すべて",
+     "Tất cả"
+    ],
+    "ex": [
+     "関東倉庫",
+     "Tên kho, chọn từ danh sách kho"
+    ],
+    "detail": [
+     "資材を持つ倉庫（倉庫マスタ。ES事務所も含む）。",
+     "Kho có giữ vật tư (master kho; bao gồm cả văn phòng ES)."
+    ],
+    "trig": "select"
+   },
+   "002:2.1.2": {
+    "ja": "資材",
+    "vi": "Vật tư",
+    "kind": "text",
+    "req": "－",
+    "len": "文字列 60",
+    "ex": [
+     "割り箸",
+     "Tên vật tư (đũa dùng một lần), tìm kiếm khớp một phần"
+    ],
+    "detail": [
+     "資材名・資材ID の部分一致。",
+     "Khớp một phần tên vật tư hoặc mã vật tư."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "002:2.1.3": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（すべて／要発注／足りる）",
+     "Chọn (Tất cả / Cần đặt / Đủ)"
+    ],
+    "init": [
+     "すべて",
+     "Tất cả"
+    ],
+    "ex": [
+     "要発注",
+     "Trạng thái: 要発注 (cần đặt) hoặc 足りる (đủ)"
+    ],
+    "detail": [
+     "「要発注」＝その倉庫で、在庫＋発注中が見込み（受けて未出荷＋28日の平均×日数）に足りない。「足りる」はそれ以外。しきい値による「在庫不足」は作らない。",
+     "\"要発注\" (cần đặt) = tại kho đó, tồn kho + đang đặt không đủ so với dự kiến (đã nhận chưa xuất + trung bình 28 ngày × số ngày). \"足りる\" (đủ) là các trường hợp còn lại. Không làm \"在庫不足\" (thiếu tồn kho) theo ngưỡng."
+    ],
+    "trig": "select"
+   },
+   "002:2.2": {
+    "ja": "在庫の表",
+    "vi": "Bảng tồn kho",
+    "kind": "table",
+    "detail": [
+     "初期の並びは倉庫マスタの順（ES事務所を含む）→ 資材ID。1ページ 10件（10／20／50）。0件は I01。",
+     "Thứ tự ban đầu theo master kho (bao gồm văn phòng ES) → mã vật tư. 10 dòng/trang (10/20/50). 0 kết quả hiển thị I01."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "002:2.2.1": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "label",
+    "detail": [
+     "倉庫名。",
+     "Tên kho."
+    ],
+    "trig": "view"
+   },
+   "002:2.2.2": {
+    "ja": "資材",
+    "vi": "Vật tư",
+    "kind": "label",
+    "detail": [
+     "資材名（下に資材ID）。",
+     "Tên vật tư (bên dưới là mã vật tư)."
+    ],
+    "trig": "view"
+   },
+   "002:2.2.3": {
+    "ja": "棚卸し（日）",
+    "vi": "Kiểm kê (ngày)",
+    "kind": "label",
+    "detail": [
+     "最後に取り込んだ棚卸しの数（下にその日付 yyyy-mm-dd）。",
+     "Số kiểm kê được nhập gần nhất (bên dưới là ngày đó, yyyy-mm-dd)."
+    ],
+    "trig": "view"
+   },
+   "002:2.2.4": {
+    "ja": "入荷",
+    "vi": "Nhập hàng",
+    "kind": "label",
+    "detail": [
+     "棚卸し以降の入荷（入荷登録）の合計。なければ「—」。",
+     "Tổng nhập hàng (đăng ký nhập hàng) kể từ lần kiểm kê. Không có thì hiển thị \"—\"."
+    ],
+    "trig": "view"
+   },
+   "002:2.2.5": {
+    "ja": "出荷（資材便）",
+    "vi": "Xuất hàng (chuyến vật tư)",
+    "kind": "label",
+    "detail": [
+     "棚卸し以降の資材便の出荷の合計。なければ「—」。",
+     "Tổng xuất hàng của chuyến vật tư kể từ lần kiểm kê. Không có thì hiển thị \"—\"."
+    ],
+    "trig": "view"
+   },
+   "002:2.2.6": {
+    "ja": "記録",
+    "vi": "Ghi nhận",
+    "kind": "label",
+    "detail": [
+     "「在庫の記録」の増減の合計（＋／−）。なければ「—」。",
+     "Tổng tăng/giảm trong \"在庫の記録\" (ghi nhận tồn kho) (＋/−). Không có thì hiển thị \"—\"."
+    ],
+    "trig": "view"
+   },
+   "002:2.2.7": {
+    "ja": "在庫",
+    "vi": "Tồn kho",
+    "kind": "label",
+    "detail": [
+     "棚卸し＋入荷−出荷±記録。太字。",
+     "Kiểm kê + nhập hàng − xuất hàng ± ghi nhận. In đậm."
+    ],
+    "trig": "view"
+   },
+   "002:2.2.8": {
+    "ja": "入荷予定",
+    "vi": "Dự kiến nhập",
+    "kind": "label",
+    "detail": [
+     "発注済みでまだ入荷していない数。なければ「—」。",
+     "Số lượng đã đặt nhưng chưa nhập hàng. Không có thì hiển thị \"—\"."
+    ],
+    "trig": "view"
+   },
+   "002:2.2.9": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "label",
+    "detail": [
+     "「要発注」（赤）／「足りる」（緑）の2つだけ。",
+     "Chỉ có 2 giá trị: \"要発注\" (cần đặt, đỏ) / \"足りる\" (đủ, xanh lá)."
+    ],
+    "trig": "view"
+   },
+   "002:2.3": {
+    "ja": "ページ送り（在庫）",
+    "vi": "Phân trang (tồn kho)",
+    "kind": "area",
+    "detail": [
+     "「n件中 a–b件」・ページ番号・表示件数（10／20／50）。",
+     "\"n件中 a–b件\" (a–b trong n kết quả), số trang, số dòng hiển thị (10/20/50)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "003:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず：発注・入荷 ＞ 資材発注。資材は本発注だけ・随時（仮発注なし）。資材の在庫は倉庫ごとに持ち、足りない分を資材ごとの倉庫へ発注する。資材の在庫の直し方は「在庫の記録」（倉庫在庫・AW_WHS）の「対象：資材」で行う。見られるのは発注管理を閲覧できる役割（フル権限・商品開発・経理・営業・CS・物流・商品管理）。発注できるのはフル権限・商品開発だけ。",
+     "Breadcrumb: 発注・入荷 ＞ 資材発注. Vật tư chỉ đặt chính thức, bất kỳ lúc nào (không có đặt tạm). Tồn kho vật tư được giữ theo từng kho, phần thiếu đặt về kho của từng vật tư. Chỉnh tồn kho vật tư thực hiện ở \"対象：資材\" của \"在庫の記録\" (tồn kho kho, AW_WHS). Vai trò xem được là những vai trò xem được quản lý đặt hàng (toàn quyền, phát triển sản phẩm, kế toán, kinh doanh, CS, logistics, quản lý sản phẩm). Chỉ toàn quyền và phát triển sản phẩm mới đặt hàng được."
+    ],
+    "trig": "view"
+   },
+   "003:7": {
+    "ja": "タブ",
+    "vi": "Tab",
+    "kind": "tab",
+    "detail": [
+     "ヘッダーの下に「発注」（初期表示）／「資材の在庫」／「発注の履歴」の3つ。選んだタブの中身だけを表示する（「発注」＝発注表（No.3）、「資材の在庫」＝在庫の表（No.2）、「発注の履歴」＝履歴の表（No.4））。タブは URL の ?tab= に持ち（例：?tab=stock／?tab=history。「発注」は付けない）、再読み込み・戻るでも同じタブを開く。入力中（発注数など）にタブを変えても入力は消さない。ヘッダーの CSV出力はどのタブでも「発注」の表（No.1.1）。",
+     "Dưới header có 3 tab: 「発注」 (hiển thị ban đầu) / 「資材の在庫」 / 「発注の履歴」. Chỉ hiển thị nội dung của tab đã chọn (「発注」 = bảng đặt hàng (No.3), 「資材の在庫」 = bảng tồn kho (No.2), 「発注の履歴」 = bảng lịch sử (No.4)). Tab giữ trong URL ?tab= (ví dụ: ?tab=stock / ?tab=history; 「発注」 không gắn), tải lại / Back vẫn mở đúng tab. Đổi tab khi đang nhập (số lượng đặt...) không mất nội dung. CSV出力 ở header ở tab nào cũng là của bảng 「発注」 (No.1.1)."
+    ],
+    "pattern": "P-TAB",
+    "trig": "click"
+   },
+   "003:7.1": {
+    "ja": "タブ名の件数",
+    "vi": "Số đếm trên tên tab",
+    "kind": "label",
+    "detail": [
+     "「発注」の名前の後ろに、要発注の資材の数を出してよい（例：発注 (3)）。0 のときは数を出さない。",
+     "Có thể hiện số vật tư 要発注 (cần đặt) sau tên 「発注」 (ví dụ: 発注 (3)). Bằng 0 thì không hiện số."
+    ],
+    "pattern": "P-TAB",
+    "trig": "view"
+   },
+   "003:4": {
+    "ja": "資材の発注の履歴",
+    "vi": "Lịch sử đặt mua vật tư",
+    "kind": "area",
+    "detail": [
+     "資材の発注の一覧。初期の並びは発注日時の降順。1ページ 10件（10／20／50）。詳しい処理（仕入先の回答・分納・メール）は「発注・入荷」の発注詳細で行う。",
+     "Danh sách đặt mua vật tư. Thứ tự ban đầu theo ngày giờ đặt giảm dần. 10 dòng/trang (10/20/50). Xử lý chi tiết (phản hồi nhà cung cấp, giao từng phần, email) thực hiện ở chi tiết đơn đặt của \"発注・入荷\"."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "003:4.1": {
+    "ja": "検索条件（履歴）",
+    "vi": "Điều kiện tìm kiếm (lịch sử)",
+    "kind": "area",
+    "detail": [
+     "資材／入荷状態／期間（発注日）。「検索」か Enter で反映。",
+     "Vật tư / trạng thái nhập hàng / thời gian (ngày đặt). Nhấn \"検索\" (Tìm kiếm) hoặc Enter để áp dụng."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "003:4.1.1": {
+    "ja": "資材",
+    "vi": "Vật tư",
+    "kind": "text",
+    "req": "－",
+    "len": "文字列 60",
+    "ex": [
+     "割り箸",
+     "Tên vật tư (đũa dùng một lần), tìm kiếm khớp một phần"
+    ],
+    "detail": [
+     "資材名・資材ID の部分一致。",
+     "Khớp một phần tên vật tư hoặc mã vật tư."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "003:4.1.2": {
+    "ja": "入荷状態",
+    "vi": "Trạng thái nhập hàng",
+    "kind": "select",
+    "req": "－",
+    "len": [
+     "選択（すべて／未入荷／一部入荷／入荷済）",
+     "Chọn (Tất cả / Chưa nhập / Nhập một phần / Đã nhập)"
+    ],
+    "init": [
+     "すべて",
+     "Tất cả"
+    ],
+    "ex": [
+     "未入荷",
+     "Trạng thái nhập hàng: 未入荷 (chưa nhập), 一部入荷 (nhập một phần) hoặc 入荷済 (đã nhập)"
+    ],
+    "detail": [
+     "発注の入荷の状態。分納の途中は「一部入荷」（C1 の決まり）。",
+     "Trạng thái nhập hàng của đơn đặt. Đang giao từng phần là \"一部入荷\" (nhập một phần) (quy định C1)."
+    ],
+    "trig": "select"
+   },
+   "003:4.1.3": {
+    "ja": "発注日（から）",
+    "vi": "Ngày đặt (từ)",
+    "kind": "date",
+    "req": "－",
+    "len": "日付 yyyy-mm-dd",
+    "ex": [
+     "2026-10-01",
+     "Ngày bắt đầu của ngày đặt, dạng yyyy-mm-dd"
+    ],
+    "detail": [
+     "発注日時の日付の下限。共通の日付の部品。空なら下限なし。",
+     "Cận dưới của ngày trong ngày giờ đặt. Dùng thành phần ngày dùng chung. Để trống thì không có cận dưới."
+    ],
+    "err": [
+     "E01"
+    ],
+    "trig": "input"
+   },
+   "003:4.1.4": {
+    "ja": "発注日（まで）",
+    "vi": "Ngày đặt (đến)",
+    "kind": "date",
+    "req": "－",
+    "len": "日付 yyyy-mm-dd",
+    "ex": [
+     "2026-10-31",
+     "Ngày kết thúc của ngày đặt, dạng yyyy-mm-dd"
+    ],
+    "detail": [
+     "発注日時の日付の上限。「から」より前の日は E08。空なら上限なし。",
+     "Cận trên của ngày trong ngày giờ đặt. Ngày trước \"から\" (từ) là E08. Để trống thì không có cận trên."
+    ],
+    "err": [
+     "E08"
+    ],
+    "trig": "input"
+   },
+   "003:4.2": {
+    "ja": "履歴の表",
+    "vi": "Bảng lịch sử",
+    "kind": "table",
+    "detail": [
+     "0件は I01（コードの「まだありません」は I01 に揃える）。",
+     "0 kết quả hiển thị I01 (câu \"まだありません\" trong code được thống nhất thành I01)."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "003:4.2.1": {
+    "ja": "発注番号",
+    "vi": "Số đơn đặt",
+    "kind": "link",
+    "detail": [
+     "押すと発注詳細の小窓（発注・入荷 ＞ 発注の発注詳細。C1）を開く。この画面では状態を持たない。",
+     "Khi nhấn sẽ mở hộp thoại chi tiết đơn đặt (発注・入荷 ＞ chi tiết đơn đặt. C1). Màn hình này không giữ trạng thái."
+    ],
+    "trig": "click"
+   },
+   "003:4.2.2": {
+    "ja": "発注日時",
+    "vi": "Ngày giờ đặt",
+    "kind": "label",
+    "detail": [
+     "yyyy-mm-dd HH:MM。",
+     "yyyy-mm-dd HH:MM."
+    ],
+    "trig": "view"
+   },
+   "003:4.2.3": {
+    "ja": "資材名",
+    "vi": "Tên vật tư",
+    "kind": "label",
+    "detail": [
+     "資材名。",
+     "Tên vật tư."
+    ],
+    "trig": "view"
+   },
+   "003:4.2.4": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "label",
+    "detail": [
+     "発注した数（単位つき）。右寄せ。",
+     "Số lượng đã đặt (kèm đơn vị). Căn phải."
+    ],
+    "trig": "view"
+   },
+   "003:4.2.5": {
+    "ja": "納入先",
+    "vi": "Nơi giao hàng",
+    "kind": "label",
+    "detail": [
+     "発注の納入先倉庫（資材ごとに選んだ倉庫）。",
+     "Kho nhận hàng của đơn đặt (kho đã chọn theo từng vật tư)."
+    ],
+    "trig": "view"
+   },
+   "003:4.2.6": {
+    "ja": "仕入先回答",
+    "vi": "Phản hồi của nhà cung cấp",
+    "kind": "label",
+    "detail": [
+     "仕入先の回答の状態（バッジ）。",
+     "Trạng thái phản hồi của nhà cung cấp (badge)."
+    ],
+    "trig": "view"
+   },
+   "003:4.2.7": {
+    "ja": "出荷予定日",
+    "vi": "Ngày dự kiến xuất",
+    "kind": "label",
+    "detail": [
+     "仕入先が答えた出荷予定日 yyyy-mm-dd。なければ「—」。",
+     "Ngày dự kiến xuất hàng mà nhà cung cấp trả lời, yyyy-mm-dd. Không có thì hiển thị \"—\"."
+    ],
+    "trig": "view"
+   },
+   "003:4.2.8": {
+    "ja": "入荷",
+    "vi": "Nhập hàng",
+    "kind": "label",
+    "detail": [
+     "入荷の状態（バッジ：未入荷／一部入荷／入荷済の3つ。分納の途中は一部入荷）と入荷日。入荷は運営が「入荷登録」で手入力する（THOMAS の入荷実績 CSV は使わない）。",
+     "Trạng thái nhập hàng (badge: 3 giá trị 未入荷 chưa nhập / 一部入荷 nhập một phần / 入荷済 đã nhập; đang giao từng phần là 一部入荷) và ngày nhập hàng. Bộ phận vận hành nhập tay nhập hàng bằng \"入荷登録\" (đăng ký nhập hàng) (không dùng CSV thực tích nhập hàng của THOMAS)."
+    ],
+    "trig": "view"
+   },
+   "003:4.3": {
+    "ja": "ページ送り（履歴）",
+    "vi": "Phân trang (lịch sử)",
+    "kind": "area",
+    "detail": [
+     "「n件中 a–b件」・ページ番号・表示件数（10／20／50）。",
+     "\"n件中 a–b件\" (a–b trong n kết quả), số trang, số dòng hiển thị (10/20/50)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "004:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず：発注・入荷 ＞ 資材発注。資材は本発注だけ・随時（仮発注なし）。資材の在庫は倉庫ごとに持ち、足りない分を資材ごとの倉庫へ発注する。資材の在庫の直し方は「在庫の記録」（倉庫在庫・AW_WHS）の「対象：資材」で行う。見られるのは発注管理を閲覧できる役割（フル権限・商品開発・経理・営業・CS・物流・商品管理）。発注できるのはフル権限・商品開発だけ。",
+     "Breadcrumb: 発注・入荷 ＞ 資材発注. Vật tư chỉ đặt chính thức, bất kỳ lúc nào (không có đặt tạm). Tồn kho vật tư được giữ theo từng kho, phần thiếu đặt về kho của từng vật tư. Chỉnh tồn kho vật tư thực hiện ở \"対象：資材\" của \"在庫の記録\" (tồn kho kho, AW_WHS). Vai trò xem được là những vai trò xem được quản lý đặt hàng (toàn quyền, phát triển sản phẩm, kế toán, kinh doanh, CS, logistics, quản lý sản phẩm). Chỉ toàn quyền và phát triển sản phẩm mới đặt hàng được."
+    ],
+    "trig": "view"
+   },
+   "004:3": {
+    "ja": "資材の発注",
+    "vi": "Đặt mua vật tư",
+    "kind": "area",
+    "detail": [
+     "本発注だけ・随時（仮発注なし）。資材は食品のサイクル（A〜D）に属さない。資材ごとに1行。納入先は資材ごとの倉庫（資材マスタの取扱倉庫。ES事務所も倉庫の1つ）で、初期値は取扱倉庫、行ごとに変えられる。在庫・目安は選んだ倉庫の数。検索・ページ送りは付けない（資材の数だけで少ない）。発注できるのは発注管理（フル権限・商品開発）の操作。",
+     "Chỉ đặt chính thức, bất kỳ lúc nào (không có đặt tạm). Vật tư không thuộc chu kỳ thực phẩm (A–D). Mỗi vật tư một dòng. Nơi giao hàng là kho theo từng vật tư (kho phụ trách trong master vật tư; văn phòng ES cũng là một kho), mặc định là kho phụ trách, có thể đổi theo từng dòng. Tồn kho và mức đề xuất là số của kho đã chọn. Không có tìm kiếm và phân trang (chỉ có ít vật tư). Người đặt hàng được làThao tác của quản lý đặt hàng (toàn quyền, phát triển sản phẩm)."
+    ],
+    "trig": "view"
+   },
+   "004:3.2": {
+    "ja": "発注数",
+    "vi": "Số lượng đặt",
+    "kind": "text",
+    "req": "○",
+    "len": [
+     "数値 0〜999,999（ロットの倍数）",
+     "Số 0–999,999 (bội của lô)"
+    ],
+    "init": [
+     "発注の目安（0なら空）",
+     "Mức đặt đề xuất (nếu 0 thì để trống)"
+    ],
+    "ex": [
+     "300",
+     "Số lượng đặt, số nguyên là bội của lô"
+    ],
+    "detail": [
+     "右寄せ・単位は資材の単位（膳・本・枚など）。ロットの倍数で入れる（割り箸100膳なら100・200…）。数量の範囲は共通基準どおり 0〜999,999（範囲外は E12）。ただし 0 は「発注しない」の意味で、発注する（3.3）を押しても通らない（空・0 は E01）。範囲外は E12、倍数でないときは E144（{n}＝ロット）。エラーは入力欄の下に出す。全角の数字は半角に直す。発注する小窓へ進む前に行ごとに確認する。",
+     "Căn phải; đơn vị là đơn vị của vật tư (膳, 本, 枚...). Nhập bội của lô (đũa dùng một lần lô 100 膳 thì nhập 100, 200...). Phạm vi số lượng theo chuẩn chung 0–999,999 (ngoài phạm vi là E12), nhưng 0 nghĩa là \"không đặt\": nhấn \"発注する\" (3.3) cũng không đi tiếp (trống hoặc 0 là E01), không phải bội là E144 ({n} = lô). Lỗi hiển thị bên dưới ô nhập. Số toàn-width được đổi sang half-width. Kiểm tra theo từng dòng trước khi sang hộp thoại đặt hàng."
+    ],
+    "err": [
+     "E01",
+     "E12",
+     "E144"
+    ],
+    "trig": "input"
+   },
+   "004:3.3": {
+    "ja": "発注する",
+    "vi": "Đặt hàng",
+    "kind": "button",
+    "detail": [
+     "押すと発注数を確認し（3.2）、通れば「資材の発注（本発注）」の確認の小窓（No.5）を開く。発注管理（フル権限・商品開発）の操作。",
+     "Khi nhấn sẽ kiểm tra số lượng đặt (3.2), nếu hợp lệ thì mở hộp thoại xác nhận \"資材の発注（本発注）\" (No.5). Thao tác của quản lý đặt hàng (toàn quyền, phát triển sản phẩm)."
+    ],
+    "cond": [
+     "発注管理の発注ができる役割（フル権限・商品開発）だけに出す",
+     "Chỉ hiển thị cho vai trò đặt hàng được trong quản lý đặt hàng (toàn quyền, phát triển sản phẩm)"
+    ],
+    "trig": "click"
+   },
+   "004:3.4": {
+    "ja": "発注数のエラー",
+    "vi": "Lỗi số lượng đặt",
+    "kind": "label",
+    "detail": [
+     "発注数の下に出す。空・0＝E01、範囲外＝E12、ロットの倍数でない＝E144。確認の小窓は開かない。",
+     "Hiển thị bên dưới số lượng đặt. Trống/0 = E01, ngoài phạm vi = E12, không phải bội của lô = E144. Không mở hộp thoại xác nhận."
+    ],
+    "err": [
+     "E01",
+     "E12",
+     "E144"
+    ],
+    "trig": "show"
+   },
+   "005:5": {
+    "ja": "資材の発注（本発注）",
+    "vi": "Đặt mua vật tư (đặt chính thức)",
+    "kind": "modal",
+    "detail": [
+     "発注する（3.3）で開く確認の小窓。内容を見て発注する。仕入先へのメールは発注・入荷（C1）の決まりに従う（発注方法が「外部」なら送らない）。入力が途中のまま閉じるときの確認（Q02）は共通。",
+     "Hộp thoại xác nhận mở bằng \"発注する\" (3.3). Xem nội dung rồi đặt hàng. Email gửi nhà cung cấp theo quy định của 発注・入荷 (C1) (nếu phương thức đặt là \"外部\" thì không gửi). Xác nhận khi đóng lúc đang nhập dở (Q02) dùng chung."
+    ],
+    "trig": "click"
+   },
+   "005:5.1": {
+    "ja": "資材",
+    "vi": "Vật tư",
+    "kind": "label",
+    "detail": [
+     "資材名（資材ID）。",
+     "Tên vật tư (mã vật tư)."
+    ],
+    "trig": "view"
+   },
+   "005:5.2": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "label",
+    "detail": [
+     "発注数＋単位（3桁区切り）。",
+     "Số lượng đặt + đơn vị (ngăn cách hàng nghìn)."
+    ],
+    "trig": "view"
+   },
+   "005:5.3": {
+    "ja": "納入先",
+    "vi": "Nơi giao hàng",
+    "kind": "label",
+    "detail": [
+     "発注の表で選んだ納入先倉庫。",
+     "Kho nhận hàng đã chọn ở bảng đặt hàng."
+    ],
+    "trig": "view"
+   },
+   "005:5.4": {
+    "ja": "金額（税抜）",
+    "vi": "Số tiền (chưa thuế)",
+    "kind": "label",
+    "detail": [
+     "数量×資材マスタの単価。「1,000円」の形で右寄せ。",
+     "Số lượng × đơn giá trong master vật tư. Căn phải, dạng \"1,000円\"."
+    ],
+    "trig": "view"
+   },
+   "005:5.5": {
+    "ja": "入荷希望日",
+    "vi": "Ngày muốn nhập hàng",
+    "kind": "date",
+    "req": "○",
+    "len": "日付 yyyy-mm-dd",
+    "init": [
+     "今日",
+     "Hôm nay"
+    ],
+    "ex": [
+     "2026-10-09",
+     "Ngày muốn nhập hàng, dạng yyyy-mm-dd"
+    ],
+    "detail": [
+     "共通の日付の部品。初期値は今日。今日より前は選べない（E145）。空は E01。",
+     "Thành phần ngày dùng chung. Giá trị ban đầu là hôm nay. Không chọn được ngày trước hôm nay (E145). Để trống là E01."
+    ],
+    "err": [
+     "E01",
+     "E145"
+    ],
+    "trig": "input"
+   },
+   "005:5.6": {
+    "ja": "戻る",
+    "vi": "Quay lại",
+    "kind": "button",
+    "detail": [
+     "小窓を閉じて発注の表に戻る（何も作らない）。",
+     "Đóng hộp thoại và quay lại bảng đặt hàng (không tạo gì)."
+    ],
+    "trig": "click"
+   },
+   "005:5.7": {
+    "ja": "この内容で発注する",
+    "vi": "Đặt hàng với nội dung này",
+    "kind": "button",
+    "detail": [
+     "発注（本発注）を作る。成功したら小窓を閉じてトースト S122（{発注番号}）を出し、履歴の先頭に出る。発注番号は PO-YYYYMM-資材ID-NN。仕入先へのメールは C1 の決まり。発注管理（フル権限・商品開発）の操作。",
+     "Tạo đơn đặt (đặt chính thức). Khi thành công thì đóng hộp thoại, hiện toast S122 ({số đơn đặt}) và đơn xuất hiện ở đầu lịch sử. Số đơn đặt là PO-YYYYMM-mã vật tư-NN. Email gửi nhà cung cấp theo quy định C1. Thao tác của quản lý đặt hàng (toàn quyền, phát triển sản phẩm)."
+    ],
+    "err": [
+     "S122"
+    ],
+    "trig": "click"
+   },
+   "006:5": {
+    "ja": "資材の発注（本発注）",
+    "vi": "Đặt mua vật tư (đặt chính thức)",
+    "kind": "modal",
+    "detail": [
+     "発注する（3.3）で開く確認の小窓。内容を見て発注する。仕入先へのメールは発注・入荷（C1）の決まりに従う（発注方法が「外部」なら送らない）。入力が途中のまま閉じるときの確認（Q02）は共通。",
+     "Hộp thoại xác nhận mở bằng \"発注する\" (3.3). Xem nội dung rồi đặt hàng. Email gửi nhà cung cấp theo quy định của 発注・入荷 (C1) (nếu phương thức đặt là \"外部\" thì không gửi). Xác nhận khi đóng lúc đang nhập dở (Q02) dùng chung."
+    ],
+    "trig": "click"
+   },
+   "006:5.1": {
+    "ja": "資材",
+    "vi": "Vật tư",
+    "kind": "label",
+    "detail": [
+     "資材名（資材ID）。",
+     "Tên vật tư (mã vật tư)."
+    ],
+    "trig": "view"
+   },
+   "006:5.2": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "label",
+    "detail": [
+     "発注数＋単位（3桁区切り）。",
+     "Số lượng đặt + đơn vị (ngăn cách hàng nghìn)."
+    ],
+    "trig": "view"
+   },
+   "006:5.3": {
+    "ja": "納入先",
+    "vi": "Nơi giao hàng",
+    "kind": "label",
+    "detail": [
+     "発注の表で選んだ納入先倉庫。",
+     "Kho nhận hàng đã chọn ở bảng đặt hàng."
+    ],
+    "trig": "view"
+   },
+   "006:5.4": {
+    "ja": "金額（税抜）",
+    "vi": "Số tiền (chưa thuế)",
+    "kind": "label",
+    "detail": [
+     "数量×資材マスタの単価。「1,000円」の形で右寄せ。",
+     "Số lượng × đơn giá trong master vật tư. Căn phải, dạng \"1,000円\"."
+    ],
+    "trig": "view"
+   },
+   "006:5.5": {
+    "ja": "入荷希望日",
+    "vi": "Ngày muốn nhập hàng",
+    "kind": "date",
+    "req": "○",
+    "len": "日付 yyyy-mm-dd",
+    "init": [
+     "今日",
+     "Hôm nay"
+    ],
+    "ex": [
+     "2026-10-09",
+     "Ngày muốn nhập hàng, dạng yyyy-mm-dd"
+    ],
+    "detail": [
+     "共通の日付の部品。初期値は今日。今日より前は選べない（E145）。空は E01。",
+     "Thành phần ngày dùng chung. Giá trị ban đầu là hôm nay. Không chọn được ngày trước hôm nay (E145). Để trống là E01."
+    ],
+    "err": [
+     "E01",
+     "E145"
+    ],
+    "trig": "input"
+   },
+   "006:5.6": {
+    "ja": "戻る",
+    "vi": "Quay lại",
+    "kind": "button",
+    "detail": [
+     "小窓を閉じて発注の表に戻る（何も作らない）。",
+     "Đóng hộp thoại và quay lại bảng đặt hàng (không tạo gì)."
+    ],
+    "trig": "click"
+   },
+   "006:5.8": {
+    "ja": "入荷希望日のエラー",
+    "vi": "Lỗi ngày muốn nhập hàng",
+    "kind": "label",
+    "detail": [
+     "入荷希望日の下に出す（E01／E145）。「この内容で発注する」は押しても発注しない。",
+     "Hiển thị bên dưới ngày muốn nhập hàng (E01/E145). Dù nhấn \"この内容で発注する\" cũng không đặt hàng."
+    ],
+    "err": [
+     "E01",
+     "E145"
+    ],
+    "trig": "show"
+   },
+   "007:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず：発注・入荷 ＞ 資材発注。資材は本発注だけ・随時（仮発注なし）。資材の在庫は倉庫ごとに持ち、足りない分を資材ごとの倉庫へ発注する。資材の在庫の直し方は「在庫の記録」（倉庫在庫・AW_WHS）の「対象：資材」で行う。見られるのは発注管理を閲覧できる役割（フル権限・商品開発・経理・営業・CS・物流・商品管理）。発注できるのはフル権限・商品開発だけ。",
+     "Breadcrumb: 発注・入荷 ＞ 資材発注. Vật tư chỉ đặt chính thức, bất kỳ lúc nào (không có đặt tạm). Tồn kho vật tư được giữ theo từng kho, phần thiếu đặt về kho của từng vật tư. Chỉnh tồn kho vật tư thực hiện ở \"対象：資材\" của \"在庫の記録\" (tồn kho kho, AW_WHS). Vai trò xem được là những vai trò xem được quản lý đặt hàng (toàn quyền, phát triển sản phẩm, kế toán, kinh doanh, CS, logistics, quản lý sản phẩm). Chỉ toàn quyền và phát triển sản phẩm mới đặt hàng được."
+    ],
+    "trig": "view"
+   },
+   "007:6": {
+    "ja": "発注完了のトースト",
+    "vi": "Toast hoàn tất đặt hàng",
+    "kind": "toast",
+    "detail": [
+     "「資材を発注しました（{発注番号}）。」。右下に出て消える。",
+     "\"資材を発注しました（{発注番号}）。\" (Đã đặt vật tư ({số đơn đặt}).) Hiện ở góc dưới bên phải rồi biến mất."
+    ],
+    "err": [
+     "S122"
+    ],
+    "trig": "show"
+   },
+   "007:4": {
+    "ja": "資材の発注の履歴",
+    "vi": "Lịch sử đặt mua vật tư",
+    "kind": "area",
+    "detail": [
+     "資材の発注の一覧。初期の並びは発注日時の降順。1ページ 10件（10／20／50）。詳しい処理（仕入先の回答・分納・メール）は「発注・入荷」の発注詳細で行う。",
+     "Danh sách đặt mua vật tư. Thứ tự ban đầu theo ngày giờ đặt giảm dần. 10 dòng/trang (10/20/50). Xử lý chi tiết (phản hồi nhà cung cấp, giao từng phần, email) thực hiện ở chi tiết đơn đặt của \"発注・入荷\"."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "007:4.2": {
+    "ja": "履歴の表",
+    "vi": "Bảng lịch sử",
+    "kind": "table",
+    "detail": [
+     "0件は I01（コードの「まだありません」は I01 に揃える）。",
+     "0 kết quả hiển thị I01 (câu \"まだありません\" trong code được thống nhất thành I01)."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "007:4.2.1": {
+    "ja": "発注番号",
+    "vi": "Số đơn đặt",
+    "kind": "link",
+    "detail": [
+     "押すと発注詳細の小窓（発注・入荷 ＞ 発注の発注詳細。C1）を開く。この画面では状態を持たない。",
+     "Khi nhấn sẽ mở hộp thoại chi tiết đơn đặt (発注・入荷 ＞ chi tiết đơn đặt. C1). Màn hình này không giữ trạng thái."
+    ],
+    "trig": "click"
+   },
+   "008:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず：発注・入荷 ＞ 資材発注。資材は本発注だけ・随時（仮発注なし）。資材の在庫は倉庫ごとに持ち、足りない分を資材ごとの倉庫へ発注する。資材の在庫の直し方は「在庫の記録」（倉庫在庫・AW_WHS）の「対象：資材」で行う。見られるのは発注管理を閲覧できる役割（フル権限・商品開発・経理・営業・CS・物流・商品管理）。発注できるのはフル権限・商品開発だけ。",
+     "Breadcrumb: 発注・入荷 ＞ 資材発注. Vật tư chỉ đặt chính thức, bất kỳ lúc nào (không có đặt tạm). Tồn kho vật tư được giữ theo từng kho, phần thiếu đặt về kho của từng vật tư. Chỉnh tồn kho vật tư thực hiện ở \"対象：資材\" của \"在庫の記録\" (tồn kho kho, AW_WHS). Vai trò xem được là những vai trò xem được quản lý đặt hàng (toàn quyền, phát triển sản phẩm, kế toán, kinh doanh, CS, logistics, quản lý sản phẩm). Chỉ toàn quyền và phát triển sản phẩm mới đặt hàng được."
+    ],
+    "trig": "view"
+   },
+   "008:8": {
+    "ja": "一括発注",
+    "vi": "Đặt hàng loạt",
+    "kind": "area",
+    "detail": [
+     "「発注」タブの発注表で複数の資材を選び、まとめて発注する。共通の入荷希望日・資材ごとの数量。発注は資材ごとに1件作る（発注番号も資材ごと）。各行の「発注する」（3.3）も従来どおり使える。発注管理（フル権限・商品開発）の操作。",
+     "Ở bảng đặt hàng của tab 「発注」, chọn nhiều vật tư rồi đặt cùng lúc. Một ngày muốn nhập hàng chung, số lượng theo từng vật tư. Mỗi vật tư tạo một đơn đặt (số đơn đặt cũng theo từng vật tư). Nút 「発注する」 (3.3) ở từng dòng vẫn dùng như cũ. Thao tác của quản lý đặt hàng (toàn quyền, phát triển sản phẩm)."
+    ],
+    "trig": "view"
+   },
+   "008:8.1": {
+    "ja": "選択のチェックボックス",
+    "vi": "Ô chọn dòng",
+    "kind": "check",
+    "req": "－",
+    "init": [
+     "未選択",
+     "Chưa chọn"
+    ],
+    "ex": [
+     "選択",
+     "Đã chọn (đánh dấu)"
+    ],
+    "detail": [
+     "発注表の各行の左。見出し行のチェックで全行の選択・解除。初期値は未選択。",
+     "Bên trái mỗi dòng của bảng đặt hàng. Ô ở dòng tiêu đề chọn/bỏ chọn tất cả. Giá trị ban đầu là chưa chọn."
+    ],
+    "cond": [
+     "発注管理の発注ができる役割（フル権限・商品開発）だけに出す",
+     "Chỉ hiển thị cho vai trò đặt hàng được trong quản lý đặt hàng (toàn quyền, phát triển sản phẩm)"
+    ],
+    "trig": "click"
+   },
+   "008:8.2": {
+    "ja": "選択した資材を発注",
+    "vi": "Đặt các vật tư đã chọn",
+    "kind": "button",
+    "detail": [
+     "発注表の上。押すと、選んだ資材の一括発注の確認の小窓（No.9）を開く。数量の初期値は、発注表に入れた数（なければ発注の目安）。発注管理（フル権限・商品開発）の操作。",
+     "Phía trên bảng đặt hàng. Khi nhấn sẽ mở hộp thoại xác nhận đặt hàng loạt (No.9) cho các vật tư đã chọn. Số lượng ban đầu là số đã nhập ở bảng đặt hàng (nếu chưa có thì mức đặt đề xuất). Thao tác của quản lý đặt hàng (toàn quyền, phát triển sản phẩm)."
+    ],
+    "cond": [
+     "発注ができる役割だけに出す。1件も選んでいないときは押せない",
+     "Chỉ hiển thị cho vai trò đặt hàng được; chưa chọn dòng nào thì không nhấn được"
+    ],
+    "trig": "click"
+   },
+   "008:10": {
+    "ja": "仕入先の発注方法",
+    "vi": "Phương thức đặt hàng của nhà cung cấp",
+    "kind": "label",
+    "detail": [
+     "資材の仕入先は、システム内（ESステーション＝仕入先サイトで回答）／メール（返信・電話を受けて運営が代理入力）／外部（仕入先の発注システム。運営が代理入力、メールは1通も送らない）のどれか（仕入先ごと。台帳 I・仕様 55 の 6-3）。一括発注でも1件ずつの発注でも、この方法に従う。",
+     "Nhà cung cấp vật tư thuộc một trong: trong hệ thống (ESステーション = trả lời trên trang nhà cung cấp) / email (nhận phản hồi hoặc điện thoại rồi vận hành nhập thay) / 外部 (hệ thống đặt hàng của nhà cung cấp; vận hành nhập thay, không gửi email nào) (theo từng nhà cung cấp; sổ cái I, mục 6-3 của đặc tả 55). Đặt hàng loạt hay từng mục đều theo phương thức này. Hiển thị: cột 「仕入先（発注方法）」 của bảng đặt hàng (3.1.3) và của bảng trong hộp thoại đặt hàng loạt (9.1), cùng cột 「発注方法」 trong CSV xuất. Giá trị lấy từ master nhà cung cấp (No.13); nhà cung cấp chưa có giá trị thì coi là ESステーション."
+    ],
+    "trig": "view"
+   },
+   "009:9": {
+    "ja": "資材の一括発注（小窓）",
+    "vi": "Đặt mua vật tư hàng loạt (hộp thoại)",
+    "kind": "modal",
+    "detail": [
+     "選んだ資材を一度に確認して発注する小窓。仕入先へのメールは発注・入荷（C1）の決まりに従う（発注方法が「外部」の仕入先には送らない）。入力が途中のまま閉じるときの確認（Q02）は共通。",
+     "Hộp thoại xác nhận và đặt cùng lúc các vật tư đã chọn. Email gửi nhà cung cấp theo quy định 発注・入荷 (C1) (không gửi cho nhà cung cấp có phương thức đặt là 「外部」). Xác nhận khi đóng lúc đang nhập dở (Q02) dùng chung."
+    ],
+    "trig": "click"
+   },
+   "009:9.1": {
+    "ja": "選んだ資材の表",
+    "vi": "Bảng vật tư đã chọn",
+    "kind": "table",
+    "detail": [
+     "資材（名前とID）・仕入先・数量・金額（税抜）。金額＝数量×資材マスタの単価。仕入先の列は「仕入先（発注方法）」で、仕入先名の下に発注方法（No.10）を添える。",
+     "Vật tư (tên và ID), nhà cung cấp, số lượng, số tiền (chưa thuế) = số lượng × đơn giá trong master vật tư. Cột nhà cung cấp là 「仕入先（発注方法）」, bên dưới tên nhà cung cấp có ghi phương thức đặt hàng (No.10)."
+    ],
+    "trig": "view"
+   },
+   "009:9.2": {
+    "ja": "数量（一括）",
+    "vi": "Số lượng (hàng loạt)",
+    "kind": "text",
+    "req": "○",
+    "len": [
+     "数値 0〜999,999（ロットの倍数）",
+     "Số 0–999,999 (bội của lô)"
+    ],
+    "init": [
+     "発注表の数（なければ発注の目安）",
+     "Số ở bảng đặt hàng (nếu chưa có thì mức đặt đề xuất)"
+    ],
+    "ex": [
+     "300",
+     "Số lượng đặt, số nguyên là bội của lô"
+    ],
+    "detail": [
+     "資材ごとに直せる。空・0＝E01、範囲外＝E12、ロットの倍数でない＝E144。エラーは行の入力欄の下に出し、1行でもエラーなら1件も発注しない。",
+     "Sửa được theo từng vật tư. Trống/0 = E01, ngoài phạm vi = E12, không phải bội của lô = E144. Lỗi hiển thị bên dưới ô nhập của dòng; chỉ cần một dòng lỗi thì không đặt đơn nào."
+    ],
+    "err": [
+     "E01",
+     "E12",
+     "E144"
+    ],
+    "trig": "input"
+   },
+   "009:9.3": {
+    "ja": "入荷希望日（共通）",
+    "vi": "Ngày muốn nhập hàng (chung)",
+    "kind": "date",
+    "req": "○",
+    "len": "日付 yyyy-mm-dd",
+    "init": [
+     "今日",
+     "Hôm nay"
+    ],
+    "ex": [
+     "2026-10-09",
+     "Ngày muốn nhập hàng, dạng yyyy-mm-dd"
+    ],
+    "detail": [
+     "全資材共通の1つ。共通の日付の部品。初期値は今日。今日より前は選べない（E145）。空は E01。",
+     "Một ngày dùng chung cho mọi vật tư. Thành phần ngày dùng chung. Giá trị ban đầu là hôm nay. Không chọn được ngày trước hôm nay (E145). Để trống là E01."
+    ],
+    "err": [
+     "E01",
+     "E145"
+    ],
+    "trig": "input"
+   },
+   "009:9.4": {
+    "ja": "戻る（一括）",
+    "vi": "Quay lại (hàng loạt)",
+    "kind": "button",
+    "detail": [
+     "小窓を閉じて発注表に戻る（何も作らない。選択は残る）。",
+     "Đóng hộp thoại và quay lại bảng đặt hàng (không tạo gì, vẫn giữ các dòng đã chọn)."
+    ],
+    "trig": "click"
+   },
+   "009:9.5": {
+    "ja": "この内容で発注する（一括）",
+    "vi": "Đặt hàng với nội dung này (hàng loạt)",
+    "kind": "button",
+    "detail": [
+     "選んだ資材ごとに1件ずつ発注（本発注）を作る。成功したら小窓を閉じ、トースト S122（資材の件数と発注番号の一覧）を1回出す。履歴の先頭に件数分の発注が出る。仕入先へのメールは C1 の決まり。発注管理（フル権限・商品開発）の操作。",
+     "Tạo mỗi vật tư một đơn đặt (đặt chính thức). Khi thành công thì đóng hộp thoại, hiện toast S122 một lần (số vật tư và danh sách số đơn đặt). Số đơn đặt tương ứng xuất hiện ở đầu lịch sử. Email gửi nhà cung cấp theo quy định C1. Thao tác của quản lý đặt hàng (toàn quyền, phát triển sản phẩm)."
+    ],
+    "err": [
+     "S122"
+    ],
+    "trig": "click"
+   },
+   "009:10": {
+    "ja": "仕入先の発注方法",
+    "vi": "Phương thức đặt hàng của nhà cung cấp",
+    "kind": "label",
+    "detail": [
+     "資材の仕入先は、システム内（ESステーション＝仕入先サイトで回答）／メール（返信・電話を受けて運営が代理入力）／外部（仕入先の発注システム。運営が代理入力、メールは1通も送らない）のどれか（仕入先ごと。台帳 I・仕様 55 の 6-3）。一括発注でも1件ずつの発注でも、この方法に従う。",
+     "Nhà cung cấp vật tư thuộc một trong: trong hệ thống (ESステーション = trả lời trên trang nhà cung cấp) / email (nhận phản hồi hoặc điện thoại rồi vận hành nhập thay) / 外部 (hệ thống đặt hàng của nhà cung cấp; vận hành nhập thay, không gửi email nào) (theo từng nhà cung cấp; sổ cái I, mục 6-3 của đặc tả 55). Đặt hàng loạt hay từng mục đều theo phương thức này. Hiển thị: cột 「仕入先（発注方法）」 của bảng đặt hàng (3.1.3) và của bảng trong hộp thoại đặt hàng loạt (9.1), cùng cột 「発注方法」 trong CSV xuất. Giá trị lấy từ master nhà cung cấp (No.13); nhà cung cấp chưa có giá trị thì coi là ESステーション."
+    ],
+    "trig": "view"
+   },
+   "009:12.12": {
+    "ja": "棚卸し日以前の警告",
+    "vi": "Cảnh báo ngày trước kiểm kê",
+    "kind": "label",
+    "detail": [
+     "日付（12.5）がその倉庫・資材の直近の棚卸し日以前のとき、日付の下に W123 を出す（登録はできる）。",
+     "Khi ngày (12.5) trước hoặc bằng ngày kiểm kê gần nhất của kho・vật tư đó, hiện W123 bên dưới ngày (vẫn đăng ký được)."
+    ],
+    "err": [
+     "W123"
+    ],
+    "trig": "show"
+   },
+   "009:13": {
+    "ja": "仕入先マスタの発注方法",
+    "vi": "Phương thức đặt hàng trong master nhà cung cấp",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "選択（ESステーション／メール／外部）",
+     "Chọn (ES Station / Email / Bên ngoài)"
+    ],
+    "init": [
+     "ESステーション（値がない仕入先も同じ）",
+     "ES Station (nhà cung cấp chưa có giá trị cũng vậy)"
+    ],
+    "ex": [
+     "外部",
+     "Bên ngoài"
+    ],
+    "detail": [
+     "運営の仕入先マスタ（マスタ管理 ＞ 仕入先マスタ）の項目。一覧の列と絞り込み、詳細・編集（ID・名前・鉛筆で開く）の選択、CSV（「発注方法」の列）で持つ。ESステーション＝仕入先サイトで回答する／メール＝ログインしない仕入先へメールで送り、返信・電話を受けて運営が代理入力／外部＝仕入先の発注システムで受け、運営が代理入力しメールは1通も送らない（台帳 I）。資材の発注表と一括発注（No.10）、商品の発注・入荷（C1）もこの値に従う。承認のあとマスタで決める。",
+     "Mục của master nhà cung cấp phía vận hành (Quản lý master > Master nhà cung cấp). Có ở cột và bộ lọc của danh sách, ô chọn trong chi tiết/chỉnh sửa (mở bằng ID・tên・biểu tượng bút), và CSV (cột 「発注方法」). ESステーション = trả lời trên trang nhà cung cấp / メール = gửi email cho nhà cung cấp không đăng nhập, nhận phản hồi hoặc điện thoại rồi vận hành nhập thay / 外部 = nhận qua hệ thống đặt hàng của nhà cung cấp, vận hành nhập thay và không gửi email nào (sổ cái I). Bảng đặt hàng vật tư và đặt hàng loạt (No.10) và đặt hàng/nhập hàng sản phẩm (C1) cũng theo giá trị này. Quyết định trong master sau khi duyệt."
+    ],
+    "trig": "select"
+   },
+   "010:9": {
+    "ja": "資材の一括発注（小窓）",
+    "vi": "Đặt mua vật tư hàng loạt (hộp thoại)",
+    "kind": "modal",
+    "detail": [
+     "選んだ資材を一度に確認して発注する小窓。仕入先へのメールは発注・入荷（C1）の決まりに従う（発注方法が「外部」の仕入先には送らない）。入力が途中のまま閉じるときの確認（Q02）は共通。",
+     "Hộp thoại xác nhận và đặt cùng lúc các vật tư đã chọn. Email gửi nhà cung cấp theo quy định 発注・入荷 (C1) (không gửi cho nhà cung cấp có phương thức đặt là 「外部」). Xác nhận khi đóng lúc đang nhập dở (Q02) dùng chung."
+    ],
+    "trig": "click"
+   },
+   "010:9.2": {
+    "ja": "数量（一括）",
+    "vi": "Số lượng (hàng loạt)",
+    "kind": "text",
+    "req": "○",
+    "len": [
+     "数値 0〜999,999（ロットの倍数）",
+     "Số 0–999,999 (bội của lô)"
+    ],
+    "init": [
+     "発注表の数（なければ発注の目安）",
+     "Số ở bảng đặt hàng (nếu chưa có thì mức đặt đề xuất)"
+    ],
+    "ex": [
+     "300",
+     "Số lượng đặt, số nguyên là bội của lô"
+    ],
+    "detail": [
+     "資材ごとに直せる。空・0＝E01、範囲外＝E12、ロットの倍数でない＝E144。エラーは行の入力欄の下に出し、1行でもエラーなら1件も発注しない。",
+     "Sửa được theo từng vật tư. Trống/0 = E01, ngoài phạm vi = E12, không phải bội của lô = E144. Lỗi hiển thị bên dưới ô nhập của dòng; chỉ cần một dòng lỗi thì không đặt đơn nào."
+    ],
+    "err": [
+     "E01",
+     "E12",
+     "E144"
+    ],
+    "trig": "input"
+   },
+   "010:9.6": {
+    "ja": "一括発注のエラー",
+    "vi": "Lỗi đặt hàng loạt",
+    "kind": "label",
+    "detail": [
+     "数量は行の下、入荷希望日は日付の下に出す。1つでもエラーがあれば発注しない（トーストにしない）。",
+     "Số lượng hiển thị dưới dòng, ngày muốn nhập hàng hiển thị dưới ô ngày. Chỉ cần một lỗi thì không đặt hàng (không dùng toast)."
+    ],
+    "err": [
+     "E01",
+     "E12",
+     "E144",
+     "E145"
+    ],
+    "trig": "show"
+   },
+   "011:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず：発注・入荷 ＞ 資材発注。資材は本発注だけ・随時（仮発注なし）。資材の在庫は倉庫ごとに持ち、足りない分を資材ごとの倉庫へ発注する。資材の在庫の直し方は「在庫の記録」（倉庫在庫・AW_WHS）の「対象：資材」で行う。見られるのは発注管理を閲覧できる役割（フル権限・商品開発・経理・営業・CS・物流・商品管理）。発注できるのはフル権限・商品開発だけ。",
+     "Breadcrumb: 発注・入荷 ＞ 資材発注. Vật tư chỉ đặt chính thức, bất kỳ lúc nào (không có đặt tạm). Tồn kho vật tư được giữ theo từng kho, phần thiếu đặt về kho của từng vật tư. Chỉnh tồn kho vật tư thực hiện ở \"対象：資材\" của \"在庫の記録\" (tồn kho kho, AW_WHS). Vai trò xem được là những vai trò xem được quản lý đặt hàng (toàn quyền, phát triển sản phẩm, kế toán, kinh doanh, CS, logistics, quản lý sản phẩm). Chỉ toàn quyền và phát triển sản phẩm mới đặt hàng được."
+    ],
+    "trig": "view"
+   },
+   "011:6": {
+    "ja": "発注完了のトースト",
+    "vi": "Toast hoàn tất đặt hàng",
+    "kind": "toast",
+    "detail": [
+     "「資材を発注しました（{発注番号}）。」。右下に出て消える。",
+     "\"資材を発注しました（{発注番号}）。\" (Đã đặt vật tư ({số đơn đặt}).) Hiện ở góc dưới bên phải rồi biến mất."
+    ],
+    "err": [
+     "S122"
+    ],
+    "trig": "show"
+   },
+   "011:4": {
+    "ja": "資材の発注の履歴",
+    "vi": "Lịch sử đặt mua vật tư",
+    "kind": "area",
+    "detail": [
+     "資材の発注の一覧。初期の並びは発注日時の降順。1ページ 10件（10／20／50）。詳しい処理（仕入先の回答・分納・メール）は「発注・入荷」の発注詳細で行う。",
+     "Danh sách đặt mua vật tư. Thứ tự ban đầu theo ngày giờ đặt giảm dần. 10 dòng/trang (10/20/50). Xử lý chi tiết (phản hồi nhà cung cấp, giao từng phần, email) thực hiện ở chi tiết đơn đặt của \"発注・入荷\"."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "011:4.2": {
+    "ja": "履歴の表",
+    "vi": "Bảng lịch sử",
+    "kind": "table",
+    "detail": [
+     "0件は I01（コードの「まだありません」は I01 に揃える）。",
+     "0 kết quả hiển thị I01 (câu \"まだありません\" trong code được thống nhất thành I01)."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "011:4.2.1": {
+    "ja": "発注番号",
+    "vi": "Số đơn đặt",
+    "kind": "link",
+    "detail": [
+     "押すと発注詳細の小窓（発注・入荷 ＞ 発注の発注詳細。C1）を開く。この画面では状態を持たない。",
+     "Khi nhấn sẽ mở hộp thoại chi tiết đơn đặt (発注・入荷 ＞ chi tiết đơn đặt. C1). Màn hình này không giữ trạng thái."
+    ],
+    "trig": "click"
+   },
+   "012:1": {
+    "ja": "ヘッダー",
+    "vi": "Header",
+    "kind": "area",
+    "detail": [
+     "パンくず：発注・入荷 ＞ 資材発注。資材は本発注だけ・随時（仮発注なし）。資材の在庫は倉庫ごとに持ち、足りない分を資材ごとの倉庫へ発注する。資材の在庫の直し方は「在庫の記録」（倉庫在庫・AW_WHS）の「対象：資材」で行う。見られるのは発注管理を閲覧できる役割（フル権限・商品開発・経理・営業・CS・物流・商品管理）。発注できるのはフル権限・商品開発だけ。",
+     "Breadcrumb: 発注・入荷 ＞ 資材発注. Vật tư chỉ đặt chính thức, bất kỳ lúc nào (không có đặt tạm). Tồn kho vật tư được giữ theo từng kho, phần thiếu đặt về kho của từng vật tư. Chỉnh tồn kho vật tư thực hiện ở \"対象：資材\" của \"在庫の記録\" (tồn kho kho, AW_WHS). Vai trò xem được là những vai trò xem được quản lý đặt hàng (toàn quyền, phát triển sản phẩm, kế toán, kinh doanh, CS, logistics, quản lý sản phẩm). Chỉ toàn quyền và phát triển sản phẩm mới đặt hàng được."
+    ],
+    "trig": "view"
+   },
+   "012:7": {
+    "ja": "タブ",
+    "vi": "Tab",
+    "kind": "tab",
+    "detail": [
+     "ヘッダーの下に「発注」（初期表示）／「資材の在庫」／「発注の履歴」の3つ。選んだタブの中身だけを表示する（「発注」＝発注表（No.3）、「資材の在庫」＝在庫の表（No.2）、「発注の履歴」＝履歴の表（No.4））。タブは URL の ?tab= に持ち（例：?tab=stock／?tab=history。「発注」は付けない）、再読み込み・戻るでも同じタブを開く。入力中（発注数など）にタブを変えても入力は消さない。ヘッダーの CSV出力はどのタブでも「発注」の表（No.1.1）。",
+     "Dưới header có 3 tab: 「発注」 (hiển thị ban đầu) / 「資材の在庫」 / 「発注の履歴」. Chỉ hiển thị nội dung của tab đã chọn (「発注」 = bảng đặt hàng (No.3), 「資材の在庫」 = bảng tồn kho (No.2), 「発注の履歴」 = bảng lịch sử (No.4)). Tab giữ trong URL ?tab= (ví dụ: ?tab=stock / ?tab=history; 「発注」 không gắn), tải lại / Back vẫn mở đúng tab. Đổi tab khi đang nhập (số lượng đặt...) không mất nội dung. CSV出力 ở header ở tab nào cũng là của bảng 「発注」 (No.1.1)."
+    ],
+    "pattern": "P-TAB",
+    "trig": "click"
+   },
+   "012:11": {
+    "ja": "調整",
+    "vi": "Điều chỉnh",
+    "kind": "button",
+    "detail": [
+     "押すと、その行の倉庫と資材が入った状態で調整のモーダル（No.12）を開く。資材の在庫を直す手段はこのボタンだけ（NG品ロス・棚卸し差異・再送・ES外発注の入荷・その他）。資材の記録の権限は、現在のコードでは「在庫の記録を作る」操作（倉庫在庫と同じ）。",
+     "Khi nhấn sẽ mở modal điều chỉnh (No.12) với kho và vật tư của dòng đó đã điền sẵn. Đây là cách duy nhất để chỉnh tồn kho vật tư (NG品ロス・棚卸し差異・再送・ES外発注の入荷・その他). Quyền ghi nhận vật tư hiện trong code là thao tác \"tạo ghi nhận tồn kho\" (giống tồn kho kho)."
+    ],
+    "cond": [
+     "タブ「資材の在庫」の各行の右端。在庫の記録を作れる役割だけに出す",
+     "Cuối bên phải mỗi dòng của tab 「資材の在庫」. Chỉ hiển thị cho vai trò tạo được ghi nhận tồn kho"
+    ],
+    "trig": "click"
+   },
+   "013:12": {
+    "ja": "資材の在庫の調整（モーダル）",
+    "vi": "Điều chỉnh tồn kho vật tư (modal)",
+    "kind": "modal",
+    "detail": [
+     "「調整」（No.11）で開く。倉庫在庫の詳細の「この商品を記録」（AW_WHS_002 No.5）と同じモーダルを、対象＝資材で開く。1回の登録で記録は1件。登録するとモーダルを閉じ、「資材の在庫」の表の「記録」「在庫」に反映する。キャンセルは入力を捨てて閉じる。登録した記録は直せない・消せない（間違いは区分「その他」で打ち消す記録を足す）。",
+     "Mở bằng 「調整」 (No.11). Cùng modal với 「この商品を記録」 ở chi tiết tồn kho kho (AW_WHS_002 No.5), mở với đối tượng = vật tư. Mỗi lần đăng ký 1 bản ghi. Khi đăng ký xong đóng modal và phản ánh vào cột 「記録」「在庫」 của bảng 「資材の在庫」. Hủy thì bỏ nội dung nhập rồi đóng. Bản ghi đã đăng ký không sửa/xóa được (nếu sai thì thêm bản ghi bù trừ với phân loại 「その他」)."
+    ],
+    "err": [
+     "S01"
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "013:12.1": {
+    "ja": "対象",
+    "vi": "Đối tượng",
+    "kind": "label",
+    "detail": [
+     "「資材」で固定（選べない）。商品の記録は倉庫在庫の詳細で行う。",
+     "Cố định là 「資材」 (không chọn được). Ghi nhận sản phẩm làm ở chi tiết tồn kho kho."
+    ],
+    "trig": "view"
+   },
+   "013:12.2": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "label",
+    "detail": [
+     "押した行の倉庫（ES事務所（資材）・関東倉庫など）。固定（選べない）。",
+     "Kho của dòng đã nhấn (văn phòng ES (vật tư), kho Kanto, ...). Cố định (không chọn được)."
+    ],
+    "trig": "view"
+   },
+   "013:12.3": {
+    "ja": "資材",
+    "vi": "Vật tư",
+    "kind": "label",
+    "detail": [
+     "押した行の資材（資材名と資材ID）。固定（選べない）。",
+     "Vật tư của dòng đã nhấn (tên và mã vật tư). Cố định (không chọn được)."
+    ],
+    "trig": "view"
+   },
+   "013:12.4": {
+    "ja": "区分",
+    "vi": "Phân loại",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "選択（NG品ロス／棚卸し差異／再送／ES外発注の入荷／その他）",
+     "Chọn (Mất hàng NG / Chênh lệch kiểm kê / Gửi lại / Nhập hàng đặt ngoài ES / Khác)"
+    ],
+    "init": [
+     "NG品ロス",
+     "Mất hàng NG"
+    ],
+    "ex": [
+     "棚卸し差異",
+     "Chênh lệch kiểm kê"
+    ],
+    "detail": [
+     "倉庫在庫の「この商品を記録」と同じ選択肢。「在庫戻し」は出さない（出荷指示の作成で自動で記録される。商品だけ）。",
+     "Cùng lựa chọn với 「この商品を記録」 ở tồn kho kho. Không hiện 「在庫戻し」 (tự ghi khi tạo chỉ thị xuất hàng; chỉ cho sản phẩm)."
+    ],
+    "err": [
+     "E02"
+    ],
+    "trig": "select"
+   },
+   "013:12.5": {
+    "ja": "日付",
+    "vi": "Ngày",
+    "kind": "date",
+    "req": "○",
+    "len": "日付（yyyy-mm-dd）",
+    "init": [
+     "今日",
+     "Hôm nay"
+    ],
+    "ex": [
+     "2026-10-05",
+     "Ngày ghi nhận, dạng yyyy-mm-dd"
+    ],
+    "detail": [
+     "共通の日付の部品。その倉庫の直近の棚卸し日以前の日付は W123 の警告を出すが、登録はできる（見込み在庫には効かない）。",
+     "Thành phần ngày dùng chung. Ngày trước hoặc bằng ngày kiểm kê gần nhất của kho đó thì hiện cảnh báo W123 nhưng vẫn đăng ký được (không ảnh hưởng tồn kho dự kiến)."
+    ],
+    "err": [
+     "E01",
+     "W123"
+    ],
+    "trig": "input"
+   },
+   "013:12.6": {
+    "ja": "増減",
+    "vi": "Tăng/giảm",
+    "kind": "radio",
+    "req": "○",
+    "len": [
+     "選択（増える／減る）",
+     "Chọn (Tăng / Giảm)"
+    ],
+    "init": [
+     "減る",
+     "Giảm"
+    ],
+    "ex": [
+     "増える",
+     "Tăng"
+    ],
+    "detail": [
+     "在庫がどちらに動くか。",
+     "Tồn kho thay đổi theo hướng nào."
+    ],
+    "cond": [
+     "区分が NG品ロス・再送のときは「減る」、ES外発注の入荷のときは「増える」に固定。棚卸し差異・その他のときだけ選べる",
+     "Phân loại NG品ロス・再送 thì cố định 「減る」; ES外発注の入荷 thì cố định 「増える」. Chỉ chọn được khi là 棚卸し差異・その他"
+    ],
+    "trig": "select"
+   },
+   "013:12.7": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "text",
+    "req": "○",
+    "len": "整数 0〜999,999",
+    "ex": [
+     "100",
+     "Số nguyên, theo đơn vị của vật tư"
+    ],
+    "detail": [
+     "資材の単位（膳・本・枚など）で入れる。整数。範囲外は E12、空は E01。エラーは項目の下に出す。",
+     "Nhập theo đơn vị của vật tư (膳・本・枚...). Số nguyên. Ngoài phạm vi là E12, để trống là E01. Lỗi hiển thị bên dưới mục."
+    ],
+    "err": [
+     "E01",
+     "E12"
+    ],
+    "trig": "input"
+   },
+   "013:12.8": {
+    "ja": "理由",
+    "vi": "Lý do",
+    "kind": "textarea",
+    "req": "○",
+    "len": [
+     "文字列 500（複数行）",
+     "Chuỗi tối đa 500 ký tự (nhiều dòng)"
+    ],
+    "ex": [
+     "棚卸しで割り箸が200膳少なかった",
+     "Lý do ghi nhận (nhiều dòng)"
+    ],
+    "detail": [
+     "記録の理由。空は E01。",
+     "Lý do ghi nhận. Để trống là E01."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "013:12.9": {
+    "ja": "キャンセル",
+    "vi": "Hủy",
+    "kind": "button",
+    "detail": [
+     "入力を捨ててモーダルを閉じる。何も登録しない。",
+     "Bỏ nội dung nhập và đóng modal. Không đăng ký gì."
+    ],
+    "trig": "click"
+   },
+   "013:12.10": {
+    "ja": "登録",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "全項目をまとめてチェックし、エラーは項目の下に出す。問題なければ在庫の記録（対象＝資材）を1件作り、モーダルを閉じる。資材の記録の権限は、現在のコードでは「在庫の記録を作る」操作（倉庫在庫と同じ）。",
+     "Kiểm tra tất cả các mục, lỗi hiển thị bên dưới mục. Nếu không có vấn đề thì tạo 1 ghi nhận tồn kho (đối tượng = vật tư) và đóng modal. Quyền ghi nhận vật tư hiện trong code là thao tác \"tạo ghi nhận tồn kho\" (giống tồn kho kho)."
+    ],
+    "err": [
+     "S01",
+     "E01",
+     "E12",
+     "W123"
+    ],
+    "trig": "click"
+   },
+   "014:12": {
+    "ja": "資材の在庫の調整（モーダル）",
+    "vi": "Điều chỉnh tồn kho vật tư (modal)",
+    "kind": "modal",
+    "detail": [
+     "「調整」（No.11）で開く。倉庫在庫の詳細の「この商品を記録」（AW_WHS_002 No.5）と同じモーダルを、対象＝資材で開く。1回の登録で記録は1件。登録するとモーダルを閉じ、「資材の在庫」の表の「記録」「在庫」に反映する。キャンセルは入力を捨てて閉じる。登録した記録は直せない・消せない（間違いは区分「その他」で打ち消す記録を足す）。",
+     "Mở bằng 「調整」 (No.11). Cùng modal với 「この商品を記録」 ở chi tiết tồn kho kho (AW_WHS_002 No.5), mở với đối tượng = vật tư. Mỗi lần đăng ký 1 bản ghi. Khi đăng ký xong đóng modal và phản ánh vào cột 「記録」「在庫」 của bảng 「資材の在庫」. Hủy thì bỏ nội dung nhập rồi đóng. Bản ghi đã đăng ký không sửa/xóa được (nếu sai thì thêm bản ghi bù trừ với phân loại 「その他」)."
+    ],
+    "err": [
+     "S01"
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "014:12.6": {
+    "ja": "増減",
+    "vi": "Tăng/giảm",
+    "kind": "radio",
+    "req": "○",
+    "len": [
+     "選択（増える／減る）",
+     "Chọn (Tăng / Giảm)"
+    ],
+    "init": [
+     "減る",
+     "Giảm"
+    ],
+    "ex": [
+     "増える",
+     "Tăng"
+    ],
+    "detail": [
+     "在庫がどちらに動くか。",
+     "Tồn kho thay đổi theo hướng nào."
+    ],
+    "cond": [
+     "区分が NG品ロス・再送のときは「減る」、ES外発注の入荷のときは「増える」に固定。棚卸し差異・その他のときだけ選べる",
+     "Phân loại NG品ロス・再送 thì cố định 「減る」; ES外発注の入荷 thì cố định 「増える」. Chỉ chọn được khi là 棚卸し差異・その他"
+    ],
+    "trig": "select"
+   },
+   "014:12.7": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "text",
+    "req": "○",
+    "len": "整数 0〜999,999",
+    "ex": [
+     "100",
+     "Số nguyên, theo đơn vị của vật tư"
+    ],
+    "detail": [
+     "資材の単位（膳・本・枚など）で入れる。整数。範囲外は E12、空は E01。エラーは項目の下に出す。",
+     "Nhập theo đơn vị của vật tư (膳・本・枚...). Số nguyên. Ngoài phạm vi là E12, để trống là E01. Lỗi hiển thị bên dưới mục."
+    ],
+    "err": [
+     "E01",
+     "E12"
+    ],
+    "trig": "input"
+   },
+   "014:12.9": {
+    "ja": "キャンセル",
+    "vi": "Hủy",
+    "kind": "button",
+    "detail": [
+     "入力を捨ててモーダルを閉じる。何も登録しない。",
+     "Bỏ nội dung nhập và đóng modal. Không đăng ký gì."
+    ],
+    "trig": "click"
+   },
+   "014:12.10": {
+    "ja": "登録",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "全項目をまとめてチェックし、エラーは項目の下に出す。問題なければ在庫の記録（対象＝資材）を1件作り、モーダルを閉じる。資材の記録の権限は、現在のコードでは「在庫の記録を作る」操作（倉庫在庫と同じ）。",
+     "Kiểm tra tất cả các mục, lỗi hiển thị bên dưới mục. Nếu không có vấn đề thì tạo 1 ghi nhận tồn kho (đối tượng = vật tư) và đóng modal. Quyền ghi nhận vật tư hiện trong code là thao tác \"tạo ghi nhận tồn kho\" (giống tồn kho kho)."
+    ],
+    "err": [
+     "S01",
+     "E01",
+     "E12",
+     "W123"
+    ],
+    "trig": "click"
+   },
+   "014:12.11": {
+    "ja": "調整のエラー",
+    "vi": "Lỗi điều chỉnh",
+    "kind": "label",
+    "detail": [
+     "数量・理由・日付の下に出す（空は E01、数量の範囲外は E12）。1つでもエラーがあれば登録しない。",
+     "Hiển thị bên dưới số lượng・lý do・ngày (trống là E01, số lượng ngoài phạm vi là E12). Chỉ cần một lỗi thì không đăng ký."
+    ],
+    "err": [
+     "E01",
+     "E12"
+    ],
+    "trig": "show"
+   },
+   "015:12": {
+    "ja": "資材の在庫の調整（モーダル）",
+    "vi": "Điều chỉnh tồn kho vật tư (modal)",
+    "kind": "modal",
+    "detail": [
+     "「調整」（No.11）で開く。倉庫在庫の詳細の「この商品を記録」（AW_WHS_002 No.5）と同じモーダルを、対象＝資材で開く。1回の登録で記録は1件。登録するとモーダルを閉じ、「資材の在庫」の表の「記録」「在庫」に反映する。キャンセルは入力を捨てて閉じる。登録した記録は直せない・消せない（間違いは区分「その他」で打ち消す記録を足す）。",
+     "Mở bằng 「調整」 (No.11). Cùng modal với 「この商品を記録」 ở chi tiết tồn kho kho (AW_WHS_002 No.5), mở với đối tượng = vật tư. Mỗi lần đăng ký 1 bản ghi. Khi đăng ký xong đóng modal và phản ánh vào cột 「記録」「在庫」 của bảng 「資材の在庫」. Hủy thì bỏ nội dung nhập rồi đóng. Bản ghi đã đăng ký không sửa/xóa được (nếu sai thì thêm bản ghi bù trừ với phân loại 「その他」)."
+    ],
+    "err": [
+     "S01"
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "015:12.4": {
+    "ja": "区分",
+    "vi": "Phân loại",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "選択（NG品ロス／棚卸し差異／再送／ES外発注の入荷／その他）",
+     "Chọn (Mất hàng NG / Chênh lệch kiểm kê / Gửi lại / Nhập hàng đặt ngoài ES / Khác)"
+    ],
+    "init": [
+     "NG品ロス",
+     "Mất hàng NG"
+    ],
+    "ex": [
+     "棚卸し差異",
+     "Chênh lệch kiểm kê"
+    ],
+    "detail": [
+     "倉庫在庫の「この商品を記録」と同じ選択肢。「在庫戻し」は出さない（出荷指示の作成で自動で記録される。商品だけ）。",
+     "Cùng lựa chọn với 「この商品を記録」 ở tồn kho kho. Không hiện 「在庫戻し」 (tự ghi khi tạo chỉ thị xuất hàng; chỉ cho sản phẩm)."
+    ],
+    "err": [
+     "E02"
+    ],
+    "trig": "select"
+   },
+   "015:12.12": {
+    "ja": "棚卸し日以前の警告",
+    "vi": "Cảnh báo ngày trước kiểm kê",
+    "kind": "label",
+    "detail": [
+     "日付（12.5）がその倉庫・資材の直近の棚卸し日以前のとき、日付の下に W123 を出す（登録はできる）。",
+     "Khi ngày (12.5) trước hoặc bằng ngày kiểm kê gần nhất của kho・vật tư đó, hiện W123 bên dưới ngày (vẫn đăng ký được)."
+    ],
+    "err": [
+     "W123"
+    ],
+    "trig": "show"
+   }
+  },
+  "画面設計書_AW_SMP_営業サンプル": {
+   "001:1": {
+    "ja": "ヘッダー",
+    "vi": "Đầu trang",
+    "kind": "area",
+    "detail": [
+     "パンくず：発注・入荷 ＞ 営業サンプル。営業の依頼で運営が宛先を登録し、出荷週ごとに受け付けて THOMAS へ出荷指示を出す。詳細画面は作らない（メモの追記は一覧のモーダル）。月の枠は メニュー管理 ＞ 月間メニューで設定する（運営B）。",
+     "Breadcrumb: Đặt hàng・Nhập hàng ＞ Mẫu kinh doanh. Theo yêu cầu của kinh doanh, vận hành đăng ký địa chỉ nhận, tiếp nhận theo từng tuần gửi và ra chỉ thị xuất hàng cho THOMAS. Không có màn chi tiết (bổ sung ghi chú qua modal trong danh sách). Hạn mức tháng đặt ở Quản lý menu ＞ Menu tháng (Vận hành B)."
+    ],
+    "trig": "view"
+   },
+   "001:1.1": {
+    "ja": "CSV出力",
+    "vi": "Xuất CSV",
+    "kind": "button",
+    "detail": [
+     "ヘッダーの右。閲覧できる全役割に出す。1行＝サンプルの1商品（サンプルの項目を商品の数だけ繰り返す）。列：サンプルNo・受付日・法人名・郵便番号・住所・担当者名・電話番号・品番・商品・数量・納品日・発送日・倉庫・配送会社・中継先・送り状番号・リードタイム（日）・出荷週・状態・出荷指示・前倒しの理由・メモ・登録者。検索条件のとおりの全件（取消を表示しているときは取消も出す）。",
+     "Bên phải đầu trang. Hiện cho mọi vai trò xem được. 1 dòng = 1 sản phẩm của mẫu (lặp các mục của mẫu theo số sản phẩm). Cột: Số mẫu・Ngày tiếp nhận・Tên công ty・Mã bưu điện・Địa chỉ・Người phụ trách・Số điện thoại・Mã hàng・Sản phẩm・Số lượng・Ngày giao・Ngày gửi・Kho・Công ty vận chuyển・Điểm trung chuyển・Số vận đơn・Lead time (ngày)・Tuần gửi・Trạng thái・Chỉ thị xuất hàng・Lý do dời sớm・Ghi chú・Người đăng ký. Toàn bộ kết quả theo điều kiện tìm kiếm (khi đang hiển thị mẫu hủy thì xuất cả mẫu hủy)."
+    ],
+    "pattern": "P-CSV-OUT",
+    "trig": "click"
+   },
+   "001:1.2": {
+    "ja": "サンプルを登録",
+    "vi": "Đăng ký mẫu",
+    "kind": "button",
+    "detail": [
+     "サンプル登録（AW_SMP_002）へ。",
+     "Chuyển sang Đăng ký mẫu (AW_SMP_002)."
+    ],
+    "cond": [
+     "営業サンプルの作成権限（営業・フル権限）があるとき。ないときは出さない",
+     "Khi có quyền tạo mẫu kinh doanh (kinh doanh・toàn quyền). Không có quyền thì không hiện"
+    ],
+    "trig": "click"
+   },
+   "001:2": {
+    "ja": "枠の概要",
+    "vi": "Tổng quan hạn mức",
+    "kind": "area",
+    "detail": [
+     "月ごとの営業サンプル枠。4つの数字（枠・受付済・残り枠・対象商品）は2つのタブの上に共通で出す。月は月間メニューのある月（枠はメニューごと＝その枠を決めたメニューの月）。枠の設定は メニュー管理 ＞ 月間メニューで行う（この画面では直さない）。",
+     "Hạn mức mẫu kinh doanh theo tháng. 4 con số (hạn mức・đã tiếp nhận・còn lại・sản phẩm đối tượng) hiển thị chung phía trên cả hai tab. Tháng là tháng có Menu tháng (hạn mức theo từng menu = tháng của menu đã đặt hạn mức đó). Việc đặt hạn mức thực hiện ở Quản lý menu ＞ Menu tháng (không sửa ở màn hình này)."
+    ],
+    "trig": "view"
+   },
+   "001:2.1": {
+    "ja": "枠の月の切替",
+    "vi": "Chuyển tháng",
+    "kind": "tab",
+    "init": [
+     "納品日が今日以降のいちばん近い月（直前に見た月を覚える）",
+     "Tháng gần nhất có ngày giao từ hôm nay trở đi (nhớ tháng xem trước đó)"
+    ],
+    "detail": [
+     "押した月の KPI を表示する（一覧の絞り込みには影響しない）。",
+     "Hiện KPI của tháng được bấm (không ảnh hưởng đến bộ lọc danh sách)."
+    ],
+    "trig": "click"
+   },
+   "001:2.2": {
+    "ja": "営業サンプル枠（月の合計）",
+    "vi": "Hạn mức mẫu (tổng tháng)",
+    "kind": "label",
+    "detail": [
+     "その月の合計件数（既定は月60件・足せる）。枠が未設定の月は「未設定」と出し、W120 を出す（登録はできる）。",
+     "Tổng số mẫu của tháng (mặc định 60 mẫu/tháng, có thể tăng). Tháng chưa đặt hạn mức hiện 「Chưa đặt」 và hiện W120 (vẫn đăng ký được)."
+    ],
+    "err": [
+     "W120"
+    ],
+    "trig": "view"
+   },
+   "001:2.3": {
+    "ja": "受付済（宛先の数）",
+    "vi": "Đã tiếp nhận (số địa chỉ nhận)",
+    "kind": "label",
+    "detail": [
+     "その月の宛先の数。宛先1か所＝1件（数量が2個以上でも1件）。状態「取消」は数えない。",
+     "Số địa chỉ nhận của tháng. 1 địa chỉ nhận = 1 mẫu (dù số lượng từ 2 cái trở lên vẫn là 1). Trạng thái 「取消」 không tính."
+    ],
+    "trig": "view"
+   },
+   "001:2.4": {
+    "ja": "残り枠",
+    "vi": "Hạn mức còn lại",
+    "kind": "label",
+    "detail": [
+     "月の合計 − 受付済。枠が未設定のときは「—」。0 を下回る（枠を超えている）ときは赤字で「枠を超えています」。",
+     "Tổng tháng − 受付済. Khi chưa đặt hạn mức hiện 「—」. Nếu nhỏ hơn 0 (vượt hạn mức) thì chữ đỏ 「Đã vượt hạn mức」."
+    ],
+    "trig": "view"
+   },
+   "001:2.5": {
+    "ja": "対象商品",
+    "vi": "Sản phẩm đối tượng",
+    "kind": "label",
+    "detail": [
+     "商品マスタの「営業サンプル」にチェックした商品の数。数量の初期値は各2個（1〜9個）。",
+     "Số sản phẩm được tích 「営業サンプル」 trong master sản phẩm. Số lượng ban đầu là 2 cái mỗi sản phẩm (1〜9)."
+    ],
+    "trig": "view"
+   },
+   "001:3": {
+    "ja": "タブ",
+    "vi": "Tab",
+    "kind": "area",
+    "detail": [
+     "「サンプル一覧」（初期表示）／「出荷週の受付」の2つ。タブは URL の ?tab= で持つ（出荷週の受付＝?tab=出荷週の受付）。4つの数字（2）は両タブの上に共通。",
+     "2 tab: 「サンプル一覧」 (mặc định) / 「出荷週の受付」. Tab được giữ trong URL (?tab=; 出荷週の受付 = ?tab=出荷週の受付). 4 con số (2) dùng chung phía trên cả hai tab."
+    ],
+    "pattern": "P-TAB",
+    "trig": "view"
+   },
+   "001:3.1": {
+    "ja": "サンプル一覧（タブ）",
+    "vi": "Danh sách mẫu (tab)",
+    "kind": "tab",
+    "init": [
+     "選択中（初期表示）",
+     "Đang chọn (mặc định)"
+    ],
+    "detail": [
+     "検索条件（4）と営業サンプルの一覧（5）・ページ送り（6）を出す。",
+     "Hiện điều kiện tìm kiếm (4), danh sách mẫu kinh doanh (5) và phân trang (6)."
+    ],
+    "trig": "click"
+   },
+   "001:3.2": {
+    "ja": "出荷週の受付（タブ）",
+    "vi": "Tiếp nhận theo tuần gửi (tab)",
+    "kind": "tab",
+    "detail": [
+     "出荷週ごとの受付の表（7）を出す。「受付を締める」・自動で締める案内・「余りを在庫へ戻す」はこのタブ。",
+     "Hiện bảng tiếp nhận theo tuần gửi (7). 「受付を締める」・giải thích tự động chốt・「余りを在庫へ戻す」 nằm ở tab này."
+    ],
+    "trig": "click"
+   },
+   "001:4": {
+    "ja": "検索条件",
+    "vi": "Điều kiện tìm kiếm",
+    "kind": "area",
+    "detail": [
+     "サンプルNo・法人名・担当者のキーワード／出荷週／月／倉庫／状態／受付日（から・まで）。「検索」か Enter で反映。取消は既定では出さない（状態で「取消」を選ぶと出る）。",
+     "Từ khóa số mẫu・tên công ty・người phụ trách / tuần gửi / tháng / kho / trạng thái / ngày tiếp nhận (từ・đến). Áp dụng bằng 「Tìm」 hoặc Enter. Mặc định không hiện mẫu hủy (chọn trạng thái 「取消」 mới hiện)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:4.1": {
+    "ja": "キーワード",
+    "vi": "Từ khóa",
+    "kind": "text",
+    "req": "－",
+    "len": "文字列 60",
+    "ex": [
+     "ミズホ",
+     "Từ khóa tìm kiếm (một phần tên công ty), dạng chuỗi"
+    ],
+    "detail": [
+     "サンプルNo・法人名・担当者名を部分一致で探す。",
+     "Tìm theo khớp một phần số mẫu・tên công ty・tên người phụ trách."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "001:4.2": {
+    "ja": "出荷週",
+    "vi": "Tuần gửi",
+    "kind": "select",
+    "req": "－",
+    "len": "選択",
+    "init": [
+     "（未選択）",
+     "(Chưa chọn)"
+    ],
+    "ex": [
+     "10-12〜10-18（10月サイクル A週）",
+     "Một tuần gửi được chọn từ danh sách, dạng 「MM-DD〜MM-DD (chu kỳ tháng n, tuần X)」"
+    ],
+    "detail": [
+     "一覧の出荷週と同じ。",
+     "Giống tuần gửi trong danh sách."
+    ],
+    "trig": "select"
+   },
+   "001:4.3": {
+    "ja": "月",
+    "vi": "Tháng",
+    "kind": "select",
+    "req": "－",
+    "len": "選択",
+    "init": [
+     "（未選択）",
+     "(Chưa chọn)"
+    ],
+    "ex": [
+     "2026-11",
+     "Tháng áp dụng (tháng chu kỳ), dạng yyyy-mm"
+    ],
+    "detail": [
+     "サンプルの対象月（納品日のサイクル月）。",
+     "Tháng áp dụng của mẫu (tháng chu kỳ của ngày giao)."
+    ],
+    "trig": "select"
+   },
+   "001:4.4": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "select",
+    "req": "－",
+    "len": "選択",
+    "init": [
+     "（未選択）",
+     "(Chưa chọn)"
+    ],
+    "ex": [
+     "関東倉庫",
+     "Tên kho picking, chọn từ danh sách"
+    ],
+    "detail": [
+     "倉庫マスタの有効なピッキング倉庫。",
+     "Kho picking đang hiệu lực trong master kho."
+    ],
+    "trig": "select"
+   },
+   "001:4.5": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "select",
+    "req": "－",
+    "len": "選択",
+    "init": [
+     "（未選択）＝取消以外すべて",
+     "(Chưa chọn) = tất cả trừ 取消"
+    ],
+    "ex": [
+     "受付済",
+     "Trạng thái mẫu, chọn từ danh sách"
+    ],
+    "detail": [
+     "受付済／締め済／締め後追加／取消。未選択のときは取消を出さない。",
+     "受付済／締め済／締め後追加／取消. Khi chưa chọn thì không hiện mẫu hủy."
+    ],
+    "trig": "select"
+   },
+   "001:4.6": {
+    "ja": "受付日（から）",
+    "vi": "Ngày tiếp nhận (từ)",
+    "kind": "date",
+    "req": "－",
+    "len": "日付",
+    "ex": [
+     "2026-10-01",
+     "Ngày tiếp nhận, dạng yyyy-mm-dd"
+    ],
+    "detail": [
+     "登録した日。まで より後は指定できない。",
+     "Ngày đăng ký. Không chọn được sau ngày 「đến」."
+    ],
+    "err": [
+     "E02"
+    ],
+    "trig": "input"
+   },
+   "001:4.7": {
+    "ja": "受付日（まで）",
+    "vi": "Ngày tiếp nhận (đến)",
+    "kind": "date",
+    "req": "－",
+    "len": "日付",
+    "ex": [
+     "2026-10-31",
+     "Ngày tiếp nhận, dạng yyyy-mm-dd"
+    ],
+    "detail": [
+     "登録した日。",
+     "Ngày đăng ký."
+    ],
+    "trig": "input"
+   },
+   "001:4.8": {
+    "ja": "クリア・検索",
+    "vi": "Xóa・Tìm",
+    "kind": "button",
+    "detail": [
+     "「クリア」で条件を空に戻す。「検索」で反映する。",
+     "「Xóa」 đưa điều kiện về trống. 「Tìm」 để áp dụng."
+    ],
+    "trig": "click"
+   },
+   "001:4.9": {
+    "ja": "並べ替え",
+    "vi": "Sắp xếp",
+    "kind": "select",
+    "req": "－",
+    "len": "選択",
+    "init": [
+     "受付日時の降順（初期の並び）",
+     "Ngày giờ tiếp nhận giảm dần (thứ tự ban đầu)"
+    ],
+    "ex": [
+     "納品日",
+     "Mục sắp xếp, chọn từ danh sách"
+    ],
+    "detail": [
+     "並べる項目と昇順・降順を選ぶ。初期の並びは受付日時の降順（新しい受付が上）。",
+     "Chọn mục sắp xếp và tăng dần・giảm dần. Thứ tự ban đầu là ngày giờ tiếp nhận giảm dần (mẫu mới ở trên)."
+    ],
+    "trig": "select"
+   },
+   "001:5": {
+    "ja": "営業サンプルの一覧",
+    "vi": "Bảng mẫu kinh doanh",
+    "kind": "table",
+    "detail": [
+     "1ページ 10件。0件は I01 を一覧の中に出す。1行＝1回の登録（倉庫が分かれる出荷・枝番は作らない。台帳 F 2026-10-08）。詳細画面は作らない。",
+     "10 dòng/trang. Khi 0 dòng hiện I01 trong danh sách. 1 dòng = 1 lần đăng ký (không tách chuyến theo kho, không có số nhánh; Sổ cái F 2026-10-08). Không có màn chi tiết."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:5.1": {
+    "ja": "サンプルNo",
+    "vi": "Số mẫu",
+    "kind": "label",
+    "detail": [
+     "SM-YYMM-NNN（YYMM＝サイクル月）。枝番（-1・-2）は付けない（倉庫が分かれる出荷を作らないため）。システムが採番する。",
+     "SM-YYMM-NNN (YYMM = tháng chu kỳ). Không có số nhánh -1・-2 (vì không tách chuyến theo kho). Hệ thống tự đánh số."
+    ],
+    "trig": "view"
+   },
+   "001:5.2": {
+    "ja": "受付日",
+    "vi": "Ngày tiếp nhận",
+    "kind": "label",
+    "detail": [
+     "yyyy-mm-dd。登録した日。",
+     "yyyy-mm-dd. Ngày đăng ký."
+    ],
+    "trig": "view"
+   },
+   "001:5.3": {
+    "ja": "宛先",
+    "vi": "Địa chỉ nhận",
+    "kind": "label",
+    "detail": [
+     "法人名（文字だけ。押しても何も開かない＝宛先の送付履歴のモーダルは作らない。台帳 F 2026-10-08）。下に都道府県・市区町村。法人・拠点・契約とはつながない。同じ宛先への過去の送付は、登録画面の警告（W121）だけで知らせる。",
+     "Tên công ty (chỉ hiện chữ, bấm không mở gì = không làm modal lịch sử gửi tới địa chỉ; Sổ cái F 2026-10-08). Bên dưới là tỉnh/thành・quận/huyện. Không liên kết với công ty・chi nhánh・hợp đồng. Việc đã gửi trước đây tới cùng địa chỉ chỉ báo bằng cảnh báo (W121) ở màn đăng ký."
+    ],
+    "trig": "view"
+   },
+   "001:5.4": {
+    "ja": "担当者",
+    "vi": "Người phụ trách",
+    "kind": "label",
+    "detail": [
+     "先方の担当者名。",
+     "Tên người phụ trách phía khách."
+    ],
+    "trig": "view"
+   },
+   "001:5.4.1": {
+    "ja": "登録者",
+    "vi": "Người đăng ký",
+    "kind": "label",
+    "ex": [
+     "にっしぐち（運営）",
+     "Tên tài khoản vận hành, hệ thống tự ghi"
+    ],
+    "detail": [
+     "そのサンプルを登録した運営のアカウント名（担当者の右）。CSV出力にも「登録者」の列で出す。登録後に変わらない。",
+     "Tên tài khoản vận hành đã đăng ký mẫu đó (bên phải Người phụ trách). Cũng xuất ra CSV出力 ở cột 「登録者」. Không đổi sau khi đăng ký."
+    ],
+    "trig": "view"
+   },
+   "001:5.5": {
+    "ja": "商品",
+    "vi": "Sản phẩm",
+    "kind": "label",
+    "detail": [
+     "「商品名×数量」を「、」でつなぐ。長いときは省略し、マウスを乗せると全文。",
+     "Nối 「tên sản phẩm×số lượng」 bằng 「、」. Nếu dài thì rút gọn, rê chuột vào để xem đầy đủ."
+    ],
+    "trig": "view"
+   },
+   "001:5.6": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "label",
+    "detail": [
+     "その行の数量の合計（右寄せ）。",
+     "Tổng số lượng của dòng đó (căn phải)."
+    ],
+    "trig": "view"
+   },
+   "001:5.7": {
+    "ja": "納品日",
+    "vi": "Ngày giao",
+    "kind": "label",
+    "detail": [
+     "yyyy-mm-dd（曜）。ピッキングできない日で前倒ししたときは、振り替えたあとの日。",
+     "yyyy-mm-dd (thứ). Khi đã dời sớm do ngày không picking được thì là ngày sau khi dời."
+    ],
+    "trig": "view"
+   },
+   "001:5.8": {
+    "ja": "発送日",
+    "vi": "Ngày gửi",
+    "kind": "label",
+    "detail": [
+     "納品日 − リードタイム（登録のとき運営が入れた値。宛先ごと）。ピッキングできない日なら直前のピッキングできる日に前倒しし、「前倒し」の黄バッジと理由を出す。",
+     "Ngày giao − lead time (giá trị vận hành nhập lúc đăng ký, theo từng địa chỉ nhận). Nếu là ngày không picking được thì dời sớm về ngày picking được gần nhất trước đó, hiện badge vàng 「前倒し」 và lý do."
+    ],
+    "trig": "view"
+   },
+   "001:5.9": {
+    "ja": "倉庫",
+    "vi": "Kho",
+    "kind": "label",
+    "detail": [
+     "ピッキング倉庫（関東・関西・中部）。",
+     "Kho picking (Kanto・Kansai・Chubu)."
+    ],
+    "trig": "view"
+   },
+   "001:5.9.1": {
+    "ja": "配送会社・中継先",
+    "vi": "Công ty vận chuyển・điểm trung chuyển",
+    "kind": "label",
+    "ex": [
+     "ヤマト運輸 ／ ヤマト運輸 練馬営業所",
+     "Công ty vận chuyển (/ điểm trung chuyển nếu có), do vận hành nhập lúc đăng ký"
+    ],
+    "detail": [
+     "登録のとき入れた配送ルートの「配送会社」。中継先があれば「配送会社 ／ 中継先」の形で並べる。登録後は変わらない。",
+     "「Công ty vận chuyển」 của tuyến giao hàng nhập lúc đăng ký. Nếu có điểm trung chuyển thì hiện dạng 「công ty vận chuyển ／ điểm trung chuyển」. Không đổi sau khi đăng ký."
+    ],
+    "trig": "view"
+   },
+   "001:5.9.2": {
+    "ja": "送り状番号",
+    "vi": "Số vận đơn",
+    "kind": "label",
+    "ex": [
+     "123456789012",
+     "Số vận đơn của công ty vận chuyển (chữ số/chữ cái nửa chiều rộng và gạch nối, tối đa 30 ký tự)"
+    ],
+    "detail": [
+     "出荷後に分かる送り状番号。入れていなければ空。「メモ・送り状番号」のモーダルで入れる・直す（5.13）。CSV出力にも出す。",
+     "Số vận đơn biết sau khi xuất hàng. Chưa nhập thì để trống. Nhập・sửa ở modal 「メモ・送り状番号」 (5.13). Cũng xuất ra CSV出力."
+    ],
+    "trig": "view"
+   },
+   "001:5.10": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "label",
+    "detail": [
+     "受付済（青）＝受付中で出荷指示はまだ／締め済（緑）＝出荷指示を作成済／締め後追加（黄）＝締めたあとに追加したため出荷指示なし／取消（灰）＝枠に数えず、既定では一覧に出さない。",
+     "受付済 (xanh dương) = đang tiếp nhận, chưa có chỉ thị xuất hàng / 締め済 (xanh lá) = đã tạo chỉ thị xuất hàng / 締め後追加 (vàng) = thêm sau khi chốt nên không có chỉ thị xuất hàng / 取消 (xám) = không tính hạn mức, mặc định không hiện trong danh sách."
+    ],
+    "pattern": "P-STATUS-COLORS",
+    "trig": "view"
+   },
+   "001:5.11": {
+    "ja": "出荷指示",
+    "vi": "Chỉ thị xuất hàng",
+    "kind": "link",
+    "detail": [
+     "締め済は「あり（SS-YYMMDD-倉庫の記号）」。押すと THOMAS 用CSVを再ダウンロードする（形式は配送の出荷指示CSVと同じ）。受付済は「なし（締めると作成）」、締め後追加は「なし（締め後追加）」。",
+     "締め済 hiện 「Có (SS-YYMMDD-ký hiệu kho)」. Bấm để tải lại CSV cho THOMAS (định dạng giống CSV chỉ thị xuất hàng của giao hàng). 受付済 là 「Không (tạo khi chốt)」, 締め後追加 là 「Không (thêm sau khi chốt)」."
+    ],
+    "open": [
+     "登録のときに配送データ（出荷）も作るか。いまの設計は「締めたときに出荷指示を作る。配送データは作らない」",
+     "Khi đăng ký có tạo cả dữ liệu giao hàng (配送データ) không. Thiết kế hiện tại: 「tạo chỉ thị xuất hàng khi chốt; không tạo dữ liệu giao hàng」"
+    ],
+    "trig": "click"
+   },
+   "001:5.12": {
+    "ja": "操作",
+    "vi": "Thao tác",
+    "kind": "label",
+    "detail": [
+     "行の右端。「メモ・送り状番号」「取消」の2つのボタン。権限がない役割には出さない。",
+     "Cuối bên phải dòng. Hai nút 「メモ・送り状番号」 「取消」. Không hiện cho vai trò không có quyền."
+    ],
+    "trig": "view"
+   },
+   "001:5.13": {
+    "ja": "メモ・送り状番号（ボタン）",
+    "vi": "Ghi chú・số vận đơn (nút)",
+    "kind": "button",
+    "detail": [
+     "「メモ・送り状番号」の編集のモーダル（8）を開く。メモは一覧の列には出さない（CSV には出す）。送り状番号は列（5.9.2）に出す。変更履歴はモーダルの下に出る。",
+     "Mở modal sửa 「メモ・送り状番号」 (8). Ghi chú không hiện ở cột danh sách (có trong CSV). Số vận đơn hiện ở cột (5.9.2)."
+    ],
+    "cond": [
+     "営業サンプルの更新権限があるとき（受付を締める・取消と同じ機能ごとの操作）。どの状態の行にも出す（取消の行を除く）",
+     "Khi có quyền cập nhật mẫu kinh doanh (thao tác theo chức năng, giống chốt tiếp nhận・hủy). Hiện ở dòng thuộc mọi trạng thái (trừ dòng đã hủy)"
+    ],
+    "trig": "click"
+   },
+   "001:5.14": {
+    "ja": "取消（ボタン）",
+    "vi": "Hủy (nút)",
+    "kind": "button",
+    "detail": [
+     "取消の確認のモーダルを開く。発送日以降は E151 のトースト。",
+     "Mở modal xác nhận hủy. Từ ngày gửi trở đi hiện toast E151."
+    ],
+    "cond": [
+     "受付済：いつでも／締め済：発送日の前日まで／締め後追加：発送日の前日まで／発送日以降と取消済は押せない（E151）。営業サンプルの更新権限（営業・フル権限・商品管理）があるとき出す",
+     "受付済: bất cứ lúc nào / 締め済: đến trước ngày gửi / 締め後追加: đến trước ngày gửi / Từ ngày gửi trở đi và mẫu đã hủy thì không bấm được (E151). Hiện khi có quyền cập nhật mẫu kinh doanh (kinh doanh・toàn quyền・quản lý sản phẩm)"
+    ],
+    "err": [
+     "E151"
+    ],
+    "trig": "click"
+   },
+   "001:6": {
+    "ja": "ページ送り",
+    "vi": "Phân trang",
+    "kind": "area",
+    "detail": [
+     "「n件中 a–b件」・ページ番号・表示件数（10／20／50）。初期は10件。",
+     "「a–b trong n mẫu」・số trang・số dòng hiển thị (10/20/50). Ban đầu là 10 dòng."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "002:3": {
+    "ja": "タブ",
+    "vi": "Tab",
+    "kind": "area",
+    "detail": [
+     "「サンプル一覧」（初期表示）／「出荷週の受付」の2つ。タブは URL の ?tab= で持つ（出荷週の受付＝?tab=出荷週の受付）。4つの数字（2）は両タブの上に共通。",
+     "2 tab: 「サンプル一覧」 (mặc định) / 「出荷週の受付」. Tab được giữ trong URL (?tab=; 出荷週の受付 = ?tab=出荷週の受付). 4 con số (2) dùng chung phía trên cả hai tab."
+    ],
+    "pattern": "P-TAB",
+    "trig": "view"
+   },
+   "002:7": {
+    "ja": "出荷週ごとの受付",
+    "vi": "Tiếp nhận theo tuần gửi",
+    "kind": "table",
+    "detail": [
+     "出荷週＝発送日の週（月曜〜日曜）。受付の締めの日に、受付済のサンプルへ出荷指示（SS-YYMMDD-倉庫の記号）を作って THOMAS 用CSVを出す。締めの後に追加したサンプルは「締め後追加」と表示し、出荷指示を作らない。締め後の余りは「在庫戻しの出荷指示」で ES へ戻す。",
+     "Tuần gửi = tuần của ngày gửi (thứ Hai〜Chủ nhật). Vào ngày chốt tiếp nhận, tạo chỉ thị xuất hàng (SS-YYMMDD-ký hiệu kho) cho các mẫu 受付済 và xuất CSV cho THOMAS. Mẫu thêm sau khi chốt hiện 「締め後追加」 và không tạo chỉ thị xuất hàng. Hàng dư sau chốt trả về ES bằng 「chỉ thị xuất hàng trả về kho」."
+    ],
+    "cond": [
+     "「出荷週の受付」タブ",
+     "Tab 「出荷週の受付」"
+    ],
+    "trig": "view"
+   },
+   "002:7.1": {
+    "ja": "出荷週",
+    "vi": "Tuần gửi",
+    "kind": "label",
+    "detail": [
+     "「MM-DD〜MM-DD（n月サイクル X週）」。出荷週の一覧は、受付があった週・締めた週と、これからの4週。",
+     "「MM-DD〜MM-DD (chu kỳ tháng n, tuần X)」. Danh sách tuần gửi gồm các tuần có tiếp nhận, tuần đã chốt và 4 tuần sắp tới."
+    ],
+    "trig": "view"
+   },
+   "002:7.2": {
+    "ja": "サンプル",
+    "vi": "Số mẫu",
+    "kind": "label",
+    "detail": [
+     "その出荷週のサンプルの件数（1登録＝1件）。取消は数えない。",
+     "Số mẫu của tuần gửi đó (1 đăng ký = 1 mẫu). Mẫu hủy không tính."
+    ],
+    "trig": "view"
+   },
+   "002:7.3": {
+    "ja": "内訳",
+    "vi": "Chi tiết",
+    "kind": "label",
+    "detail": [
+     "状態ごとの件数（受付済・締め済・締め後追加）。",
+     "Số lượng theo trạng thái (受付済・締め済・締め後追加)."
+    ],
+    "trig": "view"
+   },
+   "002:7.4": {
+    "ja": "受付",
+    "vi": "Tiếp nhận",
+    "kind": "label",
+    "detail": [
+     "締める前は「受付中」（青）。締めたあとは「締め済」（緑）と締めた日時。自動で締めた場合も同じ（日時は自動の実行時刻）。",
+     "Trước khi chốt là 「Đang tiếp nhận」 (xanh dương). Sau khi chốt là 「締め済」 (xanh lá) kèm ngày giờ chốt. Chốt tự động cũng giống vậy (ngày giờ là thời điểm chạy tự động)."
+    ],
+    "trig": "view"
+   },
+   "002:7.5": {
+    "ja": "受付を締める",
+    "vi": "Chốt tiếp nhận",
+    "kind": "button",
+    "detail": [
+     "自動の締めの前に、運営が早く締めるときに押す（確認 Q120 → 出荷指示を作成・THOMAS 用CSVを出す → S124）。締め後に取り消すときは 7.8。 同時に配送データも作る（7.10）。",
+     "Bấm khi vận hành muốn chốt sớm trước giờ tự động chốt (xác nhận Q120 → tạo chỉ thị xuất hàng・xuất CSV cho THOMAS → S124). Muốn hủy chốt sau đó thì dùng 7.8. Đồng thời tạo dữ liệu giao hàng (7.10)."
+    ],
+    "cond": [
+     "受付中の出荷週。営業サンプルの更新権限（営業・フル権限・商品管理）があるとき出す",
+     "Tuần gửi đang tiếp nhận. Hiện khi có quyền cập nhật mẫu kinh doanh (kinh doanh・toàn quyền・quản lý sản phẩm)"
+    ],
+    "err": [
+     "Q120",
+     "S124"
+    ],
+    "trig": "click"
+   },
+   "002:7.6": {
+    "ja": "余りを在庫へ戻す",
+    "vi": "Trả hàng dư về kho",
+    "kind": "button",
+    "detail": [
+     "在庫戻しの出荷指示（AW_WHS_005）へ移る。",
+     "Chuyển sang Chỉ thị xuất hàng trả về kho (AW_WHS_005)."
+    ],
+    "cond": [
+     "締め済の出荷週",
+     "Tuần gửi đã 締め済"
+    ],
+    "trig": "click"
+   },
+   "002:7.7": {
+    "ja": "自動で締める案内",
+    "vi": "Giải thích tự động chốt",
+    "kind": "label",
+    "detail": [
+     "表の上に I122 を出す（N＝2は仮。運営の設定「自動締めの営業日数」で変える＝運営I）。出荷週の月曜の{n}営業日前の営業開始時に自動で締め、受付済に出荷指示を作る（手動で締めたときと同じ。S124 は運営TOPのお知らせには出さない）。",
+     "Hiện I122 phía trên bảng (N=2 là tạm. Đổi ở cài đặt vận hành 「Số ngày làm việc tự động chốt」 = Vận hành I). Tự động chốt vào giờ bắt đầu làm việc, {n} ngày làm việc trước thứ Hai của tuần gửi, tạo chỉ thị xuất hàng cho 受付済 (giống khi chốt thủ công. S124 không hiện ở thông báo TOP vận hành)."
+    ],
+    "err": [
+     "I122"
+    ],
+    "trig": "view"
+   },
+   "002:7.8": {
+    "ja": "締めを取り消す",
+    "vi": "Hủy chốt",
+    "kind": "button",
+    "detail": [
+     "押すと確認モーダル（No.11）。「締めを取り消す」で、その週の 締め済 のサンプルを 受付済 に戻し、出荷指示を取り消す。締めたあとに追加したサンプル（締め後追加）はそのまま。週の「締め済」の表示は「受付中」に戻る。取り消したあと、トーストで「出荷指示を取り消しました。変更行のCSVを出力して再登録してください」と知らせる（台帳 L の出荷指示後の変更と同じ方法）。",
+     "Bấm → modal xác nhận (No.11). Bấm 「Hủy chốt」: các mẫu 締め済 của tuần đó quay về 受付済 và chỉ thị xuất hàng bị hủy. Mẫu thêm sau khi chốt (締め後追加) giữ nguyên. Hiển thị 「締め済」 của tuần trở lại 「Đang tiếp nhận」. Sau khi hủy, toast báo 「Đã hủy chỉ thị xuất hàng. Hãy xuất CSV dòng thay đổi và đăng ký lại」 (cùng cách với thay đổi sau chỉ thị xuất hàng ở Sổ cái L)."
+    ],
+    "cond": [
+     "締め済の出荷週で、今日がその週の最初の発送日より前のとき。営業サンプルの更新権限（受付を締めると同じ）があるとき出す",
+     "Tuần gửi đã 締め済 và hôm nay trước ngày gửi đầu tiên của tuần đó. Hiện khi có quyền cập nhật mẫu kinh doanh (giống quyền chốt tiếp nhận)"
+    ],
+    "trig": "click"
+   },
+   "002:7.9": {
+    "ja": "取り消せない理由",
+    "vi": "Lý do không hủy được",
+    "kind": "label",
+    "detail": [
+     "「締めを取り消す」ボタンを出さず、同じ場所に「最初の発送日（MM-DD）を過ぎたため、取り消せません」と書く。取り消す必要があるときは、個別のサンプルの取消（AW_SMP_001 No.5.9）や在庫戻しで対応する。",
+     "Không hiện nút 「Hủy chốt」, thay vào đó ghi cùng chỗ 「Đã quá ngày gửi đầu tiên (MM-DD) nên không thể hủy」. Khi cần hủy thì xử lý bằng hủy từng mẫu (AW_SMP_001 No.5.9) hoặc trả về kho."
+    ],
+    "cond": [
+     "締め済で、今日がその週の最初の発送日以降のとき",
+     "Tuần đã 締め済 và hôm nay là ngày gửi đầu tiên của tuần đó trở đi"
+    ],
+    "trig": "view"
+   },
+   "002:7.10": {
+    "ja": "配送データ（締めと同時に作る）",
+    "vi": "Dữ liệu giao hàng (tạo cùng lúc khi chốt)",
+    "kind": "label",
+    "detail": [
+     "営業サンプルの配送データは、受付を締めて出荷指示を作るとき（手動・自動とも）に同時に作る。種類は「サンプル」で、登録のときに入れた配送ルート（ピッキング倉庫・配送会社・中継先）を付ける。締めを取り消したときは、出荷指示と一緒に取り消す。",
+     "Dữ liệu giao hàng của mẫu kinh doanh được tạo cùng lúc khi chốt tiếp nhận và tạo chỉ thị xuất hàng (cả thủ công lẫn tự động). Loại là 「サンプル」, kèm tuyến giao hàng đã nhập khi đăng ký (kho picking・công ty vận chuyển・điểm trung chuyển). Khi hủy chốt thì hủy cùng chỉ thị xuất hàng."
+    ],
+    "open": [
+     "作る時期は決まった（出荷指示と同時＝受付を締めたとき。種類「サンプル」・入れたルートつき）。まだ決まっていないこと：運営D 出荷・配送管理と委託配送先Webでの見せ方（営業サンプルの配送だと分かる表示・契約の配送との区別・配送会社が見る範囲）。運営D の確認で決める。いまのコードは配送データを作らない",
+     "Đã quyết thời điểm tạo (cùng lúc với chỉ thị xuất hàng = khi chốt tiếp nhận; loại 「サンプル」, kèm tuyến đã nhập). Chưa quyết: cách hiển thị ở Vận hành D 出荷・配送管理 và Web công ty vận chuyển ủy thác (cách nhận biết là giao hàng mẫu kinh doanh, phân biệt với giao hàng theo hợp đồng, phạm vi công ty vận chuyển được xem). Sẽ quyết ở xác nhận của Vận hành D. Code hiện chưa tạo dữ liệu giao hàng"
+    ],
+    "trig": "view"
+   },
+   "003:4.1": {
+    "ja": "キーワード",
+    "vi": "Từ khóa",
+    "kind": "text",
+    "req": "－",
+    "len": "文字列 60",
+    "ex": [
+     "ミズホ",
+     "Từ khóa tìm kiếm (một phần tên công ty), dạng chuỗi"
+    ],
+    "detail": [
+     "サンプルNo・法人名・担当者名を部分一致で探す。",
+     "Tìm theo khớp một phần số mẫu・tên công ty・tên người phụ trách."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "003:4.8": {
+    "ja": "クリア・検索",
+    "vi": "Xóa・Tìm",
+    "kind": "button",
+    "detail": [
+     "「クリア」で条件を空に戻す。「検索」で反映する。",
+     "「Xóa」 đưa điều kiện về trống. 「Tìm」 để áp dụng."
+    ],
+    "trig": "click"
+   },
+   "003:5.15": {
+    "ja": "0件の表示",
+    "vi": "Hiển thị 0 dòng",
+    "kind": "label",
+    "err": [
+     "I01"
+    ],
+    "trig": "show"
+   },
+   "004:8": {
+    "ja": "メモ・送り状番号の編集（モーダル）",
+    "vi": "Sửa ghi chú・số vận đơn (modal)",
+    "kind": "modal",
+    "detail": [
+     "登録したあとに直せるのは「メモ」と「送り状番号」だけ（宛先・商品・納品日・配送ルートは直せない。誤りは取消して登録し直す）。送り状番号は出荷後に分かるため。受付済・締め済・締め後追加のどれでも直せる。出荷指示には影響しない。直した内容は変更履歴に残る（いつ・誰が・前→後）。",
+     "Sau khi đăng ký chỉ sửa được 「ghi chú」 và 「số vận đơn」 (không sửa được địa chỉ nhận・sản phẩm・ngày giao・tuyến giao hàng. Nếu sai thì hủy rồi đăng ký lại). Số vận đơn chỉ biết sau khi xuất hàng. Sửa được ở cả 受付済・締め済・締め後追加. Không ảnh hưởng đến chỉ thị xuất hàng. Nội dung đã sửa được lưu vào lịch sử thay đổi (khi nào・ai・trước → sau)."
+    ],
+    "pattern": "P-HIST",
+    "trig": "show"
+   },
+   "004:8.1": {
+    "ja": "サンプルNo・宛先",
+    "vi": "Số mẫu・Địa chỉ",
+    "kind": "label",
+    "detail": [
+     "対象のサンプルNo・法人名。読むだけ。",
+     "Số mẫu・tên công ty của mẫu đối tượng. Chỉ đọc."
+    ],
+    "trig": "view"
+   },
+   "004:8.2": {
+    "ja": "送り状番号（任意）",
+    "vi": "Số vận đơn (tùy chọn)",
+    "kind": "text",
+    "req": "－",
+    "len": "文字列 30",
+    "init": [
+     "いまの送り状番号（なければ空）",
+     "Số vận đơn hiện tại (trống nếu chưa có)"
+    ],
+    "ex": [
+     "123456789012",
+     "Số vận đơn của công ty vận chuyển, chữ số/chữ cái nửa chiều rộng và gạch nối (tối đa 30 ký tự)"
+    ],
+    "detail": [
+     "出荷後に分かった送り状番号。一覧（5.9.2）とCSV出力に出る。",
+     "Số vận đơn biết sau khi xuất hàng. Hiện ở danh sách (5.9.2) và CSV出力."
+    ],
+    "valid": [
+     "任意。半角英数字とハイフン。30文字まで。前後の空白を取る。空にもできる。",
+     "Tùy chọn. Chữ số/chữ cái nửa chiều rộng và gạch nối. Tối đa 30 ký tự. Bỏ khoảng trắng đầu cuối. Có thể để trống."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "004:8.3": {
+    "ja": "メモ",
+    "vi": "Ghi chú",
+    "kind": "textarea",
+    "req": "－",
+    "len": [
+     "文字列 500（複数行）",
+     "Chuỗi tối đa 500 ký tự (nhiều dòng)"
+    ],
+    "init": [
+     "いまのメモ（登録時のメモ）",
+     "Ghi chú hiện tại (ghi chú lúc đăng ký)"
+    ],
+    "ex": [
+     "商談名：給食センター向け新メニューの試食。営業担当は佐藤。",
+     "Ghi chú hiện tại (nhiều dòng, tối đa 500 ký tự): tên cuộc thương thảo, người phụ trách kinh doanh"
+    ],
+    "valid": [
+     "500文字まで。前後の空白を取る。空にもできる。",
+     "Tối đa 500 ký tự. Bỏ khoảng trắng đầu cuối. Có thể để trống."
+    ],
+    "err": [
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "004:8.4": {
+    "ja": "変更履歴",
+    "vi": "Lịch sử thay đổi",
+    "kind": "table",
+    "detail": [
+     "メモ・送り状番号を直した日時・直した人・項目・変更前→変更後。新しい順（最新が上）。変わった項目だけ1行ずつ残す。まだ直していないときは「変更履歴はまだありません。」と出す。登録したときの値は履歴に出さない（直したときから残る）。",
+     "Ngày giờ sửa ghi chú・số vận đơn, người sửa, mục, giá trị trước → sau. Mới nhất ở trên. Mỗi mục thay đổi lưu thành 1 dòng. Khi chưa sửa lần nào hiện 「変更履歴はまだありません。」. Giá trị lúc đăng ký không hiện trong lịch sử (chỉ lưu từ lần sửa)."
+    ],
+    "trig": "view"
+   },
+   "004:8.5": {
+    "ja": "保存",
+    "vi": "Lưu",
+    "kind": "button",
+    "detail": [
+     "メモと送り状番号を保存して閉じる（S01）。他の人が先に直していたら E31。",
+     "Lưu ghi chú và số vận đơn rồi đóng (S01). Nếu người khác đã sửa trước thì E31."
+    ],
+    "err": [
+     "S01"
+    ],
+    "trig": "click"
+   },
+   "004:8.6": {
+    "ja": "キャンセル",
+    "vi": "Hủy",
+    "kind": "button",
+    "detail": [
+     "直していれば Q02。直していなければそのまま閉じる。",
+     "Nếu đã sửa thì Q02. Nếu chưa sửa thì đóng luôn."
+    ],
+    "err": [
+     "Q02"
+    ],
+    "trig": "click"
+   },
+   "005:9": {
+    "ja": "取消の確認（モーダル）",
+    "vi": "Xác nhận hủy (modal)",
+    "kind": "modal",
+    "detail": [
+     "受付済は Q123 の本文。締め済（発送日の前日まで）は Q123 の「出荷指示は作成済みです。THOMAS へ変更行のCSVを出力して再登録してください」を足し、「変更行のCSV」（取り消す行）を出す。",
+     "受付済 dùng nội dung Q123. 締め済 (đến trước ngày gửi) thêm câu 「出荷指示は作成済みです。THOMAS へ変更行のCSVを出力して再登録してください」 của Q123 và hiện 「CSV dòng thay đổi」 (dòng bị hủy)."
+    ],
+    "err": [
+     "Q123"
+    ],
+    "trig": "show"
+   },
+   "005:9.1": {
+    "ja": "取消の理由",
+    "vi": "Lý do hủy",
+    "kind": "textarea",
+    "req": "○",
+    "len": [
+     "文字列 500（複数行）",
+     "Chuỗi tối đa 500 ký tự (nhiều dòng)"
+    ],
+    "ex": [
+     "商談が中止になったため。",
+     "Lý do hủy (bắt buộc, nhiều dòng, tối đa 500 ký tự)"
+    ],
+    "detail": [
+     "取消の理由。変更履歴に残す。",
+     "Lý do hủy. Được lưu vào lịch sử thay đổi."
+    ],
+    "valid": [
+     "必須。500文字まで。",
+     "Bắt buộc. Tối đa 500 ký tự."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "005:9.2": {
+    "ja": "取り消す",
+    "vi": "Hủy mẫu",
+    "kind": "button",
+    "detail": [
+     "状態を「取消」にし、月の枠に数えなくなる（S125）。締め済の取消は、THOMAS 用の変更行CSVを出す。発送日以降は E151（在庫の記録・在庫戻しで対応する）。",
+     "Chuyển trạng thái thành 「取消」 và không còn tính vào hạn mức tháng (S125). Hủy mẫu 締め済 thì xuất CSV dòng thay đổi cho THOMAS. Từ ngày gửi trở đi là E151 (xử lý bằng ghi nhận tồn kho・trả về kho)."
+    ],
+    "err": [
+     "S125",
+     "E151"
+    ],
+    "trig": "click"
+   },
+   "005:9.3": {
+    "ja": "キャンセル",
+    "vi": "Hủy bỏ",
+    "kind": "button",
+    "detail": [
+     "閉じる。何も変えない。",
+     "Đóng. Không thay đổi gì."
+    ],
+    "trig": "click"
+   },
+   "006:9": {
+    "ja": "取消の確認（モーダル）",
+    "vi": "Xác nhận hủy (modal)",
+    "kind": "modal",
+    "detail": [
+     "受付済は Q123 の本文。締め済（発送日の前日まで）は Q123 の「出荷指示は作成済みです。THOMAS へ変更行のCSVを出力して再登録してください」を足し、「変更行のCSV」（取り消す行）を出す。",
+     "受付済 dùng nội dung Q123. 締め済 (đến trước ngày gửi) thêm câu 「出荷指示は作成済みです。THOMAS へ変更行のCSVを出力して再登録してください」 của Q123 và hiện 「CSV dòng thay đổi」 (dòng bị hủy)."
+    ],
+    "err": [
+     "Q123"
+    ],
+    "trig": "show"
+   },
+   "006:9.2": {
+    "ja": "取り消す",
+    "vi": "Hủy mẫu",
+    "kind": "button",
+    "detail": [
+     "状態を「取消」にし、月の枠に数えなくなる（S125）。締め済の取消は、THOMAS 用の変更行CSVを出す。発送日以降は E151（在庫の記録・在庫戻しで対応する）。",
+     "Chuyển trạng thái thành 「取消」 và không còn tính vào hạn mức tháng (S125). Hủy mẫu 締め済 thì xuất CSV dòng thay đổi cho THOMAS. Từ ngày gửi trở đi là E151 (xử lý bằng ghi nhận tồn kho・trả về kho)."
+    ],
+    "err": [
+     "S125",
+     "E151"
+    ],
+    "trig": "click"
+   },
+   "006:9.3": {
+    "ja": "キャンセル",
+    "vi": "Hủy bỏ",
+    "kind": "button",
+    "detail": [
+     "閉じる。何も変えない。",
+     "Đóng. Không thay đổi gì."
+    ],
+    "trig": "click"
+   },
+   "007:10": {
+    "ja": "受付を締める（確認モーダル）",
+    "vi": "Chốt tiếp nhận (modal xác nhận)",
+    "kind": "modal",
+    "detail": [
+     "出荷週と受付済の件数を出す。「締める」で出荷指示（SS-…）を作り、THOMAS 用CSVを出す（S124）。",
+     "Hiện tuần gửi và số mẫu 受付済. Bấm 「Chốt」 để tạo chỉ thị xuất hàng (SS-…) và xuất CSV cho THOMAS (S124)."
+    ],
+    "err": [
+     "Q120"
+    ],
+    "trig": "show"
+   },
+   "007:10.1": {
+    "ja": "キャンセル",
+    "vi": "Hủy",
+    "kind": "button",
+    "detail": [
+     "閉じる。",
+     "Đóng."
+    ],
+    "trig": "click"
+   },
+   "007:10.2": {
+    "ja": "締める",
+    "vi": "Chốt",
+    "kind": "button",
+    "detail": [
+     "受付済に出荷指示を作成し、その週を「締め済」にする。同時に配送データも作る（7.10）。締めの取り消しは 7.8。",
+     "Tạo chỉ thị xuất hàng cho 受付済 và chuyển tuần đó thành 「締め済」. Đồng thời tạo dữ liệu giao hàng (7.10). Hủy chốt dùng 7.8."
+    ],
+    "err": [
+     "S124"
+    ],
+    "trig": "click"
+   },
+   "008:1": {
+    "ja": "ヘッダー",
+    "vi": "Đầu trang",
+    "kind": "area",
+    "detail": [
+     "パンくず：発注・入荷 ＞ 営業サンプル ＞ サンプル登録。法人・拠点・契約は作らない（宛先だけ入力）。営業サンプルの作成権限（営業・フル権限）がある役割だけ開ける。",
+     "Breadcrumb: Đặt hàng・Nhập hàng ＞ Mẫu kinh doanh ＞ Đăng ký mẫu. Không tạo công ty・chi nhánh・hợp đồng (chỉ nhập địa chỉ nhận). Chỉ vai trò có quyền tạo mẫu kinh doanh (kinh doanh・toàn quyền) mới mở được."
+    ],
+    "trig": "view"
+   },
+   "008:1.1": {
+    "ja": "キャンセル",
+    "vi": "Hủy",
+    "kind": "button",
+    "detail": [
+     "入力していれば Q02。入力していなければそのまま一覧（AW_SMP_001）へ。サイドメニュー・ブラウザを閉じる／再読み込みでも同じ。",
+     "Nếu đã nhập thì Q02. Nếu chưa nhập thì về thẳng danh sách (AW_SMP_001). Menu bên・đóng trình duyệt / tải lại trang cũng giống vậy."
+    ],
+    "err": [
+     "Q02"
+    ],
+    "trig": "click"
+   },
+   "008:1.2": {
+    "ja": "登録",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "全項目をまとめてチェックする。通れば登録して一覧へ戻り、S123 のトースト。締め済の出荷週に当たるときは「締め後追加」で登録する。押したらボタンを無効にする。",
+     "Kiểm tra tất cả các mục cùng lúc. Nếu hợp lệ thì đăng ký và quay về danh sách, hiện toast S123. Nếu rơi vào tuần gửi đã chốt thì đăng ký là 「締め後追加」. Sau khi bấm thì vô hiệu hóa nút."
+    ],
+    "cond": [
+     "月の枠を超えるときは非活性（E149）",
+     "Vô hiệu hóa khi vượt hạn mức tháng (E149)"
+    ],
+    "err": [
+     "S123",
+     "E149"
+    ],
+    "pattern": "P-FORMBOX",
+    "trig": "click"
+   },
+   "008:2": {
+    "ja": "枠の概要",
+    "vi": "Tổng quan hạn mức",
+    "kind": "area",
+    "detail": [
+     "納品日から対象月を決め、その月の枠を出す。納品日が空のときは直前に見た月。",
+     "Xác định tháng áp dụng từ ngày giao và hiện hạn mức của tháng đó. Khi ngày giao trống thì dùng tháng xem trước đó."
+    ],
+    "trig": "view"
+   },
+   "008:2.1": {
+    "ja": "対象月（納品日から自動）",
+    "vi": "Tháng áp dụng (tự động từ ngày giao)",
+    "kind": "label",
+    "detail": [
+     "納品日のサイクル月（例 2026-11）。",
+     "Tháng chu kỳ của ngày giao (ví dụ 2026-11)."
+    ],
+    "trig": "view"
+   },
+   "008:2.2": {
+    "ja": "月の合計枠",
+    "vi": "Tổng hạn mức tháng",
+    "kind": "label",
+    "detail": [
+     "月間メニューで決めた件数。未設定の月は「未設定」と出し、W120 を出す（登録はできる）。",
+     "Số mẫu quyết định ở Menu tháng. Tháng chưa đặt hiện 「Chưa đặt」 và hiện W120 (vẫn đăng ký được)."
+    ],
+    "err": [
+     "W120"
+    ],
+    "trig": "view"
+   },
+   "008:2.3": {
+    "ja": "受付済",
+    "vi": "Đã tiếp nhận",
+    "kind": "label",
+    "detail": [
+     "その月の宛先の数（取消は数えない）。",
+     "Số địa chỉ nhận của tháng (không tính mẫu hủy)."
+    ],
+    "trig": "view"
+   },
+   "008:2.4": {
+    "ja": "残り枠",
+    "vi": "Hạn mức còn lại",
+    "kind": "label",
+    "detail": [
+     "月の合計 − 受付済。",
+     "Tổng tháng − 受付済."
+    ],
+    "trig": "view"
+   },
+   "008:3": {
+    "ja": "宛先（見込みのお客様）",
+    "vi": "Địa chỉ nhận (khách tiềm năng)",
+    "kind": "area",
+    "detail": [
+     "入れるのは宛先だけ。法人・拠点・契約は作らず、あとでその会社が申し込んでも法人へ引き継がない。",
+     "Chỉ nhập địa chỉ nhận. Không tạo công ty・chi nhánh・hợp đồng, và sau này dù công ty đó đăng ký thì cũng không chuyển sang công ty."
+    ],
+    "trig": "view"
+   },
+   "008:3.1": {
+    "ja": "法人名",
+    "vi": "Tên công ty",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 60",
+    "ex": [
+     "株式会社ミズホ食品",
+     "Tên công ty của khách tiềm năng, dạng chuỗi (tối đa 60 ký tự)"
+    ],
+    "detail": [
+     "見込みのお客様の法人名。法人名と住所が同じなら同じ宛先として、過去の送付を警告（W121）に出す。",
+     "Tên công ty của khách tiềm năng. Nếu tên công ty và địa chỉ giống nhau thì được coi là cùng một địa chỉ nhận và hiện trong cảnh báo (W121) về các lần gửi trước."
+    ],
+    "valid": [
+     "前後の空白を取る。60文字まで。",
+     "Bỏ khoảng trắng đầu cuối. Tối đa 60 ký tự."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "008:3.2": {
+    "ja": "担当者名",
+    "vi": "Người phụ trách",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 60",
+    "ex": [
+     "田中 俊",
+     "Tên người phụ trách phía khách, dạng chuỗi (tối đa 60 ký tự)"
+    ],
+    "valid": [
+     "前後の空白を取る。60文字まで。",
+     "Bỏ khoảng trắng đầu cuối. Tối đa 60 ký tự."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "008:3.3": {
+    "ja": "電話番号",
+    "vi": "Số điện thoại",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 20",
+    "ex": [
+     "03-5555-0101",
+     "Số điện thoại, chữ số và gạch nối (10〜11 chữ số)"
+    ],
+    "valid": [
+     "数字とハイフン。ハイフンを除いて10〜11桁。",
+     "Chữ số và gạch nối. Bỏ gạch nối thì 10〜11 chữ số."
+    ],
+    "err": [
+     "E01",
+     "E06"
+    ],
+    "trig": "input"
+   },
+   "008:3.4": {
+    "ja": "郵便番号",
+    "vi": "Mã bưu điện",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 8",
+    "ex": [
+     "100-0005",
+     "Mã bưu điện 7 chữ số, lưu dạng 123-4567"
+    ],
+    "detail": [
+     "入力すると、都道府県・市区町村・町域を自動で入れる（直せる）。取得できないときは W100 を出し、手入力する。",
+     "Khi nhập sẽ tự động điền tỉnh/thành・quận/huyện・khu vực (sửa được). Nếu không lấy được thì hiện W100 và nhập tay."
+    ],
+    "valid": [
+     "数字7桁（ハイフンは任意）。保存は 123-4567 の形。",
+     "7 chữ số (gạch nối tùy chọn). Lưu theo dạng 123-4567."
+    ],
+    "err": [
+     "E01",
+     "E05"
+    ],
+    "trig": "input"
+   },
+   "008:3.5": {
+    "ja": "都道府県",
+    "vi": "Tỉnh/thành",
+    "kind": "select",
+    "req": "○",
+    "len": "選択",
+    "init": [
+     "（都道府県）",
+     "(Tỉnh/thành)"
+    ],
+    "ex": [
+     "東京都",
+     "Tên tỉnh/thành, chọn từ 47 tỉnh/thành"
+    ],
+    "valid": [
+     "47都道府県から選ぶ。",
+     "Chọn từ 47 tỉnh/thành."
+    ],
+    "err": [
+     "E02"
+    ],
+    "trig": "select"
+   },
+   "008:3.6": {
+    "ja": "市区町村",
+    "vi": "Quận/huyện",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 60",
+    "ex": [
+     "千代田区",
+     "Tên quận/huyện/thành phố, dạng chuỗi (tối đa 60 ký tự)"
+    ],
+    "valid": [
+     "60文字まで。",
+     "Tối đa 60 ký tự."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "008:3.7": {
+    "ja": "町域・番地",
+    "vi": "Khu vực・số nhà",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 255",
+    "ex": [
+     "丸の内1-6-5",
+     "Khu vực・số nhà, dạng chuỗi (tối đa 255 ký tự)"
+    ],
+    "valid": [
+     "255文字まで。",
+     "Tối đa 255 ký tự."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "008:3.8": {
+    "ja": "建物・部屋番号",
+    "vi": "Tòa nhà・số phòng",
+    "kind": "text",
+    "req": "－",
+    "len": "文字列 255",
+    "ex": [
+     "丸の内北口ビル 8F",
+     "Tên tòa nhà・số phòng (tùy chọn), dạng chuỗi (tối đa 255 ký tự)"
+    ],
+    "valid": [
+     "255文字まで。",
+     "Tối đa 255 ký tự."
+    ],
+    "err": [
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "008:3.9": {
+    "ja": "同じ宛先への送付の警告",
+    "vi": "Cảnh báo đã gửi tới cùng địa chỉ",
+    "kind": "area",
+    "detail": [
+     "法人名と住所を入れると、同じ宛先（法人名＋住所が同じ。空白・ハイフン・全角半角は無視）への過去の送付を表に出す。あれば W121 を出す。警告だけで止めない（登録はできる。マーケティングのキャンペーンなどで続けて送ることがあるため。台帳 F 2026-10-08）。同じ法人名で住所が違う宛先は別の宛先として数え、件数だけ出す。一覧に「宛先の送付履歴」のモーダルは作らない。",
+     "Khi nhập tên công ty và địa chỉ, hiển thị trong bảng các lần gửi trước đây tới cùng địa chỉ nhận (cùng tên công ty + địa chỉ; bỏ qua khoảng trắng・gạch nối・toàn/bán giác). Nếu có thì hiện W121; chỉ cảnh báo, KHÔNG chặn (vẫn đăng ký được vì có thể gửi liên tiếp, ví dụ chiến dịch marketing; Sổ cái F 2026-10-08). Không làm modal 「Lịch sử gửi tới địa chỉ」 ở danh sách. Địa chỉ nhận có cùng tên công ty nhưng khác địa chỉ được tính là địa chỉ khác, chỉ hiện số lượng."
+    ],
+    "err": [
+     "W121"
+    ],
+    "trig": "view"
+   },
+   "008:3.10": {
+    "ja": "配送ルート（この宛先）",
+    "vi": "Tuyến giao hàng (cho địa chỉ này)",
+    "kind": "area",
+    "detail": [
+     "1回の登録で配送ルートを1つ、登録のたびに「ピッキング倉庫・配送会社・中継先［任意］」を都度選ぶ（既存のルートを選ぶ形にはしない。配送会社は委託配送先マスタ、中継先は倉庫マスタの中継先から選ぶ。台帳 F 2026-10-08）。ピッキング倉庫は商品ごとではなく宛先ごとで、登録全体のピッキング倉庫はここから決まる。倉庫が分かれる出荷（枝番）は作らない。ルートは配送の可変構造（配送元・配送先を都度指定できる。配送_01_マスタ）。",
+     "Mỗi lần đăng ký chỉ định 1 tuyến giao hàng, chọn mỗi lần 「kho picking・công ty vận chuyển・điểm trung chuyển [tùy chọn]」 (không cho chọn tuyến có sẵn; công ty vận chuyển chọn từ master công ty vận chuyển ủy thác, điểm trung chuyển chọn từ kho loại trung chuyển trong master kho; Sổ cái F 2026-10-08). Kho picking theo địa chỉ nhận chứ không theo sản phẩm; kho picking của cả lần đăng ký lấy từ đây. Không tách chuyến theo kho (không có số nhánh). Tuyến là cấu trúc linh hoạt của giao hàng (chỉ định nguồn gửi・nơi nhận mỗi lần; Giao hàng_01_Master)."
+    ],
+    "trig": "view"
+   },
+   "008:3.11": {
+    "ja": "ピッキング倉庫",
+    "vi": "Kho picking",
+    "kind": "select",
+    "req": "○",
+    "len": "選択",
+    "init": [
+     "（未選択）",
+     "(Chưa chọn)"
+    ],
+    "ex": [
+     "関東倉庫",
+     "Tên kho picking, chọn từ danh sách"
+    ],
+    "detail": [
+     "配送元＝ピッキング倉庫。1回の登録で1つ。サンプルNo は枝番なし、出荷指示もこの1倉庫で作る。倉庫に担当エリアは持たない（運営が選ぶ）。",
+     "Nguồn gửi = kho picking. 1 kho cho mỗi lần đăng ký. Số mẫu không có số nhánh, chỉ thị xuất hàng cũng tạo theo 1 kho này. Kho không có khu vực phụ trách (vận hành chọn)."
+    ],
+    "valid": [
+     "必須。倉庫マスタの有効なピッキング倉庫から選ぶ。選ぶと、この倉庫が扱わない商品は選べなくなる（4.1・4.4）。",
+     "Bắt buộc. Chọn từ kho picking đang hiệu lực trong master kho. Khi chọn, sản phẩm mà kho này không xử lý sẽ không chọn được (4.1・4.4)."
+    ],
+    "err": [
+     "E01",
+     "E148"
+    ],
+    "trig": "select"
+   },
+   "008:3.12": {
+    "ja": "配送会社",
+    "vi": "Công ty vận chuyển",
+    "kind": "select",
+    "req": "○",
+    "len": "選択",
+    "init": [
+     "（未選択）",
+     "(Chưa chọn)"
+    ],
+    "ex": [
+     "ヤマト運輸",
+     "Tên công ty vận chuyển, chọn từ danh sách master công ty vận chuyển ủy thác"
+    ],
+    "detail": [
+     "このルートで運ぶ配送会社。登録のたびにマスタから選ぶ（文字では入れない。台帳 F 2026-10-08）。一覧とCSV出力には配送会社の名前を出す。",
+     "Công ty vận chuyển của tuyến này. Chọn từ master mỗi lần đăng ký (không nhập bằng chữ; Sổ cái F 2026-10-08). Danh sách và CSV出力 hiện tên công ty vận chuyển."
+    ],
+    "valid": [
+     "必須。委託配送先マスタの有効な配送会社から選ぶ（自社は出さない）。",
+     "Bắt buộc. Chọn từ công ty vận chuyển đang hiệu lực trong master công ty vận chuyển ủy thác (không hiện công ty tự vận hành)."
+    ],
+    "err": [
+     "E01"
+    ],
+    "trig": "select"
+   },
+   "008:3.13": {
+    "ja": "中継先（任意）",
+    "vi": "Điểm trung chuyển (tùy chọn)",
+    "kind": "select",
+    "req": "－",
+    "len": "選択",
+    "init": [
+     "（中継しない）",
+     "(Không trung chuyển)"
+    ],
+    "ex": [
+     "ヤマト 渋谷営業所",
+     "Tên điểm trung chuyển, chọn từ kho loại trung chuyển trong master kho"
+    ],
+    "detail": [
+     "配送会社の営業所など、経由する中継先（倉庫マスタの種別が中継先の倉庫）。リードタイムは中継があっても合計1つ（5.2）で、中継分は計算に使わない。",
+     "Điểm trung chuyển như văn phòng của công ty vận chuyển (kho có loại 中継先 trong master kho). Lead time là 1 tổng giá trị (5.2) dù có trung chuyển, phần trung chuyển không dùng để tính."
+    ],
+    "valid": [
+     "任意。倉庫マスタの有効な中継先から選ぶ。空なら中継なし。",
+     "Tùy chọn. Chọn từ điểm trung chuyển đang hiệu lực trong master kho. Để trống = không trung chuyển."
+    ],
+    "trig": "select"
+   },
+   "008:4": {
+    "ja": "サンプルの商品",
+    "vi": "Sản phẩm mẫu",
+    "kind": "area",
+    "detail": [
+     "営業サンプルの対象は、商品マスタの「営業サンプル」にチェックした商品。はじめは全部「送る・2個」（数量の初期値は2。台帳 F 2026-10-08・受付簿 #189）。ただし、配送ルートのピッキング倉庫が扱わない商品（取扱倉庫に入っていない商品）は選べない（非活性・理由つき）。1つ以上選ぶ（選ばないと E02）。",
+     "Đối tượng mẫu kinh doanh là các sản phẩm được tích 「営業サンプル」 trong master sản phẩm. Ban đầu tất cả là 「Gửi・2 cái」 (số lượng ban đầu là 2; Sổ cái F 2026-10-08・Sổ tiếp nhận #189). Tuy nhiên sản phẩm mà kho picking của tuyến giao hàng không xử lý (không có trong kho xử lý) thì không chọn được (vô hiệu hóa kèm lý do). Chọn ít nhất 1 (không chọn thì E02)."
+    ],
+    "err": [
+     "E02"
+    ],
+    "trig": "view"
+   },
+   "008:4.1": {
+    "ja": "送る",
+    "vi": "Gửi",
+    "kind": "check",
+    "req": "－",
+    "len": [
+     "チェック",
+     "Checkbox"
+    ],
+    "init": [
+     "オン（全商品）",
+     "Bật (tất cả sản phẩm)"
+    ],
+    "ex": [
+     "オン（送る）",
+     "Checkbox gửi: bật = gửi sản phẩm đó"
+    ],
+    "detail": [
+     "オンの商品だけ送る。配送ルートのピッキング倉庫が扱わない商品は非活性（オンにできない）にして、理由を行に出す。",
+     "Chỉ gửi các sản phẩm đang bật. Sản phẩm mà kho picking của tuyến không xử lý thì vô hiệu hóa (không bật được) và hiện lý do trên dòng."
+    ],
+    "cond": [
+     "配送ルートのピッキング倉庫が決まっているとき、取扱倉庫に含まれない商品は非活性",
+     "Khi đã có kho picking của tuyến, sản phẩm không nằm trong kho xử lý thì vô hiệu hóa"
+    ],
+    "trig": "check"
+   },
+   "008:4.2": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "text",
+    "req": "○",
+    "len": "整数 1〜9",
+    "init": [
+     "2",
+     "2"
+    ],
+    "ex": [
+     "2",
+     "Số lượng, số nguyên 1〜9"
+    ],
+    "valid": [
+     "1〜9の整数。全角は半角に直す。範囲の外は1または9に直す。枠の件数には数えない（1件＝宛先1か所）。",
+     "Số nguyên 1〜9. Chuyển toàn giác thành bán giác. Nếu ngoài phạm vi thì sửa thành 1 hoặc 9. Không tính vào số lượng hạn mức (1 mẫu = 1 địa chỉ nhận)."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "008:4.3": {
+    "ja": "取扱倉庫（商品マスタ）",
+    "vi": "Kho xử lý (master sản phẩm)",
+    "kind": "label",
+    "detail": [
+     "商品マスタの取扱倉庫。配送ルートのピッキング倉庫がここに含まれない商品は、4.4 のとおり選べない。",
+     "Kho xử lý trong master sản phẩm. Sản phẩm mà kho picking của tuyến không nằm trong đây thì không chọn được (theo 4.4)."
+    ],
+    "trig": "view"
+   },
+   "008:4.5": {
+    "ja": "選んだ商品の数量を一括で変更",
+    "vi": "Đổi số lượng hàng loạt cho sản phẩm đã chọn",
+    "kind": "text",
+    "req": "－",
+    "len": "整数 1〜9",
+    "init": [
+     "2",
+     "2"
+    ],
+    "ex": [
+     "5",
+     "Số nguyên 1〜9, áp dụng cho mọi sản phẩm đang bật 「送る」"
+    ],
+    "detail": [
+     "表の上に置く数量の入力欄。「適用」を押すと、いま「送る」がオンの商品すべての数量を、この数にそろえる（オフの商品・取扱外で非活性の商品は変えない）。数量は1個ずつも直せる（4.2）。数量の初期値は各2個のまま。",
+     "Ô nhập số lượng đặt phía trên bảng. Bấm 「適用」 thì số lượng của tất cả sản phẩm đang bật 「送る」 được đặt thành số này (sản phẩm đang tắt hoặc bị vô hiệu hóa vì kho không xử lý thì không đổi). Vẫn sửa từng sản phẩm được (4.2). Số lượng ban đầu vẫn là 2 cái mỗi sản phẩm."
+    ],
+    "valid": [
+     "1〜9の整数。入っていない・範囲の外のときは、入力欄の横に「1〜9 の数字を入れてください」と出して、何も変えない。",
+     "Số nguyên 1〜9. Nếu để trống hoặc ngoài phạm vi, hiện 「1〜9 の数字を入れてください」 cạnh ô nhập và không đổi gì."
+    ],
+    "trig": "input"
+   },
+   "008:4.6": {
+    "ja": "適用",
+    "vi": "Áp dụng",
+    "kind": "button",
+    "detail": [
+     "一括で変更の数を、「送る」がオンの商品すべての数量に入れる。確認のモーダルは出さない（あとから1個ずつ直せる）。登録するまで保存されない。",
+     "Đặt số lượng bulk cho tất cả sản phẩm đang bật 「送る」. Không hiện modal xác nhận (có thể sửa từng sản phẩm sau). Chưa lưu cho đến khi đăng ký."
+    ],
+    "trig": "click"
+   },
+   "008:5": {
+    "ja": "納品日と発送日",
+    "vi": "Ngày giao và ngày gửi",
+    "kind": "area",
+    "detail": [
+     "納品日とリードタイム（運営が入れる）から発送日を自動で計算する（納品日 − リードタイム。ピッキングできない日は直前のピッキングできる日へ前倒しし、納品日も同じだけ振り替える）。リードタイムは宛先ごとに違い、倉庫ごとには持たない。",
+     "Tính tự động ngày gửi từ ngày giao và lead time (vận hành nhập) (ngày giao − lead time. Lead time khác nhau theo từng địa chỉ nhận, không giữ theo từng kho. Ngày không picking được thì dời sớm về ngày picking được gần nhất trước đó, và dời ngày giao cùng số ngày)."
+    ],
+    "trig": "view"
+   },
+   "008:5.1": {
+    "ja": "納品日",
+    "vi": "Ngày giao",
+    "kind": "date",
+    "req": "○",
+    "len": "日付",
+    "ex": [
+     "2026-11-18",
+     "Ngày giao, dạng yyyy-mm-dd (từ hôm nay đến ngày cuối cùng có chu kỳ giao hàng)"
+    ],
+    "detail": [
+     "先方に届けたい日。",
+     "Ngày muốn giao đến khách."
+    ],
+    "valid": [
+     "今日から、配送サイクルのある最後の日まで。発送日が今日より前になるときは E147。",
+     "Từ hôm nay đến ngày cuối cùng có chu kỳ giao hàng. Nếu ngày gửi trước hôm nay thì E147."
+    ],
+    "err": [
+     "E01",
+     "E147"
+    ],
+    "trig": "input"
+   },
+   "008:5.2": {
+    "ja": "リードタイム（日）",
+    "vi": "Lead time (ngày)",
+    "kind": "text",
+    "req": "○",
+    "len": "整数 0〜30",
+    "ex": [
+     "2",
+     "Số ngày từ lúc gửi đến lúc giao, số nguyên 0〜30 (nhập tay, hệ thống không gợi ý)"
+    ],
+    "detail": [
+     "発送日＝納品日−リードタイム。宛先ごとに違い、毎回違うことがあるため、運営が毎回手で入れる。システムは値を提案しない。",
+     "Ngày gửi = ngày giao − lead time. Khác nhau theo từng địa chỉ nhận và mỗi lần có thể khác nên vận hành nhập tay mỗi lần. Hệ thống không gợi ý giá trị."
+    ],
+    "valid": [
+     "必須。0〜30の整数。全角は半角に直す。1回の登録で1つ。",
+     "Bắt buộc. Số nguyên 0〜30. Chuyển toàn giác thành bán giác. 1 giá trị cho mỗi lần đăng ký."
+    ],
+    "err": [
+     "E01",
+     "E12"
+    ],
+    "trig": "input"
+   },
+   "008:5.4": {
+    "ja": "メモ（任意）",
+    "vi": "Ghi chú (tùy chọn)",
+    "kind": "textarea",
+    "req": "－",
+    "len": [
+     "文字列 500（複数行）",
+     "Chuỗi tối đa 500 ký tự (nhiều dòng)"
+    ],
+    "ex": [
+     "商談名：給食センター向け新メニュー。営業担当は佐藤。",
+     "Ghi chú tùy chọn (nhiều dòng, tối đa 500 ký tự): tên cuộc thương thảo, người phụ trách kinh doanh"
+    ],
+    "detail": [
+     "登録したあとは、一覧の「メモ・送り状番号」から直せる。直せるのはメモと送り状番号だけ。",
+     "Sau khi đăng ký thì sửa được từ nút 「メモ・送り状番号」 trong danh sách. Chỉ sửa được ghi chú và số vận đơn."
+    ],
+    "valid": [
+     "500文字まで。",
+     "Tối đa 500 ký tự."
+    ],
+    "err": [
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "009:6.3": {
+    "ja": "ページ上部のエラー",
+    "vi": "Lỗi ở đầu trang",
+    "kind": "label",
+    "detail": [
+     "入力エラーが1つ以上あるとき、「保存できません（n件）。赤い項目を確認してください」の1行を出す。各項目の下に、その項目の文言を出す。",
+     "Khi có từ 1 lỗi nhập trở lên thì hiện 1 dòng 「Không thể lưu (n lỗi). Hãy kiểm tra các mục màu đỏ」. Dưới mỗi mục hiện câu của mục đó."
+    ],
+    "pattern": "P-FORMBOX",
+    "trig": "show"
+   },
+   "009:3.1": {
+    "ja": "法人名",
+    "vi": "Tên công ty",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 60",
+    "ex": [
+     "株式会社ミズホ食品",
+     "Tên công ty của khách tiềm năng, dạng chuỗi (tối đa 60 ký tự)"
+    ],
+    "detail": [
+     "見込みのお客様の法人名。法人名と住所が同じなら同じ宛先として、過去の送付を警告（W121）に出す。",
+     "Tên công ty của khách tiềm năng. Nếu tên công ty và địa chỉ giống nhau thì được coi là cùng một địa chỉ nhận và hiện trong cảnh báo (W121) về các lần gửi trước."
+    ],
+    "valid": [
+     "前後の空白を取る。60文字まで。",
+     "Bỏ khoảng trắng đầu cuối. Tối đa 60 ký tự."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "009:3.2": {
+    "ja": "担当者名",
+    "vi": "Người phụ trách",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 60",
+    "ex": [
+     "田中 俊",
+     "Tên người phụ trách phía khách, dạng chuỗi (tối đa 60 ký tự)"
+    ],
+    "valid": [
+     "前後の空白を取る。60文字まで。",
+     "Bỏ khoảng trắng đầu cuối. Tối đa 60 ký tự."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E13"
+    ],
+    "trig": "input"
+   },
+   "010:3.9": {
+    "ja": "同じ宛先への送付の警告",
+    "vi": "Cảnh báo đã gửi tới cùng địa chỉ",
+    "kind": "area",
+    "detail": [
+     "法人名と住所を入れると、同じ宛先（法人名＋住所が同じ。空白・ハイフン・全角半角は無視）への過去の送付を表に出す。あれば W121 を出す。警告だけで止めない（登録はできる。マーケティングのキャンペーンなどで続けて送ることがあるため。台帳 F 2026-10-08）。同じ法人名で住所が違う宛先は別の宛先として数え、件数だけ出す。一覧に「宛先の送付履歴」のモーダルは作らない。",
+     "Khi nhập tên công ty và địa chỉ, hiển thị trong bảng các lần gửi trước đây tới cùng địa chỉ nhận (cùng tên công ty + địa chỉ; bỏ qua khoảng trắng・gạch nối・toàn/bán giác). Nếu có thì hiện W121; chỉ cảnh báo, KHÔNG chặn (vẫn đăng ký được vì có thể gửi liên tiếp, ví dụ chiến dịch marketing; Sổ cái F 2026-10-08). Không làm modal 「Lịch sử gửi tới địa chỉ」 ở danh sách. Địa chỉ nhận có cùng tên công ty nhưng khác địa chỉ được tính là địa chỉ khác, chỉ hiện số lượng."
+    ],
+    "err": [
+     "W121"
+    ],
+    "trig": "view"
+   },
+   "010:5.3": {
+    "ja": "前回のリードタイム（参考）",
+    "vi": "Lead time lần trước (tham khảo)",
+    "kind": "label",
+    "detail": [
+     "リードタイムの項目名の横に、同じ宛先（法人名＋住所が同じ）への前回のリードタイムを「0〜30の整数。同じ宛先への前回は n日（参考）」の形で出す。前回がなければ「0〜30の整数。宛先によって違うため、毎回入れてください」。値は入れない（手入力のまま）。",
+     "Cạnh tên mục lead time, hiện lead time của lần gửi trước tới cùng địa chỉ nhận (cùng tên công ty + địa chỉ) dạng 「Số nguyên 0〜30. Lần trước gửi tới cùng địa chỉ là n ngày (tham khảo)」. Nếu chưa có lần trước thì hiện 「Số nguyên 0〜30. Khác nhau theo địa chỉ nhận nên hãy nhập mỗi lần」. Không tự điền giá trị (vẫn nhập tay)."
+    ],
+    "trig": "view"
+   },
+   "011:3.10": {
+    "ja": "配送ルート（この宛先）",
+    "vi": "Tuyến giao hàng (cho địa chỉ này)",
+    "kind": "area",
+    "detail": [
+     "1回の登録で配送ルートを1つ、登録のたびに「ピッキング倉庫・配送会社・中継先［任意］」を都度選ぶ（既存のルートを選ぶ形にはしない。配送会社は委託配送先マスタ、中継先は倉庫マスタの中継先から選ぶ。台帳 F 2026-10-08）。ピッキング倉庫は商品ごとではなく宛先ごとで、登録全体のピッキング倉庫はここから決まる。倉庫が分かれる出荷（枝番）は作らない。ルートは配送の可変構造（配送元・配送先を都度指定できる。配送_01_マスタ）。",
+     "Mỗi lần đăng ký chỉ định 1 tuyến giao hàng, chọn mỗi lần 「kho picking・công ty vận chuyển・điểm trung chuyển [tùy chọn]」 (không cho chọn tuyến có sẵn; công ty vận chuyển chọn từ master công ty vận chuyển ủy thác, điểm trung chuyển chọn từ kho loại trung chuyển trong master kho; Sổ cái F 2026-10-08). Kho picking theo địa chỉ nhận chứ không theo sản phẩm; kho picking của cả lần đăng ký lấy từ đây. Không tách chuyến theo kho (không có số nhánh). Tuyến là cấu trúc linh hoạt của giao hàng (chỉ định nguồn gửi・nơi nhận mỗi lần; Giao hàng_01_Master)."
+    ],
+    "trig": "view"
+   },
+   "011:3.11": {
+    "ja": "ピッキング倉庫",
+    "vi": "Kho picking",
+    "kind": "select",
+    "req": "○",
+    "len": "選択",
+    "init": [
+     "（未選択）",
+     "(Chưa chọn)"
+    ],
+    "ex": [
+     "関東倉庫",
+     "Tên kho picking, chọn từ danh sách"
+    ],
+    "detail": [
+     "配送元＝ピッキング倉庫。1回の登録で1つ。サンプルNo は枝番なし、出荷指示もこの1倉庫で作る。倉庫に担当エリアは持たない（運営が選ぶ）。",
+     "Nguồn gửi = kho picking. 1 kho cho mỗi lần đăng ký. Số mẫu không có số nhánh, chỉ thị xuất hàng cũng tạo theo 1 kho này. Kho không có khu vực phụ trách (vận hành chọn)."
+    ],
+    "valid": [
+     "必須。倉庫マスタの有効なピッキング倉庫から選ぶ。選ぶと、この倉庫が扱わない商品は選べなくなる（4.1・4.4）。",
+     "Bắt buộc. Chọn từ kho picking đang hiệu lực trong master kho. Khi chọn, sản phẩm mà kho này không xử lý sẽ không chọn được (4.1・4.4)."
+    ],
+    "err": [
+     "E01",
+     "E148"
+    ],
+    "trig": "select"
+   },
+   "011:3.12": {
+    "ja": "配送会社",
+    "vi": "Công ty vận chuyển",
+    "kind": "select",
+    "req": "○",
+    "len": "選択",
+    "init": [
+     "（未選択）",
+     "(Chưa chọn)"
+    ],
+    "ex": [
+     "ヤマト運輸",
+     "Tên công ty vận chuyển, chọn từ danh sách master công ty vận chuyển ủy thác"
+    ],
+    "detail": [
+     "このルートで運ぶ配送会社。登録のたびにマスタから選ぶ（文字では入れない。台帳 F 2026-10-08）。一覧とCSV出力には配送会社の名前を出す。",
+     "Công ty vận chuyển của tuyến này. Chọn từ master mỗi lần đăng ký (không nhập bằng chữ; Sổ cái F 2026-10-08). Danh sách và CSV出力 hiện tên công ty vận chuyển."
+    ],
+    "valid": [
+     "必須。委託配送先マスタの有効な配送会社から選ぶ（自社は出さない）。",
+     "Bắt buộc. Chọn từ công ty vận chuyển đang hiệu lực trong master công ty vận chuyển ủy thác (không hiện công ty tự vận hành)."
+    ],
+    "err": [
+     "E01"
+    ],
+    "trig": "select"
+   },
+   "011:3.13": {
+    "ja": "中継先（任意）",
+    "vi": "Điểm trung chuyển (tùy chọn)",
+    "kind": "select",
+    "req": "－",
+    "len": "選択",
+    "init": [
+     "（中継しない）",
+     "(Không trung chuyển)"
+    ],
+    "ex": [
+     "ヤマト 渋谷営業所",
+     "Tên điểm trung chuyển, chọn từ kho loại trung chuyển trong master kho"
+    ],
+    "detail": [
+     "配送会社の営業所など、経由する中継先（倉庫マスタの種別が中継先の倉庫）。リードタイムは中継があっても合計1つ（5.2）で、中継分は計算に使わない。",
+     "Điểm trung chuyển như văn phòng của công ty vận chuyển (kho có loại 中継先 trong master kho). Lead time là 1 tổng giá trị (5.2) dù có trung chuyển, phần trung chuyển không dùng để tính."
+    ],
+    "valid": [
+     "任意。倉庫マスタの有効な中継先から選ぶ。空なら中継なし。",
+     "Tùy chọn. Chọn từ điểm trung chuyển đang hiệu lực trong master kho. Để trống = không trung chuyển."
+    ],
+    "trig": "select"
+   },
+   "011:4.1": {
+    "ja": "送る",
+    "vi": "Gửi",
+    "kind": "check",
+    "req": "－",
+    "len": [
+     "チェック",
+     "Checkbox"
+    ],
+    "init": [
+     "オン（全商品）",
+     "Bật (tất cả sản phẩm)"
+    ],
+    "ex": [
+     "オン（送る）",
+     "Checkbox gửi: bật = gửi sản phẩm đó"
+    ],
+    "detail": [
+     "オンの商品だけ送る。配送ルートのピッキング倉庫が扱わない商品は非活性（オンにできない）にして、理由を行に出す。",
+     "Chỉ gửi các sản phẩm đang bật. Sản phẩm mà kho picking của tuyến không xử lý thì vô hiệu hóa (không bật được) và hiện lý do trên dòng."
+    ],
+    "cond": [
+     "配送ルートのピッキング倉庫が決まっているとき、取扱倉庫に含まれない商品は非活性",
+     "Khi đã có kho picking của tuyến, sản phẩm không nằm trong kho xử lý thì vô hiệu hóa"
+    ],
+    "trig": "check"
+   },
+   "011:4.4": {
+    "ja": "取扱外の理由（非活性の行）",
+    "vi": "Lý do không chọn được (dòng bị vô hiệu hóa)",
+    "kind": "label",
+    "detail": [
+     "非活性の行（取扱倉庫の欄）に「（倉庫名）では扱っていないため選べません」の形で理由を出す。数量は入れられず、送る対象にならない。商品ごとのピッキング倉庫の選択は作らない（ピッキング倉庫はルートで1つ＝3.11）。",
+     "Ở dòng bị vô hiệu hóa (cột kho xử lý) hiện lý do dạng 「(tên kho) không xử lý nên không chọn được」. Không nhập được số lượng và không thuộc đối tượng gửi. Không có việc chọn kho picking theo từng sản phẩm (kho picking là 1 theo tuyến = 3.11)."
+    ],
+    "cond": [
+     "ピッキング倉庫が決まっていて、その倉庫が商品の取扱倉庫に入っていないとき",
+     "Khi đã có kho picking và kho đó không nằm trong kho xử lý của sản phẩm"
+    ],
+    "trig": "view"
+   },
+   "012:5.6": {
+    "ja": "ピッキングできない日",
+    "vi": "Ngày không picking được",
+    "kind": "label",
+    "detail": [
+     "配送サイクルの出荷不可枠・日別の出荷不可日・サイクル休止の日。この日に当たると前倒しする。関西・中部倉庫は当面は関東倉庫と同じとして扱い、リリース後にデータで調整する（台帳 F 2026-10-08）。",
+     "Khung không xuất hàng của chu kỳ giao hàng・ngày không xuất hàng theo ngày・ngày chu kỳ tạm dừng. Nếu rơi vào các ngày này thì dời sớm. Kho Kansai・Chubu tạm coi như kho Kanto (điều chỉnh bằng dữ liệu sau khi release; Sổ cái F 2026-10-08)."
+    ],
+    "trig": "view"
+   },
+   "012:5.5": {
+    "ja": "発送の計算結果",
+    "vi": "Kết quả tính ngày gửi",
+    "kind": "area",
+    "detail": [
+     "1つの結果を出す：納品日（入力）・リードタイム（入力した値）・発送日（自動）。前倒しのときは「前倒し」バッジと理由。倉庫が分かれる（別便）表示は作らない。",
+     "Hiện 1 kết quả: ngày giao (nhập)・lead time (giá trị đã nhập)・ngày gửi (tự động). Khi dời sớm thì có badge 「前倒し」 và lý do. Không có hiển thị chia kho (giao riêng)."
+    ],
+    "trig": "view"
+   },
+   "013:6.1": {
+    "ja": "出荷週が締め済（警告）",
+    "vi": "Tuần gửi đã chốt (cảnh báo)",
+    "kind": "label",
+    "detail": [
+     "発送日の出荷週が締め済のとき、登録すると「締め後追加」になり、出荷指示は作成されない。登録はできる。",
+     "Khi tuần gửi của ngày gửi đã 締め済 thì đăng ký sẽ thành 「締め後追加」 và không tạo chỉ thị xuất hàng. Vẫn đăng ký được."
+    ],
+    "err": [
+     "W122"
+    ],
+    "trig": "show"
+   },
+   "014:5.1": {
+    "ja": "納品日",
+    "vi": "Ngày giao",
+    "kind": "date",
+    "req": "○",
+    "len": "日付",
+    "ex": [
+     "2026-11-18",
+     "Ngày giao, dạng yyyy-mm-dd (từ hôm nay đến ngày cuối cùng có chu kỳ giao hàng)"
+    ],
+    "detail": [
+     "先方に届けたい日。",
+     "Ngày muốn giao đến khách."
+    ],
+    "valid": [
+     "今日から、配送サイクルのある最後の日まで。発送日が今日より前になるときは E147。",
+     "Từ hôm nay đến ngày cuối cùng có chu kỳ giao hàng. Nếu ngày gửi trước hôm nay thì E147."
+    ],
+    "err": [
+     "E01",
+     "E147"
+    ],
+    "trig": "input"
+   },
+   "014:6.2": {
+    "ja": "発送日が今日より前（エラー）",
+    "vi": "Ngày gửi trước hôm nay (lỗi)",
+    "kind": "label",
+    "detail": [
+     "計算した発送日が今日より前になるとき、納品日の下に E147 を出す。登録できない。",
+     "Khi ngày gửi đã tính trước hôm nay thì hiện E147 dưới ngày giao. Không đăng ký được."
+    ],
+    "err": [
+     "E147"
+    ],
+    "trig": "show"
+   },
+   "015:7": {
+    "ja": "入力中に離れる確認",
+    "vi": "Xác nhận khi rời trang đang nhập",
+    "kind": "modal",
+    "err": [
+     "Q02"
+    ],
+    "trig": "show"
+   },
+   "016:1.2": {
+    "ja": "登録",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "全項目をまとめてチェックする。通れば登録して一覧へ戻り、S123 のトースト。締め済の出荷週に当たるときは「締め後追加」で登録する。押したらボタンを無効にする。",
+     "Kiểm tra tất cả các mục cùng lúc. Nếu hợp lệ thì đăng ký và quay về danh sách, hiện toast S123. Nếu rơi vào tuần gửi đã chốt thì đăng ký là 「締め後追加」. Sau khi bấm thì vô hiệu hóa nút."
+    ],
+    "cond": [
+     "月の枠を超えるときは非活性（E149）",
+     "Vô hiệu hóa khi vượt hạn mức tháng (E149)"
+    ],
+    "err": [
+     "S123",
+     "E149"
+    ],
+    "pattern": "P-FORMBOX",
+    "trig": "click"
+   },
+   "016:6": {
+    "ja": "月の枠を超える（メッセージ）",
+    "vi": "Vượt hạn mức tháng (thông báo)",
+    "kind": "label",
+    "detail": [
+     "ページ上部のメッセージエリアに E149 を出し、「登録」ボタンを非活性にする。登録できない（枠を増やすときは月間メニューで件数を変える）。",
+     "Hiện E149 ở vùng thông báo đầu trang và vô hiệu hóa nút 「Đăng ký」. Không đăng ký được (muốn tăng hạn mức thì đổi số mẫu ở Menu tháng)."
+    ],
+    "err": [
+     "E149"
+    ],
+    "trig": "show"
+   },
+   "017:11": {
+    "ja": "締めを取り消す（確認モーダル）",
+    "vi": "Hủy chốt (modal xác nhận)",
+    "kind": "modal",
+    "detail": [
+     "出荷週と、受付済に戻る件数（締め済の件数）を出す。「締めを取り消す」で、締め済を受付済に戻し、出荷指示を取り消す。締め後追加のサンプルはそのまま。",
+     "Hiện tuần gửi và số mẫu sẽ quay về 受付済 (số mẫu 締め済). Bấm 「Hủy chốt」: 締め済 quay về 受付済 và chỉ thị xuất hàng bị hủy. Mẫu 締め後追加 giữ nguyên."
+    ],
+    "trig": "show"
+   },
+   "017:11.1": {
+    "ja": "キャンセル",
+    "vi": "Hủy",
+    "kind": "button",
+    "detail": [
+     "閉じる。何も変えない。",
+     "Đóng. Không thay đổi gì."
+    ],
+    "trig": "click"
+   },
+   "017:11.2": {
+    "ja": "締めを取り消す",
+    "vi": "Hủy chốt",
+    "kind": "button",
+    "detail": [
+     "締め済を受付済に戻し（出荷指示を消す）、週を「受付中」に戻す。最初の発送日を過ぎていたときは取り消せない（サーバー側でも確かめる）。",
+     "Đưa 締め済 về 受付済 (xóa chỉ thị xuất hàng), đưa tuần về 「Đang tiếp nhận」. Nếu đã qua ngày gửi đầu tiên thì không hủy được (server cũng kiểm tra)."
+    ],
+    "err": [
+     "E151"
+    ],
+    "trig": "click"
+   },
+   "018:4.5": {
+    "ja": "選んだ商品の数量を一括で変更",
+    "vi": "Đổi số lượng hàng loạt cho sản phẩm đã chọn",
+    "kind": "text",
+    "req": "－",
+    "len": "整数 1〜9",
+    "init": [
+     "2",
+     "2"
+    ],
+    "ex": [
+     "5",
+     "Số nguyên 1〜9, áp dụng cho mọi sản phẩm đang bật 「送る」"
+    ],
+    "detail": [
+     "表の上に置く数量の入力欄。「適用」を押すと、いま「送る」がオンの商品すべての数量を、この数にそろえる（オフの商品・取扱外で非活性の商品は変えない）。数量は1個ずつも直せる（4.2）。数量の初期値は各2個のまま。",
+     "Ô nhập số lượng đặt phía trên bảng. Bấm 「適用」 thì số lượng của tất cả sản phẩm đang bật 「送る」 được đặt thành số này (sản phẩm đang tắt hoặc bị vô hiệu hóa vì kho không xử lý thì không đổi). Vẫn sửa từng sản phẩm được (4.2). Số lượng ban đầu vẫn là 2 cái mỗi sản phẩm."
+    ],
+    "valid": [
+     "1〜9の整数。入っていない・範囲の外のときは、入力欄の横に「1〜9 の数字を入れてください」と出して、何も変えない。",
+     "Số nguyên 1〜9. Nếu để trống hoặc ngoài phạm vi, hiện 「1〜9 の数字を入れてください」 cạnh ô nhập và không đổi gì."
+    ],
+    "trig": "input"
+   },
+   "018:4.6": {
+    "ja": "適用",
+    "vi": "Áp dụng",
+    "kind": "button",
+    "detail": [
+     "一括で変更の数を、「送る」がオンの商品すべての数量に入れる。確認のモーダルは出さない（あとから1個ずつ直せる）。登録するまで保存されない。",
+     "Đặt số lượng bulk cho tất cả sản phẩm đang bật 「送る」. Không hiện modal xác nhận (có thể sửa từng sản phẩm sau). Chưa lưu cho đến khi đăng ký."
+    ],
+    "trig": "click"
+   },
+   "018:4.2": {
+    "ja": "数量",
+    "vi": "Số lượng",
+    "kind": "text",
+    "req": "○",
+    "len": "整数 1〜9",
+    "init": [
+     "2",
+     "2"
+    ],
+    "ex": [
+     "2",
+     "Số lượng, số nguyên 1〜9"
+    ],
+    "valid": [
+     "1〜9の整数。全角は半角に直す。範囲の外は1または9に直す。枠の件数には数えない（1件＝宛先1か所）。",
+     "Số nguyên 1〜9. Chuyển toàn giác thành bán giác. Nếu ngoài phạm vi thì sửa thành 1 hoặc 9. Không tính vào số lượng hạn mức (1 mẫu = 1 địa chỉ nhận)."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   }
+  }
+ }
+}

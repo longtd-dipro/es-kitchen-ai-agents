@@ -1,0 +1,20 @@
+/* 発注・入荷だけの見た目（元のデモの ws-style・s6css）。.ops-purchasing の中だけに効く */
+.ops-purchasing .notice.ng{background:#FDECEC;border-color:#F5C2C0;color:var(--ng)}
+.ops-purchasing .notice.ng svg{color:var(--ng)}
+.ops-purchasing .ws-note>div{flex:1;min-width:0}
+.ops-purchasing .ws-more{margin-top:0.285714rem}
+.ops-purchasing .ws-more summary{cursor:pointer;color:var(--accent);font-size:0.928571rem;list-style:revert}
+.ops-purchasing .ws-more>div{margin-top:0.428571rem;font-size:0.928571rem;line-height:1.7}
+.ops-purchasing .kpis button.kpi{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:2px;border-radius:6px;padding:2px 0.285714rem;margin:-2px -0.285714rem}
+.ops-purchasing .kpis button.kpi:hover b{text-decoration:underline}
+.ops-purchasing .kpis button.kpi.on b{color:var(--accent)}
+.ops-purchasing .kpis button.kpi:focus-visible{outline:2px solid var(--accent)}
+.ops-purchasing tr.ws-grp td{background:var(--surface-2);font-weight:700;font-size:0.928571rem}
+.ops-purchasing td.ws-l{text-align:left}
+.ops-purchasing .crumb button.lnk{border:0;background:none;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline}
+/* 本発注の数の +3／+5／+10（決定 R10） */
+.ops-purchasing .adj{display:flex;gap:0.285714rem;margin-top:0.285714rem}
+/* 発注メールの文面 */
+.ops-purchasing pre.mail{white-space:pre-wrap;background:var(--surface-2);padding:0.857143rem;border-radius:8px;font-size:0.928571rem;font-family:inherit;margin:0}
+/* 小さい入力モーダルの並び */
+.ops-purchasing .stack{display:grid;gap:0.857143rem}

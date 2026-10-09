@@ -1,0 +1,1816 @@
+{
+ "ver": "1.3",
+ "history": [
+  {
+   "ver": "1.0",
+   "date": "2026-10-06",
+   "files": [
+    "アカウント一覧（AW_ACCT）",
+    "権限（AW_PERM）",
+    "メンテナンス管理（AW_MNTN）",
+    "バージョン&強制アップデート（AW_VERS）",
+    "IPホワイトリスト管理（AW_IPWL）",
+    "お問い合わせ通知先メール（AW_IQML）"
+   ]
+  },
+  {
+   "ver": "1.1",
+   "date": "2026-10-06",
+   "files": [
+    "アカウント一覧（AW_ACCT）",
+    "権限（AW_PERM）",
+    "メンテナンス管理（AW_MNTN）",
+    "バージョン&強制アップデート（AW_VERS）",
+    "IPホワイトリスト管理（AW_IPWL）",
+    "お問い合わせ通知先メール（AW_IQML）"
+   ]
+  },
+  {
+   "ver": "1.2",
+   "date": "2026-10-06",
+   "files": [
+    "アカウント一覧（AW_ACCT）",
+    "権限（AW_PERM）",
+    "メンテナンス管理（AW_MNTN）",
+    "バージョン&強制アップデート（AW_VERS）",
+    "IPホワイトリスト管理（AW_IPWL）",
+    "お問い合わせ通知先メール（AW_IQML）"
+   ]
+  },
+  {
+   "ver": "1.3",
+   "date": "2026-10-07",
+   "files": [
+    "アカウント一覧（AW_ACCT）",
+    "権限（AW_PERM）",
+    "メンテナンス管理（AW_MNTN）",
+    "バージョン&強制アップデート（AW_VERS）",
+    "IPホワイトリスト管理（AW_IPWL）"
+   ]
+  }
+ ],
+ "files": {
+  "画面設計書_AW_ACCT_アカウント一覧": {
+   "001:1": {
+    "ja": "ヘッダー",
+    "vi": "Đầu trang",
+    "kind": "area",
+    "detail": [
+     "パンくず：アカウント管理 ＞ アカウント一覧。タイトルは「アカウント管理（タブ名）」。見られるのは運営の全役割（操作ができるのはフル権限・システム管理だけ）。",
+     "Breadcrumb: アカウント管理 > アカウント一覧. Tiêu đề là 「アカウント管理（tên tab）」. Mọi vai trò vận hành xem được (chỉ フル権限・システム管理 mới thao tác được)."
+    ],
+    "trig": "view"
+   },
+   "001:1.1": {
+    "ja": "CSV出力",
+    "vi": "Xuất CSV",
+    "kind": "button",
+    "detail": [
+     "ヘッダーの右。開いているタブの全件（検索条件のとおり）。「新規登録」ボタンは置かない（アカウントの発行は申込・各マスタ・法人詳細から）。",
+     "Bên phải đầu trang. Toàn bộ dòng của tab đang mở (theo điều kiện tìm kiếm). Không có nút 「新規登録」 (tài khoản được cấp từ 申込, các マスタ, chi tiết doanh nghiệp)."
+    ],
+    "pattern": "P-CSV-OUT",
+    "trig": "click"
+   },
+   "001:2": {
+    "ja": "タブ",
+    "vi": "Tab",
+    "kind": "tab",
+    "detail": [
+     "運営／拠点／ユーザー／委託配送／仕入先／配送スタッフ の6つ（倉庫スタッフは運営のロールの1つなので運営のタブに入る：hong 2026-10-07）。初期は「運営」。画面を移って戻ってもタブを覚えている。タブごとに検索条件・並び・ページを別に持つ。「拠点」は法人アカウントと拠点アカウント、「ユーザー」はアプリの利用者（U＋8桁）。",
+     "6 tab: 運営／拠点／ユーザー／委託配送／仕入先／配送スタッフ (nhân viên kho là một vai trò của vận hành nên nằm trong tab 運営: hong 2026-10-07). Ban đầu là 「運営」. Chuyển màn rồi quay lại vẫn nhớ tab. Mỗi tab có điều kiện tìm kiếm, thứ tự, trang riêng. 「拠点」 gồm tài khoản doanh nghiệp và điểm; 「ユーザー」 là người dùng app (U + 8 số)."
+    ],
+    "pattern": "P-TAB",
+    "trig": "click"
+   },
+   "001:3": {
+    "ja": "検索条件",
+    "vi": "Điều kiện tìm kiếm",
+    "kind": "area",
+    "detail": [
+     "キーワード（ユーザーID・ユーザー名）／ロール／アカウント状態（有効・無効・利用停止・削除済）／最終ログイン（期間）。削除済のアカウントは既定で出さず、状態で選ぶと出る。",
+     "Từ khóa (ID người dùng, tên) / vai trò / trạng thái tài khoản (有効・無効・利用停止・削除済) / lần đăng nhập cuối (khoảng thời gian). Mặc định không hiện tài khoản 削除済, chọn trạng thái thì hiện."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:4": {
+    "ja": "アカウントの一覧",
+    "vi": "Danh sách tài khoản",
+    "kind": "table",
+    "detail": [
+     "初期の並びはユーザーIDの昇順。1ページ 10件。0件は I01。列：ユーザーID・ユーザー名・メール・ロール・アカウント状態・最終ログイン。行の操作（削除など）は置かない（見られるのは状態だけ）。",
+     "Sắp xếp ban đầu theo ID người dùng tăng dần. 10 dòng/trang. Nếu 0 dòng là I01. Cột: ID người dùng, tên người dùng, email, vai trò, trạng thái tài khoản, lần đăng nhập cuối. Không có thao tác xóa trên hàng (chỉ xem trạng thái)."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:4.1": {
+    "ja": "ユーザー名（リンク）",
+    "vi": "Tên người dùng (liên kết)",
+    "kind": "link",
+    "detail": [
+     "タブごとの動き：運営＝運営アカウントの詳細（AW_ACCT_002・状態 003）／配送スタッフ＝パスワード再設定の代行（状態 004）／拠点＝法人アカウントは法人詳細・拠点アカウントは拠点詳細／委託配送・仕入先＝それぞれのマスタの画面／ユーザー＝リンクにしない（文字だけ）。",
+     "Hoạt động theo từng tab: vận hành = chi tiết tài khoản vận hành (AW_ACCT_002, trạng thái 003) / giao hàng = modal đặt lại mật khẩu hộ (trạng thái 004) / điểm = doanh nghiệp đi chi tiết/điểm đi chi tiết / giao hàng được ủy thác/nhà cung cấp = sang màn master tương ứng / người dùng = không liên kết (chỉ text)."
+    ],
+    "trig": "click"
+   },
+   "001:4.2": {
+    "ja": "ロール",
+    "vi": "Vai trò",
+    "kind": "label",
+    "detail": [
+     "運営はつけた権限名（倉庫スタッフも権限名の1つ）（2つ以上はカンマで並べる）。ユーザータブは「アプリユーザー」。",
+     "Tab 運営: tên các quyền đã gán (từ 2 quyền trở lên cách nhau bằng dấu phẩy). Tab ユーザー: 「アプリユーザー」."
+    ],
+    "trig": "view"
+   },
+   "001:4.3": {
+    "ja": "アカウント状態",
+    "vi": "Trạng thái tài khoản",
+    "kind": "label",
+    "detail": [
+     "バッジ。有効／無効／利用停止／削除済 など。この画面では変えられない。",
+     "Huy hiệu. Có hiệu lực / vô hiệu / tạm dừng / đã xóa v.v. Không thể thay đổi trên màn hình này."
+    ],
+    "trig": "view"
+   },
+   "001:4.4": {
+    "ja": "最終ログイン",
+    "vi": "Lần đăng nhập cuối",
+    "kind": "label",
+    "detail": [
+     "yyyy-mm-dd HH:MM。まだログインしていなければ「—」。",
+     "yyyy-mm-dd HH:MM. Nếu chưa đăng nhập thì \"—\"."
+    ],
+    "trig": "view"
+   },
+   "001:5": {
+    "ja": "ページ送り",
+    "vi": "Phân trang",
+    "kind": "area",
+    "detail": [
+     "P-LIST のとおり（10／20／50件）。",
+     "Theo P-LIST (10/20/50 dòng)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "002:1": {
+    "ja": "ユーザータブ",
+    "vi": "Tab người dùng",
+    "kind": "tab",
+    "detail": [
+     "アプリの利用者（U＋8桁）の一覧。列は同じ。ロールは「アプリユーザー」。名前はリンクにしない（アプリの利用者の操作は法人Web・アプリ側）。",
+     "Danh sách người dùng app (U+8 chữ số). Cột như nhau. Vai trò là \"Người dùng app\". Tên không phải liên kết (thao tác của người dùng app được làm trên Web doanh nghiệp/app)."
+    ],
+    "pattern": "P-TAB",
+    "trig": "click"
+   },
+   "003:1": {
+    "ja": "ヘッダー（詳細）",
+    "vi": "Đầu trang (chi tiết)",
+    "kind": "area",
+    "detail": [
+     "パンくず：アカウント管理 ＞ アカウント管理（運営） ＞ アカウント管理（運営）詳細。タイトル「アカウント管理（運営）詳細 {ユーザーID}」。右に「編集」（フル権限・システム管理だけ。ほかの役割には出さない）。運営のアカウントだけにこの画面がある（ほかのタブは今までどおり）。運営のアカウントは権限画面の「権限付与」で作る（この一覧に新規登録は置かない：hong 2026-10-07）。",
+     "Breadcrumb: アカウント管理 > アカウント管理（運営） > chi tiết. Tiêu đề 「アカウント管理（運営）詳細 {ID người dùng}」. Bên phải có 「編集」 (chỉ フル権限・システム管理). Chỉ tài khoản vận hành có màn hình này (các tab khác như cũ). Tài khoản vận hành được tạo ở 「権限付与」 của màn hình quyền (danh sách này không có đăng ký mới: hong 2026-10-07)."
+    ],
+    "trig": "view"
+   },
+   "003:2": {
+    "ja": "基本情報（表示）",
+    "vi": "Thông tin cơ bản (hiển thị)",
+    "kind": "area",
+    "detail": [
+     "ユーザーID・ユーザー名・メール・ロール（チップ。倉庫スタッフもロールの1つ）・アカウント状態・最終ログイン。すべて表示だけ。",
+     "ID người dùng, tên người dùng, email, vai trò (chip; nhân viên kho cũng là một vai trò), trạng thái tài khoản, lần đăng nhập cuối. Tất cả chỉ hiển thị."
+    ],
+    "trig": "view"
+   },
+   "004:1": {
+    "ja": "再設定の代行モーダル",
+    "vi": "Modal đặt lại mật khẩu hộ",
+    "kind": "modal",
+    "detail": [
+     "タイトル「{名前}（{ログインID}）」。「登録メールアドレスへ4桁の認証コードを送ります。ドライバーはアプリの「パスワードリセット」でコードと新しいパスワードを入れます。」と説明。「閉じる」「パスワード再設定を代行」。代行は運営の「委託配送管理」の権限がある役割だけに出す。",
+     "Tiêu đề 「{tên} ({ID đăng nhập})」. Giải thích: 「Gửi mã xác thực 4 số tới email đã đăng ký. Tài xế nhập mã và mật khẩu mới ở 「パスワードリセット」 trong app」. Nút 「閉じる」「パスワード再設定を代行」. Chỉ hiện với vai trò có quyền 「委託配送管理」."
+    ],
+    "err": [
+     "S185",
+     "E30"
+    ],
+    "trig": "click"
+   },
+   "004:1.1": {
+    "ja": "パスワード再設定を代行",
+    "vi": "Đặt lại mật khẩu hộ",
+    "kind": "button",
+    "detail": [
+     "押すと登録メールアドレスへ認証コード（Mail List No.3。4桁・有効5分）を送り、S185 を出して閉じる。",
+     "Gửi mã xác thực tới email đã đăng ký (Mail List No.3; 4 chữ số; hết hạn 5 phút), hiện S185 rồi đóng."
+    ],
+    "err": [
+     "S185",
+     "E30"
+    ],
+    "trig": "click"
+   },
+   "005:1": {
+    "ja": "0件の表示",
+    "vi": "Hiển thị 0 bản ghi",
+    "kind": "area",
+    "detail": [
+     "検索条件に合うアカウントがないとき、一覧の中に I01「表示するデータがありません。」を出す（P-LIST）。条件は「クリア」で戻せる。",
+     "Khi không có tài khoản nào khớp điều kiện tìm kiếm, hiển thị I01「表示するデータがありません。」trong danh sách (P-LIST). Có thể khôi phục điều kiện bằng 「クリア」."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "006:1": {
+    "ja": "詳細は参照のみ（編集のボタンなし）",
+    "vi": "Chi tiết chỉ xem (không có nút sửa)",
+    "kind": "area",
+    "detail": [
+     "運営アカウントの詳細は見られるが、右の「編集」は出さない。",
+     "Xem được chi tiết tài khoản vận hành nhưng không hiện nút 「編集」 bên phải."
+    ],
+    "cond": [
+     "権限付与の閲覧だけの役割（経理など）",
+     "Vai trò chỉ được xem 「権限付与」 (ví dụ Kế toán (「経理」))"
+    ],
+    "trig": "view"
+   },
+   "007:1": {
+    "ja": "運営アカウントの編集",
+    "vi": "Sửa tài khoản vận hành",
+    "kind": "area",
+    "detail": [
+     "タイトル「アカウント管理（運営）編集 {ユーザーID}」。「キャンセル」「保存」。入力を変えてキャンセルしたら Q02。成功したら S01 を出して詳細へ戻る。ほかの人が先に保存していたら E31。「権限付与」を編集できる運営アカウントが1人もいなくなる保存はできない（E262）。",
+     "Tiêu đề 「アカウント管理（運営）編集 {ID người dùng}」. 「キャンセル」「保存」. Đã sửa mà hủy thì hiện Q02. Thành công hiện S01 rồi quay lại chi tiết. Nếu người khác đã lưu trước thì E31. Không lưu được nếu sẽ không còn tài khoản vận hành nào sửa được 「権限付与」 (E262)."
+    ],
+    "err": [
+     "Q02",
+     "S01",
+     "E30",
+     "E31",
+     "E262"
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "007:1.1": {
+    "ja": "ユーザーID",
+    "vi": "ID người dùng",
+    "kind": "label",
+    "detail": [
+     "変えられない（表示だけ）。",
+     "Không thể đổi (chỉ hiển thị)."
+    ],
+    "trig": "view"
+   },
+   "007:1.2": {
+    "ja": "ユーザー名",
+    "vi": "Tên người dùng",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 60",
+    "ex": [
+     "中村 幸子",
+     "Nakamura Sachiko"
+    ],
+    "detail": [
+     "運営の担当者の名前。",
+     "Tên người phụ trách vận hành."
+    ],
+    "err": [
+     "E01",
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "007:1.3": {
+    "ja": "メール",
+    "vi": "Email",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 60",
+    "ex": [
+     "sample@sample.com",
+     "sample@sample.com"
+    ],
+    "detail": [
+     "ログイン案内・認証コードの宛先。ほかのアカウントと同じアドレスは登録できない。",
+     "Địa chỉ nhận hướng dẫn đăng nhập/mã xác thực. Không đăng ký trùng với tài khoản khác."
+    ],
+    "err": [
+     "E01",
+     "E07",
+     "E09"
+    ],
+    "trig": "input"
+   },
+   "007:1.4": {
+    "ja": "ロール",
+    "vi": "Vai trò",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "選択（複数・権限画面の権限名）",
+     "Chọn (nhiều, tên quyền ở màn hình quyền)"
+    ],
+    "ex": [
+     "フル権限・CS・商品管理",
+     "フル権限・CS・商品管理"
+    ],
+    "detail": [
+     "権限画面（AW_PERM）の権限名から複数選ぶ（チップ・×で外す）。倉庫スタッフも権限名の1つ。2つ以上選ぶと、どれかの権限でできる操作ができる。1つ以上必須。",
+     "Chọn nhiều từ tên quyền của màn hình quyền (AW_PERM) (chip, ×để bỏ). Nhân viên kho cũng là một tên quyền. Chọn từ 2 quyền trở lên thì làm được thao tác của bất kỳ quyền nào. Bắt buộc từ 1."
+    ],
+    "err": [
+     "E02",
+     "E262"
+    ],
+    "trig": "select"
+   },
+   "007:1.5": {
+    "ja": "アカウント状態",
+    "vi": "Trạng thái tài khoản",
+    "kind": "select",
+    "req": "○",
+    "len": [
+     "選択（有効／無効）",
+     "Chọn (có hiệu lực / vô hiệu)"
+    ],
+    "ex": [
+     "有効",
+     "Có hiệu lực"
+    ],
+    "detail": [
+     "「無効」にするとログインできなくなる。",
+     "Chọn 「無効」 thì không đăng nhập được."
+    ],
+    "err": [
+     "E01"
+    ],
+    "trig": "select"
+   },
+   "007:1.6": {
+    "ja": "最終ログイン",
+    "vi": "Lần đăng nhập cuối",
+    "kind": "label",
+    "detail": [
+     "最後にログインした日時（表示だけ）。まだなら「—」。",
+     "Ngày giờ đăng nhập gần nhất (chỉ hiển thị). Chưa có thì \"—\"."
+    ],
+    "trig": "view"
+   },
+   "008:1": {
+    "ja": "必須の入力エラー",
+    "vi": "Lỗi nhập bắt buộc",
+    "kind": "area",
+    "detail": [
+     "ユーザー名を空にして「保存」を押すと、項目の下に E01 を出して赤枠にする。メールの形式が違うときは E07、ほかのアカウントと同じなら E09。保存しない。",
+     "Để trống tên người dùng rồi nhấn 「保存」 thì hiện E01 dưới ô và viền đỏ. Email sai định dạng thì E07, trùng tài khoản khác thì E09. Không lưu."
+    ],
+    "err": [
+     "E01",
+     "E07"
+    ],
+    "trig": "view"
+   }
+  },
+  "画面設計書_AW_PERM_権限": {
+   "001:1": {
+    "ja": "ヘッダー",
+    "vi": "Đầu trang",
+    "kind": "area",
+    "detail": [
+     "パンくず：アカウント管理 ＞ 権限。見られるのは運営の全役割（登録・編集・削除ができるのはフル権限・システム管理だけ）。",
+     "Breadcrumb: アカウント管理 > 権限. Mọi vai trò vận hành đều xem được (chỉ フル権限・システム管理 mới đăng ký/sửa/xóa được)."
+    ],
+    "trig": "view"
+   },
+   "001:1.1": {
+    "ja": "CSV出力",
+    "vi": "Xuất CSV",
+    "kind": "button",
+    "detail": [
+     "ヘッダーの右。一覧の全件（検索条件のとおり。権限名・備考・ユーザー数・機能ごとの操作）。",
+     "Bên phải đầu trang. Toàn bộ danh sách (theo điều kiện tìm kiếm; tên quyền, ghi chú, số người dùng, thao tác theo chức năng)."
+    ],
+    "pattern": "P-CSV-OUT",
+    "trig": "click"
+   },
+   "001:1.2": {
+    "ja": "権限登録",
+    "vi": "Đăng ký quyền",
+    "kind": "button",
+    "detail": [
+     "権限の登録（AW_PERM_003）へ。登録の権限がない役割には出さない。",
+     "Chuyển sang đăng ký quyền (AW_PERM_003). Không hiện với vai trò không có quyền đăng ký."
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "001:2": {
+    "ja": "検索条件",
+    "vi": "Điều kiện tìm kiếm",
+    "kind": "area",
+    "detail": [
+     "キーワード（権限名・備考。部分一致）／状態（有効・削除済み。既定は有効）。",
+     "Từ khóa (tên quyền, ghi chú; khớp một phần) / trạng thái (有効・削除済み; mặc định 有効)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:3": {
+    "ja": "権限の一覧",
+    "vi": "Danh sách quyền",
+    "kind": "table",
+    "detail": [
+     "初期の並びは登録順（マスタなので昇順）。1ページ 10件。0件は I01。権限名を押すと詳細（AW_PERM_002）へ。",
+     "Thứ tự ban đầu: theo thứ tự đăng ký (master nên tăng dần). 10 dòng/trang. 0 dòng hiện I01. Nhấn tên quyền để mở chi tiết (AW_PERM_002)."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:3.1": {
+    "ja": "権限名・備考",
+    "vi": "Tên quyền / ghi chú",
+    "kind": "label",
+    "detail": [
+     "権限名は下線つきのリンク。備考は長いと一行で切って表示。",
+     "Tên quyền là link có gạch chân. Ghi chú dài thì cắt thành một dòng."
+    ],
+    "trig": "view"
+   },
+   "001:3.2": {
+    "ja": "ユーザー数",
+    "vi": "Số tài khoản",
+    "kind": "label",
+    "detail": [
+     "この権限を持つアカウントの数（削除済みのアカウントは数えない）。右寄せ。",
+     "Số tài khoản đang có quyền này (không tính tài khoản đã xóa). Căn phải."
+    ],
+    "trig": "view"
+   },
+   "001:3.3": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "label",
+    "detail": [
+     "「有効」「削除済み」（バッジ）。削除済みは検索条件で出したときだけ表示し、行は灰色。",
+     "Badge 「有効」「削除済み」. Chỉ hiện quyền đã xóa khi chọn trong điều kiện tìm kiếm, dòng màu xám."
+    ],
+    "trig": "view"
+   },
+   "001:3.4": {
+    "ja": "操作（編集・削除）",
+    "vi": "Thao tác (sửa / xóa)",
+    "kind": "button",
+    "detail": [
+     "鉛筆＝編集（AW_PERM_003）、ごみ箱＝削除（確認 Q01 → 論理削除して S02）。削除済みの行には出さない。持っているアカウントがある権限・最後の「権限付与」の編集者になる権限は削除できない（E261・E262）。操作の権限がない役割には出さない。",
+     "Bút chì = sửa (AW_PERM_003), thùng rác = xóa (xác nhận Q01 → xóa logic và hiện S02). Không hiện ở dòng đã xóa. Quyền đang có tài khoản, hoặc quyền khiến không còn ai sửa được 「権限付与」 thì không xóa được (E261・E262). Không hiện với vai trò không có quyền thao tác."
+    ],
+    "err": [
+     "Q01",
+     "S02",
+     "E261",
+     "E262"
+    ],
+    "pattern": "P-DEL",
+    "trig": "click"
+   },
+   "001:4": {
+    "ja": "ページ送り",
+    "vi": "Phân trang",
+    "kind": "area",
+    "detail": [
+     "P-LIST のとおり（10／20／50件）。",
+     "Theo P-LIST (10/20/50 dòng)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "002:1": {
+    "ja": "ヘッダー",
+    "vi": "Đầu trang",
+    "kind": "area",
+    "detail": [
+     "パンくず：アカウント管理 ＞ 権限 ＞ 権限名。右に「一覧へ戻る」「編集」「削除」（編集・削除は権限のある役割だけ。削除済みの権限には出さない）。",
+     "Danh sách tài khoản > Quyền > Tên quyền. Bên phải có \"Quay lại danh sách\", \"Sửa\", \"Xóa\" (chỉ vai trò có quyền mới sửa/xóa; không hiển thị cho quyền đã xóa)."
+    ],
+    "trig": "view"
+   },
+   "002:2": {
+    "ja": "基本情報",
+    "vi": "Thông tin cơ bản",
+    "kind": "area",
+    "detail": [
+     "権限名・備考・状態・ユーザー数・最終更新（日時と更新した人）。すべて表示だけ。",
+     "Tên quyền, ghi chú, trạng thái, số người dùng, cập nhật cuối (ngày giờ và người cập nhật). Tất cả chỉ hiển thị."
+    ],
+    "trig": "view"
+   },
+   "002:3": {
+    "ja": "機能ごとの操作",
+    "vi": "Thao tác theo chức năng",
+    "kind": "area",
+    "detail": [
+     "系統（基本操作系・法人・拠点・契約管理系 など）ごとのカード。機能ごとに 閲覧・作成・編集・削除・CSV取込・CSV出力 と、機能ごとの操作（承認・公開・確定など）を ✓ で表示（編集画面と同じ並び・表示だけ）。系統は折りたためる。",
+     "Mỗi nhóm (thao tác cơ bản, doanh nghiệp・điểm・hợp đồng…) một thẻ. Mỗi chức năng hiện bằng ✓: xem, tạo, sửa, xóa, nhập CSV, xuất CSV và thao tác riêng của chức năng (duyệt, công khai, xác định…) (cùng bố cục màn sửa, chỉ hiển thị). Nhóm có thể thu gọn."
+    ],
+    "pattern": "P-TAB",
+    "trig": "view"
+   },
+   "002:4": {
+    "ja": "この権限を持つアカウント",
+    "vi": "Tài khoản có quyền này",
+    "kind": "table",
+    "detail": [
+     "列：ユーザーID・ユーザー名・アカウント状態。1ページ 10件。名前を押しても動かない（アカウントの操作はアカウント一覧）。0件は I01。",
+     "Cột: ID người dùng, tên người dùng, trạng thái tài khoản. 10 dòng/trang. Nhấn tên không có tác dụng (thao tác tài khoản làm ở danh sách tài khoản). 0 dòng hiện I01."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "003:1": {
+    "ja": "ヘッダー",
+    "vi": "Đầu trang",
+    "kind": "area",
+    "detail": [
+     "パンくず：アカウント管理 ＞ 権限 ＞「権限登録」または権限名。右に「キャンセル」「登録」（編集は「保存」）。入力を変えてキャンセルしたら Q02。成功したら S01 を出して詳細（AW_PERM_002）へ（新規は登録した権限の詳細）。",
+     "Danh sách tài khoản > Quyền > \"Đăng ký quyền\" hoặc tên quyền. Bên phải có \"Hủy\" \"Đăng ký\" (sửa là \"Lưu\"). Nhập rồi hủy là Q02. Thành công là S01 rồi đi chi tiết (AW_PERM_002) (mới là chi tiết quyền vừa đăng ký)."
+    ],
+    "err": [
+     "Q02",
+     "S01",
+     "E30",
+     "E31"
+    ],
+    "pattern": "P-FORM",
+    "trig": "view"
+   },
+   "003:2": {
+    "ja": "権限名",
+    "vi": "Tên quyền",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 60",
+    "ex": [
+     "CS（東日本）",
+     "Tên quyền ví dụ (CS khu vực Đông Nhật Bản)"
+    ],
+    "detail": [
+     "アカウントに付ける役割の名前。",
+     "Tên vai trò gán cho tài khoản."
+    ],
+    "valid": [
+     "ほかの権限（削除済みを除く）と同じ名前は不可。",
+     "Không được trùng tên với quyền khác (không tính quyền đã xóa)."
+    ],
+    "err": [
+     "E01",
+     "E04",
+     "E260"
+    ],
+    "trig": "input"
+   },
+   "003:3": {
+    "ja": "備考",
+    "vi": "Ghi chú",
+    "kind": "textarea",
+    "req": "－",
+    "len": "文字列 500",
+    "ex": [
+     "東日本のお客様対応。法人・契約の編集ができる",
+     "Ghi chú ví dụ: chăm sóc khách hàng khu vực Đông Nhật Bản, sửa được doanh nghiệp và hợp đồng."
+    ],
+    "detail": [
+     "どんな人に付ける権限かのメモ。複数行。",
+     "Ghi chú quyền này gán cho ai. Nhiều dòng."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "003:4": {
+    "ja": "説明文",
+    "vi": "Văn bản giải thích",
+    "kind": "label",
+    "detail": [
+     "操作の選び方（「閲覧」を外すとその機能の操作はすべてなくなる・系統の先頭の行でまとめて付けられる・2つ以上の権限を持つアカウントはどれかでできる操作ができる）。",
+     "Cách chọn thao tác: bỏ 「閲覧」 thì mọi thao tác của chức năng đó mất; dòng đầu của mỗi nhóm gán gộp được; tài khoản có từ 2 quyền trở lên làm được thao tác nếu một trong các quyền cho phép (quyền cao hơn)."
+    ],
+    "trig": "view"
+   },
+   "003:5": {
+    "ja": "系統のカード",
+    "vi": "Thẻ theo nhóm chức năng",
+    "kind": "area",
+    "detail": [
+     "系統ごとに1枚。見出しの▼▶で折りたたむ（閉じていても「すべての機能」の行は使える）。見出しの横に「n／m機能で操作あり」。",
+     "Mỗi nhóm một thẻ. Thu gọn bằng ▼▶ ở tiêu đề (dù đang thu gọn vẫn dùng được dòng 「すべての機能」). Cạnh tiêu đề hiện 「n／m chức năng có thao tác」."
+    ],
+    "pattern": "P-TAB",
+    "trig": "click"
+   },
+   "003:5.1": {
+    "ja": "すべての機能（系統まとめ）",
+    "vi": "Tất cả chức năng",
+    "kind": "area",
+    "detail": [
+     "その系統の全機能にいっぺんに付ける・外す。操作ごと（作成・閲覧・編集・削除・CSV取込・CSV出力）の列にチェックを置く（全部あり＝✓、一部だけ＝－）。「まとめて」の欄（ドロップダウン）は置かない（hong 2026-10-06）。",
+     "Gán/bỏ cho tất cả chức năng của nhóm cùng lúc bằng ô tick ở từng cột thao tác (tạo・xem・sửa・xóa・nhập CSV・xuất CSV; tất cả = ✓, một phần = －). Không có cột 「まとめて」 (dropdown) (hong 2026-10-06)."
+    ],
+    "trig": "select"
+   },
+   "003:5.2": {
+    "ja": "機能の行",
+    "vi": "Hàng chức năng",
+    "kind": "area",
+    "detail": [
+     "機能名（下に対象の画面名）／閲覧・作成・編集・削除・CSV取込・CSV出力のチェック／その他（機能ごとの操作）。操作を付けると閲覧も付く。閲覧を外すとその機能の操作はすべて外れる。「まとめて」の欄は置かない。",
+     "Tên chức năng (bên dưới là tên màn hình liên quan) / tick xem・tạo・sửa・xóa・nhập CSV・xuất CSV / 「その他」 (thao tác riêng của chức năng). Gán thao tác thì tự gán cả xem. Bỏ xem thì mọi thao tác của chức năng bị bỏ. Không có cột 「まとめて」."
+    ],
+    "trig": "check"
+   },
+   "003:6": {
+    "ja": "保存時のエラー",
+    "vi": "Lỗi khi lưu",
+    "kind": "toast",
+    "detail": [
+     "保存すると「権限付与」を編集できる運営アカウントが1人もいなくなるとき（自分のアカウントの権限を外すなど）は E262 を出して保存しない。",
+     "Nếu lưu khiến không còn tài khoản vận hành nào sửa được 「権限付与」 (ví dụ bỏ quyền của chính mình) thì hiện E262 và không lưu."
+    ],
+    "err": [
+     "E262"
+    ],
+    "trig": "view"
+   },
+   "003:7": {
+    "ja": "機能モジュール・権限設定マトリクス（全機能の列まとめ）",
+    "vi": "Ma trận quyền theo module chức năng (tick cột cho toàn bộ)",
+    "kind": "area",
+    "detail": [
+     "系統のカードの上にある見出しの行。操作ごと（作成・閲覧・編集・削除・CSV取込・CSV出力）のチェックで、全系統の全機能にいっぺんに付ける・外す（全部あり＝✓、一部だけ＝－）。系統の見出し行にも同じチェックがあり、その系統の中だけに効く（hong 2026-10-06・参考画面）。",
+     "Hàng tiêu đề nằm trên các thẻ nhóm. Tick từng cột thao tác (tạo・xem・sửa・xóa・nhập CSV・xuất CSV) để gán/bỏ cho toàn bộ chức năng của mọi nhóm cùng lúc (tất cả = ✓, một phần = －). Hàng tiêu đề của từng nhóm cũng có tick tương tự và chỉ có tác dụng trong nhóm đó (hong 2026-10-06, màn hình tham khảo)."
+    ],
+    "trig": "check"
+   },
+   "004:1": {
+    "ja": "削除の確認",
+    "vi": "Xác nhận xóa",
+    "kind": "modal",
+    "detail": [
+     "タイトル「削除」。「キャンセル」「削除する」。「削除する」で論理削除（状態＝削除済み）して S02。一覧から外れ、検索条件で「削除済み」にすると表示される。",
+     "Tiêu đề 「削除」. 「キャンセル」「削除する」. 「削除する」 thì xóa logic (trạng thái = 削除済み) và hiện S02. Quyền biến mất khỏi danh sách, chọn 「削除済み」 ở điều kiện tìm kiếm thì hiện lại."
+    ],
+    "err": [
+     "Q01",
+     "S02",
+     "E30"
+    ],
+    "pattern": "P-DEL",
+    "trig": "click"
+   },
+   "005:1": {
+    "ja": "削除できない",
+    "vi": "Không xóa được",
+    "kind": "modal",
+    "detail": [
+     "その権限を持つアカウントがあるとき E261（件数つき）。最後の「権限付与」の編集者になるときは E262。モーダルの「閉じる」で閉じる。",
+     "Khi còn tài khoản đang có quyền này thì E261 (kèm số lượng). Khi quyền này khiến không còn ai sửa được 「権限付与」 thì E262. Đóng modal bằng 「閉じる」."
+    ],
+    "err": [
+     "E261",
+     "E262"
+    ],
+    "trig": "click"
+   },
+   "006:1": {
+    "ja": "0件の表示",
+    "vi": "Hiển thị 0 bản ghi",
+    "kind": "area",
+    "detail": [
+     "検索条件に合う権限がないとき、一覧の中に I01「表示するデータがありません。」を出す（P-LIST）。条件は「クリア」で戻せる。",
+     "Khi không có quyền nào khớp điều kiện tìm kiếm, hiển thị I01「表示するデータがありません。」trong danh sách (P-LIST). Có thể khôi phục điều kiện bằng 「クリア」."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "007:1": {
+    "ja": "参照のみ（権限が閲覧だけの役割）",
+    "vi": "Chỉ xem (vai trò chỉ có quyền xem)",
+    "kind": "area",
+    "detail": [
+     "経理（権限付与は閲覧のみ）。「権限登録」は出さない（権限表：権限付与は フル権限＝CRUD・ほかの6役割＝R）。",
+     "Kế toán (「経理」) (「権限付与」 chỉ được xem). Không hiển thị 「権限登録」 (bảng quyền: 「権限付与」 do Toàn quyền = CRUD, 6 vai trò còn lại = R)."
+    ],
+    "cond": [
+     "経理（権限付与は閲覧のみ）",
+     "Kế toán (「経理」) (「権限付与」 chỉ được xem)"
+    ],
+    "trig": "view"
+   },
+   "007:2": {
+    "ja": "一覧の操作の列",
+    "vi": "Cột thao tác của danh sách",
+    "kind": "table",
+    "detail": [
+     "行の鉛筆（編集）・ごみ箱（削除）は出さない。",
+     "Không hiển thị biểu tượng bút chì (sửa) và thùng rác (xóa) ở từng dòng."
+    ],
+    "trig": "view"
+   },
+   "008:1": {
+    "ja": "必須の入力エラー",
+    "vi": "Lỗi nhập bắt buộc",
+    "kind": "label",
+    "detail": [
+     "何も入れずに「登録」を押すと、「権限名」の下に E01 を出して赤枠にする（保存しない）。同じ名前の権限があれば E260。",
+     "Nếu bấm 「登録」 khi chưa nhập gì, hiển thị E01 bên dưới 「権限名」 và tô viền đỏ (không lưu). Nếu đã có quyền trùng tên thì E260."
+    ],
+    "err": [
+     "E01",
+     "E260"
+    ],
+    "pattern": "P-FORM",
+    "trig": "view"
+   }
+  },
+  "画面設計書_AW_MNTN_メンテナンス管理": {
+   "001:1": {
+    "ja": "ヘッダー",
+    "vi": "Đầu trang",
+    "kind": "area",
+    "detail": [
+     "パンくず：設定管理 ＞ メンテナンス管理。見られるのは運営の全役割（開始・終了・編集ができるのはフル権限・システム管理だけ）。",
+     "Breadcrumb: 設定管理 > メンテナンス管理. Mọi vai trò vận hành xem được (chỉ フル権限・システム管理 bắt đầu/kết thúc/sửa được)."
+    ],
+    "trig": "view"
+   },
+   "001:1.1": {
+    "ja": "CSV出力",
+    "vi": "Xuất CSV",
+    "kind": "button",
+    "detail": [
+     "ヘッダーの右。下の履歴の全件（端末OS・タイトル・説明内容・開始日時・終了日時）。",
+     "Bên phải đầu trang. Toàn bộ lịch sử bên dưới (OS thiết bị, tiêu đề, nội dung, thời gian bắt đầu, thời gian kết thúc)."
+    ],
+    "pattern": "P-CSV-OUT",
+    "trig": "click"
+   },
+   "001:2": {
+    "ja": "端末OSごとのカード",
+    "vi": "Thẻ theo OS thiết bị",
+    "kind": "area",
+    "detail": [
+     "iOS と Android の2枚。メンテナンスにできる対象はアプリだけ（Web サイトは対象外）。",
+     "2 thẻ iOS và Android. Đối tượng bảo trì chỉ là app (Web site không áp dụng)."
+    ],
+    "trig": "view"
+   },
+   "001:2.1": {
+    "ja": "状態",
+    "vi": "Trạng thái",
+    "kind": "label",
+    "detail": [
+     "「稼働中」または「メンテナンス中」（バッジ）。",
+     "「稼働中」 hoặc 「メンテナンス中」 (badge)."
+    ],
+    "trig": "view"
+   },
+   "001:2.2": {
+    "ja": "タイトル・説明内容",
+    "vi": "Tiêu đề / nội dung giải thích",
+    "kind": "label",
+    "detail": [
+     "メンテナンス中にアプリへ出す案内の文。メンテナンスにしていないときも表示する（次に使う文）。",
+     "Nội dung thông báo hiện trên app khi bảo trì. Cũng hiện khi chưa bảo trì (nội dung sẽ dùng lần tới)."
+    ],
+    "trig": "view"
+   },
+   "001:2.3": {
+    "ja": "メンテナンス開始／終了",
+    "vi": "Bắt đầu / kết thúc bảo trì",
+    "kind": "button",
+    "detail": [
+     "稼働中のカードは「メンテナンス開始」、メンテナンス中のカードは「メンテナンス終了」。押すと確認（Q180／Q181。開始は案内のタイトル・説明内容をその場で直してから開始できる）。「開始する」「終了する」で切り替えて S180／S181。すぐ反映される。権限がない役割には出さない。",
+     "Thẻ đang hoạt động có nút 「メンテナンス開始」, thẻ đang bảo trì có 「メンテナンス終了」. Nhấn sẽ hiện xác nhận (Q180/Q181; khi bắt đầu có thể sửa tiêu đề/nội dung thông báo ngay tại đó). 「開始する」「終了する」 để chuyển và hiện S180/S181. Có hiệu lực ngay. Không hiện với vai trò không có quyền."
+    ],
+    "err": [
+     "Q180",
+     "Q181",
+     "S180",
+     "S181",
+     "E30"
+    ],
+    "trig": "click"
+   },
+   "001:2.4": {
+    "ja": "編集",
+    "vi": "Sửa",
+    "kind": "button",
+    "detail": [
+     "タイトル・説明内容を直すモーダル（状態 003）。権限がない役割には出さない。",
+     "Modal sửa tiêu đề và nội dung (trạng thái 003). Không hiện với vai trò không có quyền."
+    ],
+    "cond": [
+     "権限付与の編集ができる役割（フル権限・システム管理）だけ。メンテナンス中でも直せる",
+     "Chỉ vai trò sửa được 「権限付与」 (フル権限・システム管理). Sửa được cả khi đang bảo trì"
+    ],
+    "trig": "click"
+   },
+   "001:3": {
+    "ja": "メンテナンスの履歴",
+    "vi": "Lịch sử bảo trì",
+    "kind": "table",
+    "detail": [
+     "開始・終了のたびに1行足す。初期の並びは開始日時の新しい順。1ページ 10件。0件は I01。",
+     "Mỗi lần bắt đầu/kết thúc thêm 1 dòng. Thứ tự ban đầu: thời gian bắt đầu mới nhất trước. 10 dòng/trang. 0 dòng hiện I01."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:3.1": {
+    "ja": "端末OS・タイトル・説明内容・開始日時・終了日時",
+    "vi": "OS thiết bị, tiêu đề, nội dung, giờ bắt đầu, giờ kết thúc",
+    "kind": "label",
+    "detail": [
+     "説明内容は長いと一行で切って表示（全文はマウスを載せると出る）。日時は yyyy-mm-dd HH:MM。終了前の行の終了日時は空欄。",
+     "Nội dung dài thì cắt thành một dòng (rê chuột để xem đủ). Ngày giờ dạng yyyy-mm-dd HH:MM. Dòng chưa kết thúc thì thời gian kết thúc để trống."
+    ],
+    "trig": "view"
+   },
+   "002:1": {
+    "ja": "開始のモーダル（内容を直してから開始）",
+    "vi": "Modal bắt đầu (sửa nội dung rồi bắt đầu)",
+    "kind": "modal",
+    "detail": [
+     "タイトル「メンテナンスの開始」。上に確認の文（Q180）、その下に「タイトル」「説明内容」の入力欄（保存済みの案内が入っている。ここで直してから開始できる：hong 2026-10-07）。「キャンセル」「開始する」。開始するとその OS のアプリは使えなくなる（利用中の方も）。入力を直した場合は、開始と同時に保存する（次のメンテナンスにも使う）。終了の確認（Q181）は文言と「終了する」だけ違う同じ作り（入力欄なし）。",
+     "Tiêu đề 「メンテナンスの開始」. Phía trên là câu xác nhận (Q180), bên dưới là ô nhập 「タイトル」「説明内容」 (đã điền sẵn thông báo đã lưu; có thể sửa tại đây rồi bắt đầu: hong 2026-10-07). 「キャンセル」「開始する」. Khi bắt đầu thì app của OS đó không dùng được (kể cả người đang dùng). Nếu đã sửa thì lưu cùng lúc bắt đầu (dùng cho lần bảo trì sau). Xác nhận kết thúc (Q181) có cấu trúc giống, chỉ khác câu chữ và nút 「終了する」 (không có ô nhập)."
+    ],
+    "err": [
+     "Q180",
+     "S180",
+     "E01",
+     "E04",
+     "E30"
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "002:1.1": {
+    "ja": "タイトル",
+    "vi": "Tiêu đề",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 60",
+    "ex": [
+     "システムメンテナンスのお知らせ",
+     "Thông báo bảo trì hệ thống (ví dụ)"
+    ],
+    "detail": [
+     "アプリに出す案内の見出し。保存済みの内容が入っている。空にはできない（E01）。",
+     "Tiêu đề thông báo hiển thị trên app. Đã điền sẵn nội dung đã lưu. Không được để trống (E01)."
+    ],
+    "err": [
+     "E01",
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "002:1.2": {
+    "ja": "説明内容",
+    "vi": "Nội dung giải thích",
+    "kind": "textarea",
+    "req": "○",
+    "len": "文字列 500",
+    "ex": [
+     "メンテナンスのため、しばらくご利用いただけません。",
+     "Do đang bảo trì nên tạm thời không sử dụng được."
+    ],
+    "detail": [
+     "アプリに出す案内の本文。複数行。保存済みの内容が入っている。空にはできない（E01）。",
+     "Nội dung thông báo hiển thị trên app. Nhiều dòng. Đã điền sẵn nội dung đã lưu. Không được để trống (E01)."
+    ],
+    "err": [
+     "E01",
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "003:1": {
+    "ja": "編集モーダル",
+    "vi": "Modal sửa",
+    "kind": "modal",
+    "detail": [
+     "タイトル「{端末OS} の案内を編集」。保存は「保存」、閉じるは「キャンセル」。入力を変えてキャンセルしたら Q02。成功したら S01 のトーストを出して閉じる。",
+     "Tiêu đề 「Sửa thông báo {OS thiết bị}」. Lưu = 「保存」, đóng = 「キャンセル」. Đã sửa mà hủy thì hiện Q02. Thành công hiện toast S01 rồi đóng."
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "003:1.1": {
+    "ja": "タイトル",
+    "vi": "Tiêu đề",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 60",
+    "ex": [
+     "システムメンテナンスのお知らせ",
+     "Tiêu đề thông báo bảo trì (ví dụ)"
+    ],
+    "detail": [
+     "アプリに出る案内の見出し。",
+     "Tiêu đề thông báo hiển thị trên app."
+    ],
+    "err": [
+     "E01",
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "003:1.2": {
+    "ja": "説明内容",
+    "vi": "Nội dung giải thích",
+    "kind": "textarea",
+    "req": "○",
+    "len": "文字列 500",
+    "ex": [
+     "システムの更新作業のため、10月10日 2:00〜5:00 はご利用いただけません。",
+     "Nội dung thông báo (ví dụ): do cập nhật hệ thống nên không dùng được từ 2:00 đến 5:00 ngày 10/10."
+    ],
+    "detail": [
+     "アプリに出る案内の本文。改行できる。",
+     "Nội dung thông báo hiển thị trên app. Có thể xuống dòng."
+    ],
+    "err": [
+     "E01",
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "003:1.3": {
+    "ja": "キャンセル",
+    "vi": "Hủy bỏ",
+    "kind": "button",
+    "detail": [
+     "モーダルを閉じる。入力を変えていたら Q02（キャンセル／破棄）。",
+     "Đóng modal. Đã sửa nội dung thì hiện Q02 (hủy / bỏ thay đổi)."
+    ],
+    "err": [
+     "Q02"
+    ],
+    "trig": "click"
+   },
+   "003:1.4": {
+    "ja": "保存",
+    "vi": "Lưu",
+    "kind": "button",
+    "detail": [
+     "押すとまとめてチェック（項目の下にエラー・赤枠）。エラーがなければ保存して S01。ほかの人が先に保存していたら E31（P-FORM）。",
+     "Nhấn sẽ kiểm tra gộp (lỗi hiện dưới ô, viền đỏ). Không lỗi thì lưu và hiện S01. Người khác lưu trước thì E31 (P-FORM)."
+    ],
+    "err": [
+     "S01",
+     "E30",
+     "E31"
+    ],
+    "trig": "click"
+   },
+   "004:1": {
+    "ja": "参照のみ（権限が閲覧だけの役割）",
+    "vi": "Chỉ xem (vai trò chỉ có quyền xem)",
+    "kind": "area",
+    "detail": [
+     "経理（権限付与は閲覧のみ）。「メンテナンス開始／終了」「編集」は出さない。履歴の CSV出力は出す。",
+     "Kế toán (「経理」) (「権限付与」 chỉ được xem). Không hiển thị 「メンテナンス開始／終了」「編集」. Vẫn hiển thị xuất CSV của lịch sử."
+    ],
+    "cond": [
+     "経理（権限付与は閲覧のみ）",
+     "Kế toán (「経理」) (「権限付与」 chỉ được xem)"
+    ],
+    "trig": "view"
+   },
+   "005:1": {
+    "ja": "必須の入力エラー",
+    "vi": "Lỗi nhập bắt buộc",
+    "kind": "label",
+    "detail": [
+     "タイトルを空にして「保存」を押すと、タイトルの下に E01 を出して赤枠にする（保存しない）。説明内容も同様。",
+     "Nếu để trống tiêu đề rồi bấm 「保存」, hiển thị E01 bên dưới tiêu đề và tô viền đỏ (không lưu). Nội dung mô tả cũng tương tự."
+    ],
+    "err": [
+     "E01",
+     "E04"
+    ],
+    "pattern": "P-FORM",
+    "trig": "view"
+   }
+  },
+  "画面設計書_AW_VERS_バージョン": {
+   "001:1": {
+    "ja": "ヘッダー",
+    "vi": "Đầu trang",
+    "kind": "area",
+    "detail": [
+     "パンくず：設定管理 ＞ バージョン&強制アップデート。見られるのは運営の全役割（操作ができるのはフル権限・システム管理だけ）。",
+     "Breadcrumb: 設定管理 > バージョン&強制アップデート. Mọi vai trò vận hành xem được (chỉ フル権限・システム管理 thao tác được)."
+    ],
+    "trig": "view"
+   },
+   "001:1.1": {
+    "ja": "CSV出力",
+    "vi": "Xuất CSV",
+    "kind": "button",
+    "detail": [
+     "ヘッダーの右。一覧の全件（端末OS・バージョン名・管理用備考・強制アップデート・更新日）。",
+     "Bên phải đầu trang. Toàn bộ danh sách (OS thiết bị, tên phiên bản, ghi chú, cập nhật bắt buộc, ngày cập nhật)."
+    ],
+    "pattern": "P-CSV-OUT",
+    "trig": "click"
+   },
+   "001:1.2": {
+    "ja": "新規登録",
+    "vi": "Đăng ký mới",
+    "kind": "button",
+    "detail": [
+     "バージョンの登録（AW_VERS_002）をモーダルで開く。登録の権限がない役割には出さない。",
+     "Mở modal đăng ký phiên bản (AW_VERS_002). Không hiện với vai trò không có quyền đăng ký."
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "001:2": {
+    "ja": "バージョンの一覧",
+    "vi": "Danh sách phiên bản",
+    "kind": "table",
+    "detail": [
+     "初期の並びは更新日の新しい順。1ページ 10件。検索条件は置かない（件数が少ない）。0件は I01。",
+     "Thứ tự ban đầu: ngày cập nhật mới nhất trước. 10 dòng/trang. Không có điều kiện tìm kiếm (ít dòng). 0 dòng hiện I01."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:2.1": {
+    "ja": "端末OS",
+    "vi": "OS thiết bị",
+    "kind": "label",
+    "detail": [
+     "IOS または Android（アイコンつき）。",
+     "iOS hoặc Android (có icon)."
+    ],
+    "trig": "view"
+   },
+   "001:2.2": {
+    "ja": "バージョン名",
+    "vi": "Tên phiên bản",
+    "kind": "label",
+    "detail": [
+     "2.1.0 の形。アプリがこのバージョンより古いとき、強制アップデートが ON なら更新するまで使えない。",
+     "Dạng 2.1.0. Khi app cũ hơn phiên bản này mà cập nhật bắt buộc = ON thì phải cập nhật mới dùng được."
+    ],
+    "trig": "view"
+   },
+   "001:2.3": {
+    "ja": "管理用備考",
+    "vi": "Ghi chú quản lý",
+    "kind": "label",
+    "detail": [
+     "運営だけが見るメモ。500文字まで。",
+     "Ghi chú chỉ vận hành xem. Tối đa 500 ký tự."
+    ],
+    "trig": "view"
+   },
+   "001:2.4": {
+    "ja": "強制アップデート",
+    "vi": "Cập nhật bắt buộc",
+    "kind": "label",
+    "detail": [
+     "ON のとき「✓」、OFF は空欄（表では ✓ か空欄。hong 2026-10-03）。",
+     "ON là \"✓\", OFF là trống (bảng là ✓ hoặc trống; hong 2026-10-03)."
+    ],
+    "trig": "view"
+   },
+   "001:2.5": {
+    "ja": "更新日",
+    "vi": "Ngày cập nhật",
+    "kind": "label",
+    "detail": [
+     "yyyy-mm-dd HH:MM。登録・編集した日時。",
+     "yyyy-mm-dd HH:MM. Ngày giờ đăng ký/sửa."
+    ],
+    "trig": "view"
+   },
+   "001:2.6": {
+    "ja": "操作（編集・削除）",
+    "vi": "Thao tác (sửa / xóa)",
+    "kind": "button",
+    "detail": [
+     "鉛筆＝編集（AW_VERS_002 のモーダル）、ごみ箱＝削除（確認 Q01 → S02）。操作の権限がない役割には出さない。",
+     "Bút chì = sửa (modal AW_VERS_002), thùng rác = xóa (xác nhận Q01 → S02). Không hiện với vai trò không có quyền thao tác."
+    ],
+    "err": [
+     "Q01",
+     "S02",
+     "E30"
+    ],
+    "pattern": "P-DEL",
+    "trig": "click"
+   },
+   "001:3": {
+    "ja": "ページ送り",
+    "vi": "Phân trang",
+    "kind": "area",
+    "detail": [
+     "P-LIST のとおり（10／20／50件）。",
+     "Theo P-LIST (10/20/50 dòng)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "002:1": {
+    "ja": "登録・編集モーダル",
+    "vi": "Modal đăng ký / sửa",
+    "kind": "modal",
+    "detail": [
+     "タイトル「バージョンの登録」「バージョンの編集」。保存は「登録」「保存」、閉じるは「キャンセル」。入力を変えてキャンセルしたら Q02。成功したら S01 のトーストを出して閉じ、一覧を更新する。",
+     "Tiêu đề 「バージョンの登録」「バージョンの編集」. Lưu = 「登録」「保存」, đóng = 「キャンセル」. Đã sửa mà hủy thì hiện Q02. Thành công hiện toast S01, đóng modal và cập nhật danh sách."
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "002:1.1": {
+    "ja": "端末OS",
+    "vi": "OS thiết bị",
+    "kind": "select",
+    "req": "○",
+    "len": "選択（iOS／Android）",
+    "ex": [
+     "iOS",
+     "Hệ điều hành iOS"
+    ],
+    "detail": [
+     "初期値は未選択。",
+     "Giá trị ban đầu: chưa chọn."
+    ],
+    "cond": [
+     "編集のときは変えられない（表示だけ）",
+     "Khi sửa không thể thay đổi (chỉ hiển thị)"
+    ],
+    "err": [
+     "E01"
+    ],
+    "trig": "select"
+   },
+   "002:1.2": {
+    "ja": "バージョン名",
+    "vi": "Tên phiên bản",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 14",
+    "ex": [
+     "2.1.0",
+     "Tên phiên bản dạng 3 số cách nhau bằng dấu chấm (ví dụ)"
+    ],
+    "detail": [
+     "アプリのストアのバージョンと同じ書き方。",
+     "Cách viết giống phiên bản trên cửa hàng ứng dụng."
+    ],
+    "cond": [
+     "編集のときは変えられない（表示だけ）",
+     "Khi sửa thì không đổi được (chỉ hiển thị)."
+    ],
+    "valid": [
+     "数字3つをドットでつないだ形（例 2.1.0）。同じ端末OS＋バージョン名は登録できない。",
+     "Ba số nối bằng dấu chấm (VD 2.1.0). Không đăng ký trùng cặp OS thiết bị + tên phiên bản."
+    ],
+    "err": [
+     "E01",
+     "E266",
+     "E267"
+    ],
+    "trig": "input"
+   },
+   "002:1.3": {
+    "ja": "強制アップデート",
+    "vi": "Cập nhật bắt buộc",
+    "kind": "check",
+    "req": "－",
+    "init": [
+     "OFF",
+     "Mặc định tắt"
+    ],
+    "ex": [
+     "ON",
+     "Bật cập nhật bắt buộc"
+    ],
+    "detail": [
+     "ON にすると、このバージョンより古いアプリは更新するまで使えない。",
+     "Bật ON thì app cũ hơn phiên bản này phải cập nhật mới dùng được."
+    ],
+    "trig": "check"
+   },
+   "002:1.4": {
+    "ja": "管理用備考",
+    "vi": "Ghi chú quản lý",
+    "kind": "textarea",
+    "req": "－",
+    "len": "文字列 500",
+    "ex": [
+     "セキュリティ修正のため必須",
+     "Cần thiết vì sửa bảo mật"
+    ],
+    "detail": [
+     "運営だけが見るメモ。",
+     "Ghi chú chỉ vận hành xem."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "002:1.5": {
+    "ja": "キャンセル",
+    "vi": "Hủy bỏ",
+    "kind": "button",
+    "detail": [
+     "モーダルを閉じる。入力を変えていたら Q02（キャンセル／破棄）。",
+     "Đóng modal. Đã sửa nội dung thì hiện Q02 (hủy / bỏ thay đổi)."
+    ],
+    "err": [
+     "Q02"
+    ],
+    "trig": "click"
+   },
+   "002:1.6": {
+    "ja": "登録・保存",
+    "vi": "Đăng ký・Lưu",
+    "kind": "button",
+    "detail": [
+     "押すとまとめてチェック（項目の下にエラー・赤枠）。エラーがなければ保存して S01。ほかの人が先に保存していたら E31（P-FORM）。",
+     "Nhấn sẽ kiểm tra gộp (lỗi hiện dưới ô, viền đỏ). Không lỗi thì lưu và hiện S01. Người khác lưu trước thì E31 (P-FORM)."
+    ],
+    "err": [
+     "S01",
+     "E30",
+     "E31"
+    ],
+    "trig": "click"
+   },
+   "003:1": {
+    "ja": "削除の確認",
+    "vi": "Xác nhận xóa",
+    "kind": "modal",
+    "detail": [
+     "押した行のバージョンを削除する確認。「削除する」で削除（論理削除・P-DEL）して S02。削除したバージョンは一覧に出ない。",
+     "Xác nhận xóa phiên bản ở dòng đã nhấn. 「削除する」 thì xóa (xóa logic, P-DEL) và hiện S02. Phiên bản đã xóa không hiện trong danh sách."
+    ],
+    "err": [
+     "Q01",
+     "S02",
+     "E30"
+    ],
+    "pattern": "P-DEL",
+    "trig": "click"
+   },
+   "004:1": {
+    "ja": "参照のみ（権限が閲覧だけの役割）",
+    "vi": "Chỉ xem (vai trò chỉ có quyền xem)",
+    "kind": "area",
+    "detail": [
+     "経理（権限付与は閲覧のみ）。「新規登録」は出さない（権限表：権限付与は フル権限＝CRUD・ほかの6役割＝R）。",
+     "Kế toán (「経理」) (「権限付与」 chỉ được xem). Không hiển thị 「新規登録」 (bảng quyền: 「権限付与」 do Toàn quyền = CRUD, 6 vai trò còn lại = R)."
+    ],
+    "cond": [
+     "経理（権限付与は閲覧のみ）",
+     "Kế toán (「経理」) (「権限付与」 chỉ được xem)"
+    ],
+    "trig": "view"
+   },
+   "004:2": {
+    "ja": "一覧の操作の列",
+    "vi": "Cột thao tác của danh sách",
+    "kind": "table",
+    "detail": [
+     "行の鉛筆（編集）・ごみ箱（削除）は出さない。",
+     "Không hiển thị biểu tượng bút chì (sửa) và thùng rác (xóa) ở từng dòng."
+    ],
+    "trig": "view"
+   },
+   "005:1": {
+    "ja": "必須の入力エラー",
+    "vi": "Lỗi nhập bắt buộc",
+    "kind": "label",
+    "detail": [
+     "何も入れずに「登録」を押すと、「端末OS」「バージョン名」の下に E01 を出して赤枠にする（保存しない）。形式が違えば E266、同じ版があれば E267。",
+     "Nếu bấm 「登録」 khi chưa nhập gì, hiển thị E01 bên dưới 「端末OS」「バージョン名」 và tô viền đỏ (không lưu). Nếu sai định dạng thì E266, nếu đã có phiên bản trùng thì E267."
+    ],
+    "err": [
+     "E01",
+     "E266",
+     "E267"
+    ],
+    "pattern": "P-FORM",
+    "trig": "view"
+   },
+   "006:1": {
+    "ja": "0件の表示",
+    "vi": "Hiển thị 0 bản ghi",
+    "kind": "area",
+    "detail": [
+     "登録されているバージョンがないがないとき、一覧の中に I01「表示するデータがありません。」を出す（P-LIST）。",
+     "Khi không có phiên bản nào được đăng ký, hiển thị I01「表示するデータがありません。」trong danh sách (P-LIST)."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   }
+  },
+  "画面設計書_AW_IPWL_IPホワイトリスト管理": {
+   "001:1": {
+    "ja": "ヘッダー",
+    "vi": "Đầu trang",
+    "kind": "area",
+    "detail": [
+     "パンくず：設定管理 ＞ IPホワイトリスト管理。見られるのは運営の全役割（フル権限・システム管理は操作もできる。ほかは閲覧のみ）。",
+     "Breadcrumb: 設定管理 > IPホワイトリスト管理. Mọi vai trò vận hành xem được (フル権限・システム管理 thao tác được, vai trò khác chỉ xem)."
+    ],
+    "trig": "view"
+   },
+   "001:1.1": {
+    "ja": "CSV出力",
+    "vi": "Xuất CSV",
+    "kind": "button",
+    "detail": [
+     "ヘッダーの右。一覧の全件（備考・IPアドレス・効かせるサイト・登録日時・登録者）。",
+     "Bên phải đầu trang. Toàn bộ dòng của danh sách (ghi chú, địa chỉ IP, site áp dụng, ngày đăng ký, người đăng ký)."
+    ],
+    "pattern": "P-CSV-OUT",
+    "trig": "click"
+   },
+   "001:1.2": {
+    "ja": "新規登録",
+    "vi": "Đăng ký mới",
+    "kind": "button",
+    "detail": [
+     "IPアドレスの登録（AW_IPWL_002）をモーダルで開く。登録の権限（フル権限・システム管理）がない役割には出さない。",
+     "Mở modal đăng ký địa chỉ IP (AW_IPWL_002). Không hiện với vai trò không có quyền đăng ký (フル権限・システム管理)."
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "001:2": {
+    "ja": "IPの一覧",
+    "vi": "Danh sách IP",
+    "kind": "table",
+    "detail": [
+     "初期の並びは登録順（IDの昇順）。1ページ 10件。検索条件は置かない（件数が少ない）。0件は I01。",
+     "Thứ tự ban đầu: theo thứ tự đăng ký (ID tăng dần). 10 dòng/trang. Không có điều kiện tìm kiếm (ít dòng). 0 dòng hiện I01."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "001:2.1": {
+    "ja": "管理用備考",
+    "vi": "Ghi chú quản lý",
+    "kind": "label",
+    "detail": [
+     "何のための IP か（例：本社オフィス）。500文字まで。",
+     "Ghi chú IP dùng để làm gì (ví dụ: văn phòng chính). Tối đa 500 ký tự."
+    ],
+    "trig": "view"
+   },
+   "001:2.2": {
+    "ja": "IPアドレス",
+    "vi": "Địa chỉ IP",
+    "kind": "label",
+    "detail": [
+     "IPv4。1つだけ登録したもの（/32）は「/32」を省いて表示。範囲（CIDR）はそのまま（203.0.113.0/24）。",
+     "IPv4. IP đăng ký đơn lẻ (/32) hiển thị bỏ 「/32」. Dải (CIDR) giữ nguyên (203.0.113.0/24)."
+    ],
+    "trig": "view"
+   },
+   "001:2.3": {
+    "ja": "操作（編集・削除）",
+    "vi": "Thao tác (sửa, xóa)",
+    "kind": "button",
+    "detail": [
+     "鉛筆＝編集（AW_IPWL_002 のモーダル。IPアドレス・管理用備考を直せる：hong 2026-10-07）、ごみ箱＝削除の確認（Q01）。登録の権限がない役割には出さない。",
+     "Bút chì = sửa (modal AW_IPWL_002; sửa được địa chỉ IP và ghi chú quản lý: hong 2026-10-07), thùng rác = xác nhận xóa (Q01). Không hiện với vai trò không có quyền đăng ký."
+    ],
+    "err": [
+     "Q01",
+     "S02",
+     "E30"
+    ],
+    "pattern": "P-DEL",
+    "trig": "click"
+   },
+   "001:3": {
+    "ja": "ページ送り",
+    "vi": "Phân trang",
+    "kind": "area",
+    "detail": [
+     "P-LIST のとおり（10／20／50件）。",
+     "Theo P-LIST (10/20/50 dòng)."
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "002:1": {
+    "ja": "登録モーダル",
+    "vi": "Modal đăng ký",
+    "kind": "modal",
+    "detail": [
+     "タイトル「IPアドレスの登録」「IPアドレスの編集」。保存は「登録」（編集は「保存」）、閉じるは「キャンセル」。入力を変えてキャンセルしたら Q02。成功したら S01 のトーストを出して閉じ、一覧に足す（編集は一覧の行を書き換える）。編集で同じ内容にしても保存できる。",
+     "Tiêu đề 「IPアドレスの登録」「IPアドレスの編集」. Lưu = 「登録」 (sửa là 「保存」), đóng = 「キャンセル」. Đã sửa mà hủy thì hiện Q02. Thành công hiện toast S01, đóng modal và thêm vào danh sách (sửa thì ghi đè dòng trong danh sách). Sửa mà giữ nguyên nội dung vẫn lưu được."
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "002:1.1": {
+    "ja": "IPアドレス",
+    "vi": "Địa chỉ IP",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 18",
+    "ex": [
+     "203.0.113.0/24",
+     "Dải IP dạng CIDR (ví dụ)"
+    ],
+    "detail": [
+     "運営Web のログインを許す IP。範囲で入れるときは CIDR で書く。",
+     "IP được phép đăng nhập Web vận hành. Nhập dải dùng CIDR."
+    ],
+    "valid": [
+     "IPv4（例 203.0.113.5）か範囲（CIDR・例 203.0.113.0/24）。各数字は 0〜255、マスクは 0〜32。マスクを省いたら /32 として登録する。127.x・0.x・169.254.x は登録できない。同じアドレスは登録できない。",
+     "IPv4 (VD 203.0.113.5) hoặc dải CIDR (VD 203.0.113.0/24). Mỗi số 0〜255, mask 0〜32. Bỏ mask thì đăng ký là /32. Không đăng ký được 127.x, 0.x, 169.254.x. Không đăng ký trùng."
+    ],
+    "err": [
+     "E01",
+     "E263",
+     "E264",
+     "E265"
+    ],
+    "trig": "input"
+   },
+   "002:1.2": {
+    "ja": "管理用備考",
+    "vi": "Ghi chú quản lý",
+    "kind": "textarea",
+    "req": "－",
+    "len": "文字列 500",
+    "ex": [
+     "本社オフィス（東京）",
+     "Ghi chú ví dụ: văn phòng chính (Tokyo)"
+    ],
+    "detail": [
+     "何のための IP かを後で分かるようにするメモ。",
+     "Ghi chú để sau này biết IP này dùng để làm gì."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "002:1.3": {
+    "ja": "効かせるサイト",
+    "vi": "Site áp dụng",
+    "kind": "label",
+    "detail": [
+     "運営Web に固定（表示だけ）。ほかのサイトは対象外（台帳 B）。",
+     "Cố định là Web vận hành (chỉ hiển thị). Site khác không áp dụng (台帳 B)."
+    ],
+    "trig": "view"
+   },
+   "002:1.4": {
+    "ja": "キャンセル",
+    "vi": "Hủy bỏ",
+    "kind": "button",
+    "detail": [
+     "モーダルを閉じる。入力を変えていたら Q02（キャンセル／破棄）。",
+     "Đóng modal. Đã sửa nội dung thì hiện Q02 (hủy / bỏ thay đổi)."
+    ],
+    "err": [
+     "Q02"
+    ],
+    "trig": "click"
+   },
+   "002:1.5": {
+    "ja": "登録",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "押すとまとめてチェック（項目の下にエラー・赤枠）。エラーがなければ登録して S01。ボタンは押したら無効にする（P-FORM）。",
+     "Nhấn sẽ kiểm tra gộp (lỗi hiện dưới ô, viền đỏ). Không lỗi thì đăng ký và hiện S01. Khóa nút sau khi nhấn (P-FORM)."
+    ],
+    "err": [
+     "S01",
+     "E30"
+    ],
+    "trig": "click"
+   },
+   "003:1": {
+    "ja": "削除の確認",
+    "vi": "Xác nhận xóa",
+    "kind": "modal",
+    "detail": [
+     "押した行の IP を削除する確認。「削除する」で削除（論理削除・P-DEL。登録 IP から外れる）して S02。外した IP からは運営Web に入るときにメールの認証コード（OTP）が要る。",
+     "Xác nhận xóa IP ở dòng đã nhấn. 「削除する」 sẽ xóa (xóa logic, P-DEL; IP bị loại khỏi danh sách đăng ký) và hiện S02. Với IP đã loại, khi vào Web vận hành cần mã xác thực qua email (OTP)."
+    ],
+    "err": [
+     "Q01",
+     "S02",
+     "E30"
+    ],
+    "pattern": "P-DEL",
+    "trig": "click"
+   },
+   "004:1": {
+    "ja": "参照のみ（権限が閲覧だけの役割）",
+    "vi": "Chỉ xem (vai trò chỉ có quyền xem)",
+    "kind": "area",
+    "detail": [
+     "経理（権限付与は閲覧のみ）。「新規登録」は出さない（権限表：権限付与は フル権限＝CRUD・ほかの6役割＝R）。",
+     "Kế toán (「経理」) (「権限付与」 chỉ được xem). Không hiển thị 「新規登録」 (bảng quyền: 「権限付与」 do Toàn quyền = CRUD, 6 vai trò còn lại = R)."
+    ],
+    "cond": [
+     "経理（権限付与は閲覧のみ）",
+     "Kế toán (「経理」) (「権限付与」 chỉ được xem)"
+    ],
+    "trig": "view"
+   },
+   "004:2": {
+    "ja": "一覧の操作の列",
+    "vi": "Cột thao tác của danh sách",
+    "kind": "table",
+    "detail": [
+     "行の鉛筆（編集）・ごみ箱（削除）は出さない。",
+     "Không hiển thị biểu tượng bút chì (sửa) và thùng rác (xóa) ở từng dòng."
+    ],
+    "trig": "view"
+   },
+   "005:1": {
+    "ja": "必須の入力エラー",
+    "vi": "Lỗi nhập bắt buộc",
+    "kind": "label",
+    "detail": [
+     "何も入れずに「登録」を押すと、「IPアドレス」の下に E01 を出して赤枠にする（保存しない）。形式が違えば E263、使えないアドレスは E264、同じアドレスは E265。",
+     "Nếu bấm 「登録」 khi chưa nhập gì, hiển thị E01 bên dưới 「IPアドレス」 và tô viền đỏ (không lưu). Nếu sai định dạng thì E263, địa chỉ không được phép dùng thì E264, địa chỉ trùng thì E265."
+    ],
+    "err": [
+     "E01",
+     "E263",
+     "E264",
+     "E265"
+    ],
+    "pattern": "P-FORM",
+    "trig": "view"
+   },
+   "006:1": {
+    "ja": "0件の表示",
+    "vi": "Hiển thị 0 bản ghi",
+    "kind": "area",
+    "detail": [
+     "登録されている IP がないがないとき、一覧の中に I01「表示するデータがありません。」を出す（P-LIST）。",
+     "Khi không có IP nào được đăng ký, hiển thị I01「表示するデータがありません。」trong danh sách (P-LIST)."
+    ],
+    "err": [
+     "I01"
+    ],
+    "pattern": "P-LIST",
+    "trig": "view"
+   },
+   "007:1": {
+    "ja": "登録モーダル",
+    "vi": "Modal đăng ký",
+    "kind": "modal",
+    "detail": [
+     "タイトル「IPアドレスの登録」「IPアドレスの編集」。保存は「登録」（編集は「保存」）、閉じるは「キャンセル」。入力を変えてキャンセルしたら Q02。成功したら S01 のトーストを出して閉じ、一覧に足す（編集は一覧の行を書き換える）。編集で同じ内容にしても保存できる。",
+     "Tiêu đề 「IPアドレスの登録」「IPアドレスの編集」. Lưu = 「登録」 (sửa là 「保存」), đóng = 「キャンセル」. Đã sửa mà hủy thì hiện Q02. Thành công hiện toast S01, đóng modal và thêm vào danh sách (sửa thì ghi đè dòng trong danh sách). Sửa mà giữ nguyên nội dung vẫn lưu được."
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "007:1.1": {
+    "ja": "IPアドレス",
+    "vi": "Địa chỉ IP",
+    "kind": "text",
+    "req": "○",
+    "len": "文字列 18",
+    "ex": [
+     "203.0.113.0/24",
+     "Dải IP dạng CIDR (ví dụ)"
+    ],
+    "detail": [
+     "運営Web のログインを許す IP。範囲で入れるときは CIDR で書く。",
+     "IP được phép đăng nhập Web vận hành. Nhập dải dùng CIDR."
+    ],
+    "valid": [
+     "IPv4（例 203.0.113.5）か範囲（CIDR・例 203.0.113.0/24）。各数字は 0〜255、マスクは 0〜32。マスクを省いたら /32 として登録する。127.x・0.x・169.254.x は登録できない。同じアドレスは登録できない。",
+     "IPv4 (VD 203.0.113.5) hoặc dải CIDR (VD 203.0.113.0/24). Mỗi số 0〜255, mask 0〜32. Bỏ mask thì đăng ký là /32. Không đăng ký được 127.x, 0.x, 169.254.x. Không đăng ký trùng."
+    ],
+    "err": [
+     "E01",
+     "E263",
+     "E264",
+     "E265"
+    ],
+    "trig": "input"
+   },
+   "007:1.2": {
+    "ja": "管理用備考",
+    "vi": "Ghi chú quản lý",
+    "kind": "textarea",
+    "req": "－",
+    "len": "文字列 500",
+    "ex": [
+     "本社オフィス（東京）",
+     "Ghi chú ví dụ: văn phòng chính (Tokyo)"
+    ],
+    "detail": [
+     "何のための IP かを後で分かるようにするメモ。",
+     "Ghi chú để sau này biết IP này dùng để làm gì."
+    ],
+    "err": [
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "007:1.3": {
+    "ja": "効かせるサイト",
+    "vi": "Site áp dụng",
+    "kind": "label",
+    "detail": [
+     "運営Web に固定（表示だけ）。ほかのサイトは対象外（台帳 B）。",
+     "Cố định là Web vận hành (chỉ hiển thị). Site khác không áp dụng (台帳 B)."
+    ],
+    "trig": "view"
+   },
+   "007:1.4": {
+    "ja": "キャンセル",
+    "vi": "Hủy bỏ",
+    "kind": "button",
+    "detail": [
+     "モーダルを閉じる。入力を変えていたら Q02（キャンセル／破棄）。",
+     "Đóng modal. Đã sửa nội dung thì hiện Q02 (hủy / bỏ thay đổi)."
+    ],
+    "err": [
+     "Q02"
+    ],
+    "trig": "click"
+   },
+   "007:1.5": {
+    "ja": "登録",
+    "vi": "Đăng ký",
+    "kind": "button",
+    "detail": [
+     "押すとまとめてチェック（項目の下にエラー・赤枠）。エラーがなければ登録して S01。ボタンは押したら無効にする（P-FORM）。",
+     "Nhấn sẽ kiểm tra gộp (lỗi hiện dưới ô, viền đỏ). Không lỗi thì đăng ký và hiện S01. Khóa nút sau khi nhấn (P-FORM)."
+    ],
+    "err": [
+     "S01",
+     "E30"
+    ],
+    "trig": "click"
+   }
+  },
+  "画面設計書_AW_IQML_お問い合わせ通知先メール": {
+   "001:1": {
+    "ja": "ヘッダー",
+    "vi": "Đầu trang",
+    "kind": "area",
+    "detail": [
+     "パンくず：設定管理 ＞ お問い合わせ通知先メール。見られるのは「Hubspot/API連携」の権限があるフル権限だけ。",
+     "Breadcrumb: 設定管理 > お問い合わせ通知先メール. Chỉ フル権限 có quyền 「Hubspot/API連携」 mới xem được."
+    ],
+    "trig": "view"
+   },
+   "001:1.1": {
+    "ja": "保存",
+    "vi": "Lưu",
+    "kind": "button",
+    "detail": [
+     "ヘッダーの右。入力をチェックして保存。入れたアドレスなら S183、空にしたなら S184。変えて保存せずに離れるときは Q02。",
+     "Bên phải đầu trang. Kiểm tra rồi lưu. Có địa chỉ thì S183, để trống thì S184. Đã đổi mà rời đi không lưu thì Q02."
+    ],
+    "err": [
+     "S183",
+     "S184",
+     "E07",
+     "E30",
+     "E31",
+     "Q02"
+    ],
+    "pattern": "P-FORM",
+    "trig": "click"
+   },
+   "001:2": {
+    "ja": "説明",
+    "vi": "Giải thích",
+    "kind": "label",
+    "detail": [
+     "法人Web で新しいお問い合わせ（HubSpot へ送ったもの）があったとき、このアドレスへメールで知らせる。空にするとメールは送らない（新しい件数は運営の TOP に出る）。返事・対応は HubSpot で行う。",
+     "Khi có liên hệ mới từ Web doanh nghiệp (đã gửi sang HubSpot), gửi email báo tới địa chỉ này. Để trống thì không gửi (số lượng mới vẫn hiện ở TOP vận hành). Trả lời, xử lý ở HubSpot."
+    ],
+    "trig": "view"
+   },
+   "001:3": {
+    "ja": "お問い合わせ通知先メール",
+    "vi": "Email nhận thông báo liên hệ",
+    "kind": "text",
+    "req": "－",
+    "len": "文字列 160",
+    "init": [
+     "（保存してある通知先。なければ空）",
+     "(Email thông báo đã lưu. Nếu không có thì trống)"
+    ],
+    "ex": [
+     "support@es-kitchen.co.jp",
+     "Địa chỉ email để nhận thông báo"
+    ],
+    "detail": [
+     "お問い合わせの通知を受け取るアドレス。",
+     "Liên hệ"
+    ],
+    "valid": [
+     "メールアドレスの形式（@ と . を含み、空白がない）。アドレスは1つだけ。空は可（メールを送らない）。",
+     "Định dạng email (có @ và dấu chấm, không có khoảng trắng). Chỉ 1 địa chỉ. Được để trống (không gửi email)."
+    ],
+    "err": [
+     "E07",
+     "E04"
+    ],
+    "trig": "input"
+   },
+   "001:4": {
+    "ja": "最終更新",
+    "vi": "Cập nhật cuối cùng",
+    "kind": "label",
+    "detail": [
+     "最後に保存した日時（yyyy-mm-dd HH:MM）と保存した人のアカウント。まだ保存していないときは「—」。",
+     "Ngày giờ lưu cuối cùng (yyyy-mm-dd HH:MM) và tài khoản lưu. Chưa lưu thì \"—\"."
+    ],
+    "trig": "view"
+   },
+   "001:5": {
+    "ja": "お問い合わせ一覧へのリンク",
+    "vi": "Liên kết đến danh sách liên hệ",
+    "kind": "link",
+    "detail": [
+     "お問い合わせ（AW_INQU_001）の一覧へ移る。入力を変えて保存していないときは Q02。",
+     "Chuyển sang danh sách liên hệ (AW_INQU_001). Đã đổi mà chưa lưu thì hiện Q02."
+    ],
+    "trig": "click"
+   },
+   "002:1": {
+    "ja": "形式のエラー",
+    "vi": "Lỗi định dạng",
+    "kind": "text",
+    "len": "文字列 160",
+    "ex": [
+     "abc",
+     "Định dạng email sai"
+    ],
+    "detail": [
+     "形式が違うアドレスで「保存」を押すと、項目の下に E07 を出して赤枠にする（保存しない）。",
+     "Email định dạng sai nhấn \"Lưu\" thì hiện E07 dưới item và khung đỏ (không lưu)."
+    ],
+    "err": [
+     "E07"
+    ],
+    "trig": "input"
+   }
+  }
+ }
+}

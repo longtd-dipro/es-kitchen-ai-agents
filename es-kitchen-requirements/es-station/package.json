@@ -1,0 +1,30 @@
+{
+  "name": "es-station-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:demo": "NEXT_PUBLIC_DEMO=1 next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "clean:dev": "node -e \"require('fs').rmSync('.next/dev',{recursive:true,force:true})\" && echo '[clean] .next/dev（next dev のキャッシュ）を消しました。next dev を止めてから実行してください'",
+    "mock:extract": "node scripts/extract-supplier-mock.mjs",
+    "db:reset": "node -e \"for (const f of ['es.db','es.db-wal','es.db-shm']) require('fs').rmSync('data/'+f,{force:true})\" && echo '[db] data/es.db を消しました。次に開いたとき見本データで作り直します'"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}

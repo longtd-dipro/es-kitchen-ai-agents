@@ -1,0 +1,32 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+/data/
+
+# 仕様 (docs/): chỉ đưa spec .md lên git. Giấy tờ làm việc, bản cũ, file nhị phân để local.
+docs/**/履歴_*/
+docs/01_仕様/90_デモ確認/
+docs/議事録_仕様/要件定義まとめ_ESKITCHEN.md
+docs/**/*.xlsx
+docs/**/*.docx
+docs/**/*.pptx
+docs/**/*.png
+docs/**/*.jpg
+docs/**/*.jpeg
+docs/**/*.zip
+docs/**/*.html
+
+# Python
+__pycache__/
+
+# 画面設計書の HTML（日越切替・画像入り）は入れる（docs/05_画面設計書/README.md の決まり）
+!docs/05_画面設計書/出力/**/*.html
+# 撮影のキャッシュ（画面設計書のツールが作る。コミットしない）
+docs/05_画面設計書/出力/.capture_cache/
+
+# Figma frames (ảnh màn hình) được phép commit
+!docs/05_画面設計書/figma/
+!docs/05_画面設計書/figma/**/*.png
