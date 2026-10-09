@@ -1,6 +1,30 @@
+---
+hide:
+  - navigation
+---
+
+<style>
+/* Trang ES-STATION: mục lục (Table of contents) nằm bên TRÁI; nội dung rộng 90% phần còn lại */
+.md-grid { max-width: none; }
+.md-main__inner { display: flex; }
+.md-sidebar--secondary { order: -1; }
+.md-content { flex: 0 0 auto; width: calc((100% - 12.1rem) * 0.9); max-width: none; }
+.md-typeset__table { display: block; width: 100%; }
+.md-typeset table:not([class]) { display: table; width: 100%; }
+.md-typeset table:not([class]) a[target="_blank"] { white-space: nowrap; }
+.md-typeset code { overflow-wrap: anywhere; word-break: normal; }
+/* Cột File / Thư mục (cột 2): hiện đủ tên, không bẻ dòng */
+.md-typeset table:not([class]) td:nth-child(2),
+.md-typeset table:not([class]) th:nth-child(2) { white-space: nowrap; }
+.md-typeset table:not([class]) td:nth-child(2) code { overflow-wrap: normal; white-space: nowrap; }
+/* Thu hẹp khoảng đệm ô để tên file dài vẫn vừa khít, không cuộn ngang */
+.md-typeset table:not([class]) td, .md-typeset table:not([class]) th { padding: .7em .6em; }
+.md-typeset table:not([class]) td:nth-child(2) code { font-size: .8em; }
+</style>
+
 # ES-STATION
 
-Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/es-station`): bản chuẩn (P1) song ngữ Nhật–Việt, sơ đồ luồng dữ liệu và vòng đời trạng thái, và bản giao thiết kế màn hình (HTML).
+Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/es-station`): bản chuẩn (P1) song ngữ Nhật–Việt, sơ đồ luồng dữ liệu, và bản giao thiết kế màn hình (HTML).
 
 !!! info "Cách dùng"
     - **Yêu cầu:** bấm `VI` hoặc `JA` để mở file Markdown (trang đầy đủ trong wiki).
@@ -9,35 +33,33 @@ Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/
 
 ## 1. Flow diagrams (archify)
 
-23 sơ đồ: *dataflow* (luồng dữ liệu) và *lifecycle* (máy trạng thái), chia theo thư mục đặc tả. Mới qua kiểm tra tự động, chưa xem lại bằng mắt; phần suy luận ghi trong thẻ chú thích của từng sơ đồ.
+23 sơ đồ *dataflow* (luồng dữ liệu), chia theo thư mục đặc tả. Mới qua kiểm tra tự động, chưa xem lại bằng mắt; phần suy luận ghi trong thẻ chú thích của từng sơ đồ.
 
-| # | Thư mục | Loại | Tiêu đề | Quy mô | Mở |
-|---:|---|---|---|---|---|
-| 1 | `tổng quan` | dataflow | ES Station – Luồng dữ liệu từ hợp đồng đến hóa đơn | 12 node · 12 luồng | <a href="flow/tong-quan/dataflow-dat-hang-den-thanh-toan-20261007-093226/dataflow-dat-hang-den-thanh-toan.html" target="_blank">Toàn trang</a> |
-| 2 | `tổng quan` | lifecycle | ES Station – Vòng đời trạng thái giao hàng (delivery status) | 10 trạng thái · 14 chuyển đổi | <a href="flow/tong-quan/lifecycle-trang-thai-giao-hang-20261007-093226/lifecycle-trang-thai-giao-hang.html" target="_blank">Toàn trang</a> |
-| 3 | `10_Giao_hàng` | dataflow | Chuỗi batch giao hàng: từ hợp đồng đến thực tích và thanh toán | 13 node · 12 luồng | <a href="flow/10_Giao_h%C3%A0ng/dataflow-chuoi-batch-giao-hang-20261007-095944/chuoi-batch-giao-hang.html" target="_blank">Toàn trang</a> |
-| 4 | `10_Giao_hàng` | lifecycle | Vòng đời kế hoạch và trạng thái giao hàng | 12 trạng thái · 14 chuyển đổi | <a href="flow/10_Giao_h%C3%A0ng/lifecycle-ke-hoach-va-trang-thai-giao-hang-20261007-095944/ke-hoach-va-trang-thai-giao-hang.html" target="_blank">Toàn trang</a> |
-| 5 | `20_Doanh_nghiệp_Cơ_sở_Hợp_đồng` | dataflow | Luồng dữ liệu đăng ký mới và thêm cơ sở | 10 node · 10 luồng | <a href="flow/20_Doanh_nghi%E1%BB%87p_C%C6%A1_s%E1%BB%9F_H%E1%BB%A3p_%C4%91%E1%BB%93ng/dataflow-dang-ky-moi-20261007-095856/dang-ky-moi.html" target="_blank">Toàn trang</a> |
-| 6 | `20_Doanh_nghiệp_Cơ_sở_Hợp_đồng` | lifecycle | Vòng đời trạng thái yêu cầu đăng ký mới | 5 trạng thái · 5 chuyển đổi | <a href="flow/20_Doanh_nghi%E1%BB%87p_C%C6%A1_s%E1%BB%9F_H%E1%BB%A3p_%C4%91%E1%BB%93ng/lifecycle-yeu-cau-dang-ky-20261007-095856/yeu-cau-dang-ky.html" target="_blank">Toàn trang</a> |
-| 7 | `30_Đơn_yêu_cầu` | dataflow | Luồng dữ liệu đơn thay đổi (CH-) và phê duyệt | 11 node · 11 luồng | <a href="flow/30_%C4%90%C6%A1n_y%C3%AAu_c%E1%BA%A7u/dataflow-don-yeu-cau-20261007-095903/dataflow-don-yeu-cau.html" target="_blank">Toàn trang</a> |
-| 8 | `30_Đơn_yêu_cầu` | lifecycle | Vòng đời trạng thái đơn thay đổi (CH-) | 6 trạng thái · 5 chuyển đổi | <a href="flow/30_%C4%90%C6%A1n_y%C3%AAu_c%E1%BA%A7u/lifecycle-trang-thai-don-20261007-095904/trang-thai-don.html" target="_blank">Toàn trang</a> |
-| 9 | `40_Master_Phí_Thanh_toán` | dataflow | Luồng dữ liệu hóa đơn thanh toán (ES → Bill One) | 8 node · 7 luồng | <a href="flow/40_Master_Ph%C3%AD_Thanh_to%C3%A1n/dataflow-billing-invoice-20261007-095843/billing-invoice.html" target="_blank">Toàn trang</a> |
-| 10 | `40_Master_Phí_Thanh_toán` | lifecycle | Trạng thái thanh toán (vận hành, 5 giai đoạn) | 10 trạng thái · 8 chuyển đổi | <a href="flow/40_Master_Ph%C3%AD_Thanh_to%C3%A1n/lifecycle-payment-status-20261007-095843/payment-status.html" target="_blank">Toàn trang</a> |
-| 11 | `45_Menu_Sản_phẩm` | dataflow | Luồng dữ liệu Menu tháng / Sản phẩm | 9 node · 8 luồng | <a href="flow/45_Menu_S%E1%BA%A3n_ph%E1%BA%A9m/dataflow-menu-san-pham-20261007-103000/menu-san-pham.html" target="_blank">Toàn trang</a> |
-| 12 | `45_Menu_Sản_phẩm` | lifecycle | Vòng đời trạng thái công khai của Menu tháng | 5 trạng thái · 5 chuyển đổi | <a href="flow/45_Menu_S%E1%BA%A3n_ph%E1%BA%A9m/lifecycle-menu-cong-khai-20261007-103100/menu-cong-khai.html" target="_blank">Toàn trang</a> |
-| 13 | `50_Đơn_hàng` | dataflow | Luồng dữ liệu đơn hàng hằng tháng | 11 node · 10 luồng | <a href="flow/50_%C4%90%C6%A1n_h%C3%A0ng/dataflow-don-hang-20261007-095844/don-hang.html" target="_blank">Toàn trang</a> |
-| 14 | `50_Đơn_hàng` | lifecycle | Vòng đời trạng thái đơn hàng hằng tháng | 5 trạng thái · 7 chuyển đổi | <a href="flow/50_%C4%90%C6%A1n_h%C3%A0ng/lifecycle-don-hang-20261007-095844/don-hang.html" target="_blank">Toàn trang</a> |
-| 15 | `55_Đặt_hàng_Nhập_mua_Nhập_kho` | dataflow | Luồng dữ liệu Đặt hàng - Nhà cung cấp - Nhập kho | 11 node · 12 luồng | <a href="flow/55_%C4%90%E1%BA%B7t_h%C3%A0ng_Nh%E1%BA%ADp_mua_Nh%E1%BA%ADp_kho/dataflow-dat-hang-nhap-kho-20261007-095858/dat-hang-nhap-kho.html" target="_blank">Toàn trang</a> |
-| 16 | `55_Đặt_hàng_Nhập_mua_Nhập_kho` | lifecycle | Vòng đời trạng thái Đặt hàng NCC | 9 trạng thái · 10 chuyển đổi | <a href="flow/55_%C4%90%E1%BA%B7t_h%C3%A0ng_Nh%E1%BA%ADp_mua_Nh%E1%BA%ADp_kho/lifecycle-trang-thai-dat-hang-20261007-095858/trang-thai-dat-hang.html" target="_blank">Toàn trang</a> |
-| 17 | `60_Tồn_kho` | dataflow | Luồng dữ liệu tồn kho cơ sở | 13 node · 12 luồng | <a href="flow/60_T%E1%BB%93n_kho/dataflow-ton-kho-20261007-095856/ton-kho.html" target="_blank">Toàn trang</a> |
-| 18 | `60_Tồn_kho` | lifecycle | Vòng đời báo cáo kiểm kê tháng của cơ sở | 6 trạng thái · 6 chuyển đổi | <a href="flow/60_T%E1%BB%93n_kho/lifecycle-kiem-ke-thang-20261007-095856/kiem-ke-thang.html" target="_blank">Toàn trang</a> |
-| 19 | `65_Hàng_thay_thế` | dataflow | Luồng dữ liệu Hàng thay thế | 11 node · 12 luồng | <a href="flow/65_H%C3%A0ng_thay_th%E1%BA%BF/dataflow-hang-thay-the-20261007-103000/hang-thay-the.html" target="_blank">Toàn trang</a> |
-| 20 | `70_Đại_lý` | dataflow | Luồng dữ liệu phí giới thiệu đại lý | 11 node · 11 luồng | <a href="flow/70_%C4%90%E1%BA%A1i_l%C3%BD/dataflow-agency-referral-20261007-103000/agency-referral.html" target="_blank">Toàn trang</a> |
-| 21 | `75_Mẫu_kinh_doanh` | dataflow | Luồng dữ liệu Mẫu kinh doanh | 9 node · 9 luồng | <a href="flow/75_M%E1%BA%ABu_kinh_doanh/dataflow-mau-kinh-doanh-20261007-103000/mau-kinh-doanh.html" target="_blank">Toàn trang</a> |
-| 22 | `80_Màn_hình_vận_hành_và_doanh_nghiệp` | dataflow | Luồng dữ liệu Liên hệ và Thông báo (Vận hành・Doanh nghiệp) | 10 node · 8 luồng | <a href="flow/80_M%C3%A0n_h%C3%ACnh_v%E1%BA%ADn_h%C3%A0nh_v%C3%A0_doanh_nghi%E1%BB%87p/dataflow-contact-notification-20261007-104500/contact-notification.html" target="_blank">Toàn trang</a> |
-| 23 | `80_Màn_hình_vận_hành_và_doanh_nghiệp` | lifecycle | Vòng đời trạng thái Thông báo (AW_NOTI) | 5 trạng thái · 5 chuyển đổi | <a href="flow/80_M%C3%A0n_h%C3%ACnh_v%E1%BA%ADn_h%C3%A0nh_v%C3%A0_doanh_nghi%E1%BB%87p/lifecycle-notification-status-20261007-104600/notification-status.html" target="_blank">Toàn trang</a> |
-
-Thư mục `65_Hàng_thay_thế`, `70_Đại_lý`, `75_Mẫu_kinh_doanh` không có sơ đồ *lifecycle* (tài liệu không có máy trạng thái đủ rõ).
+| # | Thư mục | Tiêu đề | Quy mô | Mở |
+|---:|---|---|---|---|
+| 1 | `tổng quan` | ES Station – Luồng dữ liệu từ hợp đồng đến hóa đơn | 12 node · 12 luồng | <a href="flow/tong-quan/dataflow-dat-hang-den-thanh-toan-20261007-093226/dataflow-dat-hang-den-thanh-toan.html" target="_blank">Toàn trang</a> |
+| 2 | `10_Giao_hàng` | Chuỗi batch giao hàng: từ hợp đồng đến thực tích và thanh toán | 13 node · 12 luồng | <a href="flow/10_Giao_h%C3%A0ng/dataflow-chuoi-batch-giao-hang-20261007-095944/chuoi-batch-giao-hang.html" target="_blank">Toàn trang</a> |
+| 3 | `20_Doanh_nghiệp_Cơ_sở_Hợp_đồng` | Luồng dữ liệu đăng ký mới và thêm cơ sở | 10 node · 10 luồng | <a href="flow/20_Doanh_nghi%E1%BB%87p_C%C6%A1_s%E1%BB%9F_H%E1%BB%A3p_%C4%91%E1%BB%93ng/dataflow-dang-ky-moi-20261007-095856/dang-ky-moi.html" target="_blank">Toàn trang</a> |
+| 4 | `30_Đơn_yêu_cầu` | Luồng dữ liệu đơn thay đổi (CH-) và phê duyệt | 11 node · 11 luồng | <a href="flow/30_%C4%90%C6%A1n_y%C3%AAu_c%E1%BA%A7u/dataflow-don-yeu-cau-20261007-095903/dataflow-don-yeu-cau.html" target="_blank">Toàn trang</a> |
+| 5 | `40_Master_Phí_Thanh_toán` | Luồng dữ liệu hóa đơn thanh toán (ES → Bill One) | 8 node · 7 luồng | <a href="flow/40_Master_Ph%C3%AD_Thanh_to%C3%A1n/dataflow-billing-invoice-20261007-095843/billing-invoice.html" target="_blank">Toàn trang</a> |
+| 6 | `45_Menu_Sản_phẩm` | Luồng dữ liệu Menu tháng / Sản phẩm | 9 node · 8 luồng | <a href="flow/45_Menu_S%E1%BA%A3n_ph%E1%BA%A9m/dataflow-menu-san-pham-20261007-103000/menu-san-pham.html" target="_blank">Toàn trang</a> |
+| 7 | `50_Đơn_hàng` | Luồng dữ liệu đơn hàng hằng tháng | 11 node · 10 luồng | <a href="flow/50_%C4%90%C6%A1n_h%C3%A0ng/dataflow-don-hang-20261007-095844/don-hang.html" target="_blank">Toàn trang</a> |
+| 8 | `55_Đặt_hàng_Nhập_mua_Nhập_kho` | Luồng dữ liệu Đặt hàng - Nhà cung cấp - Nhập kho | 11 node · 12 luồng | <a href="flow/55_%C4%90%E1%BA%B7t_h%C3%A0ng_Nh%E1%BA%ADp_mua_Nh%E1%BA%ADp_kho/dataflow-dat-hang-nhap-kho-20261007-095858/dat-hang-nhap-kho.html" target="_blank">Toàn trang</a> |
+| 9 | `60_Tồn_kho` | Luồng dữ liệu tồn kho cơ sở | 13 node · 12 luồng | <a href="flow/60_T%E1%BB%93n_kho/dataflow-ton-kho-20261007-095856/ton-kho.html" target="_blank">Toàn trang</a> |
+| 10 | `65_Hàng_thay_thế` | Luồng dữ liệu Hàng thay thế | 11 node · 12 luồng | <a href="flow/65_H%C3%A0ng_thay_th%E1%BA%BF/dataflow-hang-thay-the-20261007-103000/hang-thay-the.html" target="_blank">Toàn trang</a> |
+| 11 | `70_Đại_lý` | Luồng dữ liệu phí giới thiệu đại lý | 11 node · 11 luồng | <a href="flow/70_%C4%90%E1%BA%A1i_l%C3%BD/dataflow-agency-referral-20261007-103000/agency-referral.html" target="_blank">Toàn trang</a> |
+| 12 | `75_Mẫu_kinh_doanh` | Luồng dữ liệu Mẫu kinh doanh | 9 node · 9 luồng | <a href="flow/75_M%E1%BA%ABu_kinh_doanh/dataflow-mau-kinh-doanh-20261007-103000/mau-kinh-doanh.html" target="_blank">Toàn trang</a> |
+| 13 | `80_Màn_hình_vận_hành_và_doanh_nghiệp` | Luồng dữ liệu Liên hệ và Thông báo (Vận hành・Doanh nghiệp) | 10 node · 8 luồng | <a href="flow/80_M%C3%A0n_h%C3%ACnh_v%E1%BA%ADn_h%C3%A0nh_v%C3%A0_doanh_nghi%E1%BB%87p/dataflow-contact-notification-20261007-104500/contact-notification.html" target="_blank">Toàn trang</a> |
+| 14 | `Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng` | AW_BILL - Luồng dữ liệu chốt thanh toán và hóa đơn | 9 node · 8 luồng | <a href="flow/Web_qu%E1%BA%A3n_tr%E1%BB%8B_v%E1%BA%ADn_h%C3%A0nh_Thanh_to%C3%A1n_Mua_h%C3%A0ng/dataflow-aw-bill-20261009-160637/aw-bill.html" target="_blank">Toàn trang</a> |
+| 15 | `Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng` | AW_ACTL - Luồng dữ liệu đối soát thực tế | 11 node · 11 luồng | <a href="flow/Web_qu%E1%BA%A3n_tr%E1%BB%8B_v%E1%BA%ADn_h%C3%A0nh_Thanh_to%C3%A1n_Mua_h%C3%A0ng/dataflow-aw-actl-20261009-160546/aw-actl.html" target="_blank">Toàn trang</a> |
+| 16 | `Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng` | AW_STCK – Luồng dữ liệu kiểm kê tồn kho chi nhánh | 10 node · 9 luồng | <a href="flow/Web_qu%E1%BA%A3n_tr%E1%BB%8B_v%E1%BA%ADn_h%C3%A0nh_Thanh_to%C3%A1n_Mua_h%C3%A0ng/dataflow-aw-stck-20261009-160619/aw-stck.html" target="_blank">Toàn trang</a> |
+| 17 | `Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng` | AW_SALE - Luồng dữ liệu Quản lý mua hàng | 11 node · 10 luồng | <a href="flow/Web_qu%E1%BA%A3n_tr%E1%BB%8B_v%E1%BA%ADn_h%C3%A0nh_Thanh_to%C3%A1n_Mua_h%C3%A0ng/dataflow-aw-sale-20261009-150000/aw-sale.html" target="_blank">Toàn trang</a> |
+| 18 | `Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng` | AW_FAVO - Luồng dữ liệu tổng hợp yêu thích | 10 node · 9 luồng | <a href="flow/Web_qu%E1%BA%A3n_tr%E1%BB%8B_v%E1%BA%ADn_h%C3%A0nh_Thanh_to%C3%A1n_Mua_h%C3%A0ng/dataflow-aw-favo-20261009-160556/aw-favo.html" target="_blank">Toàn trang</a> |
+| 19 | `Web_nhà_cung_cấp` | SW_AUTH: luồng dữ liệu đăng nhập, đặt lại MK, đăng ký | 14 node · 15 luồng | <a href="flow/Web_nh%C3%A0_cung_c%E1%BA%A5p/dataflow-sw-auth-20261009-160648/sw-auth.html" target="_blank">Toàn trang</a> |
+| 20 | `Web_nhà_cung_cấp` | SW_HOME - Luồng dữ liệu Trang chủ và Chi tiết thông báo | 10 node · 10 luồng | <a href="flow/Web_nh%C3%A0_cung_c%E1%BA%A5p/dataflow-sw-home-20261009-160550/sw-home.html" target="_blank">Toàn trang</a> |
+| 21 | `Web_nhà_cung_cấp` | SW_ORDR - Luồng dữ liệu đơn nhận (nhà cung cấp) | 10 node · 9 luồng | <a href="flow/Web_nh%C3%A0_cung_c%E1%BA%A5p/dataflow-sw-ordr-20261009-160616/sw-ordr.html" target="_blank">Toàn trang</a> |
+| 22 | `Web_nhà_cung_cấp` | SW_PROF - Luồng dữ liệu hồ sơ nhà cung cấp | 7 node · 6 luồng | <a href="flow/Web_nh%C3%A0_cung_c%E1%BA%A5p/dataflow-sw-prof-20261009-160000/sw-prof.html" target="_blank">Toàn trang</a> |
+| 23 | `Web_nhà_cung_cấp` | SW_MANU - Luồng liên kết hướng dẫn thao tác | 5 node · 4 luồng | <a href="flow/Web_nh%C3%A0_cung_c%E1%BA%A5p/dataflow-sw-manu-20261009-160000/sw-manu.html" target="_blank">Toàn trang</a> |
 
 ## 2. Yêu cầu chuẩn (P1) — JA ⇄ VI
 
@@ -102,7 +124,7 @@ Thư mục `65_Hàng_thay_thế`, `70_Đại_lý`, `75_Mẫu_kinh_doanh` không 
 
 ## 3. Prototype HTML (thiết kế màn hình)
 
-16 file HTML bản giao thiết kế màn hình, mở nhúng trong wiki.
+26 file HTML bản giao thiết kế màn hình, mở toàn trang ở tab mới.
 
 | # | File | Nhóm | Dung lượng | Mở |
 |---:|---|---|---:|---|
@@ -122,3 +144,13 @@ Thư mục `65_Hàng_thay_thế`, `70_Đại_lý`, `75_Mẫu_kinh_doanh` không 
 | 14 | `Thiết_kế_màn_hình_CW_MAT_Đặt_vật_tư.html` | Web_doanh_nghiệp | 482 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_MAT_%C4%90%E1%BA%B7t_v%E1%BA%ADt_t%C6%B0.html" target="_blank">Toàn trang</a> |
 | 15 | `Thiết_kế_màn_hình_CW_ORDER_Đặt_sản_phẩm.html` | Web_doanh_nghiệp | 3.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_ORDER_%C4%90%E1%BA%B7t_s%E1%BA%A3n_ph%E1%BA%A9m.html" target="_blank">Toàn trang</a> |
 | 16 | `Thiết_kế_màn_hình_CW_STOCK_Báo_cáo_kiểm_kê.html` | Web_doanh_nghiệp | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_STOCK_B%C3%A1o_c%C3%A1o_ki%E1%BB%83m_k%C3%AA.html" target="_blank">Toàn trang</a> |
+| 17 | `Thiết_kế_màn_hình_AW_FAVO_Tổng_hợp_yêu_thích.html` | Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng | 942 KB | <a href="prototype/Thie%CC%82%CC%81t_ke%CC%82%CC%81_ma%CC%80n_hi%CC%80nh_AW_FAVO_To%CC%82%CC%89ng_ho%CC%9B%CC%A3p_ye%CC%82u_thi%CC%81ch.html" target="_blank">Toàn trang</a> |
+| 18 | `Thiết_kế_màn_hình_AW_ACTL_Quyết_toán_thực_tích.html` | Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng | 2.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_ACTL_Quy%E1%BA%BFt_to%C3%A1n_th%E1%BB%B1c_t%C3%ADch.html" target="_blank">Toàn trang</a> |
+| 19 | `Thiết_kế_màn_hình_AW_BILL_Chốt_thanh_toán_và_hóa_đơn.html` | Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng | 2.9 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_BILL_Ch%E1%BB%91t_thanh_to%C3%A1n_v%C3%A0_h%C3%B3a_%C4%91%C6%A1n.html" target="_blank">Toàn trang</a> |
+| 20 | `Thiết_kế_màn_hình_AW_SALE_Quản_lý_mua_hàng.html` | Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SALE_Qu%E1%BA%A3n_l%C3%BD_mua_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 21 | `Thiết_kế_màn_hình_AW_STCK_Kiểm_kê.html` | Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng | 2.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_STCK_Ki%E1%BB%83m_k%C3%AA.html" target="_blank">Toàn trang</a> |
+| 22 | `Thiết_kế_màn_hình_SW_AUTH_Đăng_nhập_và_đăng_ký_Bản_nháp.html` | Web_nhà_cung_cấp | 779 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_AUTH_%C4%90%C4%83ng_nh%E1%BA%ADp_v%C3%A0_%C4%91%C4%83ng_k%C3%BD_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
+| 23 | `Thiết_kế_màn_hình_SW_HOME_Trang_chủ_Bản_nháp.html` | Web_nhà_cung_cấp | 708 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_HOME_Trang_ch%E1%BB%A7_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
+| 24 | `Thiết_kế_màn_hình_SW_MANU_Hướng_dẫn_thao_tác_Bản_nháp.html` | Web_nhà_cung_cấp | 646 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_MANU_H%C6%B0%E1%BB%9Bng_d%E1%BA%ABn_thao_t%C3%A1c_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
+| 25 | `Thiết_kế_màn_hình_SW_ORDR_Đặt_hàng_Bản_nháp.html` | Web_nhà_cung_cấp | 1.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_ORDR_%C4%90%E1%BA%B7t_h%C3%A0ng_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
+| 26 | `Thiết_kế_màn_hình_SW_PROF_Hồ_sơ_Bản_nháp.html` | Web_nhà_cung_cấp | 779 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_PROF_H%E1%BB%93_s%C6%A1_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-preset="classic">
+<html lang="vi" data-theme="dark" data-preset="classic">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="archify 3.0.1">
   <meta name="archify-reader-contract" content="declared-wide-v1">
-  <title>Vòng đời trạng thái Đặt hàng NCC Diagram</title>
+  <title>Sơ đồ AW_BILL - Luồng dữ liệu chốt thanh toán và hóa đơn</title>
   <script>
     // Resolve the theme before first paint so light-preference users don't
     // see a dark flash. The toolbar script below re-applies with UI state.
@@ -4873,98 +4873,98 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   <!-- Toolbar: theme, live visual style, trace motion, presentation stage, and export.
        Motion appears only for trace-enabled artifacts and has no shortcut;
        Keyboard: T toggles theme, S cycles style, F toggles the stage, E opens export. -->
-  <div class="toolbar" role="toolbar" aria-label="Diagram actions">
+  <div class="toolbar" role="toolbar" aria-label="Thao tác với sơ đồ">
     <div class="toolbar-group">
     <button id="btn-theme" type="button"
-            title="Toggle theme (T)"
-            aria-label="Toggle color theme"
+            title="Đổi giao diện sáng/tối (T)"
+            aria-label="Đổi màu giao diện"
             aria-pressed="false">
       <span id="theme-icon" class="toolbar-icon" aria-hidden="true"></span>
-      <span id="theme-label">Dark</span>
+      <span id="theme-label">Tối</span>
     </button>
     <div class="preset-wrap">
       <button id="btn-preset" type="button"
-              title="Choose visual style (S cycles)"
-              aria-label="Choose visual style"
+              title="Chọn kiểu hiển thị (S để đổi lần lượt)"
+              aria-label="Chọn kiểu hiển thị"
               aria-haspopup="menu"
               aria-expanded="false"
               aria-controls="preset-menu"
               aria-keyshortcuts="S">
         <span class="preset-control-mark" aria-hidden="true"></span>
-        <span id="preset-label">Style</span>
+        <span id="preset-label">Kiểu</span>
         <span class="toolbar-icon toolbar-chevron" aria-hidden="true"></span>
       </button>
-      <div class="preset-menu" id="preset-menu" role="menu" aria-label="Visual style">
-        <div class="preset-menu-heading" role="presentation"><span>Visual identity</span><span class="preset-menu-shortcut"><kbd>S</kbd>to cycle</span></div>
+      <div class="preset-menu" id="preset-menu" role="menu" aria-label="Kiểu hiển thị">
+        <div class="preset-menu-heading" role="presentation"><span>Nhận diện hiển thị</span><span class="preset-menu-shortcut"><kbd>S</kbd>để đổi lần lượt</span></div>
         <button class="preset-option" data-preset-value="classic" type="button" role="menuitemradio" aria-checked="false" tabindex="-1">
           <span class="preset-option-swatch classic" aria-hidden="true"></span>
-          <span class="preset-option-copy"><strong>Classic</strong><small>Stable technical default</small></span>
+          <span class="preset-option-copy"><strong>Cổ điển</strong><small>Mặc định kỹ thuật, ổn định</small></span>
           <span class="preset-option-check" aria-hidden="true"></span>
         </button>
         <button class="preset-option" data-preset-value="signal-flow" type="button" role="menuitemradio" aria-checked="false" tabindex="-1">
           <span class="preset-option-swatch signal-flow" aria-hidden="true"></span>
-          <span class="preset-option-copy"><strong>Signal Flow</strong><small>Motion-forward presentation</small></span>
+          <span class="preset-option-copy"><strong>Luồng tín hiệu</strong><small>Trình bày thiên về chuyển động</small></span>
           <span class="preset-option-check" aria-hidden="true"></span>
         </button>
         <button class="preset-option" data-preset-value="blueprint" type="button" role="menuitemradio" aria-checked="false" tabindex="-1">
           <span class="preset-option-swatch blueprint" aria-hidden="true"></span>
-          <span class="preset-option-copy"><strong>Blueprint</strong><small>Engineering review</small></span>
+          <span class="preset-option-copy"><strong>Bản vẽ kỹ thuật</strong><small>Dùng cho rà soát kỹ thuật</small></span>
           <span class="preset-option-check" aria-hidden="true"></span>
         </button>
         <button class="preset-option" data-preset-value="editorial" type="button" role="menuitemradio" aria-checked="false" tabindex="-1">
           <span class="preset-option-swatch editorial" aria-hidden="true"></span>
-          <span class="preset-option-copy"><strong>Editorial</strong><small>Publication and launch notes</small></span>
+          <span class="preset-option-copy"><strong>Biên tập</strong><small>Dùng cho ấn phẩm và ghi chú ra mắt</small></span>
           <span class="preset-option-check" aria-hidden="true"></span>
         </button>
       </div>
     </div>
     <button id="btn-motion" type="button" hidden
-            title="Pause motion"
-            aria-label="Pause motion"
+            title="Tạm dừng chuyển động"
+            aria-label="Tạm dừng chuyển động"
             aria-pressed="true">
       <span class="motion-control-dot" aria-hidden="true"></span>
-      <span id="motion-label">Live</span>
+      <span id="motion-label">Chuyển động</span>
     </button>
     <button id="btn-present" type="button"
-            title="Presentation stage (F)"
-            aria-label="Enter presentation stage"
+            title="Chế độ trình chiếu (F)"
+            aria-label="Vào chế độ trình chiếu"
             aria-pressed="false">
       <span id="present-icon" class="toolbar-icon" aria-hidden="true"></span>
-      <span id="present-label">Present</span>
+      <span id="present-label">Trình chiếu</span>
     </button>
     </div>
     <div class="export-wrap">
       <button id="btn-export" type="button"
-              title="Export diagram (E)"
-              aria-label="Export diagram"
+              title="Xuất sơ đồ (E)"
+              aria-label="Xuất sơ đồ"
               aria-haspopup="menu"
               aria-expanded="false"
               aria-controls="export-menu">
-        Export <span class="toolbar-icon toolbar-chevron" aria-hidden="true"></span>
+        Xuất <span class="toolbar-icon toolbar-chevron" aria-hidden="true"></span>
       </button>
-      <div class="export-menu" id="export-menu" role="menu" aria-label="Export">
+      <div class="export-menu" id="export-menu" role="menu" aria-label="Xuất">
         <div class="export-menu-header" role="presentation">
-          <div><strong>Export diagram</strong><span>Portable, clean outputs</span></div>
+          <div><strong>Xuất sơ đồ</strong><span>Kết quả gọn, dùng được ở mọi nơi</span></div>
           <kbd>E</kbd>
         </div>
-        <div class="export-menu-section" role="group" aria-label="Share">
-          <span class="export-menu-heading" aria-hidden="true">Share</span>
-          <button data-action="route-share-card" type="button" role="menuitem" tabindex="-1" hidden disabled><span class="export-item-copy"><strong>Route Share Card</strong><small class="hint">1200&times;630 PNG</small></span></button>
-          <button data-action="reach-share-card" type="button" role="menuitem" tabindex="-1" hidden disabled><span class="export-item-copy"><strong>Reach Share Card</strong><small class="hint">1200&times;630 PNG</small></span></button>
-          <button data-action="copy" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>Copy diagram</strong><small class="hint">PNG to clipboard</small></span></button>
+        <div class="export-menu-section" role="group" aria-label="Chia sẻ">
+          <span class="export-menu-heading" aria-hidden="true">Chia sẻ</span>
+          <button data-action="route-share-card" type="button" role="menuitem" tabindex="-1" hidden disabled><span class="export-item-copy"><strong>Thẻ chia sẻ đường đi</strong><small class="hint">1200&times;630 PNG</small></span></button>
+          <button data-action="reach-share-card" type="button" role="menuitem" tabindex="-1" hidden disabled><span class="export-item-copy"><strong>Thẻ chia sẻ phạm vi lan tỏa</strong><small class="hint">1200&times;630 PNG</small></span></button>
+          <button data-action="copy" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>Sao chép sơ đồ</strong><small class="hint">PNG vào bộ nhớ tạm</small></span></button>
         </div>
-        <div class="export-menu-section" role="group" aria-label="Raster images">
-          <span class="export-menu-heading" aria-hidden="true">Image</span>
-          <button data-format="png" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>PNG</strong><small class="hint">Lossless image</small></span></button>
-          <button data-format="jpeg" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>JPEG</strong><small class="hint">Compact image</small></span></button>
-          <button data-format="webp" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>WebP</strong><small class="hint">Modern image</small></span></button>
+        <div class="export-menu-section" role="group" aria-label="Ảnh điểm (raster)">
+          <span class="export-menu-heading" aria-hidden="true">Ảnh</span>
+          <button data-format="png" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>PNG</strong><small class="hint">Ảnh không nén mất mát</small></span></button>
+          <button data-format="jpeg" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>JPEG</strong><small class="hint">Ảnh nhỏ gọn</small></span></button>
+          <button data-format="webp" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>WebP</strong><small class="hint">Ảnh định dạng mới</small></span></button>
         </div>
-        <div class="export-menu-section" role="group" aria-label="Vector and motion">
-          <span class="export-menu-heading" aria-hidden="true">Vector &amp; motion</span>
-          <button data-format="svg" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>SVG · Auto</strong><small class="hint">Matches host theme</small></span></button>
-          <button data-format="svg-light" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>SVG · Light</strong><small class="hint">Always light</small></span></button>
-          <button data-format="svg-dark" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>SVG · Dark</strong><small class="hint">Always dark</small></span></button>
-          <button data-format="webm" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>WebM</strong><small class="hint">6s motion</small></span></button>
+        <div class="export-menu-section" role="group" aria-label="Vector và chuyển động">
+          <span class="export-menu-heading" aria-hidden="true">Vector &amp; chuyển động</span>
+          <button data-format="svg" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>SVG · Tự động</strong><small class="hint">Theo giao diện của trang chứa</small></span></button>
+          <button data-format="svg-light" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>SVG · Sáng</strong><small class="hint">Luôn nền sáng</small></span></button>
+          <button data-format="svg-dark" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>SVG · Tối</strong><small class="hint">Luôn nền tối</small></span></button>
+          <button data-format="webm" type="button" role="menuitem" tabindex="-1"><span class="export-item-copy"><strong>WebM</strong><small class="hint">Chuyển động 6 giây</small></span></button>
         </div>
       </div>
     </div>
@@ -4974,22 +4974,22 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <!-- Header -->
     <div class="header">
       <div class="header-row"
-           data-preset-badge-signal-flow="SIGNAL FLOW"
-           data-preset-badge-blueprint="BLUEPRINT / REV 01"
-           data-preset-badge-editorial="EDITORIAL / FIELD NOTE">
+           data-preset-badge-signal-flow="LUỒNG TÍN HIỆU"
+           data-preset-badge-blueprint="BẢN VẼ / REV 01"
+           data-preset-badge-editorial="BIÊN TẬP / GHI CHÚ">
         <div class="pulse-dot"></div>
-        <h1>Vòng đời trạng thái Đặt hàng NCC</h1>
+        <h1>AW_BILL - Luồng dữ liệu chốt thanh toán và hóa đơn</h1>
       </div>
     </div>
 
 
-    <script id="archify-i18n-data" type="application/json">{"locale":"en","messages":{"viewer.kind.frontend":"Frontend","viewer.kind.backend":"Backend","viewer.kind.database":"Database","viewer.kind.cloud":"Cloud","viewer.kind.security":"Security","viewer.kind.messagebus":"Message bus","viewer.kind.external":"External","viewer.kind.neutral":"Neutral","viewer.kind.node":"Node","viewer.kind.start":"Start","viewer.kind.active":"Active","viewer.kind.waiting":"Waiting","viewer.kind.decision":"Decision","viewer.kind.success":"Success","viewer.kind.failure":"Failure","viewer.toolbar.actions":"Diagram actions","viewer.theme.toggle.title":"Toggle theme (T)","viewer.theme.toggle":"Toggle color theme","viewer.theme.dark":"Dark","viewer.theme.light":"Light","viewer.preset.choose.title":"Choose visual style (S cycles)","viewer.preset.choose":"Choose visual style","viewer.preset.style":"Style","viewer.preset.menu":"Visual style","viewer.preset.identity":"Visual identity","viewer.preset.cycles":"to cycle","viewer.preset.classic":"Classic","viewer.preset.classic.short":"Classic","viewer.preset.classic.hint":"Stable technical default","viewer.preset.flow":"Signal Flow","viewer.preset.flow.short":"Flow","viewer.preset.flow.hint":"Motion-forward presentation","viewer.preset.blueprint":"Blueprint","viewer.preset.blueprint.hint":"Engineering review","viewer.preset.editorial":"Editorial","viewer.preset.editorial.hint":"Publication and launch notes","viewer.preset.badge.signalFlow":"SIGNAL FLOW","viewer.preset.badge.blueprint":"BLUEPRINT / REV 01","viewer.preset.badge.editorial":"EDITORIAL / FIELD NOTE","viewer.preset.badge.editorialPlate":"ARCHIFY / PLATE 04","viewer.preset.current":"Visual style: {style}. Choose visual style","viewer.motion.live":"Live","viewer.motion.still":"Still","viewer.motion.pause":"Pause motion","viewer.motion.resume":"Resume motion","viewer.motion.reduced":"Motion paused by reduced-motion preference","viewer.motion.hidden":"Motion paused while this page is hidden","viewer.motion.yielding":"Pause motion; currently yielding to {owner}","viewer.motion.yielding.title":"Live preview enabled · yielding to {owner}","viewer.owner.route":"Route Probe","viewer.owner.lens":"Semantic Lens","viewer.owner.relationship":"Relationship Preview","viewer.owner.intent":"Intent Trace","viewer.owner.focus":"semantic focus","viewer.owner.legend":"legend preview","viewer.owner.reader":"reader interaction","viewer.present.enter":"Enter presentation stage","viewer.present.enter.title":"Presentation stage (F)","viewer.present.exit":"Exit presentation stage","viewer.present.exit.title":"Exit presentation stage (F or Escape)","viewer.present.present":"Present","viewer.present.exit.label":"Exit","viewer.export.button":"Export","viewer.export.button.title":"Export diagram (E)","viewer.export.diagram":"Export diagram","viewer.export.menu":"Export","viewer.export.subtitle":"Portable, clean outputs","viewer.export.share":"Share","viewer.export.shareCard":"Share Card","viewer.export.routeShareCard":"Route Share Card","viewer.export.reachShareCard":"Reach Share Card","viewer.export.copyDiagram":"Copy diagram","viewer.export.clipboardPng":"PNG to clipboard","viewer.export.raster":"Raster images","viewer.export.image":"Image","viewer.export.lossless":"Lossless image","viewer.export.compact":"Compact image","viewer.export.modern":"Modern image","viewer.export.vectorMotion":"Vector and motion","viewer.export.vectorMotion.heading":"Vector \u0026 motion","viewer.export.editable":"Editable vector","viewer.export.svg.auto":"SVG · Auto","viewer.export.svg.auto.hint":"Matches host theme","viewer.export.svg.light":"SVG · Light","viewer.export.svg.light.hint":"Always light","viewer.export.svg.dark":"SVG · Dark","viewer.export.svg.dark.hint":"Always dark","viewer.export.motion6s":"6s motion","viewer.export.unsupported":"Not supported by this browser","viewer.export.clipboardUnsupported":"Clipboard image write not supported by this browser","viewer.export.clipboardUnsupported.short":"Clipboard image write not supported in this browser.","viewer.export.motionUnavailable":"Motion capture unavailable in this browser","viewer.export.webmUnavailable":"WebM unavailable in this browser","viewer.export.failed":"Export failed: {message}","viewer.export.unknownVariant":"Unknown Share Card variant: {variant}","viewer.export.routeRequired":"Trace a route before exporting a Route Share Card","viewer.export.reachRequired":"Trace authored reach before exporting a Reach Share Card","viewer.export.unknown":"unknown","viewer.export.routeFailed":"Route Share Card export failed: {message}","viewer.export.reachFailed":"Reach Share Card export failed: {message}","viewer.export.copyFailed":"Copy failed: {message}","viewer.export.copiedPng":"Copied PNG to clipboard","viewer.export.downloadedRoute":"Downloaded Route Share Card","viewer.export.downloadedReach":"Downloaded Reach Share Card","viewer.export.downloadedWebm":"Downloaded WebM","viewer.export.recording":"Recording 6 seconds of motion…","viewer.export.card.routeSummary.one":"Path: {source} → {target} · {count} step","viewer.export.card.routeSummary.other":"Path: {source} → {target} · {count} steps","viewer.export.card.reachSummary":"Authored {direction} from {origin} · {nodes} · {links} · max {hops}","viewer.export.card.node.one":"{count} node","viewer.export.card.node.other":"{count} nodes","viewer.export.card.link.one":"{count} link","viewer.export.card.link.other":"{count} links","viewer.export.card.hop.one":"{count} hop","viewer.export.card.hop.other":"{count} hops","viewer.export.card.routeBadge":"ARCHIFY · ROUTE · {hops}","viewer.export.card.reachBadge":"ARCHIFY · {direction} REACH","viewer.export.direction.upstream":"Upstream","viewer.export.direction.downstream":"Downstream","viewer.export.error.canvasUnavailable":"Canvas unavailable for {label}","viewer.export.error.contextUnavailable":"2D canvas context unavailable for {label}","viewer.export.error.toBlobUnavailable":"canvas.toBlob unavailable for {label}","viewer.export.error.toBlobNull":"canvas.toBlob returned no data for {label}","viewer.export.error.variantsCombined":"Share Card variants cannot be combined","viewer.export.error.viewerState":"Share Card export could not remove temporary viewer state","viewer.export.error.routeState":"Route Card export could not preserve the resolved route safely","viewer.export.error.reachState":"Reach Card export could not preserve authored reach safely","viewer.export.error.webmRequirements":"WebM motion export requires a trace animation and browser MediaRecorder support","viewer.export.error.mediaRecorder":"MediaRecorder failed","viewer.export.error.emptyWebm":"MediaRecorder produced an empty WebM","viewer.export.error.webmBackground":"SVG background could not be loaded for WebM export","viewer.guide.title":"Explore this system","viewer.focus.selectedNodes":"{count} selected nodes","viewer.guide.eyebrow":"Diagram guide","viewer.guide.close":"Close diagram guide","viewer.guide.inspecting":"Inspecting compiled semantics","viewer.guide.actions":"Diagram exploration actions","viewer.guide.find":"Find any node","viewer.guide.find.hint":"Search labels, responsibilities, kinds, and stable IDs.","viewer.guide.route":"Trace a route","viewer.guide.route.aria":"Trace a directed route","viewer.guide.route.hint":"Ask how two semantic nodes connect in authored direction.","viewer.guide.map":"See the whole system","viewer.guide.map.hint":"Open Semantic Radar with a live viewport and stable nodes.","viewer.guide.lens":"Compare semantic kinds","viewer.guide.lens.hint":"Count roles, reveal their traffic, and compare direct authored links.","viewer.guide.present":"Enter Presentation Stage","viewer.guide.present.hint":"Give the live diagram the viewport without changing export.","viewer.guide.shortcuts":"Additional keyboard shortcuts","viewer.guide.shortcut.export":"Export","viewer.guide.shortcut.theme":"Theme","viewer.guide.shortcut.style":"Style","viewer.guide.shortcut.reset":"Reset","viewer.guide.shortcut.zoomIn":"Zoom in","viewer.guide.shortcut.zoomOut":"Zoom out","viewer.guide.shortcut.close":"Close","viewer.guide.facts":"{nodes} · {relationships}","viewer.guide.fact.node.one":"{count} semantic node","viewer.guide.fact.node.other":"{count} semantic nodes","viewer.guide.fact.relationship.one":"{count} relationship","viewer.guide.fact.relationship.other":"{count} relationships","viewer.guide.open":"Open diagram guide","viewer.finder.title":"Find a node","viewer.finder.close":"Close node finder","viewer.finder.placeholder":"Search labels or IDs","viewer.finder.search":"Search diagram nodes","viewer.finder.results":"Diagram nodes","viewer.finder.empty":"No matching nodes","viewer.finder.result.focus":"Focus {label}","viewer.finder.result.routeStart":"Choose {label} as route start","viewer.finder.result.routeTarget":"Choose {label} as route destination, {links}","viewer.finder.status.empty":"No matching nodes","viewer.finder.status.count.one":"{count} matching node","viewer.finder.status.count.other":"{count} matching nodes","viewer.finder.noun.nodes":"nodes","viewer.finder.link.one":"{count} link","viewer.finder.link.other":"{count} links","viewer.finder.result.focus.one":"Focus {label}, {count} related connection","viewer.finder.result.focus.other":"Focus {label}, {count} related connections","viewer.finder.status.filtered":"{visible} of {available} {noun}","viewer.finder.status.all":"{available} {noun}","viewer.passport.eyebrow":"Semantic passport","viewer.passport.metadata":"Node metadata","viewer.passport.evidence":"Verified source evidence","viewer.passport.verified":"Verified source","viewer.passport.verificationScope":"Verified against local Git at the pinned revision. Remote access has not been checked.","viewer.passport.reach":"Authored reach","viewer.passport.reach.trace":"Trace authored reachability","viewer.passport.upstream":"Upstream","viewer.passport.downstream":"Downstream","viewer.passport.upstream.trace":"Trace upstream authored reachability","viewer.passport.downstream.trace":"Trace downstream authored reachability","viewer.passport.close":"Close semantic passport","viewer.passport.move":"Move semantic passport. Drag, use arrow keys, or press Home to reset.","viewer.passport.copy":"Copy link","viewer.passport.copy.focus":"Copy link to focused node","viewer.passport.relations":"Relations","viewer.passport.relations.show":"Show connected relationships","viewer.passport.relations.hide":"Hide connected relationships","viewer.passport.relations.list":"Connected relationships","viewer.passport.copyRelation":"Copy relation","viewer.passport.copyNode":"Copy node","viewer.passport.copyPinned":"Copy link to pinned relationship","viewer.passport.copySource":"Copy link to source node","viewer.passport.copy.focused.success":"Focused node link copied","viewer.passport.copy.pinned.success":"Pinned relationship link copied","viewer.passport.copy.focused.failed":"Could not copy focused node link","viewer.passport.copy.pinned.failed":"Could not copy pinned relationship link","viewer.passport.relationship.none":"No connected relationships","viewer.passport.relationship.count.one":"{count} relation","viewer.passport.relationship.count.other":"{count} relations","viewer.passport.relationship.show.one":"Show {count} connected relationship","viewer.passport.relationship.show.other":"Show {count} connected relationships","viewer.passport.relationship.summary":"{out} outgoing · {in} incoming{loops}","viewer.passport.relationship.loops":" · {count} loop","viewer.passport.relationship.explorer":"Direct relationship explorer","viewer.passport.relationship.help":"Use arrow keys to explore relationships. Press Enter or Space to pin details; Escape clears.","viewer.passport.relationship.loopsBack":"loops back","viewer.passport.relationship.connectsTo":"connects to","viewer.passport.relationship.connectsFrom":"connects from","viewer.passport.relationship.pinned":"Pinned relationship · {from} → {to} · {label}","viewer.passport.relationship.inspect":"Inspect relationship {index} of {total}: {from} to {to}, {label}. Press Enter for details.","viewer.passport.relationship.group.out":"Outgoing","viewer.passport.relationship.group.in":"Incoming","viewer.passport.relationship.group.loop":"Self loops","viewer.passport.relationship.row":"{group}: {relationship}, {neighbor}","viewer.passport.relationship.direction.out":"OUT →","viewer.passport.relationship.direction.in":"← IN","viewer.passport.relationship.direction.loop":"LOOP","viewer.passport.sourceCount.one":"{count} verified source reference","viewer.passport.sourceCount.other":"{count} verified source references","viewer.passport.sourceMarker":"SRC","viewer.passport.beacon.one":"{count} verified source; focus this node to inspect","viewer.passport.beacon.other":"{count} verified sources; focus this node to inspect","viewer.passport.repository.open":"Open verified repository revision {revision}","viewer.passport.source.open":"Open verified source {path} at revision {revision}","viewer.passport.source.openLink":"Open ↗","viewer.passport.reach.upstream.one":"Trace {count} upstream authored node","viewer.passport.reach.upstream.other":"Trace {count} upstream authored nodes","viewer.passport.reach.downstream.one":"Trace {count} downstream authored node","viewer.passport.reach.downstream.other":"Trace {count} downstream authored nodes","viewer.passport.reach.noUpstream":"No upstream authored nodes","viewer.passport.reach.noDownstream":"No downstream authored nodes","viewer.passport.reach.status":"{direction} · {nodes} nodes · {links} links · max {hops} hops","viewer.route.eyebrow":"Path","viewer.route.start":"Click where the path starts","viewer.route.start.find":"Find start","viewer.route.start.find.aria":"Find a route start","viewer.route.copy":"Copy link","viewer.route.copy.aria":"Copy link to traced route","viewer.route.clear":"Clear","viewer.route.clear.aria":"Clear route probe","viewer.route.traced":"Path","viewer.route.pickTwo":"Click two nodes on the diagram","viewer.route.pickOne":"Click a node on the diagram","viewer.route.controls":"Route journey controls","viewer.route.previous":"Previous route position","viewer.route.play":"Play route journey","viewer.route.pause":"Pause route journey","viewer.route.replay":"Replay route journey","viewer.route.next":"Next route position","viewer.route.journey":"Journey","viewer.route.pause.label":"Pause","viewer.route.replay.label":"Replay","viewer.route.overview":"Overview","viewer.route.overview.aria":"Show complete route overview","viewer.route.instructions":"Click a start, then an end. Paths follow the arrows.","viewer.route.destination":"Where does the path from {label} end?","viewer.route.destination.find":"Find target","viewer.route.destination.find.aria":"Find a reachable route destination","viewer.route.differentDestination":"Choose a different destination","viewer.route.distinct":"Pick two different nodes.","viewer.route.unreachable":"Cannot reach {label} from here","viewer.route.unreachable.detail":"{target} cannot be reached from {source} along the arrows. Pick a highlighted node.","viewer.route.start.instructions":"Next, pick the end. Only nodes you can reach will light up.","viewer.route.copy.success":"Traced route link copied","viewer.route.copy.failed":"Could not copy traced route link","viewer.route.position":"Route position {index} of {total}: {label}","viewer.route.step":"Step {index} of {total} · {phase} · {label}","viewer.route.motionRequired":"Automatic journey requires Live motion","viewer.route.trigger.clear":"Clear traced route","viewer.route.overview.status":"{nodes} · {hops} · shortest path","viewer.route.overview.node.one":"{count} node","viewer.route.overview.node.other":"{count} nodes","viewer.route.overview.hop.one":"{count} step","viewer.route.overview.hop.other":"{count} steps","viewer.route.phase.playing":"Playing","viewer.route.phase.complete":"Complete","viewer.route.phase.inspecting":"Inspecting","viewer.route.destination.count.one":"{count} reachable node is highlighted. Click it.","viewer.route.destination.count.other":"{count} reachable nodes are highlighted. Click one.","viewer.route.noOutgoing":"No arrows lead out of this node. Clear it and pick another start.","viewer.route.result.title":"{source} to {target}","viewer.route.finder.source.title":"Choose route start","viewer.route.finder.source.placeholder":"Search route sources","viewer.route.finder.source.empty":"No matching route sources","viewer.route.finder.source.results":"Nodes that can start a route","viewer.route.finder.source.noun":"route sources","viewer.route.finder.source.badge":"start","viewer.route.finder.target.title":"Destination from {label}","viewer.route.finder.target.placeholder":"Search reachable destinations","viewer.route.finder.target.empty":"No matching reachable destinations","viewer.route.finder.target.results":"Reachable route destinations","viewer.route.finder.target.noun":"reachable destinations","viewer.route.hop.one":"{count} hop","viewer.route.hop.other":"{count} hops","viewer.lens.eyebrow":"Semantic lens","viewer.lens.title":"Compare system roles","viewer.lens.close":"Close semantic lens","viewer.lens.instruction":"Choose up to two semantic kinds. One reveals its real traffic; two compare only direct authored relationships.","viewer.lens.kinds":"Semantic kinds","viewer.lens.choose":"Choose a kind to inspect its nodes and touching relationships.","viewer.lens.copy":"Copy link to semantic lens","viewer.lens.clear":"Clear semantic lens","viewer.lens.open":"Open semantic lens","viewer.lens.openActive":"Open active semantic lens","viewer.lens.legend":"Semantic legend","viewer.lens.legend.inspect.one":"Inspect {label}, {count} node","viewer.lens.legend.inspect.other":"Inspect {label}, {count} nodes","viewer.lens.kind.count.one":"{label}, {count} node","viewer.lens.kind.count.other":"{label}, {count} nodes","viewer.lens.compare.one":"{first} → {second}: {forward} · {second} → {first}: {reverse} · {count} direct relationship","viewer.lens.compare.other":"{first} → {second}: {forward} · {second} → {first}: {reverse} · {count} direct relationships","viewer.lens.single":"{nodes} · {relationships} · connected peers remain visible","viewer.lens.node.one":"{count} {label} node","viewer.lens.node.other":"{count} {label} nodes","viewer.lens.relationship.one":"{count} touching relationship","viewer.lens.relationship.other":"{count} touching relationships","viewer.radar.title":"Semantic radar","viewer.radar.building":"Building overview","viewer.radar.openFull":"Open full semantic radar","viewer.radar.open":"Open radar","viewer.radar.close":"Close semantic radar","viewer.radar.surface":"Diagram overview. Click a node to focus it, or use arrow keys to pan.","viewer.radar.click":"Click node","viewer.radar.drag":"Drag to pan","viewer.radar.space":"Semantic radar needs more MAP space.","viewer.radar.nodes":"Semantic diagram radar nodes","viewer.radar.focus":"Focus {label} from Semantic Radar","viewer.radar.status":"{count} nodes · {viewport}","viewer.radar.fullMap":"{count} nodes · full map","viewer.radar.compacted":"Radar compacted to avoid covering the Semantic Passport or MAP controls.","viewer.radar.cancelWaiting":"Cancel semantic radar waiting for more MAP space","viewer.radar.needsSpace":"Semantic radar needs more visible MAP space","viewer.radar.viewport.full":"full map","viewer.radar.viewport.width":"{percent}% width","viewer.radar.viewport.scale":"{percent}% viewport","viewer.nav.controls":"Diagram view controls","viewer.nav.route":"Trace a directed route","viewer.nav.route.title":"Trace route (R)","viewer.nav.route.short":"PATH","viewer.nav.radar":"Open semantic radar","viewer.nav.radar.title":"Semantic radar (M)","viewer.nav.radar.short":"MAP","viewer.nav.lens":"Open semantic lens","viewer.nav.lens.title":"Semantic lens (L)","viewer.nav.lens.short":"LENS","viewer.nav.find":"Find a node","viewer.nav.find.title":"Find a node (/)","viewer.outline.title":"Node index","viewer.rail.show":"Notes \u0026 index","viewer.rail.controls":"Side panel","viewer.rail.collapse":"Collapse side panel","viewer.rail.bottom":"Move panel below the diagram","viewer.rail.right":"Move panel beside the diagram","viewer.nav.guide":"Open diagram guide","viewer.nav.guide.title":"Diagram guide (?)","viewer.nav.zoomOut":"Zoom out","viewer.nav.zoomOut.title":"Zoom out (-)","viewer.nav.reset":"Reset diagram view","viewer.nav.reset.title":"Reset view (0)","viewer.nav.read":"READ","viewer.nav.zoomIn":"Zoom in","viewer.nav.zoomIn.title":"Zoom in (+)","viewer.nav.camera":"{hint}. Reset diagram view","viewer.nav.camera.title":"{semantic}{hint} · reset view (0)","viewer.nav.camera.semantic":"Semantic camera active · ","viewer.nav.level.map":"MAP","viewer.nav.level.read":"READ","viewer.nav.level.full":"FULL","viewer.nav.level.auto":"AUTO","viewer.nav.detail.map":"Zoom in to reveal relationship labels and node context","viewer.nav.detail.read":"Zoom in again to reveal tags and annotations","viewer.nav.detail.full":"Full diagram detail","viewer.intent.summary":"{label}. {out} outgoing, {in} incoming{loops}. {total} connections. Press Enter for details.","viewer.intent.loops":", {count} self loop","viewer.common.copied":"Copied","viewer.common.copyFailed":"Copy failed","viewer.common.copyLink":"Copy link","viewer.common.clear":"Clear","viewer.common.close":"Close"}}</script>
+    <script id="archify-i18n-data" type="application/json">{"locale":"vi","messages":{"viewer.kind.frontend":"Giao diện (Frontend)","viewer.kind.backend":"Máy chủ (Backend)","viewer.kind.database":"Cơ sở dữ liệu","viewer.kind.cloud":"Đám mây","viewer.kind.security":"Bảo mật","viewer.kind.messagebus":"Bus thông điệp","viewer.kind.external":"Bên ngoài","viewer.kind.neutral":"Trung tính","viewer.kind.node":"Nút","viewer.kind.start":"Bắt đầu","viewer.kind.active":"Đang xử lý","viewer.kind.waiting":"Đang chờ","viewer.kind.decision":"Quyết định","viewer.kind.success":"Thành công","viewer.kind.failure":"Thất bại","viewer.toolbar.actions":"Thao tác với sơ đồ","viewer.theme.toggle.title":"Đổi giao diện sáng/tối (T)","viewer.theme.toggle":"Đổi màu giao diện","viewer.theme.dark":"Tối","viewer.theme.light":"Sáng","viewer.preset.choose.title":"Chọn kiểu hiển thị (S để đổi lần lượt)","viewer.preset.choose":"Chọn kiểu hiển thị","viewer.preset.style":"Kiểu","viewer.preset.menu":"Kiểu hiển thị","viewer.preset.identity":"Nhận diện hiển thị","viewer.preset.cycles":"để đổi lần lượt","viewer.preset.classic":"Cổ điển","viewer.preset.classic.short":"Cổ điển","viewer.preset.classic.hint":"Mặc định kỹ thuật, ổn định","viewer.preset.flow":"Luồng tín hiệu","viewer.preset.flow.short":"Luồng","viewer.preset.flow.hint":"Trình bày thiên về chuyển động","viewer.preset.blueprint":"Bản vẽ kỹ thuật","viewer.preset.blueprint.hint":"Dùng cho rà soát kỹ thuật","viewer.preset.editorial":"Biên tập","viewer.preset.editorial.hint":"Dùng cho ấn phẩm và ghi chú ra mắt","viewer.preset.badge.signalFlow":"LUỒNG TÍN HIỆU","viewer.preset.badge.blueprint":"BẢN VẼ / REV 01","viewer.preset.badge.editorial":"BIÊN TẬP / GHI CHÚ","viewer.preset.badge.editorialPlate":"ARCHIFY / BẢN 04","viewer.preset.current":"Kiểu hiển thị: {style}. Chọn kiểu hiển thị","viewer.motion.live":"Chuyển động","viewer.motion.still":"Tĩnh","viewer.motion.pause":"Tạm dừng chuyển động","viewer.motion.resume":"Tiếp tục chuyển động","viewer.motion.reduced":"Chuyển động bị tạm dừng theo tùy chọn giảm chuyển động","viewer.motion.hidden":"Chuyển động bị tạm dừng khi trang bị ẩn","viewer.motion.yielding":"Tạm dừng chuyển động; đang nhường cho {owner}","viewer.motion.yielding.title":"Đang bật xem trực tiếp · nhường cho {owner}","viewer.owner.route":"Dò đường đi","viewer.owner.lens":"Kính lọc ngữ nghĩa","viewer.owner.relationship":"Xem trước quan hệ","viewer.owner.intent":"Theo dõi ý định","viewer.owner.focus":"tập trung ngữ nghĩa","viewer.owner.legend":"xem trước chú giải","viewer.owner.reader":"thao tác của người xem","viewer.present.enter":"Vào chế độ trình chiếu","viewer.present.enter.title":"Chế độ trình chiếu (F)","viewer.present.exit":"Thoát chế độ trình chiếu","viewer.present.exit.title":"Thoát chế độ trình chiếu (F hoặc Escape)","viewer.present.present":"Trình chiếu","viewer.present.exit.label":"Thoát","viewer.export.button":"Xuất","viewer.export.button.title":"Xuất sơ đồ (E)","viewer.export.diagram":"Xuất sơ đồ","viewer.export.menu":"Xuất","viewer.export.subtitle":"Kết quả gọn, dùng được ở mọi nơi","viewer.export.share":"Chia sẻ","viewer.export.shareCard":"Thẻ chia sẻ","viewer.export.routeShareCard":"Thẻ chia sẻ đường đi","viewer.export.reachShareCard":"Thẻ chia sẻ phạm vi lan tỏa","viewer.export.copyDiagram":"Sao chép sơ đồ","viewer.export.clipboardPng":"PNG vào bộ nhớ tạm","viewer.export.raster":"Ảnh điểm (raster)","viewer.export.image":"Ảnh","viewer.export.lossless":"Ảnh không nén mất mát","viewer.export.compact":"Ảnh nhỏ gọn","viewer.export.modern":"Ảnh định dạng mới","viewer.export.vectorMotion":"Vector và chuyển động","viewer.export.vectorMotion.heading":"Vector \u0026 chuyển động","viewer.export.editable":"Vector chỉnh sửa được","viewer.export.svg.auto":"SVG · Tự động","viewer.export.svg.auto.hint":"Theo giao diện của trang chứa","viewer.export.svg.light":"SVG · Sáng","viewer.export.svg.light.hint":"Luôn nền sáng","viewer.export.svg.dark":"SVG · Tối","viewer.export.svg.dark.hint":"Luôn nền tối","viewer.export.motion6s":"Chuyển động 6 giây","viewer.export.unsupported":"Trình duyệt này không hỗ trợ","viewer.export.clipboardUnsupported":"Trình duyệt này không hỗ trợ ghi ảnh vào bộ nhớ tạm","viewer.export.clipboardUnsupported.short":"Trình duyệt này không hỗ trợ ghi ảnh vào bộ nhớ tạm.","viewer.export.motionUnavailable":"Trình duyệt này không quay được chuyển động","viewer.export.webmUnavailable":"Trình duyệt này không hỗ trợ WebM","viewer.export.failed":"Xuất thất bại: {message}","viewer.export.unknownVariant":"Kiểu thẻ chia sẻ không xác định: {variant}","viewer.export.routeRequired":"Hãy dò một đường đi trước khi xuất thẻ chia sẻ đường đi","viewer.export.reachRequired":"Hãy dò phạm vi lan tỏa đã khai báo trước khi xuất thẻ chia sẻ phạm vi","viewer.export.unknown":"không xác định","viewer.export.routeFailed":"Xuất thẻ chia sẻ đường đi thất bại: {message}","viewer.export.reachFailed":"Xuất thẻ chia sẻ phạm vi lan tỏa thất bại: {message}","viewer.export.copyFailed":"Sao chép thất bại: {message}","viewer.export.copiedPng":"Đã sao chép PNG vào bộ nhớ tạm","viewer.export.downloadedRoute":"Đã tải thẻ chia sẻ đường đi","viewer.export.downloadedReach":"Đã tải thẻ chia sẻ phạm vi lan tỏa","viewer.export.downloadedWebm":"Đã tải WebM","viewer.export.recording":"Đang quay 6 giây chuyển động…","viewer.export.card.routeSummary.one":"Đường đi: {source} → {target} · {count} bước","viewer.export.card.routeSummary.other":"Đường đi: {source} → {target} · {count} bước","viewer.export.card.reachSummary":"Đã khai báo {direction} từ {origin} · {nodes} · {links} · tối đa {hops}","viewer.export.card.node.one":"{count} nút","viewer.export.card.node.other":"{count} nút","viewer.export.card.link.one":"{count} liên kết","viewer.export.card.link.other":"{count} liên kết","viewer.export.card.hop.one":"{count} chặng","viewer.export.card.hop.other":"{count} chặng","viewer.export.card.routeBadge":"ARCHIFY · ĐƯỜNG ĐI · {hops}","viewer.export.card.reachBadge":"ARCHIFY · LAN TỎA {direction}","viewer.export.direction.upstream":"Thượng nguồn","viewer.export.direction.downstream":"Hạ nguồn","viewer.export.error.canvasUnavailable":"Không có canvas cho {label}","viewer.export.error.contextUnavailable":"Không có ngữ cảnh canvas 2D cho {label}","viewer.export.error.toBlobUnavailable":"Không có canvas.toBlob cho {label}","viewer.export.error.toBlobNull":"canvas.toBlob không trả về dữ liệu cho {label}","viewer.export.error.variantsCombined":"Không thể kết hợp các kiểu thẻ chia sẻ","viewer.export.error.viewerState":"Xuất thẻ chia sẻ không gỡ được trạng thái xem tạm thời","viewer.export.error.routeState":"Xuất thẻ đường đi không giữ lại được đường đi đã xác định một cách an toàn","viewer.export.error.reachState":"Xuất thẻ phạm vi không giữ lại được phạm vi đã khai báo một cách an toàn","viewer.export.error.webmRequirements":"Xuất chuyển động WebM cần hiệu ứng theo dõi (trace) và trình duyệt hỗ trợ MediaRecorder","viewer.export.error.mediaRecorder":"MediaRecorder thất bại","viewer.export.error.emptyWebm":"MediaRecorder tạo ra WebM rỗng","viewer.export.error.webmBackground":"Không tải được nền SVG để xuất WebM","viewer.guide.title":"Khám phá hệ thống này","viewer.focus.selectedNodes":"Đã chọn {count} nút","viewer.guide.eyebrow":"Hướng dẫn sơ đồ","viewer.guide.close":"Đóng hướng dẫn sơ đồ","viewer.guide.inspecting":"Đang xem ngữ nghĩa đã biên dịch","viewer.guide.actions":"Thao tác khám phá sơ đồ","viewer.guide.find":"Tìm bất kỳ nút nào","viewer.guide.find.hint":"Tìm theo nhãn, trách nhiệm, loại và mã định danh.","viewer.guide.route":"Dò một đường đi","viewer.guide.route.aria":"Dò một đường đi có hướng","viewer.guide.route.hint":"Xem hai nút nối với nhau thế nào theo đúng chiều đã khai báo.","viewer.guide.map":"Xem toàn hệ thống","viewer.guide.map.hint":"Mở radar ngữ nghĩa với vùng nhìn trực tiếp và các nút ổn định.","viewer.guide.lens":"So sánh các loại ngữ nghĩa","viewer.guide.lens.hint":"Đếm vai trò, hiện lưu lượng của chúng và so sánh các liên kết trực tiếp đã khai báo.","viewer.guide.present":"Vào chế độ trình chiếu","viewer.guide.present.hint":"Dành cả vùng nhìn cho sơ đồ mà không đổi kết quả xuất.","viewer.guide.shortcuts":"Phím tắt bổ sung","viewer.guide.shortcut.export":"Xuất","viewer.guide.shortcut.theme":"Giao diện","viewer.guide.shortcut.style":"Kiểu","viewer.guide.shortcut.reset":"Đặt lại","viewer.guide.shortcut.zoomIn":"Phóng to","viewer.guide.shortcut.zoomOut":"Thu nhỏ","viewer.guide.shortcut.close":"Đóng","viewer.guide.facts":"{nodes} · {relationships}","viewer.guide.fact.node.one":"{count} nút ngữ nghĩa","viewer.guide.fact.node.other":"{count} nút ngữ nghĩa","viewer.guide.fact.relationship.one":"{count} quan hệ","viewer.guide.fact.relationship.other":"{count} quan hệ","viewer.guide.open":"Mở hướng dẫn sơ đồ","viewer.finder.title":"Tìm một nút","viewer.finder.close":"Đóng ô tìm nút","viewer.finder.placeholder":"Tìm theo nhãn hoặc mã","viewer.finder.search":"Tìm các nút trong sơ đồ","viewer.finder.results":"Các nút trong sơ đồ","viewer.finder.empty":"Không có nút phù hợp","viewer.finder.result.focus":"Tập trung vào {label}","viewer.finder.result.routeStart":"Chọn {label} làm điểm bắt đầu đường đi","viewer.finder.result.routeTarget":"Chọn {label} làm điểm đến của đường đi, {links}","viewer.finder.status.empty":"Không có nút phù hợp","viewer.finder.status.count.one":"{count} nút phù hợp","viewer.finder.status.count.other":"{count} nút phù hợp","viewer.finder.noun.nodes":"nút","viewer.finder.link.one":"{count} liên kết","viewer.finder.link.other":"{count} liên kết","viewer.finder.result.focus.one":"Tập trung vào {label}, {count} kết nối liên quan","viewer.finder.result.focus.other":"Tập trung vào {label}, {count} kết nối liên quan","viewer.finder.status.filtered":"{visible} trên {available} {noun}","viewer.finder.status.all":"{available} {noun}","viewer.passport.eyebrow":"Hộ chiếu ngữ nghĩa","viewer.passport.metadata":"Siêu dữ liệu của nút","viewer.passport.evidence":"Bằng chứng nguồn đã xác minh","viewer.passport.verified":"Nguồn đã xác minh","viewer.passport.verificationScope":"Đã đối chiếu với Git cục bộ tại phiên bản đã ghim. Chưa kiểm tra truy cập từ xa.","viewer.passport.reach":"Phạm vi lan tỏa đã khai báo","viewer.passport.reach.trace":"Dò phạm vi lan tỏa đã khai báo","viewer.passport.upstream":"Thượng nguồn","viewer.passport.downstream":"Hạ nguồn","viewer.passport.upstream.trace":"Dò phạm vi lan tỏa thượng nguồn đã khai báo","viewer.passport.downstream.trace":"Dò phạm vi lan tỏa hạ nguồn đã khai báo","viewer.passport.close":"Đóng hộ chiếu ngữ nghĩa","viewer.passport.move":"Di chuyển hộ chiếu ngữ nghĩa. Kéo, dùng phím mũi tên, hoặc nhấn Home để đặt lại.","viewer.passport.copy":"Sao chép liên kết","viewer.passport.copy.focus":"Sao chép liên kết tới nút đang chọn","viewer.passport.relations":"Quan hệ","viewer.passport.relations.show":"Hiện các quan hệ đang nối","viewer.passport.relations.hide":"Ẩn các quan hệ đang nối","viewer.passport.relations.list":"Các quan hệ đang nối","viewer.passport.copyRelation":"Sao chép quan hệ","viewer.passport.copyNode":"Sao chép nút","viewer.passport.copyPinned":"Sao chép liên kết tới quan hệ đã ghim","viewer.passport.copySource":"Sao chép liên kết tới nút nguồn","viewer.passport.copy.focused.success":"Đã sao chép liên kết tới nút đang chọn","viewer.passport.copy.pinned.success":"Đã sao chép liên kết tới quan hệ đã ghim","viewer.passport.copy.focused.failed":"Không sao chép được liên kết tới nút đang chọn","viewer.passport.copy.pinned.failed":"Không sao chép được liên kết tới quan hệ đã ghim","viewer.passport.relationship.none":"Không có quan hệ nào đang nối","viewer.passport.relationship.count.one":"{count} quan hệ","viewer.passport.relationship.count.other":"{count} quan hệ","viewer.passport.relationship.show.one":"Hiện {count} quan hệ đang nối","viewer.passport.relationship.show.other":"Hiện {count} quan hệ đang nối","viewer.passport.relationship.summary":"{out} đi ra · {in} đi vào{loops}","viewer.passport.relationship.loops":" · {count} vòng lặp","viewer.passport.relationship.explorer":"Trình xem quan hệ trực tiếp","viewer.passport.relationship.help":"Dùng phím mũi tên để duyệt quan hệ. Nhấn Enter hoặc Space để ghim chi tiết; Escape để bỏ.","viewer.passport.relationship.loopsBack":"quay lại chính nó","viewer.passport.relationship.connectsTo":"nối tới","viewer.passport.relationship.connectsFrom":"nối từ","viewer.passport.relationship.pinned":"Quan hệ đã ghim · {from} → {to} · {label}","viewer.passport.relationship.inspect":"Xem quan hệ {index} trên {total}: {from} tới {to}, {label}. Nhấn Enter để xem chi tiết.","viewer.passport.relationship.group.out":"Đi ra","viewer.passport.relationship.group.in":"Đi vào","viewer.passport.relationship.group.loop":"Vòng lặp","viewer.passport.relationship.row":"{group}: {relationship}, {neighbor}","viewer.passport.relationship.direction.out":"RA →","viewer.passport.relationship.direction.in":"← VÀO","viewer.passport.relationship.direction.loop":"VÒNG","viewer.passport.sourceCount.one":"{count} tham chiếu nguồn đã xác minh","viewer.passport.sourceCount.other":"{count} tham chiếu nguồn đã xác minh","viewer.passport.sourceMarker":"NGUỒN","viewer.passport.beacon.one":"{count} nguồn đã xác minh; chọn nút này để xem","viewer.passport.beacon.other":"{count} nguồn đã xác minh; chọn nút này để xem","viewer.passport.repository.open":"Mở phiên bản kho mã đã xác minh {revision}","viewer.passport.source.open":"Mở nguồn đã xác minh {path} tại phiên bản {revision}","viewer.passport.source.openLink":"Mở ↗","viewer.passport.reach.upstream.one":"Dò {count} nút thượng nguồn đã khai báo","viewer.passport.reach.upstream.other":"Dò {count} nút thượng nguồn đã khai báo","viewer.passport.reach.downstream.one":"Dò {count} nút hạ nguồn đã khai báo","viewer.passport.reach.downstream.other":"Dò {count} nút hạ nguồn đã khai báo","viewer.passport.reach.noUpstream":"Không có nút thượng nguồn đã khai báo","viewer.passport.reach.noDownstream":"Không có nút hạ nguồn đã khai báo","viewer.passport.reach.status":"{direction} · {nodes} nút · {links} liên kết · tối đa {hops} chặng","viewer.route.eyebrow":"Đường đi","viewer.route.start":"Bấm vào nơi đường đi bắt đầu","viewer.route.start.find":"Tìm điểm bắt đầu","viewer.route.start.find.aria":"Tìm điểm bắt đầu của đường đi","viewer.route.copy":"Sao chép liên kết","viewer.route.copy.aria":"Sao chép liên kết tới đường đi đã dò","viewer.route.clear":"Xóa","viewer.route.clear.aria":"Xóa dò đường đi","viewer.route.traced":"Đường đi","viewer.route.pickTwo":"Bấm vào hai nút trên sơ đồ","viewer.route.pickOne":"Bấm vào một nút trên sơ đồ","viewer.route.controls":"Điều khiển hành trình đường đi","viewer.route.previous":"Vị trí trước trên đường đi","viewer.route.play":"Chạy hành trình đường đi","viewer.route.pause":"Tạm dừng hành trình đường đi","viewer.route.replay":"Chạy lại hành trình đường đi","viewer.route.next":"Vị trí tiếp theo trên đường đi","viewer.route.journey":"Hành trình","viewer.route.pause.label":"Tạm dừng","viewer.route.replay.label":"Chạy lại","viewer.route.overview":"Tổng quan","viewer.route.overview.aria":"Hiện tổng quan toàn bộ đường đi","viewer.route.instructions":"Bấm điểm bắt đầu, rồi điểm kết thúc. Đường đi đi theo chiều mũi tên.","viewer.route.destination":"Đường đi từ {label} kết thúc ở đâu?","viewer.route.destination.find":"Tìm điểm đến","viewer.route.destination.find.aria":"Tìm điểm đến có thể tới được","viewer.route.differentDestination":"Hãy chọn điểm đến khác","viewer.route.distinct":"Hãy chọn hai nút khác nhau.","viewer.route.unreachable":"Không thể tới {label} từ đây","viewer.route.unreachable.detail":"Không thể tới {target} từ {source} theo chiều mũi tên. Hãy chọn một nút đang sáng.","viewer.route.start.instructions":"Tiếp theo, chọn điểm kết thúc. Chỉ các nút tới được mới sáng lên.","viewer.route.copy.success":"Đã sao chép liên kết đường đi đã dò","viewer.route.copy.failed":"Không sao chép được liên kết đường đi đã dò","viewer.route.position":"Vị trí {index} trên {total} của đường đi: {label}","viewer.route.step":"Bước {index} trên {total} · {phase} · {label}","viewer.route.motionRequired":"Hành trình tự động cần bật chế độ chuyển động","viewer.route.trigger.clear":"Xóa đường đi đã dò","viewer.route.overview.status":"{nodes} · {hops} · đường ngắn nhất","viewer.route.overview.node.one":"{count} nút","viewer.route.overview.node.other":"{count} nút","viewer.route.overview.hop.one":"{count} bước","viewer.route.overview.hop.other":"{count} bước","viewer.route.phase.playing":"Đang chạy","viewer.route.phase.complete":"Hoàn tất","viewer.route.phase.inspecting":"Đang xem","viewer.route.destination.count.one":"Đang sáng {count} nút có thể tới. Hãy bấm vào nút đó.","viewer.route.destination.count.other":"Đang sáng {count} nút có thể tới. Hãy bấm vào một nút.","viewer.route.noOutgoing":"Không có mũi tên nào đi ra từ nút này. Hãy xóa và chọn điểm bắt đầu khác.","viewer.route.result.title":"{source} tới {target}","viewer.route.finder.source.title":"Chọn điểm bắt đầu đường đi","viewer.route.finder.source.placeholder":"Tìm điểm bắt đầu đường đi","viewer.route.finder.source.empty":"Không có điểm bắt đầu phù hợp","viewer.route.finder.source.results":"Các nút có thể bắt đầu đường đi","viewer.route.finder.source.noun":"điểm bắt đầu","viewer.route.finder.source.badge":"bắt đầu","viewer.route.finder.target.title":"Điểm đến từ {label}","viewer.route.finder.target.placeholder":"Tìm điểm đến có thể tới được","viewer.route.finder.target.empty":"Không có điểm đến phù hợp","viewer.route.finder.target.results":"Các điểm đến có thể tới được","viewer.route.finder.target.noun":"điểm đến có thể tới","viewer.route.hop.one":"{count} chặng","viewer.route.hop.other":"{count} chặng","viewer.lens.eyebrow":"Kính lọc ngữ nghĩa","viewer.lens.title":"So sánh các vai trò trong hệ thống","viewer.lens.close":"Đóng kính lọc ngữ nghĩa","viewer.lens.instruction":"Chọn tối đa hai loại ngữ nghĩa. Chọn một loại để xem lưu lượng thật của nó; chọn hai loại để so sánh các quan hệ trực tiếp đã khai báo.","viewer.lens.kinds":"Các loại ngữ nghĩa","viewer.lens.choose":"Chọn một loại để xem các nút và quan hệ liên quan.","viewer.lens.copy":"Sao chép liên kết tới kính lọc ngữ nghĩa","viewer.lens.clear":"Xóa kính lọc ngữ nghĩa","viewer.lens.open":"Mở kính lọc ngữ nghĩa","viewer.lens.openActive":"Mở kính lọc ngữ nghĩa đang bật","viewer.lens.legend":"Chú giải ngữ nghĩa","viewer.lens.legend.inspect.one":"Xem {label}, {count} nút","viewer.lens.legend.inspect.other":"Xem {label}, {count} nút","viewer.lens.kind.count.one":"{label}, {count} nút","viewer.lens.kind.count.other":"{label}, {count} nút","viewer.lens.compare.one":"{first} → {second}: {forward} · {second} → {first}: {reverse} · {count} quan hệ trực tiếp","viewer.lens.compare.other":"{first} → {second}: {forward} · {second} → {first}: {reverse} · {count} quan hệ trực tiếp","viewer.lens.single":"{nodes} · {relationships} · các nút kết nối vẫn hiển thị","viewer.lens.node.one":"{count} nút {label}","viewer.lens.node.other":"{count} nút {label}","viewer.lens.relationship.one":"{count} quan hệ liên quan","viewer.lens.relationship.other":"{count} quan hệ liên quan","viewer.radar.title":"Radar ngữ nghĩa","viewer.radar.building":"Đang dựng tổng quan","viewer.radar.openFull":"Mở radar ngữ nghĩa đầy đủ","viewer.radar.open":"Mở radar","viewer.radar.close":"Đóng radar ngữ nghĩa","viewer.radar.surface":"Tổng quan sơ đồ. Bấm vào một nút để chọn, hoặc dùng phím mũi tên để di chuyển.","viewer.radar.click":"Bấm vào nút","viewer.radar.drag":"Kéo để di chuyển","viewer.radar.space":"Radar ngữ nghĩa cần thêm chỗ trên MAP.","viewer.radar.nodes":"Các nút trên radar sơ đồ ngữ nghĩa","viewer.radar.focus":"Tập trung vào {label} từ radar ngữ nghĩa","viewer.radar.status":"{count} nút · {viewport}","viewer.radar.fullMap":"{count} nút · toàn bản đồ","viewer.radar.compacted":"Radar đã thu gọn để không che Hộ chiếu ngữ nghĩa hoặc các nút điều khiển MAP.","viewer.radar.cancelWaiting":"Hủy chờ thêm chỗ cho radar ngữ nghĩa trên MAP","viewer.radar.needsSpace":"Radar ngữ nghĩa cần thêm chỗ hiển thị trên MAP","viewer.radar.viewport.full":"toàn bản đồ","viewer.radar.viewport.width":"rộng {percent}%","viewer.radar.viewport.scale":"vùng nhìn {percent}%","viewer.nav.controls":"Điều khiển khung nhìn sơ đồ","viewer.nav.route":"Dò một đường đi có hướng","viewer.nav.route.title":"Dò đường đi (R)","viewer.nav.route.short":"ĐƯỜNG","viewer.nav.radar":"Mở radar ngữ nghĩa","viewer.nav.radar.title":"Radar ngữ nghĩa (M)","viewer.nav.radar.short":"MAP","viewer.nav.lens":"Mở kính lọc ngữ nghĩa","viewer.nav.lens.title":"Kính lọc ngữ nghĩa (L)","viewer.nav.lens.short":"LỌC","viewer.nav.find":"Tìm một nút","viewer.nav.find.title":"Tìm một nút (/)","viewer.outline.title":"Danh mục nút","viewer.rail.show":"Ghi chú \u0026 danh mục","viewer.rail.controls":"Bảng bên","viewer.rail.collapse":"Thu gọn bảng bên","viewer.rail.bottom":"Chuyển bảng xuống dưới sơ đồ","viewer.rail.right":"Chuyển bảng sang bên cạnh sơ đồ","viewer.nav.guide":"Mở hướng dẫn sơ đồ","viewer.nav.guide.title":"Hướng dẫn sơ đồ (?)","viewer.nav.zoomOut":"Thu nhỏ","viewer.nav.zoomOut.title":"Thu nhỏ (-)","viewer.nav.reset":"Đặt lại khung nhìn sơ đồ","viewer.nav.reset.title":"Đặt lại khung nhìn (0)","viewer.nav.read":"ĐỌC","viewer.nav.zoomIn":"Phóng to","viewer.nav.zoomIn.title":"Phóng to (+)","viewer.nav.camera":"{hint}. Đặt lại khung nhìn sơ đồ","viewer.nav.camera.title":"{semantic}{hint} · đặt lại khung nhìn (0)","viewer.nav.camera.semantic":"Đang bật camera ngữ nghĩa · ","viewer.nav.level.map":"MAP","viewer.nav.level.read":"ĐỌC","viewer.nav.level.full":"ĐẦY ĐỦ","viewer.nav.level.auto":"TỰ ĐỘNG","viewer.nav.detail.map":"Phóng to để hiện nhãn quan hệ và ngữ cảnh của nút","viewer.nav.detail.read":"Phóng to thêm để hiện thẻ và chú thích","viewer.nav.detail.full":"Hiển thị đầy đủ chi tiết sơ đồ","viewer.intent.summary":"{label}. {out} đi ra, {in} đi vào{loops}. Tổng {total} kết nối. Nhấn Enter để xem chi tiết.","viewer.intent.loops":", {count} vòng lặp","viewer.common.copied":"Đã sao chép","viewer.common.copyFailed":"Sao chép thất bại","viewer.common.copyLink":"Sao chép liên kết","viewer.common.clear":"Xóa","viewer.common.close":"Đóng"}}</script>
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read"
-         data-preset-badge-editorial-plate="ARCHIFY / PLATE 04">
-      <svg viewBox="0 0 1186 768" data-reader-fit="intrinsic-height" role="img" lang="en" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
-        <title id="archify-diagram-title">Vòng đời trạng thái Đặt hàng NCC</title>
-        <desc id="archify-diagram-description">A lifecycle diagram generated by Archify.</desc>
+         data-preset-badge-editorial-plate="ARCHIFY / BẢN 04">
+      <svg viewBox="0 0 1080 560" role="img" lang="vi" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
+        <title id="archify-diagram-title">AW_BILL - Luồng dữ liệu chốt thanh toán và hóa đơn</title>
+        <desc id="archify-diagram-description">Sơ đồ luồng dữ liệu được tạo bởi Archify.</desc>
         <!-- Definitions -->
         <defs>
           <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -5012,234 +5012,198 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <!-- Background Grid -->
         <rect width="100%" height="100%" fill="url(#grid)" />
 
-        <!-- Lifecycle bands -->
-        <text x="18" y="88" class="t-dim" font-size="10" font-weight="600" writing-mode="vertical-rl" text-anchor="middle">Luồng chính</text>
-        <text x="18" y="272" class="t-dim" font-size="10" font-weight="600" writing-mode="vertical-rl" text-anchor="middle">Nhập kho</text>
-        <text x="18" y="456" class="t-dim" font-size="10" font-weight="600" writing-mode="vertical-rl" text-anchor="middle">Ngoại lệ</text>
-        <text x="18" y="640" class="t-dim" font-size="10" font-weight="600" writing-mode="vertical-rl" text-anchor="middle">Kết thúc</text>
+        <!-- Data Stages -->
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="0" x="16" y="46" width="168" height="440" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="100" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">01 / Nguồn</text>
 
-        <!-- Primary lifecycle rail -->
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="1" x="231" y="46" width="168" height="440" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="315" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">02 / Xác nhận</text>
 
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="2" x="446" y="46" width="168" height="440" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="530" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">03 / Hóa đơn ES</text>
 
-        <!-- Transition paths -->
-        <g data-graph-role="automatic-crossover" style="--step:0">
-          <path data-graph-role="automatic-crossover-underlay" d="M 200 88 L 295 88" fill="none" stroke="var(--mask)" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="tam" data-edge-to="phanhoi" data-edge-label="NCC phản hồi" data-edge-key="0" data-composition-points="200,88;295,88" data-composition-crossover="halo" d="M 200 88 L 295 88" class="a-emphasis" stroke-width="1.6" marker-end="url(#arrowhead-emphasis)"/>
-        </g>
-        <g data-graph-role="automatic-crossover" style="--step:1">
-          <path data-graph-role="automatic-crossover-underlay" d="M 435 88 L 530 88" fill="none" stroke="var(--mask)" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="phanhoi" data-edge-to="chopd" data-edge-label="VH đặt chính" data-edge-key="1" data-composition-points="435,88;530,88" data-composition-crossover="halo" d="M 435 88 L 530 88" class="a-emphasis" stroke-width="1.6" marker-end="url(#arrowhead-emphasis)"/>
-        </g>
-        <g data-graph-role="automatic-crossover" style="--step:2">
-          <path data-graph-role="automatic-crossover-underlay" d="M 670 88 L 751 88" fill="none" stroke="var(--mask)" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="chopd" data-edge-to="dapd" data-edge-label="NCC duyệt" data-edge-key="2" data-composition-points="670,88;751,88" data-composition-crossover="halo" d="M 670 88 L 751 88" class="a-emphasis" stroke-width="1.6" marker-end="url(#arrowhead-emphasis)"/>
-        </g>
-        <g data-graph-role="automatic-crossover" style="--step:3">
-          <path data-graph-role="automatic-crossover-underlay" d="M 891 88 L 986 88" fill="none" stroke="var(--mask)" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="dapd" data-edge-to="daxuat" data-edge-label="báo cáo xuất" data-edge-key="3" data-composition-points="891,88;986,88" data-composition-crossover="halo" d="M 891 88 L 986 88" class="a-emphasis" stroke-width="1.6" marker-end="url(#arrowhead-emphasis)"/>
-        </g>
-        <g data-graph-role="automatic-crossover" style="--step:4">
-          <path data-graph-role="automatic-crossover-underlay" d="M 1071 120 L 1071 240" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="daxuat" data-edge-to="danhap" data-edge-label="SL khớp" data-edge-key="4" data-composition-points="1071,120;1071,240" data-composition-crossover="halo" d="M 1071 120 L 1071 240" class="a-default" stroke-width="1.1" marker-end="url(#arrowhead)"/>
-        </g>
-        <g data-graph-role="automatic-crossover" style="--step:5">
-          <path data-graph-role="automatic-crossover-underlay" d="M 1041 120 L 1041 170 Q 1041 180 1031 180 L 948.5 180 Q 938.5 180 938.5 190 L 938.5 354 Q 938.5 364 948.5 364 L 1031 364 Q 1041 364 1041 374 L 1041 424" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="daxuat" data-edge-to="chenh" data-edge-label="SL khác" data-edge-key="5" data-composition-points="1041,120;1041,180;938.5,180;938.5,364;1041,364;1041,424" data-composition-crossover="halo" d="M 1041 120 L 1041 170 Q 1041 180 1031 180 L 948.5 180 Q 938.5 180 938.5 190 L 938.5 354 Q 938.5 364 948.5 364 L 1031 364 Q 1041 364 1041 374 L 1041 424" class="a-security" stroke-width="1.1" marker-end="url(#arrowhead-security)"/>
-        </g>
-        <g data-graph-role="automatic-crossover" style="--step:6">
-          <path data-graph-role="automatic-crossover-underlay" d="M 1071 424 L 1071 304" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="chenh" data-edge-to="danhap" data-edge-label="xử lý xong" data-edge-key="6" data-composition-points="1071,424;1071,304" data-composition-crossover="halo" d="M 1071 424 L 1071 304" class="a-dashed" stroke-width="1.1" marker-end="url(#arrowhead-dashed)"/>
-        </g>
-        <g data-graph-role="automatic-crossover" style="--step:7">
-          <path data-graph-role="automatic-crossover-underlay" d="M 600 120 L 600 424" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="chopd" data-edge-to="khongnhan" data-edge-label="NCC từ chối" data-edge-key="7" data-composition-points="600,120;600,424" data-composition-crossover="halo" d="M 600 120 L 600 424" class="a-security" stroke-width="1.1" marker-end="url(#arrowhead-security)"/>
-        </g>
-        <g data-graph-role="automatic-crossover" style="--step:8">
-          <path data-graph-role="automatic-crossover-underlay" d="M 600 488 L 600 538 Q 600 548 610 548 L 796 548 Q 806 548 806 558 L 806 608" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="khongnhan" data-edge-to="huy" data-edge-label="VH hủy" data-edge-key="8" data-composition-points="600,488;600,548;806,548;806,608" data-composition-crossover="halo" d="M 600 488 L 600 538 Q 600 548 610 548 L 796 548 Q 806 548 806 558 L 806 608" class="a-security" stroke-width="1.1" marker-end="url(#arrowhead-security)"/>
-        </g>
-        <g data-graph-role="automatic-crossover" style="--step:9">
-          <path data-graph-role="automatic-crossover-underlay" d="M 821 120 L 821 608" fill="none" stroke="var(--mask)" stroke-width="5.1" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="dapd" data-edge-to="huy" data-edge-label="VH hủy" data-edge-key="9" data-composition-points="821,120;821,608" data-composition-crossover="halo" d="M 821 120 L 821 608" class="a-dashed" stroke-width="1.1" marker-end="url(#arrowhead-dashed)"/>
-        </g>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="3" x="661" y="46" width="168" height="440" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="745" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">04 / Phát hành・xuất</text>
 
-        <!-- States -->
-        <g id="node-tam" data-node-id="tam" data-node-label="Đặt hàng tạm" tabindex="0" role="button" aria-label="Focus Đặt hàng tạm, chờ phản hồi ngày giao, Luồng chính" aria-pressed="false" data-node-kind="start" data-node-sublabel="chờ phản hồi ngày giao" data-node-context="Luồng chính">
-          <title>Đặt hàng tạm · chờ phản hồi ngày giao · Luồng chính</title>
-          <rect x="60" y="56" width="140" height="64" rx="7" class="c-mask"/>
-          <rect x="60" y="56" width="140" height="64" rx="7" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-lifecycle-initial-marker="">
-            <circle cx="38" cy="88" r="4.5" style="fill: var(--arrow-emphasis)"/><path d="M 42.5 88 L 53 88" class="a-emphasis" stroke-width="1.4"/><path d="M 52 84.5 L 59 88 L 52 91.5 Z" style="fill: var(--arrow-emphasis)"/>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="4" x="876" y="46" width="168" height="440" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="960" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">05 / Người nhận</text>
+
+        <!-- Flow paths -->
+        <path data-edge-from="actual" data-edge-to="confirm" data-edge-label="Chốt TT thực" data-edge-key="0" data-edge-id="f-actual" data-composition-points="156,157;207.5,157;207.5,271;259,271" d="M 156 157 L 207.5 157 L 207.5 271 L 259 271" class="a-dashed" stroke-width="1.4" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="sub" data-edge-to="confirm" data-edge-label="Cố định" data-edge-key="1" data-edge-id="f-sub" data-composition-points="156,271;259,271" d="M 156 271 L 259 271" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="ops" data-edge-to="confirm" data-edge-label="Thao tác" data-edge-key="2" data-edge-id="f-ops" data-composition-points="156,385;207.5,385;207.5,271;259,271" d="M 156 385 L 207.5 385 L 207.5 271 L 259 271" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="confirm" data-edge-to="invoice" data-edge-label="Tạo hóa đơn" data-edge-key="3" data-edge-id="f-inv" data-composition-points="371,271;474,271" d="M 371 271 L 474 271" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="invoice" data-edge-to="billone" data-edge-label="Đăng ký" data-edge-key="4" data-edge-id="f-bo" data-composition-points="586,271;689,271" d="M 586 271 L 689 271" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="billone" data-edge-to="corp" data-edge-label="Gửi email" data-edge-key="5" data-edge-id="f-corp" data-composition-points="801,271;904,271" d="M 801 271 L 904 271" class="a-security" stroke-width="1.4" marker-end="url(#arrowhead-security)"/>
+        <path data-edge-from="invoice" data-edge-to="corpweb" data-edge-label="Hóa đơn" data-edge-key="6" data-edge-id="f-web" data-composition-points="586,264;637.5,264;637.5,157;689,157" d="M 586 264 L 637.5 264 L 637.5 157 L 689 157" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="invoice" data-edge-to="csv" data-edge-label="Xuất CSV" data-edge-key="7" data-edge-id="f-csv" data-composition-points="586,278;637.5,278;637.5,385;689,385" d="M 586 278 L 637.5 278 L 637.5 385 L 689 385" class="a-dashed" stroke-width="1.4" marker-end="url(#arrowhead-dashed)"/>
+
+        <!-- Nodes -->
+        <g id="node-actual" data-node-id="actual" data-node-label="Quyết toán TT" tabindex="0" role="button" aria-label="Tập trung vào Quyết toán TT, 実績精算 (màn hình khác), 01 / Nguồn" aria-pressed="false" data-node-kind="backend" data-node-sublabel="実績精算 (màn hình khác)" data-node-context="01 / Nguồn">
+          <title>Quyết toán TT · 実績精算 (màn hình khác) · 01 / Nguồn</title>
+          <rect x="44" y="128" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="44" y="128" width="112" height="58" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(50 134) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <g aria-hidden="true" data-semantic-sigil="start" class="semantic-sigil s-frontend" transform="translate(66 62) scale(0.6875)">
-            <circle cx="8" cy="8" r="5"/>
-            <path d="m7 5.4 3.6 2.6L7 10.6Z" class="sigil-fill"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="130" y="79" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Đặt hàng tạm</text>
-          <text data-detail="context" x="130" y="96" class="t-muted" font-size="8" text-anchor="middle">chờ phản hồi ngày giao</text>
+          <text data-node-label="" data-detail-anchor="" x="102" y="149" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Quyết toán TT</text>
+          <text data-detail="context" x="100" y="165" class="t-muted" font-size="7" text-anchor="middle">実績精算 (màn hình khác)</text>
         </g>
 
-        <g id="node-phanhoi" data-node-id="phanhoi" data-node-label="Đã phản hồi ngày" tabindex="0" role="button" aria-label="Focus Đã phản hồi ngày, NCC phản hồi, Luồng chính" aria-pressed="false" data-node-kind="active" data-node-sublabel="NCC phản hồi" data-node-context="Luồng chính">
-          <title>Đã phản hồi ngày · NCC phản hồi · Luồng chính</title>
-          <rect x="295" y="56" width="140" height="64" rx="7" class="c-mask"/>
-          <rect x="295" y="56" width="140" height="64" rx="7" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="active" class="semantic-sigil s-frontend" transform="translate(301 62) scale(0.6875)">
-            <path d="M2 8h3l1.5-3.5L9 12l1.6-4H14"/>
+        <g id="node-sub" data-node-id="sub" data-node-label="Hợp đồng con" tabindex="0" role="button" aria-label="Tập trung vào Hợp đồng con, 固定額 + điều chỉnh ③, 01 / Nguồn" aria-pressed="false" data-node-kind="database" data-node-sublabel="固定額 + điều chỉnh ③" data-node-context="01 / Nguồn">
+          <title>Hợp đồng con · 固定額 + điều chỉnh ③ · 01 / Nguồn</title>
+          <rect x="44" y="242" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="44" y="242" width="112" height="58" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(50 248) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="366.8" y="79" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Đã phản hồi ngày</text>
-          <text data-detail="context" x="365" y="96" class="t-muted" font-size="8" text-anchor="middle">NCC phản hồi</text>
+          <text data-node-label="" data-detail-anchor="" x="100" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Hợp đồng con</text>
+          <text data-detail="context" x="100" y="279" class="t-muted" font-size="7" text-anchor="middle">固定額 + điều chỉnh ③</text>
         </g>
 
-        <g id="node-chopd" data-node-id="chopd" data-node-label="Chờ phê duyệt" tabindex="0" role="button" aria-label="Focus Chờ phê duyệt, đặt hàng chính, Luồng chính" aria-pressed="false" data-node-kind="waiting" data-node-sublabel="đặt hàng chính" data-node-context="Luồng chính">
-          <title>Chờ phê duyệt · đặt hàng chính · Luồng chính</title>
-          <rect x="530" y="56" width="140" height="64" rx="7" class="c-mask"/>
-          <rect x="530" y="56" width="140" height="64" rx="7" class="c-cloud" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="waiting" class="semantic-sigil s-cloud" transform="translate(536 62) scale(0.6875)">
-            <path d="M4 2.5h8M4 13.5h8M5 3c0 2.8 2 3.2 3 5-1 1.8-3 2.2-3 5M11 3c0 2.8-2 3.2-3 5 1 1.8 3 2.2 3 5"/>
+        <g id="node-ops" data-node-id="ops" data-node-label="Vận hành" tabindex="0" role="button" aria-label="Tập trung vào Vận hành, Ad00010/11/12 có quyền, 01 / Nguồn" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Ad00010/11/12 có quyền" data-node-context="01 / Nguồn">
+          <title>Vận hành · Ad00010/11/12 có quyền · 01 / Nguồn</title>
+          <rect x="44" y="356" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="44" y="356" width="112" height="58" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(50 362) scale(0.6875)">
+            <rect x="2" y="3" width="12" height="10" rx="2"/>
+            <path d="M2 6.5h12"/>
+            <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
+            <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="600" y="79" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Chờ phê duyệt</text>
-          <text data-detail="context" x="600" y="96" class="t-muted" font-size="8" text-anchor="middle">đặt hàng chính</text>
+          <text data-node-label="" data-detail-anchor="" x="100" y="377" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Vận hành</text>
+          <text data-detail="context" x="100" y="393" class="t-muted" font-size="7" text-anchor="middle">Ad00010/11/12 có quyền</text>
         </g>
 
-        <g id="node-dapd" data-node-id="dapd" data-node-label="Đã phê duyệt" tabindex="0" role="button" aria-label="Focus Đã phê duyệt, đặt hàng chính, Luồng chính" aria-pressed="false" data-node-kind="active" data-node-sublabel="đặt hàng chính" data-node-context="Luồng chính">
-          <title>Đã phê duyệt · đặt hàng chính · Luồng chính</title>
-          <rect x="751" y="56" width="140" height="64" rx="7" class="c-mask"/>
-          <rect x="751" y="56" width="140" height="64" rx="7" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="active" class="semantic-sigil s-frontend" transform="translate(757 62) scale(0.6875)">
-            <path d="M2 8h3l1.5-3.5L9 12l1.6-4H14"/>
+        <g id="node-confirm" data-node-id="confirm" data-node-label="Xác nhận HĐ con" tabindex="0" role="button" aria-label="Tập trung vào Xác nhận HĐ con, AW_BILL_002/004/005, 02 / Xác nhận" aria-pressed="false" data-node-kind="backend" data-node-sublabel="AW_BILL_002/004/005" data-node-context="02 / Xác nhận">
+          <title>Xác nhận HĐ con · AW_BILL_002/004/005 · 02 / Xác nhận</title>
+          <rect x="259" y="242" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="259" y="242" width="112" height="58" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(265 248) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="821" y="79" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Đã phê duyệt</text>
-          <text data-detail="context" x="821" y="96" class="t-muted" font-size="8" text-anchor="middle">đặt hàng chính</text>
+          <text data-node-label="" data-detail-anchor="" x="315" y="273" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Xác nhận HĐ con</text>
+          <text data-detail="context" x="315" y="286.4" class="t-muted" font-size="7" text-anchor="middle">AW_BILL_002/004/005</text>
         </g>
 
-        <g id="node-daxuat" data-node-id="daxuat" data-node-label="Đã xuất hàng" tabindex="0" role="button" aria-label="Focus Đã xuất hàng, NCC báo cáo xuất, Luồng chính" aria-pressed="false" data-node-kind="active" data-node-sublabel="NCC báo cáo xuất" data-node-context="Luồng chính">
-          <title>Đã xuất hàng · NCC báo cáo xuất · Luồng chính</title>
-          <rect x="986" y="56" width="140" height="64" rx="7" class="c-mask"/>
-          <rect x="986" y="56" width="140" height="64" rx="7" class="c-frontend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="active" class="semantic-sigil s-frontend" transform="translate(992 62) scale(0.6875)">
-            <path d="M2 8h3l1.5-3.5L9 12l1.6-4H14"/>
+        <g id="node-invoice" data-node-id="invoice" data-node-label="Hóa đơn ES" tabindex="0" role="button" aria-label="Tập trung vào Hóa đơn ES, 確定 / 作成済み / 請求済, 03 / Hóa đơn ES" aria-pressed="false" data-node-kind="database" data-node-sublabel="確定 / 作成済み / 請求済" data-node-context="03 / Hóa đơn ES">
+          <title>Hóa đơn ES · 確定 / 作成済み / 請求済 · 03 / Hóa đơn ES</title>
+          <rect x="474" y="242" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="474" y="242" width="112" height="58" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(480 248) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1056" y="79" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Đã xuất hàng</text>
-          <text data-detail="context" x="1056" y="96" class="t-muted" font-size="8" text-anchor="middle">NCC báo cáo xuất</text>
+          <text data-node-label="" data-detail-anchor="" x="530" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Hóa đơn ES</text>
+          <text data-detail="context" x="530" y="279" class="t-muted" font-size="7" text-anchor="middle">確定 / 作成済み / 請求済</text>
         </g>
 
-        <g id="node-danhap" data-node-id="danhap" data-node-label="Đã nhập kho" tabindex="0" role="button" aria-label="Focus Đã nhập kho, tồn kho tăng, Nhập kho" aria-pressed="false" data-node-kind="success" data-node-sublabel="tồn kho tăng" data-node-context="Nhập kho">
-          <title>Đã nhập kho · tồn kho tăng · Nhập kho</title>
-          <rect x="986" y="240" width="140" height="64" rx="7" class="c-mask"/>
-          <rect x="986" y="240" width="140" height="64" rx="7" class="c-backend" stroke-width="1.5"/>
-          <rect x="989" y="243" width="134" height="58" rx="4" class="c-backend" style="fill: none" stroke-width="1"/>
-          <g aria-hidden="true" data-semantic-sigil="success" class="semantic-sigil s-backend" transform="translate(992 246) scale(0.6875)">
-            <circle cx="8" cy="8" r="5.3"/>
-            <path d="m5.2 8 1.8 1.8 3.8-4"/>
+        <g id="node-billone" data-node-id="billone" data-node-label="Bill One" tabindex="0" role="button" aria-label="Tập trung vào Bill One, tạo・phát hành・gửi, 04 / Phát hành・xuất" aria-pressed="false" data-node-kind="external" data-node-sublabel="tạo・phát hành・gửi" data-node-context="04 / Phát hành・xuất">
+          <title>Bill One · tạo・phát hành・gửi · 04 / Phát hành・xuất</title>
+          <rect x="689" y="242" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="689" y="242" width="112" height="58" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(695 248) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1056" y="263" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Đã nhập kho</text>
-          <text data-detail="context" x="1056" y="280" class="t-muted" font-size="8" text-anchor="middle">tồn kho tăng</text>
+          <text data-node-label="" data-detail-anchor="" x="745" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Bill One</text>
+          <text data-detail="context" x="745" y="279" class="t-muted" font-size="7" text-anchor="middle">tạo・phát hành・gửi</text>
         </g>
 
-        <g id="node-chenh" data-node-id="chenh" data-node-label="Có chênh lệch" tabindex="0" role="button" aria-label="Focus Có chênh lệch, chờ xử lý, Ngoại lệ" aria-pressed="false" data-node-kind="waiting" data-node-sublabel="chờ xử lý" data-node-context="Ngoại lệ">
-          <title>Có chênh lệch · chờ xử lý · Ngoại lệ</title>
-          <rect x="986" y="424" width="140" height="64" rx="7" class="c-mask"/>
-          <rect x="986" y="424" width="140" height="64" rx="7" class="c-cloud" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="waiting" class="semantic-sigil s-cloud" transform="translate(992 430) scale(0.6875)">
-            <path d="M4 2.5h8M4 13.5h8M5 3c0 2.8 2 3.2 3 5-1 1.8-3 2.2-3 5M11 3c0 2.8-2 3.2-3 5 1 1.8 3 2.2 3 5"/>
+        <g id="node-corpweb" data-node-id="corpweb" data-node-label="法人Web" tabindex="0" role="button" aria-label="Tập trung vào 法人Web, hóa đơn của pháp nhân, 04 / Phát hành・xuất" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="hóa đơn của pháp nhân" data-node-context="04 / Phát hành・xuất">
+          <title>法人Web · hóa đơn của pháp nhân · 04 / Phát hành・xuất</title>
+          <rect x="689" y="128" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="689" y="128" width="112" height="58" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(695 134) scale(0.6875)">
+            <rect x="2" y="3" width="12" height="10" rx="2"/>
+            <path d="M2 6.5h12"/>
+            <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
+            <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1056" y="447" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Có chênh lệch</text>
-          <text data-detail="context" x="1056" y="464" class="t-muted" font-size="8" text-anchor="middle">chờ xử lý</text>
+          <text data-node-label="" data-detail-anchor="" x="745" y="149" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">法人Web</text>
+          <text data-detail="context" x="745" y="165" class="t-muted" font-size="7" text-anchor="middle">hóa đơn của pháp nhân</text>
         </g>
 
-        <g id="node-khongnhan" data-node-id="khongnhan" data-node-label="Không nhận đơn" tabindex="0" role="button" aria-label="Focus Không nhận đơn, NCC từ chối + lý do, Ngoại lệ" aria-pressed="false" data-node-kind="failure" data-node-sublabel="NCC từ chối + lý do" data-node-context="Ngoại lệ">
-          <title>Không nhận đơn · NCC từ chối + lý do · Ngoại lệ</title>
-          <rect x="530" y="424" width="140" height="64" rx="7" class="c-mask"/>
-          <rect x="530" y="424" width="140" height="64" rx="7" class="c-security" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="failure" class="semantic-sigil s-security" transform="translate(536 430) scale(0.6875)">
-            <circle cx="8" cy="8" r="5.3"/>
-            <path d="m5.7 5.7 4.6 4.6m0-4.6-4.6 4.6"/>
+        <g id="node-csv" data-node-id="csv" data-node-label="File CSV" tabindex="0" role="button" aria-label="Tập trung vào File CSV, P-CSV-OUT, 04 / Phát hành・xuất" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="P-CSV-OUT" data-node-context="04 / Phát hành・xuất">
+          <title>File CSV · P-CSV-OUT · 04 / Phát hành・xuất</title>
+          <rect x="689" y="356" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="689" y="356" width="112" height="58" rx="6" class="c-cloud" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(695 362) scale(0.6875)">
+            <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="600" y="447" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Không nhận đơn</text>
-          <text data-detail="context" x="600" y="464" class="t-muted" font-size="8" text-anchor="middle">NCC từ chối + lý do</text>
+          <text data-node-label="" data-detail-anchor="" x="745" y="377" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">File CSV</text>
+          <text data-detail="context" x="745" y="393" class="t-muted" font-size="7" text-anchor="middle">P-CSV-OUT</text>
         </g>
 
-        <g id="node-huy" data-node-id="huy" data-node-label="Hủy" tabindex="0" role="button" aria-label="Focus Hủy, VH hủy, không xóa, Kết thúc" aria-pressed="false" data-node-kind="failure" data-node-sublabel="VH hủy, không xóa" data-node-context="Kết thúc">
-          <title>Hủy · VH hủy, không xóa · Kết thúc</title>
-          <rect x="751" y="608" width="140" height="64" rx="7" class="c-mask"/>
-          <rect x="751" y="608" width="140" height="64" rx="7" class="c-security" stroke-width="1.5"/>
-          <rect x="754" y="611" width="134" height="58" rx="4" class="c-security" style="fill: none" stroke-width="1"/>
-          <g aria-hidden="true" data-semantic-sigil="failure" class="semantic-sigil s-security" transform="translate(757 614) scale(0.6875)">
-            <circle cx="8" cy="8" r="5.3"/>
-            <path d="m5.7 5.7 4.6 4.6m0-4.6-4.6 4.6"/>
+        <g id="node-corp" data-node-id="corp" data-node-label="Pháp nhân" tabindex="0" role="button" aria-label="Tập trung vào Pháp nhân, email người phụ trách, 05 / Người nhận" aria-pressed="false" data-node-kind="external" data-node-sublabel="email người phụ trách" data-node-context="05 / Người nhận">
+          <title>Pháp nhân · email người phụ trách · 05 / Người nhận</title>
+          <rect x="904" y="242" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="904" y="242" width="112" height="58" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(910 248) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="821" y="631" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Hủy</text>
-          <text data-detail="context" x="821" y="648" class="t-muted" font-size="8" text-anchor="middle">VH hủy, không xóa</text>
+          <text data-node-label="" data-detail-anchor="" x="960" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Pháp nhân</text>
+          <text data-detail="context" x="960" y="279" class="t-muted" font-size="7" text-anchor="middle">email người phụ trách</text>
         </g>
 
-        <!-- Transition labels -->
-        <g data-detail="context" data-edge-from="tam" data-edge-to="phanhoi" data-edge-label="NCC phản hồi" data-edge-key="0">
-          <rect x="212.1" y="67" width="70.80000000000001" height="16" rx="4" class="c-mask"/>
-          <text x="247.5" y="78" class="t-edge-emphasis" font-size="8" text-anchor="middle">NCC phản hồi</text>
+        <!-- Flow labels -->
+        <g data-detail="context" data-edge-from="actual" data-edge-to="confirm" data-edge-label="Chốt TT thực" data-edge-key="0" data-edge-id="f-actual">
+          <rect x="172.6" y="184" width="70.8" height="16" rx="4" class="c-mask"/>
+          <text x="208" y="195" class="t-edge-dashed" font-size="8" text-anchor="middle">Chốt TT thực</text>
         </g>
-        <g data-detail="context" data-edge-from="phanhoi" data-edge-to="chopd" data-edge-label="VH đặt chính" data-edge-key="1">
-          <rect x="447.1" y="67" width="70.80000000000001" height="16" rx="4" class="c-mask"/>
-          <text x="482.5" y="78" class="t-edge-emphasis" font-size="8" text-anchor="middle">VH đặt chính</text>
+        <g data-detail="context" data-edge-from="sub" data-edge-to="confirm" data-edge-label="Cố định" data-edge-key="1" data-edge-id="f-sub">
+          <rect x="141.85" y="222" width="46.3" height="16" rx="4" class="c-mask"/>
+          <text x="165" y="233" class="t-edge-emphasis" font-size="8" text-anchor="middle">Cố định</text>
         </g>
-        <g data-detail="context" data-edge-from="chopd" data-edge-to="dapd" data-edge-label="NCC duyệt" data-edge-key="2">
-          <rect x="682.45" y="67" width="56.1" height="16" rx="4" class="c-mask"/>
-          <text x="710.5" y="78" class="t-edge-emphasis" font-size="8" text-anchor="middle">NCC duyệt</text>
+        <g data-detail="context" data-edge-from="ops" data-edge-to="confirm" data-edge-label="Thao tác" data-edge-key="2" data-edge-id="f-ops">
+          <rect x="182.4" y="319" width="51.2" height="16" rx="4" class="c-mask"/>
+          <text x="208" y="330" class="t-edge-default" font-size="8" text-anchor="middle">Thao tác</text>
         </g>
-        <g data-detail="context" data-edge-from="dapd" data-edge-to="daxuat" data-edge-label="báo cáo xuất" data-edge-key="3">
-          <rect x="903.1" y="67" width="70.80000000000001" height="16" rx="4" class="c-mask"/>
-          <text x="938.5" y="78" class="t-edge-emphasis" font-size="8" text-anchor="middle">báo cáo xuất</text>
+        <g data-detail="context" data-edge-from="confirm" data-edge-to="invoice" data-edge-label="Tạo hóa đơn" data-edge-key="3" data-edge-id="f-inv">
+          <rect x="389.55" y="250" width="65.9" height="16" rx="4" class="c-mask"/>
+          <text x="422.5" y="261" class="t-edge-emphasis" font-size="8" text-anchor="middle">Tạo hóa đơn</text>
         </g>
-        <g data-detail="context" data-edge-from="daxuat" data-edge-to="danhap" data-edge-label="SL khớp" data-edge-key="4">
-          <rect x="1077" y="172" width="46.300000000000004" height="16" rx="4" class="c-mask"/>
-          <text x="1100.15" y="183" class="t-edge-default" font-size="8" text-anchor="middle">SL khớp</text>
+        <g data-detail="context" data-edge-from="invoice" data-edge-to="billone" data-edge-label="Đăng ký" data-edge-key="4" data-edge-id="f-bo">
+          <rect x="534.85" y="222" width="46.3" height="16" rx="4" class="c-mask"/>
+          <text x="558" y="233" class="t-edge-emphasis" font-size="8" text-anchor="middle">Đăng ký</text>
         </g>
-        <g data-detail="context" data-edge-from="daxuat" data-edge-to="chenh" data-edge-label="SL khác" data-edge-key="5">
-          <rect x="988.7" y="142" width="46.300000000000004" height="16" rx="4" class="c-mask"/>
-          <text x="1011.85" y="153" class="t-edge-security" font-size="8" text-anchor="middle">SL khác</text>
+        <g data-detail="context" data-edge-from="billone" data-edge-to="corp" data-edge-label="Gửi email" data-edge-key="5" data-edge-id="f-corp">
+          <rect x="824.45" y="250" width="56.1" height="16" rx="4" class="c-mask"/>
+          <text x="852.5" y="261" class="t-edge-security" font-size="8" text-anchor="middle">Gửi email</text>
         </g>
-        <g data-detail="context" data-edge-from="chenh" data-edge-to="danhap" data-edge-label="xử lý xong" data-edge-key="6">
-          <rect x="1077" y="356" width="61" height="16" rx="4" class="c-mask"/>
-          <text x="1107.5" y="367" class="t-edge-dashed" font-size="8" text-anchor="middle">xử lý xong</text>
+        <g data-detail="context" data-edge-from="invoice" data-edge-to="corpweb" data-edge-label="Hóa đơn" data-edge-key="6" data-edge-id="f-web">
+          <rect x="614.35" y="189.5" width="46.3" height="16" rx="4" class="c-mask"/>
+          <text x="637.5" y="200.5" class="t-edge-default" font-size="8" text-anchor="middle">Hóa đơn</text>
         </g>
-        <g data-detail="context" data-edge-from="chopd" data-edge-to="khongnhan" data-edge-label="NCC từ chối" data-edge-key="7">
-          <rect x="528.0999999999999" y="264" width="65.9" height="16" rx="4" class="c-mask"/>
-          <text x="561.05" y="275" class="t-edge-security" font-size="8" text-anchor="middle">NCC từ chối</text>
-        </g>
-        <g data-detail="context" data-edge-from="khongnhan" data-edge-to="huy" data-edge-label="VH hủy" data-edge-key="8">
-          <rect x="552.5999999999999" y="510" width="41.400000000000006" height="16" rx="4" class="c-mask"/>
-          <text x="573.3" y="521" class="t-edge-security" font-size="8" text-anchor="middle">VH hủy</text>
-        </g>
-        <g data-detail="context" data-edge-from="dapd" data-edge-to="huy" data-edge-label="VH hủy" data-edge-key="9">
-          <rect x="827" y="356" width="41.400000000000006" height="16" rx="4" class="c-mask"/>
-          <text x="847.7" y="367" class="t-edge-dashed" font-size="8" text-anchor="middle">VH hủy</text>
+        <g data-detail="context" data-edge-from="invoice" data-edge-to="csv" data-edge-label="Xuất CSV" data-edge-key="7" data-edge-id="f-csv">
+          <rect x="611.9" y="310.5" width="51.2" height="16" rx="4" class="c-mask"/>
+          <text x="637.5" y="321.5" class="t-edge-dashed" font-size="8" text-anchor="middle">Xuất CSV</text>
         </g>
 
         <!-- Legend -->
         <g data-legend="" data-legend-bridge="">
-          <text x="40" y="712" class="t-primary" font-size="12" font-weight="650">Legend</text>
-          <g data-legend-semantic-kind="start" data-legend-kind="start" data-legend-label="initial state" data-legend-x="40" data-legend-baseline="732" data-legend-width="120">
-            <circle cx="44.5" cy="728.5" r="4.5" style="fill: var(--arrow-emphasis)"/><path d="M 49 728.5 L 58 728.5" class="a-emphasis" stroke-width="1.4"/><path d="M 57 725 L 64 728.5 L 57 732 Z" style="fill: var(--arrow-emphasis)"/>
-            <text x="74" y="732" class="t-muted" font-size="10" font-weight="500">initial state</text>
+          <text x="40" y="504" class="t-primary" font-size="12" font-weight="650">Chú giải</text>
+          <g data-legend-semantic-kind="emphasis" data-legend-x="40" data-legend-baseline="524" data-legend-width="108">
+            <path d="M 40 521 L 74 521" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+            <text x="83" y="524" class="t-muted" font-size="10" font-weight="500">dữ liệu chính</text>
           </g>
-          <g data-legend-semantic-kind="active" data-legend-kind="active" data-legend-label="active" data-legend-x="182" data-legend-baseline="732" data-legend-width="73">
-            <rect x="182" y="724" width="14" height="9" rx="2" class="c-frontend" stroke-width="1"/>
-            <text x="204" y="732" class="t-muted" font-size="10" font-weight="500">active</text>
+          <g data-legend-semantic-kind="security" data-legend-x="170" data-legend-baseline="524" data-legend-width="192">
+            <path d="M 170 521 L 204 521" class="a-security" stroke-width="1.4" marker-end="url(#arrowhead-security)"/>
+            <text x="213" y="524" class="t-muted" font-size="10" font-weight="500">chính sách / thông tin cá nhân</text>
           </g>
-          <g data-legend-semantic-kind="waiting" data-legend-kind="waiting" data-legend-label="waiting" data-legend-x="277" data-legend-baseline="732" data-legend-width="78">
-            <rect x="277" y="724" width="14" height="9" rx="2" class="c-cloud" stroke-width="1"/>
-            <text x="299" y="732" class="t-muted" font-size="10" font-weight="500">waiting</text>
+          <g data-legend-semantic-kind="dashed" data-legend-x="384" data-legend-baseline="524" data-legend-width="167">
+            <path d="M 384 521 L 418 521" class="a-dashed" stroke-width="1.4" marker-end="url(#arrowhead-dashed)"/>
+            <text x="427" y="524" class="t-muted" font-size="10" font-weight="500">xử lý theo lô bất đồng bộ</text>
           </g>
-          <g data-legend-semantic-kind="success" data-legend-kind="success" data-legend-label="success" data-legend-x="377" data-legend-baseline="732" data-legend-width="78">
-            <rect x="377" y="724" width="14" height="9" rx="2" class="c-backend" stroke-width="1"/>
-            <text x="399" y="732" class="t-muted" font-size="10" font-weight="500">success</text>
+          <g data-legend-semantic-kind="database" data-legend-kind="database" data-legend-label="kho dữ liệu" data-legend-x="573" data-legend-baseline="524" data-legend-width="98">
+            <rect x="573" y="516" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
+            <text x="595" y="524" class="t-muted" font-size="10" font-weight="500">kho dữ liệu</text>
           </g>
-          <g data-legend-semantic-kind="failure" data-legend-kind="failure" data-legend-label="failure / exit" data-legend-x="477" data-legend-baseline="732" data-legend-width="113">
-            <rect x="477" y="724" width="14" height="9" rx="2" class="c-security" stroke-width="1"/>
-            <text x="499" y="732" class="t-muted" font-size="10" font-weight="500">failure / exit</text>
-          </g>
-          <g data-legend-semantic-kind="final" data-legend-x="612" data-legend-baseline="732" data-legend-width="79">
-            <rect x="612" y="724" width="14" height="9" rx="2" class="c-external" stroke-width="1"/><rect x="614.5" y="726.5" width="9" height="4" rx="1" class="c-external" style="fill: none" stroke-width="0.8"/>
-            <text x="636" y="732" class="t-muted" font-size="10" font-weight="500">final state</text>
+          <g data-legend-semantic-kind="default" data-legend-x="693" data-legend-baseline="524" data-legend-width="108">
+            <path d="M 693 521 L 727 521" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+            <text x="736" y="524" class="t-muted" font-size="10" font-weight="500">luồng dữ liệu</text>
           </g>
         </g>
       </svg>
@@ -5247,216 +5211,215 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <div class="diagram-guide no-print" id="diagram-guide" hidden role="dialog" aria-modal="false" aria-labelledby="diagram-guide-title">
         <div class="diagram-guide-head">
           <span>
-            <span class="diagram-guide-eyebrow">Diagram guide</span>
-            <strong class="diagram-guide-title" id="diagram-guide-title">Explore this system</strong>
+            <span class="diagram-guide-eyebrow">Hướng dẫn sơ đồ</span>
+            <strong class="diagram-guide-title" id="diagram-guide-title">Khám phá hệ thống này</strong>
           </span>
-          <button class="diagram-guide-close" id="diagram-guide-close" type="button" aria-label="Close diagram guide">&#215;</button>
+          <button class="diagram-guide-close" id="diagram-guide-close" type="button" aria-label="Đóng hướng dẫn sơ đồ">&#215;</button>
         </div>
-        <p class="diagram-guide-stats" id="diagram-guide-stats">Inspecting compiled semantics</p>
-        <div class="diagram-guide-actions" id="diagram-guide-actions" role="group" aria-label="Diagram exploration actions">
-          <button class="diagram-guide-action" type="button" data-guide-action="find" aria-label="Find any node">
+        <p class="diagram-guide-stats" id="diagram-guide-stats">Đang xem ngữ nghĩa đã biên dịch</p>
+        <div class="diagram-guide-actions" id="diagram-guide-actions" role="group" aria-label="Thao tác khám phá sơ đồ">
+          <button class="diagram-guide-action" type="button" data-guide-action="find" aria-label="Tìm bất kỳ nút nào">
             <span class="diagram-guide-index" aria-hidden="true">01</span>
-            <span class="diagram-guide-action-copy"><strong>Find any node</strong><small>Search labels, responsibilities, kinds, and stable IDs.</small></span>
+            <span class="diagram-guide-action-copy"><strong>Tìm bất kỳ nút nào</strong><small>Tìm theo nhãn, trách nhiệm, loại và mã định danh.</small></span>
             <kbd aria-hidden="true">/</kbd>
           </button>
-          <button class="diagram-guide-action" type="button" data-guide-action="route" aria-label="Trace a directed route">
+          <button class="diagram-guide-action" type="button" data-guide-action="route" aria-label="Dò một đường đi có hướng">
             <span class="diagram-guide-index" aria-hidden="true">02</span>
-            <span class="diagram-guide-action-copy"><strong>Trace a route</strong><small>Ask how two semantic nodes connect in authored direction.</small></span>
+            <span class="diagram-guide-action-copy"><strong>Dò một đường đi</strong><small>Xem hai nút nối với nhau thế nào theo đúng chiều đã khai báo.</small></span>
             <kbd aria-hidden="true">R</kbd>
           </button>
-          <button class="diagram-guide-action" type="button" data-guide-action="map" aria-label="See the whole system">
+          <button class="diagram-guide-action" type="button" data-guide-action="map" aria-label="Xem toàn hệ thống">
             <span class="diagram-guide-index" aria-hidden="true">03</span>
-            <span class="diagram-guide-action-copy"><strong>See the whole system</strong><small>Open Semantic Radar with a live viewport and stable nodes.</small></span>
+            <span class="diagram-guide-action-copy"><strong>Xem toàn hệ thống</strong><small>Mở radar ngữ nghĩa với vùng nhìn trực tiếp và các nút ổn định.</small></span>
             <kbd aria-hidden="true">M</kbd>
           </button>
-          <button class="diagram-guide-action" type="button" data-guide-action="lens" aria-label="Compare semantic kinds">
+          <button class="diagram-guide-action" type="button" data-guide-action="lens" aria-label="So sánh các loại ngữ nghĩa">
             <span class="diagram-guide-index" aria-hidden="true">04</span>
-            <span class="diagram-guide-action-copy"><strong>Compare semantic kinds</strong><small>Count roles, reveal their traffic, and compare direct authored links.</small></span>
+            <span class="diagram-guide-action-copy"><strong>So sánh các loại ngữ nghĩa</strong><small>Đếm vai trò, hiện lưu lượng của chúng và so sánh các liên kết trực tiếp đã khai báo.</small></span>
             <kbd aria-hidden="true">L</kbd>
           </button>
-          <button class="diagram-guide-action" type="button" data-guide-action="present" aria-label="Enter presentation stage">
+          <button class="diagram-guide-action" type="button" data-guide-action="present" aria-label="Vào chế độ trình chiếu">
             <span class="diagram-guide-index" aria-hidden="true">05</span>
-            <span class="diagram-guide-action-copy"><strong>Enter Presentation Stage</strong><small>Give the live diagram the viewport without changing export.</small></span>
+            <span class="diagram-guide-action-copy"><strong>Vào chế độ trình chiếu</strong><small>Dành cả vùng nhìn cho sơ đồ mà không đổi kết quả xuất.</small></span>
             <kbd aria-hidden="true">F</kbd>
           </button>
         </div>
-        <div class="diagram-guide-shortcuts" aria-label="Additional keyboard shortcuts">
-          <span><kbd>E</kbd> Export</span><span><kbd>T</kbd> Theme</span><span><kbd>S</kbd> Style</span><span><kbd>0</kbd> Reset</span><span><kbd>+</kbd> Zoom in</span><span><kbd>-</kbd> Zoom out</span><span><kbd>Esc</kbd> Close</span>
+        <div class="diagram-guide-shortcuts" aria-label="Phím tắt bổ sung">
+          <span><kbd>E</kbd> Xuất</span><span><kbd>T</kbd> Giao diện</span><span><kbd>S</kbd> Kiểu</span><span><kbd>0</kbd> Đặt lại</span><span><kbd>+</kbd> Phóng to</span><span><kbd>-</kbd> Thu nhỏ</span><span><kbd>Esc</kbd> Đóng</span>
         </div>
         <p class="diagram-guide-feedback" id="diagram-guide-feedback" aria-live="polite"></p>
       </div>
       <div class="node-finder no-print" id="node-finder" hidden role="dialog" aria-modal="false" aria-labelledby="node-finder-title">
         <div class="node-finder-head">
-          <strong id="node-finder-title">Find a node</strong>
-          <button class="node-finder-close" id="node-finder-close" type="button" aria-label="Close node finder">&#215;</button>
+          <strong id="node-finder-title">Tìm một nút</strong>
+          <button class="node-finder-close" id="node-finder-close" type="button" aria-label="Đóng ô tìm nút">&#215;</button>
         </div>
         <div class="node-finder-search">
           <span aria-hidden="true">&#8981;</span>
-          <input class="node-finder-input" id="node-finder-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search labels or IDs" aria-label="Search diagram nodes" aria-describedby="node-finder-status">
+          <input class="node-finder-input" id="node-finder-input" type="search" autocomplete="off" spellcheck="false" placeholder="Tìm theo nhãn hoặc mã" aria-label="Tìm các nút trong sơ đồ" aria-describedby="node-finder-status">
           <kbd aria-hidden="true">/</kbd>
         </div>
-        <div class="node-finder-results" id="node-finder-results" role="group" aria-label="Diagram nodes"></div>
-        <p class="node-finder-empty" id="node-finder-empty" hidden>No matching nodes</p>
+        <div class="node-finder-results" id="node-finder-results" role="group" aria-label="Các nút trong sơ đồ"></div>
+        <p class="node-finder-empty" id="node-finder-empty" hidden>Không có nút phù hợp</p>
         <p class="node-finder-status" id="node-finder-status" aria-live="polite"></p>
       </div>
       <div class="focus-chip relationship-lens no-print" id="focus-chip" hidden role="region" aria-labelledby="relationship-lens-title">
         <div class="relationship-lens-head">
-          <button class="relationship-lens-drag-handle" id="btn-focus-move" type="button" data-focus-drag-handle aria-label="Move semantic passport. Drag, use arrow keys, or press Home to reset." title="Move semantic passport. Drag, use arrow keys, or press Home to reset."></button>
+          <button class="relationship-lens-drag-handle" id="btn-focus-move" type="button" data-focus-drag-handle aria-label="Di chuyển hộ chiếu ngữ nghĩa. Kéo, dùng phím mũi tên, hoặc nhấn Home để đặt lại." title="Di chuyển hộ chiếu ngữ nghĩa. Kéo, dùng phím mũi tên, hoặc nhấn Home để đặt lại."></button>
           <div class="relationship-lens-copy">
-            <span class="relationship-lens-eyebrow">Semantic passport</span>
+            <span class="relationship-lens-eyebrow">Hộ chiếu ngữ nghĩa</span>
             <strong class="relationship-lens-title" id="relationship-lens-title"><span id="focus-label"></span></strong>
             <span class="semantic-passport-detail" id="focus-detail" hidden></span>
-            <div class="semantic-passport-meta" id="focus-passport-meta" aria-label="Node metadata">
+            <div class="semantic-passport-meta" id="focus-passport-meta" aria-label="Siêu dữ liệu của nút">
               <span id="focus-kind" data-passport="kind"></span>
               <span id="focus-context" data-passport="context" hidden></span>
               <span id="focus-tag" data-passport="tag" hidden></span>
               <span id="focus-brand" data-passport="brand" hidden></span>
               <code id="focus-id" data-passport="id"></code>
             </div>
-            <div class="semantic-passport-evidence" id="focus-evidence" hidden aria-label="Verified source evidence">
+            <div class="semantic-passport-evidence" id="focus-evidence" hidden aria-label="Bằng chứng nguồn đã xác minh">
               <div class="semantic-passport-evidence-head">
-                <span class="semantic-passport-evidence-status">Verified source</span>
+                <span class="semantic-passport-evidence-status">Nguồn đã xác minh</span>
                 <a class="semantic-passport-repository" id="focus-repository" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"></a>
               </div>
               <div class="semantic-passport-evidence-links" id="focus-evidence-links"></div>
             </div>
             <span class="relationship-lens-summary" id="focus-summary" aria-live="polite"></span>
             <div class="semantic-passport-reach" id="focus-reach" hidden>
-              <span class="semantic-passport-reach-label">Authored reach</span>
-              <div class="semantic-passport-reach-actions" role="group" aria-label="Trace authored reachability">
-                <button id="btn-reach-upstream" type="button" aria-label="Trace upstream authored reachability" aria-pressed="false">
-                  <span>Upstream</span><strong id="focus-reach-upstream-count">0</strong>
+              <span class="semantic-passport-reach-label">Phạm vi lan tỏa đã khai báo</span>
+              <div class="semantic-passport-reach-actions" role="group" aria-label="Dò phạm vi lan tỏa đã khai báo">
+                <button id="btn-reach-upstream" type="button" aria-label="Dò phạm vi lan tỏa thượng nguồn đã khai báo" aria-pressed="false">
+                  <span>Thượng nguồn</span><strong id="focus-reach-upstream-count">0</strong>
                 </button>
-                <button id="btn-reach-downstream" type="button" aria-label="Trace downstream authored reachability" aria-pressed="false">
-                  <span>Downstream</span><strong id="focus-reach-downstream-count">0</strong>
+                <button id="btn-reach-downstream" type="button" aria-label="Dò phạm vi lan tỏa hạ nguồn đã khai báo" aria-pressed="false">
+                  <span>Hạ nguồn</span><strong id="focus-reach-downstream-count">0</strong>
                 </button>
               </div>
               <small class="semantic-passport-reach-status" id="focus-reach-status" hidden aria-live="polite"></small>
             </div>
           </div>
           <div class="relationship-lens-actions">
-            <button id="btn-focus-clear" type="button" aria-label="Close semantic passport" title="Close">&#215;</button>
-            <button id="btn-focus-copy" type="button" aria-label="Copy link to focused node">Copy link</button>
-            <button id="btn-focus-relations" type="button" aria-label="Show connected relationships" aria-expanded="false" aria-controls="relationship-lens-list">Relations</button>
+            <button id="btn-focus-clear" type="button" aria-label="Đóng hộ chiếu ngữ nghĩa" title="Đóng">&#215;</button>
+            <button id="btn-focus-copy" type="button" aria-label="Sao chép liên kết tới nút đang chọn">Sao chép liên kết</button>
+            <button id="btn-focus-relations" type="button" aria-label="Hiện các quan hệ đang nối" aria-expanded="false" aria-controls="relationship-lens-list">Quan hệ</button>
           </div>
         </div>
-        <div class="relationship-lens-list" id="relationship-lens-list" aria-label="Connected relationships"></div>
+        <div class="relationship-lens-list" id="relationship-lens-list" aria-label="Các quan hệ đang nối"></div>
       </div>
       <div class="route-probe no-print" id="route-probe" hidden role="region" aria-labelledby="route-probe-title" data-state="idle">
         <div class="route-probe-head">
           <span class="route-probe-copy">
-            <span class="route-probe-eyebrow">Path</span>
-            <strong class="route-probe-title" id="route-probe-title">Click where the path starts</strong>
+            <span class="route-probe-eyebrow">Đường đi</span>
+            <strong class="route-probe-title" id="route-probe-title">Bấm vào nơi đường đi bắt đầu</strong>
           </span>
           <span class="route-probe-actions">
-            <button class="route-probe-find" id="route-probe-find" type="button" aria-label="Find a route start" data-node-finder-trigger>Find start</button>
-            <button class="route-probe-copy-link" id="route-probe-copy" type="button" aria-label="Copy link to traced route" hidden>Copy link</button>
-            <button id="route-probe-clear" type="button" aria-label="Clear route probe">Clear</button>
+            <button class="route-probe-find" id="route-probe-find" type="button" aria-label="Tìm điểm bắt đầu của đường đi" data-node-finder-trigger>Tìm điểm bắt đầu</button>
+            <button class="route-probe-copy-link" id="route-probe-copy" type="button" aria-label="Sao chép liên kết tới đường đi đã dò" hidden>Sao chép liên kết</button>
+            <button id="route-probe-clear" type="button" aria-label="Xóa dò đường đi">Xóa</button>
           </span>
         </div>
-        <div class="route-probe-path" id="route-probe-path" aria-label="Path">
-          <span class="route-probe-placeholder">Click two nodes on the diagram</span>
+        <div class="route-probe-path" id="route-probe-path" aria-label="Đường đi">
+          <span class="route-probe-placeholder">Bấm vào hai nút trên sơ đồ</span>
         </div>
-        <div class="route-journey-controls" id="route-journey-controls" hidden role="group" aria-label="Route journey controls" data-playing="false">
-          <button id="route-journey-prev" type="button" aria-label="Previous route position" title="Previous route position">&#8592;</button>
-          <button class="route-journey-play" id="route-journey-play" type="button" aria-label="Play route journey" aria-pressed="false" title="Play route journey">
+        <div class="route-journey-controls" id="route-journey-controls" hidden role="group" aria-label="Điều khiển hành trình đường đi" data-playing="false">
+          <button id="route-journey-prev" type="button" aria-label="Vị trí trước trên đường đi" title="Vị trí trước trên đường đi">&#8592;</button>
+          <button class="route-journey-play" id="route-journey-play" type="button" aria-label="Chạy hành trình đường đi" aria-pressed="false" title="Chạy hành trình đường đi">
             <span id="route-journey-play-icon" aria-hidden="true">&#9654;</span>
-            <span id="route-journey-play-label">Journey</span>
+            <span id="route-journey-play-label">Hành trình</span>
           </button>
-          <button id="route-journey-next" type="button" aria-label="Next route position" title="Next route position">&#8594;</button>
-          <button class="route-journey-overview" id="route-journey-overview" type="button" aria-label="Show complete route overview" title="Show complete route overview">Overview</button>
+          <button id="route-journey-next" type="button" aria-label="Vị trí tiếp theo trên đường đi" title="Vị trí tiếp theo trên đường đi">&#8594;</button>
+          <button class="route-journey-overview" id="route-journey-overview" type="button" aria-label="Hiện tổng quan toàn bộ đường đi" title="Hiện tổng quan toàn bộ đường đi">Tổng quan</button>
         </div>
-        <small class="route-probe-status" id="route-probe-status" aria-live="polite">Click a start, then an end. Paths follow the arrows.</small>
+        <small class="route-probe-status" id="route-probe-status" aria-live="polite">Bấm điểm bắt đầu, rồi điểm kết thúc. Đường đi đi theo chiều mũi tên.</small>
       </div>
       <div class="semantic-lens no-print" id="semantic-lens" hidden role="dialog" aria-modal="false" aria-labelledby="semantic-lens-title">
         <div class="semantic-lens-head">
           <span>
-            <span class="semantic-lens-eyebrow">Semantic lens</span>
-            <strong class="semantic-lens-title" id="semantic-lens-title">Compare system roles</strong>
+            <span class="semantic-lens-eyebrow">Kính lọc ngữ nghĩa</span>
+            <strong class="semantic-lens-title" id="semantic-lens-title">So sánh các vai trò trong hệ thống</strong>
           </span>
-          <button class="semantic-lens-close" id="semantic-lens-close" type="button" aria-label="Close semantic lens">&#215;</button>
+          <button class="semantic-lens-close" id="semantic-lens-close" type="button" aria-label="Đóng kính lọc ngữ nghĩa">&#215;</button>
         </div>
-        <p class="semantic-lens-instruction">Choose up to two semantic kinds. One reveals its real traffic; two compare only direct authored relationships.</p>
-        <div class="semantic-lens-kinds" id="semantic-lens-kinds" role="group" aria-label="Semantic kinds"></div>
-        <p class="semantic-lens-status" id="semantic-lens-status" aria-live="polite">Choose a kind to inspect its nodes and touching relationships.</p>
+        <p class="semantic-lens-instruction">Chọn tối đa hai loại ngữ nghĩa. Chọn một loại để xem lưu lượng thật của nó; chọn hai loại để so sánh các quan hệ trực tiếp đã khai báo.</p>
+        <div class="semantic-lens-kinds" id="semantic-lens-kinds" role="group" aria-label="Các loại ngữ nghĩa"></div>
+        <p class="semantic-lens-status" id="semantic-lens-status" aria-live="polite">Chọn một loại để xem các nút và quan hệ liên quan.</p>
         <div class="semantic-lens-actions">
-          <button id="semantic-lens-copy" type="button" aria-label="Copy link to semantic lens" hidden>Copy link</button>
-          <button id="semantic-lens-clear" type="button" aria-label="Clear semantic lens">Clear</button>
+          <button id="semantic-lens-copy" type="button" aria-label="Sao chép liên kết tới kính lọc ngữ nghĩa" hidden>Sao chép liên kết</button>
+          <button id="semantic-lens-clear" type="button" aria-label="Xóa kính lọc ngữ nghĩa">Xóa</button>
         </div>
       </div>
       <div class="overview-map no-print" id="overview-map" hidden role="region" aria-labelledby="overview-map-title">
         <div class="overview-map-head">
           <span class="overview-map-live" aria-hidden="true"></span>
           <span class="overview-map-copy">
-            <strong id="overview-map-title">Semantic radar</strong>
-            <small id="overview-map-status" aria-live="polite">Building overview</small>
+            <strong id="overview-map-title">Radar ngữ nghĩa</strong>
+            <small id="overview-map-status" aria-live="polite">Đang dựng tổng quan</small>
           </span>
-          <button class="overview-map-expand" id="overview-map-expand" type="button" aria-label="Open full semantic radar">Open radar</button>
-          <button class="overview-map-close" id="overview-map-close" type="button" aria-label="Close semantic radar">&#215;</button>
+          <button class="overview-map-expand" id="overview-map-expand" type="button" aria-label="Mở radar ngữ nghĩa đầy đủ">Mở radar</button>
+          <button class="overview-map-close" id="overview-map-close" type="button" aria-label="Đóng radar ngữ nghĩa">&#215;</button>
         </div>
-        <div class="overview-map-surface" id="overview-map-surface" tabindex="0" role="group" aria-label="Diagram overview. Click a node to focus it, or use arrow keys to pan."></div>
-        <div class="overview-map-hint" aria-hidden="true"><span>Click node</span><span>Drag to pan</span></div>
+        <div class="overview-map-surface" id="overview-map-surface" tabindex="0" role="group" aria-label="Tổng quan sơ đồ. Bấm vào một nút để chọn, hoặc dùng phím mũi tên để di chuyển."></div>
+        <div class="overview-map-hint" aria-hidden="true"><span>Bấm vào nút</span><span>Kéo để di chuyển</span></div>
       </div>
-      <p class="overview-map-feedback no-print" id="overview-map-feedback" role="status" aria-live="polite" hidden>Semantic radar needs more MAP space.</p>
-      <button class="rail-reveal no-print" id="rail-reveal" type="button" hidden aria-controls="reader-rail" aria-expanded="false"><span class="rail-reveal-icon" aria-hidden="true"></span><span>Notes &amp; index</span></button>
-      <div class="diagram-nav no-print" role="toolbar" aria-label="Diagram view controls">
-        <button id="btn-route-probe" type="button" aria-label="Trace a directed route" aria-pressed="false" aria-controls="route-probe" title="Trace route (R)">PATH</button>
-        <button id="btn-overview-map" type="button" aria-label="Open semantic radar" aria-expanded="false" aria-controls="overview-map" title="Semantic radar (M)">MAP</button>
-        <button id="btn-semantic-lens" type="button" aria-label="Open semantic lens" aria-haspopup="dialog" aria-expanded="false" aria-pressed="false" aria-controls="semantic-lens" title="Semantic lens (L)">LENS</button>
-        <button id="btn-node-finder" type="button" aria-label="Find a node" aria-haspopup="dialog" aria-expanded="false" aria-controls="node-finder" title="Find a node (/)" data-node-finder-trigger><span class="diagram-nav-icon find" aria-hidden="true"></span></button>
-        <button id="btn-diagram-guide" type="button" hidden aria-label="Open diagram guide" aria-haspopup="dialog" aria-expanded="false" aria-controls="diagram-guide" title="Diagram guide (?)"><span class="diagram-nav-icon guide" aria-hidden="true"></span></button>
-        <button data-view="out" type="button" aria-label="Zoom out" title="Zoom out (-)"><span class="diagram-nav-icon minus" aria-hidden="true"></span></button>
-        <button data-view="reset" type="button" aria-label="Reset diagram view" title="Reset view (0)"><span class="diagram-nav-detail" data-view-detail hidden>READ</span><span class="diagram-nav-percent" data-view-percent>100%</span></button>
-        <button data-view="in" type="button" aria-label="Zoom in" title="Zoom in (+)"><span class="diagram-nav-icon plus" aria-hidden="true"></span></button>
+      <p class="overview-map-feedback no-print" id="overview-map-feedback" role="status" aria-live="polite" hidden>Radar ngữ nghĩa cần thêm chỗ trên MAP.</p>
+      <button class="rail-reveal no-print" id="rail-reveal" type="button" hidden aria-controls="reader-rail" aria-expanded="false"><span class="rail-reveal-icon" aria-hidden="true"></span><span>Ghi chú &amp; danh mục</span></button>
+      <div class="diagram-nav no-print" role="toolbar" aria-label="Điều khiển khung nhìn sơ đồ">
+        <button id="btn-route-probe" type="button" aria-label="Dò một đường đi có hướng" aria-pressed="false" aria-controls="route-probe" title="Dò đường đi (R)">ĐƯỜNG</button>
+        <button id="btn-overview-map" type="button" aria-label="Mở radar ngữ nghĩa" aria-expanded="false" aria-controls="overview-map" title="Radar ngữ nghĩa (M)">MAP</button>
+        <button id="btn-semantic-lens" type="button" aria-label="Mở kính lọc ngữ nghĩa" aria-haspopup="dialog" aria-expanded="false" aria-pressed="false" aria-controls="semantic-lens" title="Kính lọc ngữ nghĩa (L)">LỌC</button>
+        <button id="btn-node-finder" type="button" aria-label="Tìm một nút" aria-haspopup="dialog" aria-expanded="false" aria-controls="node-finder" title="Tìm một nút (/)" data-node-finder-trigger><span class="diagram-nav-icon find" aria-hidden="true"></span></button>
+        <button id="btn-diagram-guide" type="button" hidden aria-label="Mở hướng dẫn sơ đồ" aria-haspopup="dialog" aria-expanded="false" aria-controls="diagram-guide" title="Hướng dẫn sơ đồ (?)"><span class="diagram-nav-icon guide" aria-hidden="true"></span></button>
+        <button data-view="out" type="button" aria-label="Thu nhỏ" title="Thu nhỏ (-)"><span class="diagram-nav-icon minus" aria-hidden="true"></span></button>
+        <button data-view="reset" type="button" aria-label="Đặt lại khung nhìn sơ đồ" title="Đặt lại khung nhìn (0)"><span class="diagram-nav-detail" data-view-detail hidden>ĐỌC</span><span class="diagram-nav-percent" data-view-percent>100%</span></button>
+        <button data-view="in" type="button" aria-label="Phóng to" title="Phóng to (+)"><span class="diagram-nav-icon plus" aria-hidden="true"></span></button>
       </div>
     </div>
 
     <aside class="reader-rail" id="reader-rail">
-    <div class="rail-controls no-print" role="toolbar" aria-label="Side panel">
-      <button class="rail-control" id="rail-placement" type="button" hidden aria-label="Move panel below the diagram" title="Move panel below the diagram" data-placement="right"><span class="rail-control-icon placement" aria-hidden="true"></span></button>
-      <button class="rail-control" id="rail-collapse" type="button" hidden aria-controls="reader-rail" aria-expanded="true" aria-label="Collapse side panel" title="Collapse side panel"><span class="rail-control-icon collapse" aria-hidden="true"></span></button>
+    <div class="rail-controls no-print" role="toolbar" aria-label="Bảng bên">
+      <button class="rail-control" id="rail-placement" type="button" hidden aria-label="Chuyển bảng xuống dưới sơ đồ" title="Chuyển bảng xuống dưới sơ đồ" data-placement="right"><span class="rail-control-icon placement" aria-hidden="true"></span></button>
+      <button class="rail-control" id="rail-collapse" type="button" hidden aria-controls="reader-rail" aria-expanded="true" aria-label="Thu gọn bảng bên" title="Thu gọn bảng bên"><span class="rail-control-icon collapse" aria-hidden="true"></span></button>
     </div>
     <!-- Info Cards -->
     <div class="cards">
       <div class="card">
         <div class="card-header">
-          <div class="card-dot cyan"></div>
-          <h3>Nguồn</h3>
+          <div class="card-dot emerald"></div>
+          <h3>Luồng chính</h3>
         </div>
         <ul>
-          <li>Đặt_hàng_Nhập_mua_Nhập_kho.md §3 (bảng trạng thái), §8 (chênh lệch)</li>
-          <li>Chuỗi §3 còn trạng thái Đặt hàng chính giữa Đã phản hồi và Chờ phê duyệt; bảng chuyển đổi bỏ qua nên sơ đồ gộp vào VH đặt chính</li>
+          <li>Hợp đồng con (固定額 + điều chỉnh ③) được xác nhận từng cái ở AW_BILL_004/005 hoặc cùng nơi nhận ở AW_BILL_002 (view #023, #026, #057)</li>
+          <li>Khi mọi hợp đồng con của một nơi nhận đã xác nhận thì hóa đơn ở trạng thái 確定 và tạo được (view #028)</li>
+          <li>Tạo hóa đơn đăng ký vào Bill One (row 7.2 của view #001); phát hành thì Bill One gửi đến pháp nhân (view #009, #010)</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot amber"></div>
-          <h3>Suy luận / lược</h3>
+          <h3>Quyết toán thực tế không chặn</h3>
         </div>
         <ul>
-          <li>Chuyển Có chênh lệch -&gt; Đã nhập kho (xử lý xong) là suy luận: tài liệu chỉ nêu 3 cách xử lý (chờ giao từng phần, hàng thay thế, chấp nhận thiếu hụt)</li>
-          <li>Không nhận đơn: NCC có thể từ chối cả ở Chờ phản hồi ngày giao; chỉ vẽ từ Chờ phê duyệt</li>
-          <li>Hủy: VH hủy được từ bất kỳ trạng thái; chỉ vẽ 2 mũi tên đại diện (§3 dòng cuối)</li>
-          <li>Không nhận đơn: VH sắp xếp NCC khác hoặc hủy; chỉ vẽ nhánh hủy</li>
+          <li>Hợp đồng con chưa xác nhận 実績精算 vẫn xác nhận 固定額 và phát hành được; phần chưa xác nhận được quyết toán ở hóa đơn tháng sau (row 4 của view #001, view #057)</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot rose"></div>
-          <h3>Quy tắc sửa (§4)</h3>
+          <h3>Điểm chưa chốt / suy luận</h3>
         </div>
         <ul>
-          <li>VH sửa SL được đến khi NCC phê duyệt đặt hàng chính</li>
-          <li>Sau duyệt: tăng = đặt hàng bổ sung, giảm = hủy rồi đặt lại</li>
-          <li>Thiếu hàng khi nhập kho: không tự giảm, VH chọn cách xử lý</li>
+          <li>Cách nhận trạng thái gửi từ Bill One (API / Webhook / thủ công) chưa quyết - issue 5; bản demo có nút đặt trạng thái gửi (row 5.1 view #033)</li>
+          <li>Nút Vận hành → xác nhận: gộp thao tác tạo/phát hành vào một mũi tên (suy luận để gọn)</li>
+          <li>Hóa đơn đã hủy không hiện ở 法人Web, lỗi gửi cũng không hiện với pháp nhân (view #033, row 1.6 view #023)</li>
+          <li>Dòng quyết toán thực tế và các nguồn khác chỉ nêu ở mức màn hình này, không phải toàn bộ hệ thống nguồn</li>
         </ul>
       </div>
     </div>
     <nav class="node-outline no-print" id="node-outline" hidden aria-labelledby="node-outline-title">
       <div class="node-outline-head">
-        <strong id="node-outline-title">Node index</strong>
+        <strong id="node-outline-title">Danh mục nút</strong>
         <span class="node-outline-count" id="node-outline-count"></span>
       </div>
       <ol class="node-outline-list" id="node-outline-list"></ol>
