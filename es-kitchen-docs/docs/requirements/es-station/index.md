@@ -33,7 +33,7 @@ Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/
 
 ## 1. Flow diagrams (archify)
 
-23 sơ đồ *dataflow* (luồng dữ liệu), chia theo thư mục đặc tả. Mới qua kiểm tra tự động, chưa xem lại bằng mắt; phần suy luận ghi trong thẻ chú thích của từng sơ đồ.
+26 sơ đồ *dataflow* (luồng dữ liệu), chia theo thư mục đặc tả. Mới qua kiểm tra tự động, chưa xem lại bằng mắt; phần suy luận ghi trong thẻ chú thích của từng sơ đồ.
 
 | # | Thư mục | Tiêu đề | Quy mô | Mở |
 |---:|---|---|---|---|
@@ -60,6 +60,9 @@ Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/
 | 21 | `Web_nhà_cung_cấp` | SW_ORDR - Luồng dữ liệu đơn nhận (nhà cung cấp) | 10 node · 9 luồng | <a href="flow/Web_nh%C3%A0_cung_c%E1%BA%A5p/dataflow-sw-ordr-20261009-160616/sw-ordr.html" target="_blank">Toàn trang</a> |
 | 22 | `Web_nhà_cung_cấp` | SW_PROF - Luồng dữ liệu hồ sơ nhà cung cấp | 7 node · 6 luồng | <a href="flow/Web_nh%C3%A0_cung_c%E1%BA%A5p/dataflow-sw-prof-20261009-160000/sw-prof.html" target="_blank">Toàn trang</a> |
 | 23 | `Web_nhà_cung_cấp` | SW_MANU - Luồng liên kết hướng dẫn thao tác | 5 node · 4 luồng | <a href="flow/Web_nh%C3%A0_cung_c%E1%BA%A5p/dataflow-sw-manu-20261009-160000/sw-manu.html" target="_blank">Toàn trang</a> |
+| 24 | `Lịch_trình_Cycle_giao_hàng_picking` | Lịch trình: từ kế hoạch giao tới yêu cầu đổi ngày và cập nhật dữ liệu giao hàng | 12 node · 11 luồng | <a href="flow/L%E1%BB%8Bch_tr%C3%ACnh_Cycle_giao_h%C3%A0ng_picking/dataflow-aw-sched-20261012-154502/aw-sched.html" target="_blank">Toàn trang</a> |
+| 25 | `Lịch_trình_Cycle_giao_hàng_picking` | Quản lý xuất・giao hàng (AW_DLVMNG): từ kế hoạch đến kết quả giao | 12 node · 14 luồng | <a href="flow/L%E1%BB%8Bch_tr%C3%ACnh_Cycle_giao_h%C3%A0ng_picking/dataflow-aw-dlvmng-20261012-154539/aw-dlvmng.html" target="_blank">Toàn trang</a> |
+| 26 | `Lịch_trình_Cycle_giao_hàng_picking` | AW_CYCSET - Luồng dữ liệu thiết lập chu kỳ giao hàng | 12 node · 13 luồng | <a href="flow/L%E1%BB%8Bch_tr%C3%ACnh_Cycle_giao_h%C3%A0ng_picking/dataflow-aw-cycset-20261012-154414/aw-cycset.html" target="_blank">Toàn trang</a> |
 
 ## 2. Yêu cầu chuẩn (P1) — JA ⇄ VI
 
@@ -122,9 +125,15 @@ Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/
 |---:|---|---|---|---:|---|
 | 41 | `README.md` | [VI](vi/05_%E7%94%BB%E9%9D%A2%E8%A8%AD%E8%A8%88%E6%9B%B8_vi/README.md) | [JA](ja/05_%E7%94%BB%E9%9D%A2%E8%A8%AD%E8%A8%88%E6%9B%B8/README.md) | 4 KB | Cách làm việc/quy định của thư mục thiết kế màn hình |
 
+### SPEC — Lịch trình · Cycle giao hàng · Picking
+
+| # | File | Nhóm | Dung lượng | Mục đích | Mở |
+|---:|---|---|---:|---|---|
+| 1 | `Ban_do_luong_ES_Kitchen.html` | Lịch_trình_Cycle_giao_hàng_picking | 83 KB | Bản đồ luồng nghiệp vụ của spec chu kỳ giao hàng: tách 10 cụm luồng chạy song song và khóa lẫn nhau (ES KITCHEN · PHASE 2 · 納品サイクル設定) | <a href="spec/Ban_do_luong_ES_Kitchen.html" target="_blank">Toàn trang</a> |
+
 ## 3. Prototype HTML (thiết kế màn hình)
 
-28 file HTML bản giao thiết kế màn hình, mở toàn trang ở tab mới.
+29 file HTML bản giao thiết kế màn hình, mở toàn trang ở tab mới.
 
 | # | File | Nhóm | Dung lượng | Mở |
 |---:|---|---|---:|---|
@@ -156,3 +165,4 @@ Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/
 | 26 | `Thiết_kế_màn_hình_SW_PROF_Hồ_sơ_Bản_nháp.html` | Web_nhà_cung_cấp | 779 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_PROF_H%E1%BB%93_s%C6%A1_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
 | 27 | `Demo_form_đăng_ký_Web_doanh_nghiệp.html` | Web_doanh_nghiệp | 313 KB | <a href="prototype/Demo_form_%C4%91%C4%83ng_k%C3%BD_Web_doanh_nghi%E1%BB%87p.html" target="_blank">Toàn trang</a> |
 | 28 | `Prototype_Admin_Duyet_DangKy_Company.html` | Web_quản_trị_vận_hành_Duyệt_Đơn_Đăng_Ký | 2.2 MB | <a href="prototype/Prototype_Admin_Duyet_DangKy_Company.html" target="_blank">Toàn trang</a> |
+| 29 | `Prototype_lich_trinh.html` | Lịch_trình_Cycle_giao_hàng_picking | 1.3 MB | <a href="prototype/Prototype_lich_trinh.html" target="_blank">Toàn trang</a> |
