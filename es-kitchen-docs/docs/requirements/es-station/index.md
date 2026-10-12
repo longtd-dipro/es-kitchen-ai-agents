@@ -124,7 +124,7 @@ Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/
 
 ## 3. Prototype HTML (thiết kế màn hình)
 
-27 file HTML bản giao thiết kế màn hình, mở toàn trang ở tab mới.
+28 file HTML bản giao thiết kế màn hình, mở toàn trang ở tab mới.
 
 | # | File | Nhóm | Dung lượng | Mở |
 |---:|---|---|---:|---|
@@ -155,3 +155,4 @@ Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/
 | 25 | `Thiết_kế_màn_hình_SW_ORDR_Đặt_hàng_Bản_nháp.html` | Web_nhà_cung_cấp | 1.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_ORDR_%C4%90%E1%BA%B7t_h%C3%A0ng_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
 | 26 | `Thiết_kế_màn_hình_SW_PROF_Hồ_sơ_Bản_nháp.html` | Web_nhà_cung_cấp | 779 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_PROF_H%E1%BB%93_s%C6%A1_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
 | 27 | `Demo_form_đăng_ký_Web_doanh_nghiệp.html` | Web_doanh_nghiệp | 313 KB | <a href="prototype/Demo_form_%C4%91%C4%83ng_k%C3%BD_Web_doanh_nghi%E1%BB%87p.html" target="_blank">Toàn trang</a> |
+| 28 | `Prototype_Admin_Duyet_DangKy_Company.html` | Web_quản_trị_vận_hành_Duyệt_Đơn_Đăng_Ký | 2.2 MB | <a href="prototype/Prototype_Admin_Duyet_DangKy_Company.html" target="_blank">Toàn trang</a> |
