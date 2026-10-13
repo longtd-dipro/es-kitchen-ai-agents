@@ -93,7 +93,7 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 
 | Agent | Vai trò | Trigger khi | Slash command |
 |---|---|---|---|
-| `ba-agent.md` | Business Analyst | Phân tích yêu cầu → **5 outputs bắt buộc**: SPEC.md (14 sections) + 3 Figma frames (Flow Tổng Quan · Screen Flow · Screens+Items) + HTML Prototype. Workflow chi tiết tách ra `.claude/ba-agent/` (xem bảng bên dưới) | `/create-spec` |
+| `ba-agent.md` | Business Analyst | Phân tích yêu cầu → **5 outputs bắt buộc**: SPEC.md (14 sections) + 3 Figma frames (Flow Tổng Quan · Screen Flow · Screens+Items) + HTML Prototype (+ Output OQ khi còn câu hỏi mở · Output 5 Basic Design on-demand). Workflow chi tiết tách ra `.claude/ba-agent/` (xem bảng bên dưới) | `/create-spec` |
 | `techlead-design-agent.md` | Tech Lead Design | Đọc SPEC → tạo DESIGN.md per repo | `/create-design` |
 | `techlead-tasks-agent.md` | Tech Lead Tasks | Đọc DESIGN → phân rã task files | `/create-tasks` |
 | `pm-agent.md` | Project Manager | Tạo PLAN.md, phase-gate, timeline | `/create-plan` |
@@ -113,18 +113,21 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 
 | File | Nội dung | ba-agent Read khi |
 |---|---|---|
-| `preflight-questions.md` | 7 câu preflight (0.4 Scope · 0 Platform · 0.5 Figma URL · 0.8 Tech stack · 0.9 Granularity · 0.10 Actors · 0.11 Ngôn ngữ) + 10 câu chuẩn + template **Discovery Brief** | Bước 2b — trước mọi câu hỏi |
+| `preflight-questions.md` | 8 câu preflight (0.4 Scope · 0 Platform · 0.5 Figma URL · 0.8 Tech stack · 0.9 Granularity · 0.10 Actors · 0.11 Ngôn ngữ · **0.12 PII**) + 10 câu chuẩn + template **Discovery Brief** | Bước 2b — trước mọi câu hỏi |
 | `clarify-ambiguity.md` | Template trình 2-3 diễn giải khi request mơ hồ | Bước 2a khi trigger ambiguity |
 | `granularity-principles.md` | Nguyên tắc granularity chung cho Flow + Screen (chống flow quá thô/quá vụn) + **⛔ GATE FR COVERAGE** — mốc đếm phải là DÒNG CHỨC NĂNG GỐC, không phải nhóm do BA tự gom | Bước 4 + Bước 5 Output 1 |
 | `spec-template.md` | Template 14 sections SPEC.md + rule phân loại Non-Happy theo mức hiển thị (Inline/Toast · Modal · Full screen → Screen Code riêng) + **cột `FR No.` bắt buộc** trong bảng `## Screens` khi nguồn đánh số được | Bước 4 — trước khi viết SPEC |
 | `versioning.md` | Rule snapshot `versions/v<N>_<DDMMYYYY>/` — không overwrite version cũ | Bước 3 |
 | `recheck.md` | **9 tiêu chí** — visual + **Tiêu chí 7 quét bbox** + **Tiêu chí 8 FR Coverage scan** (phép trừ tập hợp về tài liệu nguồn) + **Tiêu chí 9 node phải nằm trong biên frame** (chạy TRƯỚC tiêu chí 7) | Bước 5.5 Quality Gate |
 | `self-feedback.md` | Template self-feedback theo `POLICIES.md §4.5` | Bước 5.6 |
-| `post-meeting-workflow.md` | Quy trình cập nhật SPEC sau meeting với khách | Khi user trigger |
+| `post-meeting-workflow.md` | **Bước 7** — phân định từng item feedback/meeting note là CR hay FEEDBACK trước khi sửa, rồi scoped update + version mới | Khi user trigger |
+| `change-request.md` | Nhánh CR của Bước 7: vẽ CR view mới (badge NEW/UPD/DEL) + `output_cr.md` trao đổi KH | Bước 7 khi có item CR |
+| `open-questions.md` | **Output OQ** (Bước 5.4): `OQ-REGISTER.md` → `open_questions.xlsx` (script) → Figma OQ view khi ≤ 20 câu | Bước 5.4 — sau Gate A còn business rule chưa trả lời |
+| `basic-design/output-5-basic-design.md` · `workbook-structure.md` | **Output 5 — Basic Design** (ON-DEMAND): ghi spec vào master Excel, Proposal Gate bằng `AskUserQuestion`, Quality Gate O5 bằng script | Bước 5.8 — chỉ khi user trigger (`/basic-design`) |
 | `template-ba.md` | Template BA tổng hợp | Bước 4 |
 | `figma-outputs/shared-rules.md` | Sequential Rule · **Gate Rules (Light/Strict Mode)** · state machine `WAITING_APPROVAL`/`APPROVED`/`STALE` · GATE ẢNH MẪU · Post-Delivery `## BA Deliverables` | Bước 5 — trước mọi `use_figma` |
 | `figma-outputs/code-patterns.md` | JS pattern cho Figma Design / FigJam + **rule toạ độ**: `node.x` là TƯƠNG ĐỐI FRAME, cấm cộng `absoluteBoundingBox` | Bước 5 |
-| `figma-outputs/output-1-flow.md` … `output-5-mkdocs.md` | Spec chi tiết từng output | Bước 5 — đúng output đang vẽ |
+| `figma-outputs/output-1-flow.md` … `output-4-html.md` | Spec chi tiết từng output (Output 5 = Basic Design, xem `basic-design/`; `output-5-mkdocs.md` là bản MkDocs cũ, không còn trong DoD) | Bước 5 — đúng output đang vẽ |
 
 **5 rule cứng khi vẽ Figma (không được vi phạm):**
 
@@ -143,8 +146,10 @@ tilth_deps(path: "<file>")                   # blast radius — BẮT BUỘC tr�
 | 1 | Khối **"Bước tiếp theo" + HANDOVER RULE** cuối `agents/ba-agent.md` | Kit là bản generic, không có pipeline ESKITCHEN. Khối này trỏ tới `/create-ui-design` và `/test/analyze-req → plan-tcs → gen-tcs` — **copy đè kit sẽ mất** | 21/09/2026 |
 | 2 | **Bước 5.7 Prototype Quality Gate (Playwright) KHÔNG áp dụng.** Không đưa `figma-outputs/output-4-verify.md` và `skills/business-analyst/scripts/verify-prototype.js` vào dự án | Dự án không cài Playwright cho nhánh BA. Output 4 kiểm thủ công theo Rule P4–P8 của `output-4-html.md` | 22/09/2026 |
 | 3 | `.claude/context/backlog-workflow.md` giữ bản dự án, **không** lấy bản kit (kit 324 dòng vs dự án 229) | Quyết định của PM — ảnh hưởng cả PM/QC/TL, không chỉ BA | 22/09/2026 |
+| 4 | **Path & context riêng dự án**: `<output-folder>` của kit → `<DOCS_ROOT>/features/<feature>` (riêng `meetings/`, `design/` → `<DOCS_ROOT>/...`); `agents/ba-agent.md` giữ Bước 1 đọc `.claude/context/*` + Bước 1.5 BẮT BUỘC (kèm 1b ES Station), mục Domain Knowledge, Screen Code theo `screen-code-rule.md` (`spec-template.md`) | Kit chạy ad-hoc, không có project-memory và path `<output-folder>` | 08/10/2026 |
+| 5 | `.claude/rules/POLICY.md` · `RELIABILITY.md` · `SECURITY.md` · `settings.json` giữ bản dự án (chỉ **thêm** hook H06 + `DATA-PRIVACY.md` + `POLICIES.md §3.6`, không copy đè) | Bản dự án có restricted-paths / H01–H05 / mcpServers riêng | 08/10/2026 |
 
-> Mọi file BA workflow khác trong `.claude/ba-agent/`, `.claude/skills/ba-figma-output/`, `.claude/skills/business-analyst/` **khớp 1-1 với kit** — sync bằng cách copy đè là an toàn.
+> Đã sync toàn bộ với kit ngày **08/10/2026** (Output OQ · Output 5 Basic Design · Bước 7 CR/FEEDBACK · PII H06). Mọi file BA workflow khác trong `.claude/ba-agent/`, `.claude/skills/ba-figma-output/`, `.claude/skills/business-analyst/` khớp kit ngoài 5 ngoại lệ trên — khi sync lại, copy đè rồi đổi `<output-folder>` → `<DOCS_ROOT>/features/<feature>` và giữ nguyên các ngoại lệ.
 
 **Verdict 3 mức** thay PASS/FAIL nhị phân ở Quality Gate: ✅ `Complete` → gate kế tiếp · ⚠️ `Needs Revision` → BA tự sửa rồi rerun · ❌ `Critical Gaps` (thiếu dữ liệu nguồn) → **DỪNG hỏi user**, không tự bịa.
 
@@ -173,6 +178,8 @@ Danh sách đầy đủ (skill → repo → khi nào dùng) → `.claude/skills/
 | `business-flows/domains/<slug>.md` | Stories per domain (Hợp đồng, Menu & Order, Giao hàng…) — đọc đúng 1 domain liên quan | `ba-agent` (Discovery/SPEC), `techlead-design-agent` (Design) |
 | `business-flows/function-list.md` | Master function list — Summary by epic + Phase 1/2 stories (135 KB, chỉ load khi cần lookup function cụ thể) | `pm-agent` (estimate), `techlead-design-agent` (scope check) |
 | `business-flows/screen-code-rule.md` | Quy tắc `<Module>_<Feature>_<Seq>` | `ba-agent` (điền Screen Code vào SPEC) · `designer-agent` (đặt frame name Figma) · `frontend-agent`, `mobile-agent`, `qc-agent` (khi đặt screen code mới) |
+| `es-station/README.md` | Digest đặc tả ES Station (es-kitchen-requirements/es-station): thứ tự ưu tiên nguồn, routing 12 chủ đề, bản đồ thư mục, quy ước dùng chung | `ba-agent` (BẮT BUỘC khi feature chạm ES Station — Bước 1.5 mục 1b), `techlead-design-agent`, `qc-agent` |
+| `es-station/domains/<slug>.md` | Digest 7 mục per chủ đề (giao-hang · doanh-nghiep-co-so-hop-dong · don-yeu-cau · master-phi-thanh-toan · menu-san-pham · don-hang · dat-hang-nhap-kho · ton-kho · hang-thay-the · dai-ly · mau-kinh-doanh · man-hinh-van-hanh-doanh-nghiep · quy-uoc-chung) — đọc đúng 1–2 file liên quan | `ba-agent` (SPEC/Discovery), `techlead-design-agent` (Design) |
 | `ai-workflow.md` | Kiến trúc AI Agent system | Human reference — không có agent cụ thể; đọc khi thêm agent mới |
 
 ### Workflows — `.claude/workflows/` (đọc on-demand)
