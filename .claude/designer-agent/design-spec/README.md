@@ -18,6 +18,8 @@
 | 6 | User Mobile App (E01) | [29112-212045](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=29112-212045) | Cart / Scan / Payment confirm |
 | 7 | WebApp ES_QR | [31896-133017](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=31896-133017) | Home / Product / Cart / Scan (update 11/09) |
 | 8 | WebApp Driver (E06) | [33034-353615](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=33034-353615) | DA_HOME / DA_COOL / DA_RECV (COOL便 V1.0) |
+| 9 | Company Web — 申し込むフォーム V1.0 (customer shell) | [28019-260266](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=28019-260266) | Login · R01–R04 · Done · Collap · Summary card → `12-web-company.md` §5–§7 |
+| 10 | Company Web — Quản lý company (AW_CORPORATE_000–004) | [19174-77566](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=19174-77566) | Shell portal A + tab chi tiết → `12-web-company.md` §8 |
 
 Figma file key: `VKAAOyoSPvgoB3H2qdeeV3` (ES-Kitchen-phase-2) · Library: **ES Kitchen** (Sparkle Design base) — component keys ở `.claude/context/designer-context.md` §11.
 
@@ -41,6 +43,9 @@ design-spec/
 ├── 20-mobile-app-user.md        ← E01 User Mobile App (Flutter, yellow)
 ├── 21-webapp-esqr.md            ← ES_QR WebApp — MỚI Phase 2 (yellow, mobile web)
 ├── 22-webapp-driver.md          ← E06 Driver WebApp (blue + COOL purple)
+├── 30-screen-index.md           ← MỌI platform, SAU khi vẽ xong: bảng Screen Index trên Figma (Bước 5.5) — vị trí, cột, style, DoD
+├── 31-field-table.md            ← MỌI platform, SAU Screen Index: bảng mô tả từng trường của màn hình (Bước 5.6) — nguồn nguyên văn, 24 cột JP|VI, style, DoD
+├── 32-flow-connectors.md        ← MỌI platform: đường nối + nhãn giữa các màn hình (Bước 5.7)
 ├── tokens.json                  ← token máy đọc được, theo platform
 └── refs/*.png                   ← screenshot tham chiếu (Read để xem trực quan)
 ```
@@ -51,7 +56,7 @@ design-spec/
 |---|---|---|---|
 | Admin Web (E03) | 00 + 10 + 11 | `refs/admin_list_AW_MAINTAIN_001.png`, `refs/admin_modal_AW_MAINTAIN_003.png` | 1440 × 1024 |
 | Company Web (E02) | 00 + 10 + 12 | `refs/company_list_CW_ORDER_003.png` | 1440 × 1024 |
-| Supplier Web (E04) | 00 + 10 + 13 | `refs/supplier_detail_SW_HOME_006.png` | 1440 × 1024 |
+| Supplier Web (E04) | 00 + 10 + 13 | `refs/supplier_detail_SW_HOME_006.png`, `refs/supplier_reference_SW_HOME_001-006.png` | 1440 × 1024 |
 | Công ty vận chuyển Web (E05) | 00 + 10 + 14 | `refs/logistic_list_OW_SCHED_001.png` | 1440 × 1024 |
 | User Mobile App (E01) | 00 + 20 | `refs/mobile_cart.png`, `refs/mobile_flow_overview.png` | 390 × 844 |
 | WebApp ES_QR | 00 + 21 | `refs/esqr_home.png` | 390 × 844 |
@@ -82,3 +87,7 @@ Nhiều platform → đọc hợp các file. `tokens.json` → lấy block theme
 | 2026-09-30 | v1.3 — thêm Bước 0.0 kiểm tra đầu vào design system (AskUserQuestion khi thiếu) · Bước 0.2b hỏi ngôn ngữ group/section/screen name · foundation §12 naming đa ngôn ngữ xuống dòng (đề xuất vi-ja-en) |
 | 2026-09-30 | v1.4 — thêm Bước 0.I: AskUserQuestion hỏi input (prototype HTML · tài liệu khác · Figma output · tên output tự đặt / agent đề xuất) |
 | 2026-09-30 | v1.5 — đo lại Button: `theme=Company` = CAM (`#FAA51D`), Admin/Driver dùng `theme=primary` (xanh). Sửa foundation §8, 11-web-admin, tokens.json `buttonTheme`, memory. Phát hiện khi vẽ AI_Generate_Tồn Kho |
+| 2026-10-09 | v1.6 — thêm `30-screen-index.md` + Bước 5.5 trong `designer-agent.md`: BẮT BUỘC dựng frame Screen Index trên Figma (format theo khối "BẢNG SCREEN INDEX" file ALPHA-TEAM `86:1655`) sau khi vẽ xong. Phát hiện khi vẽ Admin Hoá Đơn (30 frame / 4 section) |
+| 2026-10-09 | v1.7 — thêm `31-field-table.md` + Bước 5.6: output thứ 2 của Designer = Field Description Table (JP\|VI, nguyên văn từ item trong prototype/SPEC, KHÔNG suy diễn; format theo node `34325:198362`). Phát hiện khi vẽ Admin Hoá Đơn (16 bảng / 4 section) |
+| 2026-10-09 | v1.8 — bổ sung design-system Supplier từ Figma `Group 29` `34579:235837` (SW_HOME_001–006): viết lại `13-web-supplier.md` (sider 4 mục, header, page header, pattern TOP/一覧/詳細, bộ Badge trạng thái, danh sách instance + variable bind `slot/stroke`), thêm `refs/supplier_reference_SW_HOME_001-006.png`, tokens.json (`statusBadge`, `sider`, `selectedCell`…). Ghi 6 mâu thuẫn S1–S6 (nav active, header, link phân trang…) |
+| 2026-10-12 | v1.9 — bổ sung design-system Company Web: **shell B customer form** (TopNav 139 / gradient / Footer 120, Button 48 `#FAA51D`, Field 40, Collab Tab, Summary Card, Done modal, Login card) từ `28019:260266` + pattern portal từ `19174:77566`; thêm `12-web-company.md` §5–§11 (gap analysis G1–G14, đề xuất §10), tokens.json `company-web.customerShell`, refs `company_apply_form_V1.png`, `company_manage_AW_CORPORATE.png`. Ghi mâu thuẫn CO1: CTA solid `#FAA51D` vs primary `#F4860C` |

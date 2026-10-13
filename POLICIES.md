@@ -84,6 +84,35 @@
 
 ---
 
+## 3.6. Dữ liệu bí mật & cá nhân của khách hàng (秘密情報・個人情報)
+
+> **Nguyên tắc: KHÔNG đưa trực tiếp 秘密情報・個人情報 của khách hàng vào AI.**
+> Khác với §3.5 (bảo vệ **nội dung nội bộ của ta**), mục này bảo vệ **dữ liệu của khách hàng và người dùng cuối**.
+
+| # | Nhóm dữ liệu | Ví dụ |
+|---|---|---|
+| 1 | **Thông tin định danh cá nhân** | Tên, email, SĐT, địa chỉ, thông tin member/user thực tế |
+| 2 | **Dữ liệu production** | DB dump, export, log, bản ghi nghiệp vụ thật |
+| 3 | **Credential** | Password, API key, token, connection string, private key |
+| 4 | **Giao dịch / hợp đồng có thể xác định cá nhân** | Đơn hàng, thanh toán, hợp đồng, bảng lương, thông tin ngân hàng |
+| 5 | **Dữ liệu khác được KH xác định là confidential** | 社外秘 / confidential / thuộc phạm vi NDA |
+
+Danh sách là **ví dụ, không phải giới hạn**. Không chắc → **mặc định coi là confidential**, hỏi người phụ trách.
+
+**Ba điều bắt buộc với BA:**
+
+- ✅ Mọi output (SPEC.md · Figma frame · HTML prototype) dùng **dữ liệu mẫu**, không dùng dữ liệu thật
+- ⚠️ **Figma là dịch vụ cloud bên ngoài** — vẽ dữ liệu thật lên frame = đã đưa PII ra ngoài
+- ✅ Trích dẫn người nói trong `## Source Register` bằng **vai trò** (`BrSE A`), không bằng họ tên đầy đủ
+
+**Chi tiết cho BA kit** (bản đồ rủi ro theo 8 loại source · bộ dữ liệu mẫu chuẩn · checklist trước khi bàn giao · xử lý khi lỡ) → **`.claude/rules/DATA-PRIVACY.md`**.
+
+**Enforcement:** hook **H06** (`.claude/hooks/detect-pii.js`, nối trong `.claude/settings.json`) chặn cứng nhóm ①③④ ở `Write`/`Edit`/`Bash` **và** ở MCP đẩy ra ngoài (`figma`/`backlog`/`slack`/`drive`). Nhóm ②⑤ không có hình dạng để quét → chặn bằng **Câu 0.12** trong Discovery Brief.
+
+> ⚠️ H06 chỉ đọc **text trong tool call** — **không** mở được nội dung ảnh `.png`/`.jpg`. Screenshot chứa email thật vẫn lọt qua; chặn bằng quy trình (tài khoản test / staging), không bằng script.
+
+---
+
 ## 4. Khi thiếu thông tin → BẮT BUỘC hỏi
 
 Mỗi persona có checklist câu hỏi riêng trước khi hành động:
@@ -286,6 +315,7 @@ Kit vận hành trên **2 lớp** enforce, bổ sung nhau (không thay thế):
 | **H03** | Không `--no-verify` / `--no-gpg-sign` | `rules/git-workflow.md` |
 | **H04** | Không `rm -rf` trên root/home/wildcard | `rules/POLICY.md` |
 | **H05** | Không hardcode API key/JWT/private key trong Write/Edit | `rules/security-rules.md` |
+| **H06** | Chặn 秘密情報・個人情報 lọt ra ngoài qua tool call (`PreToolUse`) + CLI scan trước bàn giao (`--scan`) | `.claude/hooks/detect-pii.js` → rule `§3.6` · `rules/DATA-PRIVACY.md` |
 
 **Quy tắc khi rule và hook conflict:**
 - Rule = intent gốc (source of truth về nghiệp vụ)

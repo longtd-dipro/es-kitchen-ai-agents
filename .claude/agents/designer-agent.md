@@ -589,7 +589,40 @@ Khi Designer phát hiện design gap (state chưa rõ, flow chưa confirm, token
 
 > Mục đích: BA / Tech Lead / Dev đọc được những gap design ngay trong SPEC.md, không phải xem comment Figma.
 
-> **Output duy nhất** = Figma frames (cloud, high-fi) + cập nhật SPEC.md (## Screens Figma Link + ## Open Questions Design notes). KHÔNG viết UI-SPEC.md, KHÔNG viết figma context .md files.
+> **Output** = Figma frames (cloud, high-fi) + **Screen Index frame trên Figma (Bước 5.5)** + cập nhật SPEC.md (## Screens Figma Link + ## Open Questions Design notes). KHÔNG viết UI-SPEC.md, KHÔNG viết figma context .md files.
+
+### Bước 5.5 — Screen Index trên Figma (BẮT BUỘC sau khi vẽ xong)
+
+> Mục đích: ai mở file Figma cũng thấy ngay **đã vẽ gì** (màn nào · node nào · loại gì · ứng với phần nào của REQ/prototype/SPEC). Không có Screen Index = chưa hoàn thành.
+> **Đặc tả đầy đủ (vị trí, cột, style đo từ file mẫu, code, DoD) → `.claude/designer-agent/design-spec/30-screen-index.md`** — `Read` file này TRƯỚC khi dựng bảng.
+
+**5.5a. Thu thập** — duyệt các section/group vừa vẽ, mỗi FRAME màn hình/popup = 1 hàng (bỏ label TEXT). Lấy: node ID · Screen Code · tên · `Loại` (List/Detail/Form/Wizard/Dashb./Report/Settings/Chat/Modal/Popup/Toast) · `Ref` (# trạng thái prototype / FR / dòng REQ / mục SPEC) · mô tả ≤ 1 dòng.
+
+**5.5b. Dựng** — 1 FRAME `Screen Index — <Feature> · <platform>` **cùng page** với các section vừa vẽ (trên-trái cụm section, không chồng frame khác). Cấu trúc: tiêu đề `BẢNG SCREEN INDEX (<phạm vi>)` → dòng `Tổng: N frame …` (nêu **phạm vi chưa vẽ**) → header row `# · Screen · Ref · Loại · Mô tả` (nền `#E8F4FD`, viền `#0969DA`) → hàng dữ liệu xen kẽ trắng / `#F6F8FA` → hàng nhóm cho mỗi section khi ≥ 2 section → dòng chân. Ô `Screen` gắn **hyperlink NODE** tới frame. Style/kích thước/màu từng cột → `30-screen-index.md` §3 (format theo khối "BẢNG SCREEN INDEX" của file ALPHA-TEAM `86:1655`).
+
+**5.5c. Kiểm tra** — `get_screenshot` frame Screen Index: không cắt chữ, không chồng frame, số `Tổng` khớp số frame đã vẽ, hyperlink đúng. Ghi thêm bản markdown `screen-index.md` (cùng bảng + node ID) vào folder feature / `output/<feature>/`.
+
+**Vẽ bổ sung ở lần sau** → cập nhật **chính frame Screen Index đó** (thêm hàng, tô highlight cam `#FFF8F0`, sửa `Tổng`) — không tạo frame thứ hai.
+
+### Bước 5.6 — Field Description Table trên Figma (BẮT BUỘC sau Screen Index)
+
+> Output thứ 2 của Designer: bảng mô tả **từng trường (item)** của màn hình, JP | VI song song. **Đặc tả (nguồn, 24 cột, style đo từ mẫu `34325:198362`, cách dựng, DoD) → `.claude/designer-agent/design-spec/31-field-table.md`** — `Read` trước khi dựng.
+
+- **KHÔNG SUY DIỄN**: lấy nguyên văn từ **HTML prototype / tài liệu thiết kế có sẵn item** (vd `KD_DATA.views[].rows[]`), nếu không có thì từ `SPEC.md ## Screen Details`; không có cả hai → DỪNG, `AskUserQuestion`.
+- 1 khối `Fields · <Screen Code>` / màn hình chính = banner "Flow note" xanh (hyperlink tới frame) + Table 24 cột (No · 項目名 · 必須 · 入力形式 · 桁数・範囲 · 初期値 · 表示条件 · 詳細 · トリガー · バリデーション · 例 · エラーメッセージ ‖ nửa VI tương ứng).
+- Đặt trong SECTION `AI_Generate_Mô tả trường | <group>` ngay dưới section màn hình. File Design không có `createTable` → dựng bằng auto-layout.
+- Kiểm tra: số hàng = số dòng nguồn; không cắt chữ (`get_screenshot`). Ghi node ID các khối vào `screen-index.md`.
+
+### Bước 5.7 — Flow Connectors: nối liền các màn hình (BẮT BUỘC sau Field Table)
+
+> Mục đích: vẽ xong các frame thì phải **nối chúng lại thành luồng** — ai mở Figma cũng thấy màn nào dẫn tới màn nào, bằng hành động gì. Frame đứng rời = chưa xong.
+> **Đặc tả đầy đủ (style đo từ file mẫu `34847:83576`, hình học, code, DoD) → `.claude/designer-agent/design-spec/32-flow-connectors.md`** — `Read` file này TRƯỚC khi vẽ.
+
+**5.7a. Lập bảng chuyển tiếp** từ nguồn (prototype / `SPEC.md ## Flow Tổng Quan` + `## Screen Details` cột Navigation): `Từ → Đến · Nhãn JP · Nhãn VN`. **KHÔNG tự suy** chuyển tiếp; nguồn không nói → `AskUserQuestion`.
+
+**5.7b. Vẽ** mỗi chuyển tiếp = 1 đường nối `flow · <nhãn JP>` (xanh `#0A69D9`, nét 3 px, mũi tên tam giác ở đầu đích) + 1 nhãn 2 dòng JP/VN `flowlabel · <nhãn JP>` (Medium 14 px xanh). Kiểu đường: ngang (màn kề nhau) · dọc · khuỷu qua kênh giữa hai hàng · vòng ra lề trái (quay lại) · tỏa nhánh (1 trục chung, mỗi biến thể 1 nhãn). Thêm legend `legend · state flow` trên-trái section.
+
+**5.7c. Kiểm tra** — không frame mồ côi (mọi màn có ≥ 1 đường vào/ra) · số đường = số chuyển tiếp trong nguồn · không đường nào xuyên thân frame (quét bbox bằng script, không bằng mắt) · mũi tên chạm đúng mép đích (`get_screenshot`). Ghi bảng chuyển tiếp + node ID đường vào `screen-index.md`.
 
 ### Bước 6 — Handover
 
@@ -598,9 +631,12 @@ Khi Designer phát hiện design gap (state chưa rõ, flow chưa confirm, token
 
 Files đã update:
   - SPEC.md ## Screens — Figma Link đã điền cho <N> screens
+  - screen-index.md — bảng Screen Index (bản markdown) + node ID các Field Table
 
 Figma frames đã tạo (high-fi):
   - <list Screen Code + node-id>
+Screen Index (Figma): <figma-url của frame Screen Index> — <N> hàng / <N> frame
+Field Table (Figma): <N> khối `Fields · <Screen Code>` trong <section 'Mô tả trường'> — số hàng khớp nguồn
 
 Components reuse từ library:
   - <list components đã import>
@@ -610,6 +646,9 @@ Components SKIP wireframe (user đồng ý):
   - <list nếu có>
 
 Quality check:
+  ✅ Screen Index frame đã tạo trên Figma (Bước 5.5) — số hàng khớp số frame, hyperlink đúng
+  ✅ Field Description Table đã tạo cho mọi màn hình chính (Bước 5.6) — nguyên văn từ nguồn, không suy diễn
+  ✅ Flow Connectors đã nối (Bước 5.7) — <N> đường / <N> chuyển tiếp, không frame mồ côi, không đường xuyên frame
   ✅ Tất cả screens dùng component instance (không rectangle thủ công)
   ✅ Sample data realistic đúng domain/ngôn ngữ dự án
   ✅ Icons + status badges + pagination đầy đủ
@@ -635,3 +674,4 @@ Sau khi có task files — implement theo repo:
 - **KHÔNG tạo file UI-SPEC.md hoặc figma/figma_*_context.md** — các agents khác đọc Figma MCP trực tiếp từ URL trong SPEC.md ## Screens
 - **KHÔNG vẽ wireframe (rectangle + plain text) khi mục tiêu là HIGH-FIDELITY**. Nếu thiếu component → STOP và HỎI USER (xem rule ⚠️ ở đầu file)
 - Mỗi screen phải đạt **quality level** tương đương reference screen mẫu (do team cung cấp) hoặc bị flag re-design
+- **BẮT BUỘC tạo Screen Index frame trên Figma sau khi vẽ xong** (Bước 5.5 · spec `design-spec/30-screen-index.md`). Chưa có Screen Index, Field Description Table **và Flow Connectors (Bước 5.7 · `design-spec/32-flow-connectors.md`)** → chưa được báo "hoàn thành" ở Bước 6
