@@ -1,4 +1,4 @@
-name: Deployment to EC2 automatically
+name: Deploy wiki to S3 + CloudFront
 
 on:
   push:
@@ -9,17 +9,24 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
+# id-token: write lets the job get a GitHub OIDC token; no repository secrets needed.
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-1
+  # Not secrets: the role only trusts this repo's main branch (es-kitchen-infra/environments/wiki).
+  AWS_ROLE_ARN: arn:aws:iam::049985671158:role/estkitchen-wiki-deploy
+  S3_BUCKET: estkitchen-wiki-049985671158
+  CLOUDFRONT_DISTRIBUTION_ID: E10B2U2P8VP0IG
+
 jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      steps:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -33,24 +40,14 @@ jobs:
       - name: Build documentation
         run: cd es-kitchen-docs && mkdocs build --strict
 
-      - name: Validate required secrets
-        run: |
-          test -n "${{ secrets.DEPLOY_HOST }}" || (echo "Missing secret: DEPLOY_HOST" && exit 1)
-          test -n "${{ secrets.DEPLOY_USER }}" || (echo "Missing secret: DEPLOY_USER" && exit 1)
-          test -n "${{ secrets.DEPLOY_SSH_KEY }}" || (echo "Missing secret: DEPLOY_SSH_KEY" && exit 1)
-
-      - name: Start SSH agent and load key
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Trust remote host
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -p "${{ secrets.DEPLOY_PORT }}" -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+      - name: Upload site
+        run: aws s3 sync ./es-kitchen-docs/site/ "s3://${S3_BUCKET}/" --delete
 
-      - name: Deploy via Rsync
-        env:
-          DEST_DIR: "/var/www/wiki/site" # Change this to your EC2 web server path
-        run: |
-          rsync -avz --delete ./es-kitchen-docs/site/ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:$DEST_DIR
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id "${CLOUDFRONT_DISTRIBUTION_ID}" --paths "/*"
