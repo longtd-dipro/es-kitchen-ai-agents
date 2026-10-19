@@ -1,0 +1,74 @@
+{
+  "menuItems": [
+    "ホーム",
+    "スケジュール",
+    "配送管理",
+    "見積もり管理",
+    "集金・駐車",
+    "配送スタッフ",
+    "プロフィール"
+  ],
+  "activeMenu": "ホーム",
+  "h1": [
+    "ホーム"
+  ],
+  "h2": [
+    "今月の配送スケジュール",
+    "お知らせ",
+    "未回答の見積もり依頼"
+  ],
+  "h3": [],
+  "breadcrumb": "ホーム/ホーム",
+  "bodyText": "\n    ホームスケジュール配送管理見積もり管理集金・駐車配送スタッフプロフィールお帰りなさいhoangh31@yopmail.comホーム/ホームホーム今月の配送スケジュールスケジュールへ月火水木金土日282930123456配送：2件未 2件7配送：2件未 2件8910111213配送：2件未 2件1415配送：1件未 1件1617181920配送：1件未 1件21配送：2件未 2件222324252627282930311先月・来月祝・休日配送スタッフ未設定当日お知らせ21日前 · 15:50重要ssssss21日前 · 15:48お知らせtest lai21日前 · 15:32重要qqqq21日前 · 15:29お知らせgggggggg21日前 · 15:24重要Hoàng đã sai21日前 · 15:22重要ttttt21日前 · 14:35お知らせcó accceptp未回答の見積もり依頼見積もり一覧へ未回答の見積もり依頼はありません。\n  \n",
+  "tables": 0,
+  "label_exact_今月の配送スケジュール": 1,
+  "label_partial_今月の配送スケジュール": 1,
+  "label_exact_お知らせ": 4,
+  "label_partial_お知らせ": 4,
+  "label_exact_未回答の見積もり依頼": 1,
+  "label_partial_未回答の見積もり依頼": 2,
+  "label_exact_スケジュールへ": 1,
+  "label_partial_スケジュールへ": 1,
+  "label_exact_一覧に戻る": 0,
+  "label_partial_一覧に戻る": 0,
+  "annoSectionCount": 0,
+  "cardCount": 0,
+  "cardTitles": [],
+  "calGridCount": 0,
+  "calGridHTML_300": "",
+  "noticeLinkHrefs": [],
+  "mainContentHTML_500": "<div class=\"py-6\"><div class=\"base-heading-breadcrumb mb-5 flex items-center justify-between gap-3\"><div class=\"flex flex-col gap-1\"><nav class=\"ant-breadcrumb mb-0 css-1tzwyuk app\"><ol><li class=\"ant-breadcrumb-item\"><span class=\"ant-breadcrumb-link\">ホーム</span></li><li class=\"ant-breadcrumb-separator\" aria-hidden=\"true\">/</li><li class=\"ant-breadcrumb-item\"><span class=\"ant-breadcrumb-link\">ホーム</span></li></ol></nav><h1 class=\"mb-0! text-2xl font-normal text-neutral-900\">ホーム</h1></div><div class=\"heading-breadcrumb-actions\"></div></div><div class=\"flex flex-col gap-6 xl:flex-row\"><section class=\"flex flex-col gap-4 rounded-lg bg-white px-4 py-6 min-w-0 flex-1\"><div class=\"flex items-center justify-between gap-3\"><h2 class=\"text-txt-high mb-0! text-[22px] leading-7 font-bold tracking-[0.05em]\">今月の配送スケジュール</h2><a class=\"text-sm font-medium text-blue-500 underline\" href=\"/schedule\" data-discover=\"true\">スケジュールへ</a></div><div class=\"flex flex-col gap-2\"><div class=\"grid grid-cols-7 gap-1\">",
+  "schedLinkHref": "/schedule",
+  "estimateLinkHref": "/orders",
+  "sidebarLinks": [
+    {
+      "text": "ホーム",
+      "href": null
+    },
+    {
+      "text": "スケジュール",
+      "href": null
+    },
+    {
+      "text": "配送管理",
+      "href": null
+    },
+    {
+      "text": "見積もり管理",
+      "href": null
+    },
+    {
+      "text": "集金・駐車",
+      "href": null
+    },
+    {
+      "text": "配送スタッフ",
+      "href": null
+    },
+    {
+      "text": "プロフィール",
+      "href": null
+    }
+  ],
+  "todayCellCount": 0
+}

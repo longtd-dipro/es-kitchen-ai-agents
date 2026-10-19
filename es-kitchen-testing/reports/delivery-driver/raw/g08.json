@@ -1,0 +1,307 @@
+{
+ "TC-TRB-001-001": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-001.png"
+ },
+ "TC-TRB-001-002": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-002.png"
+ },
+ "TC-TRB-001-005": {
+  "result": "OK",
+  "note": "Du lieu DEV khac TC (dung 伊田 thay 大和): loc tuc thi khi go, chi con the khop, the kho 未受取 bi an",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-005.png"
+ },
+ "TC-TRB-001-010": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-010.png"
+ },
+ "TC-TRB-001-022": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-022.png"
+ },
+ "TC-TRB-001-023": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-023.png"
+ },
+ "TC-TRB-001-024": {
+  "result": "OK",
+  "note": "Dung the diem giao + the kho (du lieu DEV)",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-024.png"
+ },
+ "TC-TRB-001-026": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-026.png"
+ },
+ "TC-TRB-001-027": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-027.png"
+ },
+ "TC-TRB-001-036": {
+  "result": "OK",
+  "note": "Duong dan thuc te la /issues (TC ghi /trouble)",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-036.png"
+ },
+ "TC-TRB-001-040": {
+  "result": "NG",
+  "note": "Actual: nhan dup 次へ roi Back 1 lan van o /issues/11557 (DA_RPTD_002 bi them 2 lan vao history); doi chung: bam 1 lan roi Back → /issues dung | Expected: chi mo 1 man DA_RPTD_002, Back 1 lan ve DA_RPTD_001 | Buoc: chon the, dblclick 次へ, Back",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-001-040.png"
+ },
+ "TC-TRB-002-014": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-014.png"
+ },
+ "TC-TRB-002-017": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-017.png"
+ },
+ "TC-TRB-002-021": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-021.png"
+ },
+ "TC-TRB-002-022": {
+  "result": "NG",
+  "note": "Actual: vien o nhap mau rgb(208, 215, 222)|oklab(0.539907 -0.0412925 -0.186042 / 0.5)|rgba(0, 0, 0, 0) 0 (khong do) | Expected: vien do | Buoc: chon その他",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-022.png"
+ },
+ "TC-TRB-002-024": {
+  "result": "NG",
+  "note": "Actual: thong bao 「理由を入力してください。」 (co dau 。 cuoi, hien dang thong bao tren dau man hinh, khong inline duoi o nhap) | Expected: 「理由を入力してください」 inline (E_DARPTD002_003) | Bước: chon その他, de trong, bam 送信 | Evidence: anh",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-024.png"
+ },
+ "TC-TRB-002-026": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-026.png"
+ },
+ "TC-TRB-002-027": {
+  "result": "NG",
+  "note": "Actual: modal DA_RPTD_004 van mo, KHONG co loi 255文字以内; o nhap khong co maxlength | Expected: loi inline 「理由は255文字以内で入力してください」, khong mo modal | Buoc: nhap 256 ky tu あ, bam 送信 | Evidence: anh",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-027.png"
+ },
+ "TC-TRB-002-034": {
+  "result": "OK",
+  "note": "File JPEG 2MB tao bang noise (qc_photo_01.jpg)",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-034.png"
+ },
+ "TC-TRB-002-036": {
+  "result": "NG",
+  "note": "Actual: file PDF duoc chap nhan (bo dem anh thanh 1/5枚), khong co loi; input chi co accept=image/* nen chi chan o file picker | Expected: loi inline 「対応していないファイル形式です」 va khong them thumbnail (E_DARPTD002_006) | Buoc: chon qc_doc.pdf (setInputFiles) | Evidence: anh",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-036.png"
+ },
+ "TC-TRB-002-037": {
+  "result": "NG",
+  "note": "Actual: anh ~11.2MB duoc chap nhan, khong co loi (bo dem 1/5枚) | Expected: loi inline 「ファイルサイズは10MB以下にしてください」 (E_DARPTD002_007) va khong them thumbnail | Buoc: chon qc_big_11mb.jpg | Evidence: anh",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-037.png"
+ },
+ "TC-TRB-002-038": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-038.png"
+ },
+ "TC-TRB-002-039": {
+  "result": "NG",
+  "note": "Actual: 20 thumbnail, bo dem hien 「20/5枚」 (gioi han hien thi la 5 anh) | Expected: 20 thumbnail, gioi han toi da 20 anh (SPEC/TC) | Buoc: chon 20 file | Evidence: anh",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-039.png"
+ },
+ "TC-TRB-002-040": {
+  "result": "NG",
+  "note": "Actual: anh thu 21 duoc them, khong co loi (bo dem 「21/5枚」) | Expected: loi inline 「写真は最大20枚までです」 (E_DARPTD002_008), van 20 thumbnail | Buoc: chon 20 anh roi them anh thu 21 | Evidence: anh",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-040.png"
+ },
+ "TC-TRB-002-042": {
+  "result": "OK",
+  "note": "Chi xac nhan so luong thumbnail (3 -> 2); khong phan biet duoc anh nao bi xoa vi 3 anh cung noi dung",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-042.png"
+ },
+ "TC-TRB-002-050": {
+  "result": "NG",
+  "note": "Actual: modal DA_RPTD_004 van mo, KHONG co loi 500文字以内; textarea khong co maxlength | Expected: loi inline 「備考は500文字以内で入力してください」 (E_DARPTD002_005), khong mo modal | Buoc: nhap 501 ky tu vao 備考, roi bam 送信 | Evidence: anh",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-050.png"
+ },
+ "TC-TRB-002-054": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-054.png"
+ },
+ "TC-TRB-002-055": {
+  "result": "OK",
+  "note": "Chua co request ghi nao duoc gui khi moi mo modal (da chan moi request ghi)",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-055.png"
+ },
+ "TC-TRB-002-058": {
+  "result": "NG",
+  "note": "Actual: sau dblclick 送信 co 0 modal (modal mo roi bi lan click thu 2 trung lop phu dong lai) | Expected: dung 1 modal DA_RPTD_004 hien ra | Buoc: wb + radio, nhan dup nhanh 送信 | Evidence: anh",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-058.png"
+ },
+ "TC-TRB-002-067": {
+  "result": "OK",
+  "note": "Route that: /issues/:id (TC ghi /trouble/:id); /issues/1 chua dang nhap → /login; /trouble/1 → /login",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-067.png"
+ },
+ "TC-TRB-002-015": {
+  "result": "NG",
+  "note": "Actual: chi chon radio 「誤配送」 (chua tich van don) → 送信 ENABLE va bam 送信 mo modal 「この内容で報告を送信しますか？」, khong co loi 「影響を受けた注文を1件以上選択してください」 | Expected: 送信 van disable, khong hien modal | Buoc: mo chi tiet kho (1 van don), chon 誤配送 | Evidence: reports/delivery-driver/screenshots/g08_TC-TRB-002-015.png",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-002-015.png"
+ },
+ "TC-TRB-E16-001": {
+  "result": "OK",
+  "note": "Chi kiem thu thu tu/noi dung bang DOM; mau sac/pixel khong doi chieu",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-E16-001.png"
+ },
+ "TC-TRB-E16-002": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-E16-002.png"
+ },
+ "TC-TRB-E16-007": {
+  "result": "OK",
+  "note": "Xac nhan lien ket tel:050-5784-2777 va popup van mo; khong mo duoc app dien thoai that tren Chromium headless",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-E16-007.png"
+ },
+ "TC-TRB-E16-009": {
+  "result": "NG",
+  "note": "Actual: nut 「トラブル報告へ」 DISABLE cho den khi tich checkbox 「ESキッチンへ連絡済みです。」 ; sau khi tich 「ESキッチンへ連絡済みです。」 thi bam duoc va chuyen /issues (DA_RPTD_001), popup dong | Expected: bam truc tiep 「トラブル報告へ」 la sang DA_RPTD_001 (BD ghi anh huong checkbox len nut la UNKNOWN - can xac nhan OQ) | Buoc: mo popup, bam nut khi chua tich",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-E16-009.png"
+ },
+ "TC-TRB-E16-011": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-E16-011.png"
+ },
+ "TC-TRB-E17-001": {
+  "result": "OK",
+  "note": "Chi doi chieu thu tu/noi dung bang DOM",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-E17-001.png"
+ },
+ "TC-TRB-E17-004": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-E17-004.png"
+ },
+ "TC-TRB-E17-007": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g08_TC-TRB-E17-007.png"
+ },
+ "TC-TRB-001-018": {
+  "result": "Pending",
+  "note": "Du lieu DEV khac TC (the 伊田テクノス, khong co dong ten kho trong the diem giao, 0箱/100品/0品). Can diem giao ES配送便 co kho 所属倉庫 + dia chi/so luong nhu TC de doi chieu day du; quan sat: the co ten, badge 「未配送」, dia chi, tom tat 箱/品/品, radio; KHONG thay dong kho",
+  "evidence": ""
+ },
+ "TC-TRB-001-020": {
+  "result": "Pending",
+  "note": "Can diem giao A (chua giao) + diem giao B (配送完了) cung luc tren DEV de doi chieu; tai khoan test khong co lich giao",
+  "evidence": ""
+ },
+ "TC-TRB-001-025": {
+  "result": "Pending",
+  "note": "Chon the kho → 次へ sang man chi tiet duoc, nhung noi dung danh sach van don (chua nhan va chua giao cua kho, loai tru da nhan/da giao) can du lieu kho オージーフーズ倉庫 + nhieu trang thai don de xac nhan",
+  "evidence": ""
+ },
+ "TC-TRB-001-029": {
+  "result": "Pending",
+  "note": "Can tai khoan DR_QC002 (khong co don 未配送); tai khoan test hien tai co the 伊田テクノス nen khong tai hien duoc trang thai trong",
+  "evidence": ""
+ },
+ "TC-TRB-002-001": {
+  "result": "Pending",
+  "note": "Du lieu DEV chi co the voi 0-1 van don nen khong doi chieu duoc checkbox chon tat ca va 3 dong van don; cac phan con lai (※, トラブル内容 4 radio, 画像 placeholder + ファイル選択, 備考 textarea, 戻る/送信 disable) khop; luu y bo dem anh hien 0/5枚",
+  "evidence": ""
+ },
+ "TC-TRB-002-009": {
+  "result": "Pending",
+  "note": "Can the diem giao co >= 2 van don (hien the diem 伊田 khong co van don, kho chi 1 van don)",
+  "evidence": ""
+ },
+ "TC-TRB-002-011": {
+  "result": "Pending",
+  "note": "Can the diem giao co >= 2 van don de co trang thai trung gian (−)",
+  "evidence": ""
+ },
+ "TC-TRB-002-029": {
+  "result": "Pending",
+  "note": "Phan nhap XSS khong gay alert den buoc mo modal; buoc cuoi 「報告する」 bi cam (ghi du lieu that) nen chua xac nhan viec luu/hien thi van ban thuong",
+  "evidence": ""
+ },
+ "TC-TRB-002-035": {
+  "result": "Pending",
+  "note": "Khong tao duoc file HEIC/WebP hop le trong moi truong test (chi tao duoc PNG/JPEG); PNG da hien thumbnail trong cac TC khac",
+  "evidence": ""
+ },
+ "TC-TRB-002-046": {
+  "result": "Pending",
+  "note": "Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi); can xem request upload anh sau 「報告する」",
+  "evidence": ""
+ },
+ "TC-TRB-002-056": {
+  "result": "Pending",
+  "note": "Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi)",
+  "evidence": ""
+ },
+ "TC-TRB-002-057": {
+  "result": "Pending",
+  "note": "Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi)",
+  "evidence": ""
+ },
+ "TC-TRB-E16-003": {
+  "result": "Pending",
+  "note": "Can mo DA_RECV_001 / DA_ESDL_001 / DA_COOL_001 (chi tiet giao hang that); tai khoan test khong co lich giao nen khong vao duoc cac man nay",
+  "evidence": ""
+ },
+ "TC-TRB-E17-006": {
+  "result": "Pending",
+  "note": "Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi)",
+  "evidence": ""
+ },
+ "TC-TRB-E17-014": {
+  "result": "Pending",
+  "note": "Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi); [UNCONFIRMED] cach the hien UI chua mo ta",
+  "evidence": ""
+ },
+ "TC-TRB-E18-001": {
+  "result": "Pending",
+  "note": "Toast/badge xuat hien sau khi gui bao cao thanh cong (hoac gui that bai) tren Home; Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi)",
+  "evidence": ""
+ },
+ "TC-TRB-E18-002": {
+  "result": "Pending",
+  "note": "Toast/badge xuat hien sau khi gui bao cao thanh cong (hoac gui that bai) tren Home; Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi)",
+  "evidence": ""
+ },
+ "TC-TRB-E18-004": {
+  "result": "Pending",
+  "note": "Toast/badge xuat hien sau khi gui bao cao thanh cong (hoac gui that bai) tren Home; Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi)",
+  "evidence": ""
+ },
+ "TC-TRB-E18-007": {
+  "result": "Pending",
+  "note": "Toast/badge xuat hien sau khi gui bao cao thanh cong (hoac gui that bai) tren Home; Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi)",
+  "evidence": ""
+ },
+ "TC-TRB-E18-008": {
+  "result": "Pending",
+  "note": "Toast/badge xuat hien sau khi gui bao cao thanh cong (hoac gui that bai) tren Home; Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi)",
+  "evidence": ""
+ },
+ "TC-TRB-E18-009": {
+  "result": "Pending",
+  "note": "Toast/badge xuat hien sau khi gui bao cao thanh cong (hoac gui that bai) tren Home; Bi cam: gui bao cao/ghi du lieu that tren DEV dung chung (da chan request ghi)",
+  "evidence": ""
+ },
+ "TC-TRB-002-069": {
+  "result": "N/A",
+  "note": "Ban phim ao that tren thiet bi di dong",
+  "evidence": ""
+ }
+}

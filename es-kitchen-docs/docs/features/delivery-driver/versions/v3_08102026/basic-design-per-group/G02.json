@@ -1,0 +1,211 @@
+{
+ "group_no": "02",
+ "key": "Reset Password",
+ "file": "BD_02_Reset Password.xlsx",
+ "figma_group_nodes": [
+  "34199:211569"
+ ],
+ "figma_group_names": [
+  "Group Reset Password"
+ ],
+ "screens": [
+  "DA_AUTHEN_002_01",
+  "DA_AUTHEN_002_02",
+  "DA_AUTHEN_002_04",
+  "DA_AUTHEN_002_06"
+ ],
+ "frames": [
+  {
+   "no": "02-01",
+   "name": "DA_AUTHEN_002_01 — パスワードリセット ステップ1：ID・メールアドレス [default]",
+   "node": "16422:120856",
+   "w": 384,
+   "h": 814,
+   "kind": "Screen",
+   "screen_id": "DA_AUTHEN_002_01",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Hàng trên (y=2969), 4 con"
+  },
+  {
+   "no": "02-02",
+   "name": "DA_AUTHEN_002_02 — パスワードリセット ステップ2：認証コード [default]",
+   "node": "16422:120906",
+   "w": 385,
+   "h": 814,
+   "kind": "Screen",
+   "screen_id": "DA_AUTHEN_002_02",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Hàng trên, 4 con"
+  },
+  {
+   "no": "02-03",
+   "name": "DA_AUTHEN_002_03 — パスワードリセット ステップ2：認証コード [state: 4 ô, 確認 active]",
+   "node": "16422:120940",
+   "w": 384,
+   "h": 814,
+   "kind": "State",
+   "screen_id": "DA_AUTHEN_002_02",
+   "state_label": "state của 002_02 (theo brief)",
+   "dup_of": null,
+   "note": "Hàng trên, 4 con; nội dung state CHƯA xác minh bằng screenshot (Figma rate limit)"
+  },
+  {
+   "no": "02-04",
+   "name": "DA_AUTHEN_002_04 — パスワードリセット ステップ3：新しいパスワード [default]",
+   "node": "16422:120873",
+   "w": 384,
+   "h": 814,
+   "kind": "Screen",
+   "screen_id": "DA_AUTHEN_002_04",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Hàng trên, 4 con"
+  },
+  {
+   "no": "02-05",
+   "name": "DA_AUTHEN_002_06 — パスワードリセット完了 [default]",
+   "node": "16422:120894",
+   "w": 385,
+   "h": 814,
+   "kind": "Screen",
+   "screen_id": "DA_AUTHEN_002_06",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Hàng trên, 3 con; trùng tên với 02-09, chưa xác định bản nào là bản chuẩn"
+  },
+  {
+   "no": "02-06",
+   "name": "DA_AUTHEN_002_01 — パスワードリセット ステップ1：ID・メールアドレス [bản hàng dưới ]",
+   "node": "20239:150525",
+   "w": 384,
+   "h": 814,
+   "kind": "Duplicate",
+   "screen_id": "DA_AUTHEN_002_01",
+   "state_label": "bản hàng dưới (y=4165)",
+   "dup_of": "02-01",
+   "note": "7 con (nhiều hơn bản trên) — nghi bản có chú thích; CHƯA xác minh"
+  },
+  {
+   "no": "02-07",
+   "name": "DA_AUTHEN_002_02、DA_AUTHEN_002_03 — パスワードリセット ステップ2：認証コード [gộp 2 state]",
+   "node": "20239:151452",
+   "w": 816,
+   "h": 814,
+   "kind": "Duplicate",
+   "screen_id": "DA_AUTHEN_002_02",
+   "state_label": "gộp 002_02 + 002_03 cạnh nhau",
+   "dup_of": "02-02,02-03",
+   "note": "8 con; frame gộp 2 màn (816px) — nghi bản có chú thích; CHƯA xác minh"
+  },
+  {
+   "no": "02-08",
+   "name": "DA_AUTHEN_002_04 — パスワードリセット ステップ3：新しいパスワード [bản hàng dưới]",
+   "node": "20240:152422",
+   "w": 384,
+   "h": 814,
+   "kind": "Duplicate",
+   "screen_id": "DA_AUTHEN_002_04",
+   "state_label": "bản hàng dưới",
+   "dup_of": "02-04",
+   "note": "6 con — nghi bản có chú thích; CHƯA xác minh"
+  },
+  {
+   "no": "02-09",
+   "name": "DA_AUTHEN_002_06 — パスワードリセット完了 [bản hàng dưới]",
+   "node": "20240:152572",
+   "w": 385,
+   "h": 814,
+   "kind": "Duplicate",
+   "screen_id": "DA_AUTHEN_002_06",
+   "state_label": "bản hàng dưới",
+   "dup_of": "02-05",
+   "note": "2 con (ít hơn 02-05) — CHƯA xác minh"
+  }
+ ],
+ "non_screen_counts": {
+  "TABLE": 8,
+  "CONNECTOR": 4
+ },
+ "tables": [
+  {
+   "node": "20238:149553",
+   "summary": "Bảng mô tả cạnh 002_01 (x4046,12 con) — nội dung chưa đọc (rate limit)"
+  },
+  {
+   "node": "20238:149552",
+   "summary": "Bảng cạnh 002_02/03 (x4801,12 con) — nội dung chưa đọc (rate limit)"
+  },
+  {
+   "node": "20238:149554",
+   "summary": "Bảng cạnh 002_04 (x5800,12 con) — nội dung chưa đọc (rate limit)"
+  },
+  {
+   "node": "20238:149555",
+   "summary": "Bảng cạnh 002_06 (x6654,12 con) — nội dung chưa đọc (rate limit)"
+  },
+  {
+   "node": "20239:150170",
+   "summary": "Bảng lớn 4000x832 (168 ô), cạnh 002_01 bản dưới — nội dung chưa đọc (rate limit)"
+  },
+  {
+   "node": "20239:151066",
+   "summary": "Bảng lớn 4522x968 (192 ô), cạnh 002_02/03 bản dưới — nội dung chưa đọc (rate limit)"
+  },
+  {
+   "node": "20240:151938",
+   "summary": "Bảng lớn 4510x952 (240 ô), cạnh 002_04 bản dưới — nội dung chưa đọc (rate limit)"
+  },
+  {
+   "node": "20240:152458",
+   "summary": "Bảng 2117x448 (52 ô), cạnh 002_06 bản dưới — nội dung chưa đọc (rate limit)"
+  }
+ ],
+ "images": {
+  "DA_AUTHEN_002_01": [
+   {
+    "file": "N02/02-01_DA_AUTHEN_002_01.png",
+    "node": "16422:120856",
+    "no": "02-01",
+    "label": "DA_AUTHEN_002_01 · Screen · default"
+   }
+  ],
+  "DA_AUTHEN_002_02": [
+   {
+    "file": "N02/02-02_DA_AUTHEN_002_02.png",
+    "node": "16422:120906",
+    "no": "02-02",
+    "label": "DA_AUTHEN_002_02 · Screen · default"
+   },
+   {
+    "file": "N02/02-03_DA_AUTHEN_002_02.png",
+    "node": "16422:120940",
+    "no": "02-03",
+    "label": "DA_AUTHEN_002_03 · State · state của 002_02 (theo brief)"
+   }
+  ],
+  "DA_AUTHEN_002_04": [
+   {
+    "file": "N02/02-04_DA_AUTHEN_002_04.png",
+    "node": "16422:120873",
+    "no": "02-04",
+    "label": "DA_AUTHEN_002_04 · Screen · default"
+   }
+  ],
+  "DA_AUTHEN_002_06": [
+   {
+    "file": "N02/02-05_DA_AUTHEN_002_06.png",
+    "node": "16422:120894",
+    "no": "02-05",
+    "label": "DA_AUTHEN_002_06 · Screen · default"
+   }
+  ]
+ },
+ "open": [
+  "Figma rate limit chạm sau 1 lần đọc: KHÔNG đọc được text/screenshot frame, KHÔNG export ảnh state, KHÔNG đối chiếu items với Figma. JSON 4 màn giữ nguyên nội dung bản trước, chỉ thêm khóa figma.",
+  "kind Duplicate của 02-06..02-09 và State của 02-03 suy từ tên/kích thước/số con, chưa xem screenshot.",
+  "Brief ghi 7 TABLE + 5 CONNECTOR; thực đọc 8 TABLE + 4 CONNECTOR (21 con = 9 frame + 8 + 4).",
+  "DA_AUTHEN_002_03 chưa có ảnh; ảnh G02 là ảnh cũ copy, chưa kiểm khớp frame."
+ ]
+}

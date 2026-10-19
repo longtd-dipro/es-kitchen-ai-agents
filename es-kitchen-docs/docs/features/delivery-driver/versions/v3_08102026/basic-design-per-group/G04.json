@@ -1,0 +1,184 @@
+{
+ "group_no": "04",
+ "key": "Home",
+ "file": "BD_04_Home.xlsx",
+ "figma_group_nodes": [
+  "34199:206579"
+ ],
+ "figma_group_names": [
+  "Group HOME"
+ ],
+ "screens": [
+  "DA_HOME_001",
+  "DA_HOME_006",
+  "DA_HOME_007",
+  "DA_HOME_008"
+ ],
+ "frames": [
+  {
+   "no": "04-01",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [master component; component]",
+   "node": "15719:120976",
+   "w": 390,
+   "h": 1312,
+   "kind": "Component",
+   "screen_id": "DA_HOME_001",
+   "state_label": "master component",
+   "dup_of": null,
+   "note": "Phân loại theo tên/kích thước node, chưa xem screenshot (Figma MCP hết hạn mức) — cần xác nhận lại"
+  },
+  {
+   "no": "04-02",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [instance; component]",
+   "node": "20240:152573",
+   "w": 390,
+   "h": 868,
+   "kind": "Component",
+   "screen_id": "DA_HOME_001",
+   "state_label": "instance",
+   "dup_of": null,
+   "note": "Phân loại theo tên/kích thước node, chưa xem screenshot (Figma MCP hết hạn mức) — cần xác nhận lại"
+  },
+  {
+   "no": "04-03",
+   "name": "DA_HOME_008 — 配送予定データなし（1日） [1 ngày trống]",
+   "node": "16892:77185",
+   "w": 390,
+   "h": 849,
+   "kind": "State",
+   "screen_id": "DA_HOME_008",
+   "state_label": "1 ngày trống",
+   "dup_of": null,
+   "note": "Phân loại theo tên/kích thước node, chưa xem screenshot (Figma MCP hết hạn mức) — cần xác nhận lại"
+  },
+  {
+   "no": "04-04",
+   "name": "DA_HOME_007 — 配送予定なし（SOLちゃん） [3 ngày trống + SOL ちゃん]",
+   "node": "16892:77680",
+   "w": 390,
+   "h": 844,
+   "kind": "State",
+   "screen_id": "DA_HOME_007",
+   "state_label": "3 ngày trống + SOL ちゃん",
+   "dup_of": null,
+   "note": "Phân loại theo tên/kích thước node, chưa xem screenshot (Figma MCP hết hạn mức) — cần xác nhận lại"
+  },
+  {
+   "no": "04-05",
+   "name": "DA_HOME_007 — 配送予定なし（SOLちゃん） [biến thể -3]",
+   "node": "20235:148985",
+   "w": 390,
+   "h": 844,
+   "kind": "State",
+   "screen_id": "DA_HOME_007",
+   "state_label": "biến thể -3",
+   "dup_of": null,
+   "note": "Phân loại theo tên/kích thước node, chưa xem screenshot (Figma MCP hết hạn mức) — cần xác nhận lại"
+  },
+  {
+   "no": "04-06",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [bản trùng]",
+   "node": "20235:148979",
+   "w": 390,
+   "h": 1312,
+   "kind": "Duplicate",
+   "screen_id": "DA_HOME_001",
+   "state_label": "",
+   "dup_of": "04-01",
+   "note": "Phân loại theo tên/kích thước node, chưa xem screenshot (Figma MCP hết hạn mức) — cần xác nhận lại"
+  },
+  {
+   "no": "04-07",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [badge trạng thái; component]",
+   "node": "15719:122093",
+   "w": 251,
+   "h": 135,
+   "kind": "Component",
+   "screen_id": "DA_HOME_001",
+   "state_label": "badge trạng thái",
+   "dup_of": null,
+   "note": "Phân loại theo tên/kích thước node, chưa xem screenshot (Figma MCP hết hạn mức) — cần xác nhận lại"
+  },
+  {
+   "no": "04-08",
+   "name": "4",
+   "node": "20235:149034",
+   "w": 447,
+   "h": 579,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": null,
+   "note": "Phân loại theo tên/kích thước node, chưa xem screenshot (Figma MCP hết hạn mức) — cần xác nhận lại"
+  }
+ ],
+ "non_screen_counts": {
+  "TABLE": 5,
+  "CONNECTOR": 3,
+  "FRAME 'disc' 18×19 (chấm minh hoạ)": 5
+ },
+ "tables": [
+  {
+   "node": "20224:209135",
+   "summary": "Bảng mô tả — chưa đọc nội dung (hết hạn mức Figma)"
+  },
+  {
+   "node": "20234:148074",
+   "summary": "Bảng mô tả — chưa đọc nội dung (hết hạn mức Figma)"
+  },
+  {
+   "node": "20231:148602",
+   "summary": "Bảng mô tả — chưa đọc nội dung (hết hạn mức Figma)"
+  },
+  {
+   "node": "20235:148276",
+   "summary": "Bảng mô tả — chưa đọc nội dung (hết hạn mức Figma)"
+  },
+  {
+   "node": "20235:148473",
+   "summary": "Bảng mô tả — chưa đọc nội dung (hết hạn mức Figma)"
+  }
+ ],
+ "images": {
+  "DA_HOME_001": [
+   {
+    "file": "N04/04-01_DA_HOME_001.png",
+    "node": "15719:120976",
+    "no": "04-01",
+    "label": "DA_HOME_001 · Component · master component"
+   },
+   {
+    "file": "N04/04-02_DA_HOME_001.png",
+    "node": "20240:152573",
+    "no": "04-02",
+    "label": "DA_HOME_001 · Component · instance"
+   }
+  ],
+  "DA_HOME_007": [
+   {
+    "file": "N04/04-04_DA_HOME_007.png",
+    "node": "16892:77680",
+    "no": "04-04",
+    "label": "DA_HOME_007 · State · 3 ngày trống + SOL ちゃん"
+   },
+   {
+    "file": "N04/04-05_DA_HOME_007.png",
+    "node": "20235:148985",
+    "no": "04-05",
+    "label": "DA_HOME_007 · State · biến thể -3"
+   }
+  ],
+  "DA_HOME_008": [
+   {
+    "file": "N04/04-03_DA_HOME_008.png",
+    "node": "16892:77185",
+    "no": "04-03",
+    "label": "DA_HOME_008 · State · 1 ngày trống"
+   }
+  ]
+ },
+ "open": [
+  "Figma MCP hết hạn mức: chưa xem screenshot/bảng mô tả; JSON chưa dựng lại từ Figma (giữ bản trước đã duyệt)",
+  "DA_HOME_006 (toast chặn kho) chưa có frame Figma"
+ ]
+}

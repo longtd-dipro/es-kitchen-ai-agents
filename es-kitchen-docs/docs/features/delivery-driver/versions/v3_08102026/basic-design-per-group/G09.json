@@ -1,0 +1,248 @@
+{
+ "group_no": "09",
+ "key": "Giao hàng COOL",
+ "file": "BD_09_Giao hàng COOL.xlsx",
+ "figma_group_nodes": [
+  "34199:211576"
+ ],
+ "figma_group_names": [
+  "Giao hàng Cool"
+ ],
+ "screens": [
+  "DA_COOL_001",
+  "DA_COOL_004",
+  "DA_COOL_002",
+  "DA_COOL_003"
+ ],
+ "frames": [
+  {
+   "no": "09-01",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [context]",
+   "node": "18260:100270",
+   "w": 654,
+   "h": 1939,
+   "kind": "Context",
+   "screen_id": null,
+   "state_label": "Home (minh hoạ luồng)",
+   "dup_of": null,
+   "note": "Chưa xem screenshot (hết hạn mức Figma); phân loại dựa trên cây node + text. Màn nhóm Home, chỉ nằm cạnh để minh hoạ luồng thẻ COOL → DA_COOL_001"
+  },
+  {
+   "no": "09-02",
+   "name": "DA_COOL_001 — COOL便：配送詳細 [default (chưa tích)]",
+   "node": "20266:172696",
+   "w": 654,
+   "h": 2337,
+   "kind": "Screen",
+   "screen_id": "DA_COOL_001",
+   "state_label": "default (chưa tích)",
+   "dup_of": null,
+   "note": "Chưa xem screenshot (hết hạn mức Figma); phân loại dựa trên cây node + text. Node kiểu COMPONENT; tiêu đề 「COOL便」, icon còi header, 3 checkbox chưa tích, フィルター ẩn, nút 完了"
+  },
+  {
+   "no": "09-03",
+   "name": "DA_COOL_001 — COOL便：配送詳細 [tích hết]",
+   "node": "18870:186914",
+   "w": 654,
+   "h": 2362,
+   "kind": "State",
+   "screen_id": "DA_COOL_001",
+   "state_label": "tích hết",
+   "dup_of": null,
+   "note": "Chưa xem screenshot (hết hạn mức Figma); phân loại dựa trên cây node + text. 3 checkbox đã tích, nút 完了"
+  },
+  {
+   "no": "09-04",
+   "name": "DA_COOL_001 — COOL便：配送詳細 [tên cũ DA_DLVR_001]",
+   "node": "18870:185297",
+   "w": 654,
+   "h": 2362,
+   "kind": "Duplicate",
+   "screen_id": "DA_COOL_001",
+   "state_label": "tên cũ DA_DLVR_001",
+   "dup_of": "09-02",
+   "note": "Chưa xem screenshot (hết hạn mức Figma); phân loại dựa trên cây node + text. Tên frame cũ (OQ-32 chưa đổi). Text/cấu trúc giống 09-02/09-03 (tiêu đề COOL便, nút 完了); trạng thái tích của checkbox chưa kiểm — dup_of 09-02 là suy từ text, cần xác nhận"
+  },
+  {
+   "no": "09-05",
+   "name": "DA_COOL_002 — 配送完了確認・ES連絡ポップアップ [checkbox chưa tích / nút disabled]",
+   "node": "18870:187956",
+   "w": 654,
+   "h": 1939,
+   "kind": "Popup",
+   "screen_id": "DA_COOL_002",
+   "state_label": "checkbox chưa tích / nút disabled",
+   "dup_of": null,
+   "note": "Nền là màn DA_RECV_001 (tiêu đề 「荷物受取」) — tên/nền lệch ngữ cảnh; popup 654x1939 phủ cả frame; nội dung popup = DA_COOL_002 (đã đọc text + variant)"
+  },
+  {
+   "no": "09-06",
+   "name": "DA_COOL_002 — 配送完了確認・ES連絡ポップアップ [checkbox đã tích / nút active]",
+   "node": "18870:187974",
+   "w": 654,
+   "h": 1939,
+   "kind": "Popup",
+   "screen_id": "DA_COOL_002",
+   "state_label": "checkbox đã tích / nút active",
+   "dup_of": null,
+   "note": "Như 09-05 nhưng checkbox body=checked, nút 一部未配送のまま完了 state=active"
+  },
+  {
+   "no": "09-07",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [toast không nút ×; chứa DA_COOL_003]",
+   "node": "18870:187485",
+   "w": 654,
+   "h": 1939,
+   "kind": "Toast",
+   "screen_id": "DA_COOL_003",
+   "state_label": "toast không nút ×",
+   "dup_of": null,
+   "note": "Frame Home chứa Toast success 「荷物配達完了しました。」 (isCloseTrigger=false)"
+  },
+  {
+   "no": "09-08",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [toast có nút ×; chứa DA_COOL_003]",
+   "node": "18870:189044",
+   "w": 654,
+   "h": 1939,
+   "kind": "Toast",
+   "screen_id": "DA_COOL_003",
+   "state_label": "toast có nút ×",
+   "dup_of": null,
+   "note": "Frame Home chứa Toast success có nút ×"
+  },
+  {
+   "no": "09-09",
+   "name": "DA_COOL_001 — COOL便：配送詳細 [đã hoàn tất (chỉ đọc); chứa DA_COOL_004]",
+   "node": "18870:188561",
+   "w": 654,
+   "h": 2291,
+   "kind": "Banner",
+   "screen_id": "DA_COOL_004",
+   "state_label": "đã hoàn tất (chỉ đọc)",
+   "dup_of": null,
+   "note": "Toàn màn DA_COOL_001 ở trạng thái hoàn tất, chứa banner DA_COOL_004 trong header (✓ + 「荷物の配送は完了しました。」 + 「2026年4月15日12時03分に配送済み」); tiêu đề 「荷物受取」; không có nút 完了; badge Ship done. Cũng là state của DA_COOL_001"
+  },
+  {
+   "no": "09-10",
+   "name": "Flow note",
+   "node": "18260:100591",
+   "w": 5603,
+   "h": 200,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": null,
+   "dup_of": null,
+   "note": "INSTANCE ghi chú: 🚀 COOL配送便 (V1.0)"
+  }
+ ],
+ "non_screen_counts": {
+  "TABLE": 3,
+  "CONNECTOR": 4,
+  "VECTOR": 1,
+  "RECT": 4
+ },
+ "tables": [
+  {
+   "node": "23808:112206",
+   "summary": "COOL便 配送詳細 — 15 mục (back, title, 納品先名, 配達日, badge, thông tin điểm giao, 納品備考, tóm tắt thùng, 送り状番号, checkbox, 完了)"
+  },
+  {
+   "node": "23808:112820",
+   "summary": "Mục 2 Modal xác nhận hoàn tất・liên hệ ES (2.1 ×, 2.2 tiêu đề/văn bản, 2.3 checkbox bắt buộc, 2.4 ESへ電話する, 2.5 一部未配送のまま完了, 2.6 キャンセル)"
+  },
+  {
+   "node": "23808:113126",
+   "summary": "Mục 3 Hiển thị sau hoàn tất: 3.1 toast 荷物配達完了しました。 (đóng ×), 3.2 banner 荷物の配送は完了しました。"
+  }
+ ],
+ "connectors": [
+  {
+   "node": "18870:187992",
+   "summary": "Điều kiện kích hoạt nút 一部未配送のまま完了: checkbox đã tích HOẶC đã gọi ES"
+  },
+  {
+   "node": "18870:188552",
+   "summary": "すべてチェックではない (tất cả checkbox chưa tích)"
+  },
+  {
+   "node": "18870:187993",
+   "summary": "COOL便配送：配送完了分は完了、未配送分は別COOL配送タグを自動生成（未配送）"
+  },
+  {
+   "node": "20266:170407",
+   "summary": "Check all: successly"
+  }
+ ],
+ "non_screen_ids": {
+  "VECTOR": [
+   "18870:185295"
+  ],
+  "RECT": [
+   "25090:42088",
+   "25091:42091",
+   "25093:42094",
+   "25393:198331"
+  ]
+ },
+ "images": {
+  "DA_COOL_001": [
+   {
+    "file": "N09/09-02_DA_COOL_001.png",
+    "node": "20266:172696",
+    "no": "09-02",
+    "label": "DA_COOL_001 · Screen · default (chưa tích)"
+   },
+   {
+    "file": "N09/09-03_DA_COOL_001.png",
+    "node": "18870:186914",
+    "no": "09-03",
+    "label": "DA_COOL_001 · State · tích hết"
+   }
+  ],
+  "DA_COOL_004": [
+   {
+    "file": "N09/09-09_DA_COOL_004.png",
+    "node": "18870:188561",
+    "no": "09-09",
+    "label": "DA_COOL_001 · Banner · đã hoàn tất (chỉ đọc)"
+   }
+  ],
+  "DA_COOL_002": [
+   {
+    "file": "N09/09-05_DA_COOL_002.png",
+    "node": "18870:187956",
+    "no": "09-05",
+    "label": "DA_COOL_002 · Popup · checkbox chưa tích / nút disabled"
+   },
+   {
+    "file": "N09/09-06_DA_COOL_002.png",
+    "node": "18870:187974",
+    "no": "09-06",
+    "label": "DA_COOL_002 · Popup · checkbox đã tích / nút active"
+   }
+  ],
+  "DA_COOL_003": [
+   {
+    "file": "N09/09-07_DA_COOL_003.png",
+    "node": "18870:187485",
+    "no": "09-07",
+    "label": "DA_HOME_001 · Toast · toast không nút ×"
+   },
+   {
+    "file": "N09/09-08_DA_COOL_003.png",
+    "node": "18870:189044",
+    "no": "09-08",
+    "label": "DA_HOME_001 · Toast · toast có nút ×"
+   }
+  ]
+ },
+ "open": [
+  "Hết hạn mức Figma MCP ở get_screenshot: KHÔNG export ảnh mới; ảnh state (09-03, 09-06, 09-08...) chưa lấy; ảnh cũ copy nguyên, chưa đối chiếu với frame.",
+  "Frame 09-04 DA_DLVR_001 - 12: dup_of 09-02 suy từ text; checkbox state chưa kiểm.",
+  "Frame 09-05/09-06 popup DA_COOL_002 dùng nền DA_RECV_001 (Figma lệch ngữ cảnh).",
+  "Tiêu đề 「COOL便」 vs 「荷物受取」 khác nhau giữa các frame.",
+  "Icon còi header (Figma) chưa có dòng trong SPEC Components.",
+  "Rectangle 'image 469/470/471/478' có thể là ảnh tham chiếu — chưa xem nội dung."
+ ]
+}

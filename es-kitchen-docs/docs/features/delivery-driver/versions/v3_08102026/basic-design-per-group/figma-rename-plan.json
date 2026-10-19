@@ -1,0 +1,936 @@
+[
+ {
+  "no": "01-01",
+  "node": "16422:120841",
+  "old": "DA_AUTHEN_001",
+  "new": "DA_AUTHEN_001 — ログイン [bản có chú thích]",
+  "kind": "Screen",
+  "screen_id": "DA_AUTHEN_001",
+  "code": "DA_AUTHEN_001",
+  "group": "01"
+ },
+ {
+  "no": "01-02",
+  "node": "20238:149519",
+  "old": "DA_AUTHEN_001",
+  "new": "DA_AUTHEN_001 — ログイン [bản sạch]",
+  "kind": "Duplicate",
+  "screen_id": "DA_AUTHEN_001",
+  "code": "DA_AUTHEN_001",
+  "group": "01"
+ },
+ {
+  "no": "02-01",
+  "node": "16422:120856",
+  "old": "DA_AUTHEN_002_01",
+  "new": "DA_AUTHEN_002_01 — パスワードリセット ステップ1：ID・メールアドレス [default]",
+  "kind": "Screen",
+  "screen_id": "DA_AUTHEN_002_01",
+  "code": "DA_AUTHEN_002_01",
+  "group": "02"
+ },
+ {
+  "no": "02-02",
+  "node": "16422:120906",
+  "old": "DA_AUTHEN_002_02",
+  "new": "DA_AUTHEN_002_02 — パスワードリセット ステップ2：認証コード [default]",
+  "kind": "Screen",
+  "screen_id": "DA_AUTHEN_002_02",
+  "code": "DA_AUTHEN_002_02",
+  "group": "02"
+ },
+ {
+  "no": "02-03",
+  "node": "16422:120940",
+  "old": "DA_AUTHEN_002_03",
+  "new": "DA_AUTHEN_002_03 — パスワードリセット ステップ2：認証コード [state: 4 ô, 確認 active]",
+  "kind": "State",
+  "screen_id": "DA_AUTHEN_002_02",
+  "code": "DA_AUTHEN_002_02",
+  "group": "02"
+ },
+ {
+  "no": "02-04",
+  "node": "16422:120873",
+  "old": "DA_AUTHEN_002_04",
+  "new": "DA_AUTHEN_002_04 — パスワードリセット ステップ3：新しいパスワード [default]",
+  "kind": "Screen",
+  "screen_id": "DA_AUTHEN_002_04",
+  "code": "DA_AUTHEN_002_04",
+  "group": "02"
+ },
+ {
+  "no": "02-05",
+  "node": "16422:120894",
+  "old": "DA_AUTHEN_002_06",
+  "new": "DA_AUTHEN_002_06 — パスワードリセット完了 [default]",
+  "kind": "Screen",
+  "screen_id": "DA_AUTHEN_002_06",
+  "code": "DA_AUTHEN_002_06",
+  "group": "02"
+ },
+ {
+  "no": "02-06",
+  "node": "20239:150525",
+  "old": "DA_AUTHEN_002_01",
+  "new": "DA_AUTHEN_002_01 — パスワードリセット ステップ1：ID・メールアドレス [bản hàng dưới ]",
+  "kind": "Duplicate",
+  "screen_id": "DA_AUTHEN_002_01",
+  "code": "DA_AUTHEN_002_01",
+  "group": "02"
+ },
+ {
+  "no": "02-07",
+  "node": "20239:151452",
+  "old": "DA_AUTHEN_002_02、DA_AUTHEN_002_03",
+  "new": "DA_AUTHEN_002_02、DA_AUTHEN_002_03 — パスワードリセット ステップ2：認証コード [gộp 2 state]",
+  "kind": "Duplicate",
+  "screen_id": "DA_AUTHEN_002_02",
+  "code": "DA_AUTHEN_002_02",
+  "group": "02"
+ },
+ {
+  "no": "02-08",
+  "node": "20240:152422",
+  "old": "DA_AUTHEN_002_04",
+  "new": "DA_AUTHEN_002_04 — パスワードリセット ステップ3：新しいパスワード [bản hàng dưới]",
+  "kind": "Duplicate",
+  "screen_id": "DA_AUTHEN_002_04",
+  "code": "DA_AUTHEN_002_04",
+  "group": "02"
+ },
+ {
+  "no": "02-09",
+  "node": "20240:152572",
+  "old": "DA_AUTHEN_002_06",
+  "new": "DA_AUTHEN_002_06 — パスワードリセット完了 [bản hàng dưới]",
+  "kind": "Duplicate",
+  "screen_id": "DA_AUTHEN_002_06",
+  "code": "DA_AUTHEN_002_06",
+  "group": "02"
+ },
+ {
+  "no": "03-01",
+  "node": "16892:78274",
+  "old": "DA_HOME_005",
+  "new": "DA_HOME_005 — アカウント [default]",
+  "kind": "Screen",
+  "screen_id": "DA_HOME_005",
+  "code": "DA_HOME_005",
+  "group": "03"
+ },
+ {
+  "no": "04-01",
+  "node": "15719:120976",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [master component; component]",
+  "kind": "Component",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "04"
+ },
+ {
+  "no": "04-02",
+  "node": "20240:152573",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [instance; component]",
+  "kind": "Component",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "04"
+ },
+ {
+  "no": "04-03",
+  "node": "16892:77185",
+  "old": "DA_HOME_001 - 01",
+  "new": "DA_HOME_008 — 配送予定データなし（1日） [1 ngày trống]",
+  "kind": "State",
+  "screen_id": "E-06",
+  "code": "DA_HOME_008",
+  "group": "04"
+ },
+ {
+  "no": "04-04",
+  "node": "16892:77680",
+  "old": "DA_HOME_001 - 02",
+  "new": "DA_HOME_007 — 配送予定なし（SOLちゃん） [3 ngày trống + SOL ちゃん]",
+  "kind": "State",
+  "screen_id": "E-05",
+  "code": "DA_HOME_007",
+  "group": "04"
+ },
+ {
+  "no": "04-05",
+  "node": "20235:148985",
+  "old": "DA_HOME_001 - 3",
+  "new": "DA_HOME_007 — 配送予定なし（SOLちゃん） [biến thể -3]",
+  "kind": "State",
+  "screen_id": "E-05",
+  "code": "DA_HOME_007",
+  "group": "04"
+ },
+ {
+  "no": "04-06",
+  "node": "20235:148979",
+  "old": "Frame 2147226373",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [bản trùng]",
+  "kind": "Duplicate",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "04"
+ },
+ {
+  "no": "04-07",
+  "node": "15719:122093",
+  "old": "Trạng thái",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [badge trạng thái; component]",
+  "kind": "Component",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "04"
+ },
+ {
+  "no": "05-02",
+  "node": "18439:175106",
+  "old": "DA_LIST_001_Kho",
+  "new": "DA_LIST_001_Kho — 配送一覧 Tab A: 倉庫受取 [default]",
+  "kind": "Screen",
+  "screen_id": "DA_LIST_001_Kho",
+  "code": "DA_LIST_001_Kho",
+  "group": "05"
+ },
+ {
+  "no": "05-03",
+  "node": "18439:174962",
+  "old": "DA_LIST_002_ES",
+  "new": "DA_LIST_002_ES — 配送一覧 Tab B: 未配送 [default]",
+  "kind": "Screen",
+  "screen_id": "DA_LIST_002_ES",
+  "code": "DA_LIST_002_ES",
+  "group": "05"
+ },
+ {
+  "no": "05-04",
+  "node": "18439:175034",
+  "old": "DA_LIST_003_COOL",
+  "new": "DA_LIST_003_COOL — 配送一覧 Tab C: 配送完了 [default]",
+  "kind": "Screen",
+  "screen_id": "DA_LIST_003_COOL",
+  "code": "DA_LIST_003_COOL",
+  "group": "05"
+ },
+ {
+  "no": "05-05",
+  "node": "20285:178603",
+  "old": "DA_LIST_001_Kho",
+  "new": "DA_LIST_001_Kho — 配送一覧 Tab A: 倉庫受取 [annotated]",
+  "kind": "Duplicate",
+  "screen_id": "DA_LIST_001_Kho",
+  "code": "DA_LIST_001_Kho",
+  "group": "05"
+ },
+ {
+  "no": "05-06",
+  "node": "20297:179762",
+  "old": "DA_LIST_002_ES",
+  "new": "DA_LIST_002_ES — 配送一覧 Tab B: 未配送 [annotated]",
+  "kind": "Duplicate",
+  "screen_id": "DA_LIST_002_ES",
+  "code": "DA_LIST_002_ES",
+  "group": "05"
+ },
+ {
+  "no": "05-07",
+  "node": "20297:179763",
+  "old": "DA_LIST_003_COOL",
+  "new": "DA_LIST_003_COOL — 配送一覧 Tab C: 配送完了 [annotated]",
+  "kind": "Duplicate",
+  "screen_id": "DA_LIST_003_COOL",
+  "code": "DA_LIST_003_COOL",
+  "group": "05"
+ },
+ {
+  "no": "06-01",
+  "node": "20276:175611",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [Home (minh hoạ luồng chuông → thông báo); context]",
+  "kind": "Context",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "06"
+ },
+ {
+  "no": "06-03",
+  "node": "20276:175614",
+  "old": "DA_NOTI_001",
+  "new": "DA_NOTI_001 — お知らせ一覧 [default]",
+  "kind": "Screen",
+  "screen_id": "DA_NOTI_001",
+  "code": "DA_NOTI_001",
+  "group": "06"
+ },
+ {
+  "no": "06-04",
+  "node": "20276:175647",
+  "old": "DA_NOTI_002",
+  "new": "DA_NOTI_002 — お知らせ詳細 [default]",
+  "kind": "Screen",
+  "screen_id": "DA_NOTI_002",
+  "code": "DA_NOTI_002",
+  "group": "06"
+ },
+ {
+  "no": "07-01",
+  "node": "16481:48515",
+  "old": "DA_RECV_001",
+  "new": "DA_RECV_001 — 荷物受取（編集可） [default (0 tick); component]",
+  "kind": "Component",
+  "screen_id": "DA_RECV_001",
+  "code": "DA_RECV_001",
+  "group": "07"
+ },
+ {
+  "no": "07-02",
+  "node": "16887:76722",
+  "old": "DA_RECV_001",
+  "new": "DA_RECV_001 — 荷物受取（編集可） [tick hết tất cả]",
+  "kind": "State",
+  "screen_id": "DA_RECV_001",
+  "code": "DA_RECV_001",
+  "group": "07"
+ },
+ {
+  "no": "07-03",
+  "node": "16481:48735",
+  "old": "DA_RECV_001 - 02",
+  "new": "DA_RECV_005 — 受取完了確認・ES連絡モーダル [modal nhận thiếu]",
+  "kind": "Popup",
+  "screen_id": "E-02",
+  "code": "DA_RECV_005",
+  "group": "07"
+ },
+ {
+  "no": "07-04",
+  "node": "20344:209745",
+  "old": "Pop up",
+  "new": "DA_RECV_006 — 編集内容破棄確認ポップアップ [popup huỷ chỉnh sửa]",
+  "kind": "Popup",
+  "screen_id": "E-03",
+  "code": "DA_RECV_006",
+  "group": "07"
+ },
+ {
+  "no": "07-05",
+  "node": "16895:119338",
+  "old": "DA_RECV_001 - 3",
+  "new": "DA_RECV_005 — 受取完了確認・ES連絡モーダル [checkbox đã tick, 一部未受取のまま完了 active]",
+  "kind": "State",
+  "screen_id": "E-02",
+  "code": "DA_RECV_005",
+  "group": "07"
+ },
+ {
+  "no": "07-06",
+  "node": "20262:41179",
+  "old": "DA_RECV_003",
+  "new": "DA_RECV_003 — 荷物受取（閲覧のみ） [chỉ đọc, đã nhận; component]",
+  "kind": "Component",
+  "screen_id": "DA_RECV_003",
+  "code": "DA_RECV_003",
+  "group": "07"
+ },
+ {
+  "no": "07-07",
+  "node": "18578:34695",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [có thẻ kho 未受取; context]",
+  "kind": "Context",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "07"
+ },
+ {
+  "no": "07-08",
+  "node": "18578:35896",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [sau khi hoàn tất (nền toast); context]",
+  "kind": "Context",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "07"
+ },
+ {
+  "no": "07-09",
+  "node": "16887:112468",
+  "old": "Toast",
+  "new": "DA_RECV_004 — 受取完了トースト [toast hoàn tất nhận]",
+  "kind": "Toast",
+  "screen_id": "E-01",
+  "code": "DA_RECV_004",
+  "group": "07"
+ },
+ {
+  "no": "07-11",
+  "node": "16943:78441",
+  "old": "Toast",
+  "new": "DA_RECV_004 — 受取完了トースト [toast hoàn tất nhận]",
+  "kind": "Duplicate",
+  "screen_id": "E-01",
+  "code": "DA_RECV_004",
+  "group": "07"
+ },
+ {
+  "no": "07-12",
+  "node": "19664:153217",
+  "old": "DA_LIST_001_Kho",
+  "new": "DA_LIST_001_Kho — 配送一覧 Tab A: 倉庫受取 [tab 倉庫受取; context]",
+  "kind": "Context",
+  "screen_id": "DA_LIST_001_Kho",
+  "code": "DA_LIST_001_Kho",
+  "group": "07"
+ },
+ {
+  "no": "07-13",
+  "node": "18578:40940",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [Home (sau nhận một phần); context]",
+  "kind": "Context",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "07"
+ },
+ {
+  "no": "07-14",
+  "node": "18578:41715",
+  "old": "DA_LIST_001_Kho",
+  "new": "DA_LIST_001_Kho — 配送一覧 Tab A: 倉庫受取 [tab すべて表示/倉庫受取; context]",
+  "kind": "Context",
+  "screen_id": "DA_LIST_001_Kho",
+  "code": "DA_LIST_001_Kho",
+  "group": "07"
+ },
+ {
+  "no": "08-01",
+  "node": "18870:189708",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [Home, thẻ kho mở rộng; context]",
+  "kind": "Context",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "08"
+ },
+ {
+  "no": "08-02",
+  "node": "19057:91246",
+  "old": "DA_RPTD_002-03",
+  "new": "DA_RPTD_003 — ES電話確認ポップアップ [phủ trên Home]",
+  "kind": "Popup",
+  "screen_id": "E-16",
+  "code": "DA_RPTD_003",
+  "group": "08"
+ },
+ {
+  "no": "08-03",
+  "node": "18260:101521",
+  "old": "DA_RPTD_001-01",
+  "new": "DA_RPTD_001 — トラブル報告：配達先・倉庫選択 [chưa chọn, hint kho]",
+  "kind": "Screen",
+  "screen_id": "DA_RPTD_001",
+  "code": "DA_RPTD_001",
+  "group": "08"
+ },
+ {
+  "no": "08-04",
+  "node": "18870:191330",
+  "old": "DA_RPTD_001-02",
+  "new": "DA_RPTD_001 — トラブル報告：配達先・倉庫選択 [đã chọn 1 → hiện 戻る/次へ]",
+  "kind": "State",
+  "screen_id": "DA_RPTD_001",
+  "code": "DA_RPTD_001",
+  "group": "08"
+ },
+ {
+  "no": "08-05",
+  "node": "16422:115223",
+  "old": "DA_RPTD_002-01",
+  "new": "DA_RPTD_002 — トラブル報告：詳細 [mặc định]",
+  "kind": "Screen",
+  "screen_id": "DA_RPTD_002",
+  "code": "DA_RPTD_002",
+  "group": "08"
+ },
+ {
+  "no": "08-06",
+  "node": "16659:83144",
+  "old": "DA_RPTD_002-02",
+  "new": "DA_RPTD_002 — トラブル報告：詳細 [chọn 2/3 vận đơn (−), その他 + ô lý do viền đỏ, có ảnh, 送信 active]",
+  "kind": "State",
+  "screen_id": "DA_RPTD_002",
+  "code": "DA_RPTD_002",
+  "group": "08"
+ },
+ {
+  "no": "08-07",
+  "node": "16422:115205",
+  "old": "DA_RPTD_002-03",
+  "new": "DA_RPTD_004 — 報告送信確認モーダル [modal xác nhận gửi]",
+  "kind": "Popup",
+  "screen_id": "E-17",
+  "code": "DA_RPTD_004",
+  "group": "08"
+ },
+ {
+  "no": "08-08",
+  "node": "18870:190847",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [Home + toast 「報告を送信しました。」; chứa DA_RPTD_005]",
+  "kind": "Toast",
+  "screen_id": "E-18",
+  "code": "DA_RPTD_005",
+  "group": "08",
+  "host": "DA_HOME_001"
+ },
+ {
+  "no": "08-09",
+  "node": "18870:193054",
+  "old": "Frame 2147226371",
+  "new": "DA_RECV_001 — 荷物受取（編集可） [荷物受取 (DA_RECV_001) có chuông; context]",
+  "kind": "Context",
+  "screen_id": "DA_RECV_001",
+  "code": "DA_RECV_001",
+  "group": "08"
+ },
+ {
+  "no": "08-10",
+  "node": "18870:192377",
+  "old": "DA_ESDL_000_0 Normal (Today, not yet shipped)",
+  "new": "DA_ESDL_000_0 — ES配送便 基本情報（当日・未配送） [ES配送便 có chuông; context]",
+  "kind": "Context",
+  "screen_id": "DA_ESDL_000_0",
+  "code": "DA_ESDL_000_0",
+  "group": "08"
+ },
+ {
+  "no": "08-11",
+  "node": "18870:192740",
+  "old": "DA_COOL_001 - 01 Default",
+  "new": "DA_COOL_001 — COOL便：配送詳細 [COOL便 default; context]",
+  "kind": "Context",
+  "screen_id": "DA_COOL_001",
+  "code": "DA_COOL_001",
+  "group": "08"
+ },
+ {
+  "no": "08-12",
+  "node": "19057:91443",
+  "old": "DA_RPTD_002-03",
+  "new": "DA_RPTD_003 — ES電話確認ポップアップ [phủ trên DA_RPTD_002 (header レポート報告)]",
+  "kind": "Popup",
+  "screen_id": "E-16",
+  "code": "DA_RPTD_003",
+  "group": "08"
+ },
+ {
+  "no": "08-13",
+  "node": "18870:192895",
+  "old": "DA_RPTD_002-01",
+  "new": "DA_RPTD_002 — トラブル報告：詳細 [bản sao với radio khác]",
+  "kind": "State",
+  "screen_id": "DA_RPTD_002",
+  "code": "DA_RPTD_002",
+  "group": "08"
+ },
+ {
+  "no": "08-14",
+  "node": "19057:91230",
+  "old": "Dropdown-Menu",
+  "new": "DA_RPTD_002 — トラブル報告：詳細 [menu 写真を撮る / 写真ライブラリ; component]",
+  "kind": "Component",
+  "screen_id": "DA_RPTD_002",
+  "code": "DA_RPTD_002",
+  "group": "08"
+ },
+ {
+  "no": "09-01",
+  "node": "18260:100270",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [context]",
+  "kind": "Context",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "09"
+ },
+ {
+  "no": "09-02",
+  "node": "20266:172696",
+  "old": "DA_COOL_001 - 01 Default",
+  "new": "DA_COOL_001 — COOL便：配送詳細 [default (chưa tích)]",
+  "kind": "Screen",
+  "screen_id": "DA_COOL_001",
+  "code": "DA_COOL_001",
+  "group": "09"
+ },
+ {
+  "no": "09-03",
+  "node": "18870:186914",
+  "old": "DA_COOL_001 - 02 check all",
+  "new": "DA_COOL_001 — COOL便：配送詳細 [tích hết]",
+  "kind": "State",
+  "screen_id": "DA_COOL_001",
+  "code": "DA_COOL_001",
+  "group": "09"
+ },
+ {
+  "no": "09-04",
+  "node": "18870:185297",
+  "old": "DA_DLVR_001 - 12",
+  "new": "DA_COOL_001 — COOL便：配送詳細 [tên cũ DA_DLVR_001]",
+  "kind": "Duplicate",
+  "screen_id": "DA_COOL_001",
+  "code": "DA_COOL_001",
+  "group": "09"
+ },
+ {
+  "no": "09-05",
+  "node": "18870:187956",
+  "old": "DA_RECV_001 - 4",
+  "new": "DA_COOL_002 — 配送完了確認・ES連絡ポップアップ [checkbox chưa tích / nút disabled]",
+  "kind": "Popup",
+  "screen_id": "E-13",
+  "code": "DA_COOL_002",
+  "group": "09"
+ },
+ {
+  "no": "09-06",
+  "node": "18870:187974",
+  "old": "DA_RECV_001 - 5",
+  "new": "DA_COOL_002 — 配送完了確認・ES連絡ポップアップ [checkbox đã tích / nút active]",
+  "kind": "Popup",
+  "screen_id": "E-13",
+  "code": "DA_COOL_002",
+  "group": "09"
+ },
+ {
+  "no": "09-07",
+  "node": "18870:187485",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [toast không nút ×; chứa DA_COOL_003]",
+  "kind": "Toast",
+  "screen_id": "E-14",
+  "code": "DA_COOL_003",
+  "group": "09",
+  "host": "DA_HOME_001"
+ },
+ {
+  "no": "09-08",
+  "node": "18870:189044",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [toast có nút ×; chứa DA_COOL_003]",
+  "kind": "Toast",
+  "screen_id": "E-14",
+  "code": "DA_COOL_003",
+  "group": "09",
+  "host": "DA_HOME_001"
+ },
+ {
+  "no": "09-09",
+  "node": "18870:188561",
+  "old": "DA_COOL_001 - 03 successly",
+  "new": "DA_COOL_001 — COOL便：配送詳細 [đã hoàn tất (chỉ đọc); chứa DA_COOL_004]",
+  "kind": "Banner",
+  "screen_id": "E-15",
+  "code": "DA_COOL_004",
+  "group": "09",
+  "host": "DA_COOL_001"
+ },
+ {
+  "no": "10-01",
+  "node": "16422:114580",
+  "old": "DA_HOME_001",
+  "new": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [context]",
+  "kind": "Context",
+  "screen_id": "DA_HOME_001",
+  "code": "DA_HOME_001",
+  "group": "10"
+ },
+ {
+  "no": "10-02",
+  "node": "16383:114020",
+  "old": "DA_ESDL_000_0 Normal (Today, not yet shipped)",
+  "new": "DA_ESDL_000_0 — ES配送便 基本情報（当日・未配送） [default (hôm nay, chưa giao)]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_000_0",
+  "code": "DA_ESDL_000_0",
+  "group": "10"
+ },
+ {
+  "no": "10-03",
+  "node": "19036:18274",
+  "old": "DA_ESDL_000_1 future data(Cannot edit future data)",
+  "new": "DA_ESDL_000_1 — ES配送便（未来日・閲覧のみ） [dữ liệu tương lai]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_000_1",
+  "code": "DA_ESDL_000_1",
+  "group": "10"
+ },
+ {
+  "no": "10-04",
+  "node": "19663:152788",
+  "old": "DA_ESDL_000_2 Completed(Editable until 7 days before)",
+  "new": "DA_ESDL_000_2 — ES配送便（配送完了） [đã hoàn tất]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_000_2",
+  "code": "DA_ESDL_000_2",
+  "group": "10"
+ },
+ {
+  "no": "10-05",
+  "node": "20266:174078",
+  "old": "DA_ESDL_000_2 Completed(Editable until 7 days before)",
+  "new": "DA_ESDL_000_2 — ES配送便（配送完了） [master component bản dài (cuộn); component]",
+  "kind": "Component",
+  "screen_id": "DA_ESDL_000_2",
+  "code": "DA_ESDL_000_2",
+  "group": "10"
+ },
+ {
+  "no": "10-06",
+  "node": "18645:24837",
+  "old": "DA_ESDL_001-01(default)",
+  "new": "DA_ESDL_001 — Step 1 陳列前写真 [default (chưa có ảnh, 続ける disabled)]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_001",
+  "code": "DA_ESDL_001",
+  "group": "10"
+ },
+ {
+  "no": "10-07",
+  "node": "18645:24838",
+  "old": "Dropdown-Menu",
+  "new": "DA_ESDL_001 — Step 1 陳列前写真 [menu nguồn ảnh; component]",
+  "kind": "Component",
+  "screen_id": "DA_ESDL_001",
+  "code": "DA_ESDL_001",
+  "group": "10"
+ },
+ {
+  "no": "10-08",
+  "node": "16422:114716",
+  "old": "DA_ESDL_001-02(upload image done)",
+  "new": "DA_ESDL_001 — Step 1 陳列前写真 [đã upload (3 thumbnail có ×, loading)]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_001",
+  "code": "DA_ESDL_001",
+  "group": "10"
+ },
+ {
+  "no": "10-09",
+  "node": "18058:158268",
+  "old": "DA_ESDL_002-01Check tồn kho (Default)",
+  "new": "DA_ESDL_002 — 在庫 [default (chưa check, 確認 disabled)]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_002",
+  "code": "DA_ESDL_002",
+  "group": "10"
+ },
+ {
+  "no": "10-10",
+  "node": "16422:114840",
+  "old": "DA_ESDL_002-02 Scan Bar code tồn kho",
+  "new": "DA_ESDL_002 — 在庫 [mở camera quét barcode]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_002",
+  "code": "DA_ESDL_002",
+  "group": "10"
+ },
+ {
+  "no": "10-11",
+  "node": "18123:165893",
+  "old": "DA_ESDL_002-03  Scan Bar code & input",
+  "new": "DA_ESDL_007 — スキャン廃棄登録モーダル [popup sau khi quét (nhập 廃棄数/在庫数)]",
+  "kind": "Popup",
+  "screen_id": "E-08",
+  "code": "DA_ESDL_007",
+  "group": "10"
+ },
+ {
+  "no": "10-12",
+  "node": "18260:89828",
+  "old": "DA_ESDL_002-04 Checked",
+  "new": "DA_ESDL_002 — 在庫 [đã check các dòng (廃棄数 xám, 確認 active)]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_002",
+  "code": "DA_ESDL_002",
+  "group": "10"
+ },
+ {
+  "no": "10-13",
+  "node": "18260:90236",
+  "old": "DA_ESDL_002-05 confirm ",
+  "new": "DA_ESDL_002-05 — Step 2: 成功結果 [kết quả Step 2 (chứa banner DA_ESDL_008)]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_002-05",
+  "code": "DA_ESDL_002-05",
+  "group": "10"
+ },
+ {
+  "no": "10-14",
+  "node": "16422:114955",
+  "old": "DA_ESDL_003-01 Step 3 default",
+  "new": "DA_ESDL_003 — 陳列 (検品) (Step 3) [default (確認 disabled)]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_003",
+  "code": "DA_ESDL_003",
+  "group": "10"
+ },
+ {
+  "no": "10-15",
+  "node": "18252:82725",
+  "old": "DA_ESDL_003-02 Step 3 Scan",
+  "new": "DA_ESDL_003 — 陳列 (検品) (Step 3) [mở camera quét]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_003",
+  "code": "DA_ESDL_003",
+  "group": "10"
+ },
+ {
+  "no": "10-16",
+  "node": "18252:82730",
+  "old": "DA_ESDL_003-03 Step 3 popup after Scan",
+  "new": "DA_ESDL_009 — スキャン検品登録モーダル [popup sau quét (実際数)]",
+  "kind": "Popup",
+  "screen_id": "E-10",
+  "code": "DA_ESDL_009",
+  "group": "10"
+ },
+ {
+  "no": "10-17",
+  "node": "17000:119128",
+  "old": "DA_ESDL_003-04 have diff confirm popup",
+  "new": "DA_ESDL_010 — 陳列完了確認・ES連絡モーダル [popup khác biệt/未確認]",
+  "kind": "Popup",
+  "screen_id": "E-11",
+  "code": "DA_ESDL_010",
+  "group": "10"
+ },
+ {
+  "no": "10-18",
+  "node": "18578:45802",
+  "old": "DA_ESDL_003-05 have diff confirm popup",
+  "new": "DA_ESDL_010 — 陳列完了確認・ES連絡モーダル [biến thể popup khác biệt]",
+  "kind": "Duplicate",
+  "screen_id": "E-11",
+  "code": "DA_ESDL_010",
+  "group": "10"
+ },
+ {
+  "no": "10-19",
+  "node": "16422:115045",
+  "old": "DA_ESDL_003-06 step 3 confirm",
+  "new": "DA_ESDL_003-06 — Step 3: 成功結果（差異表） [kết quả Step 3 (chứa banner DA_ESDL_012)]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_003-06",
+  "code": "DA_ESDL_003-06",
+  "group": "10"
+ },
+ {
+  "no": "10-20",
+  "node": "16422:115333",
+  "old": "DA_ESDL_004-01 default",
+  "new": "DA_ESDL_004 — Step 4 陳列後写真 [default]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_004",
+  "code": "DA_ESDL_004",
+  "group": "10"
+ },
+ {
+  "no": "10-21",
+  "node": "16422:114757",
+  "old": "DA_ESDL_004-02 sau khi up ảnh",
+  "new": "DA_ESDL_004 — Step 4 陳列後写真 [đã upload ảnh]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_004",
+  "code": "DA_ESDL_004",
+  "group": "10"
+ },
+ {
+  "no": "10-22",
+  "node": "16422:115605",
+  "old": "DA_ESDL_005-01 nhập tiền mặt thu",
+  "new": "DA_ESDL_005 — Step 5 集金登録 [nhập tiền thu]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_005",
+  "code": "DA_ESDL_005",
+  "group": "10"
+ },
+ {
+  "no": "10-23",
+  "node": "18578:42560",
+  "old": "DA_ESDL_006-01 Sau khi hoàn thành-tab thông tin cơ bản",
+  "new": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 基本情報 sau hoàn tất (chứa banner DA_ESDL_011)]",
+  "kind": "Screen",
+  "screen_id": "DA_ESDL_006",
+  "code": "DA_ESDL_006",
+  "group": "10"
+ },
+ {
+  "no": "10-24",
+  "node": "18578:44771",
+  "old": "DA_ESDL_006-02 Sau khi hoàn thành-tab nộp tiền gửi xe(mode view)",
+  "new": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 駐車報告 (view)]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_006",
+  "code": "DA_ESDL_006",
+  "group": "10"
+ },
+ {
+  "no": "10-25",
+  "node": "18578:44248",
+  "old": "DA_ESDL_006-03 Sau khi hoàn thành-tab nộp tiền gửi xe(mode edit)",
+  "new": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 駐車報告 (edit)]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_006",
+  "code": "DA_ESDL_006",
+  "group": "10"
+ },
+ {
+  "no": "10-26",
+  "node": "18578:43759",
+  "old": "DA_ESDL_006-04 Sau khi hoàn thành-tab view thông tin step 1",
+  "new": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 陳列情報 step 1]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_006",
+  "code": "DA_ESDL_006",
+  "group": "10"
+ },
+ {
+  "no": "10-27",
+  "node": "18578:46215",
+  "old": "DA_ESDL_006-05 Sau khi hoàn thành-tab view thông tin step 2",
+  "new": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 陳列情報 step 2]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_006",
+  "code": "DA_ESDL_006",
+  "group": "10"
+ },
+ {
+  "no": "10-28",
+  "node": "18578:46758",
+  "old": "DA_ESDL_006-06 Sau khi hoàn thành-tab view thông tin step 3",
+  "new": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 陳列情報 step 3]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_006",
+  "code": "DA_ESDL_006",
+  "group": "10"
+ },
+ {
+  "no": "10-29",
+  "node": "18578:47594",
+  "old": "DA_ESDL_006-08 Sau khi hoàn thành-tab view thông tin step 5",
+  "new": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 陳列情報 step 5]",
+  "kind": "State",
+  "screen_id": "DA_ESDL_006",
+  "code": "DA_ESDL_006",
+  "group": "10"
+ }
+]

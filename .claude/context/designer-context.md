@@ -29,7 +29,7 @@
 | E01 Mobile | `#CA9A04` + `#FAC215` (yellow/gold) | `colors.primitives.yellow.400` (`app.400`) | Gold tone, dùng cho CTAs |
 | E02 Company | `#faa61f` (orange) | `colors.primitives.orange.400` (`admin.400`) | ⚠️ Slight diff với design_rule (#FAA51D) |
 | E03 System Admin | `#0969DA` (blue) | `colors.semantics.company.500` | Matches design_rule |
-| E04 Supplier | `#6639BA` (purple) — **CONFIRMED 2026-06-09** | `colors.primitives.purple.600` | Code production hiện = orange `#faa61f` (chưa migrate). Designer dùng purple cho mọi screen E04 mới. |
+| E04 Supplier | `#6639BA` (purple) — **CONFIRMED 2026-06-09** | `colors.primitives.purple.600` | Code production hiện = orange `#faa61f` (chưa migrate). Designer dùng purple cho mọi screen E04 mới. Frame mẫu Figma SW_HOME dùng nền trắng (không phải `#F0F2F5`); xem `design-spec/13-web-supplier.md` §11. |
 | E05 Công ty vận chuyển | `#8ACA0D` (lime green — code cũ) | KHÔNG có trong token table — hardcoded | ⚠️ Figma Phase 2 = green `#1A7F37` (`success.500`) — thiết kế mới dùng green |
 | E06 Driver | `#0969DA` (info-500) | `colors.semantics.company.500` | Same as E03 |
 

@@ -1,0 +1,102 @@
+{
+ "group_no": "06",
+ "key": "Notification",
+ "file": "BD_06_Notification.xlsx",
+ "figma_group_nodes": [
+  "34199:211572"
+ ],
+ "figma_group_names": [
+  "Group Notification"
+ ],
+ "screens": [
+  "DA_NOTI_001",
+  "DA_NOTI_003",
+  "DA_NOTI_002"
+ ],
+ "frames": [
+  {
+   "no": "06-01",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [Home (minh hoạ luồng chuông → thông báo); context]",
+   "node": "20276:175611",
+   "w": 390,
+   "h": 866,
+   "kind": "Context",
+   "screen_id": null,
+   "state_label": "Home (minh hoạ luồng chuông → thông báo)",
+   "dup_of": null,
+   "note": "Màn của nhóm Home; chỉ nằm cạnh để minh hoạ luồng. Chưa xem screenshot (hết hạn mức Figma), phân loại dựa trên tên + text"
+  },
+  {
+   "no": "06-02",
+   "name": "Flow note",
+   "node": "20276:175613",
+   "w": 2347,
+   "h": 87,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": null,
+   "dup_of": null,
+   "note": "INSTANCE ghi chú: 🚀 notifications (V1.0)"
+  },
+  {
+   "no": "06-03",
+   "name": "DA_NOTI_001 — お知らせ一覧 [default]",
+   "node": "20276:175614",
+   "w": 390,
+   "h": 844,
+   "kind": "Screen",
+   "screen_id": "DA_NOTI_001",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Header お知らせ, お知らせ一覧, すべて見る, 4 dòng mẫu (今日 - 07:00 …)"
+  },
+  {
+   "no": "06-04",
+   "name": "DA_NOTI_002 — お知らせ詳細 [default]",
+   "node": "20276:175647",
+   "w": 390,
+   "h": 844,
+   "kind": "Screen",
+   "screen_id": "DA_NOTI_002",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Header, tiêu đề, ngày giờ, nội dung 3 đoạn"
+  }
+ ],
+ "non_screen_counts": {
+  "TABLE": 1,
+  "CONNECTOR": 0,
+  "VECTOR": 2
+ },
+ "tables": [
+  {
+   "node": "20319:242429",
+   "summary": "Bảng mô tả (221 con, 2881x1664) — CHƯA ĐỌC được nội dung: Figma báo hết hạn mức gọi tool"
+  }
+ ],
+ "images": {
+  "DA_NOTI_001": [
+   {
+    "file": "N06/06-03_DA_NOTI_001.png",
+    "node": "20276:175614",
+    "no": "06-03",
+    "label": "DA_NOTI_001 · Screen · default"
+   }
+  ],
+  "DA_NOTI_002": [
+   {
+    "file": "N06/06-04_DA_NOTI_002.png",
+    "node": "20276:175647",
+    "no": "06-04",
+    "label": "DA_NOTI_002 · Screen · default"
+   }
+  ]
+ },
+ "open": [
+  "DA_NOTI_003 chưa có frame Figma (OQ-45) → frames rỗng, NO IMAGE",
+  "Bảng TABLE 20319:242429 chưa đọc được (rate limit Figma) — chưa đối chiếu annotation với JSON",
+  "Chưa get_screenshot frame nào (rate limit); ảnh G06 là ảnh cũ copy, chưa xác minh khớp frame hiện tại",
+  "Vector 'Arrow 4' 20276:175656, 'Arrow 12' 20297:179936 là mũi tên luồng (non-screen)",
+  "Figma DA_NOTI_001 có 「すべて見る」 — SPEC không mô tả (đã ghi open_question)"
+ ]
+}

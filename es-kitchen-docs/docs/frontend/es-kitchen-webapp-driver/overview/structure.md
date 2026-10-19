@@ -1,5 +1,6 @@
 # es-kitchen-webapp-driver — Cấu trúc Source
 
+> Nguồn = es-kitchen-webapp-driver@62b870a ngày 2026-10-16 (HEAD; working tree có sửa `vite.config.ts` chưa commit — chỉ ghi nhận). Từ lần sync trước chỉ thay đổi nhỏ: nút マニュアル ở BottomNavigation (ESKITCHEN-1867) + CI self-hosted runner.
 > Repo: `es-kitchen-webapp-driver` · Epic: **E06 Driver Web App** (mobile-first web, không native)
 > Vai trò: driver nhận đơn, quản lý delivery, báo cáo issue, xem notification — workflow linear, không dashboard phức tạp.
 
@@ -27,6 +28,7 @@
 | Barcode | react-barcode-scanner | 4.0.1 |
 | Class utility | class-variance-authority · clsx · tailwind-merge | 0.7.1 / 2.1.1 / 3.6.0 |
 | Theme | next-themes | 0.4.6 |
+| UI khác | react-day-picker ^10.0.1 · shadcn CLI 4.7.0 · @fontsource-variable/noto-sans-jp 5.2.10 · tw-animate-css 1.4.0 | — |
 
 > **Khác biệt lớn nhất với E02/E03/E04/E05:** **KHÔNG dùng Ant Design + KHÔNG dùng Redux**. Stack shadcn/ui + Base UI + Radix + zustand — cùng nhóm với E07 webapp-payment.
 
@@ -49,7 +51,7 @@ es-kitchen-webapp-driver/
 │   ├── services/
 │   │   ├── http/         ← axios + interceptors + session-expired
 │   │   ├── query/        ← TanStack Query client (staleTime 5min, retry 1)
-│   │   └── client/       ← 8+ domain services
+│   │   └── client/       ← 9 file (api.ts + 8 service)
 │   ├── shared/
 │   ├── statics/          ← images, fonts
 │   ├── stores/           ← **zustand** stores (useAuthStore)
@@ -75,7 +77,9 @@ es-kitchen-webapp-driver/
 
 ### Protected — `AuthLayout` (Header + BottomNavigation + Outlet)
 
-`/home` (index) · `/delivery` · `/delivery/:id` · `/orders` · `/issues` · `/issues/:id` · `/account` · `/notifications` · `/notifications/:id`
+`/home` (index → redirect) · `/delivery` · `/delivery/:id` · `/orders` · `/issues` · `/issues/:id` · `/account` · `/notifications` · `/notifications/:id`
+
+> Đếm từ `src/routes/index.tsx`: **14 route** (4 public + `/reset-success` + 9 protected) — không đổi so với bản trước. `*` → `/login`. `/orders` là trang placeholder (`OrdersPage.tsx`, không có service riêng); tab マニュアル ở BottomNavigation KHÔNG trỏ `/orders` mà mở `MANUAL_URL` (PDF ES Station) tab mới (`BottomNavigation.tsx`).
 
 ### `AuthCenteredLayout`
 
@@ -85,7 +89,7 @@ es-kitchen-webapp-driver/
 
 ## Pages (src/pages/)
 
-`account/` (driver profile) · `auth/` (login, forgot, verify, reset) · `delivery/` (DeliveryPage, DeliveryDetailPage + `_components/`, `constants/`, `hooks/`) · `home/` (dashboard) · `issues/` (list + report detail) · `notifications/` (center + detail) · `orders/`
+`account/` (driver profile) · `auth/` (login, forgot, verify, reset, reset-success) · `delivery/` (DeliveryPage, DeliveryDetailPage + `_components/`: DeliveryCoolDetailPage / DeliveryESDetailPage / DeliveryWarehouseDetailPage, `_es/` multi-step ES Step1–5 + `useDeliveryESStep`; `constants/list.ts`; `hooks/` useDeliveryDetail/useDeliveryList/useParkingReport/useWarehouseReceipt) · `home/` (dashboard) · `issues/` (IssuesPage, IssueReportPage; hooks `useTroubleReport`) · `notifications/` (center + detail) · `orders/`
 
 **Pattern per-page:** page phức tạp có sub-folder `_components/`, `constants/`, `hooks/` bên trong page folder (co-location).
 
@@ -119,20 +123,22 @@ Không có store khác — server data đưa vào TanStack Query.
 
 ## API services — `src/services/`
 
-**Client (8):**
-`auth.service.ts` · `delivery.service.ts` · `home.service.ts` · `notification.service.ts` · `receipt.service.ts` · `error-report.service.ts` · `trouble-report.service.ts` · `file-upload.service.ts` · `api.ts` (Requester class wrapping axios)
+**Client (8 service + `api.ts`):**
+`auth` · `delivery` · `home` · `notification` · `receipt` · `error-report` · `trouble-report` · `file-upload` (`.service.ts`) · `api.ts` (Requester class wrapping axios)
+
+Endpoint (grep): `/auth/*`, `/account/me`, `/home`, `/schedules`, `/delivery-list`, `/notifications` (+`/unread-count`), `/trouble-reports` (+`/targets`), `/uploads/presigned-upload-url`, `/api/error/report`.
 
 **HTTP:**
 `axios.instance.ts` · `authToken.ts` · `handleRequest.ts` · `handleResponse.ts` · `sessionExpired.ts` · `index.ts`
 
 **Query:**
-`queryClient.ts` — `staleTime: 5min`, `retry: 1` (khác E03: E03 dùng `staleTime: 0`)
+`queryClient.ts` — `staleTime: 5min`, `retry: 1`, `refetchOnWindowFocus: false`, mutations `retry: 0` (khác E03: E03 dùng `staleTime: 0`)
 
 ---
 
 ## Custom hooks — `src/hooks/`
 
-`useAuth`, `useCan`, `useDebouncedValue`, `useInView`, `useMutationCustom`, `useSessionExpired`, `useTableParams`, `router`
+`useAuth`, `useCan`, `useDebouncedValue`, `useInView`, `useMutationCustom`, `useSessionExpired`, `useTableParams`, `router`. Hook theo page nằm trong `pages/<x>/hooks/` (delivery, home, issues, notifications). Util riêng: `utils/geolocation.ts`, `utils/photoDraft.ts`.
 
 ---
 
@@ -193,7 +199,7 @@ App.tsx:
 - `tw-animate-css` cho animation utility
 - Global CSS: `src/styles/global.css`
 
-**Theme màu (E06):** primary blue `#0969DA` = `colors.semantics.company.500` (**cùng token với E03**).
+**Theme màu (E06):** primary blue `#0969DA` = `colors.semantics.company.500` (**cùng token với E03**) — theo doc cũ + `design_rule.md`; `src/index.css` dùng biến CSS shadcn (chưa đối chiếu hex trong lượt sync này). Toaster Sonner: `position="top-center"`.
 
 ---
 

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "6b4362be-45a5-41f6-b9a1-e0aa54cf01f2",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_nhà_cung_cấp/dataflow-sw-manu-20261009-160000/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_nhà_cung_cấp/dataflow-sw-manu-20261009-160000/sw-manu.html",
+  "specification": {
+    "sha256": "afc762131b13a322a72612155a0f1c6b247e26a1eaa58c49c5703b3a6df99dca",
+    "bytes": 34416
+  },
+  "artifact": {
+    "sha256": "5f52e873f051373b444b2fcda3b6251214c5a5c8fc2cc8eaa48f7bb13fe84ebb",
+    "bytes": 756456
+  }
+}

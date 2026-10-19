@@ -1,0 +1,7 @@
+{
+ "_probe": {
+  "result": "N/A",
+  "note": "{\"listText\":\"Phuong さん、\\n安全運転で\\nいってらっしゃいませ。\\n\\n配達一覧\\n2026/10/09\\n倉庫受取\\n0\\n未配送\\n0\\n配送完了\\n0\\nステータス\\n\\n倉庫データはありません。\\n\\nホーム\\nマニュアル\\n配送一覧\\nトラブル\\nアカウント\",\"detailText\":\"ホーム\\nマニュアル\\n配送一覧\\nトラブル\\nアカウント\\n配送詳細\\n\\nデータの取得に失敗しました。\\n\\n再試行\",\"url\":\"https://dev-dr.es-kitchen.co.jp/delivery/QC_FAKE_ES01\"}",
+  "evidence": "reports/delivery-driver/screenshots/g10a_delivery_list.png;reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ }
+}

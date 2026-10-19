@@ -40,6 +40,14 @@ Portal web dành riêng cho **công ty vận chuyển được ES Kitchen ủy t
 | — | **Figma nguồn (client)** — 57 frame giao diện + 24 bảng 画面設計書 | ✅ Có sẵn | `https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=26173-304942` |
 | — | **Phụ lục phân tích Figma** (Tech Lead, 2026-09-18) | ✅ Có sẵn | [`Figma-Analysis.md`](Figma-Analysis.md) |
 
+### Basic Design (Output 5)
+
+| # | Output | Workbook | Sheets | Trạng thái |
+|---|---|---|---|---|
+| 5 | **Basic Design** (v3, 08/10/2026) | `REQ/REQ_Công ty vận chuyển/Basic Design - Công ty vận chuyển.xlsx` (bản snapshot: `versions/v3_08102026/basic_design.xlsx`) | Created: 19 sheet `OW_*` (đủ 19 màn trong `## Screens`) · Updated: `Screen Index` · `Screen Error message` (138 error) · `Change History` (CHG-0006) | Quality Gate O5: `15 checks · 14 PASS · 0 FAIL · 1 WARN` (`OW_AUTH_005` NO IMAGE) — **WAITING FOR BRSE APPROVAL** |
+
+> Ảnh UI lấy từ frame Figma gốc (`31498:xxx`) theo cột Figma Link của `## Screens`, lưu ở `basic-design/images/`. Message Code dạng `E_<SCREEN rút gọn>_NNN` suy cơ học từ Screen ID — **chờ BrSE xác nhận viết tắt**. Message tiếng Việt trong Figma (OQ-15) có bản JP dịch tạm, đã gắn `INFERENCE`.
+
 **Downstream instructions:**
 
 | Agent | Đọc phần nào |

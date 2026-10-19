@@ -1,0 +1,334 @@
+{
+  "buttonCount": 35,
+  "allButtonData": [
+    {
+      "text": "28",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white opacity-60 cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">28</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "29",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white opacity-60 cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">29</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "30",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white opacity-60 cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">30</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "1",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">1</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "2",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">2</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "3",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">3</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "4",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">4</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "5",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">5</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "6配送：2件未 2件",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-green-50 cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">6</span><div class=\"flex flex-col items-end\"></div></div><span class=\"text-txt-middle text-xs leading-[18px]\">配送：2件</span><span class=\"inline-flex items-center gap-1 rounded bg-[#F23836] px-1.5 py-0.5 text-white w-fit\" title=\"配送スタッフ未設定\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"11\" "
+    },
+    {
+      "text": "7配送：2件未 2件",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-green-50 cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">7</span><div class=\"flex flex-col items-end\"></div></div><span class=\"text-txt-middle text-xs leading-[18px]\">配送：2件</span><span class=\"inline-flex items-center gap-1 rounded bg-[#F23836] px-1.5 py-0.5 text-white w-fit\" title=\"配送スタッフ未設定\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"11\" "
+    },
+    {
+      "text": "8",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">8</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "9",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md p-2 text-left min-h-[90px] bg-white border-2 border-primary cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">9</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "10",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">10</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "11",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">11</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "12",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">12</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "13配送：2件未 2件",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-green-50 cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">13</span><div class=\"flex flex-col items-end\"></div></div><span class=\"text-txt-middle text-xs leading-[18px]\">配送：2件</span><span class=\"inline-flex items-center gap-1 rounded bg-[#F23836] px-1.5 py-0.5 text-white w-fit\" title=\"配送スタッフ未設定\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"11\""
+    },
+    {
+      "text": "14",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">14</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "15配送：1件未 1件",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-green-50 cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">15</span><div class=\"flex flex-col items-end\"></div></div><span class=\"text-txt-middle text-xs leading-[18px]\">配送：1件</span><span class=\"inline-flex items-center gap-1 rounded bg-[#F23836] px-1.5 py-0.5 text-white w-fit\" title=\"配送スタッフ未設定\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"11\""
+    },
+    {
+      "text": "16",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">16</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "17",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">17</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "18",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">18</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "19",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">19</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "20配送：1件未 1件",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-green-50 cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">20</span><div class=\"flex flex-col items-end\"></div></div><span class=\"text-txt-middle text-xs leading-[18px]\">配送：1件</span><span class=\"inline-flex items-center gap-1 rounded bg-[#F23836] px-1.5 py-0.5 text-white w-fit\" title=\"配送スタッフ未設定\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"11\""
+    },
+    {
+      "text": "21配送：2件未 2件",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-green-50 cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">21</span><div class=\"flex flex-col items-end\"></div></div><span class=\"text-txt-middle text-xs leading-[18px]\">配送：2件</span><span class=\"inline-flex items-center gap-1 rounded bg-[#F23836] px-1.5 py-0.5 text-white w-fit\" title=\"配送スタッフ未設定\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"11\""
+    },
+    {
+      "text": "22",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">22</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "23",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">23</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "24",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">24</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "25",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">25</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "26",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">26</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "27",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">27</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "28",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">28</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "29",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">29</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "30",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">30</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "31",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">31</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "1",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white opacity-60 cursor-pointer transition-colors hover:border-primary",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">1</span><div class=\"flex flex-col items-end\"></div></div>"
+    }
+  ],
+  "weekBadges": [],
+  "redBars": [
+    {
+      "cls": "inline-flex min-w-10 items-center justify-center rounded px-2 text-xs leading-5 font-bold tracking-[",
+      "text": "重要"
+    },
+    {
+      "cls": "inline-flex min-w-10 items-center justify-center rounded px-2 text-xs leading-5 font-bold tracking-[",
+      "text": "重要"
+    },
+    {
+      "cls": "inline-flex min-w-10 items-center justify-center rounded px-2 text-xs leading-5 font-bold tracking-[",
+      "text": "重要"
+    },
+    {
+      "cls": "inline-flex min-w-10 items-center justify-center rounded px-2 text-xs leading-5 font-bold tracking-[",
+      "text": "重要"
+    }
+  ],
+  "todayBtn": {
+    "text": "28",
+    "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white opacity-60 cursor-pointer transition-colors hover:border-primary",
+    "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">28</span><div class=\"flex flex-col items-end\"></div></div>"
+  },
+  "primaryBorderCount": 36,
+  "badgeSpans": [
+    {
+      "text": "月",
+      "cls": "text-xl leading-6 text-txt-middle"
+    },
+    {
+      "text": "火",
+      "cls": "text-xl leading-6 text-txt-middle"
+    },
+    {
+      "text": "水",
+      "cls": "text-xl leading-6 text-txt-middle"
+    },
+    {
+      "text": "木",
+      "cls": "text-xl leading-6 text-txt-middle"
+    },
+    {
+      "text": "金",
+      "cls": "text-xl leading-6 text-txt-middle"
+    },
+    {
+      "text": "土",
+      "cls": "text-xl leading-6 text-[#0969DA]"
+    },
+    {
+      "text": "日",
+      "cls": "text-xl leading-6 text-[#CF222E]"
+    },
+    {
+      "text": "28",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "29",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "30",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "1",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "2",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "3",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "4",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "5",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "6",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "配送：2件",
+      "cls": "text-txt-middle text-xs leading-[18px]"
+    },
+    {
+      "text": "未 2件",
+      "cls": "inline-flex items-center gap-1 rounded bg-[#F23836] px-1.5 py-0.5 text-white w-f"
+    },
+    {
+      "text": "未 2件",
+      "cls": "text-[11px] leading-[13px] font-medium"
+    },
+    {
+      "text": "7",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "配送：2件",
+      "cls": "text-txt-middle text-xs leading-[18px]"
+    },
+    {
+      "text": "未 2件",
+      "cls": "inline-flex items-center gap-1 rounded bg-[#F23836] px-1.5 py-0.5 text-white w-f"
+    },
+    {
+      "text": "未 2件",
+      "cls": "text-[11px] leading-[13px] font-medium"
+    },
+    {
+      "text": "8",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "9",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "10",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "11",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "12",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "13",
+      "cls": "text-lg font-bold text-txt-high"
+    },
+    {
+      "text": "配送：2件",
+      "cls": "text-txt-middle text-xs leading-[18px]"
+    }
+  ],
+  "nav_配送管理": "HOST/delivery-status",
+  "nav_集金・駐車": "HOST/collection-reports",
+  "nav_配送スタッフ": "HOST/driver",
+  "nav_プロフィール": "HOST/profile",
+  "noticeSectionPartial": "<div class=\"flex items-center justify-between gap-3\"><h2 class=\"text-txt-high mb-0! text-[22px] leading-7 font-bold tracking-[0.05em]\">お知らせ</h2></div><div class=\"flex max-h-[300px] flex-col overflow-y",
+  "estimateText": "未回答の見積もり依頼見積もり一覧へ未回答の見積もり依頼はありません。",
+  "noHScroll": true
+}

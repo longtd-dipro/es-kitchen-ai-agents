@@ -1,0 +1,918 @@
+{
+ "group_no": "10",
+ "key": "Tài xế xếp đồ",
+ "file": "BD_10_Tài xế xếp đồ.xlsx",
+ "figma_group_nodes": [
+  "34199:211578",
+  "34199:211577"
+ ],
+ "figma_group_names": [
+  "Group Tài Xế Xếp Đồ (SECTION, 63 con)",
+  "Group Mô Tả Quy Trinh Xep Do (GROUP, 34 con)"
+ ],
+ "screens": [
+  "DA_ESDL_000_0",
+  "DA_ESDL_000_1",
+  "DA_ESDL_000_2",
+  "DA_ESDL_001",
+  "DA_ESDL_002",
+  "DA_ESDL_007",
+  "DA_ESDL_002-05",
+  "DA_ESDL_008",
+  "DA_ESDL_003",
+  "DA_ESDL_009",
+  "DA_ESDL_010",
+  "DA_ESDL_003-06",
+  "DA_ESDL_012",
+  "DA_ESDL_004",
+  "DA_ESDL_005",
+  "DA_ESDL_006",
+  "DA_ESDL_011"
+ ],
+ "frames": [
+  {
+   "no": "10-01",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [context]",
+   "node": "16422:114580",
+   "w": 390,
+   "h": 844,
+   "kind": "Context",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": null,
+   "note": "Màn nhóm khác (Home) — chỉ minh hoạ điểm vào luồng ES配送便; chưa mở screenshot (hết quota Figma), xác định theo tên"
+  },
+  {
+   "no": "10-02",
+   "name": "DA_ESDL_000_0 — ES配送便 基本情報（当日・未配送） [default (hôm nay, chưa giao)]",
+   "node": "16383:114020",
+   "w": 390,
+   "h": 1098,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_000_0",
+   "state_label": "default (hôm nay, chưa giao)",
+   "dup_of": null,
+   "note": "Node type COMPONENT; ảnh đã xem: header + tab 基本情報/駐車報告/陳列情報 + 納品先情報 + 荷物情報 + nút 「陳列を開始する」"
+  },
+  {
+   "no": "10-03",
+   "name": "DA_ESDL_000_1 — ES配送便（未来日・閲覧のみ） [dữ liệu tương lai]",
+   "node": "19036:18274",
+   "w": 390,
+   "h": 844,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_000_1",
+   "state_label": "dữ liệu tương lai",
+   "dup_of": null,
+   "note": "Đã xem: không có footer nút 「陳列を開始する」; Figma tên frame ghi 'Cannot edit future data'"
+  },
+  {
+   "no": "10-04",
+   "name": "DA_ESDL_000_2 — ES配送便（配送完了） [đã hoàn tất]",
+   "node": "19663:152788",
+   "w": 390,
+   "h": 810,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_000_2",
+   "state_label": "đã hoàn tất",
+   "dup_of": null,
+   "note": "Đã xem: banner xanh 「荷物の配送は完了しました。」+ ngày giờ, badge 配送完了"
+  },
+  {
+   "no": "10-05",
+   "name": "DA_ESDL_000_2 — ES配送便（配送完了） [master component bản dài (cuộn); component]",
+   "node": "20266:174078",
+   "w": 390,
+   "h": 1354,
+   "kind": "Component",
+   "screen_id": "DA_ESDL_000_2",
+   "state_label": "master component bản dài (cuộn)",
+   "dup_of": "10-04",
+   "note": "Cùng tên với 10-04, cao 1354 (hiện đủ 荷物情報); đã xem"
+  },
+  {
+   "no": "10-06",
+   "name": "DA_ESDL_001 — Step 1 陳列前写真 [default (chưa có ảnh, 続ける disabled)]",
+   "node": "18645:24837",
+   "w": 390,
+   "h": 844,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_001",
+   "state_label": "default (chưa có ảnh, 続ける disabled)",
+   "dup_of": null,
+   "note": "Đã xem"
+  },
+  {
+   "no": "10-07",
+   "name": "DA_ESDL_001 — Step 1 陳列前写真 [menu nguồn ảnh; component]",
+   "node": "18645:24838",
+   "w": 230,
+   "h": 78,
+   "kind": "Component",
+   "screen_id": "DA_ESDL_001",
+   "state_label": "menu nguồn ảnh",
+   "dup_of": null,
+   "note": "INSTANCE; đã xem: 「写真を撮る」/「写真ライブラリ」 — hiện khi bấm ファイル選択"
+  },
+  {
+   "no": "10-08",
+   "name": "DA_ESDL_001 — Step 1 陳列前写真 [đã upload (3 thumbnail có ×, loading)]",
+   "node": "16422:114716",
+   "w": 390,
+   "h": 844,
+   "kind": "State",
+   "screen_id": "DA_ESDL_001",
+   "state_label": "đã upload (3 thumbnail có ×, loading)",
+   "dup_of": null,
+   "note": "Đã xem; 続ける active"
+  },
+  {
+   "no": "10-09",
+   "name": "DA_ESDL_002 — 在庫 [default (chưa check, 確認 disabled)]",
+   "node": "18058:158268",
+   "w": 390,
+   "h": 844,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_002",
+   "state_label": "default (chưa check, 確認 disabled)",
+   "dup_of": null,
+   "note": "Đã xem"
+  },
+  {
+   "no": "10-10",
+   "name": "DA_ESDL_002 — 在庫 [mở camera quét barcode]",
+   "node": "16422:114840",
+   "w": 390,
+   "h": 844,
+   "kind": "State",
+   "screen_id": "DA_ESDL_002",
+   "state_label": "mở camera quét barcode",
+   "dup_of": null,
+   "note": "Ảnh đã tải, CHƯA mở xem nội dung — gán theo tên frame"
+  },
+  {
+   "no": "10-11",
+   "name": "DA_ESDL_007 — スキャン廃棄登録モーダル [popup sau khi quét (nhập 廃棄数/在庫数)]",
+   "node": "18123:165893",
+   "w": 390,
+   "h": 844,
+   "kind": "Popup",
+   "screen_id": "DA_ESDL_007",
+   "state_label": "popup sau khi quét (nhập 廃棄数/在庫数)",
+   "dup_of": null,
+   "note": "Đã xem: popup 「鶏もも肉の生姜焼き風」 論理在庫：0個, 廃棄数, 在庫数, 「続けてスキャンする」, 「一覧に戻る」. Màn nền ghi 「株式会社TEST」 (khác 「大和…」 các frame khác)"
+  },
+  {
+   "no": "10-12",
+   "name": "DA_ESDL_002 — 在庫 [đã check các dòng (廃棄数 xám, 確認 active)]",
+   "node": "18260:89828",
+   "w": 390,
+   "h": 844,
+   "kind": "State",
+   "screen_id": "DA_ESDL_002",
+   "state_label": "đã check các dòng (廃棄数 xám, 確認 active)",
+   "dup_of": null,
+   "note": "Đã xem. Văn bản hướng dẫn khác 002-01: 「廃棄数を確認のうえ、残りの実在庫を確認してください。確認が完了した商品は、チェックしてください。」 — CONFLICT văn bản giữa các frame"
+  },
+  {
+   "no": "10-13",
+   "name": "DA_ESDL_002-05 — Step 2: 成功結果 [kết quả Step 2 (chứa banner DA_ESDL_008)]",
+   "node": "18260:90236",
+   "w": 390,
+   "h": 844,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_002-05",
+   "state_label": "kết quả Step 2 (chứa banner DA_ESDL_008)",
+   "dup_of": null,
+   "note": "Đã xem: banner xanh 「在庫/廃棄が成功しました。」+ 2026年4月15日12時03分; bảng 廃棄数/実在庫; 戻る / 続ける. Banner DA_ESDL_008 nằm TRONG frame này (không có frame riêng) → DA_ESDL_008 dùng chung frame 10-13",
+   "also_screen_ids": [
+    "DA_ESDL_008"
+   ]
+  },
+  {
+   "no": "10-14",
+   "name": "DA_ESDL_003 — 陳列 (検品) (Step 3) [default (確認 disabled)]",
+   "node": "16422:114955",
+   "w": 390,
+   "h": 844,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_003",
+   "state_label": "default (確認 disabled)",
+   "dup_of": null,
+   "note": "Đã xem"
+  },
+  {
+   "no": "10-15",
+   "name": "DA_ESDL_003 — 陳列 (検品) (Step 3) [mở camera quét]",
+   "node": "18252:82725",
+   "w": 390,
+   "h": 844,
+   "kind": "State",
+   "screen_id": "DA_ESDL_003",
+   "state_label": "mở camera quét",
+   "dup_of": null,
+   "note": "Đã xem: khung camera + 「タップしてカメラを起動」"
+  },
+  {
+   "no": "10-16",
+   "name": "DA_ESDL_009 — スキャン検品登録モーダル [popup sau quét (実際数)]",
+   "node": "18252:82730",
+   "w": 390,
+   "h": 844,
+   "kind": "Popup",
+   "screen_id": "DA_ESDL_009",
+   "state_label": "popup sau quét (実際数)",
+   "dup_of": null,
+   "note": "Chưa xem screenshot (Figma rate limit) — gán theo tên + bảng 23497:38196; ảnh chưa lấy"
+  },
+  {
+   "no": "10-17",
+   "name": "DA_ESDL_010 — 陳列完了確認・ES連絡モーダル [popup khác biệt/未確認]",
+   "node": "17000:119128",
+   "w": 390,
+   "h": 844,
+   "kind": "Popup",
+   "screen_id": "DA_ESDL_010",
+   "state_label": "popup khác biệt/未確認",
+   "dup_of": null,
+   "note": "Gán theo tên + bảng 23514:38197; chưa xem"
+  },
+  {
+   "no": "10-18",
+   "name": "DA_ESDL_010 — 陳列完了確認・ES連絡モーダル [biến thể popup khác biệt]",
+   "node": "18578:45802",
+   "w": 390,
+   "h": 844,
+   "kind": "Duplicate",
+   "screen_id": "DA_ESDL_010",
+   "state_label": "biến thể popup khác biệt",
+   "dup_of": "10-17",
+   "note": "Bản trùng 003-04 (brief ghi tiêu đề nhầm 「荷物の受取は完了しましたか？」 — lỗi Figma); chưa xem"
+  },
+  {
+   "no": "10-19",
+   "name": "DA_ESDL_003-06 — Step 3: 成功結果（差異表） [kết quả Step 3 (chứa banner DA_ESDL_012)]",
+   "node": "16422:115045",
+   "w": 390,
+   "h": 844,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_003-06",
+   "state_label": "kết quả Step 3 (chứa banner DA_ESDL_012)",
+   "dup_of": null,
+   "note": "Gán theo tên; chưa xem. Banner DA_ESDL_012 dự kiến nằm trong frame này",
+   "also_screen_ids": [
+    "DA_ESDL_012"
+   ]
+  },
+  {
+   "no": "10-20",
+   "name": "DA_ESDL_004 — Step 4 陳列後写真 [default]",
+   "node": "16422:115333",
+   "w": 390,
+   "h": 844,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_004",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Phần B; gán theo tên"
+  },
+  {
+   "no": "10-21",
+   "name": "DA_ESDL_004 — Step 4 陳列後写真 [đã upload ảnh]",
+   "node": "16422:114757",
+   "w": 390,
+   "h": 844,
+   "kind": "State",
+   "screen_id": "DA_ESDL_004",
+   "state_label": "đã upload ảnh",
+   "dup_of": null,
+   "note": "Phần B"
+  },
+  {
+   "no": "10-22",
+   "name": "DA_ESDL_005 — Step 5 集金登録 [nhập tiền thu]",
+   "node": "16422:115605",
+   "w": 390,
+   "h": 790,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_005",
+   "state_label": "nhập tiền thu",
+   "dup_of": null,
+   "note": "Phần B"
+  },
+  {
+   "no": "10-23",
+   "name": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 基本情報 sau hoàn tất (chứa banner DA_ESDL_011)]",
+   "node": "18578:42560",
+   "w": 390,
+   "h": 810,
+   "kind": "Screen",
+   "screen_id": "DA_ESDL_006",
+   "state_label": "tab 基本情報 sau hoàn tất (chứa banner DA_ESDL_011)",
+   "dup_of": null,
+   "note": "Phần B",
+   "also_screen_ids": [
+    "DA_ESDL_011"
+   ]
+  },
+  {
+   "no": "10-24",
+   "name": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 駐車報告 (view)]",
+   "node": "18578:44771",
+   "w": 390,
+   "h": 797,
+   "kind": "State",
+   "screen_id": "DA_ESDL_006",
+   "state_label": "tab 駐車報告 (view)",
+   "dup_of": null,
+   "note": "Phần B"
+  },
+  {
+   "no": "10-25",
+   "name": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 駐車報告 (edit)]",
+   "node": "18578:44248",
+   "w": 390,
+   "h": 810,
+   "kind": "State",
+   "screen_id": "DA_ESDL_006",
+   "state_label": "tab 駐車報告 (edit)",
+   "dup_of": null,
+   "note": "Phần B"
+  },
+  {
+   "no": "10-26",
+   "name": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 陳列情報 step 1]",
+   "node": "18578:43759",
+   "w": 390,
+   "h": 790,
+   "kind": "State",
+   "screen_id": "DA_ESDL_006",
+   "state_label": "tab 陳列情報 step 1",
+   "dup_of": null,
+   "note": "Phần B"
+  },
+  {
+   "no": "10-27",
+   "name": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 陳列情報 step 2]",
+   "node": "18578:46215",
+   "w": 390,
+   "h": 855,
+   "kind": "State",
+   "screen_id": "DA_ESDL_006",
+   "state_label": "tab 陳列情報 step 2",
+   "dup_of": null,
+   "note": "Phần B"
+  },
+  {
+   "no": "10-28",
+   "name": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 陳列情報 step 3]",
+   "node": "18578:46758",
+   "w": 390,
+   "h": 786,
+   "kind": "State",
+   "screen_id": "DA_ESDL_006",
+   "state_label": "tab 陳列情報 step 3",
+   "dup_of": null,
+   "note": "Phần B"
+  },
+  {
+   "no": "10-29",
+   "name": "DA_ESDL_006 — 完了後：陳列情報タブ・駐車報告 [tab 陳列情報 step 5]",
+   "node": "18578:47594",
+   "w": 390,
+   "h": 786,
+   "kind": "State",
+   "screen_id": "DA_ESDL_006",
+   "state_label": "tab 陳列情報 step 5",
+   "dup_of": null,
+   "note": "Phần B; KHÔNG có frame 006-07 (step 4) trong group — ghi open"
+  },
+  {
+   "no": "10-30",
+   "name": "Flow note",
+   "node": "16422:115670",
+   "w": 3340,
+   "h": 87,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": null,
+   "note": "INSTANCE ghi chú flow (dải tiêu đề phân đoạn luồng) — không phải màn"
+  },
+  {
+   "no": "10-31",
+   "name": "Flow note",
+   "node": "18685:156651",
+   "w": 3340,
+   "h": 87,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": null,
+   "note": "INSTANCE ghi chú flow (dải tiêu đề phân đoạn luồng) — không phải màn"
+  },
+  {
+   "no": "10-32",
+   "name": "Flow note",
+   "node": "18685:156661",
+   "w": 3340,
+   "h": 87,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": null,
+   "note": "INSTANCE ghi chú flow (dải tiêu đề phân đoạn luồng) — không phải màn"
+  },
+  {
+   "no": "10-33",
+   "name": "Flow note",
+   "node": "18685:156731",
+   "w": 3340,
+   "h": 87,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": null,
+   "note": "INSTANCE ghi chú flow (dải tiêu đề phân đoạn luồng) — không phải màn"
+  },
+  {
+   "no": "10-34",
+   "name": "Flow note",
+   "node": "18768:14035",
+   "w": 3340,
+   "h": 87,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": null,
+   "note": "INSTANCE ghi chú flow (dải tiêu đề phân đoạn luồng) — không phải màn"
+  },
+  {
+   "no": "10-35",
+   "name": "Flow note",
+   "node": "18784:14549",
+   "w": 3340,
+   "h": 87,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": null,
+   "note": "INSTANCE ghi chú flow (dải tiêu đề phân đoạn luồng) — không phải màn"
+  },
+  {
+   "no": "10-36",
+   "name": "Flow note",
+   "node": "18867:155204",
+   "w": 3340,
+   "h": 87,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": null,
+   "note": "INSTANCE ghi chú flow (dải tiêu đề phân đoạn luồng) — không phải màn"
+  },
+  {
+   "no": "10-37",
+   "name": "Section 1",
+   "node": "18784:14263",
+   "w": 566,
+   "h": 592,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": null,
+   "note": "SECTION chứa 3 FRAME 'header' (358x32: 18784:14148, 18784:14170, 18868:14003) + 3 GROUP nhãn (48095879/80/81) — ghi chú/annotation, không phải màn"
+  }
+ ],
+ "non_screen_counts": {
+  "CONNECTOR": 25,
+  "VECTOR": 1,
+  "TABLE": 15,
+  "RECTANGLE(image ref)": 19
+ },
+ "tables": [
+  {
+   "node": "23134:63310",
+   "summary": "A. ES配送便 基本情報タブ (3 rows x 17 cols) — mô tả màn 基本情報 (nút back, tiêu đề ES配送便, tab, 納品先情報, 荷物情報, 陳列を開始する)",
+   "screen_id": "DA_ESDL_000_0"
+  },
+  {
+   "node": "23266:36257",
+   "summary": "陳列前 写真アップロード — mô tả header/thẻ điểm giao + khu upload ảnh trước khi xếp (18 rows)",
+   "screen_id": "DA_ESDL_001"
+  },
+  {
+   "node": "23335:36257",
+   "summary": "在庫/廃棄確認 — tồn kho & hàng huỷ (hết hạn): tiêu đề mục, văn bản hướng dẫn, danh sách dòng (19 rows)",
+   "screen_id": "DA_ESDL_002"
+  },
+  {
+   "node": "25152:42096",
+   "summary": "7. Modal: Đăng ký hủy qua quét mã vạch — 商品名/論理在庫/廃棄数/在庫数/nút (8 rows)",
+   "screen_id": "DA_ESDL_007"
+  },
+  {
+   "node": "24731:177078",
+   "summary": "在庫/廃棄 完了（成功） — header, thẻ điểm giao, banner 在庫/廃棄が成功しました (14 rows); mục 1.3 hiện sau khi bấm 「確認」 ở DA_ESDL_002",
+   "screen_id": "DA_ESDL_002-05"
+  },
+  {
+   "node": "23451:37606",
+   "summary": "陳列 — xếp hàng lên kệ, check số lượng: danh sách sản phẩm từng dòng, checkbox 4.1 (9 rows)",
+   "screen_id": "DA_ESDL_003"
+  },
+  {
+   "node": "23497:38196",
+   "summary": "6. Modal: Đăng ký kiểm tra qua quét (商品名/注文個数/実際数/nút) (7 rows)",
+   "screen_id": "DA_ESDL_009"
+  },
+  {
+   "node": "23514:38197",
+   "summary": "7. Modal: Xác nhận hoàn tất trưng bày / liên hệ ES khi có chênh lệch (checkbox đã liên hệ ES, 報告完了) (7 rows)",
+   "screen_id": "DA_ESDL_010"
+  },
+  {
+   "node": "24891:96525",
+   "summary": "在庫/廃棄 完了（成功） (14 rows) — tiêu đề lặp bảng Step 2 nhưng điều kiện: hiện sau 「確定」(không chênh lệch) hoặc 「報告完了」 (có chênh lệch, đã liên hệ ES) → Step 3 result; mục 1.3 vẫn ghi chữ Step 2 (OQ-42)",
+   "screen_id": "DA_ESDL_003-06"
+  },
+  {
+   "node": "24942:90741",
+   "summary": "陳列後写真 — chụp ảnh sau xếp hàng (15 rows)",
+   "screen_id": "DA_ESDL_004"
+  },
+  {
+   "node": "23559:38617",
+   "summary": "集金登録 — mục nhập thu tiền: 集金予定額 (readonly) và các ô nhập (6 rows)",
+   "screen_id": "DA_ESDL_005"
+  },
+  {
+   "node": "23693:39294",
+   "summary": "7. 駐車報告セクション（読み取りモード）— heading + icon ✏️ sửa (hiện ≤ 7 ngày sau giao) (6 rows)",
+   "screen_id": "DA_ESDL_006"
+  },
+  {
+   "node": "23698:40099",
+   "summary": "7. 駐車報告セクション（編集モード）— icon × hủy, 💾 lưu (bắt buộc ảnh hóa đơn: 「レシート画像をアップロードしてください」) (6 rows)",
+   "screen_id": "DA_ESDL_006"
+  },
+  {
+   "node": "23747:111658",
+   "summary": "ES配送詳細 - 陳列情報タブ — điều hướng 5 bước, tiêu đề mục (chỉ truy cập sau khi hoàn tất 5 bước) (10 rows)",
+   "screen_id": "DA_ESDL_006"
+  },
+  {
+   "node": "23244:36210",
+   "summary": "完了トースト（全アイテム受取済み時）/ Toast giao hàng hoàn tất (3 rows); mục 3 配送完了バナー: hiện khi hoàn tất 5 bước",
+   "screen_id": "DA_ESDL_011"
+  }
+ ],
+ "images": {
+  "DA_ESDL_000_0": [
+   {
+    "file": "N10/10-02_DA_ESDL_000_0.png",
+    "node": "16383:114020",
+    "no": "10-02",
+    "label": "DA_ESDL_000_0 · Screen · default (hôm nay, chưa giao)"
+   }
+  ],
+  "DA_ESDL_000_1": [
+   {
+    "file": "N10/10-03_DA_ESDL_000_1.png",
+    "node": "19036:18274",
+    "no": "10-03",
+    "label": "DA_ESDL_000_1 · Screen · dữ liệu tương lai"
+   }
+  ],
+  "DA_ESDL_000_2": [
+   {
+    "file": "N10/10-04_DA_ESDL_000_2.png",
+    "node": "19663:152788",
+    "no": "10-04",
+    "label": "DA_ESDL_000_2 · Screen · đã hoàn tất"
+   }
+  ],
+  "DA_ESDL_001": [
+   {
+    "file": "N10/10-06_DA_ESDL_001.png",
+    "node": "18645:24837",
+    "no": "10-06",
+    "label": "DA_ESDL_001 · Screen · default (chưa có ảnh, 続ける disabled)"
+   },
+   {
+    "file": "N10/10-08_DA_ESDL_001.png",
+    "node": "16422:114716",
+    "no": "10-08",
+    "label": "DA_ESDL_001 · State · đã upload (3 thumbnail có ×, loading)"
+   }
+  ],
+  "DA_ESDL_002": [
+   {
+    "file": "N10/10-09_DA_ESDL_002.png",
+    "node": "18058:158268",
+    "no": "10-09",
+    "label": "DA_ESDL_002 · Screen · default (chưa check, 確認 disabled)"
+   },
+   {
+    "file": "N10/10-10_DA_ESDL_002.png",
+    "node": "16422:114840",
+    "no": "10-10",
+    "label": "DA_ESDL_002 · State · mở camera quét barcode"
+   },
+   {
+    "file": "N10/10-12_DA_ESDL_002.png",
+    "node": "18260:89828",
+    "no": "10-12",
+    "label": "DA_ESDL_002 · State · đã check các dòng (廃棄数 xám, 確認 active)"
+   }
+  ],
+  "DA_ESDL_007": [
+   {
+    "file": "N10/10-11_DA_ESDL_007.png",
+    "node": "18123:165893",
+    "no": "10-11",
+    "label": "DA_ESDL_007 · Popup · popup sau khi quét (nhập 廃棄数/在庫数)"
+   }
+  ],
+  "DA_ESDL_002-05": [
+   {
+    "file": "N10/10-13_DA_ESDL_002-05.png",
+    "node": "18260:90236",
+    "no": "10-13",
+    "label": "DA_ESDL_002-05 · Screen · kết quả Step 2 (chứa banner DA_ESDL_008)"
+   }
+  ],
+  "DA_ESDL_008": [
+   {
+    "file": "N10/10-13_DA_ESDL_008.png",
+    "node": "18260:90236",
+    "no": "10-13",
+    "label": "DA_ESDL_002-05 · Screen · kết quả Step 2 (chứa banner DA_ESDL_008)"
+   }
+  ],
+  "DA_ESDL_003": [
+   {
+    "file": "N10/10-14_DA_ESDL_003.png",
+    "node": "16422:114955",
+    "no": "10-14",
+    "label": "DA_ESDL_003 · Screen · default (確認 disabled)"
+   },
+   {
+    "file": "N10/10-15_DA_ESDL_003.png",
+    "node": "18252:82725",
+    "no": "10-15",
+    "label": "DA_ESDL_003 · State · mở camera quét"
+   }
+  ],
+  "DA_ESDL_009": [
+   {
+    "file": "N10/10-16_DA_ESDL_009.png",
+    "node": "18252:82730",
+    "no": "10-16",
+    "label": "DA_ESDL_009 · Popup · popup sau quét (実際数)"
+   }
+  ],
+  "DA_ESDL_010": [
+   {
+    "file": "N10/10-17_DA_ESDL_010.png",
+    "node": "17000:119128",
+    "no": "10-17",
+    "label": "DA_ESDL_010 · Popup · popup khác biệt/未確認"
+   }
+  ],
+  "DA_ESDL_003-06": [
+   {
+    "file": "N10/10-19_DA_ESDL_003-06.png",
+    "node": "16422:115045",
+    "no": "10-19",
+    "label": "DA_ESDL_003-06 · Screen · kết quả Step 3 (chứa banner DA_ESDL_012)"
+   }
+  ],
+  "DA_ESDL_012": [
+   {
+    "file": "N10/10-19_DA_ESDL_012.png",
+    "node": "16422:115045",
+    "no": "10-19",
+    "label": "DA_ESDL_003-06 · Screen · kết quả Step 3 (chứa banner DA_ESDL_012)"
+   }
+  ],
+  "DA_ESDL_004": [
+   {
+    "file": "N10/10-20_DA_ESDL_004.png",
+    "node": "16422:115333",
+    "no": "10-20",
+    "label": "DA_ESDL_004 · Screen · default"
+   },
+   {
+    "file": "N10/10-21_DA_ESDL_004.png",
+    "node": "16422:114757",
+    "no": "10-21",
+    "label": "DA_ESDL_004 · State · đã upload ảnh"
+   }
+  ],
+  "DA_ESDL_005": [
+   {
+    "file": "N10/10-22_DA_ESDL_005.png",
+    "node": "16422:115605",
+    "no": "10-22",
+    "label": "DA_ESDL_005 · Screen · nhập tiền thu"
+   }
+  ],
+  "DA_ESDL_006": [
+   {
+    "file": "N10/10-23_DA_ESDL_006.png",
+    "node": "18578:42560",
+    "no": "10-23",
+    "label": "DA_ESDL_006 · Screen · tab 基本情報 sau hoàn tất (chứa banner DA_ESDL_011)"
+   },
+   {
+    "file": "N10/10-24_DA_ESDL_006.png",
+    "node": "18578:44771",
+    "no": "10-24",
+    "label": "DA_ESDL_006 · State · tab 駐車報告 (view)"
+   },
+   {
+    "file": "N10/10-25_DA_ESDL_006.png",
+    "node": "18578:44248",
+    "no": "10-25",
+    "label": "DA_ESDL_006 · State · tab 駐車報告 (edit)"
+   },
+   {
+    "file": "N10/10-26_DA_ESDL_006.png",
+    "node": "18578:43759",
+    "no": "10-26",
+    "label": "DA_ESDL_006 · State · tab 陳列情報 step 1"
+   },
+   {
+    "file": "N10/10-27_DA_ESDL_006.png",
+    "node": "18578:46215",
+    "no": "10-27",
+    "label": "DA_ESDL_006 · State · tab 陳列情報 step 2"
+   },
+   {
+    "file": "N10/10-28_DA_ESDL_006.png",
+    "node": "18578:46758",
+    "no": "10-28",
+    "label": "DA_ESDL_006 · State · tab 陳列情報 step 3"
+   },
+   {
+    "file": "N10/10-29_DA_ESDL_006.png",
+    "node": "18578:47594",
+    "no": "10-29",
+    "label": "DA_ESDL_006 · State · tab 陳列情報 step 5"
+   }
+  ],
+  "DA_ESDL_011": [
+   {
+    "file": "N10/10-23_DA_ESDL_011.png",
+    "node": "18578:42560",
+    "no": "10-23",
+    "label": "DA_ESDL_006 · Screen · tab 基本情報 sau hoàn tất (chứa banner DA_ESDL_011)"
+   }
+  ]
+ },
+ "reference_images_unviewed": [
+  {
+   "name": "image 450",
+   "node": "24704:176723",
+   "pos": "12323,14857",
+   "likely_screen": "001 (inferred theo toạ độ trên bảng 23266:36257)",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 451",
+   "node": "24704:176886",
+   "pos": "14322,15071",
+   "likely_screen": "001",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 452",
+   "node": "24704:176895",
+   "pos": "16561,15071",
+   "likely_screen": "001",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 453",
+   "node": "24731:177076",
+   "pos": "19107,15071",
+   "likely_screen": "002 (trên bảng 23335:36257)",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 454",
+   "node": "24869:93031",
+   "pos": "22029,15086",
+   "likely_screen": "002-05 (trên bảng 24731:177078)",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 455",
+   "node": "24891:96517",
+   "pos": "12214,23729",
+   "likely_screen": "003 (trên bảng 23451:37606)",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 456",
+   "node": "24891:96520",
+   "pos": "15450,23729",
+   "likely_screen": "003",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 457",
+   "node": "24891:96523",
+   "pos": "18471,23729",
+   "likely_screen": "003/DA_ESDL_009",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 458",
+   "node": "24891:96998",
+   "pos": "21920,23729",
+   "likely_screen": "003-06 (trên bảng 24891:96525)",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 460",
+   "node": "24942:127530",
+   "pos": "28035,23729",
+   "likely_screen": "004? (trên bảng 24942:90741)",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 459",
+   "node": "24942:90691",
+   "pos": "11999,32178",
+   "likely_screen": "005 (phần B)",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 477",
+   "node": "25379:198248",
+   "pos": "15328,32178",
+   "likely_screen": "phần B",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 462",
+   "node": "24979:155835",
+   "pos": "18374,32200",
+   "likely_screen": "006 (phần B)",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 463",
+   "node": "24979:155838",
+   "pos": "21699,32161",
+   "likely_screen": "006",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 464",
+   "node": "24979:155841",
+   "pos": "24829,32161",
+   "likely_screen": "006",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 465",
+   "node": "24979:155844",
+   "pos": "27944,32161",
+   "likely_screen": "006",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 466",
+   "node": "24979:155957",
+   "pos": "31448,32161",
+   "likely_screen": "006",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 467",
+   "node": "24979:155960",
+   "pos": "34909,32161",
+   "likely_screen": "006",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  },
+  {
+   "name": "image 468",
+   "node": "25025:155963",
+   "pos": "38370,32161",
+   "likely_screen": "006",
+   "note": "inferred từ toạ độ cạnh bảng mô tả — chưa mở ảnh (Figma rate limit)"
+  }
+ ],
+ "open": [
+  "Hết quota Figma MCP giữa chừng: CHƯA lấy screenshot 10-15..: 003-03 (DA_ESDL_009), 003-04/003-05 (DA_ESDL_010), 003-06, 004-01/02, 005-01, 006-01..08, DA_HOME_001; các gán screen_id cho các frame này theo TÊN frame + bảng mô tả, chưa xác nhận bằng ảnh",
+  "Ảnh DA_ESDL_002_scan (10-10) đã tải nhưng chưa xem nội dung",
+  "DA_ESDL_008, DA_ESDL_012, DA_ESDL_011 là banner nằm trong frame của màn 002-05 / 003-06 / 006-01 — không có frame riêng (DA_ESDL_008 đã thấy; DA_ESDL_012/DA_ESDL_011 suy theo bảng 24891:96525 / 23244:36210, chưa thấy ảnh)",
+  "Không có frame DA_ESDL_006-07 (step 4) trong group",
+  "Văn bản hướng dẫn DA_ESDL_002 khác nhau giữa 002-01 và 002-04; frame 002-03 nền ghi 「株式会社TEST」 khác frame khác",
+  "Không có frame Figma cho DA_ESDL_002-05 riêng ngoài 10-13; 'E-xx toast/banner' ngoài nhóm không thuộc G10",
+  "Ảnh 'image 450-477' (19) là ảnh tham chiếu trong group mô tả, gán màn theo toạ độ (suy luận), chưa mở"
+ ]
+}

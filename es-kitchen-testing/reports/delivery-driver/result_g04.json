@@ -1,0 +1,277 @@
+{
+ "TC-HOM-001": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đủ 3 ngày. Quan sát thực tế: Home có 7 section ngày (4 section sau dạng 「■2026-10-12（2026-10-12）」) lệch SPEC RQ-B05 (3 ngày); tiêu đề ngày zero-padding; xem TC-HOM-021.",
+  "evidence": ""
+ },
+ "TC-HOM-003": {
+  "result": "Pending",
+  "note": "Cần đăng xuất + đăng nhập tài khoản khác (DR_QC001, không có); đăng xuất tài khoản thật gây 401 cho agent khác. Quan sát: tên header hiện là tên tài xế thật, định dạng 「<tên> さん、」.",
+  "evidence": ""
+ },
+ "TC-HOM-008": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g04_noti.png"
+ },
+ "TC-HOM-009": {
+  "result": "Pending",
+  "note": "Quay lại Home hoạt động (URL=/home, 7 section ngày + tiêu đề vẫn hiển thị) nhưng Expected yêu cầu \"dữ liệu 3 ngày\" giữ nguyên — tài khoản test không có lịch nên không xác nhận được phần dữ liệu. Evidence: reports/delivery-driver/screenshots/g04_back_home.png",
+  "evidence": "reports/delivery-driver/screenshots/g04_back_home.png"
+ },
+ "TC-HOM-010": {
+  "result": "Pending",
+  "note": "Cần dữ liệu giao hàng (ES/COOL/kho, số hoàn thành) để kiểm tra công thức tiến độ; tài khoản chỉ có 0/0/0, 0%.",
+  "evidence": ""
+ },
+ "TC-HOM-011": {
+  "result": "Pending",
+  "note": "Cần dữ liệu giao hàng (ES/COOL/kho, số hoàn thành) để kiểm tra công thức tiến độ; tài khoản chỉ có 0/0/0, 0%.",
+  "evidence": ""
+ },
+ "TC-HOM-012": {
+  "result": "Pending",
+  "note": "Cần dữ liệu giao hàng (ES/COOL/kho, số hoàn thành) để kiểm tra công thức tiến độ; tài khoản chỉ có 0/0/0, 0%.",
+  "evidence": ""
+ },
+ "TC-HOM-013": {
+  "result": "Pending",
+  "note": "Cần dữ liệu giao hàng (ES/COOL/kho, số hoàn thành) để kiểm tra công thức tiến độ; tài khoản chỉ có 0/0/0, 0%.",
+  "evidence": ""
+ },
+ "TC-HOM-014": {
+  "result": "Pending",
+  "note": "Cần dữ liệu giao hàng (ES/COOL/kho, số hoàn thành) để kiểm tra công thức tiến độ; tài khoản chỉ có 0/0/0, 0%.",
+  "evidence": ""
+ },
+ "TC-HOM-015": {
+  "result": "Pending",
+  "note": "Cần dữ liệu giao hàng (ES/COOL/kho, số hoàn thành) để kiểm tra công thức tiến độ; tài khoản chỉ có 0/0/0, 0%.",
+  "evidence": ""
+ },
+ "TC-HOM-016": {
+  "result": "Pending",
+  "note": "Cần dữ liệu giao hàng (ES/COOL/kho, số hoàn thành) để kiểm tra công thức tiến độ; tài khoản chỉ có 0/0/0, 0%.",
+  "evidence": ""
+ },
+ "TC-HOM-017": {
+  "result": "Pending",
+  "note": "Cần dữ liệu giao hàng (ES/COOL/kho, số hoàn thành) để kiểm tra công thức tiến độ; tài khoản chỉ có 0/0/0, 0% ; hành động hoàn tất nhận/giao bị cấm trên DEV.",
+  "evidence": ""
+ },
+ "TC-HOM-018": {
+  "result": "Pending",
+  "note": "Cần dữ liệu giao hàng (ES/COOL/kho, số hoàn thành) để kiểm tra công thức tiến độ; tài khoản chỉ có 0/0/0, 0% ; hành động hoàn tất nhận/giao bị cấm trên DEV.",
+  "evidence": ""
+ },
+ "TC-HOM-019": {
+  "result": "Pending",
+  "note": "Cần dữ liệu: hôm nay trống nhưng ngày mai có lịch (tài khoản test không có lịch). Quan sát thực tế khi hôm nay trống (và mọi ngày trống): khối tiến độ vẫn hiển thị 0/0/0 0% → khả năng lệch Expected (ẩn khối). Evidence: reports/delivery-driver/screenshots/g04_home.png",
+  "evidence": "reports/delivery-driver/screenshots/g04_home.png"
+ },
+ "TC-HOM-021": {
+  "result": "NG",
+  "note": "Actual: tiêu đề = ■本日（2026-10-09） / ■明日（2026-10-10） / ■明後日（2026-10-11） / ■2026-10-12（2026-10-12） / ■2026-10-13（2026-10-13） / ■2026-10-14（2026-10-14） / ■2026-10-15（2026-10-15） — ngày/tháng có zero-padding (YYYY-MM-DD) và có 7 section thay vì 3 (section thứ 4+ dạng 「■2026-10-12（2026-10-12）」 không có nhãn 本日/明日/明後日) | Expected: 3 tiêu đề 「■本日（YYYY-M-D）」… không thêm số 0, SPEC RQ-B05 chỉ 3 ngày | Bước: mở /home, đọc tiêu đề | Evidence: reports/delivery-driver/screenshots/g04_home.png",
+  "evidence": "reports/delivery-driver/screenshots/g04_home.png"
+ },
+ "TC-HOM-022": {
+  "result": "Pending",
+  "note": "Không đổi được ngày hệ thống DEV: thử giả lập clock trình duyệt 2026-10-31 nhưng tiêu đề vẫn lấy ngày thật (2026-10-09…) → ngày do server/không theo clock client. Cần ngày thật cuối tháng. Quan sát: định dạng zero-padding sai (xem TC-HOM-021).",
+  "evidence": "reports/delivery-driver/screenshots/g04_home_clock_1031.png"
+ },
+ "TC-HOM-026": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-027": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-029": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-030": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-035": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-036": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-037": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-038": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-040": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-041": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-043": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-050": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g04_tab_delivery.png"
+ },
+ "TC-HOM-051": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g04_tab_account.png"
+ },
+ "TC-HOM-052": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g04_trouble_popup.png"
+ },
+ "TC-HOM-055": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g04_tab_home.png"
+ },
+ "TC-HOM-056": {
+  "result": "Pending",
+  "note": "Cần 1 ngày trống và các ngày khác có thẻ; tài khoản test trống cả 7 ngày. Quan sát: câu 「配送予定データはありません。」 hiển thị từng section ngày trống, căn giữa, chữ xám (xem TC-HOM-E06-002).",
+  "evidence": ""
+ },
+ "TC-HOM-057": {
+  "result": "NG",
+  "note": "Actual: SOL ちゃん + câu thông báo hiển thị đúng; khối tiến độ VẪN hiển thị (0/0/0, 0%) | Expected: có SOL + câu, không có khối tiến độ | Bước: mở /home khi không có lịch | Evidence: reports/delivery-driver/screenshots/g04_home.png",
+  "evidence": "reports/delivery-driver/screenshots/g04_home.png"
+ },
+ "TC-HOM-061": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g04_unauth_home.png"
+ },
+ "TC-HOM-062": {
+  "result": "Pending",
+  "note": "Cần admin đổi dữ liệu lịch trong lúc xem + pull-to-refresh trên thiết bị cảm ứng; DEV dùng chung, cấm sửa dữ liệu.",
+  "evidence": ""
+ },
+ "TC-HOM-068": {
+  "result": "Pending",
+  "note": "Cần có thẻ kho/badge/nút 詳細表示 (không có lịch). Quan sát ở 320px (trạng thái empty): scrollWidth=320/320 (không scroll ngang), bottom nav đủ 5 tab. Evidence: reports/delivery-driver/screenshots/g04_home_320.png",
+  "evidence": "reports/delivery-driver/screenshots/g04_home_320.png"
+ },
+ "TC-HOM-071": {
+  "result": "Pending",
+  "note": "Cần thẻ kho/COOL/ES trên Home (điều kiện/trạng thái cụ thể); tài khoản test không có lịch giao nào trong 7 ngày hiển thị.",
+  "evidence": ""
+ },
+ "TC-HOM-E04-001": {
+  "result": "Pending",
+  "note": "Toast chặn kho cần thẻ kho 未受取 chứa COOL/ES trong vùng 詳細表示; tài khoản test không có lịch giao nào → không tạo được điều kiện.",
+  "evidence": ""
+ },
+ "TC-HOM-E04-002": {
+  "result": "Pending",
+  "note": "Toast chặn kho cần thẻ kho 未受取 chứa COOL/ES trong vùng 詳細表示; tài khoản test không có lịch giao nào → không tạo được điều kiện.",
+  "evidence": ""
+ },
+ "TC-HOM-E04-003": {
+  "result": "Pending",
+  "note": "Toast chặn kho cần thẻ kho 未受取 chứa COOL/ES trong vùng 詳細表示; tài khoản test không có lịch giao nào → không tạo được điều kiện.",
+  "evidence": ""
+ },
+ "TC-HOM-E04-004": {
+  "result": "Pending",
+  "note": "Toast chặn kho cần thẻ kho 未受取 chứa COOL/ES trong vùng 詳細表示; tài khoản test không có lịch giao nào → không tạo được điều kiện.",
+  "evidence": ""
+ },
+ "TC-HOM-E04-006": {
+  "result": "Pending",
+  "note": "Toast chặn kho cần thẻ kho 未受取 chứa COOL/ES trong vùng 詳細表示; tài khoản test không có lịch giao nào → không tạo được điều kiện.",
+  "evidence": ""
+ },
+ "TC-HOM-E04-008": {
+  "result": "Pending",
+  "note": "Toast chặn kho cần thẻ kho 未受取 chứa COOL/ES trong vùng 詳細表示; tài khoản test không có lịch giao nào → không tạo được điều kiện.",
+  "evidence": ""
+ },
+ "TC-HOM-E04-009": {
+  "result": "Pending",
+  "note": "Toast chặn kho cần thẻ kho 未受取 chứa COOL/ES trong vùng 詳細表示; tài khoản test không có lịch giao nào → không tạo được điều kiện.",
+  "evidence": ""
+ },
+ "TC-HOM-E05-001": {
+  "result": "NG",
+  "note": "Actual: header(logo, tên, câu chào, chuông)=đúng, 「配送予定一覧」 có, SOL ちゃん + bong bóng có, bottom nav 5 tab; NHƯNG có 7 section ngày (本日/明日/明後日 + 4 section dạng 「■2026-10-12（2026-10-12）」…「■2026-10-15（2026-10-15）」) và khối tiến độ hiển thị (0/0/0, 0%) | Expected: 3 section ngày, không khối tiến độ | Bước: mở /home | Evidence: reports/delivery-driver/screenshots/g04_home.png",
+  "evidence": "reports/delivery-driver/screenshots/g04_home.png"
+ },
+ "TC-HOM-E05-002": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g04_home.png"
+ },
+ "TC-HOM-E05-004": {
+  "result": "NG",
+  "note": "Actual: khối 本日の配送件数 / 完了件数 / 残り件数 (0/0/0) và thanh 本日の進捗 0% VẪN hiển thị khi cả 7 ngày trống | Expected: không hiển thị | Bước: mở /home (tài khoản không có lịch) | Evidence: reports/delivery-driver/screenshots/g04_home.png",
+  "evidence": "reports/delivery-driver/screenshots/g04_home.png"
+ },
+ "TC-HOM-E05-007": {
+  "result": "Pending",
+  "note": "Cần admin đổi dữ liệu lịch trong lúc xem + pull-to-refresh trên thiết bị cảm ứng; DEV dùng chung, cấm sửa dữ liệu.",
+  "evidence": ""
+ },
+ "TC-HOM-E05-008": {
+  "result": "Pending",
+  "note": "Cần admin đổi dữ liệu lịch trong lúc xem + pull-to-refresh trên thiết bị cảm ứng; DEV dùng chung, cấm sửa dữ liệu.",
+  "evidence": ""
+ },
+ "TC-HOM-E05-009": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g04_home_320.png"
+ },
+ "TC-HOM-E06-001": {
+  "result": "Pending",
+  "note": "Cần 1 ngày trống và các ngày khác có thẻ; tài khoản test trống cả 7 ngày. Quan sát: câu 「配送予定データはありません。」 hiển thị từng section ngày trống, căn giữa, chữ xám (xem TC-HOM-E06-002).",
+  "evidence": ""
+ },
+ "TC-HOM-E06-002": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g04_home.png"
+ },
+ "TC-HOM-E06-003": {
+  "result": "Pending",
+  "note": "Cần 1 ngày trống và các ngày khác có thẻ; tài khoản test trống cả 7 ngày. Quan sát: câu 「配送予定データはありません。」 hiển thị từng section ngày trống, căn giữa, chữ xám (xem TC-HOM-E06-002).",
+  "evidence": ""
+ },
+ "TC-HOM-E06-004": {
+  "result": "Pending",
+  "note": "Cần 1 ngày trống và các ngày khác có thẻ; tài khoản test trống cả 7 ngày. Quan sát: câu 「配送予定データはありません。」 hiển thị từng section ngày trống, căn giữa, chữ xám (xem TC-HOM-E06-002).",
+  "evidence": ""
+ },
+ "TC-HOM-E06-008": {
+  "result": "Pending",
+  "note": "Cần admin đổi dữ liệu lịch trong lúc xem + pull-to-refresh trên thiết bị cảm ứng; DEV dùng chung, cấm sửa dữ liệu.",
+  "evidence": ""
+ }
+}

@@ -1,0 +1,142 @@
+{
+ "TC-LGN-001": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-003": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-009": {
+  "result": "NG",
+  "note": "Actual: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed  Locator: getByText('ログインIDを入力してください。', { exact: true }) | Expected: hiện ログインIDを入力してください。, không gọi API | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-009.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-009.png"
+ },
+ "TC-LGN-019": {
+  "result": "NG",
+  "note": "Actual: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed  Locator: getByText('パスワードを入力してください。', { exact: true }) | Expected: hiện パスワードを入力してください。, không gọi API | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-019.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-019.png"
+ },
+ "TC-LGN-021": {
+  "result": "NG",
+  "note": "Actual: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed  Locator: getByText('8文字以上で、英字・数字を含めてください。', { exact: true }) | Expected: hiện 8文字以上で、英字・数字を含めてください。, không gọi API | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-021.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-021.png"
+ },
+ "TC-LGN-023": {
+  "result": "NG",
+  "note": "Actual: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed  Locator: getByText('8文字以上で、英字・数字を含めてください。', { exact: true }) | Expected: hiện 8文字以上で、英字・数字を含めてください。, không gọi API | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-023.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-023.png"
+ },
+ "TC-LGN-032": {
+  "result": "NG",
+  "note": "Actual: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed  Locator: getByText('ログインIDを入力してください。', { exact: true }) | Expected: hiện ログインIDを入力してください。 + パスワードを入力してください。, không gọi API | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-032.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-032.png"
+ },
+ "TC-LGN-033": {
+  "result": "NG",
+  "note": "Actual: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed  Locator: getByText('ログインIDを入力してください。', { exact: true }) | Expected: hiện ログインIDを入力してください。 + 8文字以上で、英字・数字を含めてください。, không gọi API | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-033.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-033.png"
+ },
+ "TC-LGN-034": {
+  "result": "NG",
+  "note": "Actual: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed  Locator: getByText('8文字以上で、英字・数字を含めてください。', { exact: true }) | Expected: hiện 8文字以上で、英字・数字を含めてください。, không gọi API | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-034.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-034.png"
+ },
+ "TC-LGN-035": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-037": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-038": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-012": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-013": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-020": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-027": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-044": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-045": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-046": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-065": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-051": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-052": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-053": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-054": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-070": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-043": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-056": {
+  "result": "NG",
+  "note": "Actual: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m  Expected: > \u001b[32m0\u001b[39m | Expected: session lưu bền (cookie có expires dài hoặc token trong storage) | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-056.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-056.png"
+ },
+ "TC-LGN-048": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ }
+}

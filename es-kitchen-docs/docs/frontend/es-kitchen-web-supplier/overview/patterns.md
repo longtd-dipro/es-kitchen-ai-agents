@@ -1,5 +1,7 @@
 # es-kitchen-web-supplier — Patterns & Conventions
 
+> Nguồn = `es-kitchen-web-supplier@57c8179` ngày 2026-10-16 (+ file untracked `pages/profile`, `profile.service.ts`, `models/profile.ts` — chưa merge).
+
 > Repo này được scaffold từ cùng template với `es-kitchen-web-admin` — **dependencies giống hệt** (cùng version React 19.2, Vite, RTK 2.12, TanStack Query 5.10, Ant Design 6.4, react-hook-form 7.76, yup 1.7).
 >
 > **Pattern chính → tham chiếu `frontend/es-kitchen-web-admin/overview/patterns.md`** (single source of truth). File này chỉ note những điểm **khác biệt** hoặc **ràng buộc riêng** của repo Supplier.
@@ -24,7 +26,7 @@
 
 | Khía cạnh | web-admin (E03) | web-supplier (E04) |
 |---|---|---|
-| Stage | Đầy đủ 24 routes, 13 services | 13 routes + wildcard, 7 service files |
+| Stage | 115 page, 52 service | 15 route path + wildcard, 10 service file (+1 untracked), 1 fake |
 | Domain | System Admin — quản trị toàn hệ thống | Supplier — quản lý menu, nhận đơn |
 | Locale | `'Accept-Language': 'ja'` | Giống — `Accept-Language: ja` trong `services/client/api.ts` |
 | Permission model | Operation vs User accounts | Supplier account (single role) — `useCan({ roles? })` |
@@ -112,19 +114,15 @@ const mutation2 = useMutationCustom({
 Khi BE chưa implement endpoint, service file dùng `USE_FAKE_DATA` flag kèm file `.fake.ts`:
 
 ```typescript
-// services/client/order.service.ts
-// NOTE: BE endpoints are not yet implemented.
+// services/client/shipping.service.ts
 export const USE_FAKE_DATA = true;
-
-export const getOrders = (params?: GetOrdersParams) => {
-  if (USE_FAKE_DATA) return getFakeOrders(params);  // from order.fake.ts
-  return API.get(APIs.ORDERS, params);
-};
+// if (USE_FAKE_DATA) { return getFakeShipmentDetail(...) }  // from shipping.fake.ts
 ```
 
 - Khi BE ready: set `USE_FAKE_DATA = false`, xóa import fake, xóa file `.fake.ts`
-- Các service đang dùng fake: `order.service.ts`, `shipping.service.ts`, `menu-management.service.ts`
-- Service không cần fake: `auth.service.ts`, `profile.service.ts` (BE đã ready)
+- Service đang dùng fake (đã kiểm 2026-10-16): chỉ `shipping.service.ts` (`USE_FAKE_DATA = true`, `shipping.fake.ts`)
+- Service gọi API thật: `auth`, `order`, `supplier`, `notice`, `file-upload`, `error-report`, `user`, `profile` (untracked)
+- `order.fake.ts` / `menu-management.service.ts` đã bị xóa
 
 ### 5. `useTableParams` — table state đồng bộ với URL
 
@@ -277,6 +275,8 @@ createBrowserRouter([
   PublicOnly (guard)
     NonAuthLayout
       /login, /forgot-password, /verify, /reset-password
+    PublicLayout
+      /register (SupplierRegisterPage)
 
   RequireAuth (guard)
     AuthCenteredLayout
@@ -286,7 +286,7 @@ createBrowserRouter([
       /dashboard, /orders, /orders/:id
       /menu-management, /menu-management/:id
       /shipping-management/:id
-      /change-password, /other, /profile
+      /change-password, /other, /profile (SupplierProfilePage)
 
   { path: "*" → Navigate to /login }
 ])
@@ -311,7 +311,7 @@ createBrowserRouter([
 // stores/reducers/auth.ts — các action chính
 dispatch(setAuthTokens({ accessToken, refreshToken }))  // sau login / reset-password
 dispatch(setCurrentUser(user))                           // sau bootstrap fetchCurrentAdmin
-dispatch(clearAuthState())                               // logout + 401
+dispatch(clearAuthState())                               // logout; 401 khi đang có phiên → SessionExpiredModal (services/http/sessionExpired.ts) rồi mới clear
 
 // SESSION_STATUS: LOADING → AUTHENTICATED | UNAUTHENTICATED
 // LOADING = có cookie nhưng chưa fetch /account/me

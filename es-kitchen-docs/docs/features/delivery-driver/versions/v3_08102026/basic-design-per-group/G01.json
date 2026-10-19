@@ -1,0 +1,67 @@
+{
+ "group_no": "01",
+ "key": "Login",
+ "file": "BD_01_Login.xlsx",
+ "figma_group_nodes": [
+  "34199:206577"
+ ],
+ "figma_group_names": [
+  "Group LOGIN"
+ ],
+ "screens": [
+  "DA_AUTHEN_001"
+ ],
+ "frames": [
+  {
+   "no": "01-01",
+   "name": "DA_AUTHEN_001 — ログイン [bản có chú thích]",
+   "node": "16422:120841",
+   "w": 390,
+   "h": 844,
+   "kind": "Screen",
+   "screen_id": "DA_AUTHEN_001",
+   "state_label": "bản có chú thích (?)",
+   "dup_of": null,
+   "note": "Phân loại theo tên/kích thước node, chưa xem screenshot (Figma MCP hết hạn mức) — cần xác nhận lại"
+  },
+  {
+   "no": "01-02",
+   "name": "DA_AUTHEN_001 — ログイン [bản sạch]",
+   "node": "20238:149519",
+   "w": 390,
+   "h": 844,
+   "kind": "Duplicate",
+   "screen_id": "DA_AUTHEN_001",
+   "state_label": "bản sạch (?)",
+   "dup_of": "01-01",
+   "note": "Phân loại theo tên/kích thước node, chưa xem screenshot (Figma MCP hết hạn mức) — cần xác nhận lại"
+  }
+ ],
+ "non_screen_counts": {
+  "TABLE": 2,
+  "CONNECTOR": 0
+ },
+ "tables": [
+  {
+   "node": "20237:149057",
+   "summary": "Bảng mô tả (4297×824) — chưa đọc nội dung (hết hạn mức Figma)"
+  },
+  {
+   "node": "20238:149526",
+   "summary": "Bảng mô tả (838×384) — chưa đọc nội dung (hết hạn mức Figma)"
+  }
+ ],
+ "images": {
+  "DA_AUTHEN_001": [
+   {
+    "file": "N01/01-01_DA_AUTHEN_001.png",
+    "node": "16422:120841",
+    "no": "01-01",
+    "label": "DA_AUTHEN_001 · Screen · bản có chú thích (?)"
+   }
+  ]
+ },
+ "open": [
+  "Figma MCP hết hạn mức: chưa xem screenshot/bảng mô tả; JSON chưa dựng lại từ Figma (giữ bản trước đã duyệt)"
+ ]
+}

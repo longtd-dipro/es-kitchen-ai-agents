@@ -1,0 +1,242 @@
+{
+ "TC-CLD-001-001": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-CLD-001-003": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-004": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test. Expected [UNCONFIRMED] (OQ chưa chốt) cần BA/PM xác nhận",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-005": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-006": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-007": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-CLD-001-009": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test. Expected [UNCONFIRMED] (OQ chưa chốt) cần BA/PM xác nhận",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-019": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-021": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-022": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-023": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-024": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật)",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-025": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-026": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test; ngày tương lai cần đơn ngày mai. Expected [UNCONFIRMED] (OQ chưa chốt) cần BA/PM xác nhận",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-027": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-028": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-029": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test; cần kho 未受取 cùng đơn COOL",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-030": {
+  "result": "OK",
+  "note": "Route thực tế của chi tiết là /delivery/:id (không có /cool/:id; /cool/* rơi vào wildcard). Cả hai URL chưa đăng nhập đều chuyển về /login (DA_AUTHEN_001).",
+  "evidence": "reports/delivery-driver/screenshots/g09_unauth_redirect.png"
+ },
+ "TC-CLD-001-032": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật)",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-037": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-038": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-042": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test; chuông ở header trang chi tiết chỉ kiểm được khi mở được đơn",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-001-043": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-CLD-E13-001": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-CLD-E13-002": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E13-005": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E13-006": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E13-007": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E13-008": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-CLD-E13-011": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật)",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E13-013": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật)",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E13-014": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật)",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E13-016": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E13-017": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E13-019": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật)",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E13-023": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-CLD-E13-025": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E14-001": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-CLD-E14-002": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật); cần đơn COOL便 đã 配送完了 hoặc đã hoàn tất để xem toast/banner",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E14-003": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật); cần đơn COOL便 đã 配送完了 hoặc đã hoàn tất để xem toast/banner",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E14-005": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật)",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E15-002": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test; cần đơn COOL便 đã 配送完了 hoặc đã hoàn tất để xem toast/banner",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E15-003": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test; cần đơn COOL便 đã 配送完了 hoặc đã hoàn tất để xem toast/banner",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E15-004": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật); cần đơn COOL便 đã 配送完了 hoặc đã hoàn tất để xem toast/banner",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E15-005": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E15-006": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E15-009": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test; cần đơn COOL便 đã 配送完了 hoặc đã hoàn tất để xem toast/banner",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ },
+ "TC-CLD-E15-010": {
+  "result": "Pending",
+  "note": "Pending: tài khoản test không có lịch giao nào (Home: 配送予定データはありません。), không có đơn COOL便 để mở. Cần: đơn COOL便 未配送 của ngày hôm nay cho tài khoản test và là thao tác ghi dữ liệu thật trên DEV dùng chung (hoàn tất giao hàng) nên bị cấm (kết quả chỉ quan sát được sau hoàn tất thật); cần đơn COOL便 đã 配送完了 hoặc đã hoàn tất để xem toast/banner",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png"
+ }
+}

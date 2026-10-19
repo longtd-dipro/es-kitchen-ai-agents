@@ -1,0 +1,16 @@
+{
+ "images": {},
+ "open": [
+  "Đã chạm giới hạn gọi Figma MCP khi đọc bảng 23698:40099 (駐車報告 edit) và 23244:36210 (banner 5 bước): KHÔNG đọc lại 2 bảng này, dùng chữ SPEC; ảnh chú thích image 450–468 chưa mở",
+  "Không có frame DA_ESDL_006-07 (Step 4 xem lại) trong Figma",
+  "006-06 ghi cột 「誤差」 vs 「差異」",
+  "Ảnh chụp ở 390px (1x) từ frame, ảnh 006 là ghép nhiều frame; DA_ESDL_011/DA_ESDL_012 là crop"
+ ],
+ "frame_corrections": [
+  {
+   "node": "18578:42560",
+   "should_be_screen_id": "DA_ESDL_000_2",
+   "why": "DA_ESDL_006-01 vẽ tab 基本情報 (納品先情報…) — nội dung thuộc DA_ESDL_000_2; chỉ dùng 006-01 làm bằng chứng banner DA_ESDL_011 / 3 tab. Gợi ý: A có thể giữ là State của 006 hoặc Context cho 000_2"
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+  "dpVisible": true,
+  "dpHTMLSample": "<div tabindex=\"-1\" class=\"ant-picker-panel-container ant-picker-date-panel-container\" style=\"margin-left: 0px; margin-right: auto;\"><div class=\"ant-picker-panel-layout\"><div><div tabindex=\"0\" class=\"ant-picker-panel\"><div class=\"ant-picker-date-panel\"><div class=\"ant-picker-header\"><button type=\"button\" aria-label=\"前年 (Controlを押しながら左キー)\" tabindex=\"-1\" class=\"ant-picker-header-super-prev-btn\"><span class=\"ant-picker-super-prev-icon\"></span></button><button type=\"button\" aria-label=\"前月 (ページアップキー)\"",
+  "startAfterType": "2026-10-01",
+  "endAfterType": "2026-10-31",
+  "datesAfterSearch": {
+    "start": "2026-10-01",
+    "end": "2026-10-31"
+  },
+  "bodyTextAfterSearch": "\n    ホームスケジュール配送管理見積もり管理集金・駐車配送スタッフプロフィールお帰りなさいhoangh31@yopmail.comホーム/集金管理集金管理CSV出力〜クリア検 索集金合計金額0円駐車合計料金0円No配送スタッフID配送スタッフ名集金合計金額駐車合計料金No配送スタッフID配送スタッフ名集金合計金額駐車合計料金No dataデータなし\n  \n2026年10月日月火水木金土27282930123456789101112131415161718192021222324252627282930311234567今日2026年10月日月火水木金土27282930123456789101112131415161718192021222324252627282930311234567今日",
+  "augRows": 14,
+  "dpVisible2": false,
+  "pickerClass": "ant-picker ant-picker-focused ant-picker-outlined base-datepicker date-picker text-neutral-10 h-10 w-full rounded-sm h-11! rounded-md! css-1tzwyuk app ant-picker-css-var",
+  "pickerInputCount": 2,
+  "dpVisible3": false
+}

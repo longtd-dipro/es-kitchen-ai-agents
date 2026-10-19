@@ -1,0 +1,73 @@
+{
+  "dpInfo": [
+    {
+      "cls": "ant-picker ant-picker-outlined base-datepicker date-picker text-neutral-10 h-10 ",
+      "html": "<div class=\"ant-picker ant-picker-outlined base-datepicker date-picker text-neutral-10 h-10 w-full rounded-sm css-1tzwyuk app ant-picker-css-var\"><div class=\"ant-picker-input\"><input aria-invalid=\"false\" autocomplete=\"off\" readonly=\"\" size=\"12\" placeholder=\"希望配送日\" value=\"\" style=\"\"><span class=\"ant-",
+      "inputCount": 1,
+      "text": ""
+    }
+  ],
+  "allBtnTexts": [
+    {
+      "text": "",
+      "cls": "flex min-w-12 cursor-pointer items-center justify-center rou",
+      "aria": "toggle sidebar"
+    },
+    {
+      "text": "",
+      "cls": "flex cursor-pointer items-center justify-center rounded-lg p",
+      "aria": "メニューを開く"
+    },
+    {
+      "text": "hoangh31@yopmail.com",
+      "cls": "ant-dropdown-trigger _accountTrigger_8rzm9_11",
+      "aria": "アカウントメニューを開く"
+    },
+    {
+      "text": "クリア",
+      "cls": "ant-btn css-1tzwyuk app ant-btn-default ant-btn-color-defaul",
+      "aria": ""
+    },
+    {
+      "text": "検 索",
+      "cls": "ant-btn css-1tzwyuk app ant-btn-primary ant-btn-color-primar",
+      "aria": ""
+    }
+  ],
+  "selectInfo": [
+    {
+      "tag": "DIV",
+      "cls": "ant-select ant-select-outlined text-neutral-10 select-common",
+      "text": "",
+      "label": ""
+    },
+    {
+      "tag": "INPUT",
+      "cls": "ant-select-input",
+      "text": "",
+      "label": ""
+    }
+  ],
+  "breadcrumb": {
+    "cls": "base-heading-breadcrumb mb-5 flex items-center justify-between gap-3",
+    "text": "注文リスト"
+  },
+  "h1": "注文リスト",
+  "rowsAfterSearch": 2,
+  "noDataText": "",
+  "inputValAfterClear": "",
+  "statusOptions": [
+    "未回答",
+    "回答済み"
+  ],
+  "sidebarLinks": [
+    {
+      "href": "/dashboard",
+      "text": "お帰りなさい"
+    },
+    {
+      "href": "https://es-station.es-kitchen.jp/Content/manual/manual_es.pdf",
+      "text": ""
+    }
+  ]
+}

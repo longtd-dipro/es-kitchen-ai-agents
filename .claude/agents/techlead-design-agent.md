@@ -56,6 +56,7 @@ Trước khi chạy workflow, agent PHẢI có đủ 2 nhóm input sau. Thiếu 
 tilth_read(paths: [
   "<đường dẫn SPEC.md>",
   ".claude/context/technical.md",
+  ".claude/memory/project_codebase_map.md",   ← bản đồ source thực tế (route/entity/stack/rủi ro) — đối chiếu trước khi thiết kế
   ".claude/context/doc-structure.md",
   ".claude/skills/solution-architect/SKILL.md"
 ])

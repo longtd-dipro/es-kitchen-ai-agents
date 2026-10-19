@@ -1,0 +1,343 @@
+{
+  "expandBtnFound": true,
+  "expandedInputs": [
+    {
+      "tag": "BUTTON",
+      "type": "button",
+      "ph": "",
+      "name": "",
+      "cls": "ant-dropdown-trigger _accountTrigger_8rzm9_11"
+    },
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "ph": "開始日",
+      "name": "",
+      "cls": ""
+    },
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "ph": "終了日",
+      "name": "",
+      "cls": ""
+    },
+    {
+      "tag": "INPUT",
+      "type": "radio",
+      "ph": "",
+      "name": "_r_m_",
+      "cls": "ant-radio-input"
+    },
+    {
+      "tag": "DIV",
+      "type": "",
+      "ph": "",
+      "name": "",
+      "cls": "ant-dropdown-trigger border-primary text-primary flex h-10 i"
+    },
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "ph": "拠点ID・名",
+      "name": "companyKeyword",
+      "cls": "ant-input css-1tzwyuk"
+    },
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "ph": "配送先住所、郵便番号、電話番号、担当者電話番号",
+      "name": "addressKeyword",
+      "cls": "ant-input css-1tzwyuk"
+    },
+    {
+      "tag": "DIV",
+      "type": "",
+      "ph": "",
+      "name": "",
+      "cls": "ant-select ant-select-outlined text-neutral-10 select-common"
+    },
+    {
+      "tag": "INPUT",
+      "type": "search",
+      "ph": "",
+      "name": "",
+      "cls": "ant-select-input"
+    },
+    {
+      "tag": "DIV",
+      "type": "",
+      "ph": "",
+      "name": "",
+      "cls": "ant-select ant-select-outlined text-neutral-10 select-common"
+    },
+    {
+      "tag": "INPUT",
+      "type": "search",
+      "ph": "",
+      "name": "",
+      "cls": "ant-select-input"
+    },
+    {
+      "tag": "DIV",
+      "type": "",
+      "ph": "",
+      "name": "",
+      "cls": "ant-select ant-select-outlined text-neutral-10 select-common"
+    },
+    {
+      "tag": "INPUT",
+      "type": "search",
+      "ph": "",
+      "name": "",
+      "cls": "ant-select-input"
+    },
+    {
+      "tag": "DIV",
+      "type": "",
+      "ph": "",
+      "name": "",
+      "cls": "ant-select ant-select-outlined text-neutral-10 select-common"
+    },
+    {
+      "tag": "INPUT",
+      "type": "search",
+      "ph": "",
+      "name": "",
+      "cls": "ant-select-input"
+    },
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "ph": "配送元",
+      "name": "originKeyword",
+      "cls": "ant-input css-1tzwyuk"
+    },
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "ph": "送り状番号、配送スタッフID、配送スタッフ名",
+      "name": "trackingOrDriverKeyword",
+      "cls": "ant-input css-1tzwyuk"
+    },
+    {
+      "tag": "DIV",
+      "type": "",
+      "ph": "",
+      "name": "",
+      "cls": "ant-select ant-select-outlined select-pagination w-full sm:w"
+    },
+    {
+      "tag": "INPUT",
+      "type": "search",
+      "ph": "",
+      "name": "",
+      "cls": "ant-select-input"
+    }
+  ],
+  "searchAreaLabels": [
+    "配送日（着）",
+    "配送日（着）"
+  ],
+  "collapseBtnFound": true,
+  "thWithSort": [
+    {
+      "text": "No",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "配送日（着）",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "荷物温度帯",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "配送No",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "荷受け住所",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "届け先拠点名",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "届け先住所",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "配送スタッフID",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "配送スタッフ名",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "送り状No",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "配送状況",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    },
+    {
+      "text": "配送区分",
+      "cls": "ant-table-cell",
+      "hasSort": false
+    }
+  ],
+  "rowCount": 7,
+  "firstRowCells": [
+    "No",
+    "配送日（着）",
+    "荷物温度帯",
+    "配送No",
+    "荷受け住所",
+    "届け先拠点名",
+    "届け先住所",
+    "配送スタッフID",
+    "配送スタッフ名",
+    "送り状No",
+    "配送状況",
+    "配送区分"
+  ],
+  "driverIdColIdx": 7,
+  "driverNameColIdx": 8,
+  "rowData": [
+    [
+      "No",
+      "配送日（着）",
+      "荷物温度帯",
+      "配送No",
+      "荷受け住所",
+      "届け先拠点名",
+      "届け先住所",
+      "配送スタッフID",
+      "配送スタッフ名",
+      "送り状No",
+      "配送状況",
+      "配送区分"
+    ],
+    [
+      "1",
+      "2026-10-13",
+      "",
+      "詳細",
+      "",
+      "株式会社KGRIT（神田支店）",
+      "千葉県 東京都千代田区内神田 2002/4/4 藤和内神田ビル5階",
+      "",
+      "",
+      "",
+      "出荷準備中",
+      "COOL便"
+    ],
+    [
+      "2",
+      "2026-10-13",
+      "",
+      "詳細",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "出荷準備中",
+      "COOL便"
+    ],
+    [
+      "3",
+      "2026-10-15",
+      "",
+      "詳細",
+      "",
+      "一般社団法人鳴尾ゴルフ倶楽部　(コース管理)",
+      "兵庫県 川西市 西畦野字金ヶ谷1-4",
+      "",
+      "",
+      "",
+      "出荷準備中",
+      "COOL便"
+    ],
+    [
+      "4",
+      "2026-10-20",
+      "",
+      "詳細",
+      "",
+      "有限会社石垣プロダクション",
+      "東京都 杉並区阿佐谷北 2004/4/5",
+      "",
+      "",
+      "",
+      "出荷準備中",
+      "COOL便"
+    ]
+  ],
+  "rowsWithEmptyDriver": 4,
+  "pagination": {
+    "cls": "base-table-pagination-footer mt-4 bg-white px-4 py-2",
+    "text": "6件中 1–6件110/ページ"
+  },
+  "detailHref": "/delivery-status/9114",
+  "detailUrl": "HOST/delivery-status/9114",
+  "detailH1": "配送詳細",
+  "detailTabs": [
+    "配送概要",
+    "配送概要",
+    "配送住所",
+    "配送住所",
+    "実績",
+    "実績",
+    "添付資料",
+    "添付資料"
+  ],
+  "activeTab": "配送概要",
+  "detailBtns": [
+    "hoangh31@yopmail.com",
+    "編集",
+    "配送情報",
+    "送り状No"
+  ],
+  "driverSelect": [
+    {
+      "cls": "ant-dropdown-trigger _accountTrigger_8rzm9_11",
+      "text": "hoangh31@yopmail.com"
+    },
+    {
+      "cls": "ant-select ant-select-outlined text-neutral-10 select-common",
+      "text": "配送スタッフ名・IDで検索"
+    },
+    {
+      "cls": "ant-select-input",
+      "text": ""
+    }
+  ],
+  "hasUnsetBadge": true,
+  "hasEditBtn": true,
+  "hasCancelBtn": false,
+  "hasConfirmBtn": false,
+  "detailBodySnippet": "ホームスケジュール配送管理見積もり管理集金・駐車配送スタッフプロフィールお帰りなさいhoangh31@yopmail.comホーム/配送管理/配送詳細配送詳細配送スタッフ選択未設定編集配送スタッフ*配送スタッフ名・IDで検索配送概要配送住所実績添付資料配送情報配送日（着）*配送ステータス*配送No*荷物名*荷物温度帯*クール便*配送区分*備考*Generated from company order #5275, slot #143/100送り状No送り状No*",
+  "addressTabContent": "ホームスケジュール配送管理見積もり管理集金・駐車配送スタッフプロフィールお帰りなさいhoangh31@yopmail.comホーム/配送管理/配送詳細配送詳細配送スタッフ選択未設定編集配送スタッフ*配送スタッフ名・IDで検索配送概要配送住所実績添付資料荷受け住所荷受け住所の情報はありません届け先住所拠点名*郵便番号*都道府県*市区町村*町域・番地*建物・部屋番号*部署名*電話番号*メイン担当者名*メイン担当者電話番号*搬入経路・添付資料*添付ファイルはありません非公開の搬入経路・添付資料*ファイルを追加",
+  "thumbnailCount": 0,
+  "jissekiTabContent": "ホームスケジュール配送管理見積もり管理集金・駐車配送スタッフプロフィールお帰りなさいhoangh31@yopmail.comホーム/配送管理/配送詳細配送詳細配送スタッフ選択未設定編集配送スタッフ*配送スタッフ名・IDで検索配送概要配送住所実績添付資料配送実績ドライバーからの実績報告はまだありません。",
+  "jissekiHeaders": [],
+  "attachTabContent": "ホームスケジュール配送管理見積もり管理集金・駐車配送スタッフプロフィールお帰りなさいhoangh31@yopmail.comホーム/配送管理/配送詳細配送詳細配送スタッフ選択未設定編集配送スタッフ*配送スタッフ名・IDで検索配送概要配送住所実績添付資料駐車報告駐車料金*レシート*添付ファイルはありません集金報告集金予定額*集金額*"
+}

@@ -3,7 +3,8 @@
 > Domain: `giao-hang-tai-xe` · Backlog: ESKITCHEN-1238 · Phase: 2 · Epic: **E06 — Driver App**
 > Repo: `es-kitchen-webapp-driver` (FE) + `es-kitchen-api` (BE)
 > **Nguồn duy nhất:** Figma section `DA - update` (`16422:114492`) — page `Driver Moblie Web (P2)_review 可`
-> Ngày cập nhật: 2026-09-22 · Version: **v2** (v1 ngày 25/06/2026 lưu tại `versions/v1_25062026/SPEC.md`)
+> Ngày cập nhật: 2026-10-08 · Version: **v3** (v1 ngày 25/06/2026 → `versions/v1_25062026/SPEC.md` · v2 ngày 22/09/2026 → `versions/v2_22092026/SPEC.md`)
+> **v3 (08/10/2026):** đối chiếu thêm 9 node Figma Phase 2 (`34199:*`) với v2 — xem `## Thay đổi v3`. Trạng thái: **WAITING_APPROVAL** (chờ BrSE/user duyệt)
 
 ---
 
@@ -60,8 +61,8 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 | # | Output | Status | Path / URL |
 |---|---|---|---|
 | 0 | `SPEC.md` (file này) | ✅ Done | `es-kitchen-docs/docs/features/delivery-driver/SPEC.md` |
-| 1 | Figma Frame — **Output 1: Flow Tổng Quan + Technology Table + Sitemap WBS** | ✅ Done | [`Output 1 — Flow Tổng Quan + Sitemap WBS — App Tài Xế (E06 P2)`](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=32099-49634) · node `32099:49634` · 2280×3216 |
-| 2 | Figma Frame — **Output 2: Screen Flow (8 Group + Master Map + Combined Detail + 3 bảng index)** | ✅ Done | [`Output 2 — Screen Flow (Merged Branch) — App Tài Xế (E06 P2)`](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=32105-49624) · node `32105:49624` · 3600×5396 |
+| 1 | Figma Frame — **Output 1: Flow Tổng Quan + Technology Table + Sitemap WBS** | ⚠️ WAITING_APPROVAL — bản v3 hiện hành (scoped update: F6, thêm DA_ESDL_012/DA_RECV_007 → 48 màn) | [`Output 1 — Flow Tổng Quan + Sitemap WBS — App Tài Xế (E06 P2)`](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=34221-50059) · node `34221:50059` · 2280×3216 |
+| 2 | Figma Frame — **Output 2: Screen Flow (8 Group + Master Map + Combined Detail + 3 bảng index)** | ⚠️ WAITING_APPROVAL — bản v3 hiện hành (scoped update: Edge/⑤/⑤b, thêm DA_ESDL_012/DA_RECV_007 → 48 màn) | [`Output 2 — Screen Flow (Merged Branch) — App Tài Xế (E06 P2)`](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=34226-50059) · node `34226:50059` · 3600×5396 |
 | 3 | Figma Frame — Screens + Items | ❌ Skipped — user quyết định. Figma gốc `DA - update` đã có đủ 95 mockup + 48 bảng item chi tiết hơn | [Figma `DA - update`](https://www.figma.com/design/VKAAOyoSPvgoB3H2qdeeV3/ES-Kitchen-phase-2?node-id=16422-114492) |
 | 4 | HTML Prototype | ❌ Skipped — user quyết định. Figma gốc đã đóng vai trò prototype | — |
 
@@ -86,7 +87,7 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 | ID | Statement | Class | Evidence (Figma node) |
 |---|---|---|---|
 | RQ-A01 | `ログインID`: bắt buộc, 1–255 ký tự, ASCII. Do **công ty vận chuyển ủy thác cấp**. Tương lai có thể đổi sang dạng email | FACT | table `20237:149057` mục 3 |
-| RQ-A02 | Mật khẩu: bắt buộc, **≥8 ký tự, ≥1 chữ cái, ≥1 chữ số**, hiển thị `●`, icon mắt toggle `password↔text` | FACT | table `20237:149057` mục 4 / 4.1 |
+| RQ-A02 | Mật khẩu: bắt buộc, **≥8 ký tự, ≥1 chữ cái, ≥1 chữ số**, **tối đa 255 ký tự (v3: bảng Figma MIN 8 / MAX 255; hành vi khi vượt: Figma không ghi)**, hiển thị `●`, icon mắt toggle `password↔text` | FACT | table `20237:149057` mục 4 / 4.1 |
 | RQ-A03 | Validate **toàn bộ field cùng lúc khi bấm nút** (`全入力項目を一括チェック`) | FACT | table `20237:149057` mục 6 |
 | RQ-A04 | **Không có tính năng khóa tài khoản** (`ロック機能なし`) | FACT | table `20237:149057` mục 6 |
 | RQ-A05 | Reset pw bước 1: đối chiếu **cặp ID + email**; khớp → gửi mã 4 chữ số qua email | FACT | table `20239:150170` mục 5 |
@@ -118,10 +119,10 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 | RQ-B11 | Nút hiện/ẩn chi tiết trên thẻ kho: đang mở 「非表示▲」, đang đóng 「詳細表示▼」 | FACT | table `20235:148276` mục 4.6 |
 | RQ-B12 | Khi kho `未受取`: COOL便/ES配送便 **chỉ xuất hiện trong vùng chi tiết của thẻ kho**, không có thẻ độc lập | FACT | table `20235:148276` mục 4.7 · `20224:209135` |
 | RQ-B13 | Thẻ COOL便 (tím) / ES配送便 (xanh): chỉ hiển thị `未配送` và `トラブル`; **`配送完了` thì ẩn** | FACT | table `20235:148473` mục 5 / 6 |
-| RQ-B14 | Tap thẻ COOL便: thẻ độc lập → `DA_DLVR_001-11`; trong chi tiết kho → **không chuyển màn**, hiện toast | FACT | table `20235:148473` mục 5.6 |
-| RQ-B15 | Tap thẻ ES配送便: thẻ độc lập → `DA_DLVR_001-1`; trong chi tiết kho → **không chuyển màn**, hiện toast | FACT | table `20235:148473` mục 6.6 |
+| RQ-B14 | Tap thẻ COOL便: thẻ độc lập → `DA_COOL_001` (frame `DA_COOL_001 - 01`; **v3**: bảng `20235:148473` mục 5.6 đã đổi từ `DA_DLVR_001-11`); trong chi tiết kho → **không chuyển màn**, hiện toast | FACT | table `20235:148473` mục 5.6 |
+| RQ-B15 | Tap thẻ ES配送便: thẻ độc lập → `DA_ESDL_000_0` (**v3**: bảng `20235:148473` mục 6.6 đã đổi từ `DA_DLVR_001-1`); trong chi tiết kho → **không chuyển màn**, hiện toast | FACT | table `20235:148473` mục 6.6 |
 | RQ-B16 | Toast chặn: 「先に倉庫受取を完了してください。」 — hiện **phía dưới màn hình ~2–3 giây rồi tự ẩn**, kiểu cảnh báo **màu cam** | FACT | table `20235:148473` mục 5.6 / 6.6 |
-| RQ-B17 | Mã màn của ES配送便/COOL便 khi tap từ Home ghi là `DA_DLVR_001-*`, nhưng bảng mô tả chi tiết dùng `DA_ESDL_*` và `DA_COOL_001` | **CONFLICT** | table `20235:148473` mục 5.6/6.6 **vs** table `23134:63310` / `23808:112206` + tên frame |
+| RQ-B17 | Mã màn của ES配送便/COOL便 khi tap từ Home ghi là `DA_DLVR_001-*`, nhưng bảng mô tả chi tiết dùng `DA_ESDL_*` và `DA_COOL_001` | ✅ **RESOLVED (v3 08/10/2026)** — Figma đã sửa bảng `20235:148473` mục 5.6/6.6 thành `DA_COOL_001 - 01` / `DA_ESDL_000_0` | table `20235:148473` mục 5.6/6.6 **vs** table `23134:63310` / `23808:112206` + tên frame |
 | RQ-B18 | Thông báo: mỗi thông báo 1 hàng gồm ngày giờ · tiêu đề (link xanh) · chỉ báo chưa đọc; **sắp xếp mới nhất lên đầu**; 0 mục thì ẩn danh sách | FACT | table `20319:242429` mục A.3 |
 | RQ-B19 | Ngày giờ theo **JST**: trong ngày 「今日・HH:mm」, ngày khác 「M月D日・HH:mm」; **không hiển thị「昨日」** | FACT | table `20319:242429` mục A.3.1 |
 | RQ-B20 | Chấm đỏ chỉ ở thông báo chưa đọc. **Mở màn chi tiết → server cập nhật đã đọc**; quay lại danh sách chấm đỏ ẩn. **Không có chức năng đánh dấu tất cả đã đọc** | FACT | table `20319:242429` mục A.3.3 / B |
@@ -165,7 +166,8 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 | RQ-C22 | Tab B/C: `品数` (mát/thường, đông lạnh) chỉ hiện khi **>0 VÀ (đã picking HOẶC dữ liệu tương lai)** | FACT | table `20297:178978` mục B10 / B11 |
 | RQ-C23 | Tab C 「タブBと同仕様」 — mọi mục B1–B11 dùng chung thông số, chỉ khác badge | FACT | table `20297:179370` mục C1–C11 |
 | RQ-C24 | Phân trang / trần số bản ghi mỗi lần tải ở 配送一覧 | UNKNOWN | Figma không mô tả pagination ở cả 3 tab |
-| RQ-C25 | Empty state của 3 tab 配送一覧 khi khoảng ngày không có bản ghi | UNKNOWN | Figma không có màn empty cho 配送一覧 |
+| RQ-C25 | Empty state của 3 tab 配送一覧 khi khoảng ngày không có bản ghi: 「配送予定データはありません。」 | FACT (v3) | legend group List SHIP `34199:211571` · node `20274:174988` |
+| RQ-C26 | **v3** — 表示順: 納品日付 → ステータス → 拠点名. Mặc định 期間 当日〜当日+7日, tab 倉庫受取. Phân trang: tự tải trang kế khi cuộn tới cuối (もっと表示方式). Số lượng: tương lai `{n}個（予定）` / đã picking `{n}箱` / chưa picking `未確定`; **0件は非表示** | FACT (v3) | legend `20274:174988` |
 
 ### Nhóm D — 荷物受取 (Nhận hàng tại kho)
 
@@ -193,7 +195,7 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 | RQ-D20 | Popup: 「キャンセル」 → giữ nguyên trạng thái check + nội dung nhập; 「破棄」 → **xóa toàn bộ** và về màn trước | FACT | table `20343:265007` mục D.3 / D.4 |
 | RQ-D21 | **Nhận một phần**: 「倉庫：受取済み分は完了として扱う。未受取分は別の倉庫タグを自動生成する。新規生成された倉庫タグは「未受取」として管理する」 | FACT | connector `18578:41563` |
 | RQ-D22 | Quyền sửa màn chi tiết nhận hàng: `未受取`(hôm nay) → **sửa được** (check + nút 完了); `受取済`・`トラブル`・quá khứ・tương lai → **chỉ đọc** | FACT | table `20285:178257` mục A.12 |
-| RQ-D23 | Nội dung cụ thể của `DA_RECV_003` | UNKNOWN | Figma có symbol `20262:41179` tên `DA_RECV_003` nhưng **không có bảng mô tả riêng** |
+| RQ-D23 | Nội dung cụ thể của `DA_RECV_003` | FACT (v3, một phần) | Figma Phase 2 symbol `20262:41179` đã vẽ phần đầu màn (xem Screen Details); **vẫn không có bảng mô tả riêng** → nút 「完了」/back giữ theo OQ-20 |
 
 ### Nhóm E — ES配送便 (quy trình trưng bày 5 bước)
 
@@ -260,7 +262,7 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 | RQ-E59 | Phí đỗ xe: tùy chọn, số nguyên **0–999,999**, giá trị ban đầu 0, phân cách 3 chữ số + 「円」 | FACT | table `23698:40099` mục 7.4 |
 | RQ-E60 | Message 駐車報告: 「レシート画像をアップロードしてください」「対応していないファイル形式です」「ファイルサイズは10MB以下にしてください」「駐車料金は0〜999,999の整数で入力してください」 | FACT | table `23698:40099` mục 7.2–7.4 |
 | RQ-E61 | Quyền sửa ES配送便 theo thời điểm: **trong 7 ngày → sửa được** (nút 陳列を開始する / 編集); **quá 7 ngày → chỉ đọc**; `トラブル`・dữ liệu tương lai → **chỉ đọc** | FACT | table `20297:178978` mục B12 · `20297:179370` mục C12 |
-| RQ-E62 | Có 4 connector ghi 「Step 1 edit」「Step 2 edit」「Step 3 edit」「Step 5 edit」 — **không có 「Step 4 edit」** | FACT | connector `18870:15080/15085/15090/15100` |
+| RQ-E62 | Có 4 connector ghi 「Step 1 edit」「Step 2 edit」「Step 3 edit」「Step 5 edit」 — **không có 「Step 4 edit」** → **v3: theo Figma, Step 4 KHÔNG có edit** (thay đổi so với OQ-25 chốt 22/09) | FACT | connector `18870:15080/15085/15090/15100` |
 
 ### Nhóm F — COOL配送便
 
@@ -278,7 +280,7 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 | RQ-F10 | **Hoàn tất một phần COOL便**: kiện đã tích = 「完了」; kiện chưa tích → **tự động tạo tag giao hàng COOL便 MỚI trạng thái `未配送`**; sau xử lý → về Home + toast | FACT | table `23808:112820` mục 2.5 · connector `18870:187993` |
 | RQ-F11 | Nút 「キャンセル」 trong popup → đóng, về màn chi tiết, **không thực hiện xử lý** | FACT | table `23808:112820` mục 2.6 |
 | RQ-F12 | Toast COOL便: 「荷物配達完了しました。」 hiện **trên cùng màn Home**, đóng bằng nút × | FACT | table `23808:113126` mục 3.1 |
-| RQ-F13 | **Banner khi mở lại**: sau khi hoàn tất, mở lại màn chi tiết COOL便 → banner 「荷物の配送は完了しました。」 | FACT | table `23808:113126` mục 3.2 |
+| RQ-F13 | **Banner khi mở lại**: sau khi hoàn tất, mở lại màn chi tiết COOL便 → banner 「荷物の配送は完了しました。」 kèm dòng giờ 「2026年4月15日12時03分に配送済み」 (**v3**, frame `18870:188561`) | FACT | table `23808:113126` mục 3.2 |
 | RQ-F14 | Điều kiện kích hoạt nút: 「以下のいずれかの条件を満たした場合、本ボタンを活性化する。チェックボックスにチェックしている / ESへ電話連絡を行っている」 | FACT | connector `18571:187374` · `18870:187992` |
 
 ### Nhóm G — トラブル報告 (Báo cáo sự cố)
@@ -331,6 +333,91 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 
 ---
 
+## Thay đổi v3 — đối chiếu Figma Phase 2 (08/10/2026)
+
+> **Phạm vi:** scoped update (rule `POLICIES.md §4.6`) — chỉ sửa phần Figma mới lệch với v2; phần còn lại giữ nguyên. Trạng thái SPEC: **WAITING_APPROVAL**.
+> **Nguồn:** 9 node Figma `ES-Kitchen-phase-2` (`VKAAOyoSPvgoB3H2qdeeV3`): Login `34199:206577` · Reset Password `34199:211569` · Home `34199:206579` · List SHIP `34199:211571` · Notification `34199:211572` · Nhận từ Kho `34199:211573` · Sự cố `34199:211575` · Giao hàng COOL `34199:211576` · Tài xế xếp đồ (ES配送便) `34199:211578`.
+> **Độ tin cậy:** công cụ không đọc được text trong node `Table`; toàn bộ chữ lấy từ ảnh chụp Figma (đã đọc lại ở độ phân giải cao). Chữ nhỏ có thể sai kana — những chỗ chưa chắc đã ghi chú tại chỗ.
+
+### A. Cập nhật không đụng quyết định BrSE đã chốt
+
+| # | Màn | Thay đổi | Node |
+|---|---|---|---|
+| 1 | `DA_HOME_001` | Đích điều hướng thẻ → `DA_COOL_001 - 01` / `DA_ESDL_000_0`; **RQ-B17 RESOLVED** | `20235:148473` |
+| 2 | `DA_RECV_003` | Điền nội dung (banner + giờ, thẻ kho, danh sách, checkbox disabled); **RQ-D23 từ UNKNOWN → FACT** | `20262:41179` |
+| 3 | `DA_NOTI_001/002` | Header 「お知らせ」; 「お知らせ一覧」 là tiêu đề mục; đã đọc → chữ xám | `20276:175614/175647` |
+| 4 | `DA_AUTHEN_001`, `_002_04` | Mật khẩu tối đa 255 ký tự | `20237:149057`, `20240:151938` |
+| 5 | `DA_AUTHEN_002_02` | Thêm heading 「認証コードを入力してください。」 | frame reset |
+| 6 | `DA_ESDL_000_*`, `_006` | 3 tab 基本情報 / 駐車報告 / 陳列情報; 陳列情報 xám khi chưa hoàn thành | `19663:152788`, `18578:42560` |
+| 7 | `DA_ESDL_003` | Thêm ô tìm kiếm + 「未確認のみ表示」 + mục 「検品・陳列」 | `16422:114955` |
+| 8 | `DA_ESDL_003-06` | Banner → 「商品の陳列が完了しました。」 (AC-62 sửa) | `16422:115045` |
+| 9 | `DA_ESDL_004` | Thêm tiêu đề mục 「アップロード（陳列後）」 | `16422:115333` |
+| 10 | `DA_RPTD_001` | Biến thể hint khi chọn kho (`001-01`) | `18260:101521` |
+| 11 | `DA_COOL_001`, `DA_RECV_003` | Dòng giờ hoàn tất trong banner | `18870:188561` |
+| 12 | `配送一覧` | 表示順, 0件は非表示, tự tải trang kế (RQ-C26) | `20274:174988` |
+| 13 | `DA_HOME_005` | Nhận Figma Phase 2 `34199:211570` (frame `16892:78274`): 6 trường chỉ đọc + 「ログアウト」 + bottom nav **khớp** SPEC; thêm icon chuông header chưa có hành vi (OQ-41). Chữ 「すべて見る」 nằm trong container bị ẩn trên frame → **không** đưa vào SPEC | `16892:78274` |
+| 14 | Màn phụ | Thêm **`DA_ESDL_012`** (banner kết quả Step 3 「商品の陳列が完了しました。」 — frame `16422:115045` + ảnh mô tả `24891:96517…`) và **`DA_RECV_007`** (banner `DA_RECV_003` 「荷物の受取は完了しました。」 — frame `20262:41179`) → tổng **48 màn = 28 + 20** (4 Toast · 8 Modal · 5 Banner · 3 Empty state) | `16422:115045`, `20262:41179` |
+
+### B. Thay đổi so với quyết định BrSE đã chốt 22/09/2026 (theo yêu cầu: "theo Figma")
+
+| OQ | v2 (đã chốt) | v3 (theo Figma) | Ghi chú rủi ro |
+|---|---|---|---|
+| OQ-13 | 「新しいパスワードでログインしました。」 | 「現在は正常にログイン・ご利用いただけます。」「引き続きよろしくお願いいたします。」, nút 「ホーム画面へ」 | Bảng Figma vẫn ghi 「要確認」 |
+| OQ-06 | 「該当する配送はありません。」 | 「配送予定データはありません。」 | Chưa chắc legend là bản cuối |
+| OQ-26 | COOL back có popup | Không popup | Bảng Figma chỉ ghi 'quay lại màn trước' |
+| OQ-25 | Step 4 sửa được trong 7 ngày | Step 4 **không** có edit | Dựa trên việc thiếu connector 「Step 4 edit」; BrSE v2 coi đó là sót |
+| (OQ-mới) | Nút 「編集」 ở 基本情報 (`DA_ESDL_000_2`) | Chỉ ở tab 陳列情報 | Figma không vẽ nút ở 基本情報 |
+
+→ Cả 5 điểm đưa vào **OQ-35** để BrSE xác nhận lại trước khi Tech Lead/QC dùng.
+
+### C. Figma tự mâu thuẫn — KHÔNG đổi SPEC, đưa vào Open Questions
+
+| # | Điểm | Mâu thuẫn |
+|---|---|---|
+| D | Modal back ở `DA_ESDL_000_0` | Màn ES không có checkbox nhưng SPEC (và có thể bảng Figma) ghi popup khi ≥1 tick |
+| E | `DA_ESDL_000_1` stat | Legend: tương lai `{n}個（予定）`; frame vẽ giống 000_0 (không có 個（予定）) |
+| F | `DA_AUTHEN_002_03` | Frame là state hết 60 giây; SPEC v2 coi là state nút active |
+| H | Step 5 cảnh báo lệch tiền | Bảng `23559:38617` mục 3.2 có 「警告を表示」; frame không vẽ; flow note ghi OPTIONAL |
+
+### D. Lỗi nội bộ Figma — báo Designer, không đưa vào SPEC
+
+1. `DA_ESDL_003-05`: tiêu đề popup ghi 「荷物の受取は…」 (đúng phải là 「陳列」 như 003-04).
+2. 論理在庫 / 理論在庫 dùng lẫn lộn; `DA_ESDL_002-01` và `002-04` có hai câu hướng dẫn khác nhau.
+3. Frame `18870:192895` vẽ radio sự cố khác bảng (商品不足・誤配送 / 交通遅延・事故 / 不在・連絡不可 / その他); `16422:115223` và bảng thì khớp SPEC.
+4. `DA_RPTD_002-03` còn tiêu đề cũ 「レポート報告」; frame `DA_DLVR_001-12` chưa đổi tên.
+5. Nút Step 3: 「確定」 vs 「確認」; `DA_ESDL_004`: 「お願いいいたします」 (nghi lỗi chính tả).
+
+### E. Chưa kiểm tra / còn mở
+
+`DA_HOME_005` chưa xem; chú thích trên connector group Home/Login chưa đọc; bảng ES ngoài các node được giao (`23134:*`…) chưa đối chiếu lại; màn マニュアル (`DA_HOME_002`) vẫn chưa có thiết kế; connector 「Sau khi ấn 1 lần」 (`18784:14534`) không xác định được ý nghĩa.
+
+### F. Downstream bị ảnh hưởng (STALE)
+
+- Figma Output 1, Output 2 (xem `## BA Deliverables`) — **đã cập nhật scoped (v3)**; vẫn `WAITING_APPROVAL`. Bản v2 cũ (`32099:49634`, `32105:49624`) đã bị xoá khỏi Figma.
+- `test-cases/driver-app/*` (666 TC) và `OPEN-QUESTIONS.md` — **chưa cập nhật**; các TC liên quan OQ-06/13/25/26, banner Step 3, nút 編集, `DA_RECV_003` cần rà lại.
+- Designer: danh sách mục D ở trên.
+
+---
+
+### G. Đồng bộ Screen Code cho 20 màn phụ (08/10/2026)
+
+Mã nội bộ `E-01`…`E-20` không theo rule `<Module(2)>_<Feature(4)>_<Seq(3)>` (`.claude/context/business-flows/screen-code-rule.md`) → đổi sang mã mới, đồng bộ với tên frame Figma đã đổi. **Mã đề xuất — chờ PM/BrSE chốt.** Toàn bộ SPEC dưới đây dùng mã mới; ID cũ chỉ còn trong bảng này.
+
+| Mã cũ | Mã mới | Mã cũ | Mã mới |
+|---|---|---|---|
+| E-01 | DA_RECV_004 | E-02 | DA_RECV_005 |
+| E-03 | DA_RECV_006 | E-04 | DA_HOME_006 |
+| E-05 | DA_HOME_007 | E-06 | DA_HOME_008 |
+| E-07 | DA_NOTI_003 | E-08 | DA_ESDL_007 |
+| E-09 | DA_ESDL_008 | E-10 | DA_ESDL_009 |
+| E-11 | DA_ESDL_010 | E-12 | DA_ESDL_011 |
+| E-13 | DA_COOL_002 | E-14 | DA_COOL_003 |
+| E-15 | DA_COOL_004 | E-16 | DA_RPTD_003 |
+| E-17 | DA_RPTD_004 | E-18 | DA_RPTD_005 |
+| E-19 | DA_ESDL_012 | E-20 | DA_RECV_007 |
+
+Ảnh hưởng: Basic Design (10 file) và test case (10 file) đã đồng bộ cùng ngày; `Danh sách màn hình tài xế_vi.xlsx`, Output 1/2 trên Figma và `OPEN-QUESTIONS.md` **chưa** đồng bộ (STALE về mã). Trạng thái SPEC: `WAITING_APPROVAL`.
+
 ## Decisions — BrSE confirmed 22/09/2026
 
 > Toàn bộ **34 Open Question** đã được chốt. Bảng này là **nguồn chính thức** cho các dòng ghi `UNKNOWN (OQ-xx)` trong `## Screen Details` — khi đọc gặp `UNKNOWN (OQ-xx)`, tra sang bảng dưới để lấy giá trị đã chốt.
@@ -343,18 +430,18 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 | **OQ-23** | Popup Step 3 hiện khi **「差異が1件以上」** — có ≥1 sản phẩm lệch số lượng. Chốt theo **bảng**, bỏ cách hiểu của connector. | — |
 | **OQ-07** | 配送一覧: phân trang **20 bản ghi/lần + infinite scroll**. `DA_RECV_001` · `DA_ESDL_002` · `DA_ESDL_003`: **tải hết 1 lần** (vì lọc/tìm kiếm chạy phía client), trần **200 dòng**. | — |
 | **OQ-34** | **Giữ nguyên `送り状番号`** của từng vận đơn (là mã vận đơn thật từ kho). Tag mới **chỉ cấp `伝票番号` mới**. **Không giới hạn** số lần sinh tag. | — |
-| **OQ-32** | Dùng **`DA_COOL_001` / `DA_ESDL_000_*`** (theo bảng chi tiết). `DA_DLVR_001-*` là tên frame cũ còn sót → **Designer cần đổi tên frame** cho khớp. | — |
-| **OQ-25** | Step 4 (陳列後写真) **CÓ sửa lại được** trong 7 ngày. Thiếu connector 「Step 4 edit」 là sót khi vẽ Figma. | — |
+| **OQ-32** | Dùng **`DA_COOL_001` / `DA_ESDL_000_*`** (theo bảng chi tiết). `DA_DLVR_001-*` là tên frame cũ còn sót → **Designer cần đổi tên frame** cho khớp. **v3:** bảng Home `20235:148473` đã sửa đích điều hướng; frame `DA_DLVR_001-12` (`18870:185297`) vẫn còn trong group COOL → Designer vẫn cần đổi tên. | — |
+| **OQ-25** | ~~Step 4 CÓ sửa lại được trong 7 ngày~~ (chốt 22/09) → **v3 (08/10/2026, theo Figma): chỉ Step 1/2/3/5 có edit; Step 4 KHÔNG có edit.** ⚠️ Thay đổi so với quyết định BrSE đã chốt — chờ BrSE xác nhận lại (OQ-35). | ✅ **Lệch v2** |
 | **OQ-02** | 「もっと表示」 tải **20 thông báo/lần**. | — |
 | **OQ-03** | Email ở `DA_AUTHEN_002_02` **KHÔNG mask** — hiển thị đầy đủ. | ✅ **Lệch** — BA đề xuất mask `sa***@email.com` |
 | **OQ-04** | Link trong nội dung thông báo mở bằng **tab browser mới** (E06 là web app, không có WebView). | — |
 | **OQ-05** | File đính kèm: **PDF / JPEG / PNG**, **tải về** bằng browser, **không xem inline**. | — |
-| **OQ-13** | Câu tiếp sau 「パスワードリセットに成功しました。」 là **「新しいパスワードでログインしました。」** | — |
+| **OQ-13** | ~~「新しいパスワードでログインしました。」~~ (chốt 22/09) → **v3 (theo Figma): 「現在は正常にログイン・ご利用いただけます。」「引き続きよろしくお願いいたします。」**, nút 「ホーム画面へ」. ⚠️ Thay đổi so với quyết định BrSE đã chốt; bảng Figma `20240:152458` vẫn ghi 「以降の文言は要確認」 — chờ BrSE xác nhận (OQ-35). | ✅ **Lệch v2** |
 | **OQ-21** | 「※次回納品日 〇月〇日」 **KHÔNG hiển thị năm** (次回納品日 luôn trong vòng vài tuần). | — |
 | **OQ-22** | Bấm 「戻る」 Step 2 → Step 1 **CÓ giữ dữ liệu đã nhập** — nhất quán với Step 3 (`23451:37606` mục 5.1). | — |
 | **OQ-31** | Đơn COOL便 **ngày tương lai KHÔNG hiện** nút 「完了」 — giống ES配送便 ẩn nút 「陳列を開始する」. | — |
 | **OQ-01** | Tab 「マニュアル」 = màn xem tài liệu hướng dẫn trưng bày (Quy trình · Chuẩn bị · Lấy đồ · Cách chụp ảnh · Trưng bày). ⚠️ **Designer cần vẽ thêm** — hiện chưa có frame nào. | — |
-| **OQ-06** | Empty state 3 tab 配送一覧: **「該当する配送はありません。」** | — |
+| **OQ-06** | ~~「該当する配送はありません。」~~ (chốt 22/09) → **v3 (theo Figma legend `20274:174988`): 「配送予定データはありません。」** cho 3 tab. ⚠️ Thay đổi so với quyết định BrSE đã chốt — chờ xác nhận (OQ-35). | ✅ **Lệch v2** |
 | **OQ-10** | **Pull-to-refresh thủ công** (không polling, không WebSocket — giảm tải 4G). | — |
 | **OQ-11** | SES không gửi được mã → **「認証コードの送信に失敗しました。しばらくしてから再度お試しください。」** | — |
 | **OQ-12** | Token reset mật khẩu: **30 phút** (từ lúc verify mã thành công đến khi submit mật khẩu mới). | — |
@@ -364,9 +451,9 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 | **OQ-17** | Bật 「未受取のみ表示」 khi đã tick hết → **「未受取の荷物はありません。」** · 「未確認のみ表示」 → **「未確認の商品はありません。」** | — |
 | **OQ-18** | API hoàn tất nhận hàng lỗi → **giữ nguyên toàn bộ trạng thái tick** + hiện Toast lỗi, cho bấm 「完了」 lại. | — |
 | **OQ-19** | `tel:` lỗi → **hiện số `050-5784-2777` dạng text** cho tài xế tự bấm. Camera lỗi → **chỉ còn chọn file từ máy**. | — |
-| **OQ-20** | `DA_RECV_003` = giống `DA_RECV_001` nhưng **checkbox disabled** (hiện trạng thái đã tick), **ẩn** nút 「完了」, back **không** hiện popup xác nhận. | — |
+| **OQ-20** | `DA_RECV_003` = giống `DA_RECV_001` nhưng **checkbox disabled** (hiện trạng thái đã tick), **ẩn** nút 「完了」, back **không** hiện popup xác nhận. **v3:** Figma đã vẽ `DA_RECV_003` (xem Screen Details) — khớp 'checkbox disabled đã tick'; nút 「完了」/back không nằm trong frame đã vẽ → giữ nguyên quyết định. | — |
 | **OQ-24** | Cảnh báo 実集金額 lệch: **Inline error màu cam** ngay dưới ô `実集金額` (**không chặn** thao tác). Admin nhận qua **thông báo in-app trên Admin Web**. | — |
-| **OQ-26** | `DA_COOL_001` bấm back khi đã tick ≥1 → **CÓ popup** 「編集内容を破棄しますか？」 (dùng chung `E-03`). | — |
+| **OQ-26** | ~~CÓ popup 「編集内容を破棄しますか？」~~ (chốt 22/09) → **v3 (theo Figma bảng `23808:112206` mục 1): bấm back ở `DA_COOL_001` quay về màn trước (配送一覧／ホーム), KHÔNG popup.** ⚠️ Thay đổi so với quyết định BrSE đã chốt — chờ xác nhận (OQ-35). | ✅ **Lệch v2** |
 | **OQ-27** | `DA_RPTD_001` không có đơn 未配送 → **「報告可能な配送はありません。」** + **ẩn** nút 「次へ」. | — |
 | **OQ-28** | **1 breakpoint mobile**; layout co giãn **320px–480px**; font **không** scale theo viewport. | — |
 | **OQ-29** | Ảnh: **nén client-side xuống ≤2MB** trước upload · **retry tự động 3 lần** · **không** upload nền. | — |
@@ -375,7 +462,7 @@ App **yêu cầu kết nối mạng liên tục** — Figma không có màn offl
 
 **Tác động xuống Designer (2 việc phát sinh):**
 1. **OQ-01** — vẽ thêm màn 「マニュアル」 (hiện bottom nav có tab nhưng không có frame).
-2. **OQ-32** — đổi tên frame `DA_DLVR_001-*` thành `DA_COOL_001` / `DA_ESDL_000_*` cho khớp bảng mô tả.
+2. **OQ-32** — đổi tên frame `DA_DLVR_001-*` thành `DA_COOL_001` / `DA_ESDL_000_*` cho khớp bảng mô tả (v3: vẫn còn frame `DA_DLVR_001-12` trong group COOL).
 
 ## Actors & Preconditions
 
@@ -512,8 +599,8 @@ Tab「トラブル」(Home) HOẶC icon chuông (荷物受取 / ES配送便 / CO
 | 倉庫受取 | Bất kỳ | Tương lai | `DA_RECV_003` | 🔒 Chỉ đọc |
 | ES配送便 | `未配送` | **Hôm nay** | `DA_ESDL_000_0` | ✅ Sửa được — nút 「陳列を開始する」 |
 | ES配送便 | `未配送` | Tương lai | `DA_ESDL_000_1` | 🔒 Chỉ đọc — **nút 「陳列を開始する」 không hiện** |
-| ES配送便 | `配送完了` | **Trong 7 ngày** kể từ khi hoàn tất | `DA_ESDL_000_2` / `DA_ESDL_006` | ✅ Sửa được — nút 「編集」 từng bước |
-| ES配送便 | `配送完了` | **Quá 7 ngày** | `DA_ESDL_000_2` / `DA_ESDL_006` | 🔒 Chỉ đọc — **nút 「編集」 bị ẩn** |
+| ES配送便 | `配送完了` | **Trong 7 ngày** kể từ khi hoàn tất | `DA_ESDL_000_2` / `DA_ESDL_006` | ✅ Sửa được — nút 「編集」 từng bước **(tab 陳列情報 — v3; Step 1/2/3/5)** |
+| ES配送便 | `配送完了` | **Quá 7 ngày** | `DA_ESDL_000_2` / `DA_ESDL_006` | 🔒 Chỉ đọc — **nút 「編集」 (tab 陳列情報) bị ẩn** |
 | ES配送便 | `トラブル` | Bất kỳ | `DA_ESDL_000` | 🔒 Chỉ đọc — kiện hàng không thao tác được, chờ ES Kitchen |
 | COOL便 | `未配送` | **Trong ngày** | `DA_COOL_001` | ✅ Sửa được — tick + nút 「完了」 |
 | COOL便 | `未配送` | Tương lai | `DA_COOL_001` | ⚠️ **UNKNOWN** — 「未来日の配送での表示有無は要確認」 (RQ-F07 / OQ-31) |
@@ -694,7 +781,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 
 **Xác thực**
 - [ ] **AC-01** `ログインID` bắt buộc 1–255 ký tự ASCII; trống → 「ログインIDを入力してください。」
-- [ ] **AC-02** Mật khẩu bắt buộc ≥8 ký tự, ≥1 chữ cái, ≥1 chữ số; vi phạm → 「8文字以上で、英字・数字を含めてください。」; trống → 「パスワードを入力してください。」
+- [ ] **AC-02** Mật khẩu bắt buộc ≥8 ký tự, ≥1 chữ cái, ≥1 chữ số, tối đa 255 ký tự (v3); vi phạm → 「8文字以上で、英字・数字を含めてください。」; trống → 「パスワードを入力してください。」
 - [ ] **AC-03** Validate **toàn bộ field cùng lúc khi bấm nút**, không validate realtime khi gõ.
 - [ ] **AC-04** Icon mắt toggle `password ↔ text` ở **mọi** ô mật khẩu (login · mật khẩu mới · xác nhận mật khẩu).
 - [ ] **AC-05** Sai thông tin đăng nhập **không làm khóa tài khoản** ở bất kỳ số lần nào.
@@ -762,7 +849,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 - [ ] **AC-59** Step 2: nút 「確認」 **chỉ active khi TẤT CẢ sản phẩm đã tick**.
 - [ ] **AC-60** Step 2: quét barcode đăng ký hủy được cả sản phẩm **không có trong danh sách**; sau quét sản phẩm **tự bật `確認`**.
 - [ ] **AC-61** Step 2/3: `廃棄数`・`実在庫`・`実際数` chỉ nhận **số nguyên ≥ 0**; vi phạm → message tương ứng.
-- [ ] **AC-62** Step 2/3 màn thành công: banner xanh 「在庫/廃棄が成功しました。」 + thời gian định dạng `yyyy年mm月dd日HH時mm分`.
+- [ ] **AC-62** Step 2 màn thành công: banner xanh 「在庫/廃棄が成功しました。」; **Step 3 màn thành công (v3): banner xanh 「商品の陳列が完了しました。」** — kèm thời gian định dạng `yyyy年mm月dd日HH時mm分`.
 - [ ] **AC-63** Step 3: `実際数` **giá trị ban đầu = `予定数`**.
 - [ ] **AC-64** Step 3: nút 「確認」 active khi **≥1** tick (khác Step 2 yêu cầu **tất cả**).
 - [ ] **AC-65** Step 3: có sót **hoặc** có chênh lệch → popup; **bắt buộc** tick 「ESキッチンへ連絡済みです。」 mới bấm được 「報告完了」.
@@ -775,7 +862,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 - [ ] **AC-72** Step 5: nút 「完了」 **luôn active**, **không hiện hộp thoại xác nhận**; bấm → trạng thái `配送完了` → về màn chi tiết ES配送便.
 - [ ] **AC-73** Banner hoàn tất **chỉ hiện sau khi xong cả 5 bước** và bấm 完了 ở bước cuối.
 - [ ] **AC-74** Tab 陳列情報 **chỉ truy cập được sau khi hoàn tất 5 bước**; step nav 1–5 chạm xem lại nội dung từng bước.
-- [ ] **AC-75** Nút 「編集」 **chỉ hiện trong 7 ngày** sau khi hoàn tất; quá 7 ngày → **ẩn**.
+- [ ] **AC-75** Nút 「編集」 (**ở tab 陳列情報 — v3**) **chỉ hiện trong 7 ngày** sau khi hoàn tất; quá 7 ngày → **ẩn**.
 - [ ] **AC-76** 駐車報告: ảnh hóa đơn **bắt buộc tối đa 1 ảnh**; chưa có → **không lưu được** (「レシート画像をアップロードしてください」).
 - [ ] **AC-77** 駐車報告: phí đỗ xe tùy chọn, số nguyên **0–999,999**, mặc định 0; bấm × hủy **không hiện hộp thoại xác nhận**.
 
@@ -803,6 +890,14 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 - [ ] **AC-96** Modal xác nhận có câu 「送信後、対象の荷物は操作できなくなります。ESキッチンの確認・対応までお待ちください。」
 - [ ] **AC-97** Gửi thành công → trạng thái đơn **tự cập nhật thành `トラブル` (đỏ)**; toast 「報告を送信しました。」 trên cùng màn Home (đóng bằng ×); **kiện hàng không thao tác được nữa**.
 - [ ] **AC-98** Validate gửi báo cáo ở **phía server**.
+- [ ] **AC-99** *(v3)* Step 4 (陳列後写真) **không có edit** sau khi hoàn tất — chỉ Step 1/2/3/5 (thay đổi so với OQ-25 cũ; chờ OQ-35).
+- [ ] **AC-100** *(v3)* `DA_COOL_001` bấm back → quay về màn trước, **không popup** dù đã tích (thay OQ-26 cũ; chờ OQ-35).
+- [ ] **AC-101** *(v3)* Empty state 3 tab 配送一覧: 「配送予定データはありません。」 (thay OQ-06 cũ; chờ OQ-35).
+- [ ] **AC-102** *(v3)* `DA_AUTHEN_002_06` hiển thị 「パスワードリセットに成功しました。」「現在は正常にログイン・ご利用いただけます。」「引き続きよろしくお願いいたします。」 và nút 「ホーム画面へ」 (thay OQ-13 cũ; chờ OQ-35).
+- [ ] **AC-103** *(v3)* 配送一覧 sắp xếp 納品日付 → ステータス → 拠点名; tự tải trang kế khi cuộn tới cuối; số lượng bằng 0 thì ẩn.
+- [ ] **AC-104** *(v3)* `DA_RECV_003`: banner hoàn tất kèm giờ, thẻ kho (badge `受取済`), danh sách vận đơn với checkbox disabled đã tick.
+- [ ] **AC-105** *(v3)* Header `DA_NOTI_001` / `DA_NOTI_002` là 「お知らせ」; 「お知らせ一覧」 là tiêu đề mục trong màn danh sách.
+- [ ] **AC-106** *(v3)* Chi tiết ES配送便 có 3 tab 基本情報 / 駐車報告 / 陳列情報; 陳列情報 disabled khi chưa hoàn thành; nút 「編集」 chỉ ở tab 陳列情報.
 
 ---
 
@@ -821,13 +916,13 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 
 ## Screens
 
-> **TỔNG: 46 màn hình** = **28 màn chính** + **18 màn phụ** (modal / popup / toast / banner / empty state).
+> **TỔNG: 48 màn hình** = **28 màn chính** + **20 màn phụ** (modal / popup / toast / banner / empty state).
 >
 > | Loại | Số lượng | Đếm vào tổng? |
 > |---|---|---|
 > | Màn hình chính | 28 | ✅ |
-> | Màn phụ: Modal · Popup · Toast · Banner · Empty state (`E-01`…`E-18`) | 18 | ✅ |
-> | **TỔNG MÀN HÌNH** | **46** | |
+> | Màn phụ: Modal · Popup · Toast · Banner · Empty state (20 mã mới theo Screen Code rule — xem mục G ## Thay đổi v3) | 20 | ✅ |
+> | **TỔNG MÀN HÌNH** | **48** | |
 >
 > **Thống kê error display trong `## Screen Details`** (đếm bằng script trên chính file này, không đếm bằng mắt — 28 screen × bảng 8 nhóm Non-Happy = 260 dòng):
 >
@@ -839,7 +934,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 > | `N/A` — nhóm Non-Happy không áp dụng cho screen đó | **72** | — |
 > | **Tổng dòng Non-Happy** | **260** | |
 >
-> ⚠️ **Lưu ý đọc số:** 18 màn phụ `E-01`…`E-18` **không trùng** với 14 dòng "là màn hình" ở bảng dưới — vì một số `E-xx` là **modal/toast/banner của luồng thành công** (E-01 · E-08 · E-09 · E-10 · E-12 · E-14 · E-15 · E-18), không phải error case nên không xuất hiện trong bảng Non-Happy.
+> ⚠️ **Lưu ý đọc số:** 20 màn phụ (mã mới — mục G ## Thay đổi v3) **không trùng** với 14 dòng "là màn hình" ở bảng dưới — vì một số `E-xx` là **modal/toast/banner của luồng thành công** (DA_RECV_004 · DA_ESDL_007 · DA_ESDL_008 · DA_ESDL_009 · DA_ESDL_011 · DA_COOL_003 · DA_COOL_004 · DA_RPTD_005 · DA_ESDL_012 · DA_RECV_007), không phải error case nên không xuất hiện trong bảng Non-Happy.
 > **106 dòng `UNKNOWN` là con số quan trọng nhất của SPEC này** — phần lớn đến từ việc Figma không định nghĩa lỗi mạng (OQ-08), lỗi server (OQ-08) và session hết hạn (OQ-09) trên cả 28 màn.
 >
 > **Quy ước ID để trace sang Figma Output 2:** bảng **⑦ ERROR / POPUP INDEX** trong Output 2 đánh số **`D-001` … `D-082`** cho **82 dòng error display loại ĐẾM + STATE**, theo **đúng thứ tự xuất hiện từ trên xuống trong `## Screen Details`** của file này (quét bằng script, bỏ qua dòng `UNKNOWN` và `N/A`).
@@ -854,52 +949,54 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 | `DA_AUTHEN_002_02` | Reset pw B2 — Mã 4 số | E06 | E06 | Form | `[Mã đúng]`→`DA_AUTHEN_002_04` | _(Designer điền)_ |
 | `DA_AUTHEN_002_04` | Reset pw B3 — Mật khẩu mới | E06 | E06 | Form | `[OK]`→`DA_AUTHEN_002_06` | _(Designer điền)_ |
 | `DA_AUTHEN_002_06` | Reset pw — Hoàn tất | E06 | E06 | Detail | →`DA_HOME_001` (đã auto-login) | _(Designer điền)_ |
-| `DA_HOME_001` | Home — Tiến độ + Lịch 3 ngày | E06 | E06 | Dashboard | →`DA_RECV_001`/`DA_COOL_001`/`DA_ESDL_000_0`/`DA_NOTI_001`/`DA_HOME_005`/`DA_LIST_001_Kho`/`E-16` | _(Designer điền)_ |
+| `DA_HOME_001` | Home — Tiến độ + Lịch 3 ngày | E06 | E06 | Dashboard | →`DA_RECV_001`/`DA_COOL_001`/`DA_ESDL_000_0`/`DA_NOTI_001`/`DA_HOME_005`/`DA_LIST_001_Kho`/`DA_RPTD_003` | _(Designer điền)_ |
 | `DA_NOTI_001` | Danh sách thông báo | E06 | E06 | List | →`DA_NOTI_002` | _(Designer điền)_ |
 | `DA_NOTI_002` | Chi tiết thông báo | E06 | E06 | Detail | →`DA_NOTI_001` (back) | _(Designer điền)_ |
 | `DA_HOME_005` | Tài khoản (My Page) | E06 | E06 | Settings | `[Logout]`→`DA_AUTHEN_001` | _(Designer điền)_ |
 | `DA_LIST_001_Kho` | 配送一覧 Tab A — 倉庫受取 | E06 | E06 | List | →`DA_RECV_001`/`DA_RECV_003` | _(Designer điền)_ |
 | `DA_LIST_002_ES` | 配送一覧 Tab B — 未配送 | E06 | E06 | List | →`DA_ESDL_000_0`/`DA_ESDL_000_1`/`DA_COOL_001` | _(Designer điền)_ |
 | `DA_LIST_003_COOL` | 配送一覧 Tab C — 配送完了 | E06 | E06 | List | →`DA_ESDL_000_2`/`DA_ESDL_006`/`DA_COOL_001` | _(Designer điền)_ |
-| `DA_RECV_001` | Nhận hàng tại kho — sửa được | E06 | E06 | List | `[Tick hết]`→`E-01` / `[Còn sót]`→`E-02` / `[Back+tick]`→`E-03` | _(Designer điền)_ |
+| `DA_RECV_001` | Nhận hàng tại kho — sửa được | E06 | E06 | List | `[Tick hết]`→`DA_RECV_004` / `[Còn sót]`→`DA_RECV_005` / `[Back+tick]`→`DA_RECV_006` | _(Designer điền)_ |
 | `DA_RECV_003` | Nhận hàng tại kho — chỉ đọc | E06 | E06 | Detail | ←back `DA_LIST_001_Kho` | _(Designer điền)_ |
 | `DA_ESDL_000_0` | ES配送便 — Tab 基本情報 (hôm nay, 未配送) | E06 | E06 | Detail | `[陳列を開始する]`→`DA_ESDL_001` | _(Designer điền)_ |
 | `DA_ESDL_000_1` | ES配送便 — dữ liệu tương lai (chỉ đọc) | E06 | E06 | Detail | ←back | _(Designer điền)_ |
 | `DA_ESDL_000_2` | ES配送便 — đã hoàn thành | E06 | E06 | Detail | →`DA_ESDL_006` | _(Designer điền)_ |
 | `DA_ESDL_001` | Step 1 — 陳列前写真 | E06 | E06 | Wizard | `[続ける]`→`DA_ESDL_002` / `[戻る]`→`DA_ESDL_000_0` | _(Designer điền)_ |
-| `DA_ESDL_002` | Step 2 — 在庫/廃棄 | E06 | E06 | Form | `[確認]`→`DA_ESDL_002-05` / `[Scan]`→`E-08` | _(Designer điền)_ |
+| `DA_ESDL_002` | Step 2 — 在庫/廃棄 | E06 | E06 | Form | `[確認]`→`DA_ESDL_002-05` / `[Scan]`→`DA_ESDL_007` | _(Designer điền)_ |
 | `DA_ESDL_002-05` | Step 2 — Kết quả thành công | E06 | E06 | Report | `[続ける]`→`DA_ESDL_003` / `[戻る]`→`DA_ESDL_002` | _(Designer điền)_ |
-| `DA_ESDL_003` | Step 3 — 陳列 (検品) | E06 | E06 | Form | `[Không lệch]`→`DA_ESDL_003-06` / `[Có lệch]`→`E-11` / `[Scan]`→`E-10` | _(Designer điền)_ |
+| `DA_ESDL_003` | Step 3 — 陳列 (検品) | E06 | E06 | Form | `[Không lệch]`→`DA_ESDL_003-06` / `[Có lệch]`→`DA_ESDL_010` / `[Scan]`→`DA_ESDL_009` | _(Designer điền)_ |
 | `DA_ESDL_003-06` | Step 3 — Kết quả thành công (bảng 差異) | E06 | E06 | Report | `[続ける]`→`DA_ESDL_004` / `[戻る]`→`DA_ESDL_003` | _(Designer điền)_ |
 | `DA_ESDL_004` | Step 4 — 陳列後写真 | E06 | E06 | Wizard | `[続ける]`→`DA_ESDL_005` / `[戻る]`→`DA_ESDL_003-06` | _(Designer điền)_ |
-| `DA_ESDL_005` | Step 5 — 集金登録 | E06 | E06 | Form | `[完了]`→`DA_ESDL_006` + `E-12` | _(Designer điền)_ |
+| `DA_ESDL_005` | Step 5 — 集金登録 | E06 | E06 | Form | `[完了]`→`DA_ESDL_006` + `DA_ESDL_011` | _(Designer điền)_ |
 | `DA_ESDL_006` | Sau hoàn thành — Tab 陳列情報 + 駐車報告 | E06 | E06 | Detail | `[編集]`→Step tương ứng (≤7 ngày) | _(Designer điền)_ |
-| `DA_COOL_001` | COOL便 — Chi tiết giao hàng | E06 | E06 | Detail | `[Tick hết]`→`DA_HOME_001`+`E-14` / `[Còn sót]`→`E-13` | _(Designer điền)_ |
+| `DA_COOL_001` | COOL便 — Chi tiết giao hàng | E06 | E06 | Detail | `[Tick hết]`→`DA_HOME_001`+`DA_COOL_003` / `[Còn sót]`→`DA_COOL_002` | _(Designer điền)_ |
 | `DA_RPTD_001` | Báo cáo sự cố — Chọn điểm giao/kho | E06 | E06 | List | `[次へ]`→`DA_RPTD_002` / `[戻る]`→`DA_HOME_001` | _(Designer điền)_ |
-| `DA_RPTD_002` | Báo cáo sự cố — Chi tiết | E06 | E06 | Form | `[送信]`→`E-17` / `[戻る]`→`DA_RPTD_001` | _(Designer điền)_ |
+| `DA_RPTD_002` | Báo cáo sự cố — Chi tiết | E06 | E06 | Form | `[送信]`→`DA_RPTD_004` / `[戻る]`→`DA_RPTD_001` | _(Designer điền)_ |
 
 ### Màn lỗi / modal / toast / banner / empty
 
 | ID | Screen | Hiển thị | Thuộc màn | Transition To |
 |---|---|---|---|---|
-| `E-01` | Toast 「荷物の受取は完了しました。」 (5 giây) | Toast | `DA_RECV_001` | →`DA_HOME_001` |
-| `E-02` | Modal 受取完了確認・ES連絡 (nhận thiếu) | Modal | `DA_RECV_001` | `[完了]`→`DA_HOME_001` / `[キャンセル]`→`DA_RECV_001` |
-| `E-03` | Popup 「編集内容を破棄しますか？」 | Modal | `DA_RECV_001` | `[破棄]`→màn trước / `[キャンセル]`→`DA_RECV_001` |
-| `E-04` | Toast 「先に倉庫受取を完了してください。」 (cam, 2–3 giây) | Toast | `DA_HOME_001` | — (ở lại) |
-| `E-05` | Empty state SOL ちゃん (cả 3 ngày trống) | Empty state | `DA_HOME_001` | — |
-| `E-06` | Empty state 「配送予定データはありません。」 (1 ngày trống) | Empty state | `DA_HOME_001` | — |
-| `E-07` | Empty state 「データがありません。」 (thông báo rỗng) | Empty state | `DA_NOTI_001` | — |
-| `E-08` | Modal スキャン廃棄登録 | Modal | `DA_ESDL_002` | `[続けてスキャン]`→`E-08` / `[一覧に戻る]`→`DA_ESDL_002` |
-| `E-09` | Banner 「在庫/廃棄が成功しました。」 + thời gian | Banner | `DA_ESDL_002-05` | — |
-| `E-10` | Modal スキャン検品登録 | Modal | `DA_ESDL_003` | `[続けてスキャン]`→`E-10` / `[一覧に戻る]`→`DA_ESDL_003` |
-| `E-11` | Modal 陳列完了確認・ES連絡 (có sót / chênh lệch) | Modal | `DA_ESDL_003` | `[報告完了]`→`DA_ESDL_003-06` / `[キャンセル]`→`DA_ESDL_003` |
-| `E-12` | Banner 「荷物の配送は完了しました。」 + thời gian (ES配送便) | Banner | `DA_ESDL_006` | — |
-| `E-13` | Popup 配送完了確認・ES連絡 (COOL便 giao thiếu) | Modal | `DA_COOL_001` | `[完了]`→`DA_HOME_001` / `[キャンセル / ×]`→`DA_COOL_001` |
-| `E-14` | Toast 「荷物配達完了しました。」 (đóng bằng ×) | Toast | `DA_HOME_001` | — |
-| `E-15` | Banner 「荷物の配送は完了しました。」 (COOL便 mở lại) | Banner | `DA_COOL_001` | — |
-| `E-16` | Popup 「ESキッチンへ電話しますか？」 | Modal | `DA_HOME_001` / `DA_RECV_001` / `DA_ESDL_000_*` / `DA_COOL_001` | `[トラブル報告へ]`→`DA_RPTD_001` / `[戻る]`→`DA_HOME_001` |
-| `E-17` | Modal 報告送信確認 | Modal | `DA_RPTD_002` | `[報告する]`→`DA_HOME_001`+`E-18` / `[キャンセル]`→`DA_RPTD_002` |
-| `E-18` | Toast 「報告を送信しました。」 (đóng bằng ×) | Toast | `DA_HOME_001` | — |
+| `DA_RECV_004` | Toast 「荷物の受取は完了しました。」 (5 giây) | Toast | `DA_RECV_001` | →`DA_HOME_001` |
+| `DA_RECV_005` | Modal 受取完了確認・ES連絡 (nhận thiếu) | Modal | `DA_RECV_001` | `[完了]`→`DA_HOME_001` / `[キャンセル]`→`DA_RECV_001` |
+| `DA_RECV_006` | Popup 「編集内容を破棄しますか？」 | Modal | `DA_RECV_001` | `[破棄]`→màn trước / `[キャンセル]`→`DA_RECV_001` |
+| `DA_HOME_006` | Toast 「先に倉庫受取を完了してください。」 (cam, 2–3 giây) | Toast | `DA_HOME_001` | — (ở lại) |
+| `DA_HOME_007` | Empty state SOL ちゃん (cả 3 ngày trống) | Empty state | `DA_HOME_001` | — |
+| `DA_HOME_008` | Empty state 「配送予定データはありません。」 (1 ngày trống) | Empty state | `DA_HOME_001` | — |
+| `DA_NOTI_003` | Empty state 「データがありません。」 (thông báo rỗng) | Empty state | `DA_NOTI_001` | — |
+| `DA_ESDL_007` | Modal スキャン廃棄登録 | Modal | `DA_ESDL_002` | `[続けてスキャン]`→`DA_ESDL_007` / `[一覧に戻る]`→`DA_ESDL_002` |
+| `DA_ESDL_008` | Banner 「在庫/廃棄が成功しました。」 + thời gian | Banner | `DA_ESDL_002-05` | — |
+| `DA_ESDL_009` | Modal スキャン検品登録 | Modal | `DA_ESDL_003` | `[続けてスキャン]`→`DA_ESDL_009` / `[一覧に戻る]`→`DA_ESDL_003` |
+| `DA_ESDL_010` | Modal 陳列完了確認・ES連絡 (có sót / chênh lệch) | Modal | `DA_ESDL_003` | `[報告完了]`→`DA_ESDL_003-06` / `[キャンセル]`→`DA_ESDL_003` |
+| `DA_ESDL_011` | Banner 「荷物の配送は完了しました。」 + thời gian (ES配送便) | Banner | `DA_ESDL_006` | — |
+| `DA_COOL_002` | Popup 配送完了確認・ES連絡 (COOL便 giao thiếu) | Modal | `DA_COOL_001` | `[完了]`→`DA_HOME_001` / `[キャンセル / ×]`→`DA_COOL_001` |
+| `DA_COOL_003` | Toast 「荷物配達完了しました。」 (đóng bằng ×) | Toast | `DA_HOME_001` | — |
+| `DA_COOL_004` | Banner 「荷物の配送は完了しました。」 (COOL便 mở lại) | Banner | `DA_COOL_001` | — |
+| `DA_RPTD_003` | Popup 「ESキッチンへ電話しますか？」 | Modal | `DA_HOME_001` / `DA_RECV_001` / `DA_ESDL_000_*` / `DA_COOL_001` | `[トラブル報告へ]`→`DA_RPTD_001` / `[戻る]`→`DA_HOME_001` |
+| `DA_RPTD_004` | Modal 報告送信確認 | Modal | `DA_RPTD_002` | `[報告する]`→`DA_HOME_001`+`DA_RPTD_005` / `[キャンセル]`→`DA_RPTD_002` |
+| `DA_RPTD_005` | Toast 「報告を送信しました。」 (đóng bằng ×) | Toast | `DA_HOME_001` | — |
+| `DA_ESDL_012` | Banner 「商品の陳列が完了しました。」 + thời gian (**v3** — kết quả Step 3; khác `DA_ESDL_008` của Step 2) | Banner | `DA_ESDL_003-06` | — |
+| `DA_RECV_007` | Banner 「荷物の受取は完了しました。」 + dòng giờ 「…に受取済み」 (**v3** — màn chỉ đọc; khác toast `DA_RECV_004`) | Banner | `DA_RECV_003` | — |
 
 > **Ghi chú granularity (Test C/D theo `spec-template.md`):**
 > - `DA_AUTHEN_002_03` **không phải màn riêng** — là state "nút xác nhận active" của `DA_AUTHEN_002_02`.
@@ -928,7 +1025,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   |---|---|---|---|
   | Top | Text | 「今日も一日、安全運転で頑張りましょう。」 | — |
   | Body | Input text | `ログインID` — bắt buộc, 1–255, ASCII. Do công ty vận chuyển ủy thác cấp | Nhập |
-  | Body | Input password | Mật khẩu — bắt buộc, ≥8 ký tự, ≥1 chữ, ≥1 số, hiển thị `●` | Nhập |
+  | Body | Input password | Mật khẩu — bắt buộc, ≥8 ký tự (tối đa 255 — v3), ≥1 chữ, ≥1 số, hiển thị `●` | Nhập |
   | Body | Icon button | Icon mắt | Toggle `password ↔ text` |
   | Body | Link | 「パスワードを忘れた方はこちら」 | → `DA_AUTHEN_002_01` |
   | Bottom | Button primary | Đăng nhập | Validate **tất cả cùng lúc** → API → `DA_HOME_001` |
@@ -990,6 +1087,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 ### DA_AUTHEN_002_02 — Reset mật khẩu B2: Mã xác thực 4 số
 > Nguồn: table `20239:151066` · meta `20238:149552` · URL `/reset-password/step2`
 > Bao gồm state `DA_AUTHEN_002_03` (nút xác nhận active).
+> ⚠️ **v3:** Figma Phase 2 có frame `DA_AUTHEN_002_03` riêng với 4 ô trống, nút 「確認」 xám, link 「再送信」 màu xanh và **không có đếm ngược** (có vẻ là state hết 60 giây) — khác mô tả ở trên. Không có node id để xác minh → giữ nguyên mô tả v2, ghi OQ-36.
 
 **Happy Case:**
 - Layout: 1 cột — tiêu đề, mô tả, email đã gửi, 4 ô mã, nút xác nhận, link gửi lại + ghi chú hạn dùng.
@@ -998,6 +1096,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Vị trí | Component | Nội dung / Ràng buộc | Action |
   |---|---|---|---|
   | Top | Text | 「パスワード再設定用メールを送信しました。下記のメールアドレスをご確認ください。」 | — |
+  | Top | Heading | 「認証コードを入力してください。」 — đặt dưới tiêu đề 「パスワードリセット」 (**v3**, frame `DA_AUTHEN_002_02`) | — |
   | Body | Text readonly | Email đã nhập bước trước — **có mask hay không: UNKNOWN (OQ-03)** | — |
   | Body | Input × 4 | 4 ô độc lập, mỗi ô 1 chữ số, **chỉ nhận số**, hiệu lực **5 phút** | Nhập → **tự chuyển focus ô kế** |
   | Body | Button (→) | Xác nhận — grayout khi chưa đủ 4 số; active khi đủ (`DA_AUTHEN_002_03`) | Đối chiếu mã → `DA_AUTHEN_002_04` |
@@ -1031,7 +1130,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Vị trí | Component | Nội dung / Ràng buộc | Action |
   |---|---|---|---|
   | Body | Text readonly | Email đã đăng ký — tham chiếu, **không sửa** | — |
-  | Body | Input password | Mật khẩu mới — bắt buộc, ≥8, ≥1 chữ, ≥1 số, `●` + icon mắt | Nhập |
+  | Body | Input password | Mật khẩu mới — bắt buộc, ≥8 và tối đa 255 (v3), ≥1 chữ, ≥1 số, `●` + icon mắt | Nhập |
   | Body | Input password | Xác nhận mật khẩu — bắt buộc, **trùng khớp tuyệt đối** + icon mắt | Nhập |
   | Bottom | Button primary (✓) | Xác nhận | Validate tất cả cùng lúc → cập nhật mật khẩu → `DA_AUTHEN_002_06` |
   | Bottom | Button | 「ログイン画面に戻る」 | → `DA_AUTHEN_001`, **ngắt luồng reset** |
@@ -1063,8 +1162,9 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Vị trí | Component | Nội dung / Ràng buộc | Action |
   |---|---|---|---|
   | Body | Card + illustration | Modal card có hình xe tải; **chỉ hiện khi chuyển hợp lệ từ `DA_AUTHEN_002_04`** | — |
-  | Body | Text | 「パスワードリセットに成功しました。」 — **phần văn bản tiếp theo: UNKNOWN (OQ-13)** | — |
-  | Bottom | Button primary | Về màn hình chính | → `DA_HOME_001` **ở trạng thái đã tự động đăng nhập**, **không qua màn login** |
+  | Body | Text | 「パスワードリセットに成功しました。」 | — |
+  | Body | Text | 「現在は正常にログイン・ご利用いただけます。」「引き続きよろしくお願いいたします。」 (**v3, theo Figma** — bảng `20240:152458` vẫn ghi 「以降の文言は要確認」, xem OQ-13/OQ-35) | — |
+  | Bottom | Button primary | 「ホーム画面へ」 (v3) | → `DA_HOME_001` **ở trạng thái đã tự động đăng nhập**, **không qua màn login** |
 
 **Non-Happy Case:**
 
@@ -1097,9 +1197,9 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Body | Section header | 「本日（YYYY-M-D）」「明日（YYYY-M-D）」「明後日（YYYY-M-D）」 | — |
   | Body | Card kho (**cam**) | Tên kho · địa chỉ · `{n}社 {n}箱（冷蔵）{n}品（冷凍）{n}品` · badge 「未受取」. **Chỉ hiện khi `未受取`** | → `DA_RECV_001` |
   | Body | Button | 「詳細表示▼」 / 「非表示▲」 | Mở/đóng vùng chi tiết trên thẻ kho |
-  | Body | Card COOL (**tím**) | Tên công ty · kho nguồn · địa chỉ · số lượng · badge `未配送`/`トラブル`. **Ẩn khi `配送完了`** | Thẻ độc lập → `DA_DLVR_001-11` *(xem RQ-B17 CONFLICT)*; trong chi tiết kho → `E-04` |
-  | Body | Card ES (**xanh**) | Tên công ty · kho nguồn · địa chỉ · số lượng · badge `未配送`/`トラブル`. **Ẩn khi `配送完了`** | Thẻ độc lập → `DA_DLVR_001-1` *(xem RQ-B17 CONFLICT)*; trong chi tiết kho → `E-04` |
-  | Footer | Bottom nav | ホーム · マニュアル · 配送一覧 · トラブル · アカウント | 配送一覧→`DA_LIST_001_Kho` · トラブル→`E-16` · アカウント→`DA_HOME_005` · マニュアル→**UNKNOWN (OQ-01)** |
+  | Body | Card COOL (**tím**) | Tên công ty · kho nguồn · địa chỉ · số lượng · badge `未配送`/`トラブル`. **Ẩn khi `配送完了`** | Thẻ độc lập → `DA_COOL_001` (frame `DA_COOL_001 - 01`; v3 — RQ-B17 RESOLVED); trong chi tiết kho → `DA_HOME_006` |
+  | Body | Card ES (**xanh**) | Tên công ty · kho nguồn · địa chỉ · số lượng · badge `未配送`/`トラブル`. **Ẩn khi `配送完了`** | Thẻ độc lập → `DA_ESDL_000_0` (v3 — RQ-B17 RESOLVED); trong chi tiết kho → `DA_HOME_006` |
+  | Footer | Bottom nav | ホーム · マニュアル · 配送一覧 · トラブル · アカウント | 配送一覧→`DA_LIST_001_Kho` · トラブル→`DA_RPTD_003` · アカウント→`DA_HOME_005` · マニュアル→**UNKNOWN (OQ-01)** |
 
 - Interactions: thứ tự thẻ trong ngày ①COOL`未配送` ②ES`未配送` ③Kho`未受取` ④COOL`トラブル` ⑤ES`トラブル`.
 - Animation đề xuất: _(Figma không định nghĩa)_
@@ -1125,14 +1225,14 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 > Nguồn: table `20319:242429` mục A
 
 **Happy Case:**
-- Layout: Header (back 「＜」 + tiêu đề 「お知らせ一覧」) → danh sách 1 dòng / thông báo → nút tải thêm.
+- Layout: Header (back 「＜」 + tiêu đề 「お知らせ」 — **v3**: header là 「お知らせ」; 「お知らせ一覧」 là tiêu đề mục (nền xanh nhạt) nằm dưới header; `DA_NOTI_002` cũng có header 「お知らせ」) → danh sách 1 dòng / thông báo → nút tải thêm.
 - Components có hành vi:
 
   | Vị trí | Component | Nội dung / Ràng buộc | Action |
   |---|---|---|---|
   | Header | Button 「＜」 | Quay lại | → `DA_HOME_001` |
-  | Body | List row | Ngày giờ + tiêu đề (**link màu xanh**) + chấm đỏ nếu chưa đọc. **Mới nhất lên đầu**. 0 mục → ẩn danh sách | Tap tiêu đề → `DA_NOTI_002` |
-  | Body | Text | Ngày giờ **JST**: trong ngày 「今日・HH:mm」, ngày khác 「M月D日・HH:mm」. **Không dùng「昨日」** | — |
+  | Body | List row | Ngày giờ + tiêu đề (**link màu xanh** khi chưa đọc, kèm chấm đỏ; **v3 theo frame `20276:175614`: đã đọc → chữ xám, không chấm**; bảng A.3.2 chỉ ghi 'link xanh'). **Mới nhất lên đầu**. 0 mục → ẩn danh sách | Tap tiêu đề → `DA_NOTI_002` |
+  | Body | Text | Ngày giờ **JST**: trong ngày 「今日・HH:mm」, ngày khác 「M月D日・HH:mm」. **Không dùng「昨日」**. ⚠️ v3: frame hiển thị 「今日 - 07:00」 / 「6月1日 - 09:30」 (dấu ' - ' thay '・') → giữ theo bảng, ghi OQ-37 | — |
   | Body | Indicator | Chấm đỏ — **chỉ** với thông báo chưa đọc | — |
   | Bottom | Button | 「もっと表示」 — **chỉ hiện khi còn thông báo chưa tải**; số lượng mỗi lần **UNKNOWN (OQ-02)** | Tap **hoặc cuộn xuống** → tải thêm |
 
@@ -1187,7 +1287,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 ---
 
 ### DA_HOME_005 — Tài khoản (My Page)
-> Nguồn: annotation `18870:17324` / `17310` / `17318` / `17311` / `17329` / `17334` / `17339` · frame `16892:78274`
+> Nguồn: annotation `18870:17324` / `17310` / `17318` / `17311` / `17329` / `17334` / `17339` · frame `16892:78274` · Figma Phase 2 group `34199:211570` (đối chiếu 08/10/2026)
 
 **Happy Case:**
 - Layout: Header lời chào → khối 基本情報 dạng label–value → nút đăng xuất → bottom nav.
@@ -1196,6 +1296,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Vị trí | Component | Nội dung / Ràng buộc | Action |
   |---|---|---|---|
   | Header | Text | 「{tên} さん、安全運転でいってらっしゃいませ。」 | — |
+  | Header | Icon button | Chuông thông báo — **v3:** có trên frame Figma (`Icon/Bell` `31989:434376`, góc phải header) nhưng **annotation không nêu hành vi** → ⚠️ **UNKNOWN (OQ-41)**; tham chiếu: chuông ở Home → `DA_NOTI_001` | UNKNOWN |
   | Body | Section title | 「基本情報」 | — |
   | Body | Field readonly | `ログインID` — format `DR00000` (vd `DR00001`) | — |
   | Body | Field readonly | `メールアドレス` | — |
@@ -1235,6 +1336,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Top | Date picker | `開始日` — mặc định **hôm nay**; chọn được quá khứ/tương lai | Chọn → lọc lại |
   | Top | Date picker | `終了日` — mặc định **hôm nay + 7 ngày**; ràng buộc `≥ 開始日` và khoảng `≤ 31 ngày` | Chọn → lọc lại |
   | Top | Tab bar | A 倉庫受取 (**mặc định**) · B 未配送 · C 配送完了 | → `DA_LIST_002_ES` / `DA_LIST_003_COOL` |
+  | Body | List order | **v3** — 表示順: 納品日付 → ステータス → 拠点名 (legend `20274:174988`) | — |
   | Body | Dropdown (**đơn**) | `未受取` · `受取済` · `トラブル`; không chọn = tất cả | Chọn → lọc |
   | Body | Input search | Khớp một phần: `倉庫名`・`中継先`・`納品先拠点名`・`住所` | Gõ → **lọc realtime**; xóa input → hiện lại toàn bộ |
   | Body | Tag | 「倉庫受取」 cố định (**màu xanh lam**) | — |
@@ -1243,7 +1345,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Body | Badge | `未受取` cam / `受取済` xanh lá / `トラブル` đỏ | — |
   | Body | Text | Địa chỉ — dài thì rút gọn `…` | — |
   | Body | Stat | `{n}社` · `{n}箱` — **ẩn `{n}箱` nếu chưa import mã vận đơn** | — |
-  | Body | Stat + icon | Bông tuyết `冷凍` (chỉ khi >0) · Tủ lạnh `冷蔵・常温` gộp (chỉ khi >0). Tương lai `{n}個（予定）` · đã picking `{n}箱` · chưa picking `未確定` | — |
+  | Body | Stat + icon | Bông tuyết `冷凍` (chỉ khi >0) · Tủ lạnh `冷蔵・常温` gộp (chỉ khi >0). Tương lai `{n}個（予定）` · đã picking `{n}箱` · chưa picking `未確定`. **v3: `0件は非表示`** (ẩn mục có giá trị 0) | — |
   | Body | Card (tappable) | Toàn thẻ | `未受取`+hôm nay → `DA_RECV_001`; còn lại → `DA_RECV_003` |
 
 **Non-Happy Case:**
@@ -1254,7 +1356,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 | 1 Validation input | Khoảng ngày > 31 ngày | Inline error | 「期間は1ヶ月以内で選択してください。」 |
 | 7 Business rule | Chưa import mã vận đơn | Chặn UI | — (**ẩn hẳn** field `{n}箱`, không hiện `0箱`) |
 | 7 Business rule | Chưa picking xong (hôm nay/quá khứ) | Inline error | 「未確定」 (hiển thị thay số lượng) |
-| 5 Empty state | Khoảng ngày không có bản ghi nào | UNKNOWN | UNKNOWN — Figma không có empty state cho 配送一覧 (OQ-06) |
+| 5 Empty state | Khoảng ngày không có bản ghi nào | Empty state | 「配送予定データはありません。」 (v3, legend `20274:174988` — thay OQ-06 cũ) |
 | 3 Network | Mất mạng khi tải danh sách | UNKNOWN | UNKNOWN — Figma không định nghĩa (OQ-08) |
 | 4 Server error | API 500 | UNKNOWN | UNKNOWN — Figma không định nghĩa (OQ-08) |
 | 2 Auth | Session hết hạn | UNKNOWN | UNKNOWN — Figma không định nghĩa (OQ-09) |
@@ -1291,7 +1393,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 | 1 Validation input | Khoảng ngày sai (như Tab A) | Inline error | 「終了日は開始日以降を選択してください。」/「期間は1ヶ月以内で選択してください。」 |
 | 7 Business rule | Chưa picking xong | Chặn UI | — (**ẩn hẳn** `{n}箱` và `品数`) |
 | 7 Business rule | Bấm thẻ `トラブル` / dữ liệu tương lai | Chặn UI | — (vào màn chi tiết nhưng **chỉ đọc**, nút thao tác không hiện) |
-| 5 Empty state | Không có đơn `未配送` trong khoảng ngày | UNKNOWN | UNKNOWN — Figma không định nghĩa (OQ-06) |
+| 5 Empty state | Không có đơn `未配送` trong khoảng ngày | Empty state | 「配送予定データはありません。」 (v3, legend `20274:174988`) |
 | 3 Network | Mất mạng | UNKNOWN | UNKNOWN (OQ-08) |
 | 4 Server error | API 500 | UNKNOWN | UNKNOWN (OQ-08) |
 | 2 Auth | Session hết hạn | UNKNOWN | UNKNOWN (OQ-09) |
@@ -1318,7 +1420,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 |---|---|---|---|
 | 1 Validation input | Khoảng ngày sai | Inline error | 「終了日は開始日以降を選択してください。」/「期間は1ヶ月以内で選択してください。」 |
 | 7 Business rule | Bấm thẻ ES便 đã **quá 7 ngày** | Chặn UI | — (mở chi tiết nhưng **ẩn nút 「編集」**) |
-| 5 Empty state | Chưa hoàn thành đơn nào trong khoảng ngày | UNKNOWN | UNKNOWN — Figma không định nghĩa (OQ-06) |
+| 5 Empty state | Chưa hoàn thành đơn nào trong khoảng ngày | Empty state | 「配送予定データはありません。」 (v3, legend `20274:174988`) |
 | 3 Network | Mất mạng | UNKNOWN | UNKNOWN (OQ-08) |
 | 4 Server error | API 500 | UNKNOWN | UNKNOWN (OQ-08) |
 | 2 Auth | Session hết hạn | UNKNOWN | UNKNOWN (OQ-09) |
@@ -1337,7 +1439,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 
   | Vị trí | Component | Nội dung / Ràng buộc | Action |
   |---|---|---|---|
-  | Header | Button back | 「＜」 | **0 tick** → về ngay; **≥1 tick** → `E-03` |
+  | Header | Button back | 「＜」 | **0 tick** → về ngay; **≥1 tick** → `DA_RECV_006` |
   | Header | Title | 「荷物受取」 — cố định giữa header | — |
   | Body | Text | Tên kho xuất hàng (vd 「オージーフーズ倉庫」) — từ API | — |
   | Body | Text | Ngày giao `yyyy-mm-dd` — **tất cả mục cùng ngày, không có giờ cụ thể** | — |
@@ -1348,7 +1450,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Body | Checkbox (per dòng) | **Chỉ tick từng mục — KHÔNG có nút chọn tất cả**. ≥1 tick = trạng thái「đang chỉnh sửa」 | Tick → badge dòng đổi `未受取`→`受取済` |
   | Body | Badge (per dòng) | `未受取` (ban đầu) / `受取済` (đã tick) / `トラブル` (**độc lập với checkbox**) | — |
   | Body | Text (per dòng) | Tên công ty điểm nhận · `送り状番号` (nguyên từ import) | — |
-  | Footer | Button primary | 「完了」 — **grayout khi 0 tick (không có message)**, active khi ≥1 tick | Tick hết → `E-01`; còn sót → `E-02` |
+  | Footer | Button primary | 「完了」 — **grayout khi 0 tick (không có message)**, active khi ≥1 tick | Tick hết → `DA_RECV_004`; còn sót → `DA_RECV_005` |
 
 - Interactions: lọc + tìm kiếm **phía client**; trạng thái tick giữ nguyên khi bật/tắt lọc.
 
@@ -1370,16 +1472,22 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 ---
 
 ### DA_RECV_003 — Nhận hàng tại kho, chỉ đọc
-> Nguồn: symbol `20262:41179` (tên frame) · quyền sửa từ `20285:178257` mục A.12
-> ⚠️ **Figma KHÔNG có bảng mô tả riêng cho màn này** — chỉ có tên symbol và quy tắc quyền sửa. Nội dung chi tiết là **UNKNOWN (OQ-20)**; SPEC **không suy đoán** component.
+> Nguồn: symbol `20262:41179` · quyền sửa từ `20285:178257` mục A.12
+> ✅ **v3 (08/10/2026):** Figma Phase 2 đã vẽ phần đầu màn (844px đầu). **Vẫn không có bảng mô tả riêng** → hành vi ngoài frame (nút 「完了」, back) giữ theo OQ-20; SPEC không suy đoán thêm.
 
 **Happy Case:**
-- Layout: UNKNOWN — Figma không có bảng mô tả. Theo `20285:178257` A.12, đây là đích đến khi trạng thái là `受取済` / `トラブル` / quá khứ / tương lai, và **quyền là chỉ đọc**.
+- Layout: Header 「荷物受取」 → banner hoàn tất kèm giờ → thẻ kho → mục 「荷物受取一覧」 → danh sách vận đơn có checkbox bị khóa. Quyền: chỉ đọc (đích đến khi `受取済` / `トラブル` / quá khứ / tương lai — A.12).
 - Components có hành vi:
 
   | Vị trí | Component | Nội dung / Ràng buộc | Action |
   |---|---|---|---|
-  | — | UNKNOWN | Figma không định nghĩa danh sách item cho `DA_RECV_003` (OQ-20) | — |
+  | Header | Title | 「荷物受取」 | — |
+  | Body | Banner (xanh lá) | 「荷物の受取は完了しました。」 + dòng giờ dạng 「2026年4月15日12時03分に受取済み」 (chữ nhỏ — kana cuối chưa đọc chắc, Designer xác nhận) | — |
+  | Body | Card kho (**cam**) | Tên kho (vd 「オージーフーズ倉庫」) · `{n}社` `{n}箱` `{n}品` (lạnh) `{n}品` (đông) · ngày giao `yyyy-mm-dd（曜日）` · badge `受取済` · mã bưu chính (vd `〒151-0051`) · địa chỉ | — |
+  | Body | Section title | 「荷物受取一覧」 | — |
+  | Body | List item | Tên công ty điểm nhận · địa chỉ · `{n}箱` `{n}品` `{n}品` | — |
+  | Body | Checkbox (per vận đơn) | **Disabled, hiển thị trạng thái đã tick** + `送り状番号` | — |
+  | Footer | Button 「完了」 | **Ẩn** (OQ-20) — không nằm trong phần frame đã vẽ | — |
 
 **Non-Happy Case:**
 
@@ -1409,6 +1517,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Header | Title | 「ES配送便」 — cố định giữa header | — |
   | Body | Text | Tên điểm giao (từ API) · ngày giao `yyyy-mm-dd（曜日）` | — |
   | Body | Badge | `未配送` / `配送完了` / `トラブル` (**độc lập với checkbox**) | — |
+  | Body | Tab bar | **v3** — 3 tab: 基本情報 (đang chọn) / 駐車報告 / 陳列情報. 陳列情報 **xám (disabled)** khi chưa hoàn thành (`16383:114020`, `19036:18274`, `19663:152788`) | — |
   | Body | Text | Mã bưu điện · địa chỉ · người phụ trách · số điện thoại | — |
   | Body | Info box | `納品備考` — **khung nhấn mạnh riêng có icon**; ghi chỉ dẫn địa điểm nhận・cách nhận・liên hệ・điểm đặc biệt | — |
   | Body | Stat | 「〇箱」 (tổng) /「〇品」+icon lạnh /「〇品」+icon đông | — |
@@ -1470,14 +1579,14 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   |---|---|---|---|
   | Body | Banner | 「荷物の配送は完了しました。」 + thời gian `yyyy年mm月dd日HH時mm分` | — |
   | Body | Badge | `配送完了` (xanh lá) | — |
-  | Body | Tab | Chuyển sang tab 陳列情報 | → `DA_ESDL_006` |
-  | Body | Button 「編集」 | **Chỉ hiện trong 7 ngày** kể từ khi hoàn tất; quá 7 ngày → **ẩn** | → màn chỉnh sửa bước đang xem |
+  | Body | Tab bar | **v3** — 3 tab 基本情報 / 駐車報告 / 陳列情報 (cả 3 dùng được sau hoàn thành) | → `DA_ESDL_006` |
+  | Body | Button 「編集」 | **v3 — KHÔNG có ở tab 基本情報** (Figma `19663:152788`, `18578:42560` không vẽ). Nút 「編集」 chỉ ở tab 陳列情報 (xem `DA_ESDL_006`), hiện trong 7 ngày kể từ khi hoàn tất. *(v2 ghi nút này ở 基本情報 — thay đổi so với v2, chờ xác nhận OQ-35)* | — |
 
 **Non-Happy Case:**
 
 | Nhóm | Trigger | Hiển thị | Message |
 |---|---|---|---|
-| 7 Business rule | Quá 7 ngày sau khi hoàn tất | Chặn UI | — (**nút 「編集」 bị ẩn**, chỉ xem) |
+| 7 Business rule | Quá 7 ngày sau khi hoàn tất | Chặn UI | — (nút 「編集」 ở tab 陳列情報 và ✏️ ở tab 駐車報告 **bị ẩn**, chỉ xem) |
 | 3 Network | Mất mạng khi tải | UNKNOWN | UNKNOWN (OQ-08) |
 | 4 Server error | API 500 | UNKNOWN | UNKNOWN (OQ-08) |
 | 2 Auth | Session hết hạn | UNKNOWN | UNKNOWN (OQ-09) |
@@ -1538,7 +1647,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Body | Section title | 「廃棄登録と実在庫の確認」 | — |
   | Body | Text | 「廃棄数を確認のうえ、残りの実在庫を確認してください。確認が完了した商品は、チェックしてください。※検索または商品スキャンからも廃棄登録できます。」 | — |
   | Body | Input search | Khớp một phần **tên sản phẩm hoặc mã sản phẩm (barcode)** | Gõ → lọc **realtime trong màn** |
-  | Body | Button quét mã | **Sản phẩm không có trong danh sách vẫn đăng ký hủy được bằng quét** | Quét → `E-08` (modal đăng ký hủy) |
+  | Body | Button quét mã | **Sản phẩm không có trong danh sách vẫn đăng ký hủy được bằng quét** | Quét → `DA_ESDL_007` (modal đăng ký hủy) |
   | Body | Text | 「※次回納品日 〇月〇日」 — hệ thống tự động hiển thị. **Có hiển thị năm hay không: UNKNOWN (OQ-21)** | — |
   | Body | Checkbox | 「未確認のみ表示」 | ON → chỉ hiện sản phẩm cột `確認` **chưa tích** |
   | Body | Text (per dòng) | Tên sản phẩm | — |
@@ -1607,12 +1716,15 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 
   | Vị trí | Component | Nội dung / Ràng buộc | Action |
   |---|---|---|---|
-  | Body | Button quét mã | Quét để kiểm phẩm | Quét → `E-10` (modal kiểm phẩm) |
+  | Body | Section title | 「検品・陳列」 (**v3**, frame `16422:114955`) | — |
+  | Body | Input search | **v3** — placeholder 「名前またはコードで商品を検索」 (kèm nút barcode) | Gõ → lọc |
+  | Body | Checkbox | **v3** — 「未確認のみ表示」 | ON → chỉ hiện sản phẩm chưa `確認` |
+  | Body | Button quét mã | Quét để kiểm phẩm | Quét → `DA_ESDL_009` (modal kiểm phẩm) |
   | Body | Checkbox (per dòng) | `確認` — đánh dấu **đã kiểm tra / trưng bày xong**. Bật → nút −/＋ và ô `実際数` cùng dòng **grayout**. Sản phẩm đăng ký bằng quét **tự động bật** | Click |
   | Body | Text (per dòng) | Tên sản phẩm + 「予定数：〇個」 (hệ thống tự hiển thị, **không thể chạm**) | — |
   | Body | Number input (per dòng) | `実際数` — số nguyên **≥0**, nút −/＋ hoặc nhập trực tiếp. **Giá trị ban đầu = `予定数`**. `実際数 ≠ 予定数` → **coi là chênh lệch**. Grayout khi đã tích `確認` | Nhập / Click |
   | Footer | Button 「戻る」 | Về Step 2 — **dữ liệu đã nhập được giữ lại** | → `DA_ESDL_002` |
-  | Footer | Button 「確認」 | Active khi **≥1** dòng đã tích (khác Step 2 yêu cầu tất cả); chưa tích cái nào → grayout | **Không sót & không chênh lệch** → `DA_ESDL_003-06`; **có sót HOẶC có chênh lệch** → `E-11` |
+  | Footer | Button 「確認」 | Active khi **≥1** dòng đã tích (khác Step 2 yêu cầu tất cả); chưa tích cái nào → grayout | **Không sót & không chênh lệch** → `DA_ESDL_003-06`; **có sót HOẶC có chênh lệch** → `DA_ESDL_010` |
 
 **Non-Happy Case:**
 
@@ -1641,7 +1753,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 
   | Vị trí | Component | Nội dung / Ràng buộc | Action |
   |---|---|---|---|
-  | Body | Banner (xanh lá) | Icon ✓ + 「在庫/廃棄が成功しました。」 + thời gian `yyyy年mm月dd日HH時mm分` | — |
+  | Body | Banner (xanh lá) | Icon ✓ + 「商品の陳列が完了しました。」 (**v3** — frame `16422:115045`; v2 ghi 「在庫/廃棄が成功しました。」) + thời gian `yyyy年mm月dd日HH時mm分`. Banner này cũng hiện ở nền popup 003-04/003-05 | — |
   | Body | Table | `連番` · `商品` (**dài thì rút gọn `…`**) · `予定数` (hệ thống tự hiển thị) · `実際数` (giá trị chốt ở Step 3) · `差異` | — |
   | Body | Table cell | `差異 = 予定数 − 実際数` **tự động tính**. Màu: **0 = đen** · **giá trị âm (thực tế NHIỀU hơn dự kiến) = cam** · **giá trị dương (thực tế ÍT hơn dự kiến) = xanh lá** | — |
   | Footer | Button 「戻る」 | Về màn nhập Step 3 | → `DA_ESDL_003` |
@@ -1673,6 +1785,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   |---|---|---|---|
   | Header | Button back 「＜」 | Về **ngay** màn chi tiết giao hàng ES | → `DA_ESDL_000_0` |
   | Header | Title | 「陳列後」 — cố định giữa header | — |
+  | Body | Section title | 「アップロード（陳列後）」 (**v3**, frame `16422:115333`) | — |
   | Body | Upload area | **Tối thiểu 1, tối đa 20 ảnh**. Chưa tải → 「写真はまだありません」 + placeholder. Đang tải → 「loading」 | Click |
   | Body | Button (×) | Xóa ảnh — góc trên phải thumbnail. Thay ảnh = xóa rồi tải lại | Click |
   | Body | Button chọn file | Camera hoặc file trong máy. JPEG/PNG/HEIC/WebP **（提案）**, ≤10MB/file **（提案）** | Click |
@@ -1708,7 +1821,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   |---|---|---|---|
   | Body | Text readonly | `集金予定額` — hệ thống tự hiển thị, **không sửa (nền xám)**, phân cách 3 chữ số + 「円」 (vd `10,000 円`) | — |
   | Body | Number input | `実集金額` — tài xế nhập thủ công, **giá trị ban đầu 0**, số nguyên **0–999,999**, phân cách 3 chữ số + 「円」 | Nhập |
-  | Footer | Button 「完了」 | **LUÔN active**. Bấm → hoàn tất toàn bộ quy trình, **KHÔNG hiện hộp thoại xác nhận**, cập nhật trạng thái thành `配送完了`, quay về màn chi tiết ES配送便. Validate **phía server** | → `DA_ESDL_006` + banner `E-12` |
+  | Footer | Button 「完了」 | **LUÔN active**. Bấm → hoàn tất toàn bộ quy trình, **KHÔNG hiện hộp thoại xác nhận**, cập nhật trạng thái thành `配送完了`, quay về màn chi tiết ES配送便. Validate **phía server** | → `DA_ESDL_006` + banner `DA_ESDL_011` |
 
 - Interactions: `実集金額` chưa nhập (vẫn 0) **hoặc** khác `集金予定額` → **hiện cảnh báo VÀ thông báo cho admin**; **sau cảnh báo vẫn bấm 「完了」 được**.
 
@@ -1731,7 +1844,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 > Nguồn: tab 陳列情報 `23747:111658` · 駐車報告 chỉ đọc `23693:39294` · 駐車報告 chỉnh sửa `23698:40099` · banner `23244:36210` · connector `18870:15080/15085/15090/15100`
 
 **Happy Case:**
-- Layout: Header → banner hoàn tất → tab (基本情報 / 陳列情報) → step nav 1–5 → nội dung bước đang chọn → khối 駐車報告.
+- Layout: Header → banner hoàn tất → tab (基本情報 / **駐車報告** / 陳列情報 — **v3: 3 tab**) → step nav 1–5 → nội dung bước đang chọn → khối 駐車報告.
 - Components có hành vi:
 
   | Vị trí | Component | Nội dung / Ràng buộc | Action |
@@ -1744,7 +1857,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Body | Table | ③陳列: `商品名` / `予定数` / `実際数` / `差異` | — |
   | Body | Text | ⑤集金登録: `集金予定額` / `実集金額` | — |
   | Body | Button 「編集」 | **Chỉ hiện trong vòng 7 ngày** sau khi giao hàng hoàn tất. Bấm → màn chỉnh sửa của **bước đang xem** (vd đang xem ①陳列前 → Step1 edit). **Quá 7 ngày → ẩn (chỉ xem)** | → Step tương ứng |
-  | Body | Section title | 「駐車報告」 | — |
+  | Body | Tab | **v3** — 「駐車報告」 là **tab riêng** (view `18578:44771`, edit `18578:44248`), không còn là khối cuối trang 陳列情報 | — |
   | Body | Icon button (✏️) | **Chỉ ở chế độ chỉ đọc**; vẫn hiện nếu **trong vòng 7 ngày** sau hoàn tất | → chế độ chỉnh sửa |
   | Body | Image (chỉ đọc) | Ảnh hóa đơn đã đăng ký; chưa có → placeholder 「領収書をアップロード」 | — |
   | Body | Text (chỉ đọc) | Phí đỗ xe (phân cách 3 chữ số + 「円」); chưa có → 「0 円」 | — |
@@ -1753,7 +1866,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Body | Upload (chỉnh sửa) | Ảnh hóa đơn — **BẮT BUỘC, tối đa 1 ảnh**, camera hoặc file, JPEG/PNG/HEIC/WebP, ≤10MB. Tải rồi vẫn xóa・thay được. Chưa có → 「写真はまだありません」 + placeholder | Click |
   | Body | Number input (chỉnh sửa) | Phí đỗ xe — **tùy chọn**, số nguyên **0–999,999**, giá trị ban đầu 0, phân cách 3 chữ số + 「円」 | Nhập |
 
-- Interactions: connector Figma có 4 nhãn 「Step 1 edit」「Step 2 edit」「Step 3 edit」「Step 5 edit」 — **không có 「Step 4 edit」** (RQ-E62 → OQ-25).
+- Interactions: connector Figma có 4 nhãn 「Step 1 edit」「Step 2 edit」「Step 3 edit」「Step 5 edit」 — **không có 「Step 4 edit」** (RQ-E62). **v3 (theo Figma): Step 4 KHÔNG sửa được** — thay đổi so với OQ-25 (22/09); chờ BrSE xác nhận (OQ-35).
 
 **Non-Happy Case:**
 
@@ -1792,8 +1905,8 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Body | Stat | 「〇箱」 (tổng) /「〇品」+icon lạnh /「〇品」+icon đông | — |
   | Body | List (per dòng) | `送り状番号` — **không thể chạm** | — |
   | Body | Checkbox (per dòng) | Xác nhận **đã giao hàng cho company**; tích riêng lẻ từng vận đơn | Tích ≥1 → nút 「完了」 active |
-  | Footer | Button 「完了」 | Hiện khi `未配送` **và là đơn giao trong ngày** (đơn tương lai: **UNKNOWN OQ-31**). Active khi tích ≥1, disable khi 0. Validate **phía server** | **Tích hết** → hoàn tất trực tiếp → `DA_HOME_001` + `E-14`; **tích một phần** → `E-13` |
-  | Body | Banner | Sau khi hoàn tất, **mở lại màn này** → banner 「荷物の配送は完了しました。」 | — |
+  | Footer | Button 「完了」 | Hiện khi `未配送` **và là đơn giao trong ngày** (đơn tương lai: **UNKNOWN OQ-31**). Active khi tích ≥1, disable khi 0. Validate **phía server** | **Tích hết** → hoàn tất trực tiếp → `DA_HOME_001` + `DA_COOL_003`; **tích một phần** → `DA_COOL_002` |
+  | Body | Banner | Sau khi hoàn tất, **mở lại màn này** → banner 「荷物の配送は完了しました。」 + dòng giờ 「2026年4月15日12時03分に配送済み」 (**v3**, frame `18870:188561`) | — |
 
 **Non-Happy Case:**
 
@@ -1808,7 +1921,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 | 2 Auth | Session hết hạn giữa lúc đang tích | UNKNOWN | UNKNOWN (OQ-09) |
 | 1 Validation input | N/A — màn không có ô nhập text/số | — | — |
 | 5 Empty state | N/A — luôn có ≥1 vận đơn khi vào được màn | — | — |
-| 6 Conflict | Bấm back khi đã tích ≥1 | UNKNOWN | UNKNOWN — Figma **không** mô tả popup hủy chỉnh sửa cho COOL便 (khác `DA_RECV_001`) → OQ-26 |
+| 6 Conflict | Bấm back khi đã tích ≥1 | Chặn UI | — (**v3, theo Figma**: quay về màn trước, **KHÔNG popup** — bảng `23808:112206` mục 1; thay quyết định OQ-26 cũ, chờ xác nhận OQ-35) |
 | 8 External | Thiết bị không mở được app điện thoại khi bấm gọi ES | UNKNOWN | UNKNOWN (OQ-19) |
 
 ---
@@ -1827,6 +1940,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Body | Section title | 「配達一覧」 | — |
   | Body | Input search | Khớp một phần theo **tên kho・tên điểm giao・số vận đơn** | Gõ → lọc **realtime trong màn** |
   | Body | Text | 「※影響を受けた拠点を選択してください。」「※複数の拠点でトラブルが発生している場合は、それぞれの拠点ごとに登録してください。」「※未配送の注文のみ表示されます。」 | — |
+  | Body | Text | **v3** — biến thể hint ở frame `DA_RPTD_001-01` (`18260:101521`): thêm 「※倉庫を選択すると、未受取かつ未配送の注文が表示されます。」 (và không có dòng 「※未配送の注文のみ表示されます。」). Placeholder ô tìm: 「倉庫名・拠点名・送り状番号」 | — |
   | Body | Icon (per thẻ) | **3 màu**: xanh = ES配送便 · tím = COOL便 · **cam = kho** | — |
   | Body | Text (per thẻ) | Tên điểm giao (company) **hoặc** tên kho | — |
   | Body | Badge (per thẻ) | **2 loại**: `未配送` / `未受取` | — |
@@ -1875,7 +1989,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   | Body | Button (×) | Xóa ảnh — góc trên phải thumbnail. **Thay ảnh = xóa rồi tải lại** | Click |
   | Body | Textarea | `備考` — **tùy chọn**, 0–500 ký tự, **nhập nhiều dòng** | Nhập / Mất focus |
   | Footer | Button 「戻る」 | Về màn chọn điểm giao — **nội dung đã nhập bị hủy** | → `DA_RPTD_001` |
-  | Footer | Button 「送信」 | **Chỉ active (xanh) khi đã chọn ≥1 vận đơn VÀ đã chọn nội dung sự cố**; chưa đủ → disable (xám). Validate **phía client** | → `E-17` (modal xác nhận gửi) |
+  | Footer | Button 「送信」 | **Chỉ active (xanh) khi đã chọn ≥1 vận đơn VÀ đã chọn nội dung sự cố**; chưa đủ → disable (xám). Validate **phía client** | → `DA_RPTD_004` (modal xác nhận gửi) |
 
 **Non-Happy Case:**
 
@@ -1928,7 +2042,7 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
   - `DA_ESDL_003` (Step 3 chênh lệch): **BẮT BUỘC tick checkbox** mới active (`RQ-E39`) — Figma ghi 「必須」, nút gọi ES ở popup này **không** tự tick.
 - Điều kiện nút 「確認」 **khác nhau giữa Step 2 và Step 3**: Step 2 yêu cầu **TẤT CẢ** sản phẩm tích (`RQ-E26`); Step 3 chỉ cần **≥1** (`RQ-E34`).
 - `DA_RECV_001` **không có nút chọn tất cả** (`RQ-D09`), nhưng `DA_RPTD_002` **có** checkbox chọn tất cả kèm trạng thái trung gian (`RQ-G17`) — hai màn cùng dạng danh sách vận đơn nhưng hành vi khác nhau.
-- Chỉ `DA_RECV_001` có popup xác nhận hủy chỉnh sửa khi bấm back (`RQ-D01`); `DA_RPTD_002` **hủy thẳng không hỏi** (`RQ-G26`); `DA_COOL_001` **Figma không mô tả** (OQ-26).
+- Chỉ `DA_RECV_001` có popup xác nhận hủy chỉnh sửa khi bấm back (`RQ-D01`); `DA_RPTD_002` **hủy thẳng không hỏi** (`RQ-G26`); `DA_COOL_001` **không popup** (v3 — theo bảng `23808:112206` mục 1).
 
 **Information Design — quan sát từ Figma:**
 - Quy tắc hiển thị số lượng được định nghĩa theo **3 trạng thái thời điểm** (tương lai `予定` / đã picking số thật / chưa picking `未確定` hoặc ẩn) — `RQ-C16`, `RQ-C21`, `RQ-C22`.
@@ -2014,6 +2128,22 @@ ES配送便:  未配送 ──[hoàn tất cả 5 step + 完了 ở Step5]→ �
 | **DEC-03** | Phạm vi Figma output | **Chỉ Output 1 + Output 2** trên page `Feature - Flow`. Output 3 (Screens + Items) và Output 4 (HTML Prototype) **skip** vì Figma gốc đã có đủ 95 mockup + 48 bảng item |
 
 ---
+
+### Câu hỏi mới phát sinh ở v3 (08/10/2026)
+
+| # | Câu hỏi | Nguồn |
+|---|---|---|
+| **OQ-35** | BrSE xác nhận lại 5 điểm đổi theo Figma so với quyết định 22/09: OQ-13 (câu hoàn tất reset), OQ-06 (câu empty state), OQ-26 (COOL back không popup), OQ-25 (Step 4 không edit), nút 「編集」 chỉ ở tab 陳列情報 | `## Thay đổi v3` mục B |
+| **OQ-36** | `DA_AUTHEN_002_03` là state 'hết 60 giây' (link 「再送信」 xanh, nút xám, không đếm ngược) hay state 'nút xác nhận active'? | frame reset `DA_AUTHEN_002_03` (chưa có node id) |
+| **OQ-37** | Ngày giờ thông báo dùng ' - ' (frame) hay '・' (bảng A.3.1)? Tiêu đề đã đọc có còn là link xanh không? | `20276:175614` vs `20319:242429` |
+| **OQ-38** | `DA_ESDL_000_1` (dữ liệu tương lai) hiện `{n}個（予定）` theo legend hay `{n}箱` theo frame? | `20274:174988` vs `19036:18274` |
+| **OQ-39** | Step 5: cảnh báo lệch 実集金額 (bảng 3.2) có hiển thị không, khi frame không vẽ và flow note ghi OPTIONAL? | `23559:38617` vs `16422:115605`, `18784:14549` |
+| **OQ-40** | `DA_ESDL_000_0`: popup huỷ khi Back có còn áp dụng khi màn không có checkbox? | `16383:114020` |
+| **OQ-41** | `DA_HOME_005`: icon chuông ở header có bấm được không, đi đâu (→ `DA_NOTI_001` như Home?) | `16892:78274` · `Icon/Bell` `31989:434376` |
+| **OQ-42** | `DA_ESDL_003-06`: bảng `24891:96525` mục 1.3 còn ghi banner 「在庫/廃棄が成功しました。」 (hiện sau 'Step2 の確認'), trong khi frame `16422:115045` và ảnh mô tả ghi 「商品の陳列が完了しました。」 — bảng có phải sót cập nhật? | `24891:96525` vs `16422:115045` |
+| **OQ-43** | Figma thiếu frame `DA_ESDL_006-07` (xem lại ④陳列後) dù bảng `23747:111658` mục 7.6 mô tả; chỉ có `006-04` (①), `006-05` (②), `006-06` (③), `006-08` (⑤) | `23747:111658` · group `34199:211578` |
+| **OQ-44** | `DA_ESDL_003`: UI có ô tìm kiếm + 「未確認のみ表示」 + nút quét nhưng bảng `23451:37606` chỉ mô tả mục 4–5 (thiếu mục 1–3: header, tìm kiếm/lọc, quét) → hành vi tìm kiếm/lọc Step 3 chưa có mô tả | `23451:37606` vs frame `16422:114955` |
+| **OQ-45** | Figma chưa có frame cho toast `DA_HOME_006` (「先に倉庫受取を完了してください。」) và empty state `DA_NOTI_003` (「データがありません。」); Basic Design `DA_HOME_006`, `DA_NOTI_003` đang `NO IMAGE` | group Home `34199:206579` · Notification `34199:211572` |
 
 ## Dependencies
 

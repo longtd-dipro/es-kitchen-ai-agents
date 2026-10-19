@@ -1,0 +1,322 @@
+{
+ "group_no": "08",
+ "key": "Sự Cố",
+ "file": "BD_08_Sự Cố.xlsx",
+ "figma_group_nodes": [
+  "34199:211575"
+ ],
+ "figma_group_names": [
+  "Group 48095885"
+ ],
+ "screens": [
+  "DA_RPTD_001",
+  "DA_RPTD_002",
+  "DA_RPTD_004",
+  "DA_RPTD_005",
+  "DA_RPTD_003"
+ ],
+ "frames": [
+  {
+   "no": "08-01",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [Home, thẻ kho mở rộng; context]",
+   "node": "18870:189708",
+   "w": 390,
+   "h": 844,
+   "kind": "Context",
+   "screen_id": null,
+   "state_label": "Home, thẻ kho mở rộng",
+   "dup_of": "",
+   "note": "Màn Home (nhóm Home) minh hoạ điểm xuất phát luồng; connector đỏ từ tab トラブル → popup DA_RPTD_003"
+  },
+  {
+   "no": "08-02",
+   "name": "DA_RPTD_003 — ES電話確認ポップアップ [phủ trên Home]",
+   "node": "19057:91246",
+   "w": 390,
+   "h": 844,
+   "kind": "Popup",
+   "screen_id": "DA_RPTD_003",
+   "state_label": "phủ trên Home",
+   "dup_of": "",
+   "note": "Tên frame sai (DA_RPTD_002-03) nhưng nội dung là popup DA_RPTD_003 trên Home: 「ESキッチンへ電話しますか？」"
+  },
+  {
+   "no": "08-03",
+   "name": "DA_RPTD_001 — トラブル報告：配達先・倉庫選択 [chưa chọn, hint kho]",
+   "node": "18260:101521",
+   "w": 390,
+   "h": 816,
+   "kind": "Screen",
+   "screen_id": "DA_RPTD_001",
+   "state_label": "chưa chọn, hint kho",
+   "dup_of": "",
+   "note": "Danh sách chọn điểm giao/kho, chưa có nút 戻る/次へ; hint thêm 「※倉庫を選択すると…」"
+  },
+  {
+   "no": "08-04",
+   "name": "DA_RPTD_001 — トラブル報告：配達先・倉庫選択 [đã chọn 1 → hiện 戻る/次へ]",
+   "node": "18870:191330",
+   "w": 390,
+   "h": 1068,
+   "kind": "State",
+   "screen_id": "DA_RPTD_001",
+   "state_label": "đã chọn 1 → hiện 戻る/次へ",
+   "dup_of": "",
+   "note": "Hint không có dòng 倉庫; radio 1 thẻ được chọn, footer 戻る/次へ"
+  },
+  {
+   "no": "08-05",
+   "name": "DA_RPTD_002 — トラブル報告：詳細 [mặc định]",
+   "node": "16422:115223",
+   "w": 390,
+   "h": 1110,
+   "kind": "Screen",
+   "screen_id": "DA_RPTD_002",
+   "state_label": "mặc định",
+   "dup_of": "",
+   "note": "Form chi tiết; radio 箱数不足/誤配送/荷物破損/その他; 送信 disable"
+  },
+  {
+   "no": "08-06",
+   "name": "DA_RPTD_002 — トラブル報告：詳細 [chọn 2/3 vận đơn (−), その他 + ô lý do viền đỏ, có ảnh, 送信 active]",
+   "node": "16659:83144",
+   "w": 390,
+   "h": 1031,
+   "kind": "State",
+   "screen_id": "DA_RPTD_002",
+   "state_label": "chọn 2/3 vận đơn (−), その他 + ô lý do viền đỏ, có ảnh, 送信 active",
+   "dup_of": "",
+   "note": "Tên node: 1031 cao, screenshot 1110"
+  },
+  {
+   "no": "08-07",
+   "name": "DA_RPTD_004 — 報告送信確認モーダル [modal xác nhận gửi]",
+   "node": "16422:115205",
+   "w": 390,
+   "h": 844,
+   "kind": "Popup",
+   "screen_id": "DA_RPTD_004",
+   "state_label": "modal xác nhận gửi",
+   "dup_of": "",
+   "note": "Tên frame DA_RPTD_002-03; header nền vẫn 「レポート報告」 (SPEC Thay đổi v3 D4)"
+  },
+  {
+   "no": "08-08",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [Home + toast 「報告を送信しました。」; chứa DA_RPTD_005]",
+   "node": "18870:190847",
+   "w": 390,
+   "h": 844,
+   "kind": "Toast",
+   "screen_id": "DA_RPTD_005",
+   "state_label": "Home + toast 「報告を送信しました。」",
+   "dup_of": "",
+   "note": "Home (Context) kèm toast DA_RPTD_005; thẻ badge トラブル đỏ (RQ-G32)"
+  },
+  {
+   "no": "08-09",
+   "name": "DA_RECV_001 — 荷物受取（編集可） [荷物受取 (DA_RECV_001) có chuông; context]",
+   "node": "18870:193054",
+   "w": 390,
+   "h": 844,
+   "kind": "Context",
+   "screen_id": null,
+   "state_label": "荷物受取 (DA_RECV_001) có chuông",
+   "dup_of": "",
+   "note": "Tên lạ; nội dung màn 荷物受取 — màn nguồn mở DA_RPTD_003 bằng icon chuông"
+  },
+  {
+   "no": "08-10",
+   "name": "DA_ESDL_000_0 — ES配送便 基本情報（当日・未配送） [ES配送便 có chuông; context]",
+   "node": "18870:192377",
+   "w": 390,
+   "h": 797,
+   "kind": "Context",
+   "screen_id": null,
+   "state_label": "ES配送便 có chuông",
+   "dup_of": "",
+   "note": "INSTANCE; màn ES配送便 — nguồn mở DA_RPTD_003 bằng chuông"
+  },
+  {
+   "no": "08-11",
+   "name": "DA_COOL_001 — COOL便：配送詳細 [COOL便 default; context]",
+   "node": "18870:192740",
+   "w": 390,
+   "h": 855,
+   "kind": "Context",
+   "screen_id": null,
+   "state_label": "COOL便 default",
+   "dup_of": "",
+   "note": "Màn COOL便 — nguồn mở DA_RPTD_003; header có chuông ở các màn khác (frame này không thấy chuông)"
+  },
+  {
+   "no": "08-12",
+   "name": "DA_RPTD_003 — ES電話確認ポップアップ [phủ trên DA_RPTD_002 (header レポート報告)]",
+   "node": "19057:91443",
+   "w": 390,
+   "h": 844,
+   "kind": "Popup",
+   "screen_id": "DA_RPTD_003",
+   "state_label": "phủ trên DA_RPTD_002 (header レポート報告)",
+   "dup_of": "",
+   "note": "Popup DA_RPTD_003 vẽ trên nền màn báo cáo; không có trong danh sách màn cha SPEC"
+  },
+  {
+   "no": "08-13",
+   "name": "DA_RPTD_002 — トラブル報告：詳細 [bản sao với radio khác]",
+   "node": "18870:192895",
+   "w": 390,
+   "h": 1110,
+   "kind": "State",
+   "screen_id": "DA_RPTD_002",
+   "state_label": "bản sao với radio khác",
+   "dup_of": "08-05",
+   "note": "Trùng tên với 08-05 nhưng radio 「商品不足・誤配送／交通遅延・事故／不在・連絡不可／その他」 — CONFLICT với bảng/SPEC"
+  },
+  {
+   "no": "08-14",
+   "name": "DA_RPTD_002 — トラブル報告：詳細 [menu 写真を撮る / 写真ライブラリ; component]",
+   "node": "19057:91230",
+   "w": 230,
+   "h": 78,
+   "kind": "Component",
+   "screen_id": "DA_RPTD_002",
+   "state_label": "menu 写真を撮る / 写真ライブラリ",
+   "dup_of": "",
+   "note": "INSTANCE; menu chọn ảnh (camera / thư viện), SPEC không mô tả hành vi"
+  },
+  {
+   "no": "08-15",
+   "name": "Flow note",
+   "node": "16422:115671",
+   "w": 5139,
+   "h": 87,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "",
+   "dup_of": "",
+   "note": "Text: 「🚀 トラブル報告 - SỰ CỐ (V1.0)」"
+  }
+ ],
+ "non_screen_counts": {
+  "TABLE": 5,
+  "CONNECTOR": 4,
+  "VECTOR": 3,
+  "RECT": 5
+ },
+ "tables": [
+  {
+   "node": "24076:42158",
+   "summary": "3. トラブル報告詳細 (DA_RPTD_002) mục 3.1–3.15 (17 hàng x 23 cột)"
+  },
+  {
+   "node": "23983:41426",
+   "summary": "1. Popup gọi ES Kitchen (DA_RPTD_003) mục 1.1–1.5"
+  },
+  {
+   "node": "24042:41580",
+   "summary": "2. Báo cáo sự cố – List giao hàng (DA_RPTD_001) mục 2.1–2.14"
+  },
+  {
+   "node": "24084:42989",
+   "summary": "Modal xác nhận gửi báo cáo (DA_RPTD_004) mục 4.1–4.3"
+  },
+  {
+   "node": "24084:42990",
+   "summary": "5. Hiển thị sau khi gửi thành công (toast DA_RPTD_005, badge トラブル) mục 5.1–5.2"
+  }
+ ],
+ "non_screen_detail": {
+  "CONNECTOR": [
+   "18870:191512",
+   "18870:192295",
+   "18870:191507",
+   "18870:192305"
+  ],
+  "VECTOR": [
+   "18870:193055 Arrow 9",
+   "18870:193057 Arrow 10",
+   "18870:193059 Arrow 11"
+  ],
+  "RECT": [
+   "25119:42054 image 472",
+   "25124:42057 image 473",
+   "25131:42060 image 474",
+   "25142:42063 image 475",
+   "25147:42054 image 476"
+  ]
+ },
+ "images": {
+  "DA_RPTD_001": [
+   {
+    "file": "N08/08-03_DA_RPTD_001.png",
+    "node": "18260:101521",
+    "no": "08-03",
+    "label": "DA_RPTD_001 · Screen · chưa chọn, hint kho"
+   },
+   {
+    "file": "N08/08-04_DA_RPTD_001.png",
+    "node": "18870:191330",
+    "no": "08-04",
+    "label": "DA_RPTD_001 · State · đã chọn 1 → hiện 戻る/次へ"
+   }
+  ],
+  "DA_RPTD_002": [
+   {
+    "file": "N08/08-05_DA_RPTD_002.png",
+    "node": "16422:115223",
+    "no": "08-05",
+    "label": "DA_RPTD_002 · Screen · mặc định"
+   },
+   {
+    "file": "N08/08-06_DA_RPTD_002.png",
+    "node": "16659:83144",
+    "no": "08-06",
+    "label": "DA_RPTD_002 · State · chọn 2/3 vận đơn (−), その他 + ô lý do viền đỏ, có ảnh, 送信 active"
+   },
+   {
+    "file": "N08/08-13_DA_RPTD_002.png",
+    "node": "18870:192895",
+    "no": "08-13",
+    "label": "DA_RPTD_002 · State · bản sao với radio khác"
+   }
+  ],
+  "DA_RPTD_004": [
+   {
+    "file": "N08/08-07_DA_RPTD_004.png",
+    "node": "16422:115205",
+    "no": "08-07",
+    "label": "DA_RPTD_004 · Popup · modal xác nhận gửi"
+   }
+  ],
+  "DA_RPTD_005": [
+   {
+    "file": "N08/08-08_DA_RPTD_005.png",
+    "node": "18870:190847",
+    "no": "08-08",
+    "label": "DA_HOME_001 · Toast · Home + toast 「報告を送信しました。」"
+   }
+  ],
+  "DA_RPTD_003": [
+   {
+    "file": "N08/08-02_DA_RPTD_003.png",
+    "node": "19057:91246",
+    "no": "08-02",
+    "label": "DA_RPTD_003 · Popup · phủ trên Home"
+   },
+   {
+    "file": "N08/08-12_DA_RPTD_003.png",
+    "node": "19057:91443",
+    "no": "08-12",
+    "label": "DA_RPTD_003 · Popup · phủ trên DA_RPTD_002 (header レポート報告)"
+   }
+  ]
+ },
+ "open": [
+  "Frame 08-13 radio khác bảng (CONFLICT, SPEC v3 D3)",
+  "Dropdown-Menu 写真を撮る/写真ライブラリ chưa có trong SPEC",
+  "DA_RPTD_003 phủ trên DA_RPTD_002 (08-12) không có trong màn cha SPEC",
+  "Frame tên sai: 08-02 và 08-07 đều tên DA_RPTD_002-03 nhưng là popup DA_RPTD_003/DA_RPTD_004; 08-07 header 「レポート報告」",
+  "Ảnh nền 5 'image 472-476' là ảnh mô tả (RECT) chưa đọc nội dung — chưa kiểm",
+  "Ảnh 08-04/08-05/08-06 có thể khác kích thước 390 do bóng đổ (406 px)"
+ ]
+}

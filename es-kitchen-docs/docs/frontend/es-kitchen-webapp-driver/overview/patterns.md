@@ -1,5 +1,6 @@
 # es-kitchen-webapp-driver — Patterns & Conventions
 
+> Nguồn = es-kitchen-webapp-driver@62b870a ngày 2026-10-16.
 > Đọc file này trước khi viết code React cho E06 Driver Web App.
 > Stack khác với các web repo khác: **Zustand** thay RTK, **shadcn/ui** thay Ant Design.
 
@@ -252,9 +253,9 @@ AuthLayout
 | Tab | Route | Icon |
 |---|---|---|
 | ホーム | `/home` | home / home-bold |
-| マニュアル | `/orders` | book / book-bold |
+| マニュアル | link ngoài `MANUAL_URL` (PDF ES Station, `target="_blank"`) — không phải `/orders` | book / book-bold |
 | 配送一覧 | `/delivery` | truck / truck-bold |
-| 遅延報告 | `/issues` | siren / siren-bold |
+| トラブル | `/issues` | siren / siren-bold |
 | アカウント | `/account` | account / account-bold |
 
 ---

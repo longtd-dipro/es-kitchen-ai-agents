@@ -1,0 +1,112 @@
+{
+ "TC-NTF-001-008": {
+  "result": "OK",
+  "note": "Mở trực tiếp URL không bị chuyển về /home; Tài khoản test có 2 thông báo thật (không phải NTF-A 4 thông báo)",
+  "evidence": ""
+ },
+ "TC-NTF-001-021": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-NTF-001-032": {
+  "result": "OK",
+  "note": "Với 2 thông báo (<20) không có nút もっと表示",
+  "evidence": ""
+ },
+ "TC-NTF-001-023": {
+  "result": "OK",
+  "note": "Định dạng 「M月D日 - HH:mm」 không zero-padding tháng/ngày: 10月1日 - 11:16 ; 10月1日 - 10:51 (dữ liệu thật khác QC_Jun)",
+  "evidence": ""
+ },
+ "TC-NTF-001-010": {
+  "result": "OK",
+  "note": "Chỉ kiểm chứng với 2 thông báo hiện có (mới→cũ: 10月1日 - 11:16 > 10月1日 - 10:51); chưa có 3 thông báo tạo lệch thứ tự",
+  "evidence": ""
+ },
+ "TC-NTF-001-012": {
+  "result": "OK",
+  "note": "Tiêu đề màu rgb(33, 139, 255), weight 500, có chấm đỏ 未読",
+  "evidence": ""
+ },
+ "TC-NTF-001-001": {
+  "result": "OK",
+  "note": "Bố cục khớp (header 戻る + お知らせ, mục お知らせ一覧, thẻ trắng ngày giờ + tiêu đề); Tài khoản test có 2 thông báo thật (không phải NTF-A 4 thông báo); ảnh: reports/delivery-driver/screenshots/g06_list.png",
+  "evidence": ""
+ },
+ "TC-NTF-001-006": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-NTF-001-003": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-NTF-001-015": {
+  "result": "Pending",
+  "note": "Assertion lỗi khi chạy (cần xác minh lại): \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed",
+  "evidence": ""
+ },
+ "TC-NTF-001-018": {
+  "result": "OK",
+  "note": "Thông báo A (10月1日 10:51) đã mở ở lần chạy trước (PATCH notifications/92910/read): quay lại danh sách chấm đỏ đã biến mất. Lưu ý: tap thẻ chuyển sang /delivery/:id chứ không phải màn chi tiết thông báo",
+  "evidence": ""
+ },
+ "TC-NTF-002-029": {
+  "result": "OK",
+  "note": "Thông báo B (11:16) vẫn giữ chấm đỏ sau khi chỉ mở A",
+  "evidence": ""
+ },
+ "TC-NTF-002-028": {
+  "result": "OK",
+  "note": "Lần mở A (lần chạy trước) tự gọi PATCH notifications/92910/read ngay khi tap thẻ, không cần thao tác khác (tap thẻ -> /delivery/:id)",
+  "evidence": ""
+ },
+ "TC-NTF-002-001": {
+  "result": "OK",
+  "note": "Header 戻る + お知らせ, thẻ tiêu đề, thẻ ngày giờ + nội dung nhiều dòng, nền xám nhạt, không link/đính kèm; nội dung thật khác mẫu N1; ảnh: reports/delivery-driver/screenshots/g06_detail.png",
+  "evidence": ""
+ },
+ "TC-NTF-002-005": {
+  "result": "OK",
+  "note": "Tiêu đề hiển thị nguyên văn (weight 500)",
+  "evidence": ""
+ },
+ "TC-NTF-002-010": {
+  "result": "OK",
+  "note": "Định dạng 10月1日 - 10:51",
+  "evidence": ""
+ },
+ "TC-NTF-002-012": {
+  "result": "OK",
+  "note": "Xuống dòng được giữ (white-space: pre-wrap), 8 dòng; chưa kiểm chứng dòng trống giữa các đoạn (nội dung thật không có)",
+  "evidence": ""
+ },
+ "TC-NTF-002-043": {
+  "result": "OK",
+  "note": "Không tràn ngang ở 320/390/480px (chỉ kiểm overflow với nội dung ngắn)",
+  "evidence": ""
+ },
+ "TC-NTF-002-003": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-NTF-002-031": {
+  "result": "OK",
+  "note": "Mô phỏng API đánh dấu đã đọc lỗi bằng route.abort (phía client): không toast lỗi, chấm đỏ của B giữ nguyên. Lưu ý: kiểm bằng luồng tap thẻ (-> /delivery/:id)",
+  "evidence": ""
+ },
+ "TC-NTF-002-032": {
+  "result": "OK",
+  "note": "Mở lại khi API bình thường: PATCH read được gọi, chấm đỏ của B biến mất (ghi nhẹ trên DEV: B đã chuyển sang đã đọc)",
+  "evidence": ""
+ },
+ "TC-NTF-001-016": {
+  "result": "Pending",
+  "note": "Assertion lỗi khi chạy (cần xác minh lại): __NG__",
+  "evidence": ""
+ }
+}

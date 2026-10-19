@@ -1,5 +1,7 @@
 # es-kitchen-web-company — Patterns & Conventions
 
+> Nguồn = `es-kitchen-web-company@fddcaef` ngày 2026-10-16. Đối chiếu: `services/client/*`, `routes/index.tsx`, `constants/route.ts`, `hooks/`.
+
 > Đọc file này trước khi viết code React mới cho E02. Cùng stack với web-admin nhưng scope nghiệp vụ khác.
 > Tham chiếu thêm: `es-kitchen-web-admin/overview/patterns.md` — các pattern cốt lõi giống nhau.
 
@@ -9,11 +11,12 @@
 
 | | `es-kitchen-web-admin` (E03) | `es-kitchen-web-company` (E02) |
 |---|---|---|
-| API prefix | `/admin/...` | `/admin-company/...` |
+| API endpoint | `/admin/...` (theo docs cũ) | `/auth/*`, `/company/*`, `/users/linked*`, `/orders*`, `/payment-methods` (path thật trong `services/client/*.service.ts`; docs cũ ghi prefix `/admin-company/` nhưng **không tìm thấy** chuỗi này trong `src/` — prefix có thể nằm ở `VITE_API_BASE_URL`, chưa xác nhận) |
 | Default route | `/dashboard` | `/sales-management` |
 | RTK slices | `auth`, `monthlyMenuImport`, `counter` | `auth` only |
-| Service files | 13 files | 12 files (6 real API + 6 FE-only mock) |
-| Pages hiện có | 8 groups | 12 route groups |
+| Service files | 52 `*.service.ts` | 11 `*.service.ts` + `api.ts` (5 real + `company` hybrid + 5 FE-only mock) |
+| Pages hiện có | 24 thư mục / 115 page | 10 thư mục / 18 page / 23 route |
+| Permission guard | `RequirePermission`, `usePermissions` | không có |
 
 > ⚠️ Không copy endpoint từ web-admin sang — prefix khác nhau hoàn toàn.
 
@@ -29,21 +32,22 @@ const API = new Requester();  // singleton
 export default API;
 ```
 
-Điểm khác biệt duy nhất: `baseURL` trỏ cùng server nhưng endpoint prefix là `/admin-company/...`
+Điểm khác biệt duy nhất: `baseURL` trỏ cùng server nhưng endpoint thực trong source: `/auth/*`, `/company/*`, `/users/linked*`, `/orders*` (không thấy prefix `/admin-company/` trong `src/`)
 
 ---
 
 ## Service Layer
 
-Hiện có 12 service files. Chia thành hai nhóm:
+Hiện có 11 service files (+ `api.ts`). Chia thành hai nhóm:
 
 **Real API (gọi BE thật):**
 - `auth.service.ts` — login, logout, forgot/reset password, verify
+- `user.service.ts` (`/api/v1/users/me`), `error-report.service.ts`
 - `account.service.ts` — linked users, purchase history, restrict/unrestrict
 - `sales.service.ts` — orders list, export, summary, payment methods
 
 **FE-only Mock (chưa có BE endpoint):**
-- `company.service.ts`, `contract.service.ts`, `disposal.service.ts`
+- `company.service.ts` (hybrid: chỉ `exportCompanyQr` gọi `/company/export-qr`), `contract.service.ts`, `disposal.service.ts`
 - `menu-order.service.ts`, `delivery-schedule.service.ts`, `prepared-shipping.service.ts`
 
 Xem chi tiết pattern mock ở section **Mock Service Pattern** bên dưới.
@@ -195,11 +199,11 @@ Khi thêm state mới: tạo slice mới trong `stores/reducers/` — không nh�
 
 ## Auth Flow
 
-Giống web-admin, nhưng gọi endpoint `/admin-company/auth/`:
+Giống web-admin, nhưng gọi endpoint `/auth/*` (xem `auth.service.ts`):
 
 ```
 App khởi động → bootstrapAuthStateFromCookies()
-Login → POST /admin-company/auth/login
+Login → POST /auth/login
   → setAuthTokens() → cookies + Redux
 401 → clearAuthState() → redirect /login
 ```
@@ -208,7 +212,7 @@ Login → POST /admin-company/auth/login
 
 ## Routing Pattern
 
-12 route groups hiện tại. Layout có thêm `AuthCenteredLayout` (reset-success) và `RegisterLayout` (công khai):
+23 route path hiện tại (5 public + register, reset-success, 17 authenticated). Layout có thêm `AuthCenteredLayout` (reset-success) và `RegisterLayout` (công khai):
 
 ```typescript
 // routes/index.tsx — cấu trúc hiện tại (rút gọn)
@@ -481,12 +485,12 @@ Khi thêm feature page mới vào web-company:
 - [ ] Thêm lazy import trong `routes/index.tsx`
 - [ ] Thêm route path vào `createBrowserRouter`
 - [ ] Thêm constant vào `constants/route.ts`
-- [ ] Nếu cần API thật: tạo `services/client/<domain>.service.ts` với prefix `/admin-company/...`
+- [ ] Nếu cần API thật: tạo `services/client/<domain>.service.ts` — hỏi BE endpoint thật (docs cũ ghi `/admin-company/...` nhưng source hiện dùng `/company/...`, `/users/linked`, `/orders`)
 - [ ] Nếu BE chưa sẵn sàng: tạo mock service theo **Mock Service Pattern** — comment `FE-only MOCK`, helper `ok()`, giữ đúng function signature
 - [ ] Dùng `useMutationCustom` thay `useMutation` khi mutation cần toast notification
 - [ ] Form nhiều section: dùng `FormProvider` + `useFormContext` trong section
 - [ ] Detail page có Cancel/Save: dùng `savedDetailRef` pattern
 - [ ] Edit mode có navigate guard: dùng `useUnsavedChangesGuard`
 - [ ] Filter bar không apply ngay: dùng **Committed Filter Pattern** (draft + applied)
-- [ ] API endpoint prefix phải là `/admin-company/...` — không dùng `/admin/...`
+- [ ] Không copy endpoint `/admin/...` từ web-admin sang — E02 dùng endpoint riêng (xem service hiện có)
 - [ ] Nếu cần state phức tạp: tạo RTK slice mới trong `stores/reducers/`
