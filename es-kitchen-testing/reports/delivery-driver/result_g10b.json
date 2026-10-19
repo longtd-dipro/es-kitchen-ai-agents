@@ -1,0 +1,632 @@
+{
+ "TC-ESD-00306-001": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-00306-002": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-00306-004": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-00306-007": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-00306-010": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-00306-011": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-00306-012": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-00306-013": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-00306-014": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-00306-015": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-00306-016": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-00306-018": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-00306-019": {
+  "result": "Pending",
+  "note": "TC dùng URL /es/:id/step3 nhưng app không có route này (chi tiết ES là /delivery/:id; chưa xác định route Step 3). Quan sát thay thế: /delivery/QC_UNKNOWN01 khi chưa đăng nhập → /login (đúng ý 'bị chặn khi chưa đăng nhập') nhưng không phải URL Step 3 thật nên chưa kết luận OK. Cần route Step 3 thật hoặc cập nhật TC.",
+  "evidence": "reports/delivery-driver/screenshots/g10b_TC-ESD-00306-019.png"
+ },
+ "TC-ESD-00306-023": {
+  "result": "Pending",
+  "note": "Cần màn có dữ liệu (đơn ES đang xử lý) để kiểm bố cục; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-00306-026": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-E19-003": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-E19-005": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-E19-006": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-004-001": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-004-006": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-008": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-004-010": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-012": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-017": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-004-019": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-004-022": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-023": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-024": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-025": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-026": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-027": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-028": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-031": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-032": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-004-033": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-034": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-038": {
+  "result": "Pending",
+  "note": "Cần màn có dữ liệu (đơn ES đang xử lý) để kiểm bố cục; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-004-045": {
+  "result": "Pending",
+  "note": "TC dùng URL /es/:id/step4 nhưng app không có route này (chi tiết ES là /delivery/:id; chưa xác định route Step 4). Quan sát thay thế: /delivery/QC_UNKNOWN01 khi chưa đăng nhập → /login (đúng ý 'bị chặn khi chưa đăng nhập') nhưng không phải URL Step 4 thật nên chưa kết luận OK. Cần route Step 4 thật hoặc cập nhật TC.",
+  "evidence": "reports/delivery-driver/screenshots/g10b_TC-ESD-004-045.png"
+ },
+ "TC-ESD-004-046": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-005-001": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-005-002": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-005-004": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-005": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-006": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-008": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-005-009": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-010": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-011": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-012": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-013": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-015": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-016": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-017": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-018": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-005-023": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-005-024": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-005-025": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-005-026": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-005-027": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-005-030": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-005-031": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-005-032": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-005-036": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-005-044": {
+  "result": "Pending",
+  "note": "Cần gửi request ghi/giả lập lỗi trên đơn ES thật; hành động ghi bị cấm và không có đơn ES trên tài khoản test",
+  "evidence": ""
+ },
+ "TC-ESD-005-046": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006T-001": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-006T-002": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-006T-007": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006T-010": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006T-012": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006T-014": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006T-019": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006T-020": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006T-023": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006T-024": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006T-026": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006T-028": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-006T-029": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006T-030": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006T-031": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006T-032": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006T-033": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006T-034": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-006T-035": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006T-036": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006T-037": {
+  "result": "Pending",
+  "note": "Cần màn có dữ liệu (đơn ES đang xử lý) để kiểm bố cục; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-E12-002": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-E12-003": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-E12-004": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-E12-007": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-E12-008": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-E12-010": {
+  "result": "Pending",
+  "note": "Cần gửi request ghi/giả lập lỗi trên đơn ES thật; hành động ghi bị cấm và không có đơn ES trên tài khoản test",
+  "evidence": ""
+ },
+ "TC-ESD-006P-001": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-006P-002": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-006P-003": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-006": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-007": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006P-008": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm | Expected [UNCONFIRMED] chưa chốt",
+  "evidence": ""
+ },
+ "TC-ESD-006P-010": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006P-011": {
+  "result": "Pending",
+  "note": "Cần dữ liệu đơn ES (đã/đang xử lý) hiển thị trên màn; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-012": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-013": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-014": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-015": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-016": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-017": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-018": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-019": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-020": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-025": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-026": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-027": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-028": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-029": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-030": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-031": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-032": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-033": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-036": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-037": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-038": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ },
+ "TC-ESD-006P-039": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006P-040": {
+  "result": "Pending",
+  "note": "Cần đơn ES đang xử lý/đã hoàn tất để thao tác; tài khoản test không có lịch giao và luồng hoàn tất/lưu ghi dữ liệu thật bị cấm",
+  "evidence": ""
+ },
+ "TC-ESD-006P-041": {
+  "result": "Pending",
+  "note": "Cần mở màn bước nhập liệu của đơn ES; tài khoản test không có lịch giao (không vào được màn bước)",
+  "evidence": ""
+ },
+ "TC-ESD-006P-046": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-006P-053": {
+  "result": "Pending",
+  "note": "Cần upload ảnh thật lên DEV (bị cấm ghi dữ liệu/upload) và đơn ES đang xử lý; tài khoản test không có lịch giao",
+  "evidence": ""
+ }
+}

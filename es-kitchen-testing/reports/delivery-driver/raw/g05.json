@@ -1,0 +1,232 @@
+{
+ "TC-SHP-L1-003": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Giá trị mặc định ngày hiện tại (2026/10/09) khớp \"hôm nay\" nhưng không có control 開始日 riêng | Bước: mở 配送一覧, quan sát vùng ngày | Evidence: reports/delivery-driver/screenshots/g05_L1_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L1_datepicker.png"
+ },
+ "TC-SHP-L1-004": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không có 終了日 (không có mặc định hôm nay+7) | Bước: mở 配送一覧, quan sát vùng ngày | Evidence: reports/delivery-driver/screenshots/g05_L1_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L1_datepicker.png"
+ },
+ "TC-SHP-L1-008": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không chọn được 終了日 trùng 開始日 (chỉ chọn 1 ngày) | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L1_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L1_datepicker.png"
+ },
+ "TC-SHP-L1-009": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không thể chọn 終了日 < 開始日 nên không có lỗi 「終了日は開始日以降を選択してください」 | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L1_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L1_datepicker.png"
+ },
+ "TC-SHP-L1-010": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không có khoảng ngày (31 ngày) | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L1_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L1_datepicker.png"
+ },
+ "TC-SHP-L1-011": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không có khoảng ngày nên không có lỗi 「期間は1ヶ月以内で選択してください」 | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L1_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L1_datepicker.png"
+ },
+ "TC-SHP-L2-003": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Giá trị mặc định ngày hiện tại (2026/10/09) khớp \"hôm nay\" nhưng không có control 開始日 riêng | Bước: mở 配送一覧, quan sát vùng ngày | Evidence: reports/delivery-driver/screenshots/g05_L2_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_datepicker.png"
+ },
+ "TC-SHP-L2-004": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không có 終了日 (không có mặc định hôm nay+7) | Bước: mở 配送一覧, quan sát vùng ngày | Evidence: reports/delivery-driver/screenshots/g05_L2_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_datepicker.png"
+ },
+ "TC-SHP-L2-008": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không chọn được 終了日 trùng 開始日 (chỉ chọn 1 ngày) | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L2_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_datepicker.png"
+ },
+ "TC-SHP-L2-009": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không thể chọn 終了日 < 開始日 nên không có lỗi 「終了日は開始日以降を選択してください」 | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L2_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_datepicker.png"
+ },
+ "TC-SHP-L2-010": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không có khoảng ngày (31 ngày) | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L2_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_datepicker.png"
+ },
+ "TC-SHP-L2-011": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không có khoảng ngày nên không có lỗi 「期間は1ヶ月以内で選択してください」 | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L2_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_datepicker.png"
+ },
+ "TC-SHP-L3-003": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Giá trị mặc định ngày hiện tại (2026/10/09) khớp \"hôm nay\" nhưng không có control 開始日 riêng | Bước: mở 配送一覧, quan sát vùng ngày | Evidence: reports/delivery-driver/screenshots/g05_L3_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_datepicker.png"
+ },
+ "TC-SHP-L3-004": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không có 終了日 (không có mặc định hôm nay+7) | Bước: mở 配送一覧, quan sát vùng ngày | Evidence: reports/delivery-driver/screenshots/g05_L3_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_datepicker.png"
+ },
+ "TC-SHP-L3-008": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không chọn được 終了日 trùng 開始日 (chỉ chọn 1 ngày) | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L3_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_datepicker.png"
+ },
+ "TC-SHP-L3-009": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không thể chọn 終了日 < 開始日 nên không có lỗi 「終了日は開始日以降を選択してください」 | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L3_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_datepicker.png"
+ },
+ "TC-SHP-L3-010": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không có khoảng ngày (31 ngày) | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L3_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_datepicker.png"
+ },
+ "TC-SHP-L3-011": {
+  "result": "NG",
+  "note": "Actual: UI chỉ có 1 date picker đơn (2026/10/09, calendar data-mode=single, 1 nút ngày, không có nhãn 開始日/終了日; chọn 1 ngày → URL /delivery?date=YYYY-MM-DD) | Expected: vùng chọn khoảng ngày 開始日/終了日 | Không có khoảng ngày nên không có lỗi 「期間は1ヶ月以内で選択してください」 | Bước: mở date picker | Evidence: reports/delivery-driver/screenshots/g05_L3_datepicker.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_datepicker.png"
+ },
+ "TC-SHP-L1-017": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_L1_default.png"
+ },
+ "TC-SHP-L1-019": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_TC-SHP-L1-019.png"
+ },
+ "TC-SHP-L1-020": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_TC-SHP-L1-020.png"
+ },
+ "TC-SHP-L2-018": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_TC-SHP-L2-018.png"
+ },
+ "TC-SHP-L2-019": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_TC-SHP-L2-019.png"
+ },
+ "TC-SHP-L3-018": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_TC-SHP-L3-018.png"
+ },
+ "TC-SHP-L3-019": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_TC-SHP-L3-019.png"
+ },
+ "TC-SHP-L1-025": {
+  "result": "NG",
+  "note": "Actual: bấm nút 「ステータス」 không mở dropdown trạng thái mà điều hướng sang /issues (màn 「トラブル報告」); không có option 未受取/受取済/トラブル | Expected: dropdown chọn trạng thái, danh sách lọc theo badge | Bước: mở 配送一覧 → bấm 「ステータス」 | Evidence: reports/delivery-driver/screenshots/g05_status_click_issues.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_status_click_issues.png"
+ },
+ "TC-SHP-L1-026": {
+  "result": "NG",
+  "note": "Actual: bấm nút 「ステータス」 không mở dropdown trạng thái mà điều hướng sang /issues (màn 「トラブル報告」); không có option 未受取/受取済/トラブル | Expected: dropdown chọn trạng thái, danh sách lọc theo badge | Bước: mở 配送一覧 → bấm 「ステータス」 | Evidence: reports/delivery-driver/screenshots/g05_status_click_issues.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_status_click_issues.png"
+ },
+ "TC-SHP-L1-027": {
+  "result": "NG",
+  "note": "Actual: bấm nút 「ステータス」 không mở dropdown trạng thái mà điều hướng sang /issues (màn 「トラブル報告」); không có option 未受取/受取済/トラブル | Expected: dropdown chọn trạng thái, danh sách lọc theo badge | Bước: mở 配送一覧 → bấm 「ステータス」 | Evidence: reports/delivery-driver/screenshots/g05_status_click_issues.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_status_click_issues.png"
+ },
+ "TC-SHP-L2-023": {
+  "result": "NG",
+  "note": "Actual: Tab 「未配送」 không có dropdown chọn kho trung chuyển; control lọc duy nhất là nút 「ステータス」 (bấm → điều hướng /issues). Các nút trên trang:  | 2026/10/09 | 倉庫受取 0 | 未配送 0 | 配送完了 0 | ステータス | トラブル | Expected: dropdown kho trung chuyển (chọn 1/nhiều mục) | Bước: mở Tab 未配送, tìm dropdown kho | Evidence: reports/delivery-driver/screenshots/g05_L2_no_wh_dropdown.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_no_wh_dropdown.png"
+ },
+ "TC-SHP-L2-024": {
+  "result": "NG",
+  "note": "Actual: Tab 「未配送」 không có dropdown chọn kho trung chuyển; control lọc duy nhất là nút 「ステータス」 (bấm → điều hướng /issues). Các nút trên trang:  | 2026/10/09 | 倉庫受取 0 | 未配送 0 | 配送完了 0 | ステータス | トラブル | Expected: dropdown kho trung chuyển (chọn 1/nhiều mục) | Bước: mở Tab 未配送, tìm dropdown kho | Evidence: reports/delivery-driver/screenshots/g05_L2_no_wh_dropdown.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_no_wh_dropdown.png"
+ },
+ "TC-SHP-L2-039": {
+  "result": "NG",
+  "note": "Actual: Tab 「未配送」 không có dropdown chọn kho trung chuyển; control lọc duy nhất là nút 「ステータス」 (bấm → điều hướng /issues). Các nút trên trang:  | 2026/10/09 | 倉庫受取 0 | 未配送 0 | 配送完了 0 | ステータス | トラブル | Expected: dropdown kho trung chuyển (kết hợp tìm kiếm AND dropdown kho) | Bước: mở Tab 未配送, tìm dropdown kho | Evidence: reports/delivery-driver/screenshots/g05_L2_no_wh_dropdown.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_no_wh_dropdown.png"
+ },
+ "TC-SHP-L3-023": {
+  "result": "NG",
+  "note": "Actual: Tab 「配送完了」 không có dropdown chọn kho trung chuyển; control lọc duy nhất là nút 「ステータス」 (bấm → điều hướng /issues). Các nút trên trang:  | 2026/10/09 | 倉庫受取 0 | 未配送 0 | 配送完了 0 | ステータス | トラブル | Expected: dropdown kho trung chuyển (chọn 1/nhiều mục) | Bước: mở Tab 配送完了, tìm dropdown kho | Evidence: reports/delivery-driver/screenshots/g05_L3_no_wh_dropdown.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_no_wh_dropdown.png"
+ },
+ "TC-SHP-L3-024": {
+  "result": "NG",
+  "note": "Actual: Tab 「配送完了」 không có dropdown chọn kho trung chuyển; control lọc duy nhất là nút 「ステータス」 (bấm → điều hướng /issues). Các nút trên trang:  | 2026/10/09 | 倉庫受取 0 | 未配送 0 | 配送完了 0 | ステータス | トラブル | Expected: dropdown kho trung chuyển (chọn 1/nhiều mục) | Bước: mở Tab 配送完了, tìm dropdown kho | Evidence: reports/delivery-driver/screenshots/g05_L3_no_wh_dropdown.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_no_wh_dropdown.png"
+ },
+ "TC-SHP-L3-039": {
+  "result": "NG",
+  "note": "Actual: Tab 「配送完了」 không có dropdown chọn kho trung chuyển; control lọc duy nhất là nút 「ステータス」 (bấm → điều hướng /issues). Các nút trên trang:  | 2026/10/09 | 倉庫受取 0 | 未配送 0 | 配送完了 0 | ステータス | トラブル | Expected: dropdown kho trung chuyển (kết hợp tìm kiếm AND dropdown kho) | Bước: mở Tab 配送完了, tìm dropdown kho | Evidence: reports/delivery-driver/screenshots/g05_L3_no_wh_dropdown.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_no_wh_dropdown.png"
+ },
+ "TC-SHP-L2-032": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_255.png"
+ },
+ "TC-SHP-L2-033": {
+  "result": "NG",
+  "note": "Actual: ô tìm kiếm không giới hạn độ dài (maxLength=-1); fill 256 ký tự → giữ 256 ký tự | Expected: chặn ở 255 ký tự | Bước: nhập 256 ký tự vào ô tìm kiếm Tab 未配送 | Evidence: reports/delivery-driver/screenshots/g05_L2_256.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_256.png"
+ },
+ "TC-SHP-L2-034": {
+  "result": "NG",
+  "note": "Actual: gõ thêm 「あ」 khi đã 255 ký tự → ô có 256 ký tự, chứa 「あ」=true (maxLength=-1) | Expected: giữ nguyên 255 ký tự, ký tự thứ 256 không được nhận | Bước: nhập 255 'a' rồi gõ 「あ」 vào ô tìm kiếm Tab 未配送 | Evidence: reports/delivery-driver/screenshots/g05_L2_255plus.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L2_255plus.png"
+ },
+ "TC-SHP-L3-032": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_255.png"
+ },
+ "TC-SHP-L3-033": {
+  "result": "NG",
+  "note": "Actual: ô tìm kiếm không giới hạn độ dài (maxLength=-1); fill 256 ký tự → giữ 256 ký tự | Expected: chặn ở 255 ký tự | Bước: nhập 256 ký tự vào ô tìm kiếm Tab 配送完了 | Evidence: reports/delivery-driver/screenshots/g05_L3_256.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_256.png"
+ },
+ "TC-SHP-L3-034": {
+  "result": "NG",
+  "note": "Actual: gõ thêm 「あ」 khi đã 255 ký tự → ô có 256 ký tự, chứa 「あ」=true (maxLength=-1) | Expected: giữ nguyên 255 ký tự, ký tự thứ 256 không được nhận | Bước: nhập 255 'a' rồi gõ 「あ」 vào ô tìm kiếm Tab 配送完了 | Evidence: reports/delivery-driver/screenshots/g05_L3_255plus.png",
+  "evidence": "reports/delivery-driver/screenshots/g05_L3_255plus.png"
+ },
+ "TC-SHP-L1-081": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-SHP-L2-073": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-SHP-L3-071": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-SHP-L1-096": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_unauth.png"
+ },
+ "TC-SHP-L2-089": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_unauth.png"
+ },
+ "TC-SHP-L3-087": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g05_unauth.png"
+ }
+}

@@ -1,7 +1,8 @@
 # es-kitchen-web-outsource-web-private — Patterns & Conventions
 
-> Repo được scaffold từ cùng template với `es-kitchen-web-admin`. Dependencies giống hệt.
-> File này document **pattern cụ thể đang chạy trong code** (xác nhận từ source, 2026-07-01).
+> Nguồn = es-kitchen-web-outsource-web-private@9b0e677 ngày 2026-10-16 (trước đó xác nhận 2026-07-01).
+> Repo được scaffold từ cùng template với `es-kitchen-web-admin`. Dependencies tương tự.
+> File này document **pattern cụ thể đang chạy trong code**.
 > Pattern chung (TanStack Query v5, RTK v2, react-hook-form v7 ...) → tham chiếu thêm
 > `frontend/es-kitchen-web-admin/overview/patterns.md`.
 
@@ -27,10 +28,10 @@
 | Khía cạnh | web-admin (E03) | outsource-web-private (E05) |
 |---|---|---|
 | Vite | 7 | 8 |
-| Màu primary (sidebar active) | blue `#0969DA` | lime green `#8ACA0D` |
+| Màu primary (sidebar active) | blue `#0969DA` | green `#1a7f37` (`Nav/index.tsx` itemSelectedBg, `antd-theme.ts` colorPrimary) |
 | Endpoint prefix | `/admin/*` | `/auth/*`, `/account/*` (xác nhận từ code) |
 | User type | System admin | Operation staff / deliverer |
-| Navigation scope | 160 functions | 5 mục: TOP / 配送状況 / 集金額 / スタッフ / パスワード変更 |
+| Navigation scope | 160 functions | 7 mục: ホーム / スケジュール / 配送管理 / 見積もり管理 / 集金・駐車 / 配送スタッフ / プロフィール (đổi mật khẩu vào từ profile/route riêng, không còn trong NAV_ITEMS) |
 | Redux slices | nhiều | **chỉ `auth`** |
 
 ---
@@ -83,16 +84,9 @@ export const updateDeliveryById = async (id: string, payload: UpdateDeliveryPayl
 };
 ```
 
-**Lưu ý quan trọng:** Nhiều service hiện đang dùng **mock data** trong khi chờ API thật.
-Mỗi mock function có comment chỉ rõ endpoint thật để swap vào:
+**Hiện trạng (2026-10-16):** không còn mock data trong `src/` — mọi service gọi API thật, thường dạng `APIs = { LIST: "...", DETAIL: (id) => ... }`, unwrap `IBaseApiResponse<T>` rồi `return res.data`; service chuẩn hoá params (`toText`, `removeFalsyProperty`) vì API chạy `forbidNonWhitelisted` (param thừa như `sortBy/order` → 400, xem `collection-report.service.ts`). Download file: truyền `rawResponse: true` để lấy cả header Content-Disposition (`api.ts`).
 
-```typescript
-// Mock data sourced from Figma node 83:7639.
-// Swap to the real API once the endpoint exists:
-//   return API.get("/deliveries", params);
-```
-
-Khi endpoint BE sẵn sàng: xóa mock, uncomment dòng `return API.xxx(...)`, xóa constant mock.
+Endpoint đang dùng (grep `services/client/`): `/auth/*`, `/account/*`, `/register` (+`/register/regions/{prefectures,cities,towns}`), `/profile` (+`/history`), `/me/contacts`, `/notifications` (+`/unread-count`), `/quotation-requests`, `/fee-change-requests` (+`/import`), `/delivery-blocks` (+`/timeline`, `/monthly-calendar`), `/relay-destinations`, `/drivers` (+`/bulk-issue-accounts[/preview]`), `/collection-reports/by-driver` (+`/export`), `/uploads/presigned-upload-url[s]`, `/api/error/report`.
 
 Endpoint thực tế đã xác nhận trong `auth.service.ts`:
 
@@ -262,16 +256,12 @@ export function useParams<T>()     { return useRouteParams() as T; }
 ```typescript
 // constants/route.ts — thêm mọi route mới vào đây
 export const ROUTE = {
-  DASHBOARD:       "/dashboard",
-  DELIVERY_STATUS: "/delivery-status",
-  BILL:            "/bill",
-  EMPLOYEE:        "/employee",
-  CHANGE_PASSWORD: "/change-password",
-  LOGIN:           "/login",
-  FORGOT_PASSWORD: "/forgot-password",
-  VERIFY:          "/verify",
-  RESET_PASSWORD:  "/reset-password",
-  RESET_SUCCESS:   "/reset-success",
+  DASHBOARD: "/dashboard", ANNOUNCEMENTS: "/announcements", ORDERS: "/orders",
+  PROFILE: "/profile", SCHEDULE: "/schedule", DELIVERY_STATUS: "/delivery-status",
+  COLLECTION_REPORTS: "/collection-reports", DRIVER: "/driver", DRIVER_CREATE: "/driver/create",
+  CHANGE_PASSWORD: "/change-password", LOGIN: "/login", REGISTER: "/register",
+  FORGOT_PASSWORD: "/forgot-password", VERIFY: "/verify",
+  RESET_PASSWORD: "/reset-password", RESET_SUCCESS: "/reset-success",
 };
 ```
 
@@ -295,20 +285,23 @@ const withSuspense = (element: ReactElement, className?: string) => (
 
 ```
 PublicOnly
-└── NonAuthLayout          (background image fullscreen + centered max-w-[464px])
-    ├── LoginPage
-    ├── ForgotPasswordPage
-    ├── VerifyPage
-    └── ResetPasswordPage
+├── NonAuthLayout          (background image fullscreen + centered max-w-[464px])
+│   └── LoginPage
+├── NonAuthLayout background="gradient"   (flow reset mật khẩu)
+│   ├── ForgotPasswordPage / VerifyPage / ResetPasswordPage
+└── PublicPageLayout       (PublicTopNav + PublicFooter)
+    └── RegisterPage       (stepper đăng ký công ty vận chuyển)
 
 RequireAuth
 ├── AuthCenteredLayout     (giống NonAuthLayout — dùng cho ResetSuccessPage sau login)
 │   └── ResetSuccessPage
 └── AuthLayout             (sidebar 210px + Header + Content bg-[#F0F2F5])
-    ├── DashboardPage
+    ├── DashboardPage · AnnouncementDetailPage (/announcements/:id)
+    ├── ProfilePage · SchedulePage
+    ├── OrdersPage / :id
     ├── DeliveryStatusPage / :id
-    ├── BillPage / :id
-    ├── EmployeePage / :id
+    ├── BillPage (collection-reports, chỉ list)
+    ├── EmployeePage / create / :id (driver)
     └── ChangePasswordPage
 ```
 
@@ -320,11 +313,13 @@ NAV_ITEMS được định nghĩa trong `constants/nav.ts`:
 
 ```typescript
 export const NAV_ITEMS: NavItem[] = [
-  { key: "dashboard",       labelJa: "TOP",            icon: DashboardIcon, href: ROUTE.DASHBOARD },
-  { key: "delivery-status", labelJa: "配送状況",        icon: TruckIcon,     href: ROUTE.DELIVERY_STATUS },
-  { key: "bill",            labelJa: "集金額",          icon: BillIcon,      href: ROUTE.BILL },
-  { key: "employee",        labelJa: "スタッフ",        icon: EmployeeIcon,  href: ROUTE.EMPLOYEE },
-  { key: "change-password", labelJa: "パスワード変更",  icon: LockIcon,      href: ROUTE.CHANGE_PASSWORD },
+  { key: "dashboard",       labelJa: "ホーム",         icon: HouseIcon,         href: ROUTE.DASHBOARD },
+  { key: "schedule",        labelJa: "スケジュール",   icon: CalendarBlankIcon, href: ROUTE.SCHEDULE },
+  { key: "delivery-status", labelJa: "配送管理",       icon: TruckIcon,         href: ROUTE.DELIVERY_STATUS },
+  { key: "orders",          labelJa: "見積もり管理",   icon: ClipboardTextIcon, href: ROUTE.ORDERS },
+  { key: "bill",            labelJa: "集金・駐車",     icon: WalletIcon,        href: ROUTE.COLLECTION_REPORTS },
+  { key: "employee",        labelJa: "配送スタッフ",   icon: UsersThreeIcon,    href: ROUTE.DRIVER },
+  { key: "profile",         labelJa: "プロフィール",   icon: UserCircleIcon,    href: ROUTE.PROFILE },
 ];
 ```
 
@@ -333,7 +328,7 @@ Sidebar dùng AntD `ConfigProvider` để override màu menu:
 ```typescript
 // components/Common/Nav/index.tsx
 <ConfigProvider theme={{ components: { Menu: {
-  itemSelectedBg:    "#8ACA0D",  // E05 lime green
+  itemSelectedBg:    "#1a7f37",  // E05 green
   itemSelectedColor: "#ffffff",
   itemBg:            "transparent",
   itemHeight:        48,
@@ -718,7 +713,7 @@ const onSubmit = async (data) => {
 1. Đọc DESIGN.md + API Contract trong task file
 2. Tạo service file trong `services/client/<domain>.service.ts`
    - Endpoint thực tế theo API Contract (không dùng prefix `/operation/*`)
-   - Nếu chưa có API: dùng mock + comment swap pattern
+   - Chưa có API: hỏi BE/TL, KHÔNG thêm mock (repo hiện không còn mock)
 3. Tạo hooks trong `hooks/use<Domain>.ts` — `useQuery` / `useMutationCustom`
 4. Tạo page trong `pages/<domain>/`:
    - List: `<Domain>Page.tsx` + `components/<Domain>FilterBar.tsx` + `components/<domain>Columns.tsx`
@@ -737,3 +732,16 @@ const onSubmit = async (data) => {
 ```
 "Hãy là Tech Lead, cập nhật overview docs cho repo es-kitchen-web-outsource-web-private"
 ```
+
+---
+
+## 16. Bổ sung 2026-10-16 (từ code thật)
+
+- **Permission:** `useCan({ roles })` + `<RequiredPermission>` (`components/Common/RequiredPermission`), `validateUserPermissions` chỉ kiểm `roles` (`utils/client/permission.ts`).
+- **Postal code / vùng:** `usePostalCodeSearch`, `PostalAddressPickerModal`, dữ liệu `public/postal/` sinh bởi `npm run postal:build`; vùng đăng ký lấy từ `/register/regions/*`.
+- **Upload file:** presigned URL (`file-upload.service.ts`, `/uploads/presigned-upload-url[s]`) + `BaseUploadFile`/`BaseFilePreviewModal`; đính kèm giao hàng ở `delivery-status/deliveryAttachment.utils.ts`.
+- **Export / Import CSV:** `BaseButtonExport`/`BaseButtonDownload` (collection-reports export, `/fee-change-requests/import`).
+- **Lịch:** `components/ScheduleCalendar` (MonthCalendarGrid, CycleTag, TemperatureTag…) + `pages/schedule/components/week`; state lịch đồng bộ URL qua `scheduleUrl.ts`.
+- **Tab detail:** mỗi detail page có `*Tabs.constants.ts` (orders, delivery-status, driver, profile).
+- **Session hết hạn:** `SessionExpiredModal` + `services/http/sessionExpired.ts`; `useUnsavedChangesGuard` + `DiscardChangesModal` cho form dở.
+- **Fields:** `components/Common/Fields/Base*` (Input, Select, InfiniteSelect, TreeSelect, DatePicker, LinkedDatePickerFields, OTPInput, Checkbox/Radio…) dùng với react-hook-form.

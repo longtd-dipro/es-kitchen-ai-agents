@@ -1,0 +1,612 @@
+{
+ "TC-ESD-000-003": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check chạm icon chuông ở header mở popup gọi ES Kitchen",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-006": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check đơn ở trạng thái トラブル chỉ xem được và không thao tác được",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-008": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm tab 「陳列情報」 khi chưa hoàn thành không chuyển màn",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-013": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check 納品備考 hiển thị trong khung nhấn mạnh có icon",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-018": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút 「陳列を開始する」 hiển thị với đơn 未配送 giao hôm nay",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-019": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm 「陳列を開始する」 chuyển sang Step 1",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-020": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhấn đúp nhanh 「陳列を開始する」 chỉ vào Step 1 một lần",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-021": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm nút ＜ khi chưa có thao tác nào quay về màn trước ngay",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-023": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút Back của trình duyệt khi đang ở màn chi tiết ES",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-027": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check mở trực tiếp URL /es/:id khi chưa đăng nhập",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-030": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check kéo làm mới thủ công tải lại dữ liệu đơn",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-034": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check đơn ngày tương lai không có nút 「陳列を開始する」",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-038": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check màn chỉ đọc không có ô nhập hay checkbox",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-040": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check banner 「荷物の配送は完了しました。」 kèm thời gian hoàn tất",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-041": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check banner hoàn tất không hiện khi đơn còn 未配送",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-043": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check cả 3 tab dùng được sau khi hoàn thành",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-045": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check tab 基本情報 không có nút 「編集」",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-046": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút 「編集」 chỉ hiện ở tab 陳列情報 khi hoàn tất chưa quá 7 ngày",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-000-047": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check quá 7 ngày nút 「編集」 và icon bút chì bị ẩn",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-005": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check thanh tiến trình hiển thị bước ① hiện tại và ②-⑤ chưa hoàn thành",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-006": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check chạm bước ② trên thanh tiến trình không chuyển bước",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-008": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check khu vực ảnh trống hiển thị placeholder và 「写真はまだありません」",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-009": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút 「続ける」 xám và không bấm được khi chưa có ảnh",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-010": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút 「続ける」 active ngay khi có 1 ảnh",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-011": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tải 1 ảnh JPEG 2MB thành công",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-016": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check chọn file PDF hiển thị lỗi định dạng",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-019": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check ảnh 11MB bị từ chối",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-022": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tải đủ 20 ảnh (biên tối đa) được chấp nhận",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-023": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check thêm ảnh thứ 21 bị từ chối",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-025": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm × xóa một ảnh trong 3 ảnh",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-026": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check xóa hết ảnh thì quay lại trạng thái trống và 続ける xám",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-028": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check xóa 1 ảnh khi đủ 20 rồi thêm lại 1 ảnh",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-029": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-001-031": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check dòng liên hệ khẩn cấp hiển thị đúng nguyên văn",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-033": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm 「続ける」 chuyển sang Step 2",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-034": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhấn đúp nhanh 「続ける」",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-035": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm 「戻る」 ở chân màn về chi tiết ES",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-036": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm ＜ ở header về chi tiết ES không hỏi xác nhận",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-038": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check ở Step 2 bấm 「戻る」 thì Step 1 vẫn giữ ảnh",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-001-044": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check mở URL /es/:id/step1 khi chưa đăng nhập",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-004": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check ① đã hoàn thành ✓ và ② hiện tại, ③-⑤ xám",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-005": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check chạm bước ① hoặc ③ không chuyển bước",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-008": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check 「※次回納品日」 không hiển thị năm",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-013": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check giá trị mặc định mỗi dòng sản phẩm",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-014": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm ＋ 5 lần ở 廃棄数 làm 実在庫 giảm tương ứng",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-015": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm − giảm 廃棄数 và 実在庫 tăng lại",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-017": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập tay 廃棄数 = 3 thì 実在庫 tự tính lại",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-018": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập 廃棄数 = 0 (biên dưới)",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-019": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập -1 vào 廃棄数",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-020": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập 1.5 vào 廃棄数",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-021": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập chữ vào 廃棄数",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-029": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check 廃棄数 = 11 khi 理論在庫 = 10",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-030": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check sửa tay 実在庫 vẫn được",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-031": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập -1 vào 実在庫",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-032": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập 2.5 vào 実在庫",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-033": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập chữ vào 実在庫",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-035": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập 実在庫 = 0 (biên dưới)",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-039": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tích 確認 làm nút −/＋ và ô nhập cùng dòng bị xám",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-041": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút 「確認」 xám khi còn dòng chưa tích",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-042": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút 「確認」 xám khi chưa tích dòng nào",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-043": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút 「確認」 active khi đã tích hết 5 dòng",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-044": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm 「確認」 sang màn kết quả Step 2",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-045": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhấn đúp nhanh 「確認」",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-046": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tìm kiếm khớp một phần theo tên sản phẩm",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-047": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tìm kiếm theo mã sản phẩm",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-050": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tìm kiếm không làm mất trạng thái tích 確認",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-053": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bật 「未確認のみ表示」 chỉ hiện dòng chưa tích",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-054": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bật 「未確認のみ表示」 khi mọi dòng đã tích",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-056": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-002-058": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm 「戻る」 về Step 1 giữ dữ liệu đã nhập",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-063": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-002-064": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check danh sách đủ 200 sản phẩm tải một lần và cuộn mượt",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-069": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check mở URL /es/:id/step2 khi chưa đăng nhập",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-074": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập 廃棄数 = 3",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-081": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check 在庫数 trong modal đồng bộ sang 実在庫 Step 2",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-083": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check 「一覧に戻る」 lưu, đóng modal và tự tích 確認",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-084": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check quét sản phẩm không nằm trong danh sách vẫn đăng ký hủy được",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-002-088": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhấn đúp nhanh 「一覧に戻る」",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-002": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check banner hiển thị 「在庫/廃棄が成功しました。」",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-003": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check banner kèm thời gian định dạng yyyy年mm月dd日HH時mm分",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-006": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check banner không hiện khi đang ở Step 2 chưa bấm 確認",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-008": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check chạm bước ③ không chuyển",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-011": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check giá trị bảng khớp dữ liệu đã chốt ở Step 2",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-012": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bảng kết quả không sửa được",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-014": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút 「続ける」 màu xanh active",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-015": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm 「続ける」 sang Step 3",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-016": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhấn đúp nhanh 「続ける」",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-017": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm 「戻る」 về Step 2 hiển thị dữ liệu đã nhập",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-00205-024": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check mở URL màn kết quả khi chưa đăng nhập",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-004": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check chạm bước ② không chuyển bước",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-007": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check mỗi dòng hiển thị 予定数 và 実際数 mặc định = 予定数",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-008": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm ＋ tăng 実際数 lên 11",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-011": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập tay 実際数 = 8",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-012": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập 実際数 = 0 (biên dưới)",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-013": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập -1 vào 実際数",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-014": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập 1.5 vào 実際数",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-015": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập chữ vào 実際数",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-022": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tích 確認 làm nút −/＋ và ô 実際数 xám",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-024": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút 「確認」 xám khi chưa tích dòng nào",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-025": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nút 「確認」 active ngay khi tích 1 dòng",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-026": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tích hết 5 dòng và 実際数 = 予定数 sang thẳng màn kết quả",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-027": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check còn dòng chưa tích, không chênh lệch thì hiện popup",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-028": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check tích hết 5 dòng nhưng 1 dòng 実際数 = 9 thì hiện popup",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-030": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check chỉ 1 trong 5 dòng đã tích bị lệch (không phải tất cả đều lệ",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-034": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tìm kiếm rồi xóa không mất tích và 実際数",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-036": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bật 「未確認のみ表示」 chỉ hiện dòng chưa tích",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-038": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-003-040": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm 「戻る」 về Step 2 giữ dữ liệu đã nhập",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-042": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhấn đúp nhanh 「確認」 khi không sót, không lệch",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-046": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-ESD-003-047": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check danh sách 200 sản phẩm tải một lần",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-052": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check mở URL /es/:id/step3 khi chưa đăng nhập",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-057": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhập 実際数 = 9",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-063": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check 「一覧に戻る」 lưu, đóng modal và tự tích 確認",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-064": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Expected có [UNCONFIRMED]/chưa chốt. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UNCONFIRMED] Check 実際数 khác 予定数 từ modal làm hiện popup DA_ESDL_010",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-069": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhấn đúp nhanh 「一覧に戻る」",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-070": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: [UI Visual] Check bố cục popup xác nhận hoàn tất trưng bày đúng Figma",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-077": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm 「報告完了」 khi chưa tích checkbox",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-078": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tích checkbox thì 「報告完了」 active",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-080": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check tích checkbox rồi bấm 「報告完了」 sang màn kết quả",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-081": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check nhấn đúp nhanh 「報告完了」",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ },
+ "TC-ESD-003-085": {
+  "result": "Pending",
+  "note": "Cần đơn ES配送便 của tài xế (未配送/hoàn thành/tương lai/トラブル) trên DEV; tài khoản test không có lịch/đơn (/delivery: 倉庫データはありません, 0 đơn). Probe /delivery/QC_FAKE_ES01 chỉ hiện 「データの取得に失敗しました。」 (không có route ES riêng, id phải là vận đơn thật). Thao tác ghi/xác nhận bước ES (upload ảnh/xác nhận/hoàn thành) bị cấm trên DEV dùng chung. Điều kiện: cấp đơn ES cho tài khoản test + dữ liệu test/sandbox cho phép ghi. TC: Check bấm 「キャンセル」 đóng popup và không xử lý gì",
+  "evidence": "reports/delivery-driver/screenshots/g10a_es_detail_fake.png"
+ }
+}

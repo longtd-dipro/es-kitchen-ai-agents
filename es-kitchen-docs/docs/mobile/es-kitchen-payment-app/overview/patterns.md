@@ -1,7 +1,7 @@
 # es-kitchen-payment-app — Patterns & Conventions
 
 > Đọc file này trước khi viết code Flutter mới cho E01. Follow pattern đang có — không tự refactor.
-> Source xác nhận từ codebase thực tế (branch develop, 2026-07).
+> Source xác nhận từ codebase thực tế. **Nguồn:** es-kitchen-payment-app@71d89b8 (develop, commit cuối 2026-10-13) — đồng bộ ngày 2026-10-16.
 
 ---
 
@@ -264,7 +264,7 @@ await ref.read(repositoryProvider).getCategories();
 
 ### 2.4 Dio Interceptors
 
-**AppInterceptor** (auth + loading + 401):
+**AppInterceptor** (auth + loading + 401; rút gọn — bản thật còn log `kDebugMode`, bỏ qua `CancelToken.isCancel`, và `onResponse` tắt loading):
 
 ```dart
 // app/core/network/interceptors/app_interceptor.dart
@@ -275,7 +275,8 @@ class AppInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final token = ref.read(appPrefsProvider).token;
-    if (token != null) {
+    final skipAuth = options.extra['skipAuth'] == true;   // @Extra({'skipAuth': true}) cho endpoint public
+    if (token != null && !skipAuth) {
       options.headers['Authorization'] = 'Bearer $token';  // inject token
     }
     if (options.extra['showLoading'] == true) {
@@ -289,8 +290,10 @@ class AppInterceptor extends Interceptor {
     if (err.requestOptions.extra['showLoading'] == true) {
       ref.read(globalLoadingProvider.notifier).state = false;
     }
-    if (err.response?.statusCode == 401) {
+    if (err.response?.statusCode == 401 && !skipAuth) {
       ref.read(appPrefsProvider).clear();
+      ToastHelper.showError(ref, err.response?.data['message'] ?? '');
+      ref.read(fcmServiceProvider).cancelAllNotifications();
       ref.read(appRouterProvider).replaceAll([const LoginRoute()]);  // redirect login
       return handler.next(err);
     }
@@ -328,7 +331,7 @@ class NetworkInterceptor extends Interceptor {
 - Controller chỉ gọi `ref.read(repositoryProvider).methodName()` — không gọi `AppApi` trực tiếp
 - Tất cả endpoint khai báo trong `app_api.dart` — không tạo thêm `@RestApi` class
 - URL constant trong `app_endpoints.dart` — không hard-code string trong `app_api.dart`
-- `@Extra({'showLoading': true})` cho action quan trọng; `@Extra({'skipShowError': true})` cho call background
+- `@Extra({'showLoading': true})` cho action quan trọng; `@Extra({'skipAuth': true})` cho endpoint không cần token; `@Extra({'skipShowError': true})` cho call background
 - `app_api.g.dart` là generated — không sửa tay; sau khi thêm method chạy `build_runner`
 
 ---
@@ -387,6 +390,10 @@ class CartPage extends ConsumerStatefulWidget { ... }
 class ProductDetailsPage extends ConsumerWidget { ... }
 ```
 
+### 3.2b Điều hướng từ push notification
+
+`push_notification/controller/` đọc `data['route']` rồi chọn route: `notification` → `NotificationDetailRoute` · `purchase-history-detail` → `PurchaseDetailRoute` · `survey-detail` → `NotificationDetailRoute` (dòng `SurveyRoute` đang comment) · `wishlist-detail` → `VoteProductRoute(wishListId)`. Trước khi push, đóng dialog/modal đang mở.
+
 ### 3.3 Navigation trong UI
 
 ```dart
@@ -417,7 +424,7 @@ ref.read(appRouterProvider).replaceAll([const LoginRoute()]);
 
 ## 4. Model Pattern (json_annotation)
 
-> **Lưu ý quan trọng:** Codebase thực tế dùng `@JsonSerializable()` từ `json_annotation` — **KHÔNG dùng `@freezed`**. Structure.md đề cập freezed là ví dụ chưa được cập nhật.
+> **Lưu ý quan trọng:** Codebase thực tế dùng `@JsonSerializable()` từ `json_annotation` (66 file) — **KHÔNG dùng `@freezed`** (0 file; `freezed` chỉ còn trong pubspec). `structure.md` đã sửa đồng bộ (2026-10-16).
 
 ### 4.1 Model cơ bản
 
@@ -523,6 +530,8 @@ Future<ApiResponse<PaginatedResponse<List<OrderModel>>>> getOrders(...);
 ---
 
 ## 5. Socket.IO Pattern
+
+> ⚠️ **Trạng thái 2026-10-16:** `SocketService` chưa được import/gọi ở đâu trong `lib/` (grep) — pattern bên dưới là code còn lại, không phải luồng đang chạy. Luồng đang chạy để lấy kết quả thanh toán: xem §6.3 (`OrderStatusRetryMixin`). Dùng lại socket cần xác nhận với BE/Tech Lead.
 
 ### 5.1 SocketService — Singleton
 
@@ -688,6 +697,18 @@ final sdkResult = await ElepayFlutter.handleSource(jsonEncode(res.data));
 - Luôn xử lý 3 kết quả: `ElepayResultSucceeded`, `ElepayResultFailed`, `ElepayResultCancelled`
 - `isPaymentProcessing` state bắt buộc để block double-tap; set `false` trong `finally`
 - iOS và Android có thể trả về message khác nhau — dùng `sdkResult.reason` trên iOS, `sdkResult.message` trên Android
+
+### 6.3 Xác nhận kết quả đơn sau thanh toán — OrderStatusRetryMixin
+
+```dart
+// app/base/order_status_retry_mixin.dart — mixin cho ConsumerState + WidgetsBindingObserver
+static const int maxRetries = 3;
+static const Duration retryInterval = Duration(seconds: 2);
+// didChangeAppLifecycleState(resumed) → _startRetry() → ref.read(cartProvider.notifier).getOrderStatus(orderId)
+```
+
+- Page cung cấp `retryOrderId`; gọi `initRetryObserver()` / `disposeRetryObserver()`
+- `PaymentMixin` (`app/base/payment_mixin.dart`) lắng nghe `cartProvider.select(isPaymentSuccess / isPaymentFailed / isCardCreated / errorMsg)` → `SuccessRoute` / `PaymentPendingRoute` / toast
 
 ---
 

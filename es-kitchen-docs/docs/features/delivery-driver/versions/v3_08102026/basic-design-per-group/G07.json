@@ -1,0 +1,287 @@
+{
+ "group_no": "07",
+ "key": "Nhận Từ Kho",
+ "file": "BD_07_Nhận Từ Kho.xlsx",
+ "figma_group_nodes": [
+  "34199:211573"
+ ],
+ "figma_group_names": [
+  "Group NhanTuKho"
+ ],
+ "screens": [
+  "DA_RECV_001",
+  "DA_RECV_004",
+  "DA_RECV_003",
+  "DA_RECV_007",
+  "DA_RECV_005",
+  "DA_RECV_006"
+ ],
+ "frames": [
+  {
+   "no": "07-01",
+   "name": "DA_RECV_001 — 荷物受取（編集可） [default (0 tick); component]",
+   "node": "16481:48515",
+   "w": 390,
+   "h": 843,
+   "kind": "Component",
+   "screen_id": "DA_RECV_001",
+   "state_label": "default (0 tick)",
+   "dup_of": null,
+   "note": "Master component của màn nhận hàng sửa được; thấy back, bell, thẻ kho, lọc, tìm kiếm, thẻ nhóm điểm nhận, nút 完了"
+  },
+  {
+   "no": "07-02",
+   "name": "DA_RECV_001 — 荷物受取（編集可） [tick hết tất cả]",
+   "node": "16887:76722",
+   "w": 390,
+   "h": 844,
+   "kind": "State",
+   "screen_id": "DA_RECV_001",
+   "state_label": "tick hết tất cả",
+   "dup_of": null,
+   "note": "Nhánh tick hết -> DA_RECV_004 toast -> Home (connector 16895:120328). Ảnh G07/DA_RECV_001_checked_all.png"
+  },
+  {
+   "no": "07-03",
+   "name": "DA_RECV_005 — 受取完了確認・ES連絡モーダル [modal nhận thiếu]",
+   "node": "16481:48735",
+   "w": 390,
+   "h": 844,
+   "kind": "Popup",
+   "screen_id": "DA_RECV_005",
+   "state_label": "modal nhận thiếu (chưa kiểm ảnh)",
+   "dup_of": null,
+   "note": "Màn nền + modal DA_RECV_005 (text đã đọc). Chưa xem được ảnh do Figma hết quota nên chưa biết trạng thái checkbox/nút"
+  },
+  {
+   "no": "07-04",
+   "name": "DA_RECV_006 — 編集内容破棄確認ポップアップ [popup huỷ chỉnh sửa]",
+   "node": "20344:209745",
+   "w": 342,
+   "h": 356,
+   "kind": "Popup",
+   "screen_id": "DA_RECV_006",
+   "state_label": "popup huỷ chỉnh sửa",
+   "dup_of": null,
+   "note": "Popup 「編集内容を破棄しますか？」 + 破棄/キャンセル"
+  },
+  {
+   "no": "07-05",
+   "name": "DA_RECV_005 — 受取完了確認・ES連絡モーダル [checkbox đã tick, 一部未受取のまま完了 active]",
+   "node": "16895:119338",
+   "w": 390,
+   "h": 844,
+   "kind": "State",
+   "screen_id": "DA_RECV_005",
+   "state_label": "checkbox đã tick, 一部未受取のまま完了 active",
+   "dup_of": null,
+   "note": "Modal DA_RECV_005 biến thể sau khi tick/gọi ES; có nút × góc modal. Ảnh G07/DA_RECV_001_modal.png"
+  },
+  {
+   "no": "07-06",
+   "name": "DA_RECV_003 — 荷物受取（閲覧のみ） [chỉ đọc, đã nhận; component]",
+   "node": "20262:41179",
+   "w": 390,
+   "h": 844,
+   "kind": "Component",
+   "screen_id": "DA_RECV_003",
+   "state_label": "chỉ đọc, đã nhận",
+   "dup_of": null,
+   "note": "Chứa banner DA_RECV_007 (con của component), back, bell, thẻ kho, danh sách + checkbox disabled; cũng là nguồn banner DA_RECV_007 (không có frame riêng)",
+   "also_screen_ids": [
+    "DA_RECV_007"
+   ]
+  },
+  {
+   "no": "07-07",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [có thẻ kho 未受取; context]",
+   "node": "18578:34695",
+   "w": 390,
+   "h": 886,
+   "kind": "Context",
+   "screen_id": "DA_HOME_001",
+   "state_label": "có thẻ kho 未受取",
+   "dup_of": null,
+   "note": "Home minh hoạ điểm vào (thẻ kho). Thuộc nhóm Home"
+  },
+  {
+   "no": "07-08",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [sau khi hoàn tất (nền toast); context]",
+   "node": "18578:35896",
+   "w": 390,
+   "h": 916,
+   "kind": "Context",
+   "screen_id": "DA_HOME_001",
+   "state_label": "sau khi hoàn tất (nền toast)",
+   "dup_of": null,
+   "note": "Home đích sau toast DA_RECV_004; không có thẻ kho"
+  },
+  {
+   "no": "07-09",
+   "name": "DA_RECV_004 — 受取完了トースト [toast hoàn tất nhận]",
+   "node": "16887:112468",
+   "w": 320,
+   "h": 48,
+   "kind": "Toast",
+   "screen_id": "DA_RECV_004",
+   "state_label": "toast hoàn tất nhận",
+   "dup_of": null,
+   "note": "check_circle + 「荷物受取完了しました。」 + close; chữ lệch SPEC 「荷物の受取は完了しました。」"
+  },
+  {
+   "no": "07-10",
+   "name": "Flow note",
+   "node": "16422:114715",
+   "w": 4007,
+   "h": 87,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": null,
+   "dup_of": null,
+   "note": "Ghi chú flow: 「倉庫で受け取る ー nhận từ kho」 (V1.0)"
+  },
+  {
+   "no": "07-11",
+   "name": "DA_RECV_004 — 受取完了トースト [toast hoàn tất nhận]",
+   "node": "16943:78441",
+   "w": 320,
+   "h": 48,
+   "kind": "Duplicate",
+   "screen_id": "DA_RECV_004",
+   "state_label": "toast hoàn tất nhận",
+   "dup_of": "07-09",
+   "note": "Bản thứ hai cùng nội dung, đặt ở nhánh trên của luồng (cạnh 07-03)"
+  },
+  {
+   "no": "07-12",
+   "name": "DA_LIST_001_Kho — 配送一覧 Tab A: 倉庫受取 [tab 倉庫受取; context]",
+   "node": "19664:153217",
+   "w": 390,
+   "h": 860,
+   "kind": "Context",
+   "screen_id": "DA_LIST_001_Kho",
+   "state_label": "tab 倉庫受取",
+   "dup_of": null,
+   "note": "Màn danh sách đích khi Back từ DA_RECV_003; thuộc nhóm List"
+  },
+  {
+   "no": "07-13",
+   "name": "DA_HOME_001 — ホーム：進捗・3日間スケジュール [Home (sau nhận một phần); context]",
+   "node": "18578:40940",
+   "w": 390,
+   "h": 977,
+   "kind": "Context",
+   "screen_id": "DA_HOME_001",
+   "state_label": "Home (sau nhận một phần)",
+   "dup_of": null,
+   "note": "Home đích sau 一部未受取のまま完了 (connector 18578:41563 ghi quy tắc tách tag mới)"
+  },
+  {
+   "no": "07-14",
+   "name": "DA_LIST_001_Kho — 配送一覧 Tab A: 倉庫受取 [tab すべて表示/倉庫受取; context]",
+   "node": "18578:41715",
+   "w": 390,
+   "h": 860,
+   "kind": "Context",
+   "screen_id": "DA_LIST_001_Kho",
+   "state_label": "tab すべて表示/倉庫受取",
+   "dup_of": null,
+   "note": "Biến thể danh sách có tab すべて表示; thuộc nhóm List"
+  }
+ ],
+ "non_screen_counts": {
+  "TABLE": 4,
+  "CONNECTOR": 8
+ },
+ "tables": [
+  {
+   "node": "20338:264152",
+   "summary": "Mục A: DA_RECV_001 A.1-A.13 (back, title, tên kho, ngày, 伝票番号, địa chỉ, lọc 未受取のみ表示, tìm 納品先名 100 ký tự, checkbox từng mục, badge, 納品先名, 送り状番号, nút 完了)"
+  },
+  {
+   "node": "20338:264153",
+   "summary": "Mục B: modal DA_RECV_005 B.1-B.7 (tiêu đề, icon, nội dung, checkbox đã liên hệ ES, nút gọi ES, nút 一部保留のまま完了, キャンセル)"
+  },
+  {
+   "node": "20343:265007",
+   "summary": "Mục C: toast hoàn tất C.1 (DA_RECV_004, 5 giây, rồi Home) + Mục D: popup huỷ chỉnh sửa D.1-D.4 (DA_RECV_006)"
+  },
+  {
+   "node": "24942:91581",
+   "summary": "Thanh tiến trình các bước (①陳列前 ②在庫/廃棄 hoàn thành, ③陳列 kế tiếp...) — KHÔNG thuộc nhóm nhận từ kho, là bảng lạc của nhóm ES配送便 (DA_ESDL)"
+  }
+ ],
+ "connectors": {
+  "16895:119818": "全てチェックではない (nhánh còn sót)",
+  "16895:120328": "全てチェック (nhánh tick hết)",
+  "18571:187374": "Điều kiện kích hoạt nút 一部...完了 (checkbox HOẶC đã gọi ES)",
+  "18578:41563": "Quy tắc: phần đã nhận = hoàn tất, phần chưa nhận sinh tag kho mới 未受取",
+  "18555:160909": "Connector line",
+  "18578:40312": "Connector line",
+  "18578:35066": "Connector line",
+  "19036:18173": "Connector line"
+ },
+ "images": {
+  "DA_RECV_001": [
+   {
+    "file": "N07/07-02_DA_RECV_001.png",
+    "node": "16887:76722",
+    "no": "07-02",
+    "label": "DA_RECV_001 · State · tick hết tất cả"
+   }
+  ],
+  "DA_RECV_004": [
+   {
+    "file": "N07/07-09_DA_RECV_004.png",
+    "node": "16887:112468",
+    "no": "07-09",
+    "label": "DA_RECV_004 · Toast · toast hoàn tất nhận"
+   }
+  ],
+  "DA_RECV_003": [
+   {
+    "file": "N07/07-06_DA_RECV_003.png",
+    "node": "20262:41179",
+    "no": "07-06",
+    "label": "DA_RECV_003 · Component · chỉ đọc, đã nhận"
+   }
+  ],
+  "DA_RECV_007": [
+   {
+    "file": "N07/07-06_DA_RECV_007.png",
+    "node": "20262:41179",
+    "no": "07-06",
+    "label": "DA_RECV_003 · Component · chỉ đọc, đã nhận"
+   }
+  ],
+  "DA_RECV_005": [
+   {
+    "file": "N07/07-03_DA_RECV_005.png",
+    "node": "16481:48735",
+    "no": "07-03",
+    "label": "DA_RECV_005 · Popup · modal nhận thiếu (chưa kiểm ảnh)"
+   },
+   {
+    "file": "N07/07-05_DA_RECV_005.png",
+    "node": "16895:119338",
+    "no": "07-05",
+    "label": "DA_RECV_005 · State · checkbox đã tick, 一部未受取のまま完了 active"
+   }
+  ],
+  "DA_RECV_006": [
+   {
+    "file": "N07/07-04_DA_RECV_006.png",
+    "node": "20344:209745",
+    "no": "07-04",
+    "label": "DA_RECV_006 · Popup · popup huỷ chỉnh sửa"
+   }
+  ]
+ },
+ "open": [
+  "Figma hết quota giữa chừng: chưa xem ảnh frame 07-03 (16481:48735), 07-07, 07-08, 07-13, 07-12, 07-14, 07-09/07-11 (chỉ có text); ảnh DA_RECV_004/DA_RECV_005/DA_RECV_006 là ảnh cũ chưa đối chiếu lại với Figma",
+  "Frame Context 07-07/08/12/13/14 phân loại theo tên + text, không xem ảnh",
+  "Kind 07-03/07-05 gán DA_RECV_005 (modal) — nếu muốn tính màn nền DA_RECV_001 thì cần quyết định",
+  "Table 24942:91581 thuộc DA_ESDL, lạc nhóm",
+  "CONFLICT: label lọc Figma 未確認のみ表示 vs SPEC 未受取のみ表示; tên nút 一部未受取 (Figma) vs 一部保留 (SPEC); dòng giờ banner ずみ vs 済み; toast 荷物受取完了しました vs SPEC"
+ ]
+}

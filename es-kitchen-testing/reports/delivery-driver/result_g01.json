@@ -1,0 +1,162 @@
+{
+ "TC-LGN-001": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-003": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-009": {
+  "result": "NG",
+  "note": "Actual: hiện 「ログインIDは必須項目です。」 (không gọi API, ở lại /login) | Expected: 「ログインIDを入力してください。」 | Bước: ID trống, PW Qc2026Test1, nhấn ログイン | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-009.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-009.png"
+ },
+ "TC-LGN-019": {
+  "result": "NG",
+  "note": "Actual: hiện 「パスワードは必須項目です。」 (không gọi API) | Expected: 「パスワードを入力してください。」 | Bước: ID QC_UNKNOWN01, PW trống, nhấn ログイン | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-019.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-019.png"
+ },
+ "TC-LGN-021": {
+  "result": "NG",
+  "note": "Actual: không có validate định dạng mật khẩu; form gọi API và hiện 「ログインIDまたはパスワードが正しくありません。」 | Expected: 「8文字以上で、英字・数字を含めてください。」, không gọi API | Bước: ID QC_UNKNOWN01, PW Qc2026T (7 ký tự) | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-021.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-021.png"
+ },
+ "TC-LGN-023": {
+  "result": "NG",
+  "note": "Actual: không có validate định dạng; gọi API và hiện lỗi xác thực | Expected: 「8文字以上で、英字・数字を含めてください。」, không gọi API | Bước: ID QC_UNKNOWN01, PW QcTestOnly (không có số) | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-023.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-023.png"
+ },
+ "TC-LGN-032": {
+  "result": "NG",
+  "note": "Actual: hiện 「ログインIDは必須項目です。」 + 「パスワードは必須項目です。」 (không gọi API) | Expected: 「ログインIDを入力してください。」 + 「パスワードを入力してください。」 | Bước: để trống cả 2 ô, nhấn ログイン | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-032.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-032.png"
+ },
+ "TC-LGN-033": {
+  "result": "NG",
+  "note": "Actual: chỉ hiện 「ログインIDは必須項目です。」; không có lỗi định dạng mật khẩu | Expected: 「ログインIDを入力してください。」 + 「8文字以上で、英字・数字を含めてください。」 | Bước: ID trống, PW Qc1abc | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-033.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-033.png"
+ },
+ "TC-LGN-034": {
+  "result": "NG",
+  "note": "Actual: gọi API login, hiện 「ログインIDまたはパスワードが正しくありません。」 | Expected: chỉ 「8文字以上で、英字・数字を含めてください。」, không gửi request login | Bước: ID QC_UNKNOWN01, PW Qc1abc | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-034.png",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-034.png"
+ },
+ "TC-LGN-035": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-037": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-038": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-012": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-013": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-020": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-027": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-044": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-045": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-046": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-065": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-051": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-052": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-053": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-054": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-070": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-043": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-056": {
+  "result": "NG",
+  "note": "Actual: cookie access_token/refresh_token có expires ~7 ngày kể từ lúc login (không phải ~1 năm); mở lại bằng storageState vẫn vào được home trong thời hạn 7 ngày | Expected: session TTL khoảng 1 năm | Bước: login thật, kiểm tra expires cookie | Evidence: reports/delivery-driver/screenshots/g01_TC-LGN-056.png | Lưu ý: TC-LGN-009/019/032/033 cho thấy message bắt buộc thực tế là 「…は必須項目です。」 khác message trong TC/BD; validate định dạng mật khẩu (8文字以上…) chưa có ở client trên DEV",
+  "evidence": "reports/delivery-driver/screenshots/g01_TC-LGN-056.png"
+ },
+ "TC-LGN-048": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-LGN-015": {
+  "result": "Pending",
+  "note": "Cần đăng nhập thành công bằng ID DR_QC001 (tài khoản QC theo TC) - không có; chỉ có tài khoản test .env không có dạng ID gạch dưới/hoa. Quan sát: ID QC_UNKNOWN01 (chữ hoa + gạch dưới) qua validate, không lỗi định dạng, chỉ nhận lỗi xác thực. Cần: tài khoản có ID chứa _ và chữ hoa.",
+  "evidence": ""
+ },
+ "TC-LGN-047": {
+  "result": "Pending",
+  "note": "Cần 10 lần đăng nhập sai liên tiếp trên tài khoản DR_QC002 thật rồi đăng nhập đúng; vượt giới hạn ~8 lần sai/agent và không có tài khoản DR_QC002/mật khẩu. Cần: tài khoản test riêng và cho phép chạy 10 lần sai.",
+  "evidence": ""
+ },
+ "TC-LGN-055": {
+  "result": "Pending",
+  "note": "Luồng reset mật khẩu hoàn tất gửi mã xác thực qua email (SES) và đổi mật khẩu thật - bị cấm trên DEV với tài khoản thật. Cần: tài khoản + hộp thư test chuyên dụng cho reset hoặc mock SES.",
+  "evidence": ""
+ },
+ "TC-LGN-069": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ }
+}

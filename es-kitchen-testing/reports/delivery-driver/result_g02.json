@@ -1,0 +1,412 @@
+{
+ "TC-RST01-001": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g02_step1_layout.png"
+ },
+ "TC-RST01-003": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST01-007": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST01-009": {
+  "result": "NG",
+  "note": "Actual: ở lại màn, message hiển thị 「ログインIDは必須項目です。」 | Expected: 「ログインIDを入力してください。」 | Bước: để trống ID + email hợp lệ, nhấn gửi | Evidence: reports/delivery-driver/screenshots/g02_rst01_009.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_009.png"
+ },
+ "TC-RST01-010": {
+  "result": "NG",
+  "note": "Actual: ở lại màn, message hiển thị 「ログインIDは必須項目です。」 | Expected: 「ログインIDを入力してください。」 | Bước: 3 dấu cách ở ID | Evidence: reports/delivery-driver/screenshots/g02_rst01_010.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_010.png"
+ },
+ "TC-RST01-011": {
+  "result": "NG",
+  "note": "Actual: chuyển sang /verify (màn nhập mã) không báo lỗi; không hiện 「ログインIDまたはメールアドレスが正しくありません。」 | Expected: hiện inline 「ログインIDまたはメールアドレスが正しくありません。」, ở lại màn | Bước: ID/email bịa QC_, nhấn 認証コードを送信 | Evidence: reports/delivery-driver/screenshots/g02_rst01_011.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_011.png"
+ },
+ "TC-RST01-012": {
+  "result": "NG",
+  "note": "Actual: 255 ký tự được nhận, chuyển sang /verify không báo lỗi cặp ID/email | Expected: 「ログインIDまたはメールアドレスが正しくありません。」 | Evidence: reports/delivery-driver/screenshots/g02_rst01_012.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_012.png"
+ },
+ "TC-RST01-013": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST01-014": {
+  "result": "NG",
+  "note": "Actual: chuyển sang /verify (màn nhập mã) không báo lỗi; không hiện 「ログインIDまたはメールアドレスが正しくありません。」 | Expected: hiện inline 「ログインIDまたはメールアドレスが正しくありません。」, ở lại màn | Bước: ID/email bịa QC_, nhấn 認証コードを送信 | Evidence: reports/delivery-driver/screenshots/g02_rst01_014.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_014.png"
+ },
+ "TC-RST01-016": {
+  "result": "NG",
+  "note": "Actual: không có alert nhưng chuyển sang /verify (màn nhập mã), không hiện 「ログインIDまたはメールアドレスが正しくありません。」 | Expected: hiện 「ログインIDまたはメールアドレスが正しくありません。」 | Evidence: reports/delivery-driver/screenshots/g02_rst01_016.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_016.png"
+ },
+ "TC-RST01-018": {
+  "result": "NG",
+  "note": "Actual: ở lại màn, message hiển thị 「メールアドレスは必須項目です。」 | Expected: 「メールアドレスを入力してください。」 | Bước: ID + để trống email | Evidence: reports/delivery-driver/screenshots/g02_rst01_018.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_018.png"
+ },
+ "TC-RST01-019": {
+  "result": "NG",
+  "note": "Actual: ở lại màn, message hiển thị 「メールアドレスは必須項目です。」 | Expected: 「メールアドレスを入力してください。」 | Bước: ID + 3 dấu cách ở email (chấp nhận thêm lỗi định dạng) | Evidence: reports/delivery-driver/screenshots/g02_rst01_019.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_019.png"
+ },
+ "TC-RST01-020": {
+  "result": "NG",
+  "note": "Actual: ở lại màn, message hiển thị 「正しいメールアドレスの形式で入力してください。」 | Expected: 「メールアドレスの形式が正しくありません。」 | Bước: email thiếu @ | Evidence: reports/delivery-driver/screenshots/g02_rst01_020.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_020.png"
+ },
+ "TC-RST01-021": {
+  "result": "NG",
+  "note": "Actual: ở lại màn, message hiển thị 「正しいメールアドレスの形式で入力してください。」 | Expected: 「メールアドレスの形式が正しくありません。」 | Bước: email thiếu domain | Evidence: reports/delivery-driver/screenshots/g02_rst01_021.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_021.png"
+ },
+ "TC-RST01-023": {
+  "result": "NG",
+  "note": "Actual: ô email nhận 255/256 ký tự (input maxLength=255) | Expected: BD cho phép 256 ký tự, hệ thống đối chiếu rồi báo 「ログインIDまたはメールアドレスが正しくありません。」 | Evidence: reports/delivery-driver/screenshots/g02_rst01_023.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_023.png"
+ },
+ "TC-RST01-029": {
+  "result": "NG",
+  "note": "Actual: ở lại màn, message hiển thị 「ログインIDは必須項目です。 / メールアドレスは必須項目です。」 | Expected: 「ログインIDを入力してください。」 + 「メールアドレスを入力してください。」 | Bước: để trống cả 2 ô | Evidence: reports/delivery-driver/screenshots/g02_rst01_029.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_029.png"
+ },
+ "TC-RST01-030": {
+  "result": "NG",
+  "note": "Actual: ở lại màn, message hiển thị 「ログインIDは必須項目です。 / 正しいメールアドレスの形式で入力してください。」 | Expected: 「ログインIDを入力してください。」 + 「メールアドレスの形式が正しくありません。」 | Bước: ID trống + email sai định dạng | Evidence: reports/delivery-driver/screenshots/g02_rst01_030.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_030.png"
+ },
+ "TC-RST01-032": {
+  "result": "Pending",
+  "note": "Cần ID tài xế thật + email khác để kiểm tra cặp ID tồn tại/email sai; quy tắc an toàn cấm dùng ID/email tài khoản thật. Quan sát với ID bịa (TC-RST01-033): app không báo lỗi cặp không khớp mà vẫn sang màn nhập mã (lệch BD E_DAAUTHEN00201_004)",
+  "evidence": ""
+ },
+ "TC-RST01-033": {
+  "result": "NG",
+  "note": "Actual: chuyển sang /verify (màn nhập mã) không báo lỗi; không hiện 「ログインIDまたはメールアドレスが正しくありません。」 | Expected: hiện inline 「ログインIDまたはメールアドレスが正しくありません。」, ở lại màn | Bước: ID/email bịa QC_, nhấn 認証コードを送信 | Evidence: reports/delivery-driver/screenshots/g02_rst01_033.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst01_033.png"
+ },
+ "TC-RST01-034": {
+  "result": "Pending",
+  "note": "Cần hộp thư thật nhận mã 4 số; không gửi mã cho tài khoản thật. Quan sát: URL màn nhập mã thực tế là /verify?driverCode=..&email=.. (TC ghi /reset-password/step2)",
+  "evidence": ""
+ },
+ "TC-RST01-035": {
+  "result": "OK",
+  "note": "Chỉ 1 request forgot-password/request, 1 lần chuyển (dữ liệu bịa; số email thực tế không kiểm chứng)",
+  "evidence": ""
+ },
+ "TC-RST01-039": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST01-040": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST02-001": {
+  "result": "NG",
+  "note": "Actual: thiếu/khác 「下記のメールアドレスをご確認ください」; thực tế dòng mô tả là 「パスワード再設定用メールを送信しました。メールをご確認ください。」 | Expected: 「パスワード再設定用メールを送信しました。下記のメールアドレスをご確認ください。」 | Evidence: reports/delivery-driver/screenshots/g02_step2_layout.png",
+  "evidence": "reports/delivery-driver/screenshots/g02_step2_layout.png"
+ },
+ "TC-RST02-004": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST02-005": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst02_005.png"
+ },
+ "TC-RST02-007": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST02-009": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST02-011": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST02-012": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST02-014": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST02-015": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST02-016": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST02-020": {
+  "result": "Pending",
+  "note": "Cần mã 4 số thật từ email; không gửi mã cho tài khoản thật",
+  "evidence": ""
+ },
+ "TC-RST02-021": {
+  "result": "OK",
+  "note": "Chạy với ID/email bịa QC_",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst02_021.png"
+ },
+ "TC-RST02-022": {
+  "result": "Pending",
+  "note": "Quan sát (ID bịa): 5 lần sai → err,err,err,err,err, màn vẫn dùng được=true. Phần \"nhập mã đúng vẫn sang bước 3\" cần mã email thật nên chưa xác nhận",
+  "evidence": ""
+ },
+ "TC-RST02-023": {
+  "result": "Pending",
+  "note": "Cần mã thật + chờ >5 phút (phụ thuộc thời gian/SES). Quan sát TC-RST02-021: mã sai báo 「認証コードが正しくありません。」",
+  "evidence": ""
+ },
+ "TC-RST02-024": {
+  "result": "Pending",
+  "note": "Phụ thuộc thời gian 5 phút 10 giây và mã thật; chưa chạy",
+  "evidence": ""
+ },
+ "TC-RST02-025": {
+  "result": "Pending",
+  "note": "Cần mã thật + chờ 4 phút 50 giây; phụ thuộc SES/thời gian",
+  "evidence": ""
+ },
+ "TC-RST02-028": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST02-030": {
+  "result": "Pending",
+  "note": "Quan sát (ID bịa, không kiểm tra hộp thư): sau đếm ngược về 0 nhấn 再送信 → 1 request, bộ đếm hiển thị （00:59） (counter tại thời điểm click: đã ẩn). Phần nhận email thật chưa xác nhận",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst02_030.png"
+ },
+ "TC-RST02-031": {
+  "result": "Pending",
+  "note": "Cần 4 lần x 60 giây và kiểm tra hộp thư thật (SES); chưa chạy",
+  "evidence": ""
+ },
+ "TC-RST02-032": {
+  "result": "OK",
+  "note": "Chỉ 1 request resend (ID bịa; số email thực tế không kiểm chứng)",
+  "evidence": ""
+ },
+ "TC-RST02-039": {
+  "result": "Pending",
+  "note": "Cần mã đúng từ email thật để sang bước 3",
+  "evidence": ""
+ },
+ "TC-RST02-040": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST04-001": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-007": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-008": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-009": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-011": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-012": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-013": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-014": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-015": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-022": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-025": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-026": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-027": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-028": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-029": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-030": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-031": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-034": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-037": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-038": {
+  "result": "Pending",
+  "note": "Bước 3 (DA_AUTHEN_002_04) chỉ vào được sau khi verify mã email thật; mở trực tiếp /reset-password/step3 bị redirect /login nên không truy cập được bằng dữ liệu bịa",
+  "evidence": ""
+ },
+ "TC-RST04-041": {
+  "result": "N/A",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RST06-001": {
+  "result": "Pending",
+  "note": "Màn hoàn tất chỉ vào được sau khi đặt lại mật khẩu thật (ghi dữ liệu tài khoản thật bị cấm)",
+  "evidence": ""
+ },
+ "TC-RST06-002": {
+  "result": "Pending",
+  "note": "Màn hoàn tất chỉ vào được sau khi đặt lại mật khẩu thật (ghi dữ liệu tài khoản thật bị cấm)",
+  "evidence": ""
+ },
+ "TC-RST06-007": {
+  "result": "Pending",
+  "note": "Màn hoàn tất chỉ vào được sau khi đặt lại mật khẩu thật (ghi dữ liệu tài khoản thật bị cấm)",
+  "evidence": ""
+ },
+ "TC-RST06-008": {
+  "result": "Pending",
+  "note": "Màn hoàn tất chỉ vào được sau khi đặt lại mật khẩu thật (ghi dữ liệu tài khoản thật bị cấm)",
+  "evidence": ""
+ },
+ "TC-RST06-009": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RSTE-001": {
+  "result": "Pending",
+  "note": "Luồng cần mã email thật + đổi mật khẩu tài khoản thật (hành động bị cấm)",
+  "evidence": ""
+ },
+ "TC-RSTE-002": {
+  "result": "Pending",
+  "note": "Luồng cần mã email thật + đổi mật khẩu tài khoản thật (hành động bị cấm)",
+  "evidence": ""
+ },
+ "TC-RSTE-003": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RSTE-004": {
+  "result": "Pending",
+  "note": "Luồng cần mã email thật + đổi mật khẩu tài khoản thật (hành động bị cấm)",
+  "evidence": ""
+ },
+ "TC-RSTE-005": {
+  "result": "Pending",
+  "note": "Luồng cần mã email thật + đổi mật khẩu tài khoản thật (hành động bị cấm)",
+  "evidence": ""
+ },
+ "TC-RSTE-006": {
+  "result": "Pending",
+  "note": "Luồng cần mã email thật + đổi mật khẩu tài khoản thật (hành động bị cấm)",
+  "evidence": ""
+ },
+ "TC-RSTE-007": {
+  "result": "OK",
+  "note": "Đã kiểm chứng giảm dần, nhấn khi còn ≤00:30 không tác dụng, hết đếm ngược gửi lại + quay về 00:59 (ID bịa)",
+  "evidence": "reports/delivery-driver/screenshots/g02_rst02_030.png"
+ },
+ "TC-RSTE-008": {
+  "result": "Pending",
+  "note": "Luồng cần mã email thật + đổi mật khẩu tài khoản thật (hành động bị cấm)",
+  "evidence": ""
+ },
+ "TC-RSTE-010": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RSTE-013": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-RSTE-016": {
+  "result": "Pending",
+  "note": "Cần ID thật + email tài xế khác; cấm dùng tài khoản thật. Quan sát ID bịa: app không báo 「ログインIDまたはメールアドレスが正しくありません。」 mà sang màn nhập mã",
+  "evidence": ""
+ }
+}

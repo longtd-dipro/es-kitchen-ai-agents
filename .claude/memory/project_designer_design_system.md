@@ -23,3 +23,7 @@ Bộ đặc tả giao diện ES Kitchen Phase 2 nằm ở `.claude/designer-agen
 - Còn mở: C7 Driver Phosphor vs Lucide → ghi `[Design]` vào SPEC Open Questions khi gặp.
 
 Liên quan: [[feedback-ba-agent-04092026]]
+
+- Supplier E04 (cập nhật 2026-10-09, Figma `Group 29` `34579:235837`): sider 4 mục TOP · 受注一覧 · 注文管理 · 会社のプロフィール (Logo+Sol+MenuFold); tím bind variable `slot/stroke`; màn mẫu chỉ ghép instance library + override tím; bộ Badge trạng thái Gray/Orange/Blue/Success; chi tiết + mâu thuẫn S1–S6 trong `design-spec/13-web-supplier.md`.
+
+- Company Web (cập nhật 2026-10-12, v1.9): có **2 shell** — A portal có sider (AW_CORPORATE, 月次注文) và **B customer form** không sider (TopNav 139 + gradient `#FAF3EB→#F8B66D` + Footer 120, nguồn Figma `28019:260266` page Company web (P2) `18162:161442`). Ở shell B: CTA solid `#FAA51D` (Button theme=Company), title/outline `#F4860C`, nút 48 r6, field 40 r6, Collab Tab `#F6F8FA`, Summary Card `#FFEFDE` r16, giá trị `#B3410A`. Chi tiết `design-spec/12-web-company.md` §5–§11; phần "ĐỀ XUẤT" §10 chưa được Design Lead duyệt; Figma KHÔNG có bản SP 390.

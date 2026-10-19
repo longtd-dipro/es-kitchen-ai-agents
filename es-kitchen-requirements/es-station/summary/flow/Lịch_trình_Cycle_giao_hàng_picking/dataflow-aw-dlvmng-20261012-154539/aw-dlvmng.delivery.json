@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "484c88b7-1b9a-4afe-81ed-00991c0464ea",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Lịch_trình_Cycle_giao_hàng_picking/dataflow-aw-dlvmng-20261012-154539/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Lịch_trình_Cycle_giao_hàng_picking/dataflow-aw-dlvmng-20261012-154539/aw-dlvmng.html",
+  "specification": {
+    "sha256": "c7ab01f739fb34aa66bef217387c6ca40932dc2ce8175e94e527264015f6557e",
+    "bytes": 39159
+  },
+  "artifact": {
+    "sha256": "a9ebe444ea094dfb5de36580ee0c441ac3f8bca5a92fc40bd63ff718992d7a14",
+    "bytes": 776194
+  }
+}

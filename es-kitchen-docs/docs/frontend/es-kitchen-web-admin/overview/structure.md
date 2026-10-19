@@ -1,6 +1,8 @@
 # es-kitchen-web-admin — Cấu trúc Source
 
-> Repo: `es-kitchen-web-admin` · Epic: **E03 System Admin** · 60+ pages có permission guard + 5 public auth page
+> Nguồn = `es-kitchen-web-admin@633b2b7` ngày 2026-10-16 (HEAD `main`; working tree chỉ có `yarn.lock` untracked). ~49 commit từ 2026-08-21 đã được đối chiếu.
+
+> Repo: `es-kitchen-web-admin` · Epic: **E03 System Admin** · 115 `page.tsx` (121 lazy import trong router, 130 key trong `ROUTE`) có permission guard + 5 public auth page
 > Vai trò: quản trị toàn hệ thống — account, company, contract, master data, order, delivery, inventory, invoice, agency, notification.
 
 ---
@@ -9,27 +11,30 @@
 
 | Layer | Package | Version |
 |---|---|---|
-| Framework | React + React DOM | 19.2.0 |
-| Build | Vite | 7.2.4 |
+| Framework | React + React DOM | ^19.2.0 (installed 19.2.4) |
+| Build | Vite | ^7.2.4 (installed 7.3.1) |
 | Language | TypeScript | ~5.9.3 |
 | Runtime | Node | 20 |
 | UI kit | Ant Design + @ant-design/icons | 6.2.2 / 6.1.0 |
 | CSS utility | TailwindCSS | 4.1.18 |
-| Pre-processor | Sass | 1.95.1 |
+| Pre-processor | Sass | ^1.95.1 |
 | Client state | Redux Toolkit + react-redux | 2.11.2 / 9.2.0 |
 | Server state | @tanstack/react-query | 5.90.20 |
 | Router | react-router-dom | 7.13.0 |
-| Forms | react-hook-form + @hookform/resolvers + yup | 7.68.0 / 5.2.2 / 1.7.1 |
+| Forms | react-hook-form + @hookform/resolvers + yup | ^7.68.0 (installed 7.72.0) / 5.2.2 / 1.7.1 |
 | HTTP | axios | 1.13.4 |
 | Realtime | socket.io-client | 4.8.3 |
 | Cookies | js-cookie | 3.0.5 |
 | Toast | react-toastify | 11.0.5 |
-| Rich text | TipTap (starter-kit, react, text-align, PM) | 3.27.1 |
+| Rich text | Quill (`BaseRichTextEditor`; TipTap đã bỏ) | ^2.0.3 |
 | Charts | recharts | 3.8.1 |
-| Drag-drop | @dnd-kit | 0.5.0 |
+| Drag-drop | @dnd-kit/react + @dnd-kit/helpers | ^0.5.0 |
+| Class merge | tailwind-merge | 3.5.0 |
 | Icons | @phosphor-icons/react | 2.1.10 |
 | Date | dayjs | 1.11.19 |
 | Util | lodash | 4.17.23 |
+
+> Version lấy từ `package.json` + `node_modules` (socket.io-client, @dnd-kit, quill chưa có trong `node_modules` local → chỉ biết range `package.json`). Không có test runner (`npm test` = echo).
 
 ---
 
@@ -41,22 +46,25 @@ es-kitchen-web-admin/
 │   ├── components/       ← Shared UI (Auth, Common, Counter, EquipmentConfiguration)
 │   ├── constants/        ← route paths, menu config, enums, errors, messages
 │   ├── enums/            ← TypeScript enums
-│   ├── hooks/            ← 23+ custom hooks (auth, permissions, options, tables, mutations)
+│   ├── hooks/            ← 24 custom hooks (auth, permissions, options, tables, mutations)
 │   ├── layouts/          ← AuthLayout · NonAuthLayout · AuthCenteredLayout
 │   ├── models/           ← Domain types (API response shapes)
-│   ├── pages/            ← Feature pages (60+ folders, xem section Pages)
-│   ├── routes/           ← Router config + 3 route guards (RequireAuth, PublicOnly, RequirePermission)
+│   ├── pages/            ← Feature pages (24 thư mục domain / 115 page.tsx, xem section Pages)
+│   ├── routes/           ← `index.tsx` (createBrowserRouter) + `guards/` 3 route guards (RequireAuth, PublicOnly, RequirePermission)
 │   ├── services/
-│   │   ├── http/         ← axios instance + interceptors + authToken (js-cookie)
+│   │   ├── http/         ← axios.instance + handleRequest/handleResponse + authToken (js-cookie)
+│   │   ├── session/      ← handleSessionEnded
+│   │   ├── socket/       ← adminSessionSocket (socket.io)
 │   │   ├── query/        ← TanStack Query client (staleTime 0, gcTime 0, retry 1, no refetch on focus)
-│   │   └── client/       ← 30+ domain-specific API services
+│   │   └── client/       ← `api.ts` (singleton Requester) + 52 `*.service.ts` + `mock/`
 │   ├── shared/           ← AntdProvider + theme configs
 │   ├── statics/          ← Images, icons, fonts
 │   ├── stores/           ← Redux store + reducers (auth, counter, monthlyMenuImport)
 │   ├── styles/           ← tailwind.css + globals.scss + nav.scss + _variables.scss + _base.scss
 │   ├── types/            ← Ambient TypeScript types
 │   ├── utils/            ← Utility helpers
-│   ├── validation/       ← Yup schemas cho react-hook-form
+│   ├── validation/       ← chỉ còn `schemas.ts` (schema chung); schema form đặt co-located `schema.ts` cạnh page
+│   ├── config.ts         ← `serverConfig` (api_server_url, auth) từ `import.meta.env`
 │   ├── App.tsx
 │   └── main.tsx          ← StrictMode → QueryClient → Redux → AntdProvider → AntdApp → ToastContainer → App
 │
@@ -73,21 +81,21 @@ es-kitchen-web-admin/
 
 ### Public — wrapped bởi `NonAuthLayout`
 
-`/login` · `/forgot-password` · `/verify` · `/verify-otp` · `/reset-password`
+`/login` · `/forgot-password` · `/verify` · `/verify-login-otp` · `/reset-password` (+ `/reset-success` cho `AuthCenteredLayout`)
 
 ### Protected — wrapped bởi `AuthLayout` + `RequirePermission`
 
-`/dashboard` · `/account-management` · `/company-management` · `/contract-management` · `/master-management` · `/menu-management` · `/order-management` · `/material-order` · `/sales-management` · `/agency-management` · `/delivery-management` · `/inventory-management` · `/invoice-management` · `/collection-management` · `/return-management` · `/waste-disposal-management` · `/survey-management` · `/notification-management` · `/maintain-management` · `/version-management` · `/ip-whitelist-management`
+`/dashboard` · `/account-management` (user · operation · role-management) · `/company-management` · `/corporate-management` · `/contract-management` (+ `/registration`) · `/master-management` (product · shipping · deliverer · relay-destination · supplier · plan · category · device · machine-model) · `/menu-management` (monthly · product-tag · service-option · discount) · `/order-management` · `/material-order` · `/category-management` · `/sales-management` · `/agency-management` · `/delivery-management` (date-change-requests · material-shipping · prepared-shipping · quotation-requests · schedule · shipments) · `/inventory-management` · `/invoice-management` · `/collection-management` · `/return-management` · `/waste-disposal-management` · `/review-management` · `/survey-management` · `/notification-management` · `/maintain-management` · `/version-management` · `/ip-whitelist-management`
 
 ### Error / fallback
 
-`/403` (ForbiddenPage) · `*` (redirect về `/login`)
+`ROUTE.FORBIDDEN` (ForbiddenPage, `pages/403`) · `*` (redirect về `/login`)
 
 ---
 
 ## Pages (src/pages/) — feature domains
 
-`403/`, `account-management/`, `agency-management/`, `auth/`, `collection-management/`, `company-management/`, `contract-management/`, `dashboard/`, `delivery-management/`, `inventory-management/`, `invoice-management/`, `ip-whitelist-management/`, `maintain-management/`, `master-management/`, `material-order/`, `menu-management/`, `notification-management/`, `order-management/`, `return-management/`, `sales-management/`, `survey-management/`, `version-management/`, `waste-disposal-management/`.
+`403/`, `account-management/`, `agency-management/`, `auth/`, `collection-management/`, `company-management/`, `contract-management/`, `corporate-management/` (mới, có `mock.ts`), `dashboard/`, `delivery-management/`, `inventory-management/`, `invoice-management/`, `ip-whitelist-management/`, `maintain-management/`, `master-management/`, `material-order/`, `menu-management/`, `notification-management/`, `order-management/`, `return-management/`, `review-management/` (mới), `sales-management/`, `survey-management/`, `version-management/`, `waste-disposal-management/`.
 
 ---
 
@@ -115,12 +123,13 @@ es-kitchen-web-admin/
 
 ## API services — `src/services/`
 
+- **`client/api.ts`** — singleton `API` (class `Requester`): `baseURL=VITE_API_BASE_URL`, `Accept-Language: ja`, `paramsSerializer`, flag `disabledToken`; mọi `*.service.ts` dùng class này
 - **`http/axios.instance.ts`** — axios instance
 - **`http/handleRequest.ts`** — thêm `Authorization: Bearer <token>` + timezone header
-- **`http/handleResponse.ts`** — error handling + trigger `sessionEnded` khi 401
+- **`http/handleResponse.ts`** — error handling + trigger `handleSessionEnded` khi 401
 - **`http/authToken.ts`** — get/set/clear access + refresh token cookie
 - **`query/queryClient.ts`** — TanStack Query: `staleTime: 0`, `gcTime: 0`, `retry: 1`, no refetch on focus
-- **`client/*.service.ts`** — 30+ domain service (auth, dashboard, delivery-schedule, inventory, category, product-tag, survey, deliverer, agency, ip-whitelist, registration, …)
+- **`client/*.service.ts`** — 52 domain service (auth, dashboard, delivery-schedule, inventory, category, product-tag, survey, deliverer, agency, ip-whitelist, registration, review, quotation-request, machine-model, referral/referral-fee-plan, shipment-management, …)
 
 ---
 
@@ -132,7 +141,7 @@ es-kitchen-web-admin/
 
 **Mutation:** `useMutationCustom`
 
-**Options (dropdown data sources):** `useCompanyOptions`, `useMenuOptions`, `useSupplierOptions`, `useProductOptions`, `useDelivererOptions`, `useCategoryOptions`, `useFavoriteLatestMonthOptions`, `usePaymentMethodOptions`, `useProductTags`
+**Options (dropdown data sources):** `useCompanyOptions`, `useMenuOptions`, `useSupplierOptions`, `useProductOptions`, `useDelivererOptions`, `useCategoryOptions`, `useFavoriteLatestMonthOptions`, `usePaymentMethodOptions`, `useProductTags`, `useAllergenOptions`, `useRelayDestinationOptions`, `useWarehouseOptions`
 
 **Router:** `router.ts`
 
@@ -144,7 +153,7 @@ es-kitchen-web-admin/
 - Expiry 7 ngày, SameSite=strict, path `/`
 - Axios interceptor gắn `Authorization: Bearer <access_token>` cho mọi request
 - **Session monitoring:** `useAdminSessionSocket()` lắng nghe `session:ended` từ socket.io server → dispatch `sessionEnded` → hiển thị `SessionEndedModal`
-- **401 response** → dispatch `sessionEnded` (không auto-refresh — user phải login lại)
+- **401 response** (`http/handleResponse.ts`, `client/api.ts`): có `errorCode` AUTH_SESSION_* hoặc đang có session → `handleSessionEnded()` (hiện `SessionEndedModal`); chưa có session → `clearAuthState()`. Không auto-refresh — user phải login lại
 - **Redirect on login:** `?redirect=<encoded-path>` giữ đích sau login
 
 ---
@@ -163,9 +172,8 @@ es-kitchen-web-admin/
 | `@hooks` | `src/hooks/` |
 | `@utils` | `src/utils/` |
 | `@types` | `src/types/` |
-| `@assets` | `src/assets/` |
 
-> **Gap:** `@assets` trỏ tới `src/assets/` nhưng thực tế thư mục là `src/statics/` — cần Dev align.
+> Alias: `@`, `@components`, `@layouts`, `@pages`, `@routes`, `@services`, `@shared`, `@hooks`, `@utils`, `@types`, `@assets` (mỗi alias có thêm `/*`). **Gap còn lại:** `@assets` → `src/assets/` nhưng thư mục thật là `src/statics/` (đã kiểm 2026-10-16, `src/assets` không tồn tại). Code hiện chủ yếu import qua `@/...`.
 
 ---
 

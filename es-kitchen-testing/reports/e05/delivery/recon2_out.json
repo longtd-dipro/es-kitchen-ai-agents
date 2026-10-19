@@ -1,0 +1,183 @@
+{
+  "bodySnippet": "ホームスケジュール配送管理見積もり管理集金・駐車配送スタッフプロフィールお帰りなさいhoangh31@yopmail.com注文リストクリア検 索依頼番号会社名配送先拠点名配送先住所希望日ステータス依頼番号会社名配送先拠点名配送先住所希望日ステータスNo dataデータなし",
+  "allText": [
+    {
+      "tag": "SPAN",
+      "cls": "ant-menu-title-content",
+      "text": "ホーム"
+    },
+    {
+      "tag": "SPAN",
+      "cls": "ant-menu-title-content",
+      "text": "スケジュール"
+    },
+    {
+      "tag": "SPAN",
+      "cls": "ant-menu-title-content",
+      "text": "配送管理"
+    },
+    {
+      "tag": "SPAN",
+      "cls": "ant-menu-title-content",
+      "text": "見積もり管理"
+    },
+    {
+      "tag": "SPAN",
+      "cls": "ant-menu-title-content",
+      "text": "集金・駐車"
+    },
+    {
+      "tag": "SPAN",
+      "cls": "ant-menu-title-content",
+      "text": "配送スタッフ"
+    },
+    {
+      "tag": "SPAN",
+      "cls": "ant-menu-title-content",
+      "text": "プロフィール"
+    },
+    {
+      "tag": "A",
+      "cls": "title-font flex items-center font-medium text-gray",
+      "text": "お帰りなさい"
+    },
+    {
+      "tag": "DIV",
+      "cls": "base-heading-breadcrumb mb-5 flex items-center jus",
+      "text": "注文リスト"
+    },
+    {
+      "tag": "H1",
+      "cls": "mb-0! text-2xl font-normal text-neutral-900",
+      "text": "注文リスト"
+    },
+    {
+      "tag": "P",
+      "cls": "text-lg font-normal text-[#000000D9]",
+      "text": "データなし"
+    }
+  ],
+  "dateInputs": [
+    {
+      "ph": null,
+      "type": null,
+      "val": "",
+      "cls": "ant-picker ant-picker-outlined base-datepicker dat"
+    },
+    {
+      "ph": "希望配送日",
+      "type": null,
+      "val": ""
+    }
+  ],
+  "dateContainerCount": 3,
+  "allInputs": [
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "name": "search",
+      "id": "",
+      "ph": "配送先を検索",
+      "value": "",
+      "cls": "ant-input css-1tzwyuk"
+    },
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "name": "",
+      "id": "",
+      "ph": "希望配送日",
+      "value": "",
+      "cls": ""
+    },
+    {
+      "tag": "INPUT",
+      "type": "search",
+      "name": "",
+      "id": "_r_l_",
+      "ph": "",
+      "value": "",
+      "cls": "ant-select-input"
+    }
+  ],
+  "allBtns": [
+    {
+      "text": "",
+      "aria": "toggle sidebar",
+      "cls": "flex min-w-12 cursor-pointer items-center justify-center rou"
+    },
+    {
+      "text": "",
+      "aria": "メニューを開く",
+      "cls": "flex cursor-pointer items-center justify-center rounded-lg p"
+    },
+    {
+      "text": "hoangh31@yopmail.com",
+      "aria": "アカウントメニューを開く",
+      "cls": "ant-dropdown-trigger _accountTrigger_8rzm9_11"
+    },
+    {
+      "text": "クリア",
+      "aria": "",
+      "cls": "ant-btn css-1tzwyuk app ant-btn-default ant-btn-color-defaul"
+    },
+    {
+      "text": "検 索",
+      "aria": "",
+      "cls": "ant-btn css-1tzwyuk app ant-btn-primary ant-btn-color-primar"
+    }
+  ],
+  "tableInfo": [
+    {
+      "tag": "DIV",
+      "cls": "app ant-table-css-var ant-table-wrapper css-1tzwyuk",
+      "headerTexts": [
+        "依頼番号",
+        "会社名",
+        "配送先拠点名",
+        "配送先住所",
+        "希望日",
+        "ステータス"
+      ],
+      "rowCount": 3
+    },
+    {
+      "tag": "DIV",
+      "cls": "ant-table ant-table-empty app ant-table-css-var css-1tzwyuk ",
+      "headerTexts": [
+        "依頼番号",
+        "会社名",
+        "配送先拠点名",
+        "配送先住所",
+        "希望日",
+        "ステータス"
+      ],
+      "rowCount": 3
+    },
+    {
+      "tag": "DIV",
+      "cls": "ant-table-container",
+      "headerTexts": [
+        "依頼番号",
+        "会社名",
+        "配送先拠点名",
+        "配送先住所",
+        "希望日",
+        "ステータス"
+      ],
+      "rowCount": 3
+    }
+  ],
+  "paginationInfo": [],
+  "tableLinks": [],
+  "allLinks": [
+    {
+      "href": "HOST/dashboard",
+      "text": "お帰りなさい"
+    },
+    {
+      "href": "HOST/Content/manual/manual_es.pdf",
+      "text": ""
+    }
+  ]
+}

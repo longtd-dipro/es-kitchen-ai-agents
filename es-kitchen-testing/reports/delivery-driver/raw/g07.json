@@ -1,0 +1,12 @@
+{
+ "TC-RCV-003-018": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g07_anon.png"
+ },
+ "TC-RCV-001-060": {
+  "result": "Pending",
+  "note": "Bước 1 đã xác nhận (chưa login mở /warehouse/<id> -> /login, không lộ dữ liệu; route thực tế /delivery/:id?type=WAREHOUSE_RECEIPT cũng -> /login). Vế \"sau đăng nhập mở đúng kho\" cần kho thật của tài xế (DEV không có lịch) và Safari iOS.",
+  "evidence": "reports/delivery-driver/screenshots/g07_anon.png"
+ }
+}

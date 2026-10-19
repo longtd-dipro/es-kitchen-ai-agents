@@ -1,0 +1,199 @@
+{
+  "startUrl": "HOST/dashboard",
+  "menuItemCount": 7,
+  "menuItemTexts": [
+    "ホーム",
+    "スケジュール",
+    "配送管理",
+    "見積もり管理",
+    "集金・駐車",
+    "配送スタッフ",
+    "プロフィール"
+  ],
+  "collectionMenuFound": true,
+  "collectionUrl": "HOST/collection-reports",
+  "bodyText": "\n    ホームスケジュール配送管理見積もり管理集金・駐車配送スタッフプロフィールお帰りなさいhoangh31@yopmail.comホーム/集金管理集金管理CSV出力〜クリア検 索集金合計金額0円駐車合計料金0円No配送スタッフID配送スタッフ名集金合計金額駐車合計料金No配送スタッフID配送スタッフ名集金合計金額駐車合計料金No dataデータなし\n  \n",
+  "inputs": [
+    {
+      "placeholder": "開始日",
+      "type": null,
+      "value": "2026-10-01"
+    },
+    {
+      "placeholder": "終了日",
+      "type": null,
+      "value": "2026-10-31"
+    },
+    {
+      "placeholder": "配送スタッフID・名",
+      "type": "text",
+      "value": ""
+    }
+  ],
+  "buttons": [
+    {
+      "text": "",
+      "disabled": false,
+      "cls": "flex min-w-12 cursor-pointer items-center justify-center rou"
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "cls": "flex cursor-pointer items-center justify-center rounded-lg p"
+    },
+    {
+      "text": "hoangh31@yopmail.com",
+      "disabled": false,
+      "cls": "ant-dropdown-trigger _accountTrigger_8rzm9_11"
+    },
+    {
+      "text": "CSV出力",
+      "disabled": false,
+      "cls": "ant-btn css-1tzwyuk app ant-btn-default ant-btn-color-defaul"
+    },
+    {
+      "text": "クリア",
+      "disabled": false,
+      "cls": "ant-btn css-1tzwyuk app ant-btn-default ant-btn-color-defaul"
+    },
+    {
+      "text": "検 索",
+      "disabled": false,
+      "cls": "ant-btn css-1tzwyuk app ant-btn-primary ant-btn-color-primar"
+    }
+  ],
+  "selectCount": 0,
+  "antSelectCount": 0,
+  "tableHeaders": [
+    "No",
+    "配送スタッフID",
+    "配送スタッフ名",
+    "集金合計金額",
+    "駐車合計料金"
+  ],
+  "tableRowCount": 2,
+  "sampleRows": [
+    [
+      "No",
+      "配送スタッフID",
+      "配送スタッフ名",
+      "集金合計金額",
+      "駐車合計料金"
+    ],
+    [
+      "No dataデータなし"
+    ]
+  ],
+  "countTexts": [
+    "hoangh31@yopmail.com"
+  ],
+  "summaryCount": 0,
+  "summaryTexts": [],
+  "statCount": 0,
+  "activeItem": "集金・駐車",
+  "csvFound": true,
+  "allClasses": [
+    "css-1tzwyuk",
+    "ant-app",
+    "app",
+    "ant-layout",
+    "ant-layout-has-sider",
+    "h-screen",
+    "ant-layout-sider",
+    "ant-layout-sider-dark",
+    "hidden",
+    "border-0",
+    "bg-white!",
+    "md:block!",
+    "ant-layout-sider-children",
+    "flex",
+    "h-full",
+    "flex-col",
+    "shadow-lg",
+    "shadow-gray-400",
+    "h-[54px]!",
+    "shrink-0",
+    "items-center",
+    "justify-center",
+    "border-b",
+    "border-gray-200",
+    "object-contain",
+    "sidebar",
+    "mt-[6px]",
+    "flex-1",
+    "overflow-y-auto",
+    "px-[13px]",
+    "ant-menu",
+    "ant-menu-root",
+    "ant-menu-inline",
+    "ant-menu-light",
+    "es-sidebar-nav",
+    "ant-menu-css-var",
+    "ant-menu-item",
+    "ant-menu-title-content",
+    "text-base",
+    "text-neutral-700",
+    "ant-menu-item-active",
+    "ant-menu-item-selected",
+    "text-white",
+    "px-4",
+    "pt-4",
+    "justify-start",
+    "pb-4",
+    "min-w-12",
+    "cursor-pointer",
+    "rounded-lg",
+    "p-2",
+    "transition-colors",
+    "anticon",
+    "anticon-menu-fold",
+    "text-primary!",
+    "h-13.5!",
+    "min-h-13.5",
+    "justify-between",
+    "bg-white",
+    "gap-2",
+    "p-1.5",
+    "hover:bg-gray-50",
+    "md:hidden",
+    "title-font",
+    "font-medium",
+    "text-gray-900",
+    "md:block",
+    "ml-0",
+    "leading-6",
+    "text-black",
+    "md:ml-3",
+    "gap-6",
+    "size-8",
+    "ant-dropdown-trigger",
+    "_accountTrigger_8rzm9_11",
+    "_avatarImage_8rzm9_26",
+    "_userName_8rzm9_34",
+    "line-clamp-1",
+    "max-w-[212px]",
+    "overflow-hidden",
+    "text-ellipsis",
+    "ant-layout-content",
+    "bg-[#F0F2F5]",
+    "px-3!",
+    "lg:px-6!",
+    "py-6",
+    "base-heading-breadcrumb",
+    "mb-5",
+    "gap-3",
+    "gap-1",
+    "ant-breadcrumb",
+    "mb-0",
+    "ant-breadcrumb-item",
+    "ant-breadcrumb-link",
+    "ant-breadcrumb-separator",
+    "mb-0!",
+    "text-2xl",
+    "font-normal",
+    "text-neutral-900",
+    "heading-breadcrumb-actions"
+  ],
+  "schedUrl": "HOST/schedule",
+  "staffUrl": "HOST/driver"
+}

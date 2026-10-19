@@ -52,7 +52,7 @@
 
 ## 5. Content card
 
-- Nền canvas `#F0F2F5`; card trắng radius 8 (hoặc 0 khi full-bleed), margin 24, padding 16, các khối cách 16.
+- Nền canvas `#F0F2F5` (riêng Supplier E04: frame mẫu SW_HOME dùng nền trắng — xem 13 §11/S7); card trắng radius 8 (hoặc 0 khi full-bleed), margin 24, padding 16, các khối cách 16.
 
 ## 6. Search Panel (`Collab Tab` — vùng điều kiện tìm kiếm)
 

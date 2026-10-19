@@ -135,9 +135,6 @@ nav:
     - API Design: features/contract-delivery-authentication/es-kitchen-api/DESIGN.md
   - Delivery Driver:
     - Open Questions: features/delivery-driver/OPEN-QUESTIONS.md
-    - Test Cases - Driver App: features/delivery-driver/test-cases/driver-app/test-cases.md
-    - Test Cases - Analysis: features/delivery-driver/test-cases/driver-app/analysis.md
-    - Test Cases - Plan: features/delivery-driver/test-cases/driver-app/plan-tcs.md
   - Delivery Partner:
     - Figma Analysis: features/delivery-partner/Figma-Analysis.md
     - Tasks Overview: features/delivery-partner/tasks-overview.md

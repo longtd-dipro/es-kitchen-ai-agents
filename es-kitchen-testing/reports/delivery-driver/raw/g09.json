@@ -1,0 +1,12 @@
+{
+ "TC-CLD-001-030": {
+  "result": "OK",
+  "note": "Route thực tế của chi tiết là /delivery/:id (không có /cool/:id; /cool/* rơi vào wildcard). Cả hai URL chưa đăng nhập đều chuyển về /login (DA_AUTHEN_001).",
+  "evidence": "reports/delivery-driver/screenshots/g09_unauth_redirect.png"
+ },
+ "_obs": {
+  "result": "N/A",
+  "note": "Home không có thẻ COOL便; /delivery/QC_FAKE01 sau login -> /delivery/QC_FAKE01",
+  "evidence": "reports/delivery-driver/screenshots/g09_home_no_data.png ; reports/delivery-driver/screenshots/g09_delivery_fake_id.png"
+ }
+}

@@ -1,5 +1,7 @@
 # es-kitchen-web-admin — Patterns & Conventions
 
+> Nguồn = `es-kitchen-web-admin@633b2b7` ngày 2026-10-16. Đã đối chiếu: `services/client/api.ts`, `services/http/handleResponse.ts`, `routes/guards/RequirePermission.tsx`, `components/Common/BaseRichTextEditor`.
+
 > Đọc file này trước khi viết code React mới cho E03. Follow pattern đang có — không tự refactor.
 
 ---
@@ -29,13 +31,11 @@ class Requester {
       return config;
     });
 
-    // Response interceptor: 401 → logout
+    // Response interceptor: 401 → AUTH_SESSION_* hoặc đang có session: handleSessionEnded() (SessionEndedModal);
+    // chưa có session: clearAuthState(). Xem services/http/handleResponse.ts
     axiosInstance.interceptors.response.use(
       (res) => res.data,
-      (error) => {
-        if (error.response?.status === 401) store.dispatch(clearAuthState());
-        return Promise.reject(error);
-      }
+      (error) => { /* ... */ return Promise.reject(error); }
     );
   }
 }
@@ -361,13 +361,12 @@ Login
   → cookies set + Redux update → LOADING → fetch /me
 
 401 response (bất kỳ request nào)
-  → interceptor dispatch clearAuthState()
-  → Redux status = UNAUTHENTICATED
-  → RequireAuth redirect /login
+  → có errorCode AUTH_SESSION_* hoặc đang có accessToken: handleSessionEnded() → SessionEndedModal
+  → chưa có session: clearAuthState() → status UNAUTHENTICATED → RequireAuth redirect /login
 
 Permission check mỗi route
   → RequirePermission guard đọc ROUTE_PERMISSIONS[pathname]
-  → canAny(required) → render | redirect /forbidden
+  → canAny(required) → render | redirect ROUTE.FORBIDDEN; SUPER_ADMIN_ONLY_ROUTES chặn non-super-admin trước; super admin bypass
 ```
 
 ---
@@ -657,7 +656,7 @@ Dùng `useInfiniteQuery` nội bộ. Tự debounce search 300ms. Tự giữ labe
 
 ### BaseRichTextEditor
 
-Rich text editor (Tiptap-based). Dùng cho notification content, mô tả dài.
+Rich text editor (Quill 2 — `quill` + `quill/dist/quill.snow.css`; TipTap đã bỏ khỏi `package.json`). Dùng cho notification content, mô tả dài.
 
 ```tsx
 import BaseRichTextEditor from '@/components/Common/BaseRichTextEditor';

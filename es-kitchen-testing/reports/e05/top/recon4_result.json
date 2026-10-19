@@ -1,0 +1,162 @@
+{
+  "buttonCount": 35,
+  "buttonData": [
+    {
+      "text": "28",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white opacity-60 cursor-pointer transition-co",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">28</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "29",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white opacity-60 cursor-pointer transition-co",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">29</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "30",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white opacity-60 cursor-pointer transition-co",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">30</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "1",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">1</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "2",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">2</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "3",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">3</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "4",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">4</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "5",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-white cursor-pointer transition-colors hover:",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">5</span><div class=\"flex flex-col items-end\"></div></div>"
+    },
+    {
+      "text": "6配送：2件未 2件",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-green-50 cursor-pointer transition-colors hov",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">6</span><div class=\"flex flex-col items-end\"></div></div><span class=\"text-txt-middle text-xs leading-[18px]\">配送：2件</span><span class=\"inline-flex items-center gap-1 rounded bg-[#F23836] p"
+    },
+    {
+      "text": "7配送：2件未 2件",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border border-[#D9D9D9] p-2 text-left min-h-[90px] bg-green-50 cursor-pointer transition-colors hov",
+      "innerHTML": "<div class=\"flex min-h-[33px] items-center justify-between gap-1\"><span class=\"text-lg font-bold text-txt-high\">7</span><div class=\"flex flex-col items-end\"></div></div><span class=\"text-txt-middle text-xs leading-[18px]\">配送：2件</span><span class=\"inline-flex items-center gap-1 rounded bg-[#F23836] p"
+    }
+  ],
+  "gridCount": 2,
+  "grid_0": [
+    {
+      "t": "月",
+      "cls": "flex h-8 items-center justify-center bg-white rounded-lg"
+    },
+    {
+      "t": "火",
+      "cls": "flex h-8 items-center justify-center bg-white rounded-lg"
+    },
+    {
+      "t": "水",
+      "cls": "flex h-8 items-center justify-center bg-white rounded-lg"
+    },
+    {
+      "t": "木",
+      "cls": "flex h-8 items-center justify-center bg-white rounded-lg"
+    },
+    {
+      "t": "金",
+      "cls": "flex h-8 items-center justify-center bg-white rounded-lg"
+    },
+    {
+      "t": "土",
+      "cls": "flex h-8 items-center justify-center bg-white rounded-lg"
+    },
+    {
+      "t": "日",
+      "cls": "flex h-8 items-center justify-center bg-white rounded-lg"
+    }
+  ],
+  "grid_1": [
+    {
+      "t": "28",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border bo"
+    },
+    {
+      "t": "29",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border bo"
+    },
+    {
+      "t": "30",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border bo"
+    },
+    {
+      "t": "1",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border bo"
+    },
+    {
+      "t": "2",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border bo"
+    },
+    {
+      "t": "3",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border bo"
+    },
+    {
+      "t": "4",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border bo"
+    },
+    {
+      "t": "5",
+      "cls": "flex flex-col gap-[3px] overflow-hidden rounded-md border bo"
+    }
+  ],
+  "annoDetailUrl": "HOST/announcements/91432",
+  "annoDetailHTML": "<div class=\"py-6\"><div class=\"base-heading-breadcrumb mb-5 flex items-center justify-between gap-3\"><div class=\"flex flex-col gap-1\"><nav class=\"ant-breadcrumb mb-0 css-1tzwyuk app\"><ol><li class=\"ant-breadcrumb-item\"><span class=\"ant-breadcrumb-link\"><a href=\"/dashboard\" data-discover=\"true\">ホーム</a></span></li><li class=\"ant-breadcrumb-separator\" aria-hidden=\"true\">/</li><li class=\"ant-breadcrumb-item\"><span class=\"ant-breadcrumb-link\"><a href=\"/dashboard\" data-discover=\"true\">ホーム</a></span></li><li class=\"ant-breadcrumb-separator\" aria-hidden=\"true\">/</li><li class=\"ant-breadcrumb-item\"><span class=\"ant-breadcrumb-link\">お知らせ詳細</span></li></ol></nav><h1 class=\"mb-0! text-2xl font-normal text-neutral-900\">お知らせ詳細</h1></div><div class=\"heading-breadcrumb-actions\"></div></div><div class=\"border-border-default rounded-lg border bg-white px-6 py-5\"><div class=\"flex flex-wrap items-center justify-between gap-3\"><span class=\"inline-flex items-center rounded px-2 text-xs leading-5 font-bold tracking-[0.05em] text-white bg-red-500\">重要</span><span class=\"text-txt-low text-sm\">投稿日時：2026年9月18日 15:50</span></div><h2 class=\"text-txt-high mt-4 mb-0! text-2xl font-bold\">ssssss</h2><div class=\"border-border-default mt-5 border-t pt-5\"><div class=\"text-txt-high leading-7 whitespace-pre-line [&amp;_ol]:list-decimal [&amp;_ol]:pl-6 [&amp;_p]:mb-2 [&amp;_ul]:list-disc [&amp;_ul]:pl-6\"><p>cccccccccccc</p></div></div><div class=\"border-border-default mt-6 border-t pt-5\"><a class=\"text-primary inline-flex items-center gap-1 font-bold\" href=\"/dashboard\" data-discover=\"true\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" viewBox=\"0 0 256 256\"><path d=\"M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z\"></path></svg>一覧に戻る</a></div></div></div>",
+  "annoDetailH1": [
+    "お知らせ詳細"
+  ],
+  "annoDetailH2": [
+    "ssssss"
+  ],
+  "annoDetailBodyText": "\n    ホームスケジュール配送管理見積もり管理集金・駐車配送スタッフプロフィールお帰りなさいhoangh31@yopmail.comホーム/ホーム/お知らせ詳細お知らせ詳細重要投稿日時：2026年9月18日 15:50sssssscccccccccccc一覧に戻る\n  \n",
+  "backLinkCount": 1,
+  "annoDetailBadges": [
+    "重要"
+  ],
+  "datePatterns": [
+    "投稿日時：2026年9月18日 15:50"
+  ],
+  "annoDetailLinks": [
+    {
+      "text": "お帰りなさい",
+      "href": "/dashboard"
+    },
+    {
+      "text": "",
+      "href": "https://es-station.es-kitchen.jp/Content/manual/manual_es.pdf"
+    },
+    {
+      "text": "ホーム",
+      "href": "/dashboard"
+    },
+    {
+      "text": "ホーム",
+      "href": "/dashboard"
+    },
+    {
+      "text": "一覧に戻る",
+      "href": "/dashboard"
+    }
+  ],
+  "day9ButtonClass": "flex flex-col gap-[3px] overflow-hidden rounded-md p-2 text-left min-h-[90px] bg-white border-2 border-primary cursor-pointer transition-colors hover:border-primary",
+  "day9ButtonText": "9",
+  "day9ClickUrl": "HOST/schedule?view=week&date=2026-10-09",
+  "schedNavUrl": "HOST/schedule"
+}

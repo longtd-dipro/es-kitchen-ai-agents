@@ -105,7 +105,12 @@
     "test@gmail.com",
     "test@admin.com",
     "0120-000-0000",
-    "AKIAIOSFODNN7EXAMPLE"
+    "AKIAIOSFODNN7EXAMPLE",
+    "+81-3-0000-0000",
+    "03-000-000",
+    "03-0000-000",
+    "03-0000-00000",
+    "090-0000-00000"
   ],
   "allowPathPatterns": [
     "\\.claude/config/pii-patterns\\.json$",

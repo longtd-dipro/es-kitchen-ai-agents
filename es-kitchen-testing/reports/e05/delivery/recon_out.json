@@ -1,0 +1,100 @@
+{
+  "sidebarItems": [],
+  "delivLinkFound": false,
+  "ordersUrl": "HOST/orders",
+  "headings": [
+    "ホーム",
+    "スケジュール",
+    "配送管理",
+    "見積もり管理",
+    "集金・駐車",
+    "配送スタッフ",
+    "プロフィール",
+    "お帰りなさい",
+    "注文リスト",
+    "注文リスト"
+  ],
+  "buttons": [
+    {
+      "text": "",
+      "ariaLabel": "toggle sidebar"
+    },
+    {
+      "text": "",
+      "ariaLabel": "メニューを開く"
+    },
+    {
+      "text": "hoangh31@yopmail.com",
+      "ariaLabel": "アカウントメニューを開く"
+    },
+    {
+      "text": "クリア",
+      "ariaLabel": null
+    },
+    {
+      "text": "検 索",
+      "ariaLabel": null
+    }
+  ],
+  "inputs": [
+    {
+      "ph": "配送先を検索",
+      "type": "text",
+      "name": "search",
+      "value": ""
+    },
+    {
+      "ph": "希望配送日",
+      "type": null,
+      "name": null,
+      "value": ""
+    },
+    {
+      "ph": null,
+      "type": "search",
+      "name": null,
+      "value": ""
+    }
+  ],
+  "tableHeaders": [
+    "依頼番号",
+    "会社名",
+    "配送先拠点名",
+    "配送先住所",
+    "希望日",
+    "ステータス"
+  ],
+  "rowCount": 2,
+  "firstRowCells": [
+    "依頼番号",
+    "会社名",
+    "配送先拠点名",
+    "配送先住所",
+    "希望日",
+    "ステータス"
+  ],
+  "firstRowHasLink": false,
+  "hasPagination": false,
+  "expandBtnFound": false,
+  "expandBtnPlusFound": false,
+  "inputsAfterExpand": [
+    {
+      "ph": "配送先を検索",
+      "type": "text",
+      "name": "search",
+      "value": ""
+    },
+    {
+      "ph": "希望配送日",
+      "type": null,
+      "name": null,
+      "value": ""
+    },
+    {
+      "ph": null,
+      "type": "search",
+      "name": null,
+      "value": ""
+    }
+  ]
+}

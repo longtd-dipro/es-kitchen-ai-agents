@@ -1,5 +1,0 @@
-output/*
-!output/.gitkeep
-input/*
-!input/.gitkeep
-.DS_Store

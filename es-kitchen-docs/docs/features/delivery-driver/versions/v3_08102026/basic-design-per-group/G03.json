@@ -1,0 +1,128 @@
+{
+ "group_no": "03",
+ "key": "MyPage",
+ "file": "BD_03_MyPage.xlsx",
+ "figma_group_nodes": [
+  "34199:211570"
+ ],
+ "figma_group_names": [
+  "Group My PAGE"
+ ],
+ "screens": [
+  "DA_HOME_005"
+ ],
+ "frames": [
+  {
+   "no": "03-01",
+   "name": "DA_HOME_005 — アカウント [default]",
+   "node": "16892:78274",
+   "w": 390,
+   "h": 845,
+   "kind": "Screen",
+   "screen_id": "DA_HOME_005",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Màn My Page: header, 基本情報 6 trường, ログアウト, bottom nav"
+  },
+  {
+   "no": "03-02",
+   "name": "annotation-3",
+   "node": "18870:17324",
+   "w": 375,
+   "h": 126,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": null,
+   "dup_of": null,
+   "note": "Chú thích đi kèm DA_HOME_005: #0 ドライバーの基本情報：委託配送会社から登録した情報。参照のみ、編集不可 (VN: thông tin do delivery admin nhập, chỉ view, không edit)"
+  },
+  {
+   "no": "03-03",
+   "name": "annotation-3",
+   "node": "18870:17310",
+   "w": 375,
+   "h": 56,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": null,
+   "dup_of": null,
+   "note": "Chú thích đi kèm DA_HOME_005: #1 ログインID：login id Format : “DR00000”"
+  },
+  {
+   "no": "03-04",
+   "name": "annotation-3",
+   "node": "18870:17318",
+   "w": 340,
+   "h": 36,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": null,
+   "dup_of": null,
+   "note": "Chú thích đi kèm DA_HOME_005: #2 メールアドレス：Email"
+  },
+  {
+   "no": "03-05",
+   "name": "annotation-3",
+   "node": "18870:17311",
+   "w": 340,
+   "h": 36,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": null,
+   "dup_of": null,
+   "note": "Chú thích đi kèm DA_HOME_005: #3 配送スタッフ名：Tên driver"
+  },
+  {
+   "no": "03-06",
+   "name": "annotation-3",
+   "node": "18870:17329",
+   "w": 340,
+   "h": 36,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": null,
+   "dup_of": null,
+   "note": "Chú thích đi kèm DA_HOME_005: #4 カナ：Phiên âm theo katakana"
+  },
+  {
+   "no": "03-07",
+   "name": "annotation-3",
+   "node": "18870:17334",
+   "w": 340,
+   "h": 36,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": null,
+   "dup_of": null,
+   "note": "Chú thích đi kèm DA_HOME_005: #5 電話番号：SĐT"
+  },
+  {
+   "no": "03-08",
+   "name": "annotation-3",
+   "node": "18870:17339",
+   "w": 340,
+   "h": 76,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": null,
+   "dup_of": null,
+   "note": "Chú thích đi kèm DA_HOME_005: #6 所属している委託配送先名 / Tên công ty vận chuyển mà driver này thuộc về"
+  }
+ ],
+ "non_screen_counts": {},
+ "tables": [],
+ "images": {
+  "DA_HOME_005": [
+   {
+    "file": "N03/03-01_DA_HOME_005.png",
+    "node": "16892:78274",
+    "no": "03-01",
+    "label": "DA_HOME_005 · Screen · default"
+   }
+  ]
+ },
+ "open": [
+  "Annotation #0-#6 không nêu hành vi chuông/トラブル/マニュアル: giữ UNKNOWN (OQ-41, OQ-01)",
+  "Không đọc được bằng use_figma (hết hạn mức) — inventory dựa trên get_metadata + screenshot; text chi tiết trong container ẩn 「すべて見る」 không kiểm lại"
+ ]
+}

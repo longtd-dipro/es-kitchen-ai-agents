@@ -1,7 +1,8 @@
 # es-kitchen-web-outsource-web-private — Cấu trúc Source
 
-> Repo: `es-kitchen-web-outsource-web-private` · Epic: **E05 Outsource / Internal Private Admin**
-> Vai trò: internal operation tool cho outsource team — quản lý delivery status, collection reports, driver/employee, schedule.
+> Nguồn = es-kitchen-web-outsource-web-private@9b0e677 ngày 2026-10-16 (HEAD; working tree có sửa `vite.config.ts` chưa commit — chỉ ghi nhận)
+> Repo: `es-kitchen-web-outsource-web-private` · Epic: **E05 Công ty vận chuyển Web (委託配送会社Web; tên cũ Outsource/Logistic)**
+> Vai trò: web cho công ty vận chuyển — dashboard + thông báo, lịch (schedule), quản lý báo giá (orders), trạng thái giao hàng, thu tiền/đỗ xe (collection-reports), tài xế (driver), profile công ty, đăng ký công ty (public). `package.json` name = `es-kitchen-web-outsource-private`, version `0.0.0`.
 
 ---
 
@@ -19,8 +20,9 @@
 | Router | react-router-dom | 7.15.1 |
 | Forms | react-hook-form + yup | 7.76.0 / 1.7.1 |
 | HTTP | axios | 1.16.1 |
+| Toast / Icon | react-toastify 11.1.0 · @phosphor-icons/react 2.1.10 · dayjs 1.11.20 · dompurify | — |
 
-> **Cùng stack với E04 web-supplier** (Vite 8 + AntD 6.4). Theme màu khác (**lime green** thay vì purple).
+> **Cùng stack với E04 web-supplier** (Vite 8 + AntD 6.4) nhưng KHÁC domain/theme (green, không phải purple) — đừng nhầm E04↔E05. Không có test (`npm test` = echo "No tests configured"); có husky + lint-staged; script `postal:build` (`scripts/generate-postal-data.mjs`) sinh dữ liệu mã bưu điện vào `public/postal/`.
 
 ---
 
@@ -29,18 +31,19 @@
 ```
 es-kitchen-web-outsource-web-private/
 ├── src/
-│   ├── components/       ← Auth, Common, Public
+│   ├── components/       ← Auth, Common (Base* + Fields/), Public, ScheduleCalendar
+│   ├── config.ts         ← serverConfig (VITE_API_BASE_URL, VITE_AUTH_URL)
 │   ├── constants/
 │   ├── enums/
 │   ├── hooks/            ← useAuth, useSessionExpired, useOrderRequests, useSchedule, useDeliveries, …
 │   ├── layouts/          ← AuthLayout · AuthCenteredLayout · NonAuthLayout · PublicPageLayout
 │   ├── models/
-│   ├── pages/            ← auth, dashboard, orders, schedule, delivery-status, collection-reports, driver, profile, …
+│   ├── pages/            ← auth, register, dashboard, orders, schedule, delivery-status, collection-reports, driver, profile, change-password
 │   ├── routes/           ← Router + guards (PublicOnly, RequireAuth)
 │   ├── services/
 │   │   ├── http/         ← axios + interceptors + session-expiry
 │   │   ├── query/        ← TanStack Query client
-│   │   └── client/       ← 10+ domain services
+│   │   └── client/       ← 16 file (api.ts + 15 domain services)
 │   ├── shared/           ← Providers + theme
 │   ├── statics/          ← icons, images
 │   ├── stores/           ← Redux store (reducers/auth)
@@ -60,19 +63,24 @@ es-kitchen-web-outsource-web-private/
 
 ## Routes (top-level)
 
-### Public — `NonAuthLayout` / `PublicPageLayout`
+> Đếm từ `src/routes/index.tsx`: **19 route** (5 public + 14 protected; 18 lazy page) — trước đây doc ghi 20 (có `/schedule/:id`, `/collection-reports/:id`, `/profile` mô tả sai). Ngoài ra `/` → redirect `/login` (hoặc `/dashboard` khi đã login) và `*` → `/login`.
 
-`/login` · `/register` · `/forgot-password` · `/verify` · `/reset-password` · `/reset-success`
+### Public — `PublicOnly` + `NonAuthLayout` / `PublicPageLayout` (5)
 
-### Protected — `AuthLayout`
+`/login` · `/forgot-password` · `/verify` · `/reset-password` (NonAuthLayout `background="gradient"` cho 3 route reset) · `/register` (PublicPageLayout)
 
-`/dashboard` · `/orders` · `/orders/:id` · `/schedule` · `/schedule/:id` · `/delivery-status` · `/delivery-status/:id` · `/collection-reports` · `/collection-reports/:id` · `/driver` · `/driver/create` · `/driver/:id` · `/profile` · `/change-password`
+### Protected — `RequireAuth` (14)
+
+`AuthCenteredLayout`: `/reset-success`
+`AuthLayout`: `/dashboard` · `/announcements/:id` · `/profile` · `/orders` · `/orders/:id` · `/schedule` · `/delivery-status` · `/delivery-status/:id` · `/collection-reports` · `/driver` · `/driver/create` · `/driver/:id` · `/change-password`
+
+> `/schedule` và `/collection-reports` chỉ có trang list (không còn trang `:id`). `/driver/create` khai báo trước `/driver/:id`.
 
 ---
 
 ## Pages (src/pages/)
 
-`auth/` · `register/` · `dashboard/` · `profile/` · `orders/` (OrdersPage, OrderDetailPage) · `schedule/` (list + detail) · `delivery-status/` · `collection-reports/` (BillPage, BillDetailPage) · `driver/` (EmployeePage, EmployeeDetailPage, CreateDriverPage) · `change-password/`
+`auth/` (Login, ForgotPassword, Verify, ResetPassword, ResetSuccess) · `register/` (RegisterPage + RegisterStepper, BasicInfo/ServiceArea/VehicleInfo/ContactTable section) · `dashboard/` (DashboardPage, AnnouncementDetailPage; card: Announcement, MonthlySchedule, PendingQuote) · `profile/` (ProfilePage; tab BasicInfo/DeliveryInfo/History) · `orders/` (OrdersPage, OrderDetailPage; tab RequestDetail/Answer/AnswerHistory) · `schedule/` (SchedulePage — lịch tháng/tuần dùng `components/ScheduleCalendar`) · `delivery-status/` (list + detail; tab Overview/Address/Report/Result) · `collection-reports/` (BillPage — list, có export) · `driver/` (EmployeePage, EmployeeDetailPage, CreateDriverPage; bulk issue account) · `change-password/`
 
 ---
 
@@ -102,8 +110,8 @@ es-kitchen-web-outsource-web-private/
 - `http/handleResponse.ts` — error + session expiry handling
 - `http/authToken.ts`
 
-**Client services (10+):**
-`auth.service.ts` · `user.service.ts` · `company-profile.service.ts` · `company-contact.service.ts` · `order-request.service.ts` · `delivery-report.service.ts` · `driver.service.ts` · `schedule.service.ts` · `deliverer-register.service.ts` · `announcement.service.ts` · `api.ts`
+**Client services (`services/client/`, 15 domain + `api.ts` Requester singleton):**
+`auth` · `user` · `company-profile` · `company-contact` · `order-request` · `delivery` · `collection-report` · `driver` · `schedule` · `deliverer-register` · `announcement` · `fee-area` · `file-upload` (presigned upload) · `postal-code` · `error-report` (`.service.ts`)
 
 **Query:** `query/queryClient.ts` · `baseQuery.ts`
 
@@ -111,12 +119,12 @@ es-kitchen-web-outsource-web-private/
 
 ## Custom hooks — `src/hooks/`
 
-**Auth/session:** `useAuth`, `useSessionExpired`, `useCan`
+**Auth/session:** `useAuth`, `useSessionExpired`, `useCan` (check `roles`; component `RequiredPermission`)
 
 **Data (TanStack Query wrappers):**
-`useOrderRequests`, `useSchedule`, `useDeliveries`, `useDrivers`, `useFeeAreas`, `useCompanyProfile`, `useCompanyContacts`, `useAnnouncements`, `useCollectionReports`, `useDelivererRegister`
+`useOrderRequests`, `useSchedule`, `useDeliveries`, `useDrivers`, `useFeeAreas`, `useCompanyProfile`, `useCompanyContacts`, `useAnnouncements`, `useCollectionReports`, `useDelivererRegister`, `usePostalCodeSearch`
 
-**UI/form:** `useTableParams`, `useMutationCustom`, `useUnsavedChangesGuard`, `useDebouncedValue`, `useInView`, `router`
+**UI/form:** `useTableParams`, `useMutationCustom`, `useUnsavedChangesGuard` (.tsx), `useDebouncedValue`, `useInView`, `router`
 
 > **Đặc thù:** E05 có nhiều hook wrap TanStack Query per-domain (`useOrderRequests`, `useSchedule`, …) — pattern này khác E03 (E03 gọi trực tiếp `useQuery` trong page). Follow pattern hiện có khi thêm feature.
 
@@ -144,6 +152,7 @@ Chuẩn: `@`, `@components`, `@layouts`, `@pages`, `@routes`, `@services`, `@sha
 |---|---|
 | `VITE_API_BASE_URL` | API server base URL |
 | `VITE_AUTH_URL` | External auth server URL |
+| `VITE_AUTH_SECRET` | Được `src/config.ts` đọc (`serverConfig.auth.secret`) nhưng KHÔNG có trong `.env.example` — chưa xác nhận có dùng thật |
 
 ---
 
@@ -168,12 +177,11 @@ Chuẩn: `@`, `@components`, `@layouts`, `@pages`, `@routes`, `@services`, `@sha
 - **AntD 6.4** — reset CSS + theme customization
 - **Tailwind safelist:** dynamic chart color (orange, green, yellow tones)
 
-**Theme màu (E05):** primary lime green `#8ACA0D`.
-
-> ⚠️ **Lime green `#8ACA0D` KHÔNG có trong `.claude/rules/design_rule.md` token table.** Đây là màu duy nhất của E05 — dùng hex trực tiếp hoặc tạo custom token `colors.primitives.green.outsource`. Cần confirm với design system owner khi mở rộng.
+**Theme màu (E05):** primary green `#1a7f37` (`shared/theme/antd-theme.ts` `colorPrimary`; = `colors.semantics.success.500` / green.500 trong `design_rule.md` — khớp Figma). Doc cũ ghi lime `#8ACA0D` là LỖI THỜI, không còn trong source.
 
 ---
 
 ## Vite plugins
 
 - `vite-plugin-svgr` — SVG as React component
+- `@vitejs/plugin-react` 6.0.2 · alias `@/…` trỏ `src/`

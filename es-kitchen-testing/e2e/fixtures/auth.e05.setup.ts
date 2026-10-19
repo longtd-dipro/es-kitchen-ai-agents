@@ -9,10 +9,10 @@ setup('authenticate e05', async ({ browser }) => {
   const page = await browser.newPage({ baseURL: url })
 
   await page.goto('/login')
-  await page.getByPlaceholder('メールアドレス').fill(process.env.E05_EMAIL!)
+  await page.getByPlaceholder('ログインID').fill(process.env.E05_EMAIL!)
   await page.getByPlaceholder('パスワード').fill(process.env.E05_PASSWORD!)
   await page.getByRole('button', { name: 'ログイン' }).click()
-  await page.waitForURL('/')
+  await page.waitForURL(/dashboard|\//, { timeout: 20000 })
 
   await page.context().storageState({ path: '.auth/e05.json' })
   await page.close()

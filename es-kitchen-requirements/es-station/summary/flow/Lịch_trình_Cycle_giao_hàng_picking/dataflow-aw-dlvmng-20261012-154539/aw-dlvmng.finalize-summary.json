@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "dataflow",
+  "quality": "showcase",
+  "specification": {
+    "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Lịch_trình_Cycle_giao_hàng_picking/dataflow-aw-dlvmng-20261012-154539/candidate.json",
+    "sha256": "c7ab01f739fb34aa66bef217387c6ca40932dc2ce8175e94e527264015f6557e",
+    "bytes": 39159
+  },
+  "artifact": {
+    "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Lịch_trình_Cycle_giao_hàng_picking/dataflow-aw-dlvmng-20261012-154539/aw-dlvmng.html",
+    "sha256": "a9ebe444ea094dfb5de36580ee0c441ac3f8bca5a92fc40bd63ff718992d7a14",
+    "bytes": 776194
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Lịch_trình_Cycle_giao_hàng_picking/dataflow-aw-dlvmng-20261012-154539/aw-dlvmng.finalize.json",
+    "summaryReceipt": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Lịch_trình_Cycle_giao_hàng_picking/dataflow-aw-dlvmng-20261012-154539/aw-dlvmng.finalize-summary.json",
+    "browserCheckReceipt": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Lịch_trình_Cycle_giao_hàng_picking/dataflow-aw-dlvmng-20261012-154539/aw-dlvmng.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.0.1",
+    "availableVersion": "3.0.1",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-12T08:45:03.149Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 1737,
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "routesOverSuggestedBends": 2
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [],
+      "detours": [
+        {
+          "relationship": {
+            "id": "f10",
+            "from": "thomas",
+            "to": "deliv",
+            "label": "KQ xuất ok・ng",
+            "collectionIndex": 8,
+            "artifactIndex": 9
+          },
+          "bends": 3,
+          "stretch": 1
+        },
+        {
+          "relationship": {
+            "id": "f12",
+            "from": "driver",
+            "to": "deliv",
+            "label": "nhận・giao",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "bends": 3,
+          "stretch": 1
+        }
+      ],
+      "truncated": false
+    },
+    "hints": [
+      "thomas → deliv needs 3 bends: move node thomas or deliv so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "driver → deliv needs 3 bends: move node driver or deliv so they share a row or column with matching centers, or sit diagonally with a clear corner."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}

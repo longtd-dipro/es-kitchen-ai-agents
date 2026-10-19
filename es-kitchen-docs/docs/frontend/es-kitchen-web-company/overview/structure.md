@@ -1,7 +1,9 @@
 # es-kitchen-web-company — Cấu trúc Source
 
+> Nguồn = `es-kitchen-web-company@fddcaef` ngày 2026-10-16 (commit cuối 2026-06-25, không có commit mới từ lần cập nhật docs trước; working tree chỉ sửa `vite.config.ts` port 3001→3002, **chưa commit**).
+
 > Repo: `es-kitchen-web-company` · Epic: E02 Company Admin · 58 functions
-> Stack: React 19 / Vite 7 / RTK v2 / TanStack Query v5 / Ant Design v6
+> Stack (installed): React 19.2.4 / Vite 7.3.1 / TypeScript ~5.9.3 / RTK 2.11.2 / TanStack Query 5.90.20 / Ant Design 6.2.2 / react-router-dom 7.13.0 / Tailwind 4.1.18 / react-hook-form 7.72.0 + yup 1.7.1 / axios 1.13.4 / react-toastify 11. Không có socket.io, recharts, lodash, quill.
 
 ---
 
@@ -13,7 +15,8 @@
 | Người dùng | Internal system admin | Company staff |
 | Functions | 160 | 58 |
 | Default route | `/dashboard` | `/sales-management` |
-| Pages hiện có | 8 page groups | 3 page groups |
+| Pages hiện có | 24 thư mục domain / 115 page.tsx | 10 thư mục domain / 18 page.tsx |
+| Permission guard | `RequirePermission` + `usePermissions` | Không có (chỉ `RequireAuth`, `PublicOnly`; `useCan` đọc role từ `utils/client/permission.ts`) |
 
 > ⚠️ Hai repo dùng chung stack nhưng **nghiệp vụ hoàn toàn khác nhau**. Không nhầm lẫn.
 
@@ -24,87 +27,57 @@
 ```
 es-kitchen-web-company/
 └── src/
-    ├── pages/                    ← Feature pages (ít hơn web-admin)
-    │   ├── auth/                 ← Login, ForgotPassword, Verify, ResetPassword
-    │   ├── account-management/   ← Quản lý user trong company
-    │   │   └── user/
-    │   │       └── [userId]/
-    │   └── sales-management/     ← Xem doanh thu, lịch sử mua hàng
-    │       └── user-purchase-history/[purchaseNumber]/
+    ├── pages/                    ← 10 domain (18 page.tsx)
+    │   ├── auth/                 ← Login, ForgotPassword, Verify, ResetPassword, ResetSuccess, register/ (đăng ký company, nhiều section)
+    │   ├── account-management/   ← user/[userId]
+    │   ├── sales-management/     ← components/UserSales, user-purchase-history/[purchaseNumber]
+    │   ├── company-management/   ← [id] (tabs: contract · history · manager), mock.ts
+    │   ├── contract-management/  ← create/ (step 1-3: sections, step3)
+    │   ├── menu-order/           ← create/, hooks/useMenuOrder.ts, components (ProductCard, AiDistributionDrawer, …)
+    │   ├── delivery-management/  ← schedule/ (calendar) · prepared-shipping/[id] · material-shipping
+    │   ├── disposal-report/      ← báo cáo phế thải
+    │   ├── disposal-history/     ← lịch sử phế thải
+    │   └── employee-benefits/    ← phúc lợi nhân viên (page mới nhất, ESKITCHEN-1422)
     │
-    ├── components/
-    │   ├── Auth/
-    │   └── Common/
-    │
-    ├── layouts/
-    │   ├── AuthLayout.tsx
-    │   ├── AuthCenteredLayout.tsx
-    │   └── NonAuthLayout.tsx
-    │
-    ├── routes/
-    │   ├── index.tsx             ← createBrowserRouter
-    │   └── guards/
-    │       ├── RequireAuth.tsx
-    │       └── PublicOnly.tsx
-    │
-    ├── stores/
-    │   └── reducers/
-    │       └── auth.ts           ← Auth state (same pattern as web-admin)
-    │
+    ├── components/               ← Auth/, Common/ (Base* — không có BaseRichTextEditor, ChangeHistoryTable, BaseInfiniteSelect… như web-admin)
+    ├── layouts/                  ← AuthLayout · AuthCenteredLayout · NonAuthLayout · RegisterLayout
+    ├── routes/                   ← index.tsx (createBrowserRouter) + guards/{RequireAuth,PublicOnly}.tsx
+    ├── stores/reducers/auth.ts   ← slice duy nhất
     ├── services/
-    │   ├── client/
-    │   │   ├── api.ts            ← Axios Requester (identical to web-admin)
-    │   │   ├── auth.service.ts
-    │   │   ├── account.service.ts
-    │   │   ├── sales.service.ts
-    │   │   ├── user.service.ts
-    │   │   └── error-report.service.ts
-    │   ├── http/
-    │   │   ├── axios.instance.ts
-    │   │   ├── authToken.ts
-    │   │   ├── handleRequest.ts
-    │   │   ├── handleResponse.ts
-    │   │   └── index.ts
-    │   └── query/
-    │       ├── queryClient.ts
-    │       ├── baseQuery.ts
-    │       └── index.ts
-    │
-    ├── hooks/
-    ├── models/
-    ├── constants/
-    ├── enums/
-    ├── types/
-    ├── utils/
-    │   ├── client/
-    │   └── menu/
-    ├── validation/
-    │   └── schemas.ts
-    ├── shared/
-    │   ├── providers/
-    │   │   └── AntdProvider.tsx
-    │   └── theme/
-    └── statics/
-        ├── icons/
-        └── images/
+    │   ├── client/               ← api.ts (Requester) + 11 *.service.ts (xem bảng dưới)
+    │   ├── http/                 ← axios.instance, authToken, handleRequest, handleResponse
+    │   └── query/                ← queryClient (staleTime 0, gcTime 0), baseQuery
+    ├── hooks/                    ← 9 file: useAuth, useCan, useDebouncedValue, useInView, useMutationCustom,
+    │                               usePaymentMethodOptions, useTableParams, useUnsavedChangesGuard, router
+    ├── models/                   ← account, auth, common, company, contract, delivery-schedule, disposal,
+    │                               location, menu-order, prepared-shipping, sales, Response
+    ├── constants/ (route, nav, menu, messages, errors, date, common, example-data) · enums/ · types/ · config.ts
+    ├── data/menu-order-products.json  ← dữ liệu mẫu cho menu-order
+    ├── utils/ (common.ts, client/, menu/) · validation/schemas.ts
+    ├── shared/ (providers/AntdProvider.tsx, theme/antd-theme.ts) · styles/ · statics/
+    └── main.tsx                  ← StrictMode → QueryClient → Redux → AntdProvider → AntdApp → ToastContainer → App
 ```
 
 ---
 
-## Routes (pages hiện có)
+## Routes (23 path, đếm từ `routes/index.tsx`)
 
-| Route path | Page component | Ghi chú |
+| Nhóm | Route path | Ghi chú |
 |---|---|---|
-| `/login` | `LoginPage` | Public only |
-| `/forgot-password` | `ForgotPasswordPage` | |
-| `/verify` | `VerifyCodePage` | OTP verify |
-| `/reset-password` | `ResetPasswordPage` | |
-| `/account-management` | `AccountManagementPage` | Quản lý users của company |
-| `/account-management/user/:userId` | `UserAccountDetailPage` | |
-| `/sales-management` | `SalesManagementPage` | **Default sau login** |
-| `/sales-management/user-purchase-history/:purchaseNumber` | `UserPurchaseHistoryPage` | |
+| Public (`NonAuthLayout`) | `/login` · `/forgot-password` · `/verify` · `/reset-password` | `PublicOnly`; `/` → `/login` |
+| Public (`RegisterLayout`) | `/register` | Đăng ký company |
+| Auth (`AuthCenteredLayout`) | `/reset-success` | |
+| Auth (`AuthLayout`) | `/account-management` · `/account-management/user/:userId` | Users của company |
+| | `/sales-management` · `/sales-management/user-purchase-history/:purchaseNumber` | **Default sau login** (`/` → `/sales-management`) |
+| | `/company-management` · `/company-management/:id` | Mock FE-only |
+| | `/contract-management` · `/contract-management/create` | Mock FE-only |
+| | `/menu-order` · `/menu-order/create` | Mock FE-only |
+| | `/delivery-management/schedule` · `/delivery-management/prepared-shipping` · `/delivery-management/prepared-shipping/:id` · `/delivery-management/material-shipping` | Mock FE-only |
+| | `/disposal-report` · `/disposal-history` | Mock FE-only |
+| | `/employee-benefits` | |
+| Fallback | `*` → `/login` | |
 
-Default redirect: `/` → `/sales-management` (khác với web-admin → `/dashboard`)
+> `ROUTE` còn khai báo `MENU_MANAGEMENT`, `PRODUCT_MASTER_MANAGEMENT` (`/menu-management`, `/product-master-management`) nhưng **chưa có route** tương ứng trong router (nằm trong `constants/route.ts`, có thể dùng cho nav) — chưa xác nhận.
 
 ---
 
@@ -114,35 +87,26 @@ Default redirect: `/` → `/sales-management` (khác với web-admin → `/dashb
 |---|---|
 | `auth` | `accessToken`, `refreshToken`, `user`, `status` |
 
-Cùng pattern với web-admin — token lưu cookie, 401 → `clearAuthState()` → logout.
+Cùng pattern với web-admin — token lưu cookie. 401 → `clearAuthState()` (`services/http/handleResponse.ts`) → logout. **Không có** `handleSessionEnded` / socket session như web-admin.
 
 ---
 
 ## API Service Layer
 
-Cùng pattern với `es-kitchen-web-admin`:
-- `services/client/api.ts` — Axios `Requester` singleton
-- Service files gọi `API.get/post/put/patch/delete`
-- Pages dùng TanStack Query wrap service calls
+Cùng pattern với `es-kitchen-web-admin`: `services/client/api.ts` — Axios `Requester` singleton; service files gọi `API.get/post/put/patch/delete`; `VITE_API_BASE_URL` (+ `VITE_AUTH_URL`) trong `.env.example`.
 
-```typescript
-// Ví dụ
-const { data } = useQuery({
-  queryKey: ['sales', filters],
-  queryFn: () => salesService.getSales(filters),
-});
-```
+| Nhóm | File |
+|---|---|
+| API thật | `auth.service.ts` (`/auth/login`, `/company/me`, `/auth/forgot-password/*`) · `account.service.ts` (`/users/linked*`) · `sales.service.ts` (`/orders*`, `/payment-methods`) · `user.service.ts` (`/api/v1/users/me`) · `error-report.service.ts` · `company.service.ts` (chỉ `exportCompanyQr` → `/company/export-qr`, phần còn lại mock) |
+| FE-only MOCK | `contract.service.ts` · `disposal.service.ts` · `menu-order.service.ts` · `prepared-shipping.service.ts` · `delivery-schedule.service.ts` (+ phần còn lại của `company.service.ts`) |
 
 ---
 
-## Scope hiện tại (May 2026)
+## Scope hiện tại (đối chiếu source 2026-10-16)
 
-Các pages đang có trong repo:
-- ✅ Auth (login, forgot password, OTP)
-- ✅ Account Management (user listing + detail)
-- ✅ Sales Management (user sales, purchase history, refund)
+Đã có UI:
+- ✅ Auth (login, forgot password, OTP verify, reset, register company)
+- ✅ Account Management (user listing + detail) · Sales Management (user sales, purchase history)
+- ✅ Company / Contract / Menu order / Delivery (schedule, prepared-shipping, material-shipping) / Disposal (report, history) / Employee benefits — **UI dùng mock data**, chưa nối BE (trừ export QR)
 
-Các pages **chưa có** (sẽ thêm trong Phase 2):
-- Menu management (Company Admin tạo menu)
-- Contract management (xem hợp đồng)
-- Company profile settings
+Chưa có trong repo: company profile settings (chưa thấy page).

@@ -1,0 +1,173 @@
+{
+ "group_no": "05",
+ "key": "SHIP",
+ "file": "BD_05_SHIP.xlsx",
+ "figma_group_nodes": [
+  "34199:211571"
+ ],
+ "figma_group_names": [
+  "Group List SHIP"
+ ],
+ "screens": [
+  "DA_LIST_001_Kho",
+  "DA_LIST_002_ES",
+  "DA_LIST_003_COOL"
+ ],
+ "frames": [
+  {
+   "no": "05-01",
+   "name": "Frame 2147226410",
+   "node": "20274:174988",
+   "w": 995,
+   "h": 557,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "legend",
+   "dup_of": null,
+   "note": "Legend khung tiếng Nhật+Việt: hiển thị ban đầu, quyền sửa thẻ, hiển thị số lượng hàng, phân trang, trạng thái rỗng — dùng chung cho 3 màn LIST (ảnh gắn vào DA_LIST_001_Kho_legend); không phải màn hình"
+  },
+  {
+   "no": "05-02",
+   "name": "DA_LIST_001_Kho — 配送一覧 Tab A: 倉庫受取 [default]",
+   "node": "18439:175106",
+   "w": 390,
+   "h": 860,
+   "kind": "Screen",
+   "screen_id": "DA_LIST_001_Kho",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Bản sạch (không chú thích) — bản cũ"
+  },
+  {
+   "no": "05-03",
+   "name": "DA_LIST_002_ES — 配送一覧 Tab B: 未配送 [default]",
+   "node": "18439:174962",
+   "w": 390,
+   "h": 866,
+   "kind": "Screen",
+   "screen_id": "DA_LIST_002_ES",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Bản sạch — bản cũ"
+  },
+  {
+   "no": "05-04",
+   "name": "DA_LIST_003_COOL — 配送一覧 Tab C: 配送完了 [default]",
+   "node": "18439:175034",
+   "w": 390,
+   "h": 860,
+   "kind": "Screen",
+   "screen_id": "DA_LIST_003_COOL",
+   "state_label": "default",
+   "dup_of": null,
+   "note": "Bản sạch — bản cũ"
+  },
+  {
+   "no": "05-05",
+   "name": "DA_LIST_001_Kho — 配送一覧 Tab A: 倉庫受取 [annotated]",
+   "node": "20285:178603",
+   "w": 390,
+   "h": 860,
+   "kind": "Duplicate",
+   "screen_id": "DA_LIST_001_Kho",
+   "state_label": "annotated",
+   "dup_of": "05-02",
+   "note": "Bản mới có marker 1/1.1/1.2/A/A1–A11 khớp bảng 20275:175065/20285:178257; nội dung nhìn thấy giống 05-02"
+  },
+  {
+   "no": "05-06",
+   "name": "DA_LIST_002_ES — 配送一覧 Tab B: 未配送 [annotated]",
+   "node": "20297:179762",
+   "w": 390,
+   "h": 866,
+   "kind": "Duplicate",
+   "screen_id": "DA_LIST_002_ES",
+   "state_label": "annotated",
+   "dup_of": "05-03",
+   "note": "Bản mới có marker B1–B11; nội dung giống 05-03"
+  },
+  {
+   "no": "05-07",
+   "name": "DA_LIST_003_COOL — 配送一覧 Tab C: 配送完了 [annotated]",
+   "node": "20297:179763",
+   "w": 390,
+   "h": 860,
+   "kind": "Duplicate",
+   "screen_id": "DA_LIST_003_COOL",
+   "state_label": "annotated",
+   "dup_of": "05-04",
+   "note": "Bản mới có marker C1–C11; nội dung giống 05-04"
+  },
+  {
+   "no": "05-08",
+   "name": "Frame 2147226413",
+   "node": "20447:195530",
+   "w": 384,
+   "h": 74,
+   "kind": "Annotation",
+   "screen_id": null,
+   "state_label": "helper",
+   "dup_of": "—",
+   "note": "Mảnh marker 1/1.1/1.2/B vẽ trên nền tối (helper chú thích, không phải màn); metadata cao 74 nhưng ảnh render 107"
+  }
+ ],
+ "non_screen_counts": {
+  "TABLE": 5,
+  "CONNECTOR": 5
+ },
+ "tables": [
+  {
+   "node": "20274:174991",
+   "summary": "CHƯA ĐỌC LẠI (Figma MCP hết hạn mức); SPEC ghi: meta màn LIST (RQ-C01 tên/ID/điều hướng)"
+  },
+  {
+   "node": "20275:175065",
+   "summary": "CHƯA ĐỌC LẠI; SPEC ghi: filter/tab/ngày"
+  },
+  {
+   "node": "20285:178257",
+   "summary": "CHƯA ĐỌC LẠI; SPEC ghi: items Tab A (A1–A11)"
+  },
+  {
+   "node": "20297:178978",
+   "summary": "CHƯA ĐỌC LẠI; SPEC ghi: Tab B (B1–B11)"
+  },
+  {
+   "node": "20297:179370",
+   "summary": "CHƯA ĐỌC LẠI; SPEC ghi: Tab C (C1–C11, 'giống Tab B')"
+  }
+ ],
+ "images": {
+  "DA_LIST_001_Kho": [
+   {
+    "file": "N05/05-02_DA_LIST_001_Kho.png",
+    "node": "18439:175106",
+    "no": "05-02",
+    "label": "DA_LIST_001_Kho · Screen · default"
+   }
+  ],
+  "DA_LIST_002_ES": [
+   {
+    "file": "N05/05-03_DA_LIST_002_ES.png",
+    "node": "18439:174962",
+    "no": "05-03",
+    "label": "DA_LIST_002_ES · Screen · default"
+   }
+  ],
+  "DA_LIST_003_COOL": [
+   {
+    "file": "N05/05-04_DA_LIST_003_COOL.png",
+    "node": "18439:175034",
+    "no": "05-04",
+    "label": "DA_LIST_003_COOL · Screen · default"
+   }
+  ]
+ },
+ "open": [
+  "Figma MCP hết hạn mức giữa phiên: 5 TABLE không đọc lại được, nội dung bảng dựa SPEC v3 (SPEC cũng ghi tool không đọc được text Table)",
+  "Chưa có frame cho Empty state 「配送予定データはありません。」, lỗi ngày inline, trạng thái lọc — chỉ có trong legend/SPEC",
+  "CONNECTOR 5 cái nối các frame tab LIST (không đọc chú thích trên connector)",
+  "Figma có badge số lượng trên tab, banner header + chuông, nhưng SPEC không mô tả",
+  "Tag 「倉庫受取」 (SPEC) vs icon kho (Figma)"
+ ]
+}

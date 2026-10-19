@@ -1,0 +1,392 @@
+{
+ "TC-RCV-001-001": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Bố cục tổng thể — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-003": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Thẻ thông tin kho — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-006": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Trạng thái ban đầu của checkbox và badge — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-008": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nút 「完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-009": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nút 「完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-010": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Checkbox từng vận đơn — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-015": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Badge トラブル — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-016": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Badge トラブル — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); expected [UNCONFIRMED]/OQ chưa chốt.",
+  "evidence": ""
+ },
+ "TC-RCV-001-017": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nút 「完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-018": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Luồng hoàn tất nhận hàng — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-019": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nút 「完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-020": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nút 「完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-021": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nút 「完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); liên quan gọi điện/hoàn tất nhận hàng (hành động ghi bị cấm trên DEV).",
+  "evidence": ""
+ },
+ "TC-RCV-001-022": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nhận một phần — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-023": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nhận một phần — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-024": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Khóa thẻ COOL便 ES配送便 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-025": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Khóa thẻ COOL便 ES配送便 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-029": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Empty state lọc — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-034": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Ô tìm kiếm 「納品先名」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-035": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Ô tìm kiếm 「納品先名」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-036": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Ô tìm kiếm 「納品先名」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-037": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Ô tìm kiếm 「納品先名」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-043": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Lọc kết hợp tìm kiếm — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-044": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nút 「＜」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-045": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nút 「＜」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-046": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nút 「＜」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-047": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Nút 「＜」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-050": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Quyền sửa theo ngày — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-051": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Quyền sửa theo ngày — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-052": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Quyền sửa theo ngày — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-054": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Tải danh sách — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-001-060": {
+  "result": "Pending",
+  "note": "Bước 1 đã xác nhận (chưa login mở /warehouse/<id> -> /login, không lộ dữ liệu; route thực tế /delivery/:id?type=WAREHOUSE_RECEIPT cũng -> /login). Vế \"sau đăng nhập mở đúng kho\" cần kho thật của tài xế (DEV không có lịch) và Safari iOS.",
+  "evidence": "reports/delivery-driver/screenshots/g07_anon.png"
+ },
+ "TC-RCV-001-062": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_001 / Mobile web — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); cần viewport 320/480px nhưng màn cần phiếu kho có dữ liệu.",
+  "evidence": ""
+ },
+ "TC-RCV-003-001": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Bố cục tổng thể — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-003-005": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Checkbox vô hiệu — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-003-006": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Checkbox vô hiệu — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-003-007": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Nút 「完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-003-008": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Nút 「＜」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-003-010": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Quyền theo trạng thái — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-003-011": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Quyền theo trạng thái — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-003-012": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Quyền theo trạng thái — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-003-013": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Quyền theo trạng thái — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-003-016": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Mobile web — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); cần viewport 320/480px nhưng màn cần phiếu kho có dữ liệu.",
+  "evidence": ""
+ },
+ "TC-RCV-003-017": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_003 / Mobile web — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); cần viewport 320/480px nhưng màn cần phiếu kho có dữ liệu.",
+  "evidence": ""
+ },
+ "TC-RCV-003-018": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g07_anon.png"
+ },
+ "TC-RCV-E01-002": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_004 / Nội dung câu thông báo — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E01-003": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_004 / Tự ẩn sau 5 giây — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E01-004": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_004 / Không có modal — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-001": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Modal tổng thể — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-003": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Checkbox đã liên hệ ES — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-005": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Nút 「一部未受取のまま完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-006": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Checkbox đã liên hệ ES — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-007": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Checkbox đã liên hệ ES — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); liên quan gọi điện/hoàn tất nhận hàng (hành động ghi bị cấm trên DEV).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-008": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Nút 「ESへ電話する」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); liên quan gọi điện/hoàn tất nhận hàng (hành động ghi bị cấm trên DEV).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-009": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Nút 「ESへ電話する」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); liên quan gọi điện/hoàn tất nhận hàng (hành động ghi bị cấm trên DEV).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-013": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Nút 「一部未受取のまま完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-014": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Nút 「一部未受取のまま完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); liên quan gọi điện/hoàn tất nhận hàng (hành động ghi bị cấm trên DEV).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-015": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Tag kho mới — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-016": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Nút 「一部未受取のまま完了」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-017": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Nút 「キャンセル」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-021": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Điều kiện hiển thị modal — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E02-027": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_005 / Mobile web — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); cần viewport 320/480px nhưng màn cần phiếu kho có dữ liệu.",
+  "evidence": ""
+ },
+ "TC-RCV-E03-001": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_006 / Popup tổng thể — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E03-002": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_006 / Tiêu đề và mô tả — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E03-003": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_006 / Điều kiện hiển thị — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E03-004": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_006 / Nút 「破棄」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E03-005": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_006 / Nút 「破棄」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E03-007": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_006 / Nút 「キャンセル」 — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E03-011": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_006 / Popup không gọi API — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); liên quan gọi điện/hoàn tất nhận hàng (hành động ghi bị cấm trên DEV).",
+  "evidence": ""
+ },
+ "TC-RCV-E03-012": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_006 / Mobile web — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); cần viewport 320/480px nhưng màn cần phiếu kho có dữ liệu.",
+  "evidence": ""
+ },
+ "TC-RCV-E20-001": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_007 / Banner tổng thể — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E20-002": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_007 / Câu thông báo — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E20-005": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_007 / Dòng giờ nhận — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); expected [UNCONFIRMED]/OQ chưa chốt.",
+  "evidence": ""
+ },
+ "TC-RCV-E20-007": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_007 / Giờ hoàn tất không đổi — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E20-008": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_007 / Banner và toast khác nhau — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn).",
+  "evidence": ""
+ },
+ "TC-RCV-E20-010": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_007 / Điều kiện hiển thị — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); expected [UNCONFIRMED]/OQ chưa chốt.",
+  "evidence": ""
+ },
+ "TC-RCV-E20-011": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_007 / Điều kiện hiển thị — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); expected [UNCONFIRMED]/OQ chưa chốt.",
+  "evidence": ""
+ },
+ "TC-RCV-E20-015": {
+  "result": "Pending",
+  "note": "Pending: DA_RECV_007 / Mobile web — tài khoản test không có lịch/phiếu kho nào (Home: 配送予定データはありません。) nên không mở được màn nhận hàng DA_RECV_00x với dữ liệu; hoàn tất nhận hàng/nhận một phần/tag kho là hành động ghi bị cấm trên DEV dùng chung. Cần: tài khoản có kho 未受取/受取済 của hôm nay (và môi trường seed an toàn); cần viewport 320/480px nhưng màn cần phiếu kho có dữ liệu.",
+  "evidence": ""
+ }
+}

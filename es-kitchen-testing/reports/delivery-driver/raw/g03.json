@@ -1,0 +1,112 @@
+{
+ "TC-MYP-044": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-MYP-001": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g03_account.png"
+ },
+ "TC-MYP-007": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-MYP-008": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-MYP-010": {
+  "result": "OK",
+  "note": "Quan sát: text-align=start",
+  "evidence": ""
+ },
+ "TC-MYP-013": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-MYP-017": {
+  "result": "NG",
+  "note": "Actual: dòng 「カナ」 hiển thị rỗng; API /driver/account/me không trả field tương ứng (chỉ có id, driverCode, driverName, email, status, lastLoginAt, createdAt) | Expected: phiên âm katakana của tài xế | Bước: mở My Page, đọc dòng カナ | Evidence: reports/delivery-driver/screenshots/g03_TC-MYP-017.png",
+  "evidence": "reports/delivery-driver/screenshots/g03_TC-MYP-017.png"
+ },
+ "TC-MYP-020": {
+  "result": "NG",
+  "note": "Actual: dòng 「電話番号」 hiển thị rỗng; API /driver/account/me không trả field tương ứng (chỉ có id, driverCode, driverName, email, status, lastLoginAt, createdAt) | Expected: số điện thoại tài xế | Bước: mở My Page, đọc dòng 電話番号 | Evidence: reports/delivery-driver/screenshots/g03_TC-MYP-020.png",
+  "evidence": "reports/delivery-driver/screenshots/g03_TC-MYP-020.png"
+ },
+ "TC-MYP-022": {
+  "result": "NG",
+  "note": "Actual: dòng 「委託配送先名」 hiển thị rỗng; API /driver/account/me không trả field tương ứng (chỉ có id, driverCode, driverName, email, status, lastLoginAt, createdAt) | Expected: tên công ty vận chuyển trực thuộc | Bước: mở My Page, đọc dòng 委託配送先名 | Evidence: reports/delivery-driver/screenshots/g03_TC-MYP-022.png",
+  "evidence": "reports/delivery-driver/screenshots/g03_TC-MYP-022.png"
+ },
+ "TC-MYP-009": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-MYP-011": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-MYP-025": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-MYP-035": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g03_bell.png"
+ },
+ "TC-MYP-038": {
+  "result": "OK",
+  "note": "",
+  "evidence": "reports/delivery-driver/screenshots/g03_nav.png"
+ },
+ "TC-MYP-052": {
+  "result": "OK",
+  "note": "Lưu ý: chỉ assert scroll ngang/nav/nút; chồng đè bong bóng-chuông xem bằng mắt",
+  "evidence": ""
+ },
+ "TC-MYP-049": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-MYP-039": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-MYP-040": {
+  "result": "OK",
+  "note": "",
+  "evidence": ""
+ },
+ "TC-MYP-028": {
+  "result": "NG",
+  "note": "Actual: bấm ログアウト hiện modal xác nhận 「ログアウトしてもよろしいですか？」(キャンセル/ログアウト), phải bấm thêm 1 lần mới chuyển sang login (sau xác nhận: về login=true, form=true) | Expected: bấm ログアウト chuyển thẳng DA_AUTHEN_001 (BD/TC không có bước xác nhận) | Bước: /account > ログアウト | Evidence: reports/delivery-driver/screenshots/g03_logout_modal.png",
+  "evidence": "reports/delivery-driver/screenshots/g03_logout_modal.png"
+ },
+ "TC-MYP-033": {
+  "result": "OK",
+  "note": "Quan sát: app hiện modal xác nhận trước (modal=true), nên bấm đúp được thực hiện trên nút xác nhận ログアウト trong modal; kết quả chỉ chuyển login 1 lần, không lỗi",
+  "evidence": ""
+ },
+ "TC-MYP-031": {
+  "result": "OK",
+  "note": "Chỉ kiểm tra trong cùng context (reload + vào /account); không mở lại trình duyệt",
+  "evidence": ""
+ },
+ "TC-MYP-047": {
+  "result": "Pending",
+  "note": "Cần E05 đổi メールアドレス của tài xế (ghi dữ liệu DEV bị cấm) rồi F5; điều kiện: môi trường test được phép sửa dữ liệu tài xế qua E05",
+  "evidence": ""
+ }
+}
