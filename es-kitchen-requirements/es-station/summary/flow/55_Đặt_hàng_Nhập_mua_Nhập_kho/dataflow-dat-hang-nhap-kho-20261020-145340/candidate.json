@@ -301,7 +301,7 @@
    "dot": "rose",
    "title": "Nhập kho・chênh lệch (§8)",
    "items": [
-    "Ghi nhận: nhập SL + số thùng; ngày nhập nhập 1 lần (mặc định hôm nay); HSD không nhập / không sửa, chỉ hiển thị hạn NCC nhập; 'Lưu' cả loạt (§8-2, 8-2a). 要確認: §8-2b vẫn ghi 'HSD bắt buộc', mâu thuẫn 8-2a (mới hơn)",
+    "Ghi nhận: nhập SL + số thùng; ngày nhập nhập 1 lần (mặc định hôm nay); HSD không nhập / không sửa, chỉ hiển thị hạn NCC nhập; 'Lưu' cả loạt (§8-2, 8-2a; hong 2026-10-20 (Q&A #6))",
     "Khớp = đúng SL (chỉ khác số thùng vẫn khớp); nhập dư: chấp nhận phần dư vào tồn kho kho (§8-3, 8-3a)",
     "Thiếu → 'Có chênh lệch・chờ xử lý' trên TOP và DS ĐH: ① chờ giao từng phần ② hàng thay thế, nút 'Thêm hàng thay thế' theo chuyến ③ chấp nhận thiếu (loại khỏi chuyến), báo DN mẫu 'お届けする商品の変更（入荷の不足）', không X17 (§8-4; AB)",
     "Chuyến đã loại theo ③ thì không thêm hàng thay thế được (§8-4a). Vật tư: 1 đơn = 1 vật tư × 1 kho, chỉ ĐH chính, bất kỳ lúc nào, không chia lần, VH nhập kho (§9) - không vẽ"

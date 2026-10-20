@@ -202,7 +202,7 @@
    "dot": "amber",
    "title": "Chốt nhận (2-13, 2-14, 2-17)",
    "items": [
-    "Chốt tự động 17:00 thứ Sáu tuần trước (台帳 AM #715) + chốt tay. 要確認: spec 2-13 ghi '2 ngày làm việc trước thứ Hai tuần xuất【仮】', ledger AL ghi '17:00 hằng tuần'; vẽ theo #715",
+    "Chốt tự động 17:00 thứ Sáu của tuần trước tuần xuất (đã chốt: hong 2026-10-20 (Q&A #1); 台帳 AM #715) + chốt tay",
     "Khi chốt tạo cùng lúc: chỉ thị xuất + CSV cho THOMAS + dữ liệu giao loại 'Mẫu' (không HĐ / cơ sở, tính vào giới hạn 300 đơn/ngày, không tính tiền)",
     "Hủy chốt: đến 23:59 ngày trước ngày gửi đầu tiên của tuần; đã hủy tay thì tự động không chốt lại (2-14). 要確認: #715 ghi việc mở chốt là 【暫定】"
    ]

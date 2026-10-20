@@ -5,16 +5,16 @@
   "status": "pass",
   "type": "dataflow",
   "quality": "showcase",
-  "startedAt": "2026-10-20T07:47:42.145Z",
+  "startedAt": "2026-10-20T09:20:40.568Z",
   "specification": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/candidate.json",
-    "sha256": "2a610e0d214361102688bc89bd5d49eeaf0cba0bd350a22bd78e05be61fab5c6",
-    "bytes": 9384
+    "sha256": "7c6a8c888ae979d7ef7a61d8e9ce28f9dd82840778cd14ba0120e3adf45b7a3f",
+    "bytes": 9390
   },
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/dang-ky-moi.html",
-    "sha256": "3f4d6ef9569ec4f2ba53e4a9c368bb5b7051cbd9738a3c4d64dbeba933bae53e",
-    "bytes": 770416
+    "sha256": "94fd7c6a406b5d5673556dae8cc9ff87b672730f62ea80ca5fe62b6abb4ae85e",
+    "bytes": 770426
   },
   "stages": {
     "validate": {
@@ -38,8 +38,8 @@
         "ok": true,
         "command": "validate",
         "specification": {
-          "sha256": "2a610e0d214361102688bc89bd5d49eeaf0cba0bd350a22bd78e05be61fab5c6",
-          "bytes": 9384
+          "sha256": "7c6a8c888ae979d7ef7a61d8e9ce28f9dd82840778cd14ba0120e3adf45b7a3f",
+          "bytes": 9390
         },
         "validation": {
           "checksPassed": 9,
@@ -54,7 +54,7 @@
     "deliver": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 426,
+      "durationMs": 341,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -68,19 +68,19 @@
       ],
       "receipt": {
         "schemaVersion": 1,
-        "receiptId": "ce167df2-cb9e-4c5d-8f38-4bc5ab3ae205",
+        "receiptId": "812b049d-8b6c-4acc-a55a-5317914f468a",
         "ok": true,
         "command": "deliver",
         "type": "dataflow",
         "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/candidate.json",
         "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/dang-ky-moi.html",
         "specification": {
-          "sha256": "2a610e0d214361102688bc89bd5d49eeaf0cba0bd350a22bd78e05be61fab5c6",
-          "bytes": 9384
+          "sha256": "7c6a8c888ae979d7ef7a61d8e9ce28f9dd82840778cd14ba0120e3adf45b7a3f",
+          "bytes": 9390
         },
         "artifact": {
-          "sha256": "3f4d6ef9569ec4f2ba53e4a9c368bb5b7051cbd9738a3c4d64dbeba933bae53e",
-          "bytes": 770416
+          "sha256": "94fd7c6a406b5d5673556dae8cc9ff87b672730f62ea80ca5fe62b6abb4ae85e",
+          "bytes": 770426
         },
         "validation": {
           "checksPassed": 9,
@@ -106,7 +106,7 @@
     "check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 157,
+      "durationMs": 122,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -118,8 +118,8 @@
         "ok": true,
         "file": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/dang-ky-moi.html",
         "artifact": {
-          "sha256": "3f4d6ef9569ec4f2ba53e4a9c368bb5b7051cbd9738a3c4d64dbeba933bae53e",
-          "bytes": 770416
+          "sha256": "94fd7c6a406b5d5673556dae8cc9ff87b672730f62ea80ca5fe62b6abb4ae85e",
+          "bytes": 770426
         },
         "checks": [
           {
@@ -236,13 +236,13 @@
           "issues": []
         },
         "provenance": "current",
-        "deliveryReceiptId": "ce167df2-cb9e-4c5d-8f38-4bc5ab3ae205"
+        "deliveryReceiptId": "812b049d-8b6c-4acc-a55a-5317914f468a"
       }
     },
     "browser-check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 1063,
+      "durationMs": 1023,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -260,11 +260,11 @@
         "status": "pass",
         "visualReview": "not-requested",
         "provenance": "current",
-        "deliveryReceiptId": "ce167df2-cb9e-4c5d-8f38-4bc5ab3ae205",
+        "deliveryReceiptId": "812b049d-8b6c-4acc-a55a-5317914f468a",
         "artifact": {
           "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/dang-ky-moi.html",
-          "sha256": "3f4d6ef9569ec4f2ba53e4a9c368bb5b7051cbd9738a3c4d64dbeba933bae53e",
-          "bytes": 770416
+          "sha256": "94fd7c6a406b5d5673556dae8cc9ff87b672730f62ea80ca5fe62b6abb4ae85e",
+          "bytes": 770426
         },
         "state": {
           "detail": "read",
@@ -958,8 +958,8 @@
     "browserCheckReceipt": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/dang-ky-moi.browser-check.json"
   },
   "visualReview": "not-requested",
-  "finishedAt": "2026-10-20T07:47:43.948Z",
-  "durationMs": 1803,
+  "finishedAt": "2026-10-20T09:20:42.192Z",
+  "durationMs": 1623,
   "update": {
     "status": "update_available",
     "installedVersion": "3.0.1",

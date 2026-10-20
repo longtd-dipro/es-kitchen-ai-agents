@@ -7,13 +7,13 @@
   "quality": "showcase",
   "specification": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/candidate.json",
-    "sha256": "6ba166fa08357f2682b1b0e6591993fb833e77184f15f67a4679bc17f463b7be",
-    "bytes": 35820
+    "sha256": "2df57978fadcd29966fca3ea8335c0e5088d042a60555203e8537f1ac991f672",
+    "bytes": 37756
   },
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/cancellation-final-invoice.html",
-    "sha256": "0ecfeea908e1418a87b74cca590943159283b625850d17e00005c67d8e88339f",
-    "bytes": 771987
+    "sha256": "8361dc0e758ad3dcdaef1b4b2a9cfb860bb082d15c3c9991a8bc5a63c0dd327e",
+    "bytes": 771942
   },
   "gates": {
     "validate": "pass",
@@ -45,5 +45,5 @@
     "eventKey": "archify@sha256:70e210265c59f24dcbdf2a502ff671104b5454e7ee7d3554aecd86bad32384f5"
   },
   "visualReview": "not-requested",
-  "durationMs": 1990
+  "durationMs": 1651
 }

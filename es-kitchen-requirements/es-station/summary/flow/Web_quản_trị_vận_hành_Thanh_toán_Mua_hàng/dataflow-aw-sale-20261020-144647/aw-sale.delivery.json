@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "receiptId": "bf60795a-f37e-4f7a-a1db-88036ec6ff87",
+  "receiptId": "aa52d3fc-b0b7-4bce-aec7-a32dd807adaa",
   "status": "current",
   "command": "deliver",
   "type": "dataflow",
   "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng/dataflow-aw-sale-20261020-144647/candidate.json",
   "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng/dataflow-aw-sale-20261020-144647/aw-sale.html",
   "specification": {
-    "sha256": "5b69a5f1bbbe09e27a73ee7bb90b61c72ba8fbc08b1b1d4ac774cc03a736881b",
-    "bytes": 39258
+    "sha256": "f4d12fc0ac322c0c70ba0dc8ce170185d3ff43d53f856643d349e66bb0f4d90b",
+    "bytes": 39331
   },
   "artifact": {
-    "sha256": "36d5d060c6fe9fec14727f7e8b98b3a762b142b142eeafee5978717e205ee1a8",
-    "bytes": 776477
+    "sha256": "e5d8eb44c571d5a81fc6e9838d99705db0ad1170f30944e207f15bdb7fa8643d",
+    "bytes": 776550
   }
 }

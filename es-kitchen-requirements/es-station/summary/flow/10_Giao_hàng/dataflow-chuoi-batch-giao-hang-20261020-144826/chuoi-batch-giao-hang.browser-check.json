@@ -6,11 +6,11 @@
   "status": "pass",
   "visualReview": "not-requested",
   "provenance": "current",
-  "deliveryReceiptId": "4177c9c3-cb99-40a8-9d1e-1ffcb98b75e1",
+  "deliveryReceiptId": "3a9a9b8e-f305-4e67-b9fb-3e93416091c5",
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/10_Giao_hàng/dataflow-chuoi-batch-giao-hang-20261020-144826/chuoi-batch-giao-hang.html",
-    "sha256": "518b403245b8a02eb4018b27c223b2f49d6fe96d5ec9e7a2bd35f1e26ac81040",
-    "bytes": 781605
+    "sha256": "b77f50ae9b82c1bff80fa2aaf6b9ad8783448af262f3b5fdcc74749a1d2aa844",
+    "bytes": 781721
   },
   "state": {
     "detail": "read",

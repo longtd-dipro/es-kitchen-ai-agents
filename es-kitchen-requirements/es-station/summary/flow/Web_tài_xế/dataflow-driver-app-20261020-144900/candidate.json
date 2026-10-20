@@ -773,7 +773,8 @@
     "Nhận ở kho／中継先: check 送り状; thiếu → bấm「ESへ電話する」hoặc tick đã liên hệ mới được「一部未受取のまま完了」; lần nhận đầu → 受取済",
     "COOL便: check rồi hoàn tất; còn thiếu →「一部未配送のまま完了」, phần thiếu là bản ghi con (複製)",
     "ES配送便: ①陳列前(ảnh) ②在庫/廃棄 (chỉ số 廃棄, không lý do: 台帳 X) ③陳列 (検品) ④陳列後(ảnh) ⑤集金 (bắt buộc nếu cơ sở có thu tiền: 台帳 AL)",
-    "Báo cáo xong = 納品済; thiếu hàng tự ghi sự cố (1 vụ); tài xế chỉ báo cáo, hủy/中止/再配送待 do vận hành (台帳 M-4)"
+    "Báo cáo xong = 納品済; thiếu hàng tự ghi sự cố (1 vụ); tài xế chỉ báo cáo, hủy/中止/再配送待 do vận hành (台帳 M-4)",
+    "Không báo cáo = sự cố / phát hiện thiếu giao, không tự hoàn tất (không みなし; みなし chỉ cho 路線便) (hong 2026-10-20 (Q&A #3))"
    ]
   },
   {

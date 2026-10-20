@@ -7,13 +7,13 @@
   "quality": "showcase",
   "specification": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/tông quan/dataflow-dat-hang-den-thanh-toan-20261020-144521/candidate.json",
-    "sha256": "3f969d61f9c4fc5d2b6279b41a0e5b3b8ddb7cf6dc706b8e7018e5f37dda150a",
-    "bytes": 39587
+    "sha256": "b71a2b2f5bca7380c2094c24c5775b6cf9bcaa68c52a46e617232ae22cf9e35f",
+    "bytes": 39788
   },
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/tông quan/dataflow-dat-hang-den-thanh-toan-20261020-144521/dataflow-dat-hang-den-thanh-toan.html",
-    "sha256": "06944c183126016d94c10282c1b58db4c3917fea02989510e944e9d9ac1d4f96",
-    "bytes": 777089
+    "sha256": "e7de71a2cb5051e9ebf4cff160734e5d99f62c5ececee6344c8dad391fa74441",
+    "bytes": 777302
   },
   "gates": {
     "validate": "pass",
@@ -45,5 +45,5 @@
     "eventKey": "archify@sha256:70e210265c59f24dcbdf2a502ff671104b5454e7ee7d3554aecd86bad32384f5"
   },
   "visualReview": "not-requested",
-  "durationMs": 2266
+  "durationMs": 1697
 }

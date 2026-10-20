@@ -6,11 +6,11 @@
   "status": "pass",
   "visualReview": "not-requested",
   "provenance": "current",
-  "deliveryReceiptId": "715c26ee-e25b-4010-8f42-7b087fb6d593",
+  "deliveryReceiptId": "aa5a57ed-2cfd-4f9c-b0fe-01ad328f6be8",
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/mau-kinh-doanh.html",
-    "sha256": "c70b1ac32b849cbc089f39511ba4e06be03c1418f06839060b1901257aaf8fd7",
-    "bytes": 760867
+    "sha256": "5e93d33df992b0d1b8425a23a049f7eb81a0f96898f2f036e64d2c7f1bd276f4",
+    "bytes": 760771
   },
   "state": {
     "detail": "read",

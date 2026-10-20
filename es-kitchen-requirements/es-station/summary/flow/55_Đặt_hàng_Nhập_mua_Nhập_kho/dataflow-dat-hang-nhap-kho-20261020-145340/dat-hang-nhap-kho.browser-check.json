@@ -6,11 +6,11 @@
   "status": "pass",
   "visualReview": "not-requested",
   "provenance": "current",
-  "deliveryReceiptId": "38ddf6a4-cbfc-454e-b215-d5029bc154a1",
+  "deliveryReceiptId": "ce382354-d280-4dbf-b9c7-a9ce5488dc44",
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/55_Đặt_hàng_Nhập_mua_Nhập_kho/dataflow-dat-hang-nhap-kho-20261020-145340/dat-hang-nhap-kho.html",
-    "sha256": "cf00666b872b6ac64914ddb708a5dced841bb6b708d029dabd84ba6b9beb3fc2",
-    "bytes": 769422
+    "sha256": "f1c1d774e859254e61ac377d1e714467bd3486b6ee2a0efd01a2a86f29298c84",
+    "bytes": 769364
   },
   "state": {
     "detail": "read",

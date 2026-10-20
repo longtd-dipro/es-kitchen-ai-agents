@@ -5,16 +5,16 @@
   "status": "pass",
   "type": "dataflow",
   "quality": "showcase",
-  "startedAt": "2026-10-20T07:53:20.011Z",
+  "startedAt": "2026-10-20T09:20:45.711Z",
   "specification": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/candidate.json",
-    "sha256": "6ba166fa08357f2682b1b0e6591993fb833e77184f15f67a4679bc17f463b7be",
-    "bytes": 35820
+    "sha256": "2df57978fadcd29966fca3ea8335c0e5088d042a60555203e8537f1ac991f672",
+    "bytes": 37756
   },
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/cancellation-final-invoice.html",
-    "sha256": "0ecfeea908e1418a87b74cca590943159283b625850d17e00005c67d8e88339f",
-    "bytes": 771987
+    "sha256": "8361dc0e758ad3dcdaef1b4b2a9cfb860bb082d15c3c9991a8bc5a63c0dd327e",
+    "bytes": 771942
   },
   "stages": {
     "validate": {
@@ -38,8 +38,8 @@
         "ok": true,
         "command": "validate",
         "specification": {
-          "sha256": "6ba166fa08357f2682b1b0e6591993fb833e77184f15f67a4679bc17f463b7be",
-          "bytes": 35820
+          "sha256": "2df57978fadcd29966fca3ea8335c0e5088d042a60555203e8537f1ac991f672",
+          "bytes": 37756
         },
         "validation": {
           "checksPassed": 9,
@@ -54,7 +54,7 @@
     "deliver": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 562,
+      "durationMs": 362,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -68,19 +68,19 @@
       ],
       "receipt": {
         "schemaVersion": 1,
-        "receiptId": "ee599520-98e9-4792-b02b-e769fed6096e",
+        "receiptId": "191563af-c488-4b1f-a3a0-9cd8a520dae3",
         "ok": true,
         "command": "deliver",
         "type": "dataflow",
         "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/candidate.json",
         "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/cancellation-final-invoice.html",
         "specification": {
-          "sha256": "6ba166fa08357f2682b1b0e6591993fb833e77184f15f67a4679bc17f463b7be",
-          "bytes": 35820
+          "sha256": "2df57978fadcd29966fca3ea8335c0e5088d042a60555203e8537f1ac991f672",
+          "bytes": 37756
         },
         "artifact": {
-          "sha256": "0ecfeea908e1418a87b74cca590943159283b625850d17e00005c67d8e88339f",
-          "bytes": 771987
+          "sha256": "8361dc0e758ad3dcdaef1b4b2a9cfb860bb082d15c3c9991a8bc5a63c0dd327e",
+          "bytes": 771942
         },
         "validation": {
           "checksPassed": 9,
@@ -106,7 +106,7 @@
     "check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 150,
+      "durationMs": 124,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -118,8 +118,8 @@
         "ok": true,
         "file": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/cancellation-final-invoice.html",
         "artifact": {
-          "sha256": "0ecfeea908e1418a87b74cca590943159283b625850d17e00005c67d8e88339f",
-          "bytes": 771987
+          "sha256": "8361dc0e758ad3dcdaef1b4b2a9cfb860bb082d15c3c9991a8bc5a63c0dd327e",
+          "bytes": 771942
         },
         "checks": [
           {
@@ -236,13 +236,13 @@
           "issues": []
         },
         "provenance": "current",
-        "deliveryReceiptId": "ee599520-98e9-4792-b02b-e769fed6096e"
+        "deliveryReceiptId": "191563af-c488-4b1f-a3a0-9cd8a520dae3"
       }
     },
     "browser-check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 1118,
+      "durationMs": 1040,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -260,11 +260,11 @@
         "status": "pass",
         "visualReview": "not-requested",
         "provenance": "current",
-        "deliveryReceiptId": "ee599520-98e9-4792-b02b-e769fed6096e",
+        "deliveryReceiptId": "191563af-c488-4b1f-a3a0-9cd8a520dae3",
         "artifact": {
           "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/cancellation-final-invoice.html",
-          "sha256": "0ecfeea908e1418a87b74cca590943159283b625850d17e00005c67d8e88339f",
-          "bytes": 771987
+          "sha256": "8361dc0e758ad3dcdaef1b4b2a9cfb860bb082d15c3c9991a8bc5a63c0dd327e",
+          "bytes": 771942
         },
         "state": {
           "detail": "read",
@@ -958,8 +958,8 @@
     "browserCheckReceipt": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/cancellation-final-invoice.browser-check.json"
   },
   "visualReview": "not-requested",
-  "finishedAt": "2026-10-20T07:53:22.002Z",
-  "durationMs": 1990,
+  "finishedAt": "2026-10-20T09:20:47.363Z",
+  "durationMs": 1651,
   "update": {
     "status": "update_available",
     "installedVersion": "3.0.1",

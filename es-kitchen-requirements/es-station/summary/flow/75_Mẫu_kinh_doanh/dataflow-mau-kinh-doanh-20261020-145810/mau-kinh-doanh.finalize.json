@@ -5,16 +5,16 @@
   "status": "pass",
   "type": "dataflow",
   "quality": "showcase",
-  "startedAt": "2026-10-20T07:59:15.043Z",
+  "startedAt": "2026-10-20T09:20:44.018Z",
   "specification": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/candidate.json",
-    "sha256": "c59aa6eb41da211540f987b08387cd609b753b5d8ceaacf4823f99403ccfb140",
-    "bytes": 5973
+    "sha256": "d8f9480b30c0e7d6bae2ce6ea51f9012c6ec507881537346c0412e52cd606d34",
+    "bytes": 5889
   },
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/mau-kinh-doanh.html",
-    "sha256": "c70b1ac32b849cbc089f39511ba4e06be03c1418f06839060b1901257aaf8fd7",
-    "bytes": 760867
+    "sha256": "5e93d33df992b0d1b8425a23a049f7eb81a0f96898f2f036e64d2c7f1bd276f4",
+    "bytes": 760771
   },
   "stages": {
     "validate": {
@@ -38,8 +38,8 @@
         "ok": true,
         "command": "validate",
         "specification": {
-          "sha256": "c59aa6eb41da211540f987b08387cd609b753b5d8ceaacf4823f99403ccfb140",
-          "bytes": 5973
+          "sha256": "d8f9480b30c0e7d6bae2ce6ea51f9012c6ec507881537346c0412e52cd606d34",
+          "bytes": 5889
         },
         "validation": {
           "checksPassed": 9,
@@ -54,7 +54,7 @@
     "deliver": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 272,
+      "durationMs": 355,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -68,19 +68,19 @@
       ],
       "receipt": {
         "schemaVersion": 1,
-        "receiptId": "715c26ee-e25b-4010-8f42-7b087fb6d593",
+        "receiptId": "aa5a57ed-2cfd-4f9c-b0fe-01ad328f6be8",
         "ok": true,
         "command": "deliver",
         "type": "dataflow",
         "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/candidate.json",
         "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/mau-kinh-doanh.html",
         "specification": {
-          "sha256": "c59aa6eb41da211540f987b08387cd609b753b5d8ceaacf4823f99403ccfb140",
-          "bytes": 5973
+          "sha256": "d8f9480b30c0e7d6bae2ce6ea51f9012c6ec507881537346c0412e52cd606d34",
+          "bytes": 5889
         },
         "artifact": {
-          "sha256": "c70b1ac32b849cbc089f39511ba4e06be03c1418f06839060b1901257aaf8fd7",
-          "bytes": 760867
+          "sha256": "5e93d33df992b0d1b8425a23a049f7eb81a0f96898f2f036e64d2c7f1bd276f4",
+          "bytes": 760771
         },
         "validation": {
           "checksPassed": 9,
@@ -106,7 +106,7 @@
     "check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 154,
+      "durationMs": 120,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -118,8 +118,8 @@
         "ok": true,
         "file": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/mau-kinh-doanh.html",
         "artifact": {
-          "sha256": "c70b1ac32b849cbc089f39511ba4e06be03c1418f06839060b1901257aaf8fd7",
-          "bytes": 760867
+          "sha256": "5e93d33df992b0d1b8425a23a049f7eb81a0f96898f2f036e64d2c7f1bd276f4",
+          "bytes": 760771
         },
         "checks": [
           {
@@ -236,13 +236,13 @@
           "issues": []
         },
         "provenance": "current",
-        "deliveryReceiptId": "715c26ee-e25b-4010-8f42-7b087fb6d593"
+        "deliveryReceiptId": "aa5a57ed-2cfd-4f9c-b0fe-01ad328f6be8"
       }
     },
     "browser-check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 916,
+      "durationMs": 1000,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -260,11 +260,11 @@
         "status": "pass",
         "visualReview": "not-requested",
         "provenance": "current",
-        "deliveryReceiptId": "715c26ee-e25b-4010-8f42-7b087fb6d593",
+        "deliveryReceiptId": "aa5a57ed-2cfd-4f9c-b0fe-01ad328f6be8",
         "artifact": {
           "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/mau-kinh-doanh.html",
-          "sha256": "c70b1ac32b849cbc089f39511ba4e06be03c1418f06839060b1901257aaf8fd7",
-          "bytes": 760867
+          "sha256": "5e93d33df992b0d1b8425a23a049f7eb81a0f96898f2f036e64d2c7f1bd276f4",
+          "bytes": 760771
         },
         "state": {
           "detail": "read",
@@ -958,8 +958,8 @@
     "browserCheckReceipt": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/mau-kinh-doanh.browser-check.json"
   },
   "visualReview": "not-requested",
-  "finishedAt": "2026-10-20T07:59:16.577Z",
-  "durationMs": 1534,
+  "finishedAt": "2026-10-20T09:20:45.625Z",
+  "durationMs": 1606,
   "update": {
     "status": "update_available",
     "installedVersion": "3.0.1",

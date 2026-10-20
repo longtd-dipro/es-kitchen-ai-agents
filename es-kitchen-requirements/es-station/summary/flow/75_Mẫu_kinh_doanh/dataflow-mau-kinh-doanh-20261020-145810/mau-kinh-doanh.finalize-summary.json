@@ -7,13 +7,13 @@
   "quality": "showcase",
   "specification": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/candidate.json",
-    "sha256": "c59aa6eb41da211540f987b08387cd609b753b5d8ceaacf4823f99403ccfb140",
-    "bytes": 5973
+    "sha256": "d8f9480b30c0e7d6bae2ce6ea51f9012c6ec507881537346c0412e52cd606d34",
+    "bytes": 5889
   },
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/mau-kinh-doanh.html",
-    "sha256": "c70b1ac32b849cbc089f39511ba4e06be03c1418f06839060b1901257aaf8fd7",
-    "bytes": 760867
+    "sha256": "5e93d33df992b0d1b8425a23a049f7eb81a0f96898f2f036e64d2c7f1bd276f4",
+    "bytes": 760771
   },
   "gates": {
     "validate": "pass",
@@ -45,5 +45,5 @@
     "eventKey": "archify@sha256:70e210265c59f24dcbdf2a502ff671104b5454e7ee7d3554aecd86bad32384f5"
   },
   "visualReview": "not-requested",
-  "durationMs": 1534
+  "durationMs": 1606
 }
