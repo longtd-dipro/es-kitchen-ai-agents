@@ -1,3 +1,5 @@
+> Bản dịch tiếng Việt của `ja/01_仕様/CSV入出力_定義_20261003.md` (nguồn es-station, bản 2026-10-20). Khi khác nhau, bản tiếng Nhật và `docs/決定台帳.md` là chuẩn.
+
 # Định nghĩa CSV xuất / nhập (bản nháp để duyệt – 2026/10/03)
 
 Áp dụng cho mọi site. Quyết định gốc: **28-183** (Nhập CSV không có cột NEW/UPDATE/DELETE; khóa trùng thì ghi đè, không có thì tạo mới; hành vi mỗi loại dòng ghi trong tiêu đề template bằng 【 】).
@@ -47,16 +49,16 @@ Tiền trên màn hình: "1,000円" (chốt 10/03). **Trong CSV, tiền là số
 |---|---|
 | Mã ký tự | Nhận UTF-8 (có / không BOM). Không phải UTF-8 → lỗi file (giống ảnh Phase 1 số 05) |
 | Template | Nút "Template" tải file mẫu: dòng tiêu đề + 1–2 dòng ví dụ + hành vi trong 【 】 ở tiêu đề (28-183). Có thể tải **dữ liệu hiện tại** làm template (= Xuất CSV) để sửa rồi nhập lại |
-| ~~Template~~ (2026-10-05) | **Bỏ nút "Template" và "Dữ liệu hiện tại" trong modal** (hong 2026-10-05, sổ cái F). Cột giống Xuất CSV nên cần mẫu thì dùng Xuất CSV. |
-| Dòng lỗi (2026-10-05) | **Dòng lỗi bị bỏ qua, các dòng khác (tạo mới・cập nhật) vẫn đăng ký**; bước xác nhận hiện dòng lỗi + CSV danh sách lỗi. Chỉ dừng khi lỗi cả tệp hoặc không có dòng nào đăng ký được (hong 2026-10-05, Danh sách mục master – màn hình danh sách #8, sổ cái F. Cũ: 1 dòng lỗi thì không đăng ký gì). |
+| ~~Template~~ (2026-10-05) | **Bỏ nút "Template" và "Dữ liệu hiện tại" trong modal** (hong 2026-10-05, sổ quyết định F). Cột giống Xuất CSV nên cần mẫu thì dùng Xuất CSV. |
+| Dòng lỗi (2026-10-05) | **Dòng lỗi bị bỏ qua, các dòng khác (tạo mới・cập nhật) vẫn đăng ký**; bước xác nhận hiện dòng lỗi + CSV danh sách lỗi. Chỉ dừng khi lỗi cả tệp hoặc không có dòng nào đăng ký được (hong 2026-10-05, Danh sách mục master – màn hình danh sách #8, sổ quyết định F. Cũ: 1 dòng lỗi thì không đăng ký gì). |
 | Tạo / cập nhật | **Khóa trùng → ghi đè, khóa không có → tạo mới.** Không có cột NEW/UPDATE/DELETE (28-183). **Không xóa qua CSV** (xóa = đánh dấu đã xóa làm trên màn hình), trừ loại dòng có ghi rõ 【削除】 trong template |
 | Khóa | Mỗi màn định nghĩa khóa (ví dụ Sản phẩm = `品番`, Cơ sở = `拠点ID`). Khóa trống → tạo mới, mã tự cấp |
 | Ô trống khi cập nhật | **Giữ nguyên giá trị cũ** (không xóa). Muốn xóa giá trị → ghi `-` (chỉ cột cho phép trống) |
 | Quy trình | **2 bước** (giống ảnh 26 Khảo sát): ① chọn file (kéo thả) → kiểm tra; ② xem kết quả: số dòng Tạo mới / Cập nhật / Không thay đổi / Lỗi, bảng lỗi theo dòng, **so sánh trước → sau** của các dòng cập nhật → bấm "Đăng ký" |
-| Có lỗi | **Không lưu dòng nào** (tất cả hoặc không). Tải được "CSV danh sách lỗi" (file gốc + cột エラー内容) để sửa |
+| Có lỗi | ~~Không lưu dòng nào~~ → **Dòng lỗi bị bỏ qua, các dòng đúng vẫn đăng ký** (xem dòng 「Dòng lỗi」 ở trên, sổ quyết định F 2026-10-05). Tải được "CSV danh sách lỗi" (「エラー一覧CSV」: file gốc + cột エラー内容) để sửa |
 | Cảnh báo | Không chặn, nhưng phải tích "Tôi đã xác nhận cảnh báo" mới bấm Đăng ký được |
-| Ảnh hưởng | Áp dụng khung 7-1: trường thuộc loại ② (áp dụng từ tương lai) phải có cột `適用開始`; loại ④ (đã khóa: đã xác nhận / đã thanh toán / đã chỉ thị xuất hàng) → lỗi dòng. Màn xác nhận hiện ảnh hưởng tới flow phía sau (như modal thay đổi hàng loạt) |
-| Giới hạn | Tối đa 5,000 dòng / file (nhiều hơn thì chia file). Trên 100 dòng cập nhật → chạy nền có thanh tiến độ |
+| Ảnh hưởng | Áp dụng khung 7-1: trường thuộc loại ② (áp dụng từ tương lai) phải có cột `適用開始` (**ngoại lệ: CSV hợp đồng con không có cột này, chỉ cập nhật tháng chưa chốt từ tháng sau — sổ quyết định AL・2026-10-16**); loại ④ (đã khóa: đã xác nhận / đã xuất hóa đơn / đã chỉ thị xuất hàng) → lỗi dòng. Màn xác nhận hiện ảnh hưởng tới flow phía sau (như modal thay đổi hàng loạt) |
+| Giới hạn | Tối đa 5,000 dòng / file (nhiều hơn thì chia file; **CSV di chuyển dữ liệu (移行) cũng chia mỗi 5,000 dòng** — sổ quyết định AL・2026-10-16). Trên 100 dòng cập nhật → chạy nền có thanh tiến độ |
 | Lịch sử | Ghi lịch sử nhập: ai, lúc nào, file, số dòng mới / cập nhật; mỗi bản ghi bị đổi có lịch sử thay đổi "Cập nhật bằng nhập CSV" |
 
 ### 2-2. Kiểm tra (validate)
@@ -90,10 +92,10 @@ Tiền trên màn hình: "1,000円" (chốt 10/03). **Trong CSV, tiền là số
 
 | Site | Xuất CSV | Nhập CSV |
 |---|---|---|
-| **Vận hành** | **Mọi màn list** | Master: Sản phẩm, Danh mục, Tag, Thuế suất, Gói (Plan) (+ thế hệ giá・thiết bị), Dòng máy, Tùy chọn (Option), Giảm giá, Kho, Đơn vị giao hàng ủy thác, Tài xế, Nhà cung cấp, Vật tư. Data: Doanh nghiệp・Cơ sở (tạo nhiều / cập nhật thông tin), Hợp đồng (cập nhật trường cho phép, có ngày bắt đầu áp dụng), Menu hàng tháng (template Phase 2), Khảo sát, Thông báo (đối tượng), Đăng ký nhập kho (nhập nhiều dòng), Ghi chép tồn kho |
+| **Vận hành** | **Mọi màn list** | Master: Sản phẩm (**Tag sản phẩm・Thuế suất không có CSV riêng** — sổ quyết định F 2026-10-07 Q7＝B; cột 「商品タグ」 (tag sản phẩm) trong CSV sản phẩm vẫn giữ), Danh mục, Gói (Plan) (+ thế hệ giá・thiết bị), Dòng máy, Tùy chọn (Option), Giảm giá, Kho, Đơn vị giao hàng ủy thác, Tài xế, Nhà cung cấp, Vật tư. Data: Doanh nghiệp・Cơ sở (**chỉ cập nhật**, không tạo mới; tạo mới thì qua đơn đăng ký — sổ quyết định AL・2026-10-16), Hợp đồng (cập nhật hợp đồng con: **không có cột 適用開始** (ngày bắt đầu áp dụng), chỉ cập nhật phần chưa chốt từ tháng sau trở đi — sổ quyết định AL・2026-10-16), Menu hàng tháng (template Phase 2), Khảo sát, Thông báo (đối tượng), Đăng ký nhập kho (nhập nhiều dòng), Ghi chép tồn kho |
 | **Doanh nghiệp** | Hóa đơn, Giao hàng, Lịch sử đơn hàng, Cơ sở, Kiểm tra tồn kho, Doanh thu / Đánh giá | Đơn hàng tháng (nhập số lượng nhiều cơ sở một lần) — ❓ cần không? |
-| **Nhà cung cấp** | Danh sách đơn nhận, Giao hàng / Thanh toán | Phản hồi đơn nhận (ngày giao・số thùng nhiều đơn một lần) — ❓ cần không? |
-| **Đơn vị giao hàng ủy thác** | Danh sách giao hàng, Thanh toán / Chi trả | Nhân viên (tạo nhiều) — ❓ cần không? |
+| **Nhà cung cấp** | Danh sách đơn nhận, Giao hàng / Hóa đơn | Phản hồi đơn nhận (ngày giao・số thùng nhiều đơn một lần) — ❓ cần không? |
+| **Đơn vị giao hàng ủy thác** | Danh sách giao hàng, Hóa đơn / Chi trả | Nhân viên (tạo nhiều) — ❓ cần không? |
 | **Tài xế** | Không | Không |
 
 ## 4. Cần bạn xác nhận
@@ -110,7 +112,7 @@ Tiền trên màn hình: "1,000円" (chốt 10/03). **Trong CSV, tiền là số
 2. Bảng con = nhiều dòng, lặp lại khóa cha (nhập lại thì gom theo khóa).
 3. Không xóa qua CSV (trừ chỗ quyết định cũ cho 【削除】, ví dụ Giá của Master Gói (Plan) – 28-183).
 4. Ô trống khi cập nhật = giữ nguyên; muốn xóa ghi `-`.
-5. Có lỗi → không lưu dòng nào; có CSV danh sách lỗi.
+5. Có lỗi → ~~không lưu dòng nào~~ → **bỏ qua dòng lỗi (theo khóa/dòng), các dòng khác vẫn đăng ký**; có CSV danh sách lỗi. **CSV đơn đăng ký mới cũng vậy** (sổ quyết định AL・2026-10-16; sổ quyết định F 2026-10-05 L245). Ngoại lệ (全件か0件 — tất cả hoặc không): Kiểm kê tồn kho kho (điểm khởi đầu)・Khảo sát.
 6. Tối đa 5,000 dòng / file.
 7. Nhập CSV ở site ngoài: Doanh nghiệp chưa cần; Nhà cung cấp có (trả lời ngày giao・số thùng nhiều đơn); Đơn vị giao hàng ủy thác có (tạo nhiều nhân viên).
 
@@ -119,43 +121,45 @@ Tiền trên màn hình: "1,000円" (chốt 10/03). **Trong CSV, tiền là số
 ## Tình trạng triển khai（2026/10/03）
 
 Khung chung: `lib/csv/core.ts` (format/parse/tên file), `lib/csv/master.ts`・`data.ts`・`sites.ts` (cột + cách lưu từng entity — dùng chung cho Xuất CSV・Template・Nhập CSV), `lib/csv/flatten.ts` (xuất "toàn bộ field" cho màn chỉ có Xuất CSV), `lib/domain/csv.ts` + area `csv` (`importPreview`/`importCommit`/`jobStep`/`logExport`, lịch sử `dm.csv.imports`・`dm.csv.exports`・`dm.csv.changes`), component `components/csv/CsvExportButton`・`CsvImportModal` (+ adapter từng site: `app/ops/_ui/csv.tsx`, `app/corp/_ui/csv.tsx`, `app/supplier/_components/csv.tsx`, `app/carrier/_ui/csv.tsx`).
-Validate nghiệp vụ = chạy đúng hàm lưu của màn hình trên DocRepo "chồng" (overlay) → lỗi của hàm đó thành lỗi dòng; có lỗi thì không ghi gì.
+Validate nghiệp vụ = chạy đúng hàm lưu của màn hình trên DocRepo "chồng" (overlay) → lỗi của hàm đó thành lỗi dòng; ~~có lỗi thì không ghi gì~~ → dòng lỗi bị bỏ qua, dòng khác vẫn ghi (sổ quyết định F 2026-10-05・sổ quyết định AL・2026-10-16).
 
 | Site | Màn hình | Xuất CSV | Nhập CSV (khóa) |
 |---|---|---|---|
-| Vận hành | Master sản phẩm | ✅ | ✅ Mã hàng (`品番`) (để trống = tạo mới. Đổi giá mà sản phẩm đang ở menu công khai = lỗi dòng) |
-| Vận hành | Tag sản phẩm・Thuế suất (dải phía trên Master sản phẩm) | ✅ | ✅ ID tag・ID thuế suất (chỉ thêm. Không được đổi tên・tỷ lệ) |
-| Vận hành | Quản lý danh mục sản phẩm | ✅ | ✅ ID danh mục sản phẩm |
+| Vận hành | Master sản phẩm | ✅ | ✅ Mã hàng (`品番`) (để trống = tạo mới. Đổi giá mà sản phẩm đang ở menu công khai = lỗi dòng). **Nhiều nhà cung cấp: 1 dòng = 1 sản phẩm × 1 nhà cung cấp. Khóa = mã hàng + ID nhà cung cấp** (khi đổi cột của sản phẩm ở các dòng cùng mã hàng thì mọi dòng phải cùng giá trị (cột không đổi thì không cần ghi gì). Không được ghi cùng một ID nhà cung cấp ở 2 dòng・「選択中」 (đang chọn) chỉ 1 công ty. Nhà cung cấp không được ghi thì giữ nguyên. Sổ tiếp nhận #225) |
+| Vận hành | Tag sản phẩm・Thuế suất (dải phía trên Master sản phẩm) | ✅ | ✅ ID tag・ID thuế suất (chỉ thêm. Không được đổi tên・tỷ lệ) ※ Theo 2026-10-07 Q7＝B thì không đặt CSV riêng (code là việc còn tồn. Sổ quyết định F) |
+| Vận hành | Quản lý danh mục sản phẩm | ✅ | — (bỏ vào 2026-10-16: số lượng ít. Sổ quyết định AQ・sổ tiếp nhận #742) |
 | Vận hành | Master Gói (Plan) (+ thế hệ giá 【削除】・thiết bị cho thuê tiêu chuẩn) | ✅ (dạng của 28-183) | ✅ ID gói／khóa tạm (dạng riêng) |
-| Vận hành | Master Dòng máy・Tùy chọn・Giảm giá | ✅ | ✅ ID dòng máy・ID tùy chọn・ID giảm giá (cột = các mục của màn hình chi tiết) |
-| Vận hành | Master Kho・Đơn vị giao hàng ủy thác・Vật tư・Nhà cung cấp | ✅ | ✅ ID kho・ID đơn vị giao hàng ủy thác・ID vật tư・ID nhà cung cấp |
-| Vận hành | Nhân viên giao hàng (Tài xế) | ✅ | ✅ ID nhân viên giao hàng |
-| Vận hành | Sổ cái túi giữ lạnh・Quyền・IP・Phiên bản・Danh sách thông báo・Danh sách tài khoản | ✅ | — |
+| Vận hành | Master Dòng máy・Tùy chọn・Giảm giá | ✅ | — (bỏ vào 2026-10-16: đăng ký・chỉnh sửa trên màn hình. Sổ quyết định AQ・sổ tiếp nhận #742). Nút 「適用 CSV取込」 (nhập CSV áp dụng) của giảm giá đã bị gỡ theo sổ tiếp nhận #734 (2026-10-16) |
+| Vận hành | Master Kho・Đơn vị giao hàng ủy thác・Vật tư・Nhà cung cấp | ✅ | ✅ ID vật tư・ID nhà cung cấp (**Master kho・đơn vị giao hàng ủy thác đã bỏ vào 2026-10-16**: số lượng ít. Sổ quyết định AQ・sổ tiếp nhận #742) |
+| Vận hành | Nhân viên giao hàng (Tài xế) | ✅ | ✅ ID nhân viên giao hàng (cột gồm **hình thức tuyển dụng (nhân viên／cá nhân kinh doanh)・đơn vị trực thuộc**. Không có cột 「区分」 (phân loại: cá nhân／thuộc công ty): sổ quyết định S・#432・#475) |
+| Vận hành | Sổ quản lý túi giữ lạnh・Danh sách thông báo・Danh sách tài khoản | ✅ | — |
+| Vận hành | Quyền・IP whitelist・Phiên bản・Quản lý bảo trì (màn hình cài đặt) | — (2026-10-16: không đặt xuất CSV. Sổ quyết định AQ・sổ tiếp nhận #743) | — |
 | Vận hành | Danh sách Doanh nghiệp・Danh sách Cơ sở | ✅ | ✅ ID doanh nghiệp・ID cơ sở (**chỉ cập nhật**. Tạo mới phải từ đơn đăng ký・28-33) |
-| Vận hành | Danh sách hợp đồng con (Hợp đồng) | ✅ | ✅ Số hợp đồng cha + ngày bắt đầu áp dụng (áp cho các tháng chưa xác nhận từ tháng đó trở đi. Đã xác nhận・đã thanh toán = lỗi dòng) |
-| Vận hành | Quản lý đơn đăng ký hợp đồng | ✅ | ✅ Đăng ký mới hàng loạt (1 dòng = 1 cơ sở, 1 đơn đăng ký theo khóa doanh nghiệp, từ trạng thái đang tiếp nhận theo luồng thông thường. Cột xem `Form_đăng_ký.md` §10-8-1・A11) |
+| Vận hành | Quản lý đại lý・giới thiệu: Master đại lý (AW_AGCY_001)・Master phí giới thiệu (AW_FEPL_001)・Lịch sử giới thiệu (AW_REFE_001)・Lịch sử thanh toán (AW_FEPA_001) | ✅ Các cột của danh sách (trừ cột thao tác・chọn) + dữ liệu chi tiết (toàn bộ mục của dữ liệu chung `dm.org.agencies`／`dm.referral.feePlans`／`dm.referral.referrals`／`dm.referral.payments`. Bảng chi tiết là các dòng lặp lại khóa của cha). Toàn bộ bản ghi theo đúng điều kiện tìm kiếm (sổ quyết định Q・sổ tiếp nhận #401) | — |
+| Vận hành | Danh sách hợp đồng con (Hợp đồng) | ✅ | ✅ Số hợp đồng cha (**không đặt cột 「適用開始」**. Chỉ cập nhật phần chưa xác nhận từ tháng sau trở đi. Đã xác nhận・đã xuất hóa đơn = lỗi dòng. Sổ quyết định AL・2026-10-16) |
+| Vận hành | Quản lý đơn đăng ký hợp đồng | ✅ | ✅ Đăng ký mới hàng loạt (1 dòng = 1 cơ sở, 1 đơn đăng ký theo khóa doanh nghiệp, từ trạng thái đang tiếp nhận theo luồng thông thường. Cột xem `Form_đăng_ký.md` §10-8-1・A11. **Chỉ loại trừ khóa (dòng) bị lỗi, đăng ký phần còn lại**: sổ quyết định AL・2026-10-16) |
 | Vận hành | Danh sách menu hàng tháng | ✅ (1 dòng = 1 sản phẩm của menu) | — |
 | Vận hành | Chi tiết・chỉnh sửa menu hàng tháng | — | ✅ Mã hàng (`品番`) (template Phase 2・thay thế menu) |
 | Vận hành | Quản lý đơn hàng sản phẩm・Quản lý đơn hàng vật tư | ✅ | — |
 | Vận hành | Danh sách khảo sát | ✅ | ✅ Màn nhập hiện có (2 bước). Nếu có lỗi thì không đăng ký được → đổi thành CSV danh sách lỗi |
-| Vận hành | Thông báo (chọn riêng lẻ) | — | ✅ ID (thêm vào lựa chọn・lưu bằng thao tác lưu thông báo) |
-| Vận hành | Thanh toán: Quyết toán thực tế・Xác nhận thanh toán・Hóa đơn・Danh sách tồn kho | ✅ | — |
+| Vận hành | Hóa đơn: Quyết toán thực tế・Chốt hóa đơn・Hóa đơn・Kiểm kê (tồn kho cơ sở) | ✅ | — |
 | Vận hành | Giao hàng: Xuất hàng・Quản lý giao hàng・Cần xác nhận・Lịch (tháng/tuần/ngày)・Hỏi đáp giao hàng・Tổng hợp vật tư | ✅ | — |
 | Vận hành | Chỉ thị xuất hàng・Nhập (THOMAS／Yamato)・CSV chỉ thị nhập kho | Không đổi (dạng liên kết) | Không đổi |
-| Vận hành | Đặt hàng (theo sản phẩm)・Đặt hàng・Lịch sử nhập kho・Danh sách thanh toán nhập mua・Đặt hàng vật tư・Mẫu kinh doanh・Tồn kho kho・Ứng viên hoàn tồn kho | ✅ | — |
+| Vận hành | Đặt hàng (theo sản phẩm)・Đặt hàng・Lịch sử nhập kho・Danh sách hóa đơn nhập mua・Đặt hàng vật tư・Mẫu kinh doanh・Ứng viên hoàn tồn kho | ✅ | — |
 | Vận hành | Đăng ký nhập kho | ✅ | ✅ Số đơn đặt hàng (1 dòng = lần nhập kho lần này của 1 đơn đặt hàng. Khác với dự kiến thì có chênh lệch・chờ xử lý) |
-| Vận hành | Ghi chép tồn kho | ✅ | ✅ Số ghi chép (để trống = tạo mới・chỉ thêm) |
+| Vận hành | Tồn kho kho (danh sách)／Kiểm kê tồn kho kho (điểm khởi đầu. AW_WHS_007. Không tạo CSV cho 「在庫の記録」 (ghi chép tồn kho): sổ quyết định F 2026-10-08) | ✅ Danh sách tồn kho kho | ✅ **Chỉ kiểm kê (điểm khởi đầu)**: cột = ID kho・**đối tượng (sản phẩm／vật tư)**・mã hàng／ID vật tư・số lượng (0〜999,999)・ngày kiểm kê. **Chỉ cần có 1 lỗi dòng là không nhập toàn bộ** (ngoại lệ: sổ quyết định P). **Quyền theo từng dòng** (dòng vật tư = quản lý tồn kho (vật tư), dòng sản phẩm = quản lý tồn kho (món ăn)), dòng không đủ quyền thì lỗi dòng. **Chuẩn ngày đăng ký trước đó của ngày kiểm kê (E141) là theo kho × đối tượng**. Điều chỉnh tăng giảm không làm bằng CSV mà bằng modal ở chi tiết tồn kho kho (sổ quyết định S・#447) |
 | Vận hành | Đánh giá・Quản lý doanh thu・Yêu thích・Liên hệ・Quản lý bảo trì | ✅ | — |
 | Vận hành | TOP・Mục tiêu đơn giá trung bình・Cài đặt chu kỳ giao hàng・Cài đặt hàng thay thế (luồng nhập liệu)・Màn hình chi tiết | — | — |
 | Doanh nghiệp | Trang chủ (Giao hàng)・Hóa đơn・Lịch sử đơn hàng (sản phẩm／vật tư)・Danh sách cơ sở・Kiểm tra tồn kho・Quản lý doanh thu／Danh sách người dùng・Đánh giá | ✅ | — |
-| Nhà cung cấp | Danh sách đơn nhận (+ chi tiết đặt hàng (kỳ) = để đối chiếu giao hàng・thanh toán) | ✅ | ✅ Số đơn đặt hàng (phản hồi đơn nhận: ngày xuất hàng dự kiến／phê duyệt đặt hàng chính thức: ngày giao・số thùng nhập kho・hạn sử dụng (hạn tiêu thụ). Hạn bắt buộc với mọi mặt hàng trừ vật tư: sổ cái E 2026-10-05) |
+> Xuất CSV báo cáo kiểm kê của Web Doanh nghiệp (cũ 「在庫点検」): **1 dòng = 1 cơ sở × 1 sản phẩm** (lặp lại các mục cơ sở・tháng). Cột = ID cơ sở・tên cơ sở・phương thức giao hàng・người kiểm kê・trạng thái・ngày giờ báo cáo・người báo cáo + theo từng sản phẩm: ID sản phẩm・tên sản phẩm・số hiện có・số đã bỏ v.v. (hong trả lời 2026-10-19・sổ quyết định AU・sổ tiếp nhận #831). Cột 「届いた数」 (số đã nhận) đã bị bỏ khỏi màn hình báo cáo kiểm kê (#810) nên cũng không xuất ra CSV〔要確認 (cần xác nhận): có khớp với các cột con trong code không〕.
+| Nhà cung cấp | Danh sách đơn nhận (+ chi tiết đặt hàng (kỳ) = để đối chiếu giao hàng・hóa đơn) | ✅ | ✅ Số đơn đặt hàng (phản hồi đơn nhận: ngày xuất hàng dự kiến／phê duyệt đặt hàng chính thức: ngày giao・số thùng nhập kho・hạn sử dụng (hạn tiêu thụ). Hạn bắt buộc với mọi mặt hàng trừ vật tư: sổ quyết định E 2026-10-05) |
 | Đơn vị giao hàng ủy thác | Danh sách giao hàng・Quản lý thu tiền・Chi tiết chi trả (tháng) | ✅ | — |
-| Đơn vị giao hàng ủy thác | Nhân viên giao hàng | ✅ | ✅ ID nhân viên giao hàng (chỉ để trống = tạo mới. Không có ảnh = chưa đăng ký bằng lái) |
+| Đơn vị giao hàng ủy thác | Nhân viên giao hàng | ✅ | ✅ ID nhân viên giao hàng (chỉ để trống = tạo mới. Không có ảnh = chưa đăng ký bằng lái). Cột gồm **hình thức tuyển dụng (nhân viên／cá nhân kinh doanh)**. **Đơn vị trực thuộc là cột chỉ đọc** (bỏ qua khi nhập). Không có cột 「区分」: sổ quyết định S・#432・#475 |
 | Tài xế | — | — | — |
 
 ## 6. Nhập CSV khảo sát (Nhập CSV khảo sát Web Vận hành・2026-10-05)
 
-Cùng nội dung với thiết kế màn hình `AW_SURV_004` (dữ liệu `docs/05_画面設計書/Dữ_liệu/AW_SURV_Khảo_sát.py` No.5). 1 dòng = 1 câu hỏi. **4 cột thông tin cơ bản lấy giá trị ở dòng 1 (dòng của câu hỏi đầu tiên) để điền vào ô ②** (từ dòng 2 trở đi không đọc. Nếu trống thì nhập ở ②. Thông báo nhắc nhở・đối tượng gửi không có trong CSV. hong 2026-10-05＝B). Ở ② xác nhận tên khảo sát・thời gian trả lời・đối tượng gửi rồi bấm "Đăng ký". Dòng lỗi không được nhập, các dòng khác vẫn đăng ký (§5・sổ cái F).
+Cùng nội dung với thiết kế màn hình `AW_SURV_004` (dữ liệu `docs/05_画面設計書/Dữ_liệu/AW_SURV_Khảo_sát.py` No.5). 1 dòng = 1 câu hỏi. **4 cột thông tin cơ bản lấy giá trị ở dòng 1 (dòng của câu hỏi đầu tiên) để điền vào ô ②** (từ dòng 2 trở đi không đọc. Nếu trống thì nhập ở ②. Thông báo nhắc nhở・đối tượng gửi không có trong CSV. hong 2026-10-05＝B). Ở ② xác nhận tên khảo sát・thời gian trả lời・đối tượng gửi rồi bấm "Đăng ký". Dòng lỗi không được nhập, các dòng khác vẫn đăng ký (§5・sổ quyết định F).
 
 **File**：UTF-8 (có hoặc không BOM), phân cách bằng dấu phẩy, dòng 1 = tiêu đề `アンケート名,案内文,回答開始日時,回答終了日時,No,設問文,設問タイプ,必須,選択肢` (đúng thứ tự này. Sai thì E214), từ dòng 2 mỗi dòng = 1 câu hỏi, tối đa 5,000 dòng, bỏ qua dòng trống, không có dòng câu hỏi nào thì E219. Giá trị chứa `,` `"` xuống dòng thì bọc `"…"` (`"` viết thành `""`). Cắt khoảng trắng đầu cuối, đổi số・chữ cái・gạch nối full-width sang half-width rồi mới kiểm tra. File mẫu có cùng thứ tự cột với Xuất CSV (1 dòng = 1 câu hỏi) (không đặt nút template).
 

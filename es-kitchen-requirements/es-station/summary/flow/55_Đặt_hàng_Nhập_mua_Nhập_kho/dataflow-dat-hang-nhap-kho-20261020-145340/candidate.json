@@ -1,0 +1,311 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Luồng dữ liệu Đặt hàng - Nhà cung cấp - Nhập kho",
+  "output": "flow/55_Đặt_hàng_Nhập_mua_Nhập_kho/dataflow-dat-hang-nhap-kho-20261020-145340/dat-hang-nhap-kho.html",
+  "viewBox": [
+   1080,
+   640
+  ],
+  "quality_profile": "showcase"
+ },
+ "stages": [
+  {
+   "label": "Nhu cầu"
+  },
+  {
+   "label": "Đặt hàng (VH)"
+  },
+  {
+   "label": "Nhà cung cấp"
+  },
+  {
+   "label": "Nhập kho"
+  },
+  {
+   "label": "Kết quả"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "biz",
+   "type": "frontend",
+   "label": "Doanh nghiệp",
+   "sublabel": "③ báo thiếu (không X17)",
+   "stage": 3,
+   "row": 0
+  },
+  {
+   "id": "menu",
+   "type": "external",
+   "label": "Menu (45_)",
+   "sublabel": "điều kiện công khai",
+   "stage": 0,
+   "row": 1
+  },
+  {
+   "id": "temp",
+   "type": "backend",
+   "label": "Đặt hàng tạm",
+   "sublabel": "trước khi CK menu",
+   "stage": 1,
+   "row": 1
+  },
+  {
+   "id": "diff",
+   "type": "security",
+   "label": "Có chênh lệch",
+   "sublabel": "chờ xử lý ①②③",
+   "stage": 3,
+   "row": 1
+  },
+  {
+   "id": "alt",
+   "type": "external",
+   "label": "Hàng thay thế (65_)",
+   "sublabel": "theo từng chuyến",
+   "stage": 4,
+   "row": 1
+  },
+  {
+   "id": "need",
+   "type": "external",
+   "label": "Số lượng cần",
+   "sublabel": "HĐ + dùng thử + mẫu",
+   "stage": 0,
+   "row": 2
+  },
+  {
+   "id": "main",
+   "type": "backend",
+   "label": "Đặt hàng chính",
+   "sublabel": "nửa đầu / nửa sau",
+   "stage": 1,
+   "row": 2
+  },
+  {
+   "id": "sup",
+   "type": "frontend",
+   "label": "Supplier site",
+   "sublabel": "NCC site・Email có TK",
+   "stage": 2,
+   "row": 2
+  },
+  {
+   "id": "recv",
+   "type": "backend",
+   "label": "Ghi nhận nhập",
+   "sublabel": "SL, thùng; hạn chỉ xem",
+   "stage": 3,
+   "row": 2
+  },
+  {
+   "id": "inv",
+   "type": "database",
+   "label": "Tồn kho kho",
+   "sublabel": "tăng khi nhập",
+   "stage": 4,
+   "row": 2
+  },
+  {
+   "id": "add",
+   "type": "external",
+   "label": "Tăng sau hạn chốt",
+   "sublabel": "dùng thử, mẫu, thay thế",
+   "stage": 0,
+   "row": 3
+  },
+  {
+   "id": "thomas",
+   "type": "external",
+   "label": "THOMAS",
+   "sublabel": "CSV chỉ thị nhập kho",
+   "stage": 1,
+   "row": 3
+  },
+  {
+   "id": "ext",
+   "type": "external",
+   "label": "NCC bên ngoài",
+   "sublabel": "không email; VH nhập",
+   "stage": 2,
+   "row": 3
+  }
+ ],
+ "flows": [
+  {
+   "id": "f-temp-menu",
+   "from": "temp",
+   "to": "menu",
+   "label": "đã duyệt",
+   "route": "straight",
+   "variant": "security"
+  },
+  {
+   "id": "f-temp-sup",
+   "from": "temp",
+   "to": "sup",
+   "label": "trả lời ngày giao",
+   "fromSide": "right",
+   "toSide": "top",
+   "via": [
+    [
+     530,
+     271
+    ]
+   ]
+  },
+  {
+   "id": "f-temp-main",
+   "from": "temp",
+   "to": "main",
+   "label": "đã trả lời → ĐH chính",
+   "route": "straight",
+   "labelAt": [
+    315,
+    328
+   ]
+  },
+  {
+   "id": "f-need",
+   "from": "need",
+   "to": "main",
+   "label": "số cần",
+   "route": "straight"
+  },
+  {
+   "id": "f-add",
+   "from": "add",
+   "to": "need",
+   "label": "ĐH bổ sung = ĐH chính mới",
+   "route": "straight",
+   "variant": "dashed",
+   "labelAt": [
+    100,
+    442
+   ]
+  },
+  {
+   "id": "f-main-sup",
+   "from": "main",
+   "to": "sup",
+   "label": "ĐH + email",
+   "route": "straight",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f-thomas",
+   "from": "main",
+   "to": "thomas",
+   "label": "CSV 5 cột, SJIS",
+   "route": "straight",
+   "labelAt": [
+    315,
+    442
+   ]
+  },
+  {
+   "id": "f-sup-recv",
+   "from": "sup",
+   "to": "recv",
+   "label": "báo xuất",
+   "route": "straight",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f-ext-recv",
+   "from": "ext",
+   "to": "recv",
+   "label": "VH nhập thay",
+   "fromSide": "right",
+   "toSide": "bottom",
+   "via": [
+    [
+     745,
+     499
+    ]
+   ]
+  },
+  {
+   "id": "f-inv",
+   "from": "recv",
+   "to": "inv",
+   "label": "khớp・dư",
+   "route": "straight",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f-diff",
+   "from": "recv",
+   "to": "diff",
+   "label": "SL thiếu",
+   "route": "straight",
+   "variant": "security",
+   "labelAt": [
+    745,
+    328
+   ]
+  },
+  {
+   "id": "f-alt",
+   "from": "diff",
+   "to": "alt",
+   "label": "② thay thế",
+   "route": "straight"
+  },
+  {
+   "id": "f-biz",
+   "from": "diff",
+   "to": "biz",
+   "label": "③ chấp nhận thiếu",
+   "route": "straight",
+   "variant": "security",
+   "labelAt": [
+    745,
+    214
+   ]
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "Chuỗi trạng thái (発注.md §1・§3)",
+   "items": [
+    "Đặt hàng tạm (trước khi CK menu) → NCC trả lời ngày giao → ĐH chính: nửa đầu B5–C1, nửa sau D5–A1 → NCC duyệt (ngày giao, số thùng, HSD bắt buộc) → báo xuất → nhập kho",
+    "Đặt hàng tạm đã duyệt là điều kiện công khai menu (45_); NCC có thể từ chối nhận (lý do + bình luận), VH có thể hủy",
+    "Chia lần giao: tối đa 3 lần, không cần VH duyệt (§5-6)",
+    "Tăng sau hạn chốt (dùng thử, mẫu KD sau chốt, hàng thay thế) → ĐH chính mới, ghi lý do (§1)"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Số cần・nguồn dữ liệu",
+   "items": [
+    "Số cần = HĐ + dùng thử + mẫu KD; mẫu tháng tới = số mẫu trong menu × 2 cái/SP (§2-1); phần HĐ đăng ký tạm hiện riêng là 'tạm' (§2-2)",
+    "Bấm ĐH chính mà còn HĐ đăng ký tạm của chu kỳ đó: cảnh báo, vẫn đặt được (AL); nhắc ĐH chính trên TOP (§1)",
+    "Màn đặt hàng chọn mọi tháng có menu chưa xóa; SP / NCC / số trong thùng lấy từ master SP (#776); dữ liệu đặt hàng gom 1 nơi, DB chung với supplier site (#767)"
+   ]
+  },
+  {
+   "dot": "cyan",
+   "title": "Phương thức NCC (§7)",
+   "items": [
+    "NCC ES Station và NCC Email nhận cùng nội dung email; NCC Email có tài khoản cũng xem đơn trên supplier site (#776)",
+    "NCC chưa xử lý: email mỗi 24h (chỉ ngày làm việc) đến khi duyệt (§7-1)",
+    "NCC bên ngoài: không email; VH ghi nhận ĐH và nhập thay; VH nhập thay được cho mọi NCC (§7-3)",
+    "THOMAS: ES xuất CSV chỉ thị nhập kho (5 cột, Shift_JIS), không nhập CSV kết quả (台帳 AJ / AH; §8-1)"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "Nhập kho・chênh lệch (§8)",
+   "items": [
+    "Ghi nhận: nhập SL + số thùng; ngày nhập nhập 1 lần (mặc định hôm nay); HSD không nhập / không sửa, chỉ hiển thị hạn NCC nhập; 'Lưu' cả loạt (§8-2, 8-2a). 要確認: §8-2b vẫn ghi 'HSD bắt buộc', mâu thuẫn 8-2a (mới hơn)",
+    "Khớp = đúng SL (chỉ khác số thùng vẫn khớp); nhập dư: chấp nhận phần dư vào tồn kho kho (§8-3, 8-3a)",
+    "Thiếu → 'Có chênh lệch・chờ xử lý' trên TOP và DS ĐH: ① chờ giao từng phần ② hàng thay thế, nút 'Thêm hàng thay thế' theo chuyến ③ chấp nhận thiếu (loại khỏi chuyến), báo DN mẫu 'お届けする商品の変更（入荷の不足）', không X17 (§8-4; AB)",
+    "Chuyến đã loại theo ③ thì không thêm hàng thay thế được (§8-4a). Vật tư: 1 đơn = 1 vật tư × 1 kho, chỉ ĐH chính, bất kỳ lúc nào, không chia lần, VH nhập kho (§9) - không vẽ"
+   ]
+  }
+ ]
+}

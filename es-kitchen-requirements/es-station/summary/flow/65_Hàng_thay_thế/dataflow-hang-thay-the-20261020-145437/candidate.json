@@ -1,0 +1,299 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Luồng dữ liệu Hàng thay thế",
+  "output": "flow/65_Hàng_thay_thế/dataflow-hang-thay-the-20261020-145437/hang-thay-the.html",
+  "viewBox": [
+   1080,
+   696
+  ],
+  "quality_profile": "showcase"
+ },
+ "stages": [
+  {
+   "label": "Kích hoạt"
+  },
+  {
+   "label": "Thiết lập"
+  },
+  {
+   "label": "Xác định"
+  },
+  {
+   "label": "Hạ nguồn"
+  },
+  {
+   "label": "Người dùng"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "notice",
+   "type": "messagebus",
+   "label": "Thông báo",
+   "sublabel": "X17 + Web; mặc định tắt",
+   "stage": 3,
+   "row": 0
+  },
+  {
+   "id": "customer",
+   "type": "external",
+   "label": "Khách hàng",
+   "sublabel": "web DN, phiếu giao",
+   "stage": 4,
+   "row": 0
+  },
+  {
+   "id": "defect",
+   "type": "external",
+   "label": "Sản phẩm lỗi",
+   "sublabel": "lô lỗi / lỗi sản phẩm",
+   "stage": 0,
+   "row": 1
+  },
+  {
+   "id": "orders",
+   "type": "database",
+   "label": "Đơn hàng・TT",
+   "sublabel": "chi tiết, dòng 8%/0 yên",
+   "stage": 3,
+   "row": 1
+  },
+  {
+   "id": "setup",
+   "type": "frontend",
+   "label": "Thiết lập",
+   "sublabel": "điều kiện→cách→xác nhận",
+   "stage": 1,
+   "row": 2
+  },
+  {
+   "id": "confirm",
+   "type": "backend",
+   "label": "Xác định",
+   "sublabel": "①②③, không hủy được",
+   "stage": 2,
+   "row": 2
+  },
+  {
+   "id": "ship",
+   "type": "messagebus",
+   "label": "Chỉ thị xuất",
+   "sublabel": "nâng phiên bản, gửi lại",
+   "stage": 3,
+   "row": 2
+  },
+  {
+   "id": "kho",
+   "type": "external",
+   "label": "Kho (THOMAS)",
+   "sublabel": "tồn lỗi: trả NCC / hủy",
+   "stage": 4,
+   "row": 2
+  },
+  {
+   "id": "shortage",
+   "type": "external",
+   "label": "Nhập thiếu (55_)",
+   "sublabel": "② / theo từng chuyến",
+   "stage": 0,
+   "row": 3
+  },
+  {
+   "id": "po",
+   "type": "database",
+   "label": "Đặt hàng",
+   "sublabel": "+TT / −lỗi; bổ sung",
+   "stage": 2,
+   "row": 4,
+   "yOffset": -22
+  },
+  {
+   "id": "stock",
+   "type": "database",
+   "label": "Tồn kho cơ sở",
+   "sublabel": "ghi bỏ đi, không hao hụt",
+   "stage": 3,
+   "row": 4,
+   "yOffset": -22
+  },
+  {
+   "id": "driver",
+   "type": "external",
+   "label": "Tài xế / nơi giao",
+   "sublabel": "app tài xế, thu hồi",
+   "stage": 4,
+   "row": 4,
+   "yOffset": -22
+  }
+ ],
+ "flows": [
+  {
+   "id": "f-defect",
+   "from": "defect",
+   "to": "setup",
+   "label": "phát hiện lỗi",
+   "fromSide": "right",
+   "toSide": "top",
+   "via": [
+    [
+     315,
+     271
+    ]
+   ]
+  },
+  {
+   "id": "f-short",
+   "from": "shortage",
+   "to": "setup",
+   "label": "Thêm hàng TT",
+   "fromSide": "right",
+   "toSide": "bottom",
+   "via": [
+    [
+     315,
+     499
+    ]
+   ]
+  },
+  {
+   "id": "f-confirm",
+   "from": "setup",
+   "to": "confirm",
+   "label": "Xác định",
+   "route": "straight",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f-notice",
+   "from": "confirm",
+   "to": "notice",
+   "label": "nếu VH tick gửi",
+   "variant": "dashed",
+   "fromSide": "top",
+   "toSide": "left",
+   "via": [
+    [
+     530,
+     157
+    ]
+   ]
+  },
+  {
+   "id": "f-notice-cust",
+   "from": "notice",
+   "to": "customer",
+   "label": "X17 + Web",
+   "route": "straight",
+   "variant": "dashed"
+  },
+  {
+   "id": "f-orders",
+   "from": "confirm",
+   "to": "orders",
+   "label": "sửa đơn",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  {
+   "id": "f-stock",
+   "from": "confirm",
+   "to": "stock",
+   "label": "ghi bỏ đi",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  {
+   "id": "f-po",
+   "from": "confirm",
+   "to": "po",
+   "label": "+TT / −lỗi",
+   "route": "straight",
+   "labelAt": [
+    530,
+    499
+   ]
+  },
+  {
+   "id": "f-orders-cust",
+   "from": "orders",
+   "to": "customer",
+   "label": "hàng TT (元)",
+   "fromSide": "right",
+   "toSide": "bottom",
+   "via": [
+    [
+     960,
+     271
+    ]
+   ]
+  },
+  {
+   "id": "f-ship",
+   "from": "orders",
+   "to": "ship",
+   "label": "nâng phiên bản",
+   "route": "straight",
+   "labelAt": [
+    745,
+    328
+   ]
+  },
+  {
+   "id": "f-kho",
+   "from": "ship",
+   "to": "kho",
+   "label": "dừng xuất",
+   "route": "straight"
+  },
+  {
+   "id": "f-stock-driver",
+   "from": "stock",
+   "to": "driver",
+   "label": "ES便 thu hồi",
+   "route": "straight",
+   "variant": "dashed"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "Luồng chính (代替品.md §1・§3・§4)",
+   "items": [
+    "VH thiết lập từ quản lý menu: điều kiện → cách xử lý → kiểm tra đối tượng → 'Xác định'. Không có lưu nháp; đã xác định thì không hủy được, muốn sửa thì tạo thiết lập mới (§1; AL Q152–158)",
+    "Gợi ý hàng TT: cùng nhiệt độ / course / kho; chọn ngoài gợi ý được (kể cả khác nhiệt độ) nhưng có cảnh báo (§3-2; AL)",
+    "Kiểm tồn hàng TT trước khi lưu; thiếu thì đặt hàng bổ sung, nhập về rồi mới giao (§3-3)",
+    "Nhập kho thiếu: nút 'Thêm hàng thay thế' theo từng chuyến, chỉ điền ngày xuất của chuyến đó; chuyến đã loại theo ③ thì không thêm được (発注.md §8-4, 8-4a)"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Cách xử lý (§2・§3)",
+   "items": [
+    "① Thay thế: tính theo đơn giá SP gốc (chuyến không kịp cũng là ①, AL)",
+    "② Bồi thường: không tính phí, dòng 0 yên; SL 'toàn bộ đã đặt' (mặc định) hoặc 'phần còn lại' (§3-4); chuyến sau (mặc định) / chuyến sau nữa / giao thêm, giao thêm ES chịu phí (§3-5)",
+    "③ Chỉ loại trừ: không tính phí",
+    "Khách đã kết thúc HĐ: không thuộc đối tượng, không thông báo và không sửa chi tiết đơn (AL)"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "Hạ nguồn",
+   "items": [
+    "Thông báo: mặc định KHÔNG gửi (không tick); VH tick thì gửi email X17 + Web (台帳 AL Q152, F #282 ②). 要確認: 代替品.md §3-7 vẫn ghi '既定で送る' (cũ, ledger thắng)",
+    "Chỉ thị xuất: nâng phiên bản, gửi lại đến ngày trước ngày xuất; sau khi kho bắt đầu picking thì VH liên lạc kho, hệ thống chỉ ghi lại (AL); từ ngày xuất trở đi → ② (§4)",
+    "Kho: tồn lỗi chọn trả NCC / hủy tại kho, cả hai đều dừng xuất (§3-6); vẽ gộp vào node Kho (THOMAS)",
+    "Tồn kho cơ sở: ghi bỏ đi, không tính hao hụt quản lý; ES便: tài xế thu hồi chuyến sau; COOL便: DN tự bỏ và khai trong báo cáo kiểm kê (§4)"
+   ]
+  },
+  {
+   "dot": "violet",
+   "title": "Đang chờ khách (#815 / #816)",
+   "items": [
+    "Web DN hiện có màn '代替品の確認' chỉ để xem (§6)",
+    "Đề xuất bỏ màn này, bấm thông báo thì chuyển tới màn đơn của cơ sở / tháng đó (#815): chưa chốt, chưa vẽ"
+   ]
+  }
+ ]
+}

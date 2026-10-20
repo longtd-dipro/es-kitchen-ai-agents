@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "715c26ee-e25b-4010-8f42-7b087fb6d593",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/mau-kinh-doanh.html",
+  "specification": {
+    "sha256": "c59aa6eb41da211540f987b08387cd609b753b5d8ceaacf4823f99403ccfb140",
+    "bytes": 5973
+  },
+  "artifact": {
+    "sha256": "c70b1ac32b849cbc089f39511ba4e06be03c1418f06839060b1901257aaf8fd7",
+    "bytes": 760867
+  }
+}

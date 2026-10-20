@@ -1,0 +1,221 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Luồng dữ liệu Mẫu kinh doanh",
+  "output": "flow/75_Mẫu_kinh_doanh/dataflow-mau-kinh-doanh-20261020-145810/mau-kinh-doanh.html",
+  "viewBox": [
+   1080,
+   520
+  ],
+  "quality_profile": "showcase"
+ },
+ "stages": [
+  {
+   "label": "Đầu vào"
+  },
+  {
+   "label": "Đăng ký"
+  },
+  {
+   "label": "Quy tắc・đặt hàng"
+  },
+  {
+   "label": "Chốt nhận"
+  },
+  {
+   "label": "Đầu ra"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "menu",
+   "type": "frontend",
+   "label": "Tạo menu",
+   "sublabel": "số mẫu/tháng, SP mẫu",
+   "stage": 1,
+   "row": 0
+  },
+  {
+   "id": "order",
+   "type": "backend",
+   "label": "Đặt hàng NCC",
+   "sublabel": "tính vào SL cần",
+   "stage": 2,
+   "row": 0
+  },
+  {
+   "id": "ship",
+   "type": "external",
+   "label": "Chỉ thị xuất",
+   "sublabel": "CSV THOMAS, kho gửi",
+   "stage": 4,
+   "row": 0
+  },
+  {
+   "id": "ops",
+   "type": "frontend",
+   "label": "Web Vận hành",
+   "sublabel": "địa chỉ + tuyến giao",
+   "stage": 0,
+   "row": 1
+  },
+  {
+   "id": "reg",
+   "type": "backend",
+   "label": "Đăng ký mẫu",
+   "sublabel": "1 địa chỉ = 1 suất",
+   "stage": 1,
+   "row": 1
+  },
+  {
+   "id": "rule",
+   "type": "backend",
+   "label": "Ngày gửi・tuyến",
+   "sublabel": "giao − lead time; kho",
+   "stage": 2,
+   "row": 1
+  },
+  {
+   "id": "close",
+   "type": "security",
+   "label": "Chốt nhận",
+   "sublabel": "tự động T6 17:00 / tay",
+   "stage": 3,
+   "row": 1
+  },
+  {
+   "id": "dlv",
+   "type": "database",
+   "label": "Dữ liệu giao",
+   "sublabel": "loại Mẫu, không phí",
+   "stage": 4,
+   "row": 1
+  },
+  {
+   "id": "hist",
+   "type": "database",
+   "label": "Lịch sử mẫu",
+   "sublabel": "danh sách / CSV",
+   "stage": 1,
+   "row": 2
+  }
+ ],
+ "flows": [
+  {
+   "id": "f-ops",
+   "from": "ops",
+   "to": "reg",
+   "label": "địa chỉ nhận",
+   "route": "straight"
+  },
+  {
+   "id": "f-menu",
+   "from": "menu",
+   "to": "reg",
+   "label": "枠 / SP mẫu",
+   "route": "straight",
+   "labelAt": [
+    315,
+    214
+   ]
+  },
+  {
+   "id": "f-order",
+   "from": "menu",
+   "to": "order",
+   "label": "số mẫu × 2 cái",
+   "route": "straight",
+   "variant": "dashed"
+  },
+  {
+   "id": "f-rule",
+   "from": "reg",
+   "to": "rule",
+   "label": "ngày giao, SP",
+   "route": "straight",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f-hist",
+   "from": "reg",
+   "to": "hist",
+   "label": "lưu",
+   "route": "straight",
+   "labelAt": [
+    315,
+    328
+   ]
+  },
+  {
+   "id": "f-close",
+   "from": "rule",
+   "to": "close",
+   "label": "ngày gửi",
+   "route": "straight",
+   "variant": "emphasis"
+  },
+  {
+   "id": "f-ship",
+   "from": "close",
+   "to": "ship",
+   "label": "chỉ thị + CSV",
+   "variant": "emphasis",
+   "fromSide": "top",
+   "toSide": "left",
+   "via": [
+    [
+     745,
+     157
+    ]
+   ]
+  },
+  {
+   "id": "f-dlv",
+   "from": "close",
+   "to": "dlv",
+   "label": "loại Mẫu",
+   "route": "straight"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "Đăng ký (営業サンプル.md §2)",
+   "items": [
+    "Đăng ký đơn giản trên Web Vận hành, chỉ nhập địa chỉ nhận, không tạo DN / cơ sở / HĐ, không liên kết DN; thông tin biết sau ghi vào ghi chú (2-1, 2-8b)",
+    "Số mẫu theo menu (mặc định 60/tháng) và SP mẫu chọn ở màn menu; đã công khai thì không đổi số suất, muốn đổi thì đăng ký vào tháng menu khác (2-2; AL)",
+    "1 địa chỉ = 1 suất; mỗi SP 1–9 cái, mặc định 2 (2-4); vượt số mẫu trong tháng thì chặn (E149) (2-15)"
+   ]
+  },
+  {
+   "dot": "orange",
+   "title": "Quy tắc ngày và kho",
+   "items": [
+    "Ngày gửi = ngày giao − lead time; rơi ngày không picking được thì đẩy sớm, ngày giao dịch cùng số ngày (2-5)",
+    "Lead time: VH nhập mỗi lần đăng ký, bắt buộc, số nguyên 0–30 ngày, hệ thống không gợi ý (2-7)",
+    "Kho picking theo từng địa chỉ nhận (không theo SP): mỗi lần đăng ký VH nhập tuyến giao (kho picking, hãng giao, điểm trung chuyển); kho không xử lý SP thì không chọn được SP đó",
+    "Không tách đơn theo kho (không số nhánh): SP ở kho khác thì đăng ký thêm 1 lần, tính 2 suất, cùng địa chỉ có cảnh báo (2-6; 台帳 S #448)"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Chốt nhận (2-13, 2-14, 2-17)",
+   "items": [
+    "Chốt tự động 17:00 thứ Sáu tuần trước (台帳 AM #715) + chốt tay. 要確認: spec 2-13 ghi '2 ngày làm việc trước thứ Hai tuần xuất【仮】', ledger AL ghi '17:00 hằng tuần'; vẽ theo #715",
+    "Khi chốt tạo cùng lúc: chỉ thị xuất + CSV cho THOMAS + dữ liệu giao loại 'Mẫu' (không HĐ / cơ sở, tính vào giới hạn 300 đơn/ngày, không tính tiền)",
+    "Hủy chốt: đến 23:59 ngày trước ngày gửi đầu tiên của tuần; đã hủy tay thì tự động không chốt lại (2-14). 要確認: #715 ghi việc mở chốt là 【暫定】"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "Sau khi chốt・đặt hàng",
+   "items": [
+    "Thêm sau chốt: được, vào chỉ thị xuất ở lần chốt của tuần xuất kế tiếp (2-9; AL)",
+    "Hủy mẫu: đã nhận thì bất cứ lúc nào; đã chốt / thêm sau chốt thì đến 23:59 ngày trước ngày gửi; đổi trên THOMAS bằng CSV dòng thay đổi, VH đưa cho kho (2-12)",
+    "Việc gửi hàng do kho (phía THOMAS) làm (2-19); phần dư trả về ES bằng chỉ thị xuất trả kho (2-10)",
+    "Đặt hàng NCC: tháng tới trở đi = số mẫu trong menu × 2 cái / SP mẫu, không đổi theo số đăng ký; tháng này trở về trước = số đã đăng ký, chênh lệch thì đặt bổ sung (2-16; 発注.md §2-1)"
+   ]
+  }
+ ]
+}

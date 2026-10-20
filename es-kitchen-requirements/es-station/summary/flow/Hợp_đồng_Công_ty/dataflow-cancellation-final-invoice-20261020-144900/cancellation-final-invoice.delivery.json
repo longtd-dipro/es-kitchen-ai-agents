@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "ee599520-98e9-4792-b02b-e769fed6096e",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/cancellation-final-invoice.html",
+  "specification": {
+    "sha256": "6ba166fa08357f2682b1b0e6591993fb833e77184f15f67a4679bc17f463b7be",
+    "bytes": 35820
+  },
+  "artifact": {
+    "sha256": "0ecfeea908e1418a87b74cca590943159283b625850d17e00005c67d8e88339f",
+    "bytes": 771987
+  }
+}

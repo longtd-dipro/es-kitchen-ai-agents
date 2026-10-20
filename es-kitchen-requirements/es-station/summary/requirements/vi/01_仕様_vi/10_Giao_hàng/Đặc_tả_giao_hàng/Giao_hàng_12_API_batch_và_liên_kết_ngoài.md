@@ -1,3 +1,5 @@
+> Bản dịch tiếng Việt của `ja/01_仕様/10_配送/配送仕様/配送_12_API・バッチ・外部連携.md` (nguồn es-station, bản 2026-10-20). Khi khác nhau, bản tiếng Nhật và `docs/決定台帳.md` là chuẩn.
+
 # Đặc tả giao hàng: guard của API・Batch・Giao dịch・Mã lỗi・Liên kết bên ngoài — Chuẩn
 
 〔Nguồn gốc: DEV仕様書 §15〜§19 (Nhật hóa 2026-10-03)〕
@@ -43,7 +45,7 @@ Tất cả API cập nhật (mutation) thực hiện theo thứ tự sau.
 | Phân công・thay đổi phân công | ○ | × | × | × | Chặng của công ty mình | × |
 | Tham chiếu dữ liệu giao hàng (phạm vi nhìn thấy) | Tất cả | Tất cả | Tất cả | `corp_admin`: tất cả cơ sở của công ty mình／`site_staff`: cơ sở được gán (#55) | Chỉ dữ liệu giao hàng có chặng của công ty mình (15.15) | Phần được phân công |
 | Báo cáo giao hàng・sự cố | Đăng ký thay | Đăng ký thay | × | × | Trong công ty mình | Phần được phân công |
-| Đăng ký báo cáo đỗ xe【Bổ sung・2026-10-03】 | Đăng ký thay・sửa (bắt buộc lý do) | × | × | × | × (là bên ứng trước rồi gom yêu cầu thanh toán cho vận hành)〔Phản hồi hong 2026-10-03〕 | Phần được phân công |
+| Đăng ký báo cáo đỗ xe【Bổ sung・2026-10-03】 | Đăng ký thay・sửa (bắt buộc lý do) | × | × | × | × (là bên ứng trước rồi gom lại xuất hóa đơn cho vận hành)〔Phản hồi hong 2026-10-03〕 | Phần được phân công |
 
 ### 15.3 Lưu thiết lập chu kỳ giao hàng
 
@@ -114,7 +116,7 @@ Override được hủy bằng trạng thái. Không xóa vật lý.
 | Thời hạn | **Chưa nhận kết quả xuất hàng của bản ghi giao hàng đó** |
 | Hash | `payload_hash` được tạo từ nội dung đã chuẩn hóa (canonical payload・19.1) |
 
-Thành công: ghi nhận thành công, nếu là lần đầu thì chuyển `locked`. Thất bại: ghi nhận thất bại, không chuyển `locked`.
+Thành công: ghi nhận thành công (không chuyển `locked`). Thất bại: ghi nhận thất bại. Chỉ chuyển `locked` khi nhập kết quả xuất hàng (19.4) (sổ quyết định AL・2026-10-16) (cũ: chuyển `locked` khi thành công lần đầu).
 
 ### 15.8 Nhập số vận đơn・kết quả xuất hàng
 
@@ -122,7 +124,8 @@ Thành công: ghi nhận thành công, nếu là lần đầu thì chuyển `loc
 - Số vận đơn không phải của dữ liệu giao hàng khác.
 - Công ty giao hàng khớp với công ty giao hàng của một chặng nào đó trong `delivery_legs` của bản ghi giao hàng đó.
 - Dữ liệu giao hàng không phải `Hủy giữa chừng`／`Hủy bỏ`.
-- Nếu số vận đơn đến trước khi gửi chỉ thị xuất hàng thành công thì tạo anomaly (cần xác nhận). Không chuyển `locked`.
+- Nếu số vận đơn đến trước khi gửi chỉ thị xuất hàng thành công thì tạo anomaly (cần xác nhận). Không chuyển `locked`. Cần xác nhận do vận đơn đến trước sẽ được ghi nhận bằng 「送信済にする」 (Đánh dấu đã gửi) rồi mới đóng (sổ quyết định AL・2026-10-16).
+- Chuyển dữ liệu giao hàng sang `locked` khi nhập kết quả xuất hàng (sổ quyết định AL・2026-10-16) (19.4).
 
 ### 15.9 Phân công tài xế
 
@@ -265,7 +268,7 @@ Sổ quyết định B "Báo cáo đỗ xe": **Cần. Tài xế nhập ảnh bi�
 | Bắt buộc | **Cả hai**: `parking_fee` (số nguyên từ 0 trở lên・yên) và ảnh biên lai. Nếu không có ảnh thì `VALIDATION_REQUIRED` |
 | Cách gửi ảnh | Ảnh gửi tách riêng khỏi phần chính (phương thức `配送_06` §12-4). 【Cần xác nhận】Có coi là "chưa hoàn tất" cho đến khi ảnh đến sau không |
 | Tách khỏi thu tiền | Không đổi `cash_expected_amount`／`cash_collected_amount`. Không hiển thị trên màn hình thu tiền・chênh lệch thu tiền mặt |
-| Thanh toán・cách hiển thị | Tài xế ứng trước → công ty giao hàng ủy thác gom lại và yêu cầu thanh toán cho vận hành (quản lý hệ thống). **Không thu của doanh nghiệp, cũng không hiển thị trên Web doanh nghiệp**〔Phản hồi hong 2026-10-03〕 |
+| Thanh toán・cách hiển thị | Tài xế ứng trước → công ty giao hàng ủy thác gom lại và xuất hóa đơn cho vận hành (quản lý hệ thống). **Không thu của doanh nghiệp, cũng không hiển thị trên Web doanh nghiệp**〔Phản hồi hong 2026-10-03〕 |
 | Lũy đẳng | Giống các API hoàn tất khác, bắt buộc có khóa lũy đẳng (ID giao hàng + bước + UUID của thiết bị) (`配送_06` §12-4) |
 
 ---
@@ -325,15 +328,19 @@ AND có order_quantities khớp với khóa duy nhất của kế hoạch
 
 Cập nhật dữ liệu giao hàng hiện có. Với kế hoạch đã qua `order_close_date` mà không có `order_quantities` thì tạo cần xác nhận `qty_missing` và để nguyên dữ liệu giao hàng.
 
-【Cần xác nhận】`配送_08` §14-5・`配送_09` §17-1 ghi "khi không có đơn hàng thì chốt bằng số lượng tiêu chuẩn (AI mode OFF)／số lượng do AI quyết định (ON)", còn `配送_04` §7-3 ghi "khi tạo xác định thì tạo khung đơn hàng bằng số lượng tiêu chuẩn". Nếu khung đơn hàng luôn có thì không mâu thuẫn với DEV, nhưng cần xác nhận xem có thể hiểu là `qty_missing` chỉ xảy ra khi "không có chính khung đơn hàng" hay không.
+Loại `qty_missing` ra khỏi cần xác nhận (theo sổ quyết định F. Sổ quyết định AL・2026-10-16・Q26. Cũ: ở đây có 【Cần xác nhận】 "có thể hiểu là `qty_missing` chỉ xảy ra khi không có chính khung đơn hàng hay không"). Số lượng khi không có đơn hàng tuân theo quyết định của sổ quyết định F (chốt bằng số lượng tiêu chuẩn／số lượng của AI).
 
 ### 16.5 `plan_recheck`
 
 Kiểm tra override・lead time・không thể xuất hàng・kho và công ty giao hàng còn hiệu lực・dữ liệu giao hàng `published` bị ảnh hưởng・kế hoạch không thể tạo. Chỉ tạo cần xác nhận, không sửa `published`／`locked`.
 
-Bổ sung 2026-09-29: UPSERT `shelf_life_warning` (DEV §3.3), `change_request_due` (DEV §9.1.1), `assignment_missing`. `assignment_missing` khi chặng cần phân công không có tài xế và `delivery_date − 3 ≤ business_date` (DEV §13.1. Thay đổi 2026-09-30. Cũ: `delivery_date − 1 ≤ business_date`)〔Bảng yêu cầu dòng 142・Phản hồi phản ánh một phần bảng yêu cầu 20260930〕. Email cho công ty giao hàng ủy thác chỉ 2 lần: ngày `delivery_date − 3` và ngày `delivery_date − 1`.
+【Rút lại 2026-10-13: đã bỏ `shelf_life_warning` (cần xác nhận "Lưu ý thời hạn tiêu dùng ngắn")・sổ quyết định X】 Bổ sung 2026-09-29: UPSERT `shelf_life_warning` (DEV §3.3), `change_request_due` (DEV §9.1.1), `assignment_missing`. `assignment_missing` khi chặng cần phân công không có tài xế và `delivery_date − 3 ≤ business_date` (DEV §13.1. Thay đổi 2026-09-30. Cũ: `delivery_date − 1 ≤ business_date`)〔Bảng yêu cầu dòng 142・Phản hồi phản ánh một phần bảng yêu cầu 20260930〕. Email cho công ty giao hàng ủy thác chỉ 2 lần: ngày `delivery_date − 3` và ngày `delivery_date − 1`.
 
 ### 16.6 `ship_order_send`
+
+> **Quyết định 2026-10-07 (sổ quyết định F Vận hành D Quản lý xuất hàng・giao hàng ④・sổ tiếp nhận #293)**: "Gửi lại" chỉ thị xuất hàng **hiện tại là thủ công**. Xuất CSV các dòng đã thay đổi, vận hành đăng ký vào THOMAS rồi bấm 「送信済にする」 (Đánh dấu đã gửi). **Gửi tự động từ ES (batch này) là giai đoạn 3 (tương lai)**. Phần dưới đây giữ lại làm định nghĩa khi làm chức năng gửi tự động.
+>
+> **Quyết định 2026-10-16 (sổ quyết định AL 「出荷指示の再送・要確認」「配送の外部連携の細部」・sổ tiếp nhận #691・#694)**: Gửi thất bại vẫn vận hành thủ công. Không có cơ chế để hệ thống phát hiện lỗi truyền thông (thực tế là nhập CSV), nếu phía THOMAS nhập thất bại thì vận hành sửa tay rồi **xuất CSV lại**. Cần xác nhận "Gửi thất bại" chỉ xuất hiện khi vận hành ghi nhận thất bại. **Thử lại tự động (`ship_order_failed`) là đặc tả tương lai của giai đoạn 3**, việc thử lại không dùng cho đến giai đoạn 3. **Vì điểm khởi đầu của `locked` đã đổi thành việc nhập kết quả xuất hàng**, nên 「送信済にする」 không chuyển `locked`.
 
 ```text
 Dữ liệu giao hàng thỏa điều kiện gửi (DEV §10.2)
@@ -347,25 +354,25 @@ AND không có phiên bản send_status = ok
 | 2 | Gom theo `warehouse_id` + `warehouses.thomas_csv_unit` |
 | 3 | Tạo phiên bản `pending`, tạo nội dung đã chuẩn hóa và `payload_hash` (19.1) |
 | 4 | Gửi theo kiểu lũy đẳng bằng `(delivery_id, rev)` |
-| 5 | Thành công lần đầu → trong cùng giao dịch nhập `locked_at`・`locked_source = ship_order_sent`・`lifecycle = locked` của kế hoạch (DEV §10.3) |
-| 6 | Thất bại → `send_status = failed`, **không `locked`**. Thử lại ở 16.14. Nếu vượt quá giới hạn thử lại thì cần xác nhận `ship_order_failed` |
+| 5 | Thành công lần đầu → ghi nhận thành công (`sent_ok_at`). **Không chuyển `locked`** (`locked_at`・`locked_source`・`lifecycle = locked` của kế hoạch được nhập khi nhập kết quả xuất hàng・19.4. Sổ quyết định AL・2026-10-16. Cũ: nhập `locked` trong cùng giao dịch) |
+| 6 | Thất bại → `send_status = failed`. Thử lại ở 16.14. Nếu vượt quá giới hạn thử lại thì cần xác nhận `ship_order_failed` (**đặc tả tương lai của giai đoạn 3**. Hiện tại vận hành thủ công・sổ quyết định AL・2026-10-16) |
 
 Không chạy cho dữ liệu giao hàng của chu kỳ `marker_source = provisional` (DEV §8.3).
 
-【Cần xác nhận】`配送_05` §10-9 (2026/10/01・xác nhận của khách hàng A2) ghi "vật tư không gửi cho THOMAS (kho văn phòng ES không có liên kết THOMAS). Làm việc bằng danh sách picking vật tư và CSV vận đơn của Yamato". DEV ghi "vật tư cũng gửi chỉ thị xuất hàng bằng catch-up hằng ngày" (DEV §4.1). Cần thêm điều kiện loại kho không có liên kết THOMAS khỏi đối tượng (cột 【Cần xác nhận】 của `配送_11` 14.5), hoặc xác nhận lại. Khi đó cũng cần quyết định cách xử lý `locked` (lần gửi chỉ thị xuất hàng thành công đầu tiên là cơ hội duy nhất) với vật tư.
+【Cần xác nhận】`配送_05` §10-9 (2026/10/01・xác nhận của khách hàng A2) ghi "vật tư không gửi cho THOMAS (kho văn phòng ES không có liên kết THOMAS). Làm việc bằng danh sách picking vật tư và CSV vận đơn của Yamato". DEV ghi "vật tư cũng gửi chỉ thị xuất hàng bằng catch-up hằng ngày" (DEV §4.1). Cần thêm điều kiện loại kho không có liên kết THOMAS khỏi đối tượng (cột 【Cần xác nhận】 của `配送_11` 14.5), hoặc xác nhận lại. Khi đó cũng cần quyết định cách xử lý `locked` (việc nhập kết quả xuất hàng là cơ hội duy nhất. Sổ quyết định AL・2026-10-16. Cũ: lần gửi chỉ thị xuất hàng thành công đầu tiên) với vật tư.
 
 ### 16.7 `billing_issue`
 
-- Chọn hợp đồng con đã qua mốc thanh toán.
-- Gom theo loại thanh toán (`billing_type`) + hạn thanh toán (`payment_due_date`).
+- Chọn hợp đồng con đã qua mốc xuất hóa đơn.
+- Gom theo loại hóa đơn (`billing_type`) + hạn thanh toán (`payment_due_date`).
 - Tạo hóa đơn theo kiểu lũy đẳng.
-- Tạo dòng thanh toán (charge) và dòng điều chỉnh (adjustment).
+- Tạo dòng hóa đơn (charge) và dòng điều chỉnh (adjustment).
 
-【Sửa theo sổ quyết định】Mốc thanh toán là sổ quyết định B "Ngày phát hành hóa đơn": **chốt ngày 20 → xác định ngày 25 → phát hành bằng Bill One vào ngày 1 tháng sau** (2026-10-01・Quy tắc thanh toán §1-1). DEV không ghi ngày của mốc. "Xác định ngày 25 → phát hành cuối tháng" ở `配送_05` §10-7 #11・`配送_08` §14-4 là quyết định cũ (đã được sổ quyết định thay thế).
+【Sửa theo sổ quyết định】Mốc xuất hóa đơn là sổ quyết định B "Ngày phát hành hóa đơn": **chốt ngày 20 → xác định ngày 25 → phát hành bằng Bill One vào ngày 1 tháng sau** (2026-10-01・Quy tắc hóa đơn §1-1). DEV không ghi ngày của mốc. "Xác định ngày 25 → phát hành cuối tháng" ở `配送_05` §10-7 #11・`配送_08` §14-4 là quyết định cũ (đã được sổ quyết định thay thế).
 
 ### 16.8 `billing_gap_detect`
 
-Tìm hợp đồng còn hiệu lực mà không có hợp đồng con, hoặc tháng thanh toán không có hóa đơn・dòng thanh toán. Chỉ tạo cần xác nhận.
+Tìm hợp đồng còn hiệu lực mà không có hợp đồng con, hoặc tháng xuất hóa đơn không có hóa đơn・dòng hóa đơn. Chỉ tạo cần xác nhận.
 
 ### 16.8.1 ~~`trouble_auto_duplicate`~~ (bãi bỏ ngày 2026-09-29)
 
@@ -395,7 +402,7 @@ Không đổi trạng thái. UPSERT cần xác nhận thiếu giao (`missing`). 
 
 ### 16.11 `tracking_anomaly_detect`
 
-Chọn dữ liệu giao hàng có số vận đơn nhưng chưa có lần gửi chỉ thị xuất hàng thành công. Tạo cần xác nhận anomaly (`tracking_anomaly`), không `locked`.
+Chọn dữ liệu giao hàng có số vận đơn nhưng chưa có lần gửi chỉ thị xuất hàng thành công. Tạo cần xác nhận anomaly (`tracking_anomaly`), không `locked` (điểm khởi đầu của `locked` là nhập kết quả xuất hàng・sổ quyết định AL・2026-10-16).
 
 ### 16.12 `ship_order_diff`
 
@@ -413,15 +420,16 @@ contract_monthly_generate
 ```
 
 - Nếu job trước thất bại toàn bộ thì không chạy job sau.
-- Thất bại của một hợp đồng được cô lập bằng giao dịch (các hợp đồng khác vẫn tiếp tục).
-- Các job thanh toán và thực tế giao hàng chạy độc lập. (`trouble_auto_duplicate` bãi bỏ 2026-09-29)
+- Thất bại của một hợp đồng được cô lập bằng giao dịch (các hợp đồng khác vẫn tiếp tục). Thất bại ở đơn vị hợp đồng không dừng các job phía sau (sổ quyết định AL・2026-10-16・Q53).
+- Các job hóa đơn và thực tế giao hàng chạy độc lập. (`trouble_auto_duplicate` bãi bỏ 2026-09-29)
 
 【Cần xác nhận】Chuỗi ở `配送_04` §7-3・`配送_09` §17-1 là **5 job** "hợp đồng con → kế hoạch → tạo xác định → chốt số lượng → kiểm tra lại", không có `ship_order_send`. DEV là 6 job. Cần quyết định theo bên nào.
 
 ### 16.14 Thử lại・khóa・log
 
-- Thất bại tạm thời thì thử lại tối đa 3 lần với khoảng cách tăng dần.
+- Thất bại tạm thời thì thử lại tối đa 3 lần với khoảng cách tăng dần. **Thử lại 3 lần・ghi vào cần xác nhận・khóa và bỏ qua job áp dụng cho toàn bộ batch hằng ngày** (sổ quyết định AL・2026-10-16). Tuy nhiên thử lại tự động của chỉ thị xuất hàng (`ship_order_failed`) là giai đoạn 3.
 - Ngăn chạy trùng bằng khóa theo đơn vị job.
+- Thất bại của batch hằng ngày được hiển thị ở **cảnh báo trên TOP vận hành**, vận hành **chạy lại thủ công**. Khi không chạy được thì **thông báo cho quản trị hệ thống**, và **lần chạy ngày hôm sau sẽ nhặt toàn bộ phần chưa xử lý**. Thông báo xác định thì gửi lại khi chạy lại. Những thứ chạy theo ngày làm việc như "Hôm nay sẽ giao đến"・tự động công khai thì **thứ Bảy, Chủ nhật, ngày lễ được xử lý như ngày làm việc trước đó** (sổ quyết định AL・2026-10-16・Q195・Q197・Q198・Q200〜Q203).
 - Tất cả batch đều lũy đẳng.
 - Nội dung ghi vào log: tên job・bắt đầu／kết thúc・ngày làm việc・số bản ghi đối tượng／thành công／thất bại／bỏ qua・thời gian thực hiện・tóm tắt lỗi.
 
@@ -434,13 +442,14 @@ contract_monthly_generate
 | Xử lý | Nội dung đưa vào một giao dịch |
 |---|---|
 | Tạo xác định | Kế hoạch + dữ liệu giao hàng (+ `delivery_legs`) |
-| Gửi chỉ thị xuất hàng thành công | Chỉ thị xuất hàng + `locked` của dữ liệu giao hàng + `lifecycle` của kế hoạch |
+| Gửi chỉ thị xuất hàng thành công | Chỉ thị xuất hàng (`send_status`・`sent_ok_at`). Không bao gồm `locked` (sổ quyết định AL・2026-10-16) |
+| Nhập kết quả xuất hàng | `Đã xuất hàng`・`locked` của dữ liệu giao hàng + `lifecycle` của kế hoạch (sổ quyết định AL・2026-10-16) |
 | Chuyển trạng thái | Dữ liệu giao hàng + thực tế・sự cố + kiểm toán |
 | Nhân bản | Liên kết với bản ghi cha + bản ghi con + kiểm toán |
 | Đăng ký sự cố・gán lại loại | Báo cáo sự cố + khóa dữ liệu giao hàng + bản ghi con tự động (nếu là loại có `auto_child = true`) + cần xác nhận (`trouble_open`・`trouble_auto_child_pending`) + kiểm toán |
 | Bản ghi giao hàng chỉ bị trễ mà tài xế báo cáo giao đủ toàn bộ | Chuyển `→ Đã giao` + giải quyết báo cáo `delay` + đóng cần xác nhận `trouble_open` + kiểm toán (DEV §13.2.3) |
 | Giải quyết sự cố (theo đơn vị bản ghi giao hàng) | Giải quyết toàn bộ báo cáo chưa giải quyết + trạng thái dữ liệu giao hàng + cập nhật・hủy bản ghi con + giải quyết cần xác nhận + kiểm toán |
-| Phát hành hóa đơn | Hóa đơn + dòng thanh toán |
+| Phát hành hóa đơn | Hóa đơn + dòng hóa đơn |
 | Đăng ký báo cáo đỗ xe【Bổ sung・2026-10-03】 | Báo cáo đỗ xe + liên kết tệp đính kèm biên lai + kiểm toán |
 | Đặt lại mật khẩu【Bổ sung・2026-10-03】 | Cập nhật mật khẩu + đánh dấu mã xác thực đã dùng + kiểm toán |
 
@@ -466,7 +475,7 @@ created_at
 correlation_id
 ```
 
-Những thứ bắt buộc có kiểm toán: thay đổi chu kỳ・master・hợp đồng, đổi ngày, override, chỉ thị xuất hàng, `locked`, trạng thái, phân công, hủy bỏ・hủy giữa chừng・nhân bản, sửa thực tế, điều chỉnh thanh toán. 【Bổ sung・2026-10-03】Đăng ký・sửa báo cáo đỗ xe, đăng nhập・đặt lại mật khẩu của tài xế (không ghi giá trị chính nó).
+Những thứ bắt buộc có kiểm toán: thay đổi chu kỳ・master・hợp đồng, đổi ngày, override, chỉ thị xuất hàng, `locked`, trạng thái, phân công, hủy bỏ・hủy giữa chừng・nhân bản, sửa thực tế, điều chỉnh hóa đơn. 【Bổ sung・2026-10-03】Đăng ký・sửa báo cáo đỗ xe, đăng nhập・đặt lại mật khẩu của tài xế (không ghi giá trị chính nó).
 
 ---
 
@@ -537,7 +546,7 @@ Chuẩn hóa trước khi hash: cắt khoảng trắng đầu cuối, ngày theo
 ### 19.2 Hủy・sửa sau khi gửi
 
 - Không dùng I/F hủy. Cả hủy và sửa đều thực hiện bằng **phiên bản mới**.
-- Hủy → phiên bản mới với `qty = 0`, `is_zeroed = true`.
+- Hủy → phiên bản mới với `qty = 0`, `is_zeroed = true`. **Hủy giao hàng chưa gửi chỉ thị xuất hàng thì không gửi gì cho THOMAS** (chỉ gửi lại với số lượng 0 sau khi đã gửi. Sổ quyết định AL・2026-10-16・Q34). Việc THOMAS có chấp nhận gửi lại với số lượng 0 hay không sẽ được kiểm tra bằng test.
 - Sửa số lượng・nội dung → phiên bản mới với giá trị mới.
 - **Đổi địa chỉ nơi giao → phiên bản mới. Số vận đơn cũ chuyển `voided` và phát hành lại** (15.14).
 - Có thể gửi lại cho đến khi nhận kết quả xuất hàng của bản ghi giao hàng đó.
@@ -556,6 +565,9 @@ Nguồn: tệp từ công ty giao hàng. 1 thùng = 1 dòng.
 | `box_no`／`box_total` | — | Dùng để hiển thị số thùng |
 | `shipped_at` | — | |
 
+- Số vận đơn là **nội dung của kết quả xuất hàng**. Cũng có trường hợp đến bằng file riêng (sổ quyết định AL・2026-10-16・Q50・Q55).
+- **Không kiểm tra số chữ số** của `tracking_no` (giống Web nhà cung cấp. Q49).
+
 Xử lý theo từng dòng:
 
 | Điều kiện | Kết quả |
@@ -567,7 +579,7 @@ Xử lý theo từng dòng:
 | Dữ liệu giao hàng là `Hủy giữa chừng`／`Hủy bỏ` | Từ chối dòng đó |
 | Chưa có lần gửi chỉ thị xuất hàng thành công | Nhận dòng, **không `locked`**. Tạo `tracking_anomaly` (16.11) |
 
-Khi nhập số vận đơn thì không đổi `delivery status`.
+Khi nhập số vận đơn thì không đổi `delivery status` (chỉ chuyển Đã xuất hàng khi nhập kết quả xuất hàng. Sổ quyết định AL・2026-10-16・Q51). **Email hoàn tất gửi hàng: 1 email khi nhập kết quả xuất hàng** (nhập số vận đơn chỉ để liên kết. Người nhận cần xác nhận. Q54・Q229).
 
 ### 19.4 Nhập kết quả xuất hàng
 
@@ -581,7 +593,7 @@ Khi nhập số vận đơn thì không đổi `delivery status`.
 
 | Điều kiện | Kết quả |
 |---|---|
-| `ok` và dữ liệu giao hàng là `Chờ xuất hàng` | Chuyển `Đã xuất hàng`, nhập `shipped_date` |
+| `ok` và dữ liệu giao hàng là `Chờ xuất hàng` | Chuyển `Đã xuất hàng`, nhập `shipped_date`. **Đồng thời `published` → `locked`** (`locked_at` là thời điểm nhập này). Gửi 1 email hoàn tất gửi hàng (sổ quyết định AL・2026-10-16) |
 | `ok` và dữ liệu giao hàng không phải `Chờ xuất hàng` | Bỏ qua và ghi vào log (lũy đẳng) |
 | `ng` | Không đổi trạng thái, tạo cần xác nhận `shipment_result_ng` |
 | `shipped_qty` khác `planned_qty` | Tạo cần xác nhận `qty_mismatch`. Không tự sửa số lượng |

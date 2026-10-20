@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "dataflow",
+  "quality": "showcase",
+  "specification": {
+    "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/40_Master_Phí_Thanh_toán/dataflow-billing-invoice-20261020-144532/candidate.json",
+    "sha256": "d866b9d1c76b333359075ff17e1271beea7c0fbc08afada6fecbcd10bf1a40bc",
+    "bytes": 6136
+  },
+  "artifact": {
+    "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/40_Master_Phí_Thanh_toán/dataflow-billing-invoice-20261020-144532/billing-invoice.html",
+    "sha256": "b02fbdac6a8f541d60945626ce99a99adef16fd87e678490abf367133c2d1cc2",
+    "bytes": 764501
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/40_Master_Phí_Thanh_toán/dataflow-billing-invoice-20261020-144532/billing-invoice.finalize.json",
+    "summaryReceipt": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/40_Master_Phí_Thanh_toán/dataflow-billing-invoice-20261020-144532/billing-invoice.finalize-summary.json",
+    "browserCheckReceipt": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/40_Master_Phí_Thanh_toán/dataflow-billing-invoice-20261020-144532/billing-invoice.browser-check.json"
+  },
+  "update": {
+    "status": "update_available",
+    "installedVersion": "3.0.1",
+    "availableVersion": "3.2.0",
+    "releaseNotes": "https://github.com/tt-a1i/archify/releases/tag/v3.2.0",
+    "severity": "normal",
+    "checkedAt": "2026-10-20T07:40:01.335Z",
+    "source": "cache",
+    "noticeRequired": true,
+    "noticeText": "Archify update: 3.0.1 → 3.2.0. A previous check at 2026-10-20T07:40:01.335Z found a newer release. Release notes: https://github.com/tt-a1i/archify/releases/tag/v3.2.0. The installed Skill has not changed; ask to snooze or ignore this reminder.",
+    "eventKey": "archify@sha256:70e210265c59f24dcbdf2a502ff671104b5454e7ee7d3554aecd86bad32384f5"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 2061
+}

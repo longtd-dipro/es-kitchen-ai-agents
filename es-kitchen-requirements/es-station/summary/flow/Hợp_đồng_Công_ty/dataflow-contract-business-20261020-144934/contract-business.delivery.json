@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "e77b27c0-265d-4caf-b461-95e3f03be242",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-contract-business-20261020-144934/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-contract-business-20261020-144934/contract-business.html",
+  "specification": {
+    "sha256": "d3c41cced84ae9720042324e1c50e5bea9e8b34a51f8c83ed818674855e22bbf",
+    "bytes": 40796
+  },
+  "artifact": {
+    "sha256": "f08ebea3c9a328efb8d2d0e9865881186885476f04bec09b5e4f7cf50a66d626",
+    "bytes": 779117
+  }
+}

@@ -1,10 +1,12 @@
-<!-- Nguồn: 01_仕様/Sắp_xếp_đặc_tả_Trục_thời_gian_bản_sao_và_tính_nhất_quán_20261001.md (chuyển ngày 2026-10-03. Nội dung giữ nguyên) -->
+> Bản dịch tiếng Việt của `ja/01_仕様/20_法人・拠点・契約/契約仕様/契約_01_時間軸・写し・整合性.md` (nguồn es-station, bản 2026-10-20). Khi khác nhau, bản tiếng Nhật và `docs/決定台帳.md` là chuẩn.
+
+<!-- Nguồn: 01_仕様/仕様整理_時間軸・写し・整合性_20261001.md (chuyển ngày 2026-10-03. Nội dung giữ nguyên) -->
 
 # Chỉnh lý đặc tả: Trục thời gian, bản sao, tính nhất quán dữ liệu (2026/10/01)
 
 > Người yêu cầu: Long (Tran Duc Long) / Soạn: Claude (Cowork).
-> Nguồn: Tài liệu review "Review thiết kế demo (góc nhìn BA・QC)" (Claude Docs) phần góc nhìn TechLead, và câu trả lời của Long (`00_Quyết_định/Quyết_định_Trả_lời_review_TechLead_20261001.md`・`Quyết_định_Trả_lời_review_TechLead_Bổ_sung_20261001.md`).
-> **Chưa phản ánh vào demo (đang thực hiện STEP5). Các tài liệu đặc tả hiện có (thiết kế cơ bản・danh sách hạng mục・quy tắc thanh toán・đặc tả tổng hợp) cũng chưa được sửa.** Nơi cần sửa xem danh sách ở §11.
+> Nguồn: Tài liệu review "Review thiết kế demo (góc nhìn BA・QC)" (Claude Docs) phần góc nhìn TechLead, và câu trả lời của Long (`00_決定/決定_TechLeadレビュー回答_20261001.md`・`決定_TechLeadレビュー回答_追補_20261001.md`).
+> **Chưa phản ánh vào demo (đang thực hiện STEP5). Các tài liệu đặc tả hiện có (thiết kế cơ bản・danh sách hạng mục・quy tắc hóa đơn・đặc tả tổng hợp) cũng chưa được sửa.** Nơi cần sửa xem danh sách ở §11.
 > Tài liệu này gom về một chỗ "khi nào sao chép dữ liệu, khi nào chốt, và thay đổi sau khi chốt được xử lý thế nào" trước khi giao cho bên phát triển. Nếu khác với file quyết định thì file quyết định là chuẩn.
 
 ## 0. Thuật ngữ
@@ -23,11 +25,11 @@ Bổ sung:
 
 1. Trong khi còn đơn đăng ký chờ phê duyệt, không thể chỉnh sửa trực tiếp các hạng mục đối tượng của đơn đó trên hợp đồng con của cơ sở đó
 2. Khi phê duyệt, nếu "giá trị trước thay đổi" của đơn khác với giá trị hiện tại thì dừng phê duyệt và để vận hành xác nhận
-3. Nơi gửi hóa đơn và lead time phát hành hóa đơn cũng được sao chép sang hợp đồng con khi tạo (hiện chưa sao chép nên nếu đổi giữa chừng thì tháng thanh toán sẽ bị chồng hoặc bị sót)
+3. Nơi gửi hóa đơn và lead time phát hành hóa đơn cũng được sao chép sang hợp đồng con khi tạo (hiện chưa sao chép nên nếu đổi giữa chừng thì tháng xuất hóa đơn sẽ bị chồng hoặc bị sót)
 
 ### 1-1. Xử lý thay đổi liên quan đến tháng đã xuất hóa đơn (**Quyết định: A**・2026/10/01 bổ sung 2)
 
-Mối lo của Long: khi có thay đổi liên quan đến tháng đã xuất hóa đơn trước (thanh toán trước 2 tháng・thanh toán theo năm), chỉ xử lý ở mức ghi chú là không tốt.
+Mối lo của Long: khi có thay đổi liên quan đến tháng đã xuất hóa đơn trước (xuất hóa đơn trước 2 tháng・thanh toán theo năm), chỉ xử lý ở mức ghi chú là không tốt.
 
 Quyết định hiện tại (STEP3 bổ sung P2) là "phần của tháng đã xuất hóa đơn sẽ được bù trừ ở hóa đơn kế tiếp (dòng điều chỉnh âm)". Tuy nhiên chưa quyết nơi lưu dữ liệu điều chỉnh và cách hiển thị trên màn hình.
 
@@ -43,22 +45,22 @@ Bổ sung: Việc điều chỉnh giá thanh toán theo năm là "giữ nguyên 
 
 | Hạng mục | Nguồn | Thời điểm sao chép | Thời điểm chốt | Nếu nguồn thay đổi sau khi chốt |
 |---|---|---|---|---|
-| Gói・Course・thiết lập giao hàng | Cơ sở・hợp đồng cha・gói | Khi tạo hợp đồng con | Xác nhận thanh toán (ngày 25) | Chưa xác nhận thì ghi đè／đã xác nhận thì dòng điều chỉnh (§1-1) |
+| Gói・Course・thiết lập giao hàng | Cơ sở・hợp đồng cha・gói | Khi tạo hợp đồng con | Chốt hóa đơn (ngày 25) | Chưa xác nhận thì ghi đè／đã xác nhận thì dòng điều chỉnh (§1-1) |
 | Giá (thế hệ giá của gói) | Master gói | Khi tạo | Khi tạo | Sửa giá được áp dụng từ các hạng mục chưa xác nhận kể từ "chu kỳ tháng bắt đầu áp dụng" (áp dụng cả cho hợp đồng hiện có: trả lời Q7). Việc sửa giá thanh toán là: lọc hợp đồng con theo thế hệ gói giá・course đối tượng, chỉ định chu kỳ bắt đầu áp dụng và chuyển hàng loạt sang thế hệ mới (REQ-PM-023). Việc thông báo trước do vận hành thực hiện thủ công bằng phát thông báo. 〔Nguồn gốc: 契約_詳細要件 §8B-3・REQ-CT-294〕 |
 | Số tiền tùy chọn・giảm giá | Master tùy chọn・giảm giá | Khi tạo | Khi tạo | Như trên (phương án thống nhất sửa master cũng theo thế hệ + tháng bắt đầu áp dụng) |
 | Thuế suất・số tiền doanh nghiệp chịu | Master・cơ sở | Khi tạo | Khi tạo | Không ghi đè |
 | Phương thức thanh toán・chu kỳ thanh toán | Nơi gửi hóa đơn | Khi tạo | Khi tạo | Chưa xác nhận thì ghi đè |
 | **Nơi gửi hóa đơn・lead time (bổ sung)** | Cơ sở | Khi tạo | Khi tạo | Thay đổi áp dụng "từ tháng chu kỳ chưa được tạo" |
-| Tên người nhận・địa chỉ gửi (tên doanh nghiệp nhận hóa đơn・người phụ trách thanh toán) | Doanh nghiệp・cơ sở・người phụ trách | **Khi phát hành** hóa đơn | Khi phát hành | Dù thay đổi trong khoảng từ sau khi xác nhận ngày 25 đến trước khi phát hành ngày 1 thì vẫn đưa vào hóa đơn của tháng đó (trả lời Q5). **Chỉ chốt số tiền** |
-| Số tiền thanh toán・thuế | Dòng chi phí của hợp đồng con・tất toán thực tế・dòng điều chỉnh | Xác nhận thanh toán (ngày 25) | Khi xác nhận | Không thay đổi. Sửa bằng dòng điều chỉnh hoặc hủy・phát hành lại |
+| Tên người nhận・địa chỉ gửi (tên doanh nghiệp nhận hóa đơn・người phụ trách hóa đơn) | Doanh nghiệp・cơ sở・người phụ trách | **Khi phát hành** hóa đơn | Khi phát hành | Dù thay đổi trong khoảng từ sau khi xác nhận ngày 25 đến trước khi phát hành ngày 1 thì vẫn đưa vào hóa đơn của tháng đó (trả lời Q5). **Chỉ chốt số tiền** |
+| Số tiền hóa đơn・thuế | Dòng chi phí của hợp đồng con・tất toán thực tế・dòng điều chỉnh | Chốt hóa đơn (ngày 25) | Khi xác nhận | Không thay đổi. Sửa bằng dòng điều chỉnh hoặc hủy・phát hành lại |
 | Ngày・số lượng của dữ liệu giao hàng | Dự kiến giao・đơn hàng | Bắt đầu order | Hạn chót (số lượng)／gửi chỉ thị xuất hàng (locked) | §7 |
 
-## 3. Xác nhận thanh toán và sửa sai
+## 3. Chốt hóa đơn và sửa sai
 
-- Biến **dòng điều chỉnh** thành một dữ liệu riêng (ghi bù trừ・chênh lệch・chuyển kỳ・thanh toán lại vào đây). Hạng mục: hóa đơn gốc・tháng chu kỳ gốc・loại・lý do・số tiền chưa thuế・thuế suất・hóa đơn đã đưa vào. Khi tạo hóa đơn kế tiếp, lấy các dòng điều chỉnh chưa được đưa vào
+- Biến **dòng điều chỉnh** thành một dữ liệu riêng (ghi bù trừ・chênh lệch・chuyển kỳ・xuất lại hóa đơn vào đây). Hạng mục: hóa đơn gốc・tháng chu kỳ gốc・loại・lý do・số tiền chưa thuế・thuế suất・hóa đơn đã đưa vào. Khi tạo hóa đơn kế tiếp, lấy các dòng điều chỉnh chưa được đưa vào
 - Trạng thái hóa đơn: Đã tạo → Xác nhận → Đã phát hành →(Đã chuyển kỳ／Hủy). **Mỗi hóa đơn chỉ sửa sai bằng một cách** (hóa đơn đã chuyển kỳ không thể hủy, hóa đơn đã hủy không phải đối tượng bù trừ)
-- Thanh toán lại cho khoản chưa nhận thanh toán (Q4・**quyết định bổ sung 5**): **Cho phép rút lại việc thanh toán lại trước khi phát hành.** Khi biết đã nhận thanh toán, vận hành rút lại khoản thanh toán lại và nếu cần thì thanh toán lại với nội dung đúng (không áp dụng cách bù bằng dòng điều chỉnh âm). Việc nhận thanh toán vẫn không được nhập vào như hiện nay
-  - Chờ xác nhận: Cách xử lý khi biết đã nhận thanh toán **sau khi** hóa đơn có chứa khoản thanh toán lại đã được phát hành (theo cách hiểu của Claude thì sửa bằng hủy・phát hành lại)
+- Xuất lại hóa đơn cho khoản chưa nhận thanh toán (Q4・**quyết định bổ sung 5**): **Cho phép rút lại việc xuất lại hóa đơn trước khi phát hành.** Khi biết đã nhận thanh toán, vận hành rút lại khoản xuất lại hóa đơn và nếu cần thì xuất lại hóa đơn với nội dung đúng (không áp dụng cách bù bằng dòng điều chỉnh âm). Việc nhận thanh toán vẫn không được nhập vào như hiện nay
+  - Chờ xác nhận: Cách xử lý khi biết đã nhận thanh toán **sau khi** hóa đơn có chứa phần xuất lại hóa đơn đã được phát hành (theo cách hiểu của Claude thì sửa bằng hủy・phát hành lại)
 
 ## 4. Quy tắc tháng áp dụng
 
@@ -72,10 +74,10 @@ Bổ sung: Việc điều chỉnh giá thanh toán theo năm là "giữ nguyên 
 
 - Trong thời gian tạm dừng không tạo hợp đồng con (giữ nguyên 28-1a)
 - **Trong thời gian tạm dừng không tất toán thực tế.** Đầu kỳ tạm dừng thực hiện kiểm tra tồn kho và tất toán phần đến lúc đó (trả lời Q1＝B). Chênh lệch do bán hàng trên thiết bị để nguyên trong thời gian tạm dừng sẽ được bù khi kiểm tra tồn kho lúc mở lại
-- **Ghi đè**: STEP3 bổ sung P5 (trong thời gian tạm dừng nếu cần vẫn tất toán, thanh toán gộp khi mở lại・hủy hợp đồng)
-- Việc dừng tính thời gian sử dụng tối thiểu trong thời gian tạm dừng chỉ áp dụng cho **thiết bị để nguyên** (Q8＝A・**quyết định bổ sung 5**). Thiết bị để nguyên thì phần còn lại trước khi tạm dừng được tiếp nối khi mở lại (STEP1). **Thiết bị đã thu hồi thì tính lại từ ngày lắp đặt lại** (giống danh sách hạng mục #615・#636). **Ghi đè**: Quy tắc thanh toán v1 3-4 "không tính trong thời gian tạm dừng (toàn bộ)"
+- **Ghi đè**: STEP3 bổ sung P5 (trong thời gian tạm dừng nếu cần vẫn tất toán, xuất hóa đơn gộp khi mở lại・hủy hợp đồng)
+- Việc dừng tính thời gian sử dụng tối thiểu trong thời gian tạm dừng chỉ áp dụng cho **thiết bị để nguyên** (Q8＝A・**quyết định bổ sung 5**). Thiết bị để nguyên thì phần còn lại trước khi tạm dừng được tiếp nối khi mở lại (STEP1). **Thiết bị đã thu hồi cũng tiếp nối phần còn lại trước khi tạm dừng khi lắp đặt lại** (không đếm lại. Phí lắp đặt lại OP000015 thì cộng thủ công. 2026-10-06・sổ quyết định "休止と最低利用期間". Cũ: tính lại từ ngày lắp đặt lại 〔danh sách hạng mục #615・#636〕). **Ghi đè**: Quy tắc hóa đơn v1 3-4 "không tính trong thời gian tạm dừng (toàn bộ)"
 
-**Quyết định (hong trả lời 2026-10-05): Kiểm tra tồn kho đầu kỳ tạm dừng do khách hàng (doanh nghiệp・cơ sở) thực hiện bằng kiểm tra tồn kho trên Web doanh nghiệp (cơ sở của ES giao hàng cũng vậy). Tháng kiểm tra là tháng của lần giao cuối cùng trước khi tạm dừng, và báo cáo trước khi tạm dừng bắt đầu.** (Cũ: Điều muốn xác nhận (doanh nghiệp là xe COOL・ES giao hàng là tài xế?))
+**Quyết định (hong trả lời 2026-10-06・ghi đè): Báo cáo kiểm kê lúc bắt đầu tạm dừng, trong thời gian tạm dừng và lúc mở lại đều là tùy ý (khi không có báo cáo, vận hành có thể 「スキップ」(bỏ qua) trên màn hình phê duyệt・lý do là tùy ý・tồn kho bắt đầu lại từ 0 kể từ tháng chu kỳ mở lại. Sổ tiếp nhận #580. Cũ: bắt buộc lý do・chênh lệch được tất toán ở báo cáo kiểm kê kế tiếp = No.168).** (Cũ・2026-10-05: ) Kiểm tra tồn kho đầu kỳ tạm dừng do khách hàng (doanh nghiệp・cơ sở) thực hiện bằng kiểm tra tồn kho trên Web doanh nghiệp (cơ sở của ES giao hàng cũng vậy). Tháng kiểm tra là tháng của lần giao cuối cùng trước khi tạm dừng, và báo cáo trước khi tạm dừng bắt đầu.** (Cũ: Điều muốn xác nhận (doanh nghiệp là xe COOL・ES giao hàng là tài xế?))
 
 ## 6. Cơ sở・hợp đồng cha・dùng thử・tài khoản
 
@@ -127,8 +129,7 @@ Có 3 loại tài khoản: **tài khoản doanh nghiệp**・**tài khoản cơ 
 
 - **Đổi ngày sau hạn chót**: Theo quyết định mới nhất (v2.3 #63・bổ sung 9/29), sau khi đã gửi chỉ thị xuất hàng (locked) vẫn có thể đổi từng đơn một đến ngày trước ngày xuất hàng. Một thao tác đổi ngày sẽ thực hiện gộp: phiên bản mới của chỉ thị xuất hàng・chuyển đặt hàng cho sản phẩm có hạn sử dụng ngắn・thông báo cho bên ủy thác và doanh nghiệp. Không đổi Số giao hàng
   - **【Chờ xác nhận Q9】THOMAS (kho) có thể tiếp nhận phiên bản mới vào ngày trước ngày xuất hàng không.** Nếu không tiếp nhận được thì rút ngắn thời hạn có thể đổi ngày sau hạn chót xuống "đến trước khi gửi chỉ thị xuất hàng"
-- **Điểm khởi đầu của locked**: Thời điểm giao CSV chỉ thị xuất hàng cho kho (nếu gửi tự động thì khi thành công, nếu giao thủ công thì khi vận hành bấm "Đã gửi")
-  Nếu CSV kết quả xuất hàng ngày hôm sau không có Số giao hàng đó thì cần xác nhận (như đề xuất)
+- **Điểm khởi đầu của locked**: Thời điểm giao CSV chỉ thị xuất hàng cho kho (nếu gửi tự động thì khi thành công, nếu giao thủ công thì khi vận hành bấm 「送付済」(Đã gửi)). Nếu CSV kết quả xuất hàng ngày hôm sau không có Số giao hàng đó thì cần xác nhận (như đề xuất)
 - **Xung đột offline**: Thiết bị đầu cuối chỉ gửi báo cáo sự thật, trạng thái do máy chủ quyết định. Nếu báo cáo giao hàng đến cho đơn giao hàng đã bị vận hành hủy thì không bỏ đi mà đưa vào danh sách cần xác nhận để vận hành chọn (Q11＝A・quyết định bổ sung 5)
 - **Hoàn thành mặc định**: Giữ nguyên như hiện nay. Nếu biết là chưa đến nơi thì tự động hoàn lại tồn kho qua đăng ký sự cố (nếu đã quyết toán thì ở lần tất toán tháng sau) (Q10＝A・quyết định bổ sung 5)
 - **Ngày nghiệp vụ**: Ngày được xử lý chỉ là "ngày" theo giờ Nhật Bản, và chỉ có một cơ chế trả về "hôm nay" (sửa việc cố định UTC ở tích hợp §4-8)
@@ -149,39 +150,47 @@ Có 3 loại tài khoản: **tài khoản doanh nghiệp**・**tài khoản cơ 
 
 | Hạng mục | Quy định |
 |---|---|
-| Mục đích | Nhập hàng loạt vào Giai đoạn 2 các khách hàng hiện có (khoảng 600 công ty) có dữ liệu ở Giai đoạn 1. **Khác với CSV đăng ký mới (Form_đăng_ký.md §10-8-1)** |
+| Mục đích | Nhập hàng loạt vào Giai đoạn 2 các khách hàng hiện có (khoảng 600 công ty) có dữ liệu ở Giai đoạn 1. **Khác với CSV đăng ký mới (申込フォーム.md §10-8-1)** |
+| Người nhập | **Đội phát triển nhập thay cho ES** (`scripts/migrate-import.ts`. Nội dung là cùng phần kiểm tra・ghi・lưu nhật ký nhập như nhập CSV). **Web vận hành không đặt màn hình nhập CSV chuyển đổi**. Danh sách "移行の要補完" (cần bổ sung sau chuyển đổi) sau khi nhập vẫn để lại trên Web vận hành 〔2026-10-16 sổ quyết định AQ・sổ tiếp nhận #744〕 |
 | Cái được tạo | Tạo trực tiếp doanh nghiệp・cơ sở・hợp đồng cha・hợp đồng con・thiết bị (cho thuê)・thế hệ giá・việc áp dụng tùy chọn／giảm giá ở trạng thái **đang sử dụng (đăng ký chính thức・có hiệu lực)**. **Không qua tiếp nhận・phê duyệt. Không gửi email** |
-| Khóa | **ID của Giai đoạn 1** (doanh nghiệp・cơ sở). Nếu có cùng khóa thì cập nhật, nếu không thì tạo (quy tắc nhập chung 28-183). Bảo trì dữ liệu có 2 lần (lần 1 tháng 11~12, lần 2 là phần chênh lệch ngay trước phát hành) nên có thể nhập lại bằng cùng một file |
-| Hạng mục còn thiếu | Có thể nhập với ô trống (ngày cho thuê là "ước tính" §9). Hạng mục còn thiếu hiển thị ra danh sách **"Cần bổ sung"**, vận hành điền trên màn hình. Hiển thị theo từng dòng hạng mục nào còn thiếu |
+| Khóa | **ID của Giai đoạn 1** (doanh nghiệp・cơ sở). Nếu có cùng khóa thì cập nhật, nếu không thì tạo (quy tắc nhập chung 28-183). Bảo trì dữ liệu có 2 lần (lần 1 tháng 11~12, lần 2 là phần chênh lệch ngay trước phát hành) nên có thể nhập lại bằng cùng một file. **Giữa lần 1 và lần 2, không tạo doanh nghiệp・cơ sở trên môi trường production. Ở lần 2 giá trị của CSV là chuẩn** (ghi đè cả giá trị đã sửa trên màn hình), và **hiển thị phần chênh lệch trên màn hình xác nhận** (sổ quyết định AL・2026-10-16) |
+| Hạng mục còn thiếu | Có thể nhập với ô trống (ngày cho thuê là "ước tính" §9). Hạng mục còn thiếu hiển thị ra danh sách **"Cần bổ sung"**, vận hành điền trên màn hình. Hiển thị theo từng dòng hạng mục nào còn thiếu. **Chỉ xuất các cột cần bổ sung** (sổ quyết định AL・2026-10-16) |
 | Giá trị mặc định | Course là ES Lite (§9). Ngày bắt đầu hợp đồng là ngày chuyển đổi (28-175). Giảm giá gắn khi chuyển đổi như ưu đãi chuyển đổi cũng nhập bằng cột |
 | Tài khoản | Được tạo khi chuyển đổi, nhưng email hướng dẫn đăng nhập sẽ gửi riêng theo thời điểm phát hành (không gửi khi nhập chuyển đổi) |
-| Quy tắc nhập | 2 giai đoạn (kiểm tra→đăng ký). **Dòng thiếu hạng mục bắt buộc (tên doanh nghiệp・tên cơ sở・địa chỉ, v.v.) là lỗi**, thiếu hạng mục tùy chọn thì cho qua với "Cần bổ sung" |
+| Quy tắc nhập | 2 giai đoạn (kiểm tra→đăng ký). **Dòng thiếu hạng mục bắt buộc (tên doanh nghiệp・tên cơ sở・địa chỉ, v.v.) là lỗi**, thiếu hạng mục tùy chọn thì cho qua với "Cần bổ sung". **Chia mỗi 5,000 dòng**. **Nếu ID của Giai đoạn 1 nằm ngoài quy tắc CU + 5 chữ số thì là lỗi dòng**. **E109 (cột không hợp lệ) cũng áp dụng cho CSV chuyển đổi**. Dòng có từ 2 người phụ trách chính trở lên là **lỗi dòng E110**. Nhập trạng thái bằng **1 cột trạng thái doanh nghiệp (Giai đoạn 1)**, với các dòng không nhập như đã hủy hợp đồng・đã xóa thì kết quả hiển thị số lượng và các dòng "取込対象外" (ngoài đối tượng nhập) (sổ quyết định AL・2026-10-16) |
 | ID | **Dùng nguyên ID của Giai đoạn 1** (khách hàng đang đăng nhập bằng ID đó. hong trả lời 2026-10-05) |
-| Giao hàng | Không xuất được từ Giai đoạn 1. Không đưa vào CSV chuyển đổi, sau chuyển đổi vận hành sẽ nhập (hong trả lời 2026-10-05) |
-| Người phụ trách・giá riêng của doanh nghiệp | Người phụ trách không giới hạn số lượng・giá riêng của doanh nghiệp nhập bằng CSV → cả hai đều là file riêng (hong trả lời 2026-10-05) |
-| Cột | **Phương án** (phần còn lại chờ xác nhận với khách hàng): [CSV_chuyển_đổi_Đề_xuất_cột_20261003.md](../CSV_chuyển_đổi_Đề_xuất_cột_20261003.md) |
+| Giao hàng | Không xuất được từ Giai đoạn 1. Không đưa vào CSV chuyển đổi, sau chuyển đổi đội phát triển sẽ nhập **CSV chỉ cho giao hàng (1 dòng = 1 cơ sở × vùng nhiệt độ)** bằng script nhập (không làm màn hình cho vận hành: sổ quyết định AS #778) (hong trả lời 2026-10-05・sổ quyết định AL・2026-10-16) |
+| Người phụ trách・giá riêng của doanh nghiệp | Người phụ trách **tối đa 10 người cho mỗi doanh nghiệp・cơ sở** (đã sửa "không giới hạn" cũ. Sổ quyết định 2026-10-12・AL)・giá riêng của doanh nghiệp nhập bằng CSV → cả hai đều là file riêng (hong trả lời 2026-10-05). **CSV người phụ trách chuyên dụng chỉ có ở C của chuyển đổi**. Người phụ trách được đối chiếu với dữ liệu hiện có・không xóa (sổ quyết định AL・2026-10-16) |
+| Mật khẩu | **Tất cả mọi người đặt lại** (link thiết lập nằm trong email hướng dẫn đăng nhập) (sổ quyết định AL・2026-10-16) |
+| Cột | **Phương án** (phần còn lại chờ xác nhận với khách hàng): [移行CSV_列の案_20261003.md](../移行CSV_列の案_20261003.md) |
 
 ## 10. Chưa quyết・chờ trả lời
 
 | No. | Nội dung | Trạng thái |
 |---|---|---|
-| Phần còn lại của Q4 | Khi biết đã nhận thanh toán sau khi hóa đơn có chứa khoản thanh toán lại được phát hành | **Đã trả lời 2026-10-05**: hủy rồi phát hành lại (sổ cái E) |
+| Phần còn lại của Q4 | Khi biết đã nhận thanh toán sau khi hóa đơn có chứa khoản xuất lại hóa đơn được phát hành | **Đã trả lời 2026-10-05**: hủy rồi phát hành lại (sổ quyết định E) |
 | Q9 | Kho có tiếp nhận phiên bản mới vào ngày trước ngày xuất hàng không | Xác nhận với kho |
 | Q13 | Phí giao hàng bổ sung vật tư là ¥1,000 (STEP4 O-3) hay ¥2,000 (STEP5 §2-5) | Như đề xuất = coi STEP5 mới hơn (¥2,000) là chuẩn. Số tiền xác nhận với khách hàng |
 | REQ-CT-144 | Hiểu lại "1 tháng" sau khi hủy hợp đồng là thời gian gia hạn cho đến khi thu hồi thiết bị | Xác nhận với khách hàng |
-| §5 | Ai thực hiện kiểm tra tồn kho đầu kỳ tạm dừng | **Đã trả lời 2026-10-05**: khách hàng (doanh nghiệp・cơ sở)・tháng của lần giao cuối cùng trước khi tạm dừng (sổ cái E) |
+| §5 | Ai thực hiện kiểm tra tồn kho đầu kỳ tạm dừng | **Đã trả lời 2026-10-05**: khách hàng (doanh nghiệp・cơ sở)・tháng của lần giao cuối cùng trước khi tạm dừng (sổ quyết định E) |
 
-Đã quyết định (bổ sung 5): Q4 (rút lại rồi thanh toán lại)・Q8 (chỉ dừng thiết bị để nguyên)・Q10 (hàng chưa đến của hoàn thành mặc định tự động hoàn lại)・Q11 (xung đột offline cần xác nhận, vận hành chọn)・Q12 (hết hàng do vận hành chọn)・Q14 (quyền của nhân viên kho lấy STEP6 bổ sung W1 làm chuẩn, sửa tích hợp §17-6)・Q15 (sau khi hủy hợp đồng, chỉ người phụ trách thanh toán còn đổi được đến hóa đơn cuối cùng).
+Đã quyết định (bổ sung 5): Q4 (rút lại rồi xuất lại hóa đơn)・Q8 (chỉ dừng thiết bị để nguyên)・Q10 (hàng chưa đến của hoàn thành mặc định tự động hoàn lại)・Q11 (xung đột offline cần xác nhận, vận hành chọn)・Q12 (hết hàng do vận hành chọn)・Q14 (quyền của nhân viên kho lấy STEP6 bổ sung W1 làm chuẩn, sửa tích hợp §17-6)・Q15 (sau khi hủy hợp đồng, chỉ người phụ trách hóa đơn còn đổi được đến hóa đơn cuối cùng).
 
 ## 11. Nơi cần sửa (phản ánh sau STEP5)
 
-> 2026-10-03: Các dòng của "Danh sách hạng mục (doanh nghiệp・cơ sở・hợp đồng・hợp đồng con)" đã được phản ánh vào 契約_00~07 (giá trị cũ còn lại ở "(Cũ: …)" mỗi nơi). Quy tắc thanh toán v1 đã phản ánh 3-1 (không tất toán trong thời gian tạm dừng). 3-4 (thời gian sử dụng tối thiểu chỉ dừng với thiết bị để nguyên) đang xác nhận với hong, dòng điều chỉnh・hủy khoản thanh toán lại・tên người nhận tại thời điểm phát hành (Q5) chưa phản ánh.
+> 2026-10-03: Các dòng của "Danh sách hạng mục (doanh nghiệp・cơ sở・hợp đồng・hợp đồng con)" đã được phản ánh vào 契約_00~07 (giá trị cũ còn lại ở "(Cũ: …)" mỗi nơi). Quy tắc hóa đơn v1 đã phản ánh 3-1 (không tất toán trong thời gian tạm dừng). 3-4 (thời gian sử dụng tối thiểu chỉ dừng với thiết bị để nguyên) đang xác nhận với hong, dòng điều chỉnh・hủy khoản xuất lại hóa đơn・tên người nhận tại thời điểm phát hành (Q5) chưa phản ánh.
 
 | Tài liệu | Nơi cần sửa |
 |---|---|
 | Danh sách hạng mục (doanh nghiệp・cơ sở・hợp đồng・hợp đồng con) | **§0.4 Dùng thử→triển khai chính thức là cùng hợp đồng cha (không cấp số mới)・hợp đồng cha giữ kỳ của loại hợp đồng**／§0.2 "tự động tạo trước 1 tháng" → thống nhất với quy tắc tạo trước／sao chép nơi gửi hóa đơn・lead time sang hợp đồng con／màn hình và hạng mục dòng điều chỉnh／#609~615 tạm dừng (không tất toán・kiểm tra khi bắt đầu)／xóa #612 "chưa định cũng được"／công thức cũ và phần lẻ ở §0.8 |
-| Quy tắc thanh toán v1 | 3-2~3-4 tạm dừng (không tất toán・thời gian sử dụng tối thiểu chỉ dừng với thiết bị để nguyên)／dòng điều chỉnh và trạng thái hóa đơn／hủy khoản thanh toán lại／tên người nhận tại thời điểm phát hành (Q5)／2-2 sau hạn chót có 2 lựa chọn |
+| Quy tắc hóa đơn v1 | 3-2~3-4 tạm dừng (không tất toán・thời gian sử dụng tối thiểu chỉ dừng với thiết bị để nguyên)／dòng điều chỉnh và trạng thái hóa đơn／hủy xuất lại hóa đơn／tên người nhận tại thời điểm phát hành (Q5)／2-2 sau hạn chót có 2 lựa chọn |
 | Thiết kế cơ bản | §5-1 trạng thái (cơ sở là đăng ký và đóng, tạm dừng lấy từ hợp đồng cha)／§7-1 sau hạn chót có 2 lựa chọn／§10-6-2・§13 bỏ các hạng mục đã quyết định khỏi mục chưa quyết／thời điểm hiệu lực tài khoản |
 | Đặc tả tổng hợp v2.3 | §10-2・§15-13・§16-5・§17-3 "sau locked không đổi ngày" → thống nhất với §8-3／§4-8 UTC→giờ Nhật Bản／§16-1 ngày lễ dùng API công khai／§17-6 quyền nhân viên kho (STEP6 bổ sung)／§9-3 luồng vật tư |
 | Danh sách hạng mục master | §0.6 nếu thống nhất cách sửa đổi thành "thế hệ + tháng bắt đầu áp dụng"／thời điểm bắt đầu hiệu lực của thiết lập có phí (Q6) |
 | Đặc tả DEV | Bảng cho dòng điều chỉnh・sổ cái tồn kho cơ sở・liên kết giữa đặt hàng và nhu cầu・giao hàng vật tư・nhân viên kho・outbox |
+
+## Lịch sử thay đổi
+
+| Ngày họp | Đối tượng (mục・REQ) | Trước thay đổi | Sau thay đổi | Lý do thay đổi | Căn cứ (MM・thời điểm) | Trạng thái |
+|---|---|---|---|---|---|---|
+| 2026/10/06 | §5 Tạm dừng và thời gian sử dụng tối thiểu | Thiết bị đã thu hồi thì tính lại từ ngày lắp đặt lại (phương án để vận hành chọn là tạm thời) | Dù đã thu hồi vẫn tiếp nối phần còn lại trước khi tạm dừng. Không có phí lắp đặt lại | Khách hàng: "tiếp tục, không reset" | 〔MM_20261006_1200 ［00:20:42］、hong 回答 2026/10/07〕 | 「実装待ち」(chờ triển khai) |

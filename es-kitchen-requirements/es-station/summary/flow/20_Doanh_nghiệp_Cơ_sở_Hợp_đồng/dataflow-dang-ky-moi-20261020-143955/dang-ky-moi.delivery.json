@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "ce167df2-cb9e-4c5d-8f38-4bc5ab3ae205",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/dang-ky-moi.html",
+  "specification": {
+    "sha256": "2a610e0d214361102688bc89bd5d49eeaf0cba0bd350a22bd78e05be61fab5c6",
+    "bytes": 9384
+  },
+  "artifact": {
+    "sha256": "3f4d6ef9569ec4f2ba53e4a9c368bb5b7051cbd9738a3c4d64dbeba933bae53e",
+    "bytes": 770416
+  }
+}

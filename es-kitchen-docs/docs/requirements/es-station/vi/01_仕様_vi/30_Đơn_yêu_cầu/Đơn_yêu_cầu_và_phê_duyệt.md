@@ -1,7 +1,9 @@
+> Bản dịch tiếng Việt của `ja/01_仕様/30_申請/申請・承認.md` (nguồn es-station, bản 2026-10-20). Khi khác nhau, bản tiếng Nhật và `docs/決定台帳.md` là chuẩn.
+
 # Đơn đăng ký・Phê duyệt (8 loại đơn đăng ký thay đổi của Web doanh nghiệp / phê duyệt của vận hành)
 
-> **Nguồn chính thức của chủ đề này. Quyết định đang có hiệu lực xem `docs/決定台帳.md`.** Nếu sổ cái và tài liệu này mâu thuẫn thì sổ cái là đúng (tài liệu này sửa sót).
-> Tạo: 2026-10-03 (tạo mới theo sổ cái A "Biểu mẫu đăng ký・phê duyệt đơn: viết mới từ các file quyết định" Q3=A).
+> **Nguồn chính thức của chủ đề này. Quyết định đang có hiệu lực xem `docs/決定台帳.md`.** Nếu sổ quyết định và tài liệu này mâu thuẫn thì sổ quyết định là đúng (tài liệu này sửa sót).
+> Tạo: 2026-10-03 (tạo mới theo sổ quyết định A "Biểu mẫu đăng ký・phê duyệt đơn: viết mới từ các file quyết định" Q3=A).
 > **Các tài liệu cũ sau được đóng băng** (từ nay không cập nhật. Nguồn đúng là tài liệu này): `30_Đơn_yêu_cầu/Màn_hình_chi_tiết_yêu_cầu_Đề_xuất_thiết_kế_lại_v1.md`, `30_Đơn_yêu_cầu/Đặc_tả_kiểm_tra_nhập_liệu_Form_đăng_ký_20261001.md` §4, Phần 1 của `30_Đơn_yêu_cầu/Danh_sách_email_Đăng_ký_và_yêu_cầu_20261001.md` (điều kiện gửi・người nhận. Nội dung thư theo Excel là đúng), `90_デモ確認/変更申請_影響範囲と制御一覧_20261001.md` (ảnh hưởng và kiểm soát đã đưa vào §8).
 > Đăng ký mới・thêm cơ sở・tiếp nhận (đăng ký tạm・đăng ký chính thức)・chuyển từ dùng thử → triển khai chính thức xem `20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/Form_đăng_ký.md`.
 > Những điều chưa quyết định・chỗ các tài liệu mâu thuẫn nhau được ghi trong nội dung là "⚠️ Cần xác nhận (2026-10-03)" và tổng hợp ở §13.
@@ -37,7 +39,7 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 |---|---|
 | 8 loại đơn đăng ký (thay đổi gói／giao hàng／thiết bị／thông tin cơ sở／thông tin doanh nghiệp・tạm dừng・mở lại・hủy hợp đồng) | Đăng ký mới・thêm cơ sở・chuyển đổi → `Form_đăng_ký.md` |
 | Các thay đổi phản ánh ngay không cần phê duyệt trên Web doanh nghiệp (người phụ trách・tên doanh nghiệp, v.v.) và thông báo cho vận hành | Thay đổi ngày giao hàng (`DD-`) → đặc tả giao hàng (#63・S7-37) |
-| Màn hình phê duyệt・nhập hộ của vận hành | Tính thanh toán (nội dung phí vi phạm・chi tiết điều chỉnh) → quy tắc thanh toán |
+| Màn hình phê duyệt・nhập hộ của vận hành | Tính hóa đơn (nội dung phí vi phạm・chi tiết điều chỉnh) → quy tắc hóa đơn |
 
 ---
 
@@ -52,7 +54,7 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 | 5 | Thay đổi thông tin doanh nghiệp | Thay đổi hợp đồng | Doanh nghiệp (phê duyệt như 1 doanh nghiệp) | **Chỉ tài khoản doanh nghiệp** | STEP1 (8 thẻ phê duyệt), Web doanh nghiệp §2-3 |
 | 6 | Tạm dừng | Tạm dừng・hủy hợp đồng | Cơ sở đang sử dụng | Doanh nghiệp・cơ sở | Như trên, Web doanh nghiệp §4-1 |
 | 7 | Mở lại | Tạm dừng・hủy hợp đồng | Cơ sở đang tạm dừng | Doanh nghiệp・cơ sở | Như trên |
-| 8 | Hủy hợp đồng | Tạm dừng・hủy hợp đồng | Cơ sở đang sử dụng・**đang tạm dừng** | Doanh nghiệp・cơ sở | 28-21, Web doanh nghiệp §4-1 |
+| 8 | Hủy hợp đồng | Tạm dừng・hủy hợp đồng | Cơ sở đang sử dụng (**cơ sở đang tạm dừng không đăng ký được từ Web doanh nghiệp**. Vận hành nhập hộ: thay đổi 2026/10/09. Trước đây: cơ sở đang tạm dừng cũng được) | Doanh nghiệp・cơ sở | 28-21, Web doanh nghiệp §4-1 |
 
 - Số đơn là **`CH-YYYYMMDD-NNNN`** (NNNN là số thứ tự theo ngày) 〔S7-7 (`Quyết_định_STEP7_Trả_lời_20261001.md`)〕. Thay đổi ngày giao hàng tách riêng bằng `DD-` 〔S7-37〕.
 - Lối vào: trên Web doanh nghiệp là "Đăng ký thay đổi" trong "Đơn đăng ký"・"Đăng ký thay đổi" ở danh sách cơ sở・"Đăng ký thay đổi" ở chi tiết cơ sở (thủ tục 1〜3・6〜8). **Thông tin cơ sở・thông tin doanh nghiệp: nếu bấm "Chỉnh sửa" và lưu ô cần phê duyệt thì ngay lúc đó trở thành đơn đăng ký (chờ phê duyệt)** (4・5) 〔Web doanh nghiệp §1・§2-2・§2-3〕.
@@ -63,7 +65,7 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 
 ## 2. Phân loại phê duyệt (theo từng mục)
 
-**Phân loại phê duyệt được quyết định theo từng mục** (cả thay đổi thông tin doanh nghiệp và thay đổi thông tin cơ sở) 〔STEP1 "Phân loại phê duyệt", sổ cái "Phê duyệt thay đổi thông tin doanh nghiệp". "Chưa quyết" ở Phạm vi ảnh hưởng B-5 đã được giải quyết〕. Có 4 loại sau.
+**Phân loại phê duyệt được quyết định theo từng mục** (cả thay đổi thông tin doanh nghiệp và thay đổi thông tin cơ sở) 〔STEP1 "Phân loại phê duyệt", sổ quyết định "Phê duyệt thay đổi thông tin doanh nghiệp". "Chưa quyết" ở Phạm vi ảnh hưởng B-5 đã được giải quyết〕. Có 4 loại sau.
 
 | Loại | Khi lưu trên Web doanh nghiệp | Vận hành | Nguồn |
 |---|---|---|---|
@@ -76,9 +78,9 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 
 | Mục | Loại | Nguồn |
 |---|---|---|
-| Tên doanh nghiệp・tên doanh nghiệp (hợp đồng)・furigana tên doanh nghiệp・tên doanh nghiệp nhận hóa đơn | **Chỉ thông báo (phản ánh ngay + thông báo cho vận hành)** | STEP2 Q3, sổ cái, 契約_03 |
+| Tên doanh nghiệp・tên doanh nghiệp (hợp đồng)・furigana tên doanh nghiệp・tên doanh nghiệp nhận hóa đơn | **Chỉ thông báo (phản ánh ngay + thông báo cho vận hành)** | STEP2 Q3, sổ quyết định, 契約_03 |
 | Địa chỉ ghi trên hóa đơn (mã bưu điện〜tòa nhà, v.v.)・số điện thoại・**số FAX** | **Bắt buộc phê duyệt** (loại đơn "Thay đổi thông tin doanh nghiệp") | Web doanh nghiệp §2-3 (09/30), 契約_03 |
-| Người phụ trách của doanh nghiệp (phân loại・họ tên・furigana・email・điện thoại・thêm／xóa dòng) | **Chỉ thông báo**. Bắt buộc có 1 người chính・1 người phụ trách thanh toán | STEP2 Q10, 契約_03 |
+| Người phụ trách của doanh nghiệp (phân loại・họ tên・furigana・email・điện thoại・thêm／xóa dòng) | **Chỉ thông báo**. Bắt buộc có 1 người chính・1 người phụ trách hóa đơn | STEP2 Q10, 契約_03 |
 | Lead time phát hành hóa đơn・đơn vị phát hành hóa đơn・phương thức thanh toán・thủ tục chuyển khoản ngân hàng・chu kỳ thanh toán・tháng bắt đầu tính・hạn thanh toán | **Chỉ vận hành** (doanh nghiệp chỉ xem. Đơn thay đổi từ doanh nghiệp không xử lý phương thức thanh toán) | 28-31, 28 §4 (6C), E-9=B, 契約_03 |
 
 ### 2-2. Cơ sở (thay đổi thông tin cơ sở)
@@ -86,11 +88,11 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 | Mục | Loại | Nguồn |
 |---|---|---|
 | Tên cơ sở・furigana・địa chỉ (mã bưu điện〜tòa nhà, v.v.)・số điện thoại | **Bắt buộc phê duyệt** | Web doanh nghiệp §1, 契約_04 |
-| Nơi nhận hóa đơn (doanh nghiệp／cơ sở này) | Bắt buộc phê duyệt (bảng mục). Cơ sở có thể đăng ký (bắt buộc phê duyệt) 〔hong trả lời 2026-10-03 (K9)〕 | 契約_04 Thanh toán #1 |
+| Nơi nhận hóa đơn (doanh nghiệp／cơ sở này) | Bắt buộc phê duyệt (bảng mục). Cơ sở có thể đăng ký (bắt buộc phê duyệt) 〔hong trả lời 2026-10-03 (K9)〕 | 契約_04 Hóa đơn #1 |
 | Ngày trong tuần không nhận hàng của hợp đồng con・ngày mong muốn cho thiết bị (thu hồi・nhập vào・dự kiến lắp đặt) | **Bắt buộc phê duyệt**. Lối vào là 1 chỗ "Thay đổi thông tin cơ sở" (không trùng với thay đổi giao hàng) | STEP1 (tối 10/01), 契約_05 |
 | Số FAX | Không cần phê duyệt (phản ánh ngay). **Không đưa vào đơn thay đổi thông tin cơ sở** | U14 (T6), 契約_04 |
 | Số nhân viên・ghi chú・ghi chú giao hàng・tài liệu lộ trình vận chuyển vào (cho khách hàng)・ảnh nơi lắp đặt | Không cần phê duyệt (phản ánh ngay) | Web doanh nghiệp §1, 契約_04・05 |
-| Người phụ trách của cơ sở | **Chỉ thông báo** (thay đổi người phụ trách chính・người phụ trách thanh toán luôn phải thông báo). Làm được cả khi đang tạm dừng | STEP2 Q10, DR-3, 契約_04 |
+| Người phụ trách của cơ sở | **Chỉ thông báo** (thay đổi người phụ trách chính・người phụ trách hóa đơn luôn phải thông báo). Làm được cả khi đang tạm dừng | STEP2 Q10, DR-3, 契約_04 |
 | Giới hạn số lượng 1 ngày・giới hạn số tiền 1 tháng (mỗi người) | Không cần phê duyệt (phản ánh ngay). Có hiệu lực với tất cả hợp đồng con từ chu kỳ hiện tại trở đi | STEP2 Q2, 契約_05 |
 | **Chế độ khách (Guest mode)** | **Chỉ thông báo (không cần phê duyệt・phản ánh ngay + thông báo cho vận hành)** (2026-10-02. Thay thế D5 "bắt buộc phê duyệt" 〔10/01〕) | Dòng 157 (`決定_要件シートPhase2` 10/02), 契約_05 #4. Dùng được ngay khi lưu. Phí theo quy tắc hạn chốt. Có hộp thoại xác nhận khi lưu 〔hong trả lời 2026-10-03 (K3)〕 |
 | **ES-QR** | **Chỉ vận hành** (Web doanh nghiệp chỉ hiển thị・không đăng ký thay đổi được) | Dòng 157 (09/30), 契約_05 #5 |
@@ -102,7 +104,7 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 | Gói・Course | Bắt buộc phê duyệt | Thay đổi gói | 契約_05 |
 | Loại giao hàng (chuyến giao ES／chuyến COOL)・số lần giao hàng | Bắt buộc phê duyệt | Thay đổi giao hàng | 契約_05, 28-19 |
 | Thiết bị (thêm・thu hồi・đổi dòng máy)・đại diện lắp đặt | Bắt buộc phê duyệt | Thay đổi thiết bị | 28 §5, dòng 156 |
-| Mẫu giao hàng・chu kỳ giao hàng・tuyến giao hàng (kho・công ty vận chuyển・công ty giao hàng・lead time) | **Chỉ vận hành** (khách hàng không chọn. Nguyện vọng ghi vào ghi chú giao hàng) | — | 28-77・78. Chỉ số lần giao hàng là khách hàng đăng ký bằng thay đổi giao hàng (bắt buộc phê duyệt) 〔28-77・28-78・sổ cái〕. Bảng của 契約_05 theo như vậy |
+| Mẫu giao hàng・chu kỳ giao hàng・tuyến giao hàng (kho・công ty vận chuyển・công ty giao hàng・lead time) | **Chỉ vận hành** (khách hàng không chọn. Nguyện vọng ghi vào ghi chú giao hàng) | — | 28-77・78. Chỉ số lần giao hàng là khách hàng đăng ký bằng thay đổi giao hàng (bắt buộc phê duyệt) 〔28-77・28-78・sổ quyết định〕. Bảng của 契約_05 theo như vậy |
 | Điều chỉnh giá・áp dụng phúc lợi・tùy chọn・giảm giá | Chỉ vận hành (thay đổi do vận hành làm ở hợp đồng con) | — | 契約_05, 28-173 |
 | Không có hạn dùng ngắn | Chỉ vận hành (quyết định khi đăng ký, thay đổi chỉ vận hành) | — | REQ-CT-300 |
 
@@ -124,8 +126,8 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 | Quy định | Nguồn |
 |---|---|
 | **Phê duyệt・từ chối theo từng cơ sở** (thay đổi thông tin doanh nghiệp là 1 doanh nghiệp) | v2.3 #1・⑥, màn hình hiện tại |
-| Trạng thái đơn: chờ phê duyệt／**đang xử lý (số đã xử lý/tổng. Ví dụ "Đang xử lý 1/3")**／đã phê duyệt／phê duyệt một phần／từ chối／đã rút lại (vẫn còn cơ sở chờ phê duyệt = đang xử lý・tất cả cơ sở đã phê duyệt = đã phê duyệt・đã xử lý hết mà lẫn phê duyệt và từ chối = phê duyệt một phần・từ chối tất cả = từ chối) (trước đây: đang xử lý là "đã xử lý một phần") 〔hong trả lời 2026-10-05 (#2)〕 | v2.3 ⑥, màn hình hiện tại |
-| Trạng thái của cơ sở (chi tiết đơn): chờ phê duyệt／đã phê duyệt／từ chối／đã rút lại | 契約_04 Lịch sử đơn đăng ký #7 |
+| Trạng thái đơn: chờ phê duyệt／**đang xử lý (số đã xử lý/tổng. Ví dụ "Đang xử lý 1/3")**／đã phê duyệt／phê duyệt một phần／từ chối／đã rút lại (vẫn còn cơ sở chờ phê duyệt = đang xử lý・tất cả cơ sở đã phê duyệt = đã phê duyệt・đã xử lý hết mà lẫn phê duyệt và từ chối = phê duyệt một phần・từ chối tất cả = từ chối) (trước đây: đang xử lý là "đã xử lý một phần"). ※ Cần xác nhận có giữ tên trạng thái 「取り下げ済」 (đã rút lại) làm tên dùng khi quản trị hệ thống hủy thủ công hay không (§3-4・sổ quyết định AL・2026-10-16) 〔hong trả lời 2026-10-05 (#2)〕 | v2.3 ⑥, màn hình hiện tại |
+| Trạng thái của cơ sở (chi tiết đơn): chờ phê duyệt／đã phê duyệt／từ chối／đã rút lại | 契約_04 Lịch sử đơn đăng ký #7, sổ quyết định "Tên trạng thái" |
 | Thông báo cho khách hàng **theo từng cơ sở** (không đợi phê duyệt 1 cơ sở mà dừng tất cả) | v2.3 ⑥ |
 | **Đơn đã phê duyệt chỉ để xem. Muốn sửa thì gửi đơn mới** (không hủy phê duyệt・không làm lại) | Danh sách vấn đề 10/02 "4-8" |
 
@@ -136,7 +138,7 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 
 | Quy định | Nguồn |
 |---|---|
-| **Cơ sở đang có đơn chờ phê duyệt không chọn được trong đơn mới** (hiển thị "Đang đăng ký" và làm xám). **Hủy hợp đồng cũng không ngoại lệ**. Nếu gấp thì rút lại rồi đăng ký lại, hoặc liên hệ | 28-4 |
+| **Cơ sở đang có đơn chờ phê duyệt không chọn được trong đơn mới** (hiển thị "Đang đăng ký" và làm xám). **Hủy hợp đồng cũng không ngoại lệ**. Nếu gấp thì liên hệ (khi cần rút lại thì quản trị hệ thống hủy thủ công = §3-4. 2026-10-16・sổ quyết định AL) | 28-4 |
 | Trong lúc chờ phê duyệt, các ô bắt buộc phê duyệt trên Web doanh nghiệp cũng bị khóa | Web doanh nghiệp §1・§4-3 |
 | Trong lúc chờ phê duyệt, vận hành cũng không chỉnh sửa trực tiếp các mục đối tượng của đơn trong hợp đồng con của cơ sở đó | TL-1, 契約_01 §1 |
 | Nhập hộ cũng vậy (không chọn được cơ sở đang có đơn chờ phê duyệt) | 28 §8 phương án, 28-144⑨ |
@@ -147,9 +149,10 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 
 | Quy định | Nguồn |
 |---|---|
-| **Chỉ với cơ sở mà vận hành chưa xử lý**, có thể rút lại theo từng cơ sở từ "Nội dung đang đăng ký" trên Web doanh nghiệp. Cơ sở đã xử lý thì không được | 28-26 |
-| Người rút lại được là **tài khoản đã gửi đơn và tài khoản doanh nghiệp** thôi. Khi mở đơn do tài khoản doanh nghiệp gửi bằng tài khoản cơ sở thì không hiển thị "Rút lại" mà hiển thị "Vì là đơn do tài khoản doanh nghiệp gửi nên việc rút lại thực hiện từ tài khoản doanh nghiệp" | H2, Web doanh nghiệp §1 |
-| Lưu lại ngày giờ rút lại (hiển thị ở lịch sử đơn của Web doanh nghiệp) | 28-28, 契約_04 |
+| **Không đặt nút "Rút lại" trên Web doanh nghiệp** (thay đổi 2026-10-16・sổ quyết định AL・sổ tiếp nhận #690). Khi cần rút lại thì **quản trị hệ thống hủy thủ công**. Tên trạng thái khi hủy・lịch sử・cách xử lý email M7 cần xác nhận | hong trả lời 2026-10-16 |
+| ~~**Chỉ với cơ sở mà vận hành chưa xử lý**, có thể rút lại theo từng cơ sở từ "Nội dung đang đăng ký" trên Web doanh nghiệp. Cơ sở đã xử lý thì không được~~ (cũ. Đã thay bằng quyết định ở trên) | 28-26 |
+| ~~Người rút lại được là tài khoản đã gửi đơn và tài khoản doanh nghiệp thôi. Khi mở đơn do tài khoản doanh nghiệp gửi bằng tài khoản cơ sở thì không hiển thị "Rút lại"…~~ (cũ. Đã thay bằng quyết định ở trên) | H2, Web doanh nghiệp §1 |
+| Lưu lại ngày giờ hủy (hiển thị ở lịch sử đơn của Web doanh nghiệp) | 28-28, 契約_04 |
 
 ### 3-5. Từ chối
 
@@ -169,7 +172,7 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 | **Khi phê duyệt, nếu "giá trị trước thay đổi" của đơn khác với giá trị hiện tại thì dừng phê duyệt và để vận hành xác nhận** ("Giá trị trước thay đổi khác với giá trị hiện tại (giá trị lúc đăng ký → giá trị hiện tại). Hãy kiểm tra giá trị hiện tại rồi phê duyệt") | TL-1, 契約_01 §1 |
 | Màn hình phê duyệt hiển thị "Còn ○ ngày đến hạn chốt" | 28-27 |
 | Màn hình phê duyệt hiển thị **tháng giao hàng thực sự được phản ánh** (ví dụ: "Vì đã quá hạn chốt đặt hàng nên sẽ được phản ánh từ chu kỳ tháng ◯") | Gốc #22・REQ-CT-258 |
-| Màn hình phê duyệt hiển thị "Số tháng đã thanh toán n tháng・tổng chênh lệch・quyết toán trong hóa đơn lần tới" (§4-4) | TL-7 |
+| Màn hình phê duyệt hiển thị "Số tháng đã xuất hóa đơn n tháng・tổng chênh lệch・quyết toán trong hóa đơn lần tới" (§4-4) | TL-7 |
 | Người phê duyệt: không giữ người cụ thể (như 林MG, v.v.). **Quản trị viên vận hành có quyền thì ai cũng phê duyệt được** | STEP1, `Quyết_định_STEP3_Bổ_sung_Thiếu_sót_Master_Tùy_chọn_Giảm_giá_20261001.md` |
 | **Tự phê duyệt (người lập đơn = người phê duyệt) được phép**. Lưu vào lịch sử (vì vận hành ít người) | T5 D12・E-11=B |
 
@@ -187,13 +190,15 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 |---|---|
 | Tạm dừng・mở lại・hủy hợp đồng・thay đổi gói, v.v. nhận qua điện thoại, **không đổi trạng thái trực tiếp ở màn hình cơ sở・hợp đồng con**. Lập đơn giống Web doanh nghiệp bằng "Nhập hộ đơn đăng ký thay đổi" và phê duyệt ở cùng màn hình phê duyệt (để những thứ hoạt động khi phê duyệt luôn chạy theo cùng thứ tự) | 28 §8 phương án, 28-144⑨ |
 | Lưu lại kênh tiếp nhận (điện thoại・email・kinh doanh (thăm trực tiếp)・phán đoán của vận hành・khác) và người nhập, hiển thị dấu "Nhập hộ" trong danh sách | 28-33, màn hình hiện tại |
+| Nhập hộ ở tab "Tạm dừng・hủy hợp đồng" cũng có cùng hình thức với tab "Thay đổi hợp đồng" (1 màn hình・hiển thị mục khác nhau theo loại・nhiều cơ sở・doanh nghiệp chọn từ dữ liệu・từ tháng sớm nhất có thể chọn・lý do tối đa 500 ký tự). Các mục giống "Nội dung mong muốn" (『ご希望の内容』) của Web doanh nghiệp ở §6-6 tạm dừng・§6-7 mở lại・§6-8 hủy hợp đồng | Sổ quyết định Vận hành A 2026-10-07 Q17 |
+| Lựa chọn của bộ lọc tìm kiếm "Kênh tiếp nhận" ở danh sách gồm 8 mục: Web doanh nghiệp／đăng ký không cần đăng nhập／điện thoại／kinh doanh (thăm trực tiếp)／đơn đăng ký giấy／email／nhập CSV／khác | Sổ quyết định Vận hành A 2026-10-07 Q15 |
 | Không thể đặt trực tiếp cơ sở sang "Đang tạm dừng" (phải qua đơn nhập hộ) | Danh sách vấn đề 10/02 "4-7" |
 | Thông báo cho doanh nghiệp gửi giống đơn trên Web doanh nghiệp (theo từng cơ sở), thêm một câu "Vận hành đã tiếp nhận thay" | 28 §8 phương án |
 | Dù gấp như sát hạn chốt cũng không tạo ngoại lệ thay đổi trực tiếp | 28 §8 phương án |
 
 ---
 
-## 4. Tháng chu kỳ bắt đầu・hạn chốt・tháng đã thanh toán
+## 4. Tháng chu kỳ bắt đầu・hạn chốt・tháng đã xuất hóa đơn
 
 ### 4-1. Cách quyết định tháng chu kỳ bắt đầu
 
@@ -201,14 +206,17 @@ Giống `Form_đăng_ký.md` §0-2. Những ký hiệu hay dùng trong tài li�
 |---|---|
 | Đăng ký liên quan đến hợp đồng: **nếu trước hạn chốt đặt hàng (mặc định ngày 15 tháng trước) thì từ chu kỳ tháng kế tiếp, nếu quá hạn thì từ tháng sau nữa** | 契約_01 §4 (D4), REQ-CT-257, dòng 159 |
 | Tháng chu kỳ bắt đầu lấy giá trị xác định theo ngày đăng ký làm giá trị ban đầu | 28-27 |
+| Ở màn hình phê duyệt, không chỉ tháng bắt đầu mà **khi là thay đổi ảnh hưởng đến giao hàng thì cũng thiết lập giao hàng cùng lúc** (thiết lập những gì (chu kỳ giao hàng・nửa đầu／nửa sau, v.v.) cần xác nhận). Nếu phát sinh dữ liệu giao hàng đã có chỉ thị xuất hàng thì đưa vào "cần xác nhận" như §4-3 〔hong trả lời 2026-10-14・sổ quyết định B・sổ tiếp nhận #637〕 | Sổ quyết định B |
 | Lắp đặt・thu hồi thiết bị cũng quyết định theo hạn chốt: nếu đăng ký trước hạn chốt thì tính đủ từ tháng chu kỳ đó／đến tháng chu kỳ đó | S1 |
 | Thiết lập có phí (Guest mode・ES-QR, v.v.), cả thiết lập và phí đều bắt đầu có hiệu lực theo quy tắc hạn chốt (thiết lập không có phí thì có hiệu lực ngay từ chu kỳ hiện tại trở đi) | 契約_01 §4 (Q6). **Ngoại lệ: Guest mode dùng được ngay khi lưu (chỉ phí theo quy tắc hạn chốt)** 〔hong trả lời 2026-10-03 (K3)〕 |
-| Kết thúc tiếp nhận hủy hợp đồng cũng xác định theo hạn chốt đặt hàng. **Không phân biệt tủ lạnh và máy bán hàng tự động** | STEP1 (K-05), T5 E-3=B (D4=A) |
+| **Kết thúc tiếp nhận đơn hủy hợp đồng・tạm dừng là ngày 25 của tháng trước tháng trước của tháng đối tượng** (từ ngày 26 trở đi không đăng ký được. Thay đổi 2026/10/09・hong trả lời 2026-10-12, ngày 2026-10-13 đổi từ "trước khi phát hành hóa đơn" sang "ngày 25". Trước đây: xác định theo hạn chốt đặt hàng 〈mặc định ngày 15 tháng trước〉). Thay đổi hợp đồng (gói, v.v.) vẫn như trước là hạn chốt đặt hàng của tháng trước. **Không phân biệt tủ lạnh và máy bán hàng tự động**. 〔Bổ sung 2026-10-16・sổ quyết định AL (bảng định nghĩa thời hạn ①⑤): khi hạn rơi vào thứ Bảy, Chủ nhật, ngày lễ thì lùi sang ngày làm việc tiếp theo (chênh lệch với "ngày làm việc trước đó" trong ghi chú của hợp đồng mới e5 cần xác nhận). Hạn hủy hợp đồng・tạm dừng của hợp đồng có lead time −2/−3 được dời sớm hơn theo lead time (−2 thì ngày 25 của 3 tháng trước). Thanh toán hằng năm xử lý riêng. "Ngày 25 tháng trước tháng trước" ở đây là chuyện của hợp đồng −1〕 | STEP1 (K-05), T5 E-3=B (D4=A), MM_20261009 ［01:15:55〜01:31:40］, tài liệu slide 27, sổ tiếp nhận #505 |
 
 ### 4-2. Khi phê duyệt sau hạn chốt
 
 Khi phê duyệt sau hạn chốt, vận hành chọn "dời sang chu kỳ kế tiếp" hoặc "vận hành đặt hàng hộ" (STEP1・T5 E-7'. Không dùng việc tự động dời của 28-27) 〔hong trả lời 2026-10-03 (A1=A)〕
 
+- **Khi đơn đăng ký mới vẫn ở trạng thái đăng ký tạm quá ngày 15 (thay đổi 2026/10/14)**: hệ thống **tự động đăng ký đơn hàng (Order) bằng giá trị chuẩn** (lưới an toàn). Vận hành **sửa** đăng ký đó hoặc **lùi sang chu kỳ tiếp theo** trước khi đặt hàng chính thức vào sáng ngày 16 〔hong trả lời 2026-10-14 (phương án C)・MM_20261014_1258 ［01:15:05］, sổ tiếp nhận #613〕.
+- Hạn chốt đặt hàng (ngày 15) được quyết định bằng ngày chốt của menu tháng, khi rơi vào thứ Bảy, Chủ nhật thì vận hành sửa ở màn hình thiết lập menu tháng 〔sổ tiếp nhận #614〕. ※2026-10-16: khi hạn chốt (ngày 15・25・20) rơi vào thứ Bảy, Chủ nhật, ngày lễ thì lùi sang ngày làm việc tiếp theo (sổ quyết định AL・bảng định nghĩa thời hạn ①. Chênh lệch với "ngày làm việc trước đó" cần xác nhận. Hạn chốt theo từng menu do vận hành đăng ký = ②).
 - Dù chọn cách nào, nội dung đã chọn (đã sửa) cũng được ghi vào thông báo cho doanh nghiệp 〔28-27, màn hình hiện tại〕.
 
 ### 4-3. Hóa đơn đã phát hành và giao hàng đã có chỉ thị xuất hàng
@@ -219,12 +227,13 @@ Khi phê duyệt sau hạn chốt, vận hành chọn "dời sang chu kỳ kế 
 | Đổi nơi nhận hóa đơn: hóa đơn đã phát hành giữ nguyên, từ hóa đơn chưa phát hành thì gửi tới nơi nhận mới | 28-6 |
 | **Không hủy dữ liệu giao hàng đã có chỉ thị xuất hàng vì lý do thay đổi hợp đồng.** Khi cần xử lý riêng trước tháng phản ánh (chuyển nhà, v.v.), vận hành sửa bằng "Chỉ lần giao hàng này" ở chi tiết dữ liệu giao hàng, không dời tháng áp dụng của hợp đồng | Gốc #22・REQ-CT-259 |
 | Phần đã thành dữ liệu giao hàng・đã có chỉ thị xuất hàng không tự động thay đổi, hiển thị "cần xác nhận" ở lịch vận hành | 28-20 |
+| **Khi cần hủy hóa đơn đã phát hành** (hủy hợp đồng・tạm dừng muộn, v.v.): **quản trị hệ thống hủy hóa đơn trên màn hình của Bill One** (không hủy được bằng API). Sau khi hủy thì phát hành lại từ ứng dụng (quy tắc hóa đơn §5-4: ID cũ là "Hủy"・phát hành lại bằng ID khác) | hong trả lời 2026-10-12, MM_20261009 ［01:15:55〜01:23:04］, sổ tiếp nhận #505 |
 
-### 4-4. Thay đổi liên quan đến tháng đã thanh toán (thanh toán năm・thanh toán trước)
+### 4-4. Thay đổi liên quan đến tháng đã xuất hóa đơn (thanh toán năm・thanh toán trước)
 
 | Quy định | Nguồn |
 |---|---|
-| **Tại thời điểm phê duyệt, hệ thống tự động tạo "chi tiết điều chỉnh" từ chênh lệch của từng tháng đã thanh toán, ghi từng dòng vào hóa đơn kế tiếp** (ví dụ "Phần chu kỳ tháng 12/2026 Thay đổi gói (100→50) chênh lệch −¥22,000"). Không tính theo ngày・là chênh lệch đủ tháng theo từng tháng chu kỳ | TL-7 (quyết định A), 契約_01 §1-1 |
+| **Tại thời điểm phê duyệt, hệ thống tự động tạo "chi tiết điều chỉnh" từ chênh lệch của từng tháng đã xuất hóa đơn, ghi từng dòng vào hóa đơn kế tiếp** (ví dụ "Phần chu kỳ tháng 12/2026 Thay đổi gói (100→50) chênh lệch −¥22,000"). Không tính theo ngày・là chênh lệch đủ tháng theo từng tháng chu kỳ | TL-7 (quyết định A), 契約_01 §1-1 |
 | Trong thanh toán năm, điều chỉnh phí giữa kỳ vẫn giữ phí hiện tại đến tháng bắt đầu tính tiếp theo (không tạo chênh lệch cho việc điều chỉnh giá) | S3-2 |
 | Đổi gói giữa chừng của thanh toán năm thì các tháng còn lại tính bằng chi tiết điều chỉnh | Danh sách vấn đề 10/03 "Thanh toán năm" |
 
@@ -238,7 +247,7 @@ Khi phê duyệt sau hạn chốt, vận hành chọn "dời sang chu kỳ kế 
 |---|---|---|
 | Tab | Thay đổi ngày giao (giao hàng)／Đơn đăng ký hợp đồng | Web doanh nghiệp §2-2 |
 | Cột | Số tiếp nhận・loại đơn・cơ sở đối tượng・ngày đăng ký・người đăng ký・tháng chu kỳ bắt đầu・nội dung đơn・trạng thái phê duyệt (+ lý do từ chối・ngày giờ rút lại) | Web doanh nghiệp §2-2, 契約_04 Lịch sử đơn |
-| Thao tác | Xem chi tiết bằng số tiếp nhận. Nếu vận hành đang xác nhận thì rút lại (§3-4). Góc trên bên phải có "Thêm cơ sở" "Đăng ký thay đổi" | Web doanh nghiệp §2-2 |
+| Thao tác | Xem chi tiết bằng số tiếp nhận. Không có nút rút lại (§3-4). Góc trên bên phải có "Thêm cơ sở" "Đăng ký thay đổi". **Sau khi hủy hợp đồng (chỉ xem) thì không hiển thị "Thêm cơ sở" "Đăng ký thay đổi" (server cũng từ chối = E345)** 〔2026-10-15 hong trả lời・sổ quyết định AK (S-8)〕 | Web doanh nghiệp §2-2 |
 | Phạm vi xem | Tài khoản doanh nghiệp = toàn bộ công ty mình／**tài khoản cơ sở = chỉ đơn của cơ sở mình** | H4, quyết định v2.3 #55 (`Quyết_định_v2.3_Bổ_sung_Lịch_trang_chủ_doanh_nghiệp_20260929.md`) |
 | Không hiển thị | Người phê duyệt・ngày giờ phê duyệt (vì hiển thị tên người phụ trách của vận hành) | 契約_04 #8 |
 
@@ -260,7 +269,7 @@ Khi phê duyệt sau hạn chốt, vận hành chọn "dời sang chu kỳ kế 
 | Quy định | Nguồn |
 |---|---|
 | Ô bắt buộc phê duyệt có dấu "Cần phê duyệt". Khi lưu, hộp thoại xác nhận phân biệt "phản ánh ngay／phản ánh sau phê duyệt" + chọn "người thay đổi" từ người phụ trách (bắt buộc) | Web doanh nghiệp §1・§1-2 |
-| Thay đổi ô bắt buộc phê duyệt và lưu thì thành chờ phê duyệt (`CH-`), phản ánh sau phê duyệt. Trong lúc chờ phê duyệt hiển thị hướng dẫn, cũng hiển thị trong danh sách "Đơn đăng ký" (rút lại được) | Web doanh nghiệp §1・§2-3 |
+| Thay đổi ô bắt buộc phê duyệt và lưu thì thành chờ phê duyệt (`CH-`), phản ánh sau phê duyệt. Trong lúc chờ phê duyệt hiển thị hướng dẫn, cũng hiển thị trong danh sách "Đơn đăng ký" (không có nút rút lại của Web doanh nghiệp = §3-4・sổ quyết định AL・2026-10-16) | Web doanh nghiệp §1・§2-3 |
 | Với các mục của hợp đồng con, khi lưu chọn "Chỉ chu kỳ này／Từ đây trở đi tất cả". Chỉ thay đổi được các chu kỳ còn trước hạn chốt | Web doanh nghiệp §1・§2 |
 
 ---
@@ -277,23 +286,25 @@ Khi phê duyệt sau hạn chốt, vận hành chọn "dời sang chu kỳ kế 
 | Phí | Từ tháng chu kỳ bắt đầu, tính đủ phí gói mới (không tính theo ngày) | Màn hình hiện tại (P1・S1), 28-5 |
 | Hợp đồng con・số lượng giao・đơn hàng mặc định | **Tính lại** hợp đồng con・số lượng giao mỗi lần (giới hạn cung cấp hằng tháng ÷ số lần giao hàng・theo từng nhóm nhiệt độ)・đơn hàng mặc định (số đặt hàng tiêu chuẩn × hệ số của gói) | Danh sách vấn đề 10/02 "3-5", 28-153・154・179 |
 | Đơn hàng | Nếu phê duyệt trong thời gian đặt hàng, **tự động đưa đơn hàng đã đăng ký (hoặc mặc định) của chu kỳ đó về đơn hàng mặc định theo điều kiện mới và thông báo cho doanh nghiệp** để họ nhập lại đến hạn chốt (nếu không nhập lại thì chốt nguyên như vậy). Việc đã tự động sửa được ghi vào "Phạm vi ảnh hưởng" của màn hình phê duyệt và thông báo | STEP5 QA, Danh sách vấn đề 10/02 "3-5 (a)" |
-| Thiết bị | Khi phê duyệt, so sánh thiết bị hiện tại với **thiết bị cho thuê tiêu chuẩn của gói mới** để tạo phương án "dịch chuyển thiết bị" (tăng kích thước・thêm・thu hồi thiết bị dư), **đồng thời đề xuất chi phí phát sinh** (phí giao hàng thay thế 28-16, phí hằng tháng của dòng máy vượt tiêu chuẩn, tiền thuê tủ đông). Vận hành sửa được trước khi phê duyệt | Danh sách vấn đề 10/02 "3-6" |
+| Thiết bị | 〔"Phương án dịch chuyển thiết bị" và "phương án chi phí" của màn hình phê duyệt được gộp thành **1 bảng chỉnh sửa được** (bên cạnh mỗi dòng là chi phí hằng tháng・chi phí một lần. Sửa dòng thì chi phí được tính lại): 2026-10-15 hong・sổ tiếp nhận #651〕 Khi phê duyệt, so sánh thiết bị hiện tại với **thiết bị cho thuê tiêu chuẩn của gói mới** để tạo phương án "dịch chuyển thiết bị" (tăng kích thước・thêm・thu hồi thiết bị dư), **đồng thời đề xuất chi phí phát sinh** (phí giao hàng thay thế 28-16, phí hằng tháng của dòng máy vượt tiêu chuẩn, tiền thuê tủ đông). Vận hành sửa được trước khi phê duyệt. **Chỉ sửa sau khi bấm "Chỉnh sửa" ở phía trên màn hình. Lưu bằng 1 nút lưu ở phía trên màn hình (lưu cùng lúc phương án thiết bị・các thiết lập làm trước khi phê duyệt). Không đặt nút lưu trong thẻ. "Quay về phương án tự động" không lưu mà chỉ đưa phương án trên màn hình về lại** 〔2026-10-15 hong・sổ quyết định 292・sổ tiếp nhận #653〕 | Danh sách vấn đề 10/02 "3-6" |
 | Thời gian sử dụng tối thiểu | Kế thừa | Phạm vi ảnh hưởng B-1 |
-| Lite→Standard (khách hàng hiện có) | Tiếp nhận theo luồng thay đổi gói. **Giảm giá chênh lệch nâng cấp Standard (DC000021. DC000003 được gộp và kết thúc) không tự động gắn dù phê duyệt** (vận hành gắn thủ công). Khách hàng hiện có tính tiền thuê tủ đông bằng master dòng máy, Standard mới thì tủ đông miễn phí | 28-170〜175, sổ cái "DC000003" "Cho thuê tủ đông của khách cũ", Danh sách vấn đề 10/02 |
+| Lite→Standard (khách hàng hiện có) | Tiếp nhận theo luồng thay đổi gói. **Giảm giá chênh lệch nâng cấp Standard (DC000021. DC000003 được gộp và kết thúc) được đánh dấu chọn sẵn ở màn hình phê duyệt, vận hành có thể bỏ** (sổ quyết định 2026-10-03・M1=A. Ngày 2026-10-16 đã sửa đặc tả cho khớp với sổ quyết định). Khách hàng hiện có tính tiền thuê tủ đông bằng master dòng máy, Standard mới thì tủ đông miễn phí | 28-170〜175, sổ quyết định "DC000003" "Cho thuê tủ đông của khách cũ", Danh sách vấn đề 10/02 |
 | Lite (tủ lạnh)→Lite (máy bán hàng tự động) | Xử lý như thay đổi gói (thay đổi course), đồng thời đăng ký dịch chuyển thiết bị | T5 E-10=A. Màn hình phê duyệt đặt bắt buộc "Kết quả khảo sát hiện trường" (ngày khảo sát・khả thi hay không・đính kèm), chưa nhập thì không phê duyệt được. Tháng chu kỳ bắt đầu do vận hành chọn khi phê duyệt 〔hong trả lời 2026-10-03 (B7)〕 |
 | Thông báo cho đại lý・chênh lệch thay đổi gói của giới thiệu | Sang Phase2 | T5 E-12=B |
+| Chuyển dùng thử→triển khai chính thức (Web doanh nghiệp 「本導入に申し込む」 (Đăng ký triển khai chính thức)) | Không phải đơn thay đổi gói mà tiếp nhận như **đơn chuyển đổi** (`申込フォーム.md` §12). Doanh nghiệp nhập nội dung hợp đồng・tùy chọn・thiết bị cùng hình thức với đăng ký mới (nội dung dùng thử là giá trị ban đầu・gói chọn được từ tất cả gói đang công khai・có báo giá・1 cơ sở = 1 hợp đồng), vận hành có thể sửa nội dung doanh nghiệp đã nhập ở "Xác nhận nội dung đăng ký" của tiếp nhận. **Khi chọn máy bán hàng tự động ở loại thiết bị, màn hình phê duyệt đặt bắt buộc "Kết quả khảo sát hiện trường" (ngày khảo sát・khả thi hay không・đính kèm), chưa nhập thì không phê duyệt được** (nếu vẫn là tủ lạnh・tủ đông thì không cần). Khi phê duyệt, **giữ nguyên hợp đồng cha và đổi loại hợp đồng sang triển khai chính thức**, cập nhật nội dung hợp đồng của cơ sở theo nội dung đã nhập (không cấp số mới). Hộp thoại xác nhận trước khi gửi・kiểm tra nhập theo từng mục・cách hiển thị cơ sở đã hủy xem `申込フォーム.md` §12 | 2026-10-15 hong trả lời・sổ quyết định AK (T-1〜T-4), sổ tiếp nhận #639 |
 
 ### 6-2. Thay đổi giao hàng
 
 | Mục | Quy định | Nguồn |
 |---|---|---|
 | Nhập | Phương thức giao hàng (**cơ sở có máy bán hàng tự động cố định là chuyến giao ES・không chọn được**)・số lần giao hàng. Nếu toàn là "không thay đổi" thì không gửi được ("Hãy chọn ít nhất 1 mục thay đổi.") | 28-19, Đặc tả kiểm tra nhập liệu §4 |
-| Lựa chọn số lần giao hàng | **Giảm thấp hơn tiêu chuẩn được** (phí không giảm. Phán định dung lượng giống khi đăng ký): giảm xuống 1 lần／2 lần (tiêu chuẩn của gói)／tăng lên 3 lần (+¥3,000／tháng)／tăng lên 4 lần (+¥6,000／tháng) 〔Master đăng ký #2・sổ cái〕 | — |
+| Lựa chọn số lần giao hàng | **Giảm thấp hơn tiêu chuẩn được** (phí không giảm. Phán định dung lượng giống khi đăng ký): chọn được từ 1〜8 lần (2 lần = tiêu chuẩn của gói). Phí khi tăng là thêm số lần giao hàng (OP000001) = ¥10,000／lần (+ phí giao hàng khu vực). Khi giảm số lần mà phán định dung lượng NG thì báo lỗi ở màn hình đăng ký và không gửi được 〔sổ quyết định AL・2026-10-16 (chi tiết đơn thay đổi giao hàng ②③④). Trước đây: 3 lần +¥3,000／tháng・4 lần +¥6,000／tháng〕| — |
 | Phí | Thay đổi số lượng thêm số lần giao hàng (OP000001) từ tháng chu kỳ bắt đầu | 28-85 |
-| Tuyến giao hàng | Tiếp nhận cùng lúc với phê duyệt, tổ chức lại bằng batch ban đêm. Phần đã thành dữ liệu giao hàng・đã có chỉ thị xuất hàng không tự động thay đổi mà đưa vào cần xác nhận. Không hạn chế thay đổi lead time giữa chừng nhưng cảnh báo trên màn hình về chồng chéo・thiếu hụt và bắt xác nhận | 28-20, S2 |
+| Thay đổi phương thức giao hàng (chuyến COOL⇔chuyến giao ES) | Khi phê duyệt, giá gói của các tháng chưa chốt đổi thành giá của phương thức giao hàng mới, phí giao hàng khu vực (OP000004) được gắn lại theo khung giá của đơn vị giao hàng ủy thác mới (không có thì bỏ). Màn hình phê duyệt hiển thị phí hằng tháng trước・sau thay đổi. Tháng đã xác định・đã xuất hóa đơn thì giống thay đổi gói (chờ phản ánh・dòng điều chỉnh). Khi số tiền trả cho đơn vị giao hàng ủy thác rẻ hơn mức thấp nhất của bảng khung giá thì cộng thêm 0 (bỏ OP000004). Khi cao hơn mức cao nhất thì không tự động quyết định, ghi vào thông báo phê duyệt để vận hành nhập tay | Sổ quyết định AS・sổ tiếp nhận #773 |
+| Tuyến giao hàng | **Vận hành nhập chuyến (khung)・tuyến giao hàng từ tháng chu kỳ bắt đầu ở màn hình phê duyệt, tổ chức lại giao hàng cùng lúc với phê duyệt** (không chờ batch ban đêm. Sổ quyết định AS・2026-10-18. Trước đây: tổ chức lại bằng batch ban đêm). Phần đã có chỉ thị xuất hàng không tự động thay đổi mà đưa vào cần xác nhận. Không hạn chế thay đổi lead time giữa chừng nhưng cảnh báo trên màn hình về chồng chéo・thiếu hụt và bắt xác nhận | 28-20, S2 |
 | Yêu cầu báo giá cho công ty giao hàng ủy thác | Thay đổi chuyến giao ES **liên kết** với yêu cầu báo giá. **Không bắt buộc** (yêu cầu tùy chọn từ chi tiết đơn. Không có báo giá vẫn phê duyệt được). Nơi yêu cầu do vận hành chọn từ các công ty đã lọc theo khu vực・thứ trong tuần hỗ trợ của master điểm giao hàng ủy thác | T5 E-5=A, `Quyết_định_STEP4_Trả_lời_Giao_hàng_20261001.md` A1 |
 | Thứ giao hàng | Khách hàng không chọn chu kỳ giao hàng・mẫu giao hàng (vận hành thiết lập) | 28-78 |
-| Đơn hàng | Giống thay đổi gói (STEP5 QA) | STEP5 QA |
+| Đơn hàng | Đưa đơn hàng của các tháng chưa chốt từ tháng chu kỳ bắt đầu trở đi về đơn hàng mặc định của điều kiện mới (sổ quyết định L590・AS) | STEP5 QA・sổ quyết định AS |
 
 ### 6-3. Thay đổi thiết bị
 
@@ -302,7 +313,7 @@ Khi phê duyệt sau hạn chốt, vận hành chọn "dời sang chu kỳ kế 
 | Nhập | Nội dung mong muốn (thêm／thu hồi／đổi dòng máy (tăng kích thước))・thiết bị đối tượng (đang dùng・mã dòng máy + tên dòng máy)・số lượng (từ 1 đến số lượng hiện có)・ngày mong muốn・đại diện lắp đặt (OP000007・một lần) | Đặc tả kiểm tra nhập liệu §4, H5, dòng 156 |
 | Có cho chọn dòng máy không | **Cho chọn** (chỉ dòng máy công khai). Kèm câu "Tùy tồn kho, chúng tôi có thể đề xuất kích thước gần nhất" | 28-18 |
 | Chi phí thay thế | **Báo giá từng lần** (Web doanh nghiệp chỉ nhập nguyện vọng. Vận hành nhập số tiền). Mức tham khảo (1 máy ¥4,800／từ 2 máy ¥7,800／không có thang máy từ tầng 3 trở lên +¥3,000) làm giá trị ban đầu của màn hình phê duyệt. Đưa vào dịch chuyển của hợp đồng con bằng phí giao hàng thiết bị trong master tùy chọn (OP000019／020・một lần) | v2.3 #7, 28-16, 28-53 |
-| Tăng kích thước | **Quản trị viên vận hành có quyền thì ai cũng phê duyệt・sắp xếp được**. Chênh lệch được thanh toán hằng tháng bằng tùy chọn (OP000023 Chênh lệch kích thước (hằng tháng)). Phần âm của giảm kích thước không thanh toán cũng không hoàn tiền | STEP1, dòng 31 |
+| Tăng kích thước | **Quản trị viên vận hành có quyền thì ai cũng phê duyệt・sắp xếp được**. Chênh lệch được xuất hóa đơn hằng tháng bằng tùy chọn (OP000023 Chênh lệch kích thước (hằng tháng)). Phần âm của giảm kích thước không xuất hóa đơn cũng không hoàn tiền | STEP1, dòng 31 |
 | Thời gian sử dụng tối thiểu | Đổi dòng máy (tăng kích thước) **kế thừa phần còn lại của máy cũ**. Thiết bị thêm tính từ ngày lắp đặt | T5 E-4=A. ※ `質問まとめ` K5 ghi "chưa có câu trả lời" nhưng đã trả lời bằng E-4=A |
 | Khi phê duyệt | **Cập nhật danh sách cho thuê** (cùng cơ chế với phương án dịch chuyển thiết bị + đề xuất chi phí) | Danh sách vấn đề 10/03 "Đơn thay đổi thiết bị → cập nhật cho thuê" |
 | Đổi địa chỉ và thiết bị | Không di dời cũng không thu hồi (khách hàng tự chịu trách nhiệm di chuyển. Nếu vận hành vận chuyển thì là tùy chọn có phí・báo giá từng lần) | v2.3 #3 |
@@ -327,25 +338,26 @@ Khi phê duyệt sau hạn chốt, vận hành chọn "dời sang chu kỳ kế 
 | Mục trở thành đơn | Địa chỉ・số điện thoại・số FAX ghi trên hóa đơn (§2-1) | Web doanh nghiệp §2-3 |
 | Đơn vị phê duyệt | Phê duyệt・từ chối như 1 doanh nghiệp (phê duyệt thì phản ánh cho toàn doanh nghiệp) | Màn hình hiện tại |
 | Thiết lập trước phê duyệt | Không có. Nơi nhận hóa đơn dùng nội dung mới từ hóa đơn chưa phát hành (sắp xếp việc sửa nơi phát hành của Bill One) | Phạm vi ảnh hưởng B-5, màn hình hiện tại |
-| Hiển thị chờ phê duyệt | Hướng dẫn ở thông tin doanh nghiệp, hiển thị trong danh sách "Đơn đăng ký" với đối tượng = "(Tên doanh nghiệp) (doanh nghiệp)" (rút lại được) | Web doanh nghiệp §2-3 |
+| Hiển thị chờ phê duyệt | Hướng dẫn ở thông tin doanh nghiệp, hiển thị trong danh sách "Đơn đăng ký" với đối tượng = "(Tên doanh nghiệp) (doanh nghiệp)" (không có nút rút lại của Web doanh nghiệp = §3-4・sổ quyết định AL・2026-10-16) | Web doanh nghiệp §2-3 |
 
 ### 6-6. Tạm dừng
 
 | Mục | Quy định | Nguồn |
 |---|---|---|
 | Nhập | Lý do tạm dừng (chọn・bắt buộc) + văn bản tự do (tùy chọn)・thiết bị trong thời gian tạm dừng (**thu hồi (mặc định)／để nguyên tại chỗ**)・thời gian muốn tạm dừng (tháng chu kỳ bắt đầu・**tháng dự kiến mở lại là bắt buộc, không chọn được "Chưa định"**) | v2.3 #8, 28-1, STEP1 (tối 10/01) |
-| Lý do tạm dừng | **Giữ 6 lựa chọn**・văn bản tự do là tùy chọn. ⚠️ Câu chữ của 6 lựa chọn đang xác nhận với kinh doanh (màn hình hiện tại có 5) (§13 B8) | v2.3 #8 |
+| Lý do tạm dừng | **6 lựa chọn・văn bản tự do là tùy chọn**: ① Để sửa chữa・di chuyển văn phòng ② Vì nghỉ dài ngày・mùa thấp điểm ③ Vì số người sử dụng giảm tạm thời ④ Muốn xem lại chi phí・cân nhắc lại việc tiếp tục ⑤ Muốn tạm dừng giao hàng để tiêu thụ tồn kho ⑥ Khác (xác định 2026/10/09. Trước đây: câu chữ 6 lựa chọn đang xác nhận với kinh doanh. Bản tóm tắt cuộc họp ghi ② là "vì mùa cao điểm", nhưng áp dụng câu chữ của tài liệu slide 31). **Không làm kịch bản giữ chân・hướng dẫn phương án thay thế sau khi chọn lý do** (chỉ chọn lý do và nhập các mục cần thiết) | v2.3 #8, MM_20261009 ［01:40:12〜01:44:50］, sổ tiếp nhận #506 |
 | Ghi nhận | Chỉ ghi lý do đã chọn (không lưu đề xuất đã xem). Màn hình phê duyệt chỉ có lý do và văn bản tự do | v2.3 #8-2・⑧ |
 | Giới hạn trên | **Tổng cộng 1 năm**. Màn hình đăng ký hiển thị **tổng tích lũy và số tháng còn lại**, không đăng ký được thời gian vượt quá | 28-10, STEP1 (tối 10/01), PAUSE_MAX=12 |
 | Khi có thể vượt 1 năm | Hướng dẫn hủy hợp đồng, thu hồi thiết bị tại đó | 28-1c |
 | Để nguyên tại chỗ | Vận hành phê duyệt. Không thu phí bảo quản. Không đặt ngày dự kiến trả | 28-1・1a |
 | Thu hồi | Đặt ngày dự kiến trả (ngày dừng + 1 tháng). Thu hồi trong khoảng 1 tháng sau ngày bắt đầu tạm dừng | 契約_04 #9, màn hình hiện tại |
-| Thời gian sử dụng tối thiểu | Thiết bị để nguyên tại chỗ dừng đếm trong thời gian tạm dừng, phần còn lại trước tạm dừng được kế thừa khi mở lại. **Thiết bị đã thu hồi do vận hành chọn khi phê duyệt mở lại**: ① tính lại từ ngày lắp đặt lại (mặc định)／② kế thừa phần còn lại và thanh toán 1 lần phí lắp đặt lại (OP000015) 〔hong trả lời 2026-10-03 (K4 xác nhận lại)・chờ khách hàng xác nhận〕 | 28-1b, 契約_01 §5 (Q8・phụ lục 5). Khi thu hồi không thu phí vi phạm 〔hong trả lời 2026-10-03 (K4=A)〕 |
+| Thời gian sử dụng tối thiểu | Thiết bị để nguyên tại chỗ dừng đếm trong thời gian tạm dừng, phần còn lại trước tạm dừng được kế thừa khi mở lại. **Thiết bị đã thu hồi cũng kế thừa phần còn lại trước tạm dừng khi lắp đặt lại** (không tính lại). Phí lắp đặt lại (OP000015) không thu tự động, chỉ khi cần thì vận hành thêm thủ công 〔hong trả lời 2026-10-06 (A-1)・khách hàng trả lời. Trước đây: vận hành chọn khi phê duyệt mở lại〕 | 28-1b, 契約_01 §5 (Q8・phụ lục 5). Khi thu hồi không thu phí vi phạm 〔hong trả lời 2026-10-03 (K4=A)〕 |
 | Hợp đồng con | Không tạo hợp đồng con cho chu kỳ đang tạm dừng. Hợp đồng con tạo trước đó **được giữ là "Hủy" và không hiển thị trong danh sách** (chỉ hiển thị dòng dải thời gian tạm dừng) | 28-12, TL-2 |
-| Quyết toán thực tế | **Trong thời gian tạm dừng không quyết toán thực tế. Kiểm tra tồn kho lúc bắt đầu tạm dừng và quyết toán phần đến đó.** Việc kiểm tra lúc bắt đầu tạm dừng do khách hàng thực hiện trên Web doanh nghiệp (cả chuyến giao ES・kỳ của lần giao hàng cuối cùng trước tạm dừng: sổ cái E 2026-10-05). Phần chênh lệch do bán hàng ở thiết bị để nguyên tại chỗ được tính khi kiểm tra tồn kho lúc mở lại (nếu không mở lại mà hủy hợp đồng thì lúc hủy) | TL-2, 契約_01 §5 (ghi đè P5). ⚠️ Chưa có trả lời ai thực hiện kiểm tra tồn kho lúc bắt đầu tạm dừng (契約_01 §10) |
+| Quyết toán thực tế | **Trong thời gian tạm dừng không quyết toán thực tế. Nếu có báo cáo kiểm kê lúc bắt đầu tạm dừng thì quyết toán phần đến đó.** Báo cáo kiểm kê lúc bắt đầu tạm dừng・trong khi tạm dừng・lúc mở lại **đều là tùy chọn** (2026-10-06・sổ quyết định E). Khi làm thì khách hàng thực hiện trên Web doanh nghiệp (cả chuyến giao ES・kỳ của lần giao hàng cuối cùng trước tạm dừng). Phần chênh lệch do bán hàng ở thiết bị để nguyên tại chỗ được tính nếu có báo cáo kiểm kê lúc mở lại (nếu không mở lại mà hủy hợp đồng thì lúc hủy). Khi không có báo cáo, vận hành có thể chọn "Bỏ qua" (lý do tùy chọn) ở màn hình phê duyệt. Mốc đã bỏ qua thì không có tổn thất quản lý・phí hành chính, tồn kho bắt đầu lại từ 0 từ tháng chu kỳ mở lại (sổ tiếp nhận #580. Trước đây: lý do bắt buộc・phần chênh lệch quyết toán ở báo cáo kiểm kê tiếp theo = No.168) | TL-2, 契約_01 §5 (ghi đè P5). ⚠️ Chưa có trả lời ai thực hiện kiểm tra tồn kho lúc bắt đầu tạm dừng (契約_01 §10) |
 | Giao hàng・đơn hàng | Hủy dự kiến giao hàng・dữ liệu giao hàng・đơn hàng của chu kỳ tạm dừng. **Chu kỳ đã quá hạn chốt đặt hàng thì vẫn giao** | Danh sách vấn đề 10/02 "3-4", STEP5 QA |
 | Hiển thị cơ sở | **Hiển thị** "Đang tạm dừng" từ chu kỳ bắt đầu tạm dừng (không giữ trong trạng thái cơ sở, hiển thị từ "Tạm ngừng sử dụng" của hợp đồng cha và lịch sử tạm dừng) | 契約_04 #6 (thay thế 28-65) |
-| Đăng nhập | Khi tạm dừng cũng **đăng nhập được**. Nếu tất cả cơ sở đều tạm dừng thì chỉ để xem. Làm được chỉ là **đăng ký mở lại・đăng ký hủy hợp đồng・liên hệ・thay đổi người phụ trách**. Nếu có dù chỉ 1 cơ sở đang sử dụng thì như bình thường | 28-3, DR-3 |
+| Hạn chốt tiếp nhận | Đơn tạm dừng cũng đến ngày 25 của tháng trước tháng trước của tháng đối tượng (giống hủy hợp đồng. §6-8). Mở lại xem §6-7 | Tài liệu slide 27, sổ tiếp nhận #505 |
+| Đăng nhập | Khi tạm dừng cũng **đăng nhập được**. Nếu tất cả cơ sở đều tạm dừng thì chỉ để xem. Làm được chỉ là **đăng ký mở lại・liên hệ・thay đổi người phụ trách** (**hủy hợp đồng không đăng ký được từ Web doanh nghiệp**. Liên hệ hỗ trợ thì vận hành nhập hộ. Thay đổi 2026/10/09. Trước đây: cũng đăng ký hủy hợp đồng được). Nếu có dù chỉ 1 cơ sở đang sử dụng thì như bình thường | 28-3, DR-3 |
 | Ứng dụng cá nhân | Nếu để nguyên thiết bị tại chỗ thì khi tạm dừng vẫn **mua được**. Nếu đã thu hồi thì không mua được | 契約_01 §6-4 (A1) |
 | Nhắc nhở kiểm tra tồn kho | Không gửi cho cơ sở đang tạm dừng (kiểm tra khi tạm dừng là tùy chọn) | STEP5 (email X12) |
 
@@ -355,29 +367,34 @@ Khi phê duyệt sau hạn chốt, vận hành chọn "dời sang chu kỳ kế 
 |---|---|---|
 | Nhập | Tháng chu kỳ mở lại・gói sau khi mở lại. **Không cần nhập thêm đặc biệt** (mức chỉnh sửa thông tin) | Đặc tả kiểm tra nhập liệu §4, Gốc #25 (độ chắc chắn: trung bình) |
 | Khi có thay đổi | **Có thể sửa trong đơn mở lại** (nơi giao hàng・người phụ trách・gói). Ngoại lệ của "1 đơn 1 loại" | 28-13 |
-| Thời gian sử dụng tối thiểu | **Kế thừa phần còn lại trước tạm dừng** (không tính lại). Chỉ thiết bị đã thu hồi và đặt lại thì tính từ ngày lắp đặt | 28-11 |
+| Thời gian sử dụng tối thiểu | **Kế thừa phần còn lại trước tạm dừng** (không tính lại). Thiết bị đã thu hồi và đặt lại cũng vậy (2026-10-06・sổ quyết định "Tạm dừng và thời gian sử dụng tối thiểu". Trước đây: chỉ thiết bị đặt lại thì tính từ ngày lắp đặt) | 28-11 |
 | Thiết lập trước phê duyệt | Tuyến giao hàng・ngày giao hàng đầu tiên・ngày lắp đặt lại thiết bị (thiết bị đặt lại thì khoảng 1 tuần trước ngày bắt đầu giao hàng) | 28-144①, màn hình hiện tại |
 | Phí | Tính đủ từ tháng chu kỳ mở lại. Phần bán được ở thiết bị để nguyên tại chỗ trong thời gian tạm dừng được quyết toán bằng kiểm tra tồn kho lúc mở lại | Màn hình hiện tại (TL-9) |
 | Hợp đồng con・giao hàng | Tạo lại hợp đồng con・dự kiến giao hàng từ chu kỳ mở lại. Hiển thị cơ sở quay lại từ chu kỳ mở lại | 28-65, Phạm vi ảnh hưởng B-7 |
+| Hạn chốt đăng ký | **Mở lại đúng dự kiến thì không cần đăng ký**. **Chỉ khi mở lại sớm hơn dự kiến mới cần đăng ký**, hạn chốt giống đăng ký mới là **ngày 15 hằng tháng** (quyết định 2026/10/09) | MM_20261009 ［01:58:41］, sổ tiếp nhận #507 |
+| Email hướng dẫn mở lại | Trước khi bắt đầu Order của tháng mở lại (theo hạn chốt hóa đơn trả trước của tháng mở lại, **khoảng ngày 20 hằng tháng**), **hệ thống tự động** thông báo "mở lại từ tháng mấy" (§10). Vì hóa đơn đến cùng lúc với bắt đầu Order nên nếu không báo trước sẽ gây khó khăn (quyết định 2026/10/09) | MM_20261009 ［01:54:26］, sổ tiếp nhận #508 |
 
 ### 6-8. Hủy hợp đồng
 
 | Mục | Quy định | Nguồn |
 |---|---|---|
 | Ngày hủy | **Chọn từ ngày cuối chu kỳ trở đi sau mức sớm nhất** (không dùng ngày tự do) | T2=A |
-| Hạn chốt tiếp nhận | Kết thúc tiếp nhận của đơn đăng ký bao gồm hủy hợp đồng xác định theo hạn chốt đặt hàng (mặc định ngày 15 tháng trước). Không phân biệt tủ lạnh và máy bán hàng tự động | STEP1 (K-05), T5 E-3=B |
-| Lý do và giữ chân | **Cho chọn lý do (giá cao／lãng phí nhiều／khó dùng, v.v.), hiển thị phương án thay thế tương ứng với lý do (đổi gói・mong muốn tư vấn, v.v.) rồi mới cho gửi**. Kịch bản giữ chân theo từng lý do sẽ đưa vào sau khi nhận được bản gốc của anh Aoyama | Gốc #23・REQ-CT-142・191・192, dòng 26 |
-| Mức quyết toán dự kiến | Màn hình đăng ký hiển thị mức phí vi phạm dự kiến theo từng thiết bị (mã dòng máy + tên dòng máy), và ô kiểm "Tôi đã xác nhận mức quyết toán dự kiến và việc hủy hợp đồng thì không thể hoàn lại" (kể cả 0 yên cũng xác nhận) | H5, màn hình hiện tại |
-| Phí vi phạm | Cộng dồn theo từng thiết bị **số tiền thu hồi khi hủy hợp đồng × số tháng còn lại ÷ thời gian sử dụng tối thiểu (tủ lạnh 3・máy bán hàng tự động 12)**. Ghi ở ① của hợp đồng con cuối cùng của hợp đồng hủy bằng dòng phí một lần | Sổ cái "Phí vi phạm", 28-2, 28-66 |
-| Hủy khi đang tạm dừng | Gửi được (phí vi phạm tính theo việc dừng đếm khi tạm dừng) | 28-21 |
+| Hạn chốt tiếp nhận | **Đơn hủy hợp đồng・tạm dừng ("中止" (dừng) trong tài liệu) đến ngày 25 của tháng trước tháng trước của tháng đối tượng (tháng chu kỳ của ngày hủy hợp đồng・bắt đầu tạm dừng)** (từ ngày 26 trở đi không đăng ký được・cùng ngày với hạn chốt quyết toán thực tế・trả trước. 2026-10-13 hong: đổi từ "trước khi phát hành hóa đơn"). Hóa đơn phát hành ngày 1 của 1 tháng trước tháng hợp đồng, hạn chốt quyết toán thực tế và trả trước của tháng hợp đồng là ngày 25 của tháng trước đó (ví dụ: chu kỳ tháng 12 thì phát hành 11/1・chốt 10/25. Xuất hóa đơn trước 2 tháng thì phát hành 10/1・chốt 9/25, xuất hóa đơn trước 3 tháng thì phát hành 9/1・chốt 8/25. Thanh toán hằng năm xử lý riêng) (thay đổi 2026/10/09・hong trả lời 2026-10-12. Trước đây: xác định theo hạn chốt đặt hàng 〈mặc định ngày 15 tháng trước〉). Không phân biệt tủ lạnh và máy bán hàng tự động. "中止" trong tài liệu được hiểu là tạm dừng (hong đã xác nhận 2026-10-13) | STEP1 (K-05), T5 E-3=B, tài liệu slide 27, sổ tiếp nhận #505 |
+| Lý do và giữ chân | **Cho chọn lý do, hiển thị phương án thay thế phù hợp với lý do rồi mới cho đi tiếp** (xác định 2026/10/09). Lý do: giá cao／lãng phí nhiều／menu không hợp・đã chán／tốn công quản lý／ít người dùng・số nhân viên giảm／tạm thời không sử dụng／di chuyển・thay đổi tổ chức／khác (tài liệu slide 19. "7 lý do" ở slide 18 là sai. hong trả lời 2026-10-12: 8 lý do). Hiển thị theo **3 tầng: nút chính (thủ tục phù hợp với lý do: thay đổi gói・tạm dừng sử dụng・thay đổi thông tin hợp đồng, v.v.)／「サポートに相談する」 (Tư vấn với hỗ trợ)／liên kết phụ 「解約手続きを続ける」 (Tiếp tục thủ tục hủy hợp đồng)**. **Không làm nút 「AIおすすめを確認する」 (Xem đề xuất của AI)** ("lãng phí nhiều" thì thay đổi gói hoặc tư vấn với hỗ trợ. Lý do là chi phí triển khai và tần suất sử dụng). "Menu không hợp" thì hướng dẫn đặt hàng dùng AI và trợ giúp・hướng dẫn bằng video, "tốn công quản lý" thì hướng dẫn chuyến giao ES (trước đây: kịch bản giữ chân theo từng lý do sẽ đưa vào sau khi nhận được bản gốc của anh Aoyama) | Gốc #23・REQ-CT-142・191・192, dòng 26, MM_20261009 ［00:11:51〜00:43:19］, tài liệu slide 17〜24, sổ tiếp nhận #500 |
+| Tư vấn với hỗ trợ | Phương tiện là **đặt lịch gặp trực tuyến・điện thoại・email**. Gặp trực tuyến thì làm riêng **trang đặt lịch dành cho "tư vấn vận hành"** (không dùng khung dành cho giải thích dịch vụ lần đầu). Điện thoại 050-5784-2777・email info@es-kitchen.co.jp (tài liệu slide 25. Việc thêm địa chỉ riêng cho CS do khách cân nhắc). Câu hướng dẫn hủy hợp đồng không phải "liên hệ CS" mà là "các câu hỏi khác xin liên hệ hỗ trợ" | MM_20261009 ［00:16:49］［00:45:29］［02:04:57］, sổ tiếp nhận #501 |
+| Thông báo cho vận hành | Khi khách hàng chọn nút khác ngoài thủ tục hủy hợp đồng (thay đổi gói・tư vấn với hỗ trợ, v.v.), **thông báo cho vận hành bằng thông báo**, và cho xem được lịch sử (ghi nhận "đã từng nghĩ đến hủy hợp đồng 1 lần"). Không thu thập・phân tích dữ liệu trước khi hủy hợp đồng (thông báo là đủ) | MM_20261009 ［00:53:15］［00:59:37］, sổ tiếp nhận #502・#503 |
+| Mức quyết toán dự kiến | Màn hình đăng ký hiển thị **xác nhận ý định trả lại thiết bị** và mức phí hủy hợp đồng dự kiến theo từng thiết bị (mã dòng máy + tên dòng máy) (giữa thủ tục hủy hợp đồng cũng hiển thị trước "việc phát sinh phí vi phạm". Bổ sung 2026/10/09・sổ tiếp nhận #504), và ô kiểm "Tôi đã xác nhận mức quyết toán dự kiến và việc hủy hợp đồng thì không thể hoàn lại" (kể cả 0 yên cũng xác nhận) | H5, màn hình hiện tại |
+| ~~Phí vi phạm (hợp đồng)~~ | ~~Hủy hợp đồng vi phạm hợp đồng thì ¥12,000 (cố định・cho 1 hợp đồng)~~ (hủy 2026/10/14: ¥12,000 là ví dụ về phí hủy hợp đồng của thiết bị. Chi phí chỉ là "phí hủy hợp đồng của thiết bị" bên dưới. Sổ tiếp nhận #522). 〔Cũ: **¥12,000 (cố định・cho 1 hợp đồng)** (điều kiện "vi phạm hợp đồng" và đã gồm thuế／chưa thuế chưa xác nhận: OPEN 1009-04). Ghi ở ① của hợp đồng con cuối cùng của hợp đồng hủy bằng dòng phí một lần (thay đổi 2026/10/09・hong trả lời 2026/10/12)〕 | MM_20261009 ［01:03:33］, sổ tiếp nhận #522 |
+| Phí hủy hợp đồng của thiết bị. Thiết bị không cho thuê thì không thuộc đối tượng. Nếu cho thuê cả tủ lạnh・tủ đông thì cả hai. **Thay đổi gói**: Standard／Lite→máy bán hàng tự động thì không có phí, Standard→Lite thì có phí tủ đông, máy bán hàng tự động→nhóm tủ lạnh thì có phí máy bán hàng tự động (dưới 3 năm) (2026/10/13・sổ tiếp nhận #606〜#610) | Khi trả lại (hủy hợp đồng) thiết bị khi chưa đủ **"số tháng đối tượng phí hủy hợp đồng" của master dòng máy** tính từ ngày bắt đầu cho thuê (**là mục khác với thời gian sử dụng tối thiểu 〔minMonths = tủ lạnh 3 tháng・máy bán hàng tự động 12 tháng. Trong thời gian này không đăng ký hủy hợp đồng được〕**. Tủ lạnh・tủ đông là 12 tháng, máy bán hàng tự động là 36 tháng. Thêm mục vào master dòng máy. 2026-10-14 hong trả lời・sổ tiếp nhận #633 〔thay thế "không tạo mục mới" của #590〕. Thiết bị không cho thuê thì không thuộc đối tượng. Thay đổi 2026/10/13. Trước đây: tất cả thiết bị dưới 1 năm), **cộng dồn nguyên** **phí hủy hợp đồng của master dòng máy theo từng thiết bị** (bảng giá 2027 "1年未満解約費" (phí hủy hợp đồng dưới 1 năm)) (không chia theo số tháng). Số tiền trong bảng là **đã gồm thuế**, hệ thống giữ **số tiền chưa thuế = đã gồm thuế ÷ 1.1**, thuế được tính trên hóa đơn. Ghi ở ① của hợp đồng con cuối cùng của hợp đồng hủy bằng dòng phí một lần (thay đổi 2026/10/09. Trước đây: số tiền thu hồi khi hủy hợp đồng × số tháng còn lại ÷ thời gian sử dụng tối thiểu) | Bảng giá 2027, sổ tiếp nhận #504 |
+| Hủy khi đang tạm dừng | **Không gửi được từ Web doanh nghiệp. Liên hệ hỗ trợ → vận hành (quản trị hệ thống) nhập hộ** (§3-8. Thay đổi 2026/10/09・hong trả lời 2026-10-12. Trước đây: gửi được. Hủy hợp đồng thông thường khi đang sử dụng vẫn đăng ký được từ Web doanh nghiệp như trước 〔hong trả lời 2026-10-12〕). Phí vi phạm tính theo việc dừng đếm khi tạm dừng | 28-21, MM_20261009 ［01:59:58〜02:04:57］, sổ tiếp nhận #509 |
 | Chốt | **Chốt bằng phê duyệt của vận hành** | Gốc #24・REQ-CT-289 |
 | Trạng thái hợp đồng・cơ sở | Phê duyệt thì hợp đồng cha "Đang làm thủ tục hủy"・cơ sở "Dự kiến đóng", vào ngày hủy hợp đồng cha "Kết thúc"・cơ sở "Đóng" | 28-62, 28-65, 契約_04 |
 | Giao hàng | Chu kỳ đã chốt thì giao đến cuối cùng. Xóa dự kiến giao hàng sau ngày hủy | `Quyết_định_STEP4_Trả_lời_Giao_hàng_20261001.md` (tích hợp 8-7) |
 | Thông báo cho công ty giao hàng ủy thác | **Khi phê duyệt, tự động thông báo bằng hiển thị trên Web công ty giao hàng ủy thác và email cho công ty giao hàng đã đăng ký ở tuyến giao hàng (hợp đồng con) của cơ sở đó** (hiển thị ví dụ nội dung trên màn hình). **Cơ sở chỉ có chuyến tự giao thì không thông báo cho bên ủy thác, mà thông báo bằng màn hình cho nhân viên giao hàng nội bộ** | Gốc #24, STEP1 (tối 10/01), T3-1・T3-2 |
 | Thu hồi thiết bị | **Không tạo giao hàng thu hồi.** Khi phê duyệt, đặt "Dự kiến thu hồi" trong danh sách cho thuê, khi vận hành đã thu hồi thì bấm "Đã thu hồi". Ngày dự kiến trả là ngày dừng + 1 tháng | Danh sách vấn đề 10/02 "3-4", 契約_04 #9 |
-| Thanh toán cuối cùng | **Tháng sau khi hủy hợp đồng, 1 hóa đơn cuối cùng riêng** (quyết toán thực tế lần cuối + phí vi phạm + mua lại tồn kho còn lại) | Sổ cái "Hóa đơn cuối cùng", S4-1 |
-| Tồn kho còn lại | Thanh toán như mua lại bằng tồn kho tính toán × đơn giá bán | S4-2 |
-| Tài khoản Web doanh nghiệp | Đến hạn thanh toán của hóa đơn cuối cùng thì "Chỉ xem", ngày hôm sau thì dừng (email thông báo dừng No.16). Trong thời gian chỉ xem, **chỉ người phụ trách thanh toán** vẫn thay đổi được | S4-3, `Quyết_định_Bổ_sung_email_và_thông_báo_20261001.md`, 契約_01 §10 (Q15) |
+| Hóa đơn cuối cùng | **Tháng sau khi hủy hợp đồng, 1 hóa đơn cuối cùng riêng** (quyết toán thực tế lần cuối + phí vi phạm + mua lại tồn kho còn lại) | Sổ quyết định "Hóa đơn cuối cùng", S4-1 |
+| Tồn kho còn lại | **Doanh nghiệp chọn "mua lại" hoặc "trả lại (gửi về ES Kitchen, người gửi trả phí)"**. Mua lại: xuất hóa đơn bằng tồn kho tính toán × đơn giá bán. Trả lại: không xuất hóa đơn, vận hành điều chỉnh tồn kho. Kiểm kê cuối cùng của tháng hủy hợp đồng là bắt buộc・tháng sau không yêu cầu (thay đổi 2026/10/06. Trước đây: xuất hóa đơn như mua lại bằng tồn kho tính toán × đơn giá bán). Việc chọn là **khi doanh nghiệp gửi đơn hủy hợp đồng**, **vận hành (quản trị hệ thống) xác định** (2026/10/08 hong trả lời) | S4-2, sổ tiếp nhận #197 |
+| Tài khoản Web doanh nghiệp | Đến hạn thanh toán của hóa đơn cuối cùng thì "Chỉ xem", ngày hôm sau thì dừng (email thông báo dừng No.16). Trong thời gian chỉ xem, **chỉ người phụ trách hóa đơn** vẫn thay đổi được | S4-3, `Quyết_định_Bổ_sung_email_và_thông_báo_20261001.md`, 契約_01 §10 (Q15) |
 | Ứng dụng cá nhân | Mua được **đến ngày hủy hợp đồng**. Từ ngày hôm sau không chọn được cơ sở đó (xem được lịch sử mua) | 契約_01 §6-4 (A2=A) |
 | Đơn hàng | Nếu đơn hàng của chu kỳ sẽ không được giao đang trong thời gian đặt hàng thì tự động hủy khi phê duyệt | STEP5 QA |
 
@@ -402,7 +419,7 @@ Giống `Form_đăng_ký.md` §10-1 (menu・badge・tab・thành phần・quyề
 | Hộp thoại từ chối (Modal) | Lý do từ chối (chọn・bắt buộc) + một lời gửi khách hàng (tùy chọn) | 28-25, màn hình hiện tại |
 | Rời khi đang chỉnh sửa | Xác nhận hủy bỏ (tiếp tục chỉnh sửa／hủy bỏ rồi chuyển) | 28-116, 28-133 |
 | Người dùng chỉ xem | Ẩn các nút phê duyệt・từ chối, v.v. | 28-110 |
-| Chú thích tăng kích thước tủ lạnh | "Quản trị viên vận hành có quyền thì ai cũng phê duyệt・sắp xếp được. ① Đăng ký dịch chuyển thiết bị (đổi dòng máy) ở Ảnh hưởng và thiết lập → ② Phê duyệt cơ sở này → ③ Thanh toán chênh lệch kích thước hằng tháng bằng OP000023" | STEP1, màn hình hiện tại |
+| Chú thích tăng kích thước tủ lạnh | "Quản trị viên vận hành có quyền thì ai cũng phê duyệt・sắp xếp được. ① Đăng ký dịch chuyển thiết bị (đổi dòng máy) ở Ảnh hưởng và thiết lập → ② Phê duyệt cơ sở này → ③ Xuất hóa đơn chênh lệch kích thước hằng tháng bằng OP000023" | STEP1, màn hình hiện tại |
 
 ---
 
@@ -412,7 +429,7 @@ Kết quả áp dụng các quyết định sau đó vào B-0〜B-11 của `変�
 
 ### 8-1. Đơn × nơi bị ảnh hưởng
 
-| Đơn | Hợp đồng・hợp đồng con | Thiết bị・cho thuê | Thời gian sử dụng tối thiểu・phí vi phạm | Thanh toán | Giao hàng | Công ty giao hàng ủy thác | Đơn hàng | Tài khoản・đăng nhập | Ứng dụng cá nhân | Trạng thái |
+| Đơn | Hợp đồng・hợp đồng con | Thiết bị・cho thuê | Thời gian sử dụng tối thiểu・phí vi phạm | Hóa đơn | Giao hàng | Công ty giao hàng ủy thác | Đơn hàng | Tài khoản・đăng nhập | Ứng dụng cá nhân | Trạng thái |
 |---|---|---|---|---|---|---|---|---|---|---|
 | B-0 Đăng ký mới | ◎ Đăng ký tạm・đăng ký chính thức | ◎ Cho thuê mới | ◎ Bắt đầu tính | ◎ Lần đầu (có gộp 2 tháng) | ◎ Tạo khi đăng ký chính thức | ○ Chuyến giao ES | ◎ Tạo khi đăng ký tạm | ◎ Cấp khi đăng ký tạm | ○ | ◎ |
 | B-1 Thay đổi gói | ◎ Tạo lại hợp đồng con | ○ Chênh lệch thiết bị cho thuê tiêu chuẩn | ○ Kế thừa | ◎ Chênh lệch hằng tháng・chi tiết điều chỉnh | ○ Số lượng giao | － | ◎ Đưa về mặc định | － | － | － |
@@ -420,7 +437,7 @@ Kết quả áp dụng các quyết định sau đó vào B-0〜B-11 của `変�
 | B-3 Thay đổi thiết bị | ◎ Dịch chuyển thiết bị | ◎ Cập nhật danh sách cho thuê | ◎ Đổi dòng máy kế thừa・thêm thì từ ngày lắp đặt | ◎ Phí hằng tháng・phí giao hàng thiết bị・chênh lệch kích thước | ○ Vận chuyển vào | － | － | － | － | － |
 | B-4 Thay đổi thông tin cơ sở | ○ | － | － | ○ Nơi nhận hóa đơn・Bill One | ◎ Địa chỉ・ngày trong tuần không nhận hàng | ◎ Nếu là địa chỉ thì xác nhận lại | － | ○ | ○ Guest mode (phản ánh ngay) | － |
 | B-5 Thay đổi thông tin doanh nghiệp | ○ | － | － | ◎ Nơi nhận hóa đơn | － | － | － | － | － | － |
-| B-6 Tạm dừng | ◎ Hủy hợp đồng con tạo trước | ◎ Thu hồi／để nguyên tại chỗ | ○ Chỉ dừng với thiết bị để nguyên | ◎ Không thanh toán・quyết toán lúc đầu | ◎ Hủy | ○ | ◎ Hủy | ◎ Chỉ xem (tất cả cơ sở tạm dừng) | ◎ Để nguyên tại chỗ thì mua được | ◎ Hiển thị đang tạm dừng |
+| B-6 Tạm dừng | ◎ Hủy hợp đồng con tạo trước | ◎ Thu hồi／để nguyên tại chỗ | ○ Chỉ dừng với thiết bị để nguyên | ◎ Không xuất hóa đơn・quyết toán lúc đầu | ◎ Hủy | ○ | ◎ Hủy | ◎ Chỉ xem (tất cả cơ sở tạm dừng) | ◎ Để nguyên tại chỗ thì mua được | ◎ Hiển thị đang tạm dừng |
 | B-7 Mở lại | ◎ Từ chu kỳ mở lại | ◎ Lắp đặt lại | ○ Kế thừa | ◎ Đủ tháng・quyết toán bằng kiểm tra tồn kho | ◎ Tạo lại | ○ | ◎ | ◎ | ◎ | ◎ |
 | B-8 Hủy hợp đồng | ◎ Đang làm thủ tục hủy→Kết thúc | ◎ Dự kiến thu hồi→Đã thu hồi | ◎ Phí vi phạm | ◎ Hóa đơn cuối cùng (tháng sau・riêng 1 hóa đơn) | ◎ Giao đến chu kỳ đã chốt | ◎ Tự động thông báo | ◎ Hủy | ◎ Chỉ xem→Dừng | ◎ Đến ngày hủy hợp đồng | ◎ Dự kiến đóng→Đóng |
 | B-9 Thay đổi ngày giao hàng | ○ | － | － | － | ◎ #63 | ○ | ○ | ○ Thông báo | － | － |
@@ -439,18 +456,18 @@ Kết quả áp dụng các quyết định sau đó vào B-0〜B-11 của `変�
 | B-3・E-4 Thời gian sử dụng tối thiểu của tăng kích thước | Kế thừa từ máy cũ | T5 E-4=A |
 | B-4・E-2・D5 Phê duyệt Guest mode | Không cần phê duyệt・phản ánh ngay + thông báo cho vận hành (thay thế D5 "bắt buộc phê duyệt") | Dòng 157 (10/02) |
 | B-4 ES-QR còn lại trong đơn của Web doanh nghiệp | Chỉ vận hành. Loại khỏi đơn của Web doanh nghiệp | Dòng 157 (09/30) |
-| B-5・E-1 Phân loại phê duyệt thông tin doanh nghiệp | Theo từng mục (§2-1) | STEP1, STEP2 Q3, sổ cái |
+| B-5・E-1 Phân loại phê duyệt thông tin doanh nghiệp | Theo từng mục (§2-1) | STEP1, STEP2 Q3, sổ quyết định |
 | B-6・E-8 "Chưa định" và tích lũy của tạm dừng | Bắt buộc tháng dự kiến mở lại・hiển thị tích lũy và số tháng còn lại・vượt quá thì không đăng ký được | STEP1 (tối 10/01) |
-| B-6 Xử lý dừng giao hàng・dừng thanh toán・đã có chỉ thị xuất hàng | Chu kỳ đã chốt thì vẫn giao・khi tạm dừng không thanh toán | Danh sách vấn đề 10/02 "3-4", TL-2 |
-| B-8・E-3 Hạn tiếp nhận hủy hợp đồng | Hạn chốt đặt hàng・không phân biệt tủ lạnh và máy bán hàng tự động | T5 E-3=B |
+| B-6 Xử lý dừng giao hàng・dừng xuất hóa đơn・đã có chỉ thị xuất hàng | Chu kỳ đã chốt thì vẫn giao・khi tạm dừng không xuất hóa đơn | Danh sách vấn đề 10/02 "3-4", TL-2 |
+| B-8・E-3 Hạn tiếp nhận hủy hợp đồng | Ngày 25 của tháng trước tháng trước của tháng đối tượng (2026-10-13 hong: đổi từ trước khi phát hành hóa đơn. Thay đổi 2026/10/09. Trước đây: hạn chốt đặt hàng)・không phân biệt tủ lạnh và máy bán hàng tự động (§4-1) | T5 E-3=B, sổ tiếp nhận #505 |
 | B-8 Quyết toán thực tế cuối cùng・mua lại tồn kho còn lại・dừng tài khoản・thông báo cho bên ủy thác | §6-8 | S4-1〜3, T3 |
 | B-8 Thông báo cho đại lý | Phase2 | T5 E-12=B |
-| B-8 "Làm lại" sau phê duyệt | Không làm (đã phê duyệt chỉ để xem) | Danh sách vấn đề 10/02 "4-8". Không đặt "Làm lại" 〔sổ cái〕 |
+| B-8 "Làm lại" sau phê duyệt | Không làm (đã phê duyệt chỉ để xem) | Danh sách vấn đề 10/02 "4-8". Không đặt "Làm lại" 〔sổ quyết định〕 |
 | B-9 Nội dung thông báo "Ngày giao hàng đã thay đổi"・chế độ đăng ký ngày mong muốn・yêu cầu báo giá | Làm sau khi RS-09 được quyết định | T5 D11=A |
 | B-10 Số hóa đơn・cách gọi ③ điều chỉnh | Cách gọi ③ điều chỉnh thống nhất theo đặc tả tổng hợp | T5 E-13=A |
-| B-11 Chuyển đổi là xử lý như mới (số mới) | Cùng hợp đồng cha・không gắn số mới | Sổ cái |
+| B-11 Chuyển đổi là xử lý như mới (số mới) | Cùng hợp đồng cha・không gắn số mới | Sổ quyết định |
 | C Tự phê duyệt | Được (lưu vào lịch sử) | T5 D12・E-11=B |
-| C Ngày phát hành hóa đơn | Chốt ngày 25 → phát hành bằng Bill One vào ngày 1 tháng sau | Sổ cái |
+| C Ngày phát hành hóa đơn | Chốt ngày 25 → phát hành bằng Bill One vào ngày 1 tháng sau | Sổ quyết định |
 | D10・D14 Liên động với đơn hàng hằng tháng・đặt hàng tạm・đại lý・tồn kho・vật tư | Đưa vào khối chung ("Phạm vi bị ảnh hưởng bởi đơn này"). Liên động tồn kho・vật tư sau khi xác nhận đặc tả | T5 D10=A・D14=A |
 | D13 Thế hệ giá・phí ban đầu của máy bán hàng tự động vào thẻ phê duyệt | Thêm | T5 D13=A |
 
@@ -476,19 +493,20 @@ Kết quả áp dụng các quyết định sau đó vào B-0〜B-11 của `変�
 | M4 | Hoàn tất tiếp nhận đăng ký thay đổi (`CH-`) | Khi gửi đơn trên Web doanh nghiệp・khi vận hành nhập hộ | Người đã đăng ký (email của người đăng ký đã chọn). Khi nhập hộ là người phụ trách chính của cơ sở đó 〔hong trả lời 2026-10-03 (B10-1)〕 | Danh sách email M4, Web doanh nghiệp §1-2 |
 | M5 | Phê duyệt (phản ánh vào hợp đồng) | Khi phê duyệt theo từng cơ sở | Đơn của cơ sở: cơ sở đó (người phụ trách chính・người đã đăng ký). Thay đổi thông tin doanh nghiệp: 1 email cho doanh nghiệp (người phụ trách chính của doanh nghiệp) | v2.3 ⑥, danh sách email M5 |
 | M6 | Từ chối | Khi từ chối theo từng cơ sở | Như M5. Kèm câu mẫu của lý do | 28-25 |
-| M7 | Rút lại | Khi doanh nghiệp rút lại | Gửi cho người đã rút lại + người phụ trách chính của cơ sở đó 〔hong trả lời 2026-10-03 (B10-2)〕 | Danh sách email M7 |
+| M7 | Rút lại | Khi doanh nghiệp rút lại (※ từ 2026-10-16 Web doanh nghiệp không có nút rút lại. Có gửi khi quản trị hệ thống hủy hay không cần xác nhận) | Gửi cho người đã rút lại + người phụ trách chính của cơ sở đó 〔hong trả lời 2026-10-03 (B10-2)〕 | Danh sách email M7 |
 | M8 | Thay đổi người phụ trách・tên doanh nghiệp, v.v. (gửi vận hành) | Khi thay đổi các mục chỉ thông báo trên Web doanh nghiệp | Vận hành (thông báo trên màn hình). Không gửi email cho vận hành (chỉ màn hình). Với người phụ trách mới là M13 (liên kết hướng dẫn) 〔hong trả lời 2026-10-03 (B10-3)〕 | STEP2 Q3・Q10, danh sách email M8 |
 | M9 | Dừng giao hàng (gửi công ty giao hàng ủy thác) | Khi phê duyệt hủy hợp đồng (tự động) | Công ty giao hàng của tuyến giao hàng. Cơ sở chỉ có chuyến tự giao thì không gửi, thông báo bằng màn hình cho nhân viên giao hàng nội bộ (WEB No.71・72) | T3-1・T3-2 |
-| No.16 | Thông báo dừng tài khoản | Khi dừng tài khoản của cơ sở đã hủy hợp đồng (ngày hôm sau hạn thanh toán) | Người phụ trách chính・phụ・thanh toán của cơ sở | `Quyết_định_Bổ_sung_email_và_thông_báo_20261001.md` |
+| (chưa có số) | Hướng dẫn mở lại | Trước khi bắt đầu Order của tháng mở lại (khoảng ngày 20 hằng tháng・**tự động**) | Người phụ trách chính của cơ sở đã được phê duyệt mở lại (cần xác nhận). Nội dung soạn cùng khách 〔2026/10/09・sổ tiếp nhận #508〕 | MM_20261009 ［01:54:26］ |
+| No.16 | Thông báo dừng tài khoản | Khi dừng tài khoản của cơ sở đã hủy hợp đồng (ngày hôm sau hạn thanh toán) | Người phụ trách chính・phụ・hóa đơn của cơ sở | `Quyết_định_Bổ_sung_email_và_thông_báo_20261001.md` |
 
 **Nội dung ghi trong email phê duyệt (M5)**
 
 | Đơn | Nội dung ghi | Nguồn |
 |---|---|---|
-| Tất cả | Trước thay đổi → sau thay đổi・chu kỳ phản ánh・ảnh hưởng đến thanh toán. Khi đã dời sang kỳ sau (hoặc đặt hàng hộ) sau hạn chốt thì ghi rõ điều đó | Danh sách email M5, 28-27 |
+| Tất cả | Trước thay đổi → sau thay đổi・chu kỳ phản ánh・ảnh hưởng đến hóa đơn. Khi đã dời sang kỳ sau (hoặc đặt hàng hộ) sau hạn chốt thì ghi rõ điều đó | Danh sách email M5, 28-27 |
 | Nhập hộ | "Vận hành đã tiếp nhận thay" | 28 §8 phương án |
-| Hủy hợp đồng | Ngày hủy hợp đồng (ngày cuối chu kỳ)・thanh toán cuối cùng là 1 hóa đơn của tháng sau khi hủy hợp đồng (quyết toán thực tế lần cuối・phí vi phạm・mua lại hàng còn lại)・đăng nhập chỉ xem đến hạn thanh toán của lần thanh toán cuối cùng, ngày hôm sau thì dừng | S4-1〜3 |
-| Tạm dừng | Thời gian tạm dừng・dự kiến mở lại・không tính phí gói của các tháng đang tạm dừng・**kiểm tra tồn kho và quyết toán lúc bắt đầu tạm dừng, trong thời gian tạm dừng không quyết toán** | TL-2. ※ "Quyết toán thực tế khi tạm dừng sẽ gộp thanh toán khi mở lại hoặc hủy hợp đồng" trong M5 của danh sách email vẫn là cách viết của P5 (thay thế bằng TL-2). Sửa cả nội dung trong Excel |
+| Hủy hợp đồng | Ngày hủy hợp đồng (ngày cuối chu kỳ)・lần xuất hóa đơn cuối cùng là 1 hóa đơn của tháng sau khi hủy hợp đồng (quyết toán thực tế lần cuối・phí vi phạm・mua lại hàng còn lại)・đăng nhập chỉ xem đến hạn thanh toán của lần xuất hóa đơn cuối cùng, ngày hôm sau thì dừng | S4-1〜3 |
+| Tạm dừng | Thời gian tạm dừng・dự kiến mở lại・không tính phí gói của các tháng đang tạm dừng・**kiểm tra tồn kho và quyết toán lúc bắt đầu tạm dừng, trong thời gian tạm dừng không quyết toán** | TL-2. ※ "Quyết toán thực tế khi tạm dừng sẽ gộp xuất hóa đơn khi mở lại hoặc hủy hợp đồng" trong M5 của danh sách email vẫn là cách viết của P5 (thay thế bằng TL-2). Sửa cả nội dung trong Excel |
 | Khi tự động sửa đơn hàng | Đã đưa về đơn hàng mặc định・có thể nhập lại đến hạn chốt | STEP5 QA |
 
 - Khi ngày gửi thông báo trùng ngày nghỉ của doanh nghiệp (ngày lễ・thứ bảy chủ nhật, v.v.), gửi vào ngày làm việc trước đó 〔Danh sách vấn đề 10/03〕.
@@ -516,7 +534,7 @@ Kết quả áp dụng các quyết định sau đó vào B-0〜B-11 của `変�
 | Màn hình | Chênh lệch | Căn cứ |
 |---|---|---|
 | Chi tiết đơn của vận hành (`app/ops/applications/_components/ChangeDetail.tsx`) | (Đã giải quyết) Đã bỏ "Làm lại" (sổ tiếp nhận No.11) | §3-2 |
-| Lý do tạm dừng của Web doanh nghiệp (`lib/corp/sites/logic.ts` SUS_REASONS) | 5 lựa chọn (quyết định là 6 lựa chọn・câu chữ do kinh doanh xác nhận) | §6-6 (⚠️ B8) |
+| Lý do tạm dừng của Web doanh nghiệp (`lib/corp/sites/logic.ts` SUS_REASONS) | 5 lựa chọn (quyết định là 6 lựa chọn. Sửa thành câu chữ 6 lựa chọn ở §6-6) | §6-6 (⚠️ B8) |
 | Hướng dẫn đăng ký thay đổi của Web doanh nghiệp | "Không thể đăng ký chồng cùng thủ tục cho cùng một cơ sở" (28-4 là không thể chồng đơn bất kể loại thủ tục) | §3-3 |
 
 ---
@@ -531,7 +549,7 @@ hong đã trả lời từ 2026-10-03〜05. **Quyết định đang có hiệu l
 | B4 | "Làm lại" | Không đặt (cơ sở đã phê duyệt・từ chối thì chốt ngay tại chỗ) |
 | B6 | Giảm số lần giao hàng thấp hơn tiêu chuẩn | Giảm được (phí không giảm) |
 | B7 | Tủ lạnh→máy bán hàng tự động | Đơn thay đổi gói + bắt buộc "Kết quả khảo sát hiện trường" |
-| B8 | Câu chữ 6 lựa chọn lý do tạm dừng | **Đang xác nhận với khách hàng** (`議事録/_OPEN一覧.md` 1003-11) |
+| B8 | Câu chữ 6 lựa chọn lý do tạm dừng | **Đã giải quyết 2026/10/09** (6 lựa chọn của tài liệu slide 31. §6-6). ※ Xác nhận với khách cũng xem `議事録/_OPEN一覧.md` 1003-11 |
 | B9 | Người thay đổi được mẫu giao hàng・chu kỳ giao hàng・số lần giao hàng | Số lần giao hàng = khách hàng đăng ký (bắt buộc phê duyệt), mẫu giao hàng・chu kỳ giao hàng = chỉ vận hành |
 | B10 | Email M4・M7・M8 | M4 nhập hộ = người phụ trách chính của cơ sở／M7 gửi (người đó + người phụ trách chính)／M8 vận hành chỉ màn hình・người phụ trách mới nhận M13 |
 | B11 | Lý do hủy hợp đồng và kịch bản giữ chân | **Chờ bản gốc của khách hàng** (1003-12) |
@@ -541,6 +559,26 @@ hong đã trả lời từ 2026-10-03〜05. **Quyết định đang có hiệu l
 | No | Nội dung | Lựa chọn |
 |---|---|---|
 | ~~B4-2~~ | ~~Sắp xếp tên trạng thái~~ → **Đã trả lời 2026-10-05**: "Đã xử lý một phần" → "Đang xử lý n/m", "Phê duyệt một phần" giữ nguyên | — |
-| B12 | Ai thực hiện kiểm tra tồn kho lúc bắt đầu tạm dừng (§6-6・契約_01 §10) | **Đã trả lời 2026-10-05: cơ sở (báo cáo kiểm kê trên Web doanh nghiệp)**. Cả cơ sở chuyến giao ES・kỳ của lần giao hàng cuối cùng trước tạm dừng (sổ cái E) |
+| B12 | Ai thực hiện kiểm tra tồn kho lúc bắt đầu tạm dừng (§6-6・契約_01 §10) | **Đã trả lời 2026-10-05: cơ sở (báo cáo kiểm kê trên Web doanh nghiệp)**. Cả cơ sở chuyến giao ES・kỳ của lần giao hàng cuối cùng trước tạm dừng (sổ quyết định E) |
 
-> **Chuyển đổi tủ lạnh→máy bán hàng tự động (B7)**: tủ lạnh→máy bán hàng tự động được tiếp nhận bằng **đơn thay đổi gói**. Màn hình phê duyệt đặt **bắt buộc "Kết quả khảo sát hiện trường" (ngày khảo sát・khả thi hay không・đính kèm)**, chưa nhập thì không phê duyệt được. Tháng chu kỳ bắt đầu do vận hành chọn khi phê duyệt. Nếu không lắp đặt được thì từ chối (lý do "Không đáp ứng điều kiện lắp đặt"). Hạn xử lý của đơn này không tính theo hạn chốt đặt hàng (không hiển thị cảnh báo 3 ngày trước) 〔hong trả lời 2026-10-03 (B7=A)〕
+> **Chuyển đổi tủ lạnh→máy bán hàng tự động (B7)**: tủ lạnh→máy bán hàng tự động được tiếp nhận bằng **đơn thay đổi gói**. Màn hình phê duyệt đặt **bắt buộc "Kết quả khảo sát hiện trường" (ngày khảo sát・khả thi hay không・đính kèm)**, chưa nhập thì không phê duyệt được. Tháng chu kỳ bắt đầu do vận hành chọn khi phê duyệt. Nếu không lắp đặt được thì từ chối (lý do "Không đáp ứng điều kiện lắp đặt"). Hạn xử lý của đơn này không tính theo hạn chốt đặt hàng (không hiển thị cảnh báo 3 ngày trước) 〔hong trả lời 2026-10-03 (B7=A)〕. **Chuyển máy bán hàng tự động→tủ lạnh cũng làm được từ phía khách (hai chiều. Còn xác nhận nội bộ)** (bổ sung 2026/10/06. MM_20261006_1200 ［00:26:27］). **Thay đổi Standard (có tủ đông)→Lite (chỉ tủ lạnh) cũng làm được từ phía khách** (2026/10/08 hong trả lời. Khách trả lời là "được")
+
+- Phản ánh cuộc họp định kỳ 2026/10/06: cập nhật thời gian sử dụng tối thiểu (lắp đặt lại)・tồn kho còn lại (mua lại／trả lại) ở trên 〔MM_20261006_1200〕
+
+---
+
+## Lịch sử thay đổi
+
+| Ngày họp | Đối tượng (mục・REQ) | Trước thay đổi | Sau thay đổi | Lý do thay đổi | Căn cứ (MM・thời điểm) | Trạng thái |
+|---|---|---|---|---|---|---|
+| 2026/10/09 | 4-1・6-6・6-8 Hạn chốt tiếp nhận hủy hợp đồng・tạm dừng | Xác định theo hạn chốt đặt hàng (mặc định ngày 15 tháng trước) | Đến trước khi phát hành hóa đơn của tháng đối tượng (hạn chốt quyết toán thực tế・trả trước là ngày 25 tháng trước). Thay đổi hợp đồng vẫn như trước là hạn chốt đặt hàng của tháng trước. Hủy hóa đơn đã phát hành thực hiện trên màn hình Bill One, phát hành lại từ ứng dụng | Để tránh phải hủy・phát hành lại hóa đơn (tài liệu của khách slide 27) | 〔MM_20261009_1200 ［01:15:55〜01:31:40］〕 sổ tiếp nhận #505 | Chờ triển khai |
+| 2026/10/09 | 6-8 Hủy hợp đồng (lý do và giữ chân) | Kịch bản giữ chân theo từng lý do sẽ đưa vào sau khi nhận được bản gốc của anh Aoyama | Hướng dẫn theo lý do (nút chính／tư vấn với hỗ trợ／tiếp tục thủ tục hủy hợp đồng). Không làm nút đề xuất AI. Tư vấn bằng gặp trực tuyến・điện thoại・email. Thông báo cho vận hành khi bấm nút khác ngoài hủy hợp đồng | Khách đưa ra tài liệu, được chấp thuận trong cuộc họp | 〔MM_20261009_1200 ［00:11:51〜00:59:37］〕 sổ tiếp nhận #500〜#503 | Chờ triển khai |
+| 2026/10/09 | 6-8 Hủy hợp đồng (quyết toán・phí vi phạm) | Phí vi phạm = số tiền thu hồi × số tháng còn lại ÷ thời gian sử dụng tối thiểu | Trong thủ tục hiển thị xác nhận ý định trả lại thiết bị và việc phát sinh chi phí. 2 loại chi phí: ① phí vi phạm hợp đồng (¥12,000 cho hủy hợp đồng vi phạm hợp đồng) và ② phí hủy hợp đồng của thiết bị (trả lại dưới 1 năm thì cộng dồn nguyên phí hủy hợp đồng của master dòng máy theo từng thiết bị) | Đề xuất của cuộc họp + hong trả lời 2026/10/12 | 〔MM_20261009_1200 ［01:03:33］〕 sổ tiếp nhận #504・#522 | Chờ triển khai |
+| 2026/10/13 | 6-8 Hủy hợp đồng (thời gian áp dụng phí hủy hợp đồng của thiết bị) | Trả lại dưới 1 năm từ ngày bắt đầu cho thuê thì có phí hủy hợp đồng theo từng thiết bị | Tủ lạnh・tủ đông trả lại dưới 1 năm, máy bán hàng tự động trả lại dưới 3 năm thì có phí hủy hợp đồng theo từng thiết bị | Anh Aoyama giải thích trong cuộc họp, hong trả lời 2026/10/14 | 〔MM_20261013_1156 ［01:29:01〜01:30:14］〕 sổ tiếp nhận #605 | Chờ triển khai |
+| 2026/10/13 | 6-8 Hủy hợp đồng (phí vi phạm hợp đồng) | ① Phí vi phạm hợp đồng ¥12,000 (hủy hợp đồng vi phạm hợp đồng) | Hủy. Chi phí chỉ là phí hủy hợp đồng của thiết bị | hong trả lời 2026/10/14 | 〔MM_20261013_1156 ［01:31:00〜01:34:05］〕 sổ tiếp nhận #522 hủy | Chờ triển khai |
+| 2026/10/09 | 6-6 Tạm dừng (lý do) | 6 lựa chọn (câu chữ đang xác nhận với kinh doanh) | Xác định câu chữ 6 lựa chọn. Không có kịch bản giữ chân | Thống nhất với khách | 〔MM_20261009_1200 ［01:40:12〜01:44:50］〕 sổ tiếp nhận #506 | Chờ triển khai |
+| 2026/10/09 | 6-7 Mở lại (hạn chốt・hướng dẫn) | Không ghi hạn chốt・hướng dẫn | Chỉ mở lại sớm mới cần đăng ký (hạn chốt ngày 15 hằng tháng). Đúng dự kiến thì không cần. Hệ thống tự động gửi hướng dẫn mở lại vào khoảng ngày 20 hằng tháng | Vì hóa đơn đến cùng lúc với bắt đầu Order | 〔MM_20261009_1200 ［01:54:26］［01:58:41］〕 sổ tiếp nhận #507・#508 | Chờ triển khai |
+| 2026/10/09 | 1 Loại đơn／6-6 Đăng nhập／6-8 Hủy khi đang tạm dừng | Cơ sở đang tạm dừng cũng đăng ký hủy hợp đồng được từ Web doanh nghiệp | Hủy khi đang tạm dừng không gửi được từ Web doanh nghiệp. Vận hành nhập hộ | Lo ngại về điều khoản sử dụng. Chủ trương của khách | 〔MM_20261009_1200 ［01:59:58〜02:04:57］〕 sổ tiếp nhận #509 | Chờ triển khai |
+| 2026/10/14 | 4-2 Sau hạn chốt・vẫn đăng ký tạm quá ngày 15 | Phê duyệt sau hạn chốt thì vận hành chọn 1 trong 2 (lùi sang chu kỳ sau／đặt hàng hộ) | Vẫn đăng ký tạm quá ngày 15 thì hệ thống tự động đăng ký đơn hàng bằng giá trị chuẩn. Vận hành sửa hoặc lùi trước khi đặt hàng chính thức sáng ngày 16. 2 lựa chọn vẫn còn là thao tác của vận hành sau khi tự động đăng ký | Dù vận hành không làm việc khi rơi vào thứ Bảy, Chủ nhật thì đơn hàng cũng không bị trống (khách đăng ký bằng ES vào ngày 16) | 〔MM_20261014_1258 ［00:51:12］［01:15:05］〕hong trả lời 2026/10/14 (phương án C) sổ tiếp nhận #613 | Chờ triển khai |
+| 2026/10/14 | 3-4・6-1 Rút lại thay đổi gói／4-2 Email phê duyệt sau hạn chốt | Rút lại không phân biệt loại đơn (không thay đổi) | Xác nhận việc rút lại cũng dùng cho thay đổi gói. Nếu phê duyệt sau hạn chốt mà đã đặt hàng thì thêm "Vui lòng đăng ký lại đơn hàng" vào email thông báo | Xác nhận trong cuộc họp | 〔MM_20261014_1258 ［01:17:39］［01:36:21］〕sổ tiếp nhận #628・#629 | Chờ triển khai |
+| 2026/10/15 | 5-1・6-1 Nút sau khi hủy hợp đồng／phê duyệt chuyển đổi | Không ghi (chuyển đổi chỉ có ở form đăng ký §12) | Sau khi hủy hợp đồng không hiển thị "Thêm cơ sở" "Đăng ký thay đổi"／nhập liệu chuyển đổi・bắt buộc kết quả khảo sát hiện trường khi là máy bán hàng tự động・khi phê duyệt đổi loại hợp đồng của cùng hợp đồng cha sang triển khai chính thức | Phản ánh hong trả lời (sổ quyết định AK) | 2026-10-15 hong trả lời・sổ quyết định AK (S-8・T-1〜T-4), sổ tiếp nhận #639 | Chờ triển khai |

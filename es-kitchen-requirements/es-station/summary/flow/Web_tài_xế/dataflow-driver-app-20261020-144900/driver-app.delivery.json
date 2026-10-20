@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "98d27108-c6f7-4d98-a3fe-91d2195a7db9",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_tài_xế/dataflow-driver-app-20261020-144900/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_tài_xế/dataflow-driver-app-20261020-144900/driver-app.html",
+  "specification": {
+    "sha256": "663eeb75901ea7c080891a339ee7c2c01df3a6b1b024b14064d91d22abf9f7d4",
+    "bytes": 37734
+  },
+  "artifact": {
+    "sha256": "0762cce427c9185c1ad19017558b8821abe7aa3c124878be06255974c71d3ed9",
+    "bytes": 780244
+  }
+}

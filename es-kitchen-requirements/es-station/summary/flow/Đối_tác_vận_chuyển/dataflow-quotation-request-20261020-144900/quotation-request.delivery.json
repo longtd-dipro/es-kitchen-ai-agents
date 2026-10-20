@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "ee05f1a5-c39d-4258-b442-2965457627d3",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Đối_tác_vận_chuyển/dataflow-quotation-request-20261020-144900/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Đối_tác_vận_chuyển/dataflow-quotation-request-20261020-144900/quotation-request.html",
+  "specification": {
+    "sha256": "36b306e169838279d8e523ea13890c57ac8a8e0482799afbd253243e413a3743",
+    "bytes": 35650
+  },
+  "artifact": {
+    "sha256": "ab314085397d3153f8e298f8121150797be86f6f06ae06453e096572398b5e1f",
+    "bytes": 770575
+  }
+}

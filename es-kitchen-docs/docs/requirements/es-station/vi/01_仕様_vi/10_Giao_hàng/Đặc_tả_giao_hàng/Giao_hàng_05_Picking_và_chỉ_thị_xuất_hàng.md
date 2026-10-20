@@ -1,3 +1,5 @@
+> Bản dịch tiếng Việt của `ja/01_仕様/10_配送/配送仕様/配送_05_ピッキング・出荷指示.md` (nguồn es-station, bản 2026-10-20). Khi khác nhau, bản tiếng Nhật và `docs/決定台帳.md` là chuẩn.
+
 # Đặc tả giao hàng: Picking, chỉ thị xuất hàng, phiếu vận chuyển, liên kết bên ngoài (§9, §10)
 
 <!-- Nguyên bản: Đặc_tả_tích_hợp_Chu_kỳ_Xuất_hàng_Picking_Giao_hàng_v2.3.md (tách theo chương ngày 2026-10-03. Nội dung giữ nguyên như thời điểm tách) -->
@@ -87,7 +89,7 @@ Việc sắp xếp bản thân kho như sau.
 **Tách đơn do hạn tiêu thụ ngắn**
 
 - **Hệ thống không tự động phán định có tách hay không. Vận hành quyết định.** Sau khi tách được xử lý như **bản ghi riêng**〔Yêu cầu REQ-DL-618・REQ-DL-624〕.
-- **Tuy nhiên hệ thống có thông báo việc "có chứa hạn tiêu thụ ngắn"**〔Quyết định v2.3 #35〕: đưa dữ liệu giao hàng (hoặc dự kiến) có chứa sản phẩm thỏa **Số ngày từ ngày xuất hàng đến ngày giao hàng ＞ Số ngày hạn tiêu thụ của sản phẩm (`products.shelf_life_days`) − số ngày an toàn** vào mục Cần xác nhận **`shelf_life_warning`**. Số ngày an toàn là **một thiết lập vận hành chung toàn công ty** (`shelf_life_safety_days`・**mặc định 2 ngày**). Phán định được thực hiện khi **tạo・tính lại dự kiến** (khi lead time kéo dài do chuyển dời), **đổi kho**, **nhân bản**. Không tự động tách (cũ: điều kiện chưa quyết 〈§18 No.6〉. Đã giải quyết 2026/09/29).
+- 【2026-10-13 rút lại: đã bỏ mục Cần xác nhận 「短消費期限の注意」 (lưu ý hạn tiêu thụ ngắn) (sổ quyết định X)】 **Tuy nhiên hệ thống có thông báo việc "có chứa hạn tiêu thụ ngắn"**〔Quyết định v2.3 #35〕: đưa dữ liệu giao hàng (hoặc dự kiến) có chứa sản phẩm thỏa **Số ngày từ ngày xuất hàng đến ngày giao hàng ＞ Số ngày hạn tiêu thụ của sản phẩm (`products.shelf_life_days`) − số ngày an toàn** vào mục Cần xác nhận **`shelf_life_warning`**. Số ngày an toàn là **một thiết lập vận hành chung toàn công ty** (`shelf_life_safety_days`・**mặc định 2 ngày**). Phán định được thực hiện khi **tạo・tính lại dự kiến** (khi lead time kéo dài do chuyển dời), **đổi kho**, **nhân bản**. Không tự động tách (cũ: điều kiện chưa quyết 〈§18 No.6〉. Đã giải quyết 2026/09/29).
 - **Hạn chót tiếp nhận khớp với "hạn chót của kỳ đặt hàng"**〔Yêu cầu REQ-DL-624〕.
 - Vì vậy **ưu tiên chênh lệch lead time**. Không đặt giới hạn trên cho mức dịch chuyển ngày giao hàng, và khi dịch chuyển quá 3 ngày so với khung gốc thì đưa vào Cần xác nhận〔Yêu cầu REQ-DL-806〕.
 - Với trường hợp không thể・chuyển dời・cần xác nhận, **bắt buộc ghi kèm lý do** (coi là ngày lễ giao hàng／thứ không thể giao／khung không thể xuất hàng・ngày không thể xuất hàng／chu kỳ tạm dừng／lượng lưu kho)〔Yêu cầu REQ-DL-617〕.
@@ -106,8 +108,8 @@ Việc sắp xếp bản thân kho như sau.
 | Diễn đạt chuyển dời | **Danh sách ngắn gọn** (`Dời sớm 2 ngày`), **màn hình chi tiết・tooltip đầy đủ** (`Đã dịch 2 ngày so với B3 (2026-09-17) ban đầu`) | 〔Quyết định #27〕〔Yêu cầu REQ-DL-846〕 |
 | Ngày được coi là lễ giao hàng | **Có thể picking** | 〔Chu kỳ §5.2〕 |
 | Cảnh báo số đơn | Hiển thị ngày vượt ngưỡng bằng viền khung và số đơn (→ 9-3) | 〔Yêu cầu REQ-DL-616・REQ-DL-623〕 |
-| Phạm vi có thể di chuyển ngày | **Từ màn hình lịch chỉ trước hạn chót đặt hàng.** Từ sau hạn chót đến trước ngày xuất hàng một ngày, vận hành có thể thay đổi từng đơn một từ "Chỉnh sửa" ở chi tiết dữ liệu giao hàng, bắt buộc có lý do, trong cùng nửa đầu／nửa sau của cùng chu kỳ (8-3)〔Quyết định v2.3 #63〕 (cũ: sau hạn chót không thể thay đổi ngày từ cả màn hình lịch lẫn chi tiết dữ liệu giao hàng. Sửa theo sổ cái 2026-10-03) | 〔Quyết định v2.2 #1〕〔Yêu cầu REQ-DL-865・REQ-DL-886〕 |
-| Sau hạn chót đặt hàng | **Đến trước ngày xuất hàng một ngày có thể thay đổi từng đơn (dòng trên). Từ ngày xuất hàng trở đi là hủy + nhân bản** (không phân biệt trước sau `locked`)〔Quyết định v2.3 #63〕 (cũ: không thay đổi ngày. Xử lý bằng hủy + nhân bản. Sửa theo sổ cái 2026-10-03) | 〔Quyết định v2.2 #1〕〔Yêu cầu REQ-DL-866〕 |
+| Phạm vi có thể di chuyển ngày | **Từ màn hình lịch chỉ trước hạn chót đặt hàng.** Từ sau hạn chót đến trước ngày xuất hàng một ngày, vận hành có thể thay đổi từng đơn một từ "Chỉnh sửa" ở chi tiết dữ liệu giao hàng, bắt buộc có lý do, trong cùng nửa đầu／nửa sau của cùng chu kỳ (8-3)〔Quyết định v2.3 #63〕 (cũ: sau hạn chót không thể thay đổi ngày từ cả màn hình lịch lẫn chi tiết dữ liệu giao hàng. Sửa theo sổ quyết định 2026-10-03) | 〔Quyết định v2.2 #1〕〔Yêu cầu REQ-DL-865・REQ-DL-886〕 |
+| Sau hạn chót đặt hàng | **Đến trước ngày xuất hàng một ngày có thể thay đổi từng đơn (dòng trên). Từ ngày xuất hàng trở đi là hủy + nhân bản** (không phân biệt trước sau `locked`)〔Quyết định v2.3 #63〕 (cũ: không thay đổi ngày. Xử lý bằng hủy + nhân bản. Sửa theo sổ quyết định 2026-10-03) | 〔Quyết định v2.2 #1〕〔Yêu cầu REQ-DL-866〕 |
 
 - Màn hình 05 (lịch giao hàng) là **chế độ xem khác tổng hợp cùng dữ liệu theo ngày giao hàng**. Tách lịch giữa xuất hàng (picking) và giao hàng〔Yêu cầu REQ-DL-308〕〔Chu kỳ §5.3〕.
 - **Không vẽ Chủ nhật・thứ Bảy là "không thể xuất hàng"・"không thể nhận hàng" cố định.** Ở mọi hiển thị đều phán định dựa trên khung không thể xuất hàng của kho đó và thứ không thể giao của hợp đồng đó〔Yêu cầu REQ-DL-818〕〔Chu kỳ §5.3〕.
@@ -133,24 +135,24 @@ Cách hiểu cũ "chỉ picking dừng còn ngày giao hàng không dịch" đã
 | `draft` (không có override) | **Tự động dời sớm.** Hiển thị lịch của doanh nghiệp cũng tự động cập nhật | 〔Yêu cầu REQ-DL-689〕〔Chu kỳ §4A-5B〕 |
 | `draft` (có override đã phê duyệt) | Trước hết chỉ dời sớm ngày picking. Nếu cần dịch cả ngày giao hàng thì không tự động dịch mà để **"Đang đề xuất"** | 〔Yêu cầu REQ-DL-612〕〔Chu kỳ §4A-5B〕 |
 | `published` | **Không dịch.** Đưa vào "Cần xác nhận" và vận hành xử lý. Dù hủy ngày không thể cũng không tự động hoàn lại | 〔Yêu cầu REQ-DL-689〕〔Chu kỳ §4A-5B〕 |
-| `locked` | **Ngoài đối tượng.** Do đã gửi chỉ thị xuất hàng, xử lý bằng liên lạc điện thoại + hủy, hoặc nhân bản | 〔Yêu cầu REQ-DL-689・REQ-DL-866〕〔Chu kỳ §4A-5B〕 |
+| `locked` | **Ngoài đối tượng.** Vì đã nhập kết quả xuất hàng (đã xuất hàng), xử lý bằng liên lạc điện thoại + hủy, hoặc nhân bản (sổ quyết định AL・2026-10-16) (cũ: vì đã gửi chỉ thị xuất hàng) | 〔Yêu cầu REQ-DL-689・REQ-DL-866〕〔Chu kỳ §4A-5B〕 |
 
 - **Ngày picking luôn tìm theo hướng dời sớm.** Vì dời muộn sẽ không kịp giao hàng. Khi vượt quá 1 ngày thì **dịch ngày giao hàng** thay vì ngày picking〔Chu kỳ §4.4〕.
 - **Khác biệt với chu kỳ tạm dừng**: ngày tạm dừng không gán slot và **không tiêu thụ khung** (không giao hàng cũng không picking). Ngày không thể xuất hàng vẫn tiêu thụ khung và chỉ việc xuất hàng bị dừng〔Yêu cầu REQ-DL-807〕〔Chu kỳ §2.2・§4.2〕.
 - **Khung được tiếp tục sau tạm dừng không được quay lại trước thời điểm tạm dừng.** Chỉ với lần mà khung bị lệch do tạm dừng, việc chuyển dời do ngày lễ・thứ không thể giao chỉ tìm theo **hướng dời muộn**〔Yêu cầu REQ-DL-825〕.
 - Trước khi lưu, **xem trước số đơn bị ảnh hưởng** (`draft` tạo lại tự động／tự động dời sớm ngày picking／áp dụng・mất hiệu lực・đang đề xuất của override đã phê duyệt／**đã chỉ thị xuất hàng 〈`locked`・không thể thay đổi〉**／không thể dời sớm)〔Yêu cầu REQ-DL-688・REQ-DL-724〕〔Chu kỳ §4A-5B〕.
 
-### 9-7. Hủy bỏ・số lượng còn lại
+### 9-7. Tiêu hủy・số lượng còn lại
 
 | Sự việc | Xử lý | Nguồn |
 |---|---|---|
-| **Hủy bỏ (廃棄)** | **Không quay lại đâu cả.** Đăng ký hủy bỏ và hiệu chỉnh tồn kho. Vì chưa giao hàng nên **không thanh toán** | 〔Yêu cầu §8H-4・REQ-DL-679〕〔Chu kỳ §4D-1〕 |
-| **Số lượng còn lại (hàng thực còn)** | **Tạo 1 dữ liệu giao hàng và gửi với nơi nhận là "Trụ sở chính".** Cách tạo là **nhân bản với lý do "Trả hàng"** (`duplicate_type = return`), thay nơi giao hàng bằng nơi trả hàng của master kho (`warehouse_type = return`). **Ngoài đối tượng thanh toán** (8-4) | 〔Yêu cầu REQ-DL-679・§8H-4〕〔Quyết định v2.3 #41〕 |
+| **Tiêu hủy (廃棄)** | **Không quay lại đâu cả.** Đăng ký tiêu hủy và hiệu chỉnh tồn kho. Vì chưa giao hàng nên **không xuất hóa đơn** | 〔Yêu cầu §8H-4・REQ-DL-679〕〔Chu kỳ §4D-1〕 |
+| **Số lượng còn lại (hàng thực còn)** | **Tạo 1 dữ liệu giao hàng và gửi với nơi nhận là "Trụ sở chính".** Cách tạo là **nhân bản với lý do "Trả hàng"** (`duplicate_type = return`), thay nơi giao hàng bằng nơi trả hàng của master kho (`warehouse_type = return`). **Ngoài đối tượng xuất hóa đơn** (8-4) | 〔Yêu cầu REQ-DL-679・§8H-4〕〔Quyết định v2.3 #41〕 |
 | **Di chuyển giữa các kho (chuyển ngang)** | Coi như **mức điều chỉnh tồn kho** và **không tạo phiếu di chuyển** (ngoài đối tượng Phase 2) | 〔Yêu cầu REQ-DL-681・§8H-4〕 |
 | **Thiếu tồn kho** | Dù phân bổ bị thiếu cũng không dừng mà chuyển vào **"Cần xác nhận"** | 〔Yêu cầu §8H-4〕 |
 | **Cách giữ tồn kho** | Giữ **theo từng kho** | 〔Yêu cầu §8H-4〕 |
 
-- Hủy bỏ **không phải là trạng thái**. Đó là **xử lý đi kèm** `delivery status` (đã giao／giao một phần／chờ giao lại／dừng), và trạng thái được quyết định theo lượng đã giao được〔Chu kỳ §4A-3B・§4A-4B〕.
+- Tiêu hủy **không phải là trạng thái**. Đó là **xử lý đi kèm** `delivery status` (đã giao／giao một phần／chờ giao lại／dừng), và trạng thái được quyết định theo lượng đã giao được〔Chu kỳ §4A-3B・§4A-4B〕.
 - Bản ghi con của số lượng còn lại tạo từ giao từng phần・giao lại được **tạo ở trạng thái "Đang xác nhận"**, mang ngày giao hàng tạm và đưa vào Cần xác nhận. Chỉ khi vận hành chọn một trong "Xác định ngày này", "Đổi ngày", "Dừng" thì mới thành **chờ xuất hàng** (để ngăn việc chảy sang chỉ thị xuất hàng với ngày tạm)〔Yêu cầu REQ-DL-649-2〕〔Chu kỳ §4A-4C〕.
 - **Việc nhân bản này chỉ thực hiện được từ dữ liệu giao hàng `published` hoặc `locked`, không nhân bản được từ `draft`.** Với `draft` chỉ có thể sao chép／thay đổi dự kiến〔Quyết định v2.1 #5〕〔Yêu cầu REQ-DL-872〕.
 
@@ -180,19 +182,22 @@ Cách hiểu cũ "chỉ picking dừng còn ngày giao hàng không dịch" đã
 - **Lý do hiển thị đã xuất hay chưa trên màn hình là vì có xuất bổ sung.** Nếu không biết trên màn hình đã xuất hay chưa thì sẽ xuất hai lần hoặc quên xuất〔Chu kỳ §4D-3〕.
 - **Quy định gộp xuất 2 tuần là quy định "khi nào gửi", không phải điểm khởi đầu của `locked`** (→ 10-2)〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-812・REQ-DL-867〕.
 
-### 10-2. Điểm khởi đầu của `locked` — chỉ là lần gửi thành công đầu tiên của chỉ thị xuất hàng
+### 10-2. Điểm khởi đầu của `locked` — chỉ là việc nhập kết quả xuất hàng
 
-**Trigger khiến thành `locked` chỉ có một. Đó là thời điểm chỉ thị xuất hàng được gửi thành công lần đầu.**〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-867〕〔Chu kỳ §4A-3・§4D-3〕
+**Trigger khiến thành `locked` chỉ có một. Tại thời điểm nhập CSV kết quả xuất hàng của THOMAS thì chuyển `published` → `locked`.** Việc đã gửi・nhập số phiếu vận chuyển không làm thành `locked` (sổ quyết định AL・2026-10-16) (cũ: thời điểm chỉ thị xuất hàng được gửi thành công lần đầu. Quyết định v2.1 #3・REQ-DL-867・868 đã bị thay thế).
+
+【Cần xác nhận】Trong khoảng từ khi gửi chỉ thị xuất hàng đến khi nhập kết quả xuất hàng, có thể sửa những gì・có tiếp nhận yêu cầu thay đổi của doanh nghiệp hay không thì chưa được quyết định. Các dòng "Gửi lại" "giữ nguyên `locked`" trong bảng dưới đây là tạm thời cho đến khi mục cần xác nhận này được quyết định.〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-867〕〔Chu kỳ §4A-3・§4D-3〕
 
 `locked` ở đây là giá trị của **`plan lifecycle`** (`draft` / `published` / `locked`), là trục khác với **`delivery status`** (chờ xuất hàng／đã xuất hàng／đã nhận／đã giao／giao một phần／chờ giao lại／đang xác nhận／dừng／hủy). Một dữ liệu giao hàng có đồng thời cả hai giá trị (ví dụ: `lifecycle = locked` và `delivery status = đã nhận`). **Không gọi chung hai thứ là "trạng thái"**〔Quyết định v2.1 S5〕〔Yêu cầu REQ-DL-883〕〔Chu kỳ §4A-3・§4A-3B〕.
 
 | # | Sự kiện | Ghi chép của `ship_orders` | `plan lifecycle` | Nguồn |
 |---|---|---|---|---|
 | 1 | **Đã xuất** CSV chỉ thị xuất hàng (chỉ mới tạo tệp) | `send_status = pending` | **Giữ nguyên `published`. Không `locked`** | 〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-867〕 |
-| 2 | **Gửi lần đầu thành công** (Thomas đã nhận) | `send_status = ok`／ghi `sent_ok_at` | **`published` → `locked` (trigger duy nhất)** | 〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-867〕〔Chu kỳ §4A-3〕 |
-| 3 | **Gửi thất bại** | `send_status = failed` | **Giữ nguyên `published`.** Không `locked` cho đến khi gửi lại thành công | 〔Quyết định v2.1 #3〕〔Chu kỳ §4A-3・§7〕 |
-| 4 | **Đã gửi lại** (tăng `rev`) | Ghi bằng `rev` mới | **Giữ nguyên `locked`. Không dịch điểm khởi đầu (`locked_at`)** | 〔Yêu cầu REQ-DL-867・REQ-DL-662〕〔Chu kỳ §4D-3〕 |
-| 5 | **Gửi lại dừng với số lượng 0** | `is_zeroed = true` | **Giữ nguyên `locked`** (→ 10-3) | 〔Yêu cầu REQ-DL-662〕〔Chu kỳ §4D-3〕 |
+| 2 | **Gửi lần đầu thành công** (Thomas đã nhận／vận hành đã bấm 「送信済にする」 (đánh dấu đã gửi)) | `send_status = ok`／ghi `sent_ok_at` | **Giữ nguyên `published`. Không `locked`** (sổ quyết định AL・2026-10-16) (cũ: `published` → `locked`) | 〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-867〕〔Chu kỳ §4A-3〕 |
+| 3 | **Gửi thất bại** | `send_status = failed` | **Giữ nguyên `published`.** | 〔Quyết định v2.1 #3〕〔Chu kỳ §4A-3・§7〕 |
+| 4 | **Đã gửi lại** (tăng `rev`) | Ghi bằng `rev` mới | **Trước khi nhập kết quả xuất hàng thì giữ nguyên `published`. Sau khi nhập thì giữ nguyên `locked`, không dịch điểm khởi đầu (`locked_at`)** | 〔Yêu cầu REQ-DL-867・REQ-DL-662〕〔Chu kỳ §4D-3〕 |
+| 5 | **Gửi lại dừng với số lượng 0** (chỉ sau khi đã gửi. Nếu chưa gửi thì không gửi gì・10-3) | `is_zeroed = true` | **Giai đoạn trước・sau khi nhập không thay đổi** (→ 10-3) | 〔Yêu cầu REQ-DL-662〕〔Chu kỳ §4D-3〕 |
+| 5B | **Đã nhập kết quả xuất hàng** | Ghi chép kết quả xuất hàng | **`published` → `locked` (trigger duy nhất). Đồng thời `delivery status` chuyển Chờ xuất hàng → Đã xuất hàng** (sổ quyết định AL・2026-10-16) | 〔Thay thế Quyết định v2.1 #3〕 |
 | 6 | **Đã gắn số phiếu vận chuyển** (có ghi chép gửi thành công của chỉ thị xuất hàng) | — | **Không thay đổi. Không `locked` bằng số phiếu vận chuyển** | 〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-867〕 |
 | 7 | **Đã gắn số phiếu vận chuyển** (không có ghi chép gửi thành công) | — | **Không `locked`. Phát hiện・thông báo là anomaly (bất thường) và đưa vào Cần xác nhận** | 〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-868〕 |
 
@@ -200,9 +205,9 @@ Cách hiểu cũ "chỉ picking dừng còn ngày giao hàng không dịch" đã
 
 | Cột | Nội dung | Nguồn |
 |---|---|---|
-| `deliveries.locked_at` | Thời điểm thành `locked`. **Ghi `ship_orders.sent_ok_at` (`send_status = ok` lần đầu)** | 〔Yêu cầu REQ-DL-867〕〔Chu kỳ §7〕 |
-| `deliveries.locked_source` | **Giá trị chỉ có một = `ship_order_sent`** | 〔Quyết định v2.1 #3〕〔Chu kỳ §7〕 |
-| `ship_orders.send_status` / `sent_ok_at` | Kết quả gửi và thời điểm thành công. Phần chỉ mới xuất・phần thất bại không `locked` | 〔Chu kỳ §7・§4D-3〕 |
+| `deliveries.locked_at` | Thời điểm thành `locked`. **Ghi thời điểm đã nhập kết quả xuất hàng** (sổ quyết định AL・2026-10-16) (cũ: `ship_orders.sent_ok_at`) | 〔Yêu cầu REQ-DL-867〕〔Chu kỳ §7〕 |
+| `deliveries.locked_source` | **Giá trị chỉ có một. Tên của giá trị là cần xác nhận** (cũ: `ship_order_sent`. Vì điểm khởi đầu đã đổi sang việc nhập kết quả xuất hàng. (sổ quyết định AL・2026-10-16)) | 〔Quyết định v2.1 #3〕〔Chu kỳ §7〕 |
+| `ship_orders.send_status` / `sent_ok_at` | Kết quả gửi và thời điểm thành công. Không liên quan đến `locked` (dù đã gửi cũng không `locked`) | 〔Chu kỳ §7・§4D-3〕 |
 
 **Phát hiện anomaly (phiếu vận chuyển có trước)**
 
@@ -212,7 +217,8 @@ Cách hiểu cũ "chỉ picking dừng còn ngày giao hàng không dịch" đã
 
 - **Các chuyển đổi bị cấm**: `published → draft`, `locked → published`, quay ngược `locked`. **Nhân bản từ `draft` cũng bị cấm**〔Quyết định v2.1 #5〕〔Yêu cầu REQ-DL-872〕〔Chu kỳ §4A-3〕.
 - Trạng thái **không thay đổi theo đơn vị tháng**. Do từng dữ liệu giao hàng thành `locked` riêng, nên ngay trong cùng tháng dự kiến nửa cuối tháng vẫn còn ở `published` một thời gian, còn hợp đồng giao cuối tháng với lead time dài thì thành `locked` ngay trong tháng trước〔Chu kỳ §4A-3〕.
-- **`locked` không phải cột mốc thay đổi ngày.** Đến trước ngày xuất hàng một ngày, vận hành có thể thay đổi từng đơn (8-3) và chỉ thị xuất hàng đã gửi được gửi lại bằng phiên bản mới. Từ ngày xuất hàng trở đi là hủy + nhân bản〔Quyết định v2.3 #63〕 (cũ: sau `locked` không thay đổi ngày. Khi cần thì hủy + nhân bản〔Quyết định v2.1 #1〕. Sửa theo sổ cái 2026-10-03).
+- **Trong khoảng từ khi gửi đến khi nhập kết quả xuất hàng, có thể sửa những gì・có tiếp nhận yêu cầu thay đổi của doanh nghiệp hay không là cần xác nhận** (sổ quyết định AL・2026-10-16).
+- **`locked` không phải cột mốc thay đổi ngày.** Đến trước ngày xuất hàng một ngày, vận hành có thể thay đổi từng đơn (8-3) và chỉ thị xuất hàng đã gửi được gửi lại bằng phiên bản mới. Từ ngày xuất hàng trở đi là hủy + nhân bản〔Quyết định v2.3 #63〕 (cũ: sau `locked` không thay đổi ngày. Khi cần thì hủy + nhân bản〔Quyết định v2.1 #1〕. Sửa theo sổ quyết định 2026-10-03).
 
 ### 10-3. Không có hủy, gửi lại kèm số phiên bản để ghi đè
 
@@ -221,9 +227,10 @@ Cách hiểu cũ "chỉ picking dừng còn ngày giao hàng không dịch" đã
 | Cơ chế | Nội dung | Nguồn |
 |---|---|---|
 | Số phiên bản (`rev`) | Cho chỉ thị xuất hàng mang số phiên bản và **tăng lên mỗi lần gửi lại** (`DL-260820-0012 / rev2`) | 〔Chu kỳ §4D-3〕 |
-| Cách gửi | **Luôn gửi trạng thái mới nhất theo từng số chỉ thị**. Làm cho thành lập dù phía đối tác nhận theo cách nào | 〔Chu kỳ §4D-3〕 |
-| Dừng | **Gửi lại với số lượng 0**. Vì không xóa bản thân chỉ thị nên truyền đạt được dù không có I/F hủy | 〔Yêu cầu REQ-DL-662〕〔Chu kỳ §4D-3〕 |
+| Cách gửi | **Luôn gửi trạng thái mới nhất theo từng số chỉ thị**. Làm sao cho vận hành được dù phía đối tác nhận theo cách nào | 〔Chu kỳ §4D-3〕 |
+| Dừng | **Gửi lại với số lượng 0**. Vì không xóa bản thân chỉ thị nên truyền đạt được dù không có I/F hủy. **Tuy nhiên khi hủy đơn giao hàng chưa gửi chỉ thị xuất hàng thì không gửi gì cho THOMAS** (không cần gửi lại số lượng 0). Chỉ khi hủy sau khi đã gửi thì mới gửi lại bằng phiên bản số lượng 0 (sổ quyết định AL・2026-10-16). Việc THOMAS có chấp nhận gửi lại số lượng 0 hay không sẽ được kiểm tra bằng thử nghiệm | 〔Yêu cầu REQ-DL-662〕〔Chu kỳ §4D-3〕 |
 | Phát hiện chênh lệch | ES **giữ "nội dung đã gửi lần cuối"**, và khi có chênh lệch với dữ liệu giao hàng thì **tự động đưa "Cần gửi lại: N đơn" vào Cần xác nhận** (batch `ship_order_diff`・mỗi ngày 07:00) | 〔Yêu cầu REQ-DL-662〕〔Chu kỳ §4D-3・§11-1〕 |
+| Phán định gửi lại | Khi sửa số lượng sau khi đã gửi chỉ thị xuất hàng cũng gửi lại (so sánh nội dung đã gửi với nội dung hiện tại, nếu khác thì "Gửi lại chỉ thị xuất hàng"・phiên bản +1). Sau khi đã nhập kết quả xuất hàng (đã xuất hàng) thì không gửi lại. "Đã gửi" được quyết định bằng ghi chép vận hành đã bấm 「送信済にする」 (chỉ khi không có ghi chép mới suy đoán theo ngày) | Sổ quyết định AS・sổ tiếp nhận #774 |
 | Có thể thay đổi sau khi gửi | **Công ty giao hàng ②・nhân viên giao hàng** = thay đổi nguyên trạng và gửi lại bằng `ship_order_diff`／**Địa chỉ nơi giao hàng** = xuất `rev` mới, chuyển phiếu vận chuyển hiện có thành `voided` và phát hành lại／**Kho picking・ngày** = không thay đổi mà **hủy + nhân bản** (15-13) | 〔Quyết định v2.2 #3〕〔Yêu cầu REQ-DL-888〜890〕 |
 | Thời hạn gửi lại | **Cho đến khi nhận được kết quả xuất hàng của đơn giao đó.** Khi nhận được thì đóng. **Hệ thống không giữ giờ bắt đầu picking của kho** (không xét đến mức đó)〔Quyết định v2.2 #4〕 **(cũ: đến trước khi bắt đầu picking. Giờ bắt đầu đang xác nhận với kho・nhà cung cấp. Hủy bởi quyết định đợt 3 ngày 2026/09/22)** | 〔Quyết định v2.2 #4〕〔Yêu cầu REQ-DL-891〕 |
 | Khi quá thời hạn | Thay đổi sau khi nhận kết quả xuất hàng chuyển sang **vận hành bằng điện thoại**, và phía dữ liệu giao hàng để lại dưới dạng **hủy** hoặc **nhân bản** | 〔Chu kỳ §4D-3〕 |
@@ -244,7 +251,7 @@ Cách hiểu cũ "chỉ picking dừng còn ngày giao hàng không dịch" đã
 | Số chỉ thị | Dùng số của dữ liệu giao hàng. **Khi giao lại・nhân bản thì gán số nhánh (`DL-…-1`)** và Thomas xử lý như ID duy nhất | 〔Yêu cầu REQ-DL-114〕〔Chu kỳ §4A-4C〕 |
 | Số phiên bản | `rev`. Tăng mỗi lần gửi lại (ví dụ `DL-260820-0012 / rev2`) | 〔Chu kỳ §4D-3〕 |
 | Số lượng | Dừng thì gửi `0` | 〔Yêu cầu REQ-DL-662〕〔Chu kỳ §4D-3〕 |
-| Nhận dạng kho | **Mã kho**. Dùng "Mã kho (cho liên kết THOMAS)" của master kho do vận hành nhập (3-1 #8. 2026/10/01 D3-2) (cũ: 【tạm】dùng nguyên ID kho 〈định dạng `WH00001`〉 làm mã liên kết. Sửa theo sổ cái 2026-10-03) | 〔Quyết định #6〕〔Yêu cầu §8L-5 #6〕〔Chu kỳ §2.3A〕 |
+| Nhận dạng kho | **Mã kho**. Dùng "Mã kho (cho liên kết THOMAS)" của master kho do vận hành nhập (3-1 #8. 2026/10/01 D3-2) (cũ: 【tạm】dùng nguyên ID kho 〈định dạng `WH00001`〉 làm mã liên kết. Sửa theo sổ quyết định 2026-10-03) | 〔Quyết định #6〕〔Yêu cầu §8L-5 #6〕〔Chu kỳ §2.3A〕 |
 | Nhóm nhiệt độ | Đông lạnh・lạnh xuất ở **bản ghi riêng** (→ 10-6) | 〔Yêu cầu REQ-DL-301・REQ-DL-602〕 |
 | Cột cần cho phiếu vận chuyển | Phase 2 theo phương châm "**truyền các cột cần cho phiếu vận chuyển bằng CSV chỉ thị xuất hàng (qua Thomas)**" | 〔Yêu cầu §8F-5〕〔Chu kỳ §4D-2〕 |
 | Cột ES lưu giữ | `ship_orders`: `id, delivery_id, warehouse_id, rev, qty, payload_hash, sent_at, sent_by, is_zeroed, send_status, sent_ok_at` (※**là định nghĩa bảng nội bộ của ES** chứ không phải cột của CSV) | 〔Chu kỳ §7〕 |
@@ -254,7 +261,7 @@ Cách hiểu cũ "chỉ picking dừng còn ngày giao hàng không dịch" đã
 
 | Nút | Làm gì |
 |---|---|
-| Xuất CSV chỉ thị xuất hàng (THOMAS) | Chọn kho và đối tượng (cửa sổ 2 tuần・phần bổ sung) và xuất chỉ thị xuất hàng tại thời điểm đó bằng CSV. **Dùng để xác nhận・liên kết thủ công, không phải gửi. Không tạo phiên bản và cũng không `locked`** (10-2) |
+| Xuất CSV chỉ thị xuất hàng (THOMAS) | Chọn kho và **khoảng ngày xuất hàng** rồi xuất chỉ thị xuất hàng tại thời điểm đó bằng CSV (đổi 2026-10-15・sổ quyết định AK M23. Cũ: chọn "đối tượng" = cửa sổ 2 tuần tuần A・B／tuần C・D／phần bổ sung. Việc chọn "đối tượng" ở tab gửi đã bị bãi bỏ). **Dùng để xác nhận・liên kết thủ công, không phải gửi. Không tạo phiên bản và cũng không `locked`** (10-2) |
 | CSV của dòng lịch sử gửi | Tải lại đúng nội dung đã gửi ở phiên bản đó |
 | Xuất CSV cho phiếu vận chuyển (Yamato) | Xuất bằng các cột tạm của 10-8 |
 | Nhập CSV kết quả xuất hàng／CSV số phiếu vận chuyển | Xử lý 19.4／19.3 của `配送_12`. Dòng không nhập được thành Cần xác nhận "Lỗi nhập" |
@@ -278,6 +285,8 @@ Cách hiểu cũ "chỉ picking dừng còn ngày giao hàng không dịch" đã
 | Giao lại・nhân bản | **Khi nhân bản thì bản con nhận số mới.** Số của bản cha giữ ở bản cha | 〔Chu kỳ §4D-2・§4A-4C〕 |
 | Nơi trung chuyển | **Không phát hành lại** | 〔Yêu cầu §8C-2〕〔Chu kỳ §4D-2〕 |
 | Vô hiệu hóa (`voided`) | **Khi đổi địa chỉ nơi giao hàng sau chỉ thị xuất hàng thì chuyển tất cả số hiện có thành `voided` và phát hành lại** (15-13). Dòng không xóa mà giữ lại | 〔Quyết định v2.2 #3〕〔Yêu cầu REQ-DL-889〕 |
+| Số chữ số | **Không kiểm tra số chữ số** (giống Web nhà cung cấp) (sổ quyết định AL・2026-10-16) |
+| Quan hệ với kết quả xuất hàng | **Số phiếu vận chuyển là nội dung của kết quả xuất hàng**. Cũng có trường hợp được gửi đến bằng tệp riêng. **Việc nhập số không làm thay đổi trạng thái giao hàng** (chỉ nhập kết quả xuất hàng mới thành Đã xuất hàng) (sổ quyết định AL・2026-10-16) |
 | Quan hệ với `locked` | **Dù được gắn số phiếu vận chuyển cũng không `locked`** (→ 10-2) | 〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-867〕 |
 | Tên bên gửi | Bên gửi trên phiếu vận chuyển hiển thị **"Tên kho (dùng cho phiếu)"** của master kho và **mã văn phòng** của nơi trung chuyển | 〔Yêu cầu §8G-6〕〔Chu kỳ §2.3A〕 |
 | Thông báo chưa thiết lập tài xế (cũ: thông báo chưa liên kết) | Với hàng **chưa thiết lập tài xế**, **3 ngày trước ngày giao hàng và ngày hôm trước**, **hiển thị ở Cần xác nhận `assignment_missing` của vận hành và Web công ty giao hàng ủy thác**, và **nếu là đoạn ủy thác thì gửi email cho công ty giao hàng ủy thác phụ trách** (12-1・15-9) (đổi 2026/09/30. Cũ: với hàng chưa phát hành phiếu vận chuyển, gửi email thông báo cho vận hành・nhà thầu giao hàng ủy thác **3 ngày trước・1 ngày trước ngày giao dự kiến**) | 〔Yêu cầu REQ-DL-304・§8C-2〕〔Bảng yêu cầu dòng 142・Quyết_định_phản_ánh_một_phần_bảng_yêu_cầu_trả_lời_20260930〕 |
@@ -302,10 +311,10 @@ Cách hiểu cũ "chỉ picking dừng còn ngày giao hàng không dịch" đã
 
 | # | Đối tác | Dữ liệu | Hướng | Phương thức | Thời điểm | Phase | Nguồn |
 |---|---|---|---|---|---|---|---|
-| 1 | **Thomas** (kho) | CSV chỉ thị xuất hàng | ES → Thomas | CSV (chuẩn Thomas・theo kho・tự động xuất) | **Gộp phần của 2 tuần, 3 ngày trước ngày bắt đầu (thứ Sáu)** + xuất bổ sung khi khẩn cấp. **`locked` khi gửi thành công lần đầu** | **Phase 2** | 〔Yêu cầu REQ-DL-111・631・812・867〕〔Chu kỳ §4D-3〕 |
-| 2 | **Thomas** (kho) | CSV kết quả xuất hàng (gồm số phiếu vận chuyển) | Thomas → ES | Nhập CSV | Khi nhập, chuyển `delivery status` từ **Chờ xuất hàng → Đã xuất hàng** | **Phase 2** | 〔Yêu cầu REQ-DL-111〕〔Chu kỳ §4A-3B・§7〕 |
+| 1 | **Thomas** (kho) | CSV chỉ thị xuất hàng | ES → Thomas | CSV (chuẩn Thomas・theo kho・tự động xuất) | **Gộp phần của 2 tuần, 3 ngày trước ngày bắt đầu (thứ Sáu)** + xuất bổ sung khi khẩn cấp. **`locked` khi nhập kết quả xuất hàng** (gửi thành công không làm thành `locked`. (sổ quyết định AL・2026-10-16)) | **Phase 2** | 〔Yêu cầu REQ-DL-111・631・812・867〕〔Chu kỳ §4D-3〕 |
+| 2 | **Thomas** (kho) | CSV kết quả xuất hàng (gồm số phiếu vận chuyển) | Thomas → ES | Nhập CSV | Khi nhập, chuyển `delivery status` từ **Chờ xuất hàng → Đã xuất hàng**, đồng thời `published` → `locked` (sổ quyết định AL・2026-10-16). **Số phiếu vận chuyển là nội dung của kết quả xuất hàng** (cũng có trường hợp được gửi đến bằng tệp riêng) | **Phase 2** | 〔Yêu cầu REQ-DL-111〕〔Chu kỳ §4A-3B・§7〕 |
 | 2B | **Thomas** (kho) | Liên kết API chỉ thị xuất hàng・kết quả xuất hàng | Hai chiều | API | — | **Phase 3 trở đi** (sau khi công ty kho thẩm định・cho phép) | 〔Tổng hợp định nghĩa yêu cầu chủ đề 8-10〕 (thêm 2026/10/01・K-37) |
-| 3 | **Yamato Transport và các bên ủy thác khác** | Số phiếu vận chuyển (CSV số phiếu) | Công ty giao hàng → ES | **Nhập CSV** (hoặc nhập tay) | Sau khi xuất hàng. Liên kết khi được gắn số. **Dù đã nhận cũng không `locked`** | **Phase 2** | 〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-116・867・§8F-5〕 |
+| 3 | **Yamato Transport và các bên ủy thác khác** | Số phiếu vận chuyển (CSV số phiếu) | Công ty giao hàng → ES | **Nhập CSV** (hoặc nhập tay) | Sau khi xuất hàng. Liên kết khi được gắn số. **Dù đã nhận cũng không `locked`. Dù nhập cũng không làm thay đổi trạng thái giao hàng. Không kiểm tra số chữ số** (sổ quyết định AL・2026-10-16) | **Phase 2** | 〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-116・867・§8F-5〕 |
 | 3B | **(Nội bộ ES)** | **Phát hiện anomaly phiếu vận chuyển có trước** | Trong ES | Batch hằng ngày `tracking_anomaly_detect` (mỗi ngày 07:00) | Phát hiện dữ liệu giao hàng không có ghi chép gửi thành công của chỉ thị xuất hàng mà đã được gắn số phiếu vận chuyển và đưa vào Cần xác nhận | **Phase 2** | 〔Quyết định v2.1 #3〕〔Yêu cầu REQ-DL-868〕〔Chu kỳ §11-1〕 |
 | 4 | **Yamato (vật tư)** | CSV xuất hàng vật tư (dùng để nhập vào Yamato・có bản đồ định dạng) | ES → Yamato | CSV | Khi tạo dữ liệu giao hàng bằng đơn hàng vật tư (→ 10-8) | Phase 2 | 〔Yêu cầu §3〕 |
 | 5 | **Các công ty giao hàng** (Yamato／Fukuyama Transporting／Sagawa v.v.) | Tình trạng giao hàng | Chỉ tham chiếu | **Liên kết ngoài đến trang liên hệ của từng công ty** | Vận hành tham chiếu khi cần | Phase 2 | 〔Yêu cầu REQ-DL-414・§8F-5〕 |
@@ -314,7 +323,7 @@ Cách hiểu cũ "chỉ picking dừng còn ngày giao hàng không dịch" đã
 | 8 | **Yamato** | Phát hiện đóng cửa mã văn phòng | Yamato → ES | **Scraping + thông báo cờ** (vì không có API) | Bất kỳ lúc nào | Tạm | 〔Yêu cầu §8B-4・§8F-5〕 |
 | 9 | **Công ty giao hàng ủy thác** | Yêu cầu báo giá・trả lời, email xác định, CSV chi tiết thu tiền | Hai chiều | Màn hình + email + CSV (chi tiết theo từng văn phòng) | Bất kỳ lúc nào | Phase 2 | 〔Yêu cầu REQ-DL-507・§8F-5〕 |
 | 10 | **Công ty giao hàng ủy thác** | Dự kiến sắp tới | Chỉ tham chiếu | **Trang chuyên dụng của công ty giao hàng (Web công ty giao hàng ủy thác)** (ES không liên lạc mỗi lần) | Đến hạn chót là dự tính (**đến chu kỳ tháng sau・đến số đơn**). **Xác định cùng thời điểm với hạn chót đặt hàng** (sau khi xác định thì toàn bộ mục). Chỉ dữ liệu giao hàng có đoạn do công ty mình phụ trách (11-6) | Phase 2 | 〔Chu kỳ §4C-4〕〔Quyết định v2.3 #34・#51〕 |
-| 11 | **Bill One** | Dữ liệu thanh toán・đối chiếu thanh toán | ES → Bill One | Đến khi xác định thanh toán・phát hành hóa đơn (**đối chiếu thanh toán ở phía Bill One**) | **Chốt ngày 20 → xác định ngày 25 → phát hành trên Bill One vào ngày 1 tháng sau** (sổ cái) (cũ: ngày xác định thanh toán = 25 → phát hành cuối tháng. Sửa theo sổ cái 2026-10-03) | Phase 2 | 〔Quyết định #71〕〔Yêu cầu REQ-DL-834〕〔Chu kỳ §4D-1〕 |
+| 11 | **Bill One** | Dữ liệu hóa đơn・đối chiếu thanh toán | ES → Bill One | Đến khi chốt hóa đơn・phát hành hóa đơn (**đối chiếu thanh toán ở phía Bill One**) | **Chốt ngày 20 → xác định ngày 25 → phát hành trên Bill One vào ngày 1 tháng sau** (sổ quyết định) (cũ: ngày chốt hóa đơn = 25 → phát hành cuối tháng. Sửa theo sổ quyết định 2026-10-03) | Phase 2 | 〔Quyết định #71〕〔Yêu cầu REQ-DL-834〕〔Chu kỳ §4D-1〕 |
 | 12 | **Master ngày lễ** | Dữ liệu ngày lễ | Chỉ tham chiếu | **Tự động lấy mỗi năm 1 lần từ API ngày lễ công khai + "Lấy lại ngày lễ"** (đổi 2026/10/01・〔trả lời của hong 2026-10-03〕. Cũ: nhập thủ công mỗi năm 1 lần dữ liệu công khai của Văn phòng Nội các・không nhập qua API) | Mỗi năm 1 lần + vận hành thêm・sửa bất kỳ lúc nào | Phase 2 | 〔Quyết định #9〕〔Yêu cầu §8L-5 #9〕〔Chu kỳ §6〕 |
 
 - **Đầu ra cho Thomas được làm sao cho có thể thay thế ở tầng xuất**, và nếu UTF-8 không được thì chuyển sang Shift_JIS khi xuất (10-4). **Nếu CSV của Thomas không có cột cần cho phiếu vận chuyển của Yamato thì xuất riêng CSV dùng cho phiếu vận chuyển** (10-8)〔Quyết định v2.3 #45・#46〕.
@@ -349,7 +358,7 @@ Lấy từ 〔Ghi chú phương án tuyến §3B〕 (2026/09/23. Ghi chú vấn 
 | Số kiện (số thùng) | Nhiều kiện là phiếu mẹ・phiếu con | Số thùng. **Cần xác nhận mỗi thùng là phiếu vận chuyển riêng hay nhiều kiện** | Mục phiếu vận chuyển |
 | Ghi chú | In trên phiếu vận chuyển | Ghi chú giao hàng ngắn. Khi giữ tại văn phòng thì là **tên cơ sở và số giao hàng**【tạm】〔Quyết định v2.3 #46〕 | Mục phiếu vận chuyển |
 | Mã quản lý của khách hàng | Tự do | **ID giao hàng** (đối chiếu CSV trả về bằng cột này) | Không hiển thị (ID giao hàng) |
-| Mã khách hàng yêu cầu thanh toán・mã quản lý cước | Bắt buộc | Giữ ở **master kho × công ty giao hàng** (không giữ trong dữ liệu giao hàng) | Không hiển thị |
+| Mã khách hàng nơi nhận hóa đơn・mã quản lý cước | Bắt buộc | Giữ ở **master kho × công ty giao hàng** (không giữ trong dữ liệu giao hàng) | Không hiển thị |
 | Email hoàn tất gửi hàng | Tùy chọn | **Gửi 1 email khi nhập kết quả xuất hàng (hoàn tất gửi hàng)** (người phụ trách chính・phụ. Số phiếu vận chuyển và trang liên hệ của công ty giao hàng. URL kèm số được tạo từ "Mẫu URL theo dõi" của master công ty giao hàng・2026/10/01 O-4). "Đang chuẩn bị gửi" chỉ là hiển thị của Web doanh nghiệp (đổi 2026/10/01・P11. Cũ: Phase 2 không dùng 〈yêu cầu 2026/05/22〉) | 〔Bảng yêu cầu dòng 127〕 |
 
 ### Các cột nhận về
@@ -357,7 +366,7 @@ Lấy từ 〔Ghi chú phương án tuyến §3B〕 (2026/09/23. Ghi chú vấn 
 | Cột | Nội dung |
 |---|---|
 | Số phiếu | Nhập bằng CSV và liên kết với dữ liệu giao hàng bằng mã quản lý của khách hàng (ID giao hàng) hoặc số chỉ thị xuất hàng |
-| Ngày giờ nhập | Tại thời điểm nhập coi là "đã gửi hàng xong" và hiển thị ngày giờ ở danh sách phiếu vận chuyển |
+| Ngày giờ nhập | Tại thời điểm nhập coi là "đã gửi hàng xong" và hiển thị ngày giờ ở danh sách phiếu vận chuyển. **Email hoàn tất gửi hàng là 1 email khi nhập kết quả xuất hàng** (nhập số phiếu vận chuyển chỉ để liên kết. Người nhận email là cần xác nhận) (sổ quyết định AL・2026-10-16) |
 
 ### Chuyển sang Phase 3
 
@@ -402,7 +411,7 @@ Lấy từ 〔Ghi chú phương án tuyến §3B〕 (2026/09/23. Ghi chú vấn 
 
 > ⚠️ **Cần xác nhận #33** — Ý nghĩa chính xác của tiền tố HU trong ID kho, và ID nơi trung chuyển có được dùng ở phiếu vận chuyển・liên kết CSV・biểu mẫu hay không. 【Tạm】HU = Hub (nơi trung chuyển)〔Quyết định #5〕〔Yêu cầu §8L-5 #5〕
 
-> ✅ **Cần xác nhận #34 (đã giải quyết)** — ~~Điều kiện phán định tự động thay đổi có chứa sản phẩm hạn tiêu thụ ngắn (ngưỡng số ngày còn lại của hạn dùng v.v.)~~ → **Giải quyết ở phụ lục 4 ngày 2026/09/29**. Nếu số ngày từ ngày xuất hàng đến ngày giao hàng ＞ số ngày hạn tiêu thụ − số ngày an toàn (mặc định 2 ngày) thì Cần xác nhận `shelf_life_warning`〔Quyết định v2.3 #35〕 (9-4)
+> 【2026-10-13 rút lại: đã bỏ mục Cần xác nhận 「短消費期限の注意」 (sổ quyết định X)】 ✅ **Cần xác nhận #34 (đã giải quyết)** — ~~Điều kiện phán định tự động thay đổi có chứa sản phẩm hạn tiêu thụ ngắn (ngưỡng số ngày còn lại của hạn dùng v.v.)~~ → **Giải quyết ở phụ lục 4 ngày 2026/09/29**. Nếu số ngày từ ngày xuất hàng đến ngày giao hàng ＞ số ngày hạn tiêu thụ − số ngày an toàn (mặc định 2 ngày) thì Cần xác nhận `shelf_life_warning`〔Quyết định v2.3 #35〕 (9-4)
 
 > ✅ **Cần xác nhận #35 (đã giải quyết)** — ~~"Khi có" đơn hàng vật tư là thời điểm nào (mỗi lần xác định giỏ hàng, hay gộp theo hạn chót chu kỳ tuần của phía vật tư)~~ → **Giải quyết ở phụ lục 4 ngày 2026/09/29**. Tạo mỗi khi xác định giỏ hàng, và chuyến vật tư cùng cơ sở・cùng ngày giao hàng・trước chỉ thị xuất hàng thì gộp thành 1 đơn. Chỉ thị xuất hàng là catch-up hằng ngày hiện có〔Quyết định v2.3 #36〕 (10-9)
 

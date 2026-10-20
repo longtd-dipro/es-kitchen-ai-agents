@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Thông báo (+ liên hệ qua HubSpot)",
+    "output": "flow/80_Màn_hình_vận_hành_và_doanh_nghiệp/dataflow-contact-notification-20261020-144821/contact-notification.html",
+    "viewBox": [
+      1068,
+      680
+    ],
+    "quality_profile": "showcase"
+  },
+  "stages": [
+    {
+      "label": "Nguồn"
+    },
+    {
+      "label": "Tiếp nhận"
+    },
+    {
+      "label": "Lưu・Gửi"
+    },
+    {
+      "label": "Lọc đối tượng"
+    },
+    {
+      "label": "Hiển thị"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cw",
+      "type": "frontend",
+      "label": "Web doanh nghiệp",
+      "sublabel": "sau đăng nhập",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "hub",
+      "type": "external",
+      "label": "Widget HubSpot",
+      "sublabel": "chatbot・trả lời trong HubSpot",
+      "stage": 1,
+      "row": 0,
+      "width": 150
+    },
+    {
+      "id": "adm",
+      "type": "frontend",
+      "label": "Quản lý hệ thống",
+      "sublabel": "AW_NOTI (vận hành)",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "noti",
+      "type": "backend",
+      "label": "Thông báo",
+      "sublabel": "NT- + 5 chữ số",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "mail",
+      "type": "external",
+      "label": "Email",
+      "sublabel": "không đính kèm file",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "hist",
+      "type": "database",
+      "label": "Lịch sử thông báo",
+      "sublabel": "hiển thị ở vận hành",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "tgt",
+      "type": "backend",
+      "label": "ES STATION に表示",
+      "sublabel": "đối tượng・đang công khai",
+      "stage": 3,
+      "row": 2
+    },
+    {
+      "id": "cwn",
+      "type": "frontend",
+      "label": "NEWS Web DN",
+      "sublabel": "pháp nhân・cơ sở",
+      "stage": 4,
+      "row": 1
+    },
+    {
+      "id": "app",
+      "type": "frontend",
+      "label": "App hội viên",
+      "sublabel": "người dùng app",
+      "stage": 4,
+      "row": 2
+    },
+    {
+      "id": "sw",
+      "type": "frontend",
+      "label": "SW_HOME",
+      "sublabel": "nhà cung cấp",
+      "stage": 4,
+      "row": 3
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "cw",
+      "to": "hub",
+      "label": "法人ID・拠点ID",
+      "route": "straight"
+    },
+    {
+      "id": "f2",
+      "from": "adm",
+      "to": "noti",
+      "label": "soạn・配信停止",
+      "route": "straight"
+    },
+    {
+      "id": "f3",
+      "from": "noti",
+      "to": "hist",
+      "label": "lưu lịch sử",
+      "route": "straight",
+      "labelDy": 26
+    },
+    {
+      "id": "f4",
+      "from": "noti",
+      "to": "mail",
+      "label": "+email / chỉ email",
+      "variant": "dashed"
+    },
+    {
+      "id": "f5",
+      "from": "hist",
+      "to": "tgt",
+      "label": "công khai",
+      "route": "straight"
+    },
+    {
+      "id": "f6",
+      "from": "tgt",
+      "to": "cwn",
+      "label": "法人・拠点"
+    },
+    {
+      "id": "f7",
+      "from": "tgt",
+      "to": "app",
+      "label": "app",
+      "route": "straight",
+      "labelDx": 25
+    },
+    {
+      "id": "f8",
+      "from": "tgt",
+      "to": "sw",
+      "label": "仕入先"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Liên hệ chỉ qua widget HubSpot (spec 80 §5b)",
+      "items": [
+        "Chỉ widget HubSpot (nút tròn góc phải dưới = chatbot AI); ES không có màn hình hay bản ghi liên hệ. Đã bỏ CW_CONT, AW_INQU, số liên hệ mới ở TOP, mục menu; /corp/contact, /ops/inquiries chuyển về trang chủ / TOP (5b-1; 台帳 AT #25)",
+        "Menu vận hành không có お問い合わせ (台帳 AU #829)",
+        "Widget chỉ hiện sau đăng nhập; không có ở màn đăng nhập, đăng ký mới, đặt lại MK (5b-3)",
+        "Truyền 法人ID・拠点ID cho HubSpot (5b-4); màn có thanh nút cố định ở đáy thì nút widget nằm trên thanh (5b-5)",
+        "Lịch sử, trả lời, xử lý đều trong HubSpot; Web DN không xem lịch sử (5b-2, 5b-6)"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Thông báo (spec 80 §5)",
+      "items": [
+        "Chức năng chung, Quản lý hệ thống quản lý; ID NT-+5 số; 4 danh mục cố định (5-1, 5-3)",
+        "3 cách gửi: chỉ ES STATION / ES STATION + email / chỉ email (AW_NOTI 3.5); chỉ email vẫn lưu lịch sử và hiện ở vận hành, nội dung email bắt buộc (5-9)",
+        "Email không kèm file đính kèm (5-8); email quan trọng: hệ thống đề xuất giờ gửi, vận hành chọn (5-11)",
+        "配信停止: dừng mục đang công khai / 予定中, không hoàn tác; sau đó không sửa được, xóa được (5-5)"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Hiển thị theo đối tượng (5-6, 5-13, 5-15)",
+      "items": [
+        "Cột 'ES STATION に表示' chọn đối tượng: pháp nhân・cơ sở, người dùng app, nhà cung cấp; ESQR và khách không thuộc đối tượng (5-6)",
+        "NEWS Web DN: chỉ mục mình là đối tượng và đang công khai; mở thẳng ID ngoài đối tượng → I276; mới nhất trước, 10 mục/trang (5-15)",
+        "Nhà cung cấp xem ở SW_HOME (đối tượng 仕入先)"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "要確認 / lưu ý",
+      "items": [
+        "要確認: tài khoản pháp nhân truyền 拠点ID nào (theo URL màn cơ sở đang mở, màn không thuộc cơ sở thì rỗng) (5b-4)",
+        "Hiển thị trên App hội viên: liên kết app chưa có đặc tả (台帳 AR #750)",
+        "Quyết định cũ đã bị thay: form gửi HubSpot・lỗi gửi, danh sách AW_INQU, số mới ở TOP (ghi chú dưới §5b)"
+      ]
+    }
+  ]
+}

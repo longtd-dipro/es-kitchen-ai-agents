@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "fce58563-dca5-4a4f-98a1-ab189a471755",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng/dataflow-aw-actl-20261020-144532/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng/dataflow-aw-actl-20261020-144532/aw-actl.html",
+  "specification": {
+    "sha256": "05d96d4a9a55984cffd1eccb7e13f14a5445c03d8c477dbc9eded05007daf6a2",
+    "bytes": 36948
+  },
+  "artifact": {
+    "sha256": "49cdf695f33088604863ca68c50ce27dcd5dc3a0ad3acead24f90ecf197a5b7d",
+    "bytes": 774335
+  }
+}
