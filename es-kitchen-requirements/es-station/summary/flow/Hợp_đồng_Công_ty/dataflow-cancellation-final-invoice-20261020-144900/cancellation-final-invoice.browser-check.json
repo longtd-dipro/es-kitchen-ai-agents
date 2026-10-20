@@ -6,11 +6,11 @@
   "status": "pass",
   "visualReview": "not-requested",
   "provenance": "current",
-  "deliveryReceiptId": "ee599520-98e9-4792-b02b-e769fed6096e",
+  "deliveryReceiptId": "191563af-c488-4b1f-a3a0-9cd8a520dae3",
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Hợp_đồng_Công_ty/dataflow-cancellation-final-invoice-20261020-144900/cancellation-final-invoice.html",
-    "sha256": "0ecfeea908e1418a87b74cca590943159283b625850d17e00005c67d8e88339f",
-    "bytes": 771987
+    "sha256": "8361dc0e758ad3dcdaef1b4b2a9cfb860bb082d15c3c9991a8bc5a63c0dd327e",
+    "bytes": 771942
   },
   "state": {
     "detail": "read",

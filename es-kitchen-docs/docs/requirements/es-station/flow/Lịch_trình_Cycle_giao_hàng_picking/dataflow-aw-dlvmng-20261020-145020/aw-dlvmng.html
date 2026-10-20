@@ -5500,7 +5500,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <ul>
           <li>Đổi ngày ở 編集 dùng cùng popup dời lịch như AW_SCHD_004: trước 本発注 nhiều chuyến; sau đó 1 chuyến, lý do bắt buộc, cùng nửa A↔B / C↔D; đã gửi chỉ thị → rev+1 (配送_04 §8-3)</li>
           <li>Đổi địa chỉ 1 chuyến: sau khi gửi → bản chỉ thị mới, vận đơn cũ voided, locked_at giữ nguyên; chỉ gửi lại được tới trước import thực tích (配送_12 §15.14, §19.2)</li>
-          <li>要確認: lý do đổi địa chỉ 必須 (配送_12 §15.14) hay 任意 (配送_08 §15-13, 台帳 W) — vẽ theo ledger: tùy chọn</li>
+          <li>Lý do đổi địa chỉ: tùy chọn (任意) (hong 2026-10-20 (Q&amp;A #2); 台帳 W)</li>
           <li>Sửa tuyến (区間 carrier/tài xế): sau khi gửi tạo ship_order_diff để gửi lại; kho không đổi (đổi kho = 取消 + 複製) (配送_12 §15.13)</li>
         </ul>
       </div>
@@ -5514,6 +5514,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <li>Xuất CSV chỉ thị không phải là gửi: ops tự đăng ký THOMAS rồi bấm 「送信済にする」; gửi tự động = Phase 3 (配送_12 §16.6, §19.6)</li>
           <li>Import thực tích xuất: ok + 出荷待 → 出荷済 + locked + mail 発送完了; ng → shipment_result_ng; lệch SL → qty_mismatch (台帳 AL; 配送_12 §19.4)</li>
           <li>Số vận đơn (file riêng có thể) chỉ gắn, không đổi status (配送_12 §19.3). Gửi lại khi nội dung khác (rev+1), không gửi lại sau 出荷済; hủy chưa gửi → không gửi gì (台帳 AS #774, AL)</li>
+          <li>Giao ES (自社/委託, qua app) không có báo cáo = sự cố / phát hiện thiếu giao, không tự đổi status; みなし完了 chỉ cho chặng cuối 路線便 (hong 2026-10-20 (Q&amp;A #3); 配送_06 §11-2). 要確認: giờ chạy みなし完了 (0:00 hay 06:00)</li>
         </ul>
       </div>
 

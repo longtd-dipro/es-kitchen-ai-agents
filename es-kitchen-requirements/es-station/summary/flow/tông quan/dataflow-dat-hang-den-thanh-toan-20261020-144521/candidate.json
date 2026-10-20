@@ -759,7 +759,8 @@
         "Gửi chỉ thị là thủ công: ops xuất CSV ở AW_SHIP_001, tự đăng ký vào THOMAS rồi bấm 「送信済にする」; gửi tự động = Phase 3 (配送_12 §16.6)",
         "Import CSV thực tích xuất của THOMAS → 出荷済 + locked + 1 mail 発送完了; 送信済 và số vận đơn không làm locked (台帳 AL; 配送_12 §19.4)",
         "Sửa sau khi gửi → gửi lại rev+1, chỉ tới khi import thực tích; hủy chuyến chưa gửi thì không gửi gì, đã gửi thì gửi bản qty = 0 (台帳 AS #774, AL)",
-        "Chặng cuối là đơn vị vận chuyển: hôm sau ngày giao xem là Đã giao (みなし) (配送_06 §11-2)"
+        "Chặng cuối là đơn vị vận chuyển: hôm sau ngày giao xem là Đã giao (みなし) (配送_06 §11-2). 要確認: giờ chạy (0:00 hay 06:00)",
+        "Giao ES (自社/委託, qua app) không có báo cáo = sự cố / phát hiện thiếu giao, không tự đổi status (hong 2026-10-20 (Q&A #3))"
       ]
     },
     {

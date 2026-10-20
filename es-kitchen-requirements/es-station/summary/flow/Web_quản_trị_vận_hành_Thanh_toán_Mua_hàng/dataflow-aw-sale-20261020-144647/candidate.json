@@ -686,6 +686,7 @@
       "title": "Luồng chính (spec 85 §1, §2, §5)",
       "items": [
         "App, ESQR, khách lưu chung 1 dữ liệu mua hàng, có giữ nguồn mua; OD+7 số, 1 đơn nhiều dòng SP (§1-1, 1-2)",
+        "Đã chốt: ESQR / khách có user ID (hong 2026-10-20 (Q&A #4))",
         "Thanh toán xong thì trừ tồn kho lý thuyết của cơ sở mua; chờ thanh toán 30 phút, quá hạn/thất bại = キャンセル (§2-1, 2-2)",
         "Số lượng・số tiền = 支払済 + 返金中 − 返金済; không tính キャンセル; dùng chung cho KPI, CSV, CW_SALE (§5-1 đến 5-3)",
         "CW_SALE (Web doanh nghiệp) không hiện キャンセル, ESQR, khách (§5-6; spec 80 §2-8)"
@@ -706,7 +707,7 @@
       "dot": "amber",
       "title": "キャンセル→支払済",
       "items": [
-        "Nút ở dòng キャンセル (tab người dùng); Quyền đầy đủ・Quản lý hệ thống; lý do bắt buộc ≤500 (AW_SALE 11.17, 14.5; 台帳 F 2026-10-07)",
+        "Nút ở dòng キャンセル (tab người dùng); ai có quyền sửa màn quản lý mua hàng đều làm được = Quyền đầy đủ (CRUD) và Quản lý hệ thống (CRUD toàn bộ, 2026-10-05) (hong 2026-10-20 (Q&A #8)); lý do bắt buộc ≤500 (AW_SALE 11.17, 14.5; 台帳 F 2026-10-07)",
         "Sửa xong thì trừ SL khỏi tồn kho lý thuyết, có thể âm; lịch sử xem ở tooltip dòng (台帳 F 2026-10-08)"
       ]
     },
@@ -724,7 +725,6 @@
       "dot": "orange",
       "title": "Điểm mở / 要確認",
       "items": [
-        "要確認: user ID của ESQR/khách — spec 85 §1-4 và AW_SALE 9.2 nói có; AW_SALE 11.1 vẫn ghi '—'. Vẽ theo spec 85",
         "OS1: chỉ còn chi tiết API (URL, xác thực, kết quả); theo code Phase 1, không thêm adapter (PAY-P1-01)",
         "OS2: hạn 3 tháng là tạm (PAY-OPEN-02); xác nhận thủ công khi kết quả không rõ chưa có màn riêng (PAY-OPEN-03)",
         "OS3: chỉ còn cấu trúc đơn OD bên app; OS5: 8 phương thức TT đã chốt (hong 2026-10-08), khách chưa xác nhận",

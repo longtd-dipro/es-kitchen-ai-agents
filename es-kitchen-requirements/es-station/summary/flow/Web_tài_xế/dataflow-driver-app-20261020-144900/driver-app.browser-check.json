@@ -6,11 +6,11 @@
   "status": "pass",
   "visualReview": "not-requested",
   "provenance": "current",
-  "deliveryReceiptId": "98d27108-c6f7-4d98-a3fe-91d2195a7db9",
+  "deliveryReceiptId": "455f8b26-5ed8-417c-946a-5bdd2ae14797",
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_tài_xế/dataflow-driver-app-20261020-144900/driver-app.html",
-    "sha256": "0762cce427c9185c1ad19017558b8821abe7aa3c124878be06255974c71d3ed9",
-    "bytes": 780244
+    "sha256": "b5ec05559e40857560a2173a4759b7fa75aa73d01d20bd82018ce6f2af537239",
+    "bytes": 780426
   },
   "state": {
     "detail": "read",

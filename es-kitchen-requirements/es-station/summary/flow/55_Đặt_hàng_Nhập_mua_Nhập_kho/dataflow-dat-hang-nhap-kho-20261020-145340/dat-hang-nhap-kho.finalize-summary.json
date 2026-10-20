@@ -7,13 +7,13 @@
   "quality": "showcase",
   "specification": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/55_Đặt_hàng_Nhập_mua_Nhập_kho/dataflow-dat-hang-nhap-kho-20261020-145340/candidate.json",
-    "sha256": "578f5104c187f3fe2a079d7df9884cc7a9abe02ec0ed6dea45226dcc98580859",
-    "bytes": 7556
+    "sha256": "f8ddd39980dd652b309907f8279d9b23a671504488141f6790ba9476197e69c6",
+    "bytes": 7502
   },
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/55_Đặt_hàng_Nhập_mua_Nhập_kho/dataflow-dat-hang-nhap-kho-20261020-145340/dat-hang-nhap-kho.html",
-    "sha256": "cf00666b872b6ac64914ddb708a5dced841bb6b708d029dabd84ba6b9beb3fc2",
-    "bytes": 769422
+    "sha256": "f1c1d774e859254e61ac377d1e714467bd3486b6ee2a0efd01a2a86f29298c84",
+    "bytes": 769364
   },
   "gates": {
     "validate": "pass",
@@ -45,5 +45,5 @@
     "eventKey": "archify@sha256:70e210265c59f24dcbdf2a502ff671104b5454e7ee7d3554aecd86bad32384f5"
   },
   "visualReview": "not-requested",
-  "durationMs": 1746
+  "durationMs": 1642
 }

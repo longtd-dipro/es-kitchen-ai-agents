@@ -7,13 +7,13 @@
   "quality": "showcase",
   "specification": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/candidate.json",
-    "sha256": "2a610e0d214361102688bc89bd5d49eeaf0cba0bd350a22bd78e05be61fab5c6",
-    "bytes": 9384
+    "sha256": "7c6a8c888ae979d7ef7a61d8e9ce28f9dd82840778cd14ba0120e3adf45b7a3f",
+    "bytes": 9390
   },
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/dang-ky-moi.html",
-    "sha256": "3f4d6ef9569ec4f2ba53e4a9c368bb5b7051cbd9738a3c4d64dbeba933bae53e",
-    "bytes": 770416
+    "sha256": "94fd7c6a406b5d5673556dae8cc9ff87b672730f62ea80ca5fe62b6abb4ae85e",
+    "bytes": 770426
   },
   "gates": {
     "validate": "pass",
@@ -45,5 +45,5 @@
     "eventKey": "archify@sha256:70e210265c59f24dcbdf2a502ff671104b5454e7ee7d3554aecd86bad32384f5"
   },
   "visualReview": "not-requested",
-  "durationMs": 1803
+  "durationMs": 1623
 }

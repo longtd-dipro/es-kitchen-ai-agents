@@ -6,11 +6,11 @@
   "status": "pass",
   "visualReview": "not-requested",
   "provenance": "current",
-  "deliveryReceiptId": "bf60795a-f37e-4f7a-a1db-88036ec6ff87",
+  "deliveryReceiptId": "aa52d3fc-b0b7-4bce-aec7-a32dd807adaa",
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_quản_trị_vận_hành_Thanh_toán_Mua_hàng/dataflow-aw-sale-20261020-144647/aw-sale.html",
-    "sha256": "36d5d060c6fe9fec14727f7e8b98b3a762b142b142eeafee5978717e205ee1a8",
-    "bytes": 776477
+    "sha256": "e5d8eb44c571d5a81fc6e9838d99705db0ad1170f30944e207f15bdb7fa8643d",
+    "bytes": 776550
   },
   "state": {
     "detail": "read",

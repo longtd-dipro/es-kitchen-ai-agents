@@ -7,13 +7,13 @@
   "quality": "showcase",
   "specification": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/10_Giao_hàng/dataflow-chuoi-batch-giao-hang-20261020-144826/candidate.json",
-    "sha256": "55dca93253d3f64e30edd7bed4e1b38e2ead81ee9b88e6eef39527fb2350df6c",
-    "bytes": 41295
+    "sha256": "d3f739927901a9afcc997518be9a67692f86f39cf50bad283dfef070e4875a53",
+    "bytes": 41407
   },
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/10_Giao_hàng/dataflow-chuoi-batch-giao-hang-20261020-144826/chuoi-batch-giao-hang.html",
-    "sha256": "518b403245b8a02eb4018b27c223b2f49d6fe96d5ec9e7a2bd35f1e26ac81040",
-    "bytes": 781605
+    "sha256": "b77f50ae9b82c1bff80fa2aaf6b9ad8783448af262f3b5fdcc74749a1d2aa844",
+    "bytes": 781721
   },
   "gates": {
     "validate": "pass",
@@ -45,7 +45,7 @@
     "eventKey": "archify@sha256:70e210265c59f24dcbdf2a502ff671104b5454e7ee7d3554aecd86bad32384f5"
   },
   "visualReview": "not-requested",
-  "durationMs": 2644,
+  "durationMs": 1862,
   "visualReviewRecommendation": {
     "action": "inspect-route-readability",
     "signals": {

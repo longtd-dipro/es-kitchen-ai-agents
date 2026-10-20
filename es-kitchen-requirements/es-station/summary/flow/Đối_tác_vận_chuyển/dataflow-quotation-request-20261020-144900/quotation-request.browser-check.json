@@ -6,11 +6,11 @@
   "status": "pass",
   "visualReview": "not-requested",
   "provenance": "current",
-  "deliveryReceiptId": "ee05f1a5-c39d-4258-b442-2965457627d3",
+  "deliveryReceiptId": "e232e6fc-558e-486c-a936-1f8c94a93ddf",
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Đối_tác_vận_chuyển/dataflow-quotation-request-20261020-144900/quotation-request.html",
-    "sha256": "ab314085397d3153f8e298f8121150797be86f6f06ae06453e096572398b5e1f",
-    "bytes": 770575
+    "sha256": "95e024f93d1260af5bfdb84a584f9931dcd564a2357b32d30ddc6bc89af48f96",
+    "bytes": 770555
   },
   "state": {
     "detail": "read",

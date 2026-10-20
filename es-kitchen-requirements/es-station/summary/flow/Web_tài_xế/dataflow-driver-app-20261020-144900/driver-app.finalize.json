@@ -5,16 +5,16 @@
   "status": "pass",
   "type": "dataflow",
   "quality": "showcase",
-  "startedAt": "2026-10-20T07:52:56.559Z",
+  "startedAt": "2026-10-20T09:20:52.705Z",
   "specification": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_tài_xế/dataflow-driver-app-20261020-144900/candidate.json",
-    "sha256": "663eeb75901ea7c080891a339ee7c2c01df3a6b1b024b14064d91d22abf9f7d4",
-    "bytes": 37734
+    "sha256": "7cf5fc908aa0a0788a709794c8399a4fa8607fc8aef524da37f92d3c6eb6d839",
+    "bytes": 37900
   },
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_tài_xế/dataflow-driver-app-20261020-144900/driver-app.html",
-    "sha256": "0762cce427c9185c1ad19017558b8821abe7aa3c124878be06255974c71d3ed9",
-    "bytes": 780244
+    "sha256": "b5ec05559e40857560a2173a4759b7fa75aa73d01d20bd82018ce6f2af537239",
+    "bytes": 780426
   },
   "stages": {
     "validate": {
@@ -38,8 +38,8 @@
         "ok": true,
         "command": "validate",
         "specification": {
-          "sha256": "663eeb75901ea7c080891a339ee7c2c01df3a6b1b024b14064d91d22abf9f7d4",
-          "bytes": 37734
+          "sha256": "7cf5fc908aa0a0788a709794c8399a4fa8607fc8aef524da37f92d3c6eb6d839",
+          "bytes": 37900
         },
         "validation": {
           "checksPassed": 9,
@@ -54,7 +54,7 @@
     "deliver": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 553,
+      "durationMs": 375,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -68,19 +68,19 @@
       ],
       "receipt": {
         "schemaVersion": 1,
-        "receiptId": "98d27108-c6f7-4d98-a3fe-91d2195a7db9",
+        "receiptId": "455f8b26-5ed8-417c-946a-5bdd2ae14797",
         "ok": true,
         "command": "deliver",
         "type": "dataflow",
         "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_tài_xế/dataflow-driver-app-20261020-144900/candidate.json",
         "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_tài_xế/dataflow-driver-app-20261020-144900/driver-app.html",
         "specification": {
-          "sha256": "663eeb75901ea7c080891a339ee7c2c01df3a6b1b024b14064d91d22abf9f7d4",
-          "bytes": 37734
+          "sha256": "7cf5fc908aa0a0788a709794c8399a4fa8607fc8aef524da37f92d3c6eb6d839",
+          "bytes": 37900
         },
         "artifact": {
-          "sha256": "0762cce427c9185c1ad19017558b8821abe7aa3c124878be06255974c71d3ed9",
-          "bytes": 780244
+          "sha256": "b5ec05559e40857560a2173a4759b7fa75aa73d01d20bd82018ce6f2af537239",
+          "bytes": 780426
         },
         "validation": {
           "checksPassed": 9,
@@ -106,7 +106,7 @@
     "check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 226,
+      "durationMs": 123,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -118,8 +118,8 @@
         "ok": true,
         "file": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_tài_xế/dataflow-driver-app-20261020-144900/driver-app.html",
         "artifact": {
-          "sha256": "0762cce427c9185c1ad19017558b8821abe7aa3c124878be06255974c71d3ed9",
-          "bytes": 780244
+          "sha256": "b5ec05559e40857560a2173a4759b7fa75aa73d01d20bd82018ce6f2af537239",
+          "bytes": 780426
         },
         "checks": [
           {
@@ -236,13 +236,13 @@
           "issues": []
         },
         "provenance": "current",
-        "deliveryReceiptId": "98d27108-c6f7-4d98-a3fe-91d2195a7db9"
+        "deliveryReceiptId": "455f8b26-5ed8-417c-946a-5bdd2ae14797"
       }
     },
     "browser-check": {
       "status": "pass",
       "exitCode": 0,
-      "durationMs": 1118,
+      "durationMs": 1017,
       "command": [
         "/opt/homebrew/Cellar/node/26.0.0/bin/node",
         "/Users/longtd/.agents/skills/archify/bin/archify.mjs",
@@ -260,11 +260,11 @@
         "status": "pass",
         "visualReview": "not-requested",
         "provenance": "current",
-        "deliveryReceiptId": "98d27108-c6f7-4d98-a3fe-91d2195a7db9",
+        "deliveryReceiptId": "455f8b26-5ed8-417c-946a-5bdd2ae14797",
         "artifact": {
           "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_tài_xế/dataflow-driver-app-20261020-144900/driver-app.html",
-          "sha256": "0762cce427c9185c1ad19017558b8821abe7aa3c124878be06255974c71d3ed9",
-          "bytes": 780244
+          "sha256": "b5ec05559e40857560a2173a4759b7fa75aa73d01d20bd82018ce6f2af537239",
+          "bytes": 780426
         },
         "state": {
           "detail": "read",
@@ -958,8 +958,8 @@
     "browserCheckReceipt": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Web_tài_xế/dataflow-driver-app-20261020-144900/driver-app.browser-check.json"
   },
   "visualReview": "not-requested",
-  "finishedAt": "2026-10-20T07:52:58.672Z",
-  "durationMs": 2113,
+  "finishedAt": "2026-10-20T09:20:54.351Z",
+  "durationMs": 1646,
   "update": {
     "status": "update_available",
     "installedVersion": "3.0.1",

@@ -813,7 +813,7 @@
       "dot": "rose",
       "title": "Sau giao・要確認・thanh toán",
       "items": [
-        "delivery_presume_complete: chặng cuối là 路線便, 出荷済, đã qua ngày giao → 納品済 (みなし); delivery_detect_missing: 自社/委託 → 要確認 missing, không đổi status (配送_12 §16.9–16.10)",
+        "delivery_presume_complete: chặng cuối là 路線便, 出荷済, đã qua ngày giao → 納品済 (みなし); delivery_detect_missing: 自社/委託 (giao ES qua app) không có báo cáo → sự cố / 要確認 missing, không bao giờ tự hoàn tất, không đổi status (hong 2026-10-20 (Q&A #3); 配送_12 §16.9–16.10)",
         "要確認 khác: tracking_anomaly (số vận đơn trước 送信済), ship_order_diff, plan_recheck; qty_missing đã bỏ (台帳 AL Q26). Sự cố loại auto_child tạo con ngay trong giao dịch đăng ký (§16.8.1)",
         "billing_issue chạy độc lập với chuỗi: ① trả trước (子契約) + ② 実績精算 (棚卸) + ③ điều chỉnh; 20 chốt → 25 ops 確定 → ops bấm 発行 → Bill One ngày 1; 0 yên không gửi (請求ルール §1-1, §1-3; 台帳 AS #779)"
       ]

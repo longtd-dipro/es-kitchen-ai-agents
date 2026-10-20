@@ -6,11 +6,11 @@
   "status": "pass",
   "visualReview": "not-requested",
   "provenance": "current",
-  "deliveryReceiptId": "5fe98be1-8031-49be-ac6e-f1ddce66d252",
+  "deliveryReceiptId": "1a228efb-fd72-4706-ba1e-2905f49895c7",
   "artifact": {
     "path": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Lịch_trình_Cycle_giao_hàng_picking/dataflow-aw-dlvmng-20261020-145020/aw-dlvmng.html",
-    "sha256": "2be30cdcba6098bb4a2d46b12531ca2cb0c168f9444eda7d12f6cb3cbd944109",
-    "bytes": 777711
+    "sha256": "0489bb2de362913f1acf7cc258e2a6924fa34db4ad59124c7bc802b4c774f851",
+    "bytes": 777960
   },
   "state": {
     "detail": "read",
