@@ -1,0 +1,258 @@
+{
+ "schema_version": 1,
+ "diagram_type": "dataflow",
+ "meta": {
+  "title": "Luồng dữ liệu tồn kho cơ sở",
+  "output": "flow/60_Tồn_kho/dataflow-ton-kho-20261020-144532/ton-kho.html",
+  "viewBox": [
+   1060,
+   640
+  ],
+  "quality_profile": "showcase"
+ },
+ "stages": [
+  {
+   "label": "Nguồn sự kiện"
+  },
+  {
+   "label": "Xử lý"
+  },
+  {
+   "label": "Lưu・tính toán"
+  },
+  {
+   "label": "Sử dụng"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "purchase",
+   "type": "frontend",
+   "label": "Mua app・ESQR",
+   "sublabel": "giỏ hàng → thanh toán",
+   "stage": 0,
+   "row": 0
+  },
+  {
+   "id": "delivery",
+   "type": "external",
+   "label": "Giao hàng",
+   "sublabel": "cộng dồn theo chuyến",
+   "stage": 0,
+   "row": 1
+  },
+  {
+   "id": "ops",
+   "type": "security",
+   "label": "Vận hành",
+   "sublabel": "điều chỉnh・di chuyển",
+   "stage": 0,
+   "row": 2
+  },
+  {
+   "id": "refund",
+   "type": "external",
+   "label": "Hoàn tiền",
+   "sublabel": "API thành công",
+   "stage": 0,
+   "row": 3
+  },
+  {
+   "id": "hold",
+   "type": "backend",
+   "label": "Giữ tạm",
+   "sublabel": "chờ thanh toán 30 phút",
+   "stage": 1,
+   "row": 0
+  },
+  {
+   "id": "theory",
+   "type": "database",
+   "label": "Tồn kho lý thuyết",
+   "sublabel": "theo cơ sở・được âm",
+   "stage": 1,
+   "row": 1
+  },
+  {
+   "id": "count",
+   "type": "frontend",
+   "label": "Kiểm kê (AW_STCK)",
+   "sublabel": "số vận hành chốt",
+   "stage": 1,
+   "row": 2
+  },
+  {
+   "id": "release",
+   "type": "backend",
+   "label": "Giải phóng giữ tạm",
+   "sublabel": "quá 30 phút・lỗi・hủy",
+   "stage": 2,
+   "row": 0
+  },
+  {
+   "id": "avail",
+   "type": "backend",
+   "label": "Tồn kho khả dụng",
+   "sublabel": "lý thuyết − giữ tạm",
+   "stage": 2,
+   "row": 1
+  },
+  {
+   "id": "app",
+   "type": "frontend",
+   "label": "Hiển thị app",
+   "sublabel": "ẩn・sắp hết・mua được",
+   "stage": 3,
+   "row": 1
+  },
+  {
+   "id": "settle",
+   "type": "backend",
+   "label": "AW_ACTL",
+   "sublabel": "管理ロス → tiền",
+   "stage": 3,
+   "row": 2
+  }
+ ],
+ "flows": [
+  {
+   "id": "f-order",
+   "from": "purchase",
+   "to": "hold",
+   "label": "đơn hàng",
+   "route": "straight"
+  },
+  {
+   "id": "f-paid",
+   "from": "hold",
+   "to": "theory",
+   "label": "TT xong: −",
+   "variant": "emphasis",
+   "route": "straight",
+   "labelAt": [
+    362,
+    214
+   ]
+  },
+  {
+   "id": "f-release",
+   "from": "hold",
+   "to": "release",
+   "label": "không thanh toán",
+   "variant": "dashed",
+   "route": "straight"
+  },
+  {
+   "id": "f-hold",
+   "from": "hold",
+   "to": "avail",
+   "label": "− giữ tạm",
+   "route": "vertical-channel",
+   "channelX": 455
+  },
+  {
+   "id": "f-delivery",
+   "from": "delivery",
+   "to": "theory",
+   "label": "+ giao hàng",
+   "variant": "emphasis",
+   "route": "straight",
+   "labelAt": [
+    196,
+    259
+   ]
+  },
+  {
+   "id": "f-ops",
+   "from": "ops",
+   "to": "theory",
+   "label": "± điều chỉnh",
+   "variant": "security",
+   "route": "vertical-channel",
+   "channelX": 215,
+   "labelAt": [
+    180,
+    343
+   ]
+  },
+  {
+   "id": "f-refund",
+   "from": "refund",
+   "to": "theory",
+   "label": "+ hoàn tiền",
+   "route": "vertical-channel",
+   "channelX": 240,
+   "labelAt": [
+    195,
+    487
+   ]
+  },
+  {
+   "id": "f-count",
+   "from": "count",
+   "to": "theory",
+   "label": "ghi đè (25 / lúc chốt)",
+   "variant": "emphasis",
+   "route": "straight",
+   "labelAt": [
+    385,
+    328
+   ]
+  },
+  {
+   "id": "f-settle",
+   "from": "count",
+   "to": "settle",
+   "label": "chênh lệch",
+   "route": "straight"
+  },
+  {
+   "id": "f-avail",
+   "from": "theory",
+   "to": "avail",
+   "label": "lý thuyết",
+   "route": "straight",
+   "labelAt": [
+    407,
+    259
+   ]
+  },
+  {
+   "id": "f-app",
+   "from": "avail",
+   "to": "app",
+   "label": "số khả dụng",
+   "route": "straight"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "Tăng giảm tồn kho lý thuyết",
+   "items": [
+    "Tăng: giao hàng (cộng dồn theo chuyến), di chuyển vào, điều chỉnh (+), hoàn tiền API thành công (在庫 §3, 4-3)",
+    "Giảm: mua hoàn tất thanh toán, đăng ký 廃棄 (vứt bỏ hàng), di chuyển ra, điều chỉnh (−) (在庫 §3)",
+    "Giữ tạm khi đặt đơn; quá 30 phút・thất bại・hủy → giải phóng (在庫 4-1, 4-2)"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Kiểm kê (chi tiết ở AW_STCK)",
+   "items": [
+    "Báo cáo của khách・tài xế là tham khảo; số dùng là số vận hành chốt (台帳 V; 在庫 5-2)",
+    "Ghi đè tự động lúc ngày 25 hoặc lúc 実績精算 chốt, mốc nào đến trước (在庫 5-3b)",
+    "Tháng đã chốt 実績精算 thì không sửa điều chỉnh (在庫 6-4)"
+   ]
+  },
+  {
+   "dot": "slate",
+   "title": "Bắt đầu lại từ 0 / ghi chú",
+   "items": [
+    "Kiểm kê đầu tiên là số khởi đầu, không tính hao hụt (在庫 5-14)",
+    "お試し→本導入: tồn reset về 0; mở lại sau tạm dừng bắt đầu từ 0 (在庫 5-11, 5-13)",
+    "Mua bằng quét không giữ tạm, không kiểm tra tồn (在庫 4-5); sơ đồ chỉ vẽ đường mua qua giỏ hàng",
+    "Tồn kho kho hàng (§2) không vẽ: chủ đề tồn kho cơ sở"
+   ]
+  }
+ ]
+}

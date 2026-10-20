@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Luồng dữ liệu đơn thay đổi (CH-) và phê duyệt",
+    "output": "flow/30_Đơn_yêu_cầu/dataflow-don-yeu-cau-20261020-144748/dataflow-don-yeu-cau.html",
+    "viewBox": [
+      1080,
+      560
+    ],
+    "quality_profile": "showcase"
+  },
+  "stages": [
+    {
+      "label": "Gửi"
+    },
+    {
+      "label": "Tiếp nhận"
+    },
+    {
+      "label": "Phê duyệt"
+    },
+    {
+      "label": "Phản ánh"
+    },
+    {
+      "label": "Tác động"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "corp",
+      "type": "frontend",
+      "label": "Web doanh nghiệp",
+      "sublabel": "契約の申請・拠点詳細",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "ops",
+      "type": "frontend",
+      "label": "Vận hành nhập hộ",
+      "sublabel": "điện thoại・email…",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "ch",
+      "type": "database",
+      "label": "Đơn CH-",
+      "sublabel": "CH-YYYYMMDD-NNNN",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "instant",
+      "type": "backend",
+      "label": "Phản ánh ngay",
+      "sublabel": "chỉ thông báo",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "approve",
+      "type": "security",
+      "label": "Phê duyệt VH",
+      "sublabel": "nhập 便・ルート",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "history",
+      "type": "database",
+      "label": "Lịch sử đơn",
+      "sublabel": "người PD・lý do",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "notify",
+      "type": "messagebus",
+      "label": "Thông báo",
+      "sublabel": "M4・M5・M6・M9 / M8",
+      "stage": 3,
+      "row": 0
+    },
+    {
+      "id": "contract",
+      "type": "database",
+      "label": "Hợp đồng con",
+      "sublabel": "HĐ・cho thuê",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "orders",
+      "type": "database",
+      "label": "Đơn hàng",
+      "sublabel": "về デフォルト・hủy",
+      "stage": 3,
+      "row": 2
+    },
+    {
+      "id": "outsource",
+      "type": "external",
+      "label": "Cty giao ủy thác",
+      "sublabel": "Web + email M9",
+      "stage": 4,
+      "row": 0
+    },
+    {
+      "id": "delivery",
+      "type": "backend",
+      "label": "Giao hàng",
+      "sublabel": "tổ chức lại ngay",
+      "stage": 4,
+      "row": 1
+    },
+    {
+      "id": "billing",
+      "type": "backend",
+      "label": "Thanh toán",
+      "sublabel": "調整明細・giá",
+      "stage": 4,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-submit",
+      "from": "corp",
+      "to": "ch",
+      "label": "gửi đơn",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          100,
+          271
+        ]
+      ]
+    },
+    {
+      "id": "f-proxy",
+      "from": "ops",
+      "to": "ch",
+      "label": "nhập hộ",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "via": [
+        [
+          315,
+          385
+        ]
+      ]
+    },
+    {
+      "id": "f-instant",
+      "from": "corp",
+      "to": "instant",
+      "label": "chỉ thông báo",
+      "route": "straight",
+      "variant": "dashed"
+    },
+    {
+      "id": "f-instant-n",
+      "from": "instant",
+      "to": "notify",
+      "label": "M8 màn hình",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "top",
+      "via": [
+        [
+          530,
+          115
+        ],
+        [
+          745,
+          115
+        ]
+      ],
+      "labelAt": [
+        640,
+        115
+      ]
+    },
+    {
+      "id": "f-m4",
+      "from": "ch",
+      "to": "notify",
+      "label": "M4 受付",
+      "fromSide": "top",
+      "toSide": "left",
+      "via": [
+        [
+          315,
+          205
+        ],
+        [
+          650,
+          205
+        ],
+        [
+          650,
+          157
+        ]
+      ],
+      "labelAt": [
+        430,
+        205
+      ]
+    },
+    {
+      "id": "f-pending",
+      "from": "ch",
+      "to": "approve",
+      "label": "chờ duyệt",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-apply",
+      "from": "approve",
+      "to": "contract",
+      "label": "phê duyệt",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-notice",
+      "from": "approve",
+      "to": "notify",
+      "label": "M5・M6",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "via": [
+        [
+          530,
+          228
+        ],
+        [
+          745,
+          228
+        ]
+      ],
+      "labelAt": [
+        690,
+        228
+      ]
+    },
+    {
+      "id": "f-log",
+      "from": "approve",
+      "to": "history",
+      "label": "ghi lịch sử",
+      "route": "straight",
+      "labelAt": [
+        530,
+        328
+      ]
+    },
+    {
+      "id": "f-m9",
+      "from": "notify",
+      "to": "outsource",
+      "label": "M9 dừng GH",
+      "route": "straight"
+    },
+    {
+      "id": "f-resched",
+      "from": "contract",
+      "to": "delivery",
+      "label": "ngay khi duyệt",
+      "route": "straight"
+    },
+    {
+      "id": "f-order",
+      "from": "contract",
+      "to": "orders",
+      "label": "デフォルト/hủy",
+      "route": "straight",
+      "labelAt": [
+        745,
+        328
+      ]
+    },
+    {
+      "id": "f-bill",
+      "from": "contract",
+      "to": "billing",
+      "label": "#773・調整明細"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Đường chính (申請・承認.md §1・§3・§5; ledger AT #33, AL)",
+      "items": [
+        "8 loại đơn; gửi xong tạo CH-YYYYMMDD-NNNN và gửi M4 (nhập hộ: M4 tới người phụ trách chính của cơ sở) (§10)",
+        "Lối vào: 申請 ＞ 契約の申請, và từ 拠点詳細 xem/tạo đơn của cơ sở đó (AT #33)",
+        "Cơ sở có đơn chờ duyệt bị khóa (§3-3); 法人Web không có nút rút lại — chỉ quản trị hệ thống hủy tay (§3-4, AL)",
+        "Hạn: 解約・休止 = ngày 25 của 2 tháng trước tháng áp dụng; đổi khác theo hạn order ngày 15 (§4-1)",
+        "Ngoài phạm vi: お届け日の変更 (DD-) nay đi qua お届け一覧 (AT #20)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Phê duyệt (§3-6・§4・§9; ledger V)",
+      "items": [
+        "Người có quyền duyệt (フル権限) nào cũng duyệt được, kể cả tự duyệt; duyệt theo từng cơ sở",
+        "Giá trị trước thay đổi khác giá trị hiện tại thì dừng; thiết lập trước duyệt phải xong",
+        "Sau hạn chốt: vận hành chọn dời sang kỳ sau hoặc đặt hàng hộ (§4-2)"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Tác động sau phê duyệt (§6・§8-1; ledger AS #765・#773)",
+      "items": [
+        "Đổi giao hàng: vận hành nhập 便・ルート ngay trên màn duyệt và tổ chức lại ngay (không chờ batch đêm); giao đã gửi chỉ thị xuất kho → 要確認 (#765)",
+        "Đơn hàng: tháng chưa chốt trả về デフォルト注文 (B-1/B-2), hoặc hủy (B-6/B-8)",
+        "COOL便⇔ES配送便 (#773): đổi giá plan, gắn lại OP000004 theo bảng giá của 委託配送先; tháng đã xác nhận/đã xuất HĐ → 調整明細",
+        "Tài khoản: 休止/解約 → 参照のみ rồi 停止 (No.16); thiết bị: 貸出 → 回収依頼中, ngày trả = ngày dừng + 1 tháng",
+        "解約 duyệt → M9 tới Cty giao ủy thác; đổi giao hàng có thể gửi 見積依頼 (tùy chọn, AT #41)"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Thông báo (§10)",
+      "items": [
+        "M8 chỉ hiện trên màn hình vận hành, không gửi email; người phụ trách mới nhận M13",
+        "要確認: khi quản trị hệ thống hủy tay thì có gửi M7 hay không (§3-4, §10)"
+      ]
+    }
+  ]
+}

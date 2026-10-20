@@ -1,3 +1,5 @@
+> Bản dịch tiếng Việt của `ja/01_仕様/10_配送/配送仕様/配送_11_データモデル.md` (nguồn es-station, bản 2026-10-20). Khi khác nhau, bản tiếng Nhật và `docs/決定台帳.md` là chuẩn.
+
 # Đặc tả giao hàng: Mô hình dữ liệu (bảng · cột · trạng thái) — Bản chính
 
 〔Nguồn gốc: Đặc tả DEV §14 (Nhật hóa ngày 2026-10-03)〕
@@ -7,17 +9,17 @@
 **Bản chính của bảng · cột · ràng buộc của giao hàng là file này.** Đã chuyển sang tiếng Nhật và dời về đây Đặc tả DEV §14 vốn là "bản chính duy nhất" từ trước đến nay (trả lời của hong: giao hàng gộp vào một bản đặc tả tích hợp, mô hình dữ liệu của DEV cũng được Nhật hóa rồi đưa vào. DEV bị đóng băng). `Giao_hàng_09_Mô_hình_dữ_liệu_và_batch.md` §16 được đọc như **mục lục** trỏ tới file này.
 
 - Tên bảng · tên cột · giá trị enum **giữ nguyên tiếng Anh** (giống DEV · code). Tiếng Việt chỉ là phần giải thích.
-- **Quyết định đang có hiệu lực hiện nay là `docs/決定台帳.md`**. Chỗ nào DEV và sổ cái lệch nhau thì theo sổ cái và ghi **【Sửa theo sổ cái】**.
-- Cột · bảng không có trong DEV mà được tạo từ quyết định của sổ cái là **【Bổ sung · 2026-10-03】** (là phương án mô hình dữ liệu. Chốt sau khi phát triển xác nhận).
+- **Quyết định đang có hiệu lực hiện nay là `docs/決定台帳.md`**. Chỗ nào DEV và sổ quyết định lệch nhau thì theo sổ quyết định và ghi **【Sửa theo sổ quyết định】**.
+- Cột · bảng không có trong DEV mà được tạo từ quyết định của sổ quyết định là **【Bổ sung · 2026-10-03】** (là phương án mô hình dữ liệu. Chốt sau khi phát triển xác nhận).
 - Chỗ không quyết định hết được bằng DEV · chỗ không tự tin về cách dịch là **【Cần xác nhận】**.
 - Những mục vốn đã là **【Phương án】** trong DEV thì giữ nguyên 【Phương án】.
-- Kiểu · độ dài của cột cũng không được ghi trong DEV nên ở đây cũng không quyết định (chỉ số ký tự ở "Quy tắc chung" bên dưới là do sổ cái quyết định).
+- Kiểu · độ dài của cột cũng không được ghi trong DEV nên ở đây cũng không quyết định (chỉ số ký tự ở "Quy tắc chung" bên dưới là do sổ quyết định quyết định).
 
 ---
 
-## 14.0 Quy tắc chung · chỗ đã sửa theo sổ cái
+## 14.0 Quy tắc chung · chỗ đã sửa theo sổ quyết định
 
-**Độ dài chuỗi ký tự (sổ cái B "Nhập ký tự 1 dòng")** 【Sửa theo sổ cái】
+**Độ dài chuỗi ký tự (sổ quyết định B "Nhập ký tự 1 dòng")** 【Sửa theo sổ quyết định】
 
 | Loại | Giới hạn | Ví dụ |
 |---|---|---|
@@ -27,13 +29,13 @@
 
 (Cũ: không dùng 120／80／50 ký tự của danh sách hạng mục · đặc tả kiểm tra nhập liệu) 【Cần xác nhận】 Cột nào là "1 dòng" hay "nhiều dòng" do ô nhập trên màn hình quyết định. Việc gán theo từng cột sẽ được lập thành danh sách ở phía phát triển.
 
-**Những chỗ trong file này đã theo sổ cái (danh sách)**
+**Những chỗ trong file này đã theo sổ quyết định (danh sách)**
 
-| Chủ đề của sổ cái | Quyết định của sổ cái | Cách xử lý trong file này | Mục |
+| Chủ đề của sổ quyết định | Quyết định của sổ quyết định | Cách xử lý trong file này | Mục |
 |---|---|---|---|
 | Đăng nhập của tài xế | ID đăng nhập + mật khẩu. Đặt lại bằng mã xác thực 4 chữ số | `drivers.login_id` là duy nhất. Cột · bảng cho mật khẩu và mã xác thực là 【Bổ sung · 2026-10-03】 | 14.10 |
-| Hạn tiêu thụ (`expiry_date`) | Không theo dõi. Không có ô nhập lẫn cột | Không đặt `expiry_date` ở `delivery_lines` hay bất kỳ bảng nào khác (`shelf_life_days` của master sản phẩm = số ngày hạn tiêu thụ thì giữ lại. Dùng cho cảnh báo hạn tiêu thụ ngắn 〈`shelf_life_warning`〉) | 14.5 · 14.7 |
-| Số lần giao hàng (1 chu kỳ) | 1〜8 lần | Ràng buộc phạm vi 1〜8 cho `contract_delivery_channels.delivery_count` 【Sửa theo sổ cái】 | 14.2 |
+| Hạn tiêu thụ (`expiry_date`) | Không theo dõi. Không có ô nhập lẫn cột | Không đặt `expiry_date` ở `delivery_lines` hay bất kỳ bảng nào khác (`shelf_life_days` của master sản phẩm = số ngày hạn tiêu thụ thì giữ lại. ~~Dùng cho cảnh báo hạn tiêu thụ ngắn 〈`shelf_life_warning`〉~~〔2026-10-13 rút lại · sổ quyết định X〕) | 14.5 · 14.7 |
+| Số lần giao hàng (1 chu kỳ) | 1〜8 lần | Ràng buộc phạm vi 1〜8 cho `contract_delivery_channels.delivery_count` 【Sửa theo sổ quyết định】 | 14.2 |
 | Báo cáo đỗ xe | Cần: tài xế nhập ảnh biên lai + phí đỗ xe. Không hiển thị phí đỗ xe trong ô thu tiền | `delivery_parking_reports` và loại tệp đính kèm là 【Bổ sung · 2026-10-03】 | 14.7 |
 | Ngày của Số giao hàng | Ngày xuất hàng dự kiến tại thời điểm tạo dữ liệu giao hàng (`DL-yymmdd-nnnn`). Không đổi số 〔trả lời của hong 2026-10-03〕 | `deliveries.delivery_no` là 【Bổ sung · 2026-10-03】 | 14.6 |
 | Tỷ lệ đông lạnh | Không nắm giữ | Không tạo cột (DEV cũng không có `frozen_ratio`) | 14.12 |
@@ -63,7 +65,7 @@
 | `contracts` | `id, site_id, mode(cycle｜special｜on_demand), plan_qty, delivery_count, ng_weekdays, holiday_shift(-1｜1), delivery_condition, status(provisional｜active｜change_scheduled｜suspend_scheduled｜suspended｜resume_scheduled｜cancel_scheduled｜ended), start_cycle_month, confirmed_at NULL, confirmed_by NULL, effective_from, effective_to` | `delivery_count` = **tổng số lần của từng phân loại giao hàng** (để tham chiếu · không nhập. DEV §4.9). `confirmed_at` = thời điểm chốt (đăng ký chính thức) cơ sở. Xem "Trạng thái hợp đồng trở thành đối tượng tạo" bên dưới |
 | `site_receive_windows` | `id, site_id, from_time, to_time, sort_order` | Khung giờ nhận hàng của cơ sở. **Nhiều dòng cho 1 cơ sở**. Không dùng để tính ngày (DEV §3.4) |
 | `contract_delivery_lines` | `id, contract_id, line_no, slot_code NULL, specified_day NULL, qty` | Chi tiết giao hàng (cài đặt của hợp đồng). **Có 2 dòng cùng `slot_code` (hoặc cùng `specified_day`) vẫn lưu được**. Màn hình chỉ cảnh báo, không chặn (2026-09-22) |
-| `contract_delivery_channels` | `id, contract_id, temp_type, warehouse_id, delivery_count NULL, lead_time, service_form(es_delivery｜cool｜material), delivery_regime(self｜partner_driver｜parcel_carrier), share_pct, effective_from` | Phân loại giao hàng (giá trị mặc định của hợp đồng cha). `delivery_count` = **số lần giao hàng của từng phân loại giao hàng** (vật tư là NULL. Lạnh từ 1 trở lên, ES Standard thì đông lạnh cũng từ 1 trở lên. DEV §4.9). **Phạm vi 1〜8** 【Sửa theo sổ cái】 (sổ cái B "số lần giao hàng 1〜8 lần". DEV chỉ có cận dưới mà không có cận trên. Cũ: 1〜4). `lead_time` là 0〜7 (DEV §4.2). **Công ty vận chuyển · điểm trung chuyển không giữ ở đây mà giữ ở `contract_routes`** |
+| `contract_delivery_channels` | `id, contract_id, temp_type, warehouse_id, delivery_count NULL, lead_time, service_form(es_delivery｜cool｜material), delivery_regime(self｜partner_driver｜parcel_carrier), share_pct, effective_from` | Phân loại giao hàng (giá trị mặc định của hợp đồng cha). `delivery_count` = **số lần giao hàng của từng phân loại giao hàng** (vật tư là NULL. Lạnh từ 1 trở lên, ES Standard thì đông lạnh cũng từ 1 trở lên. DEV §4.9). **Phạm vi 1〜8** 【Sửa theo sổ quyết định】 (sổ quyết định B "số lần giao hàng 1〜8 lần". DEV chỉ có cận dưới mà không có cận trên. Cũ: 1〜4). `lead_time` là 0〜7 (DEV §4.2). **Công ty vận chuyển · điểm trung chuyển không giữ ở đây mà giữ ở `contract_routes`** |
 | `contract_routes` | `id, channel_id, leg_no, from_type(warehouse｜relay), from_id, to_type(relay｜destination), to_id NULL, carrier_id, delivery_regime, is_final_leg, assign_scope(ops｜carrier)` | Định nghĩa tuyến theo từng phân loại giao hàng (chặng). **Không có `driver_id`** (14.4) |
 | `contract_months` | `id, contract_id, cycle_month, generated_at, generation_method, price_revision_gen` | Hợp đồng con (theo tháng chu kỳ). `price_revision_gen` = thế hệ giá đã snapshot (14.12) |
 | `contract_month_delivery_channels` | `id, contract_month_id, channel_id, temp_type, warehouse_id, lead_time, service_form, delivery_regime, snapshot_at` | Phân loại giao hàng đã sao vào hợp đồng con |
@@ -72,7 +74,7 @@
 **Ràng buộc (phần bổ sung ở 14.2)**
 
 ```sql
-CHECK (delivery_count IS NULL OR delivery_count BETWEEN 1 AND 8)   -- contract_delivery_channels【Sửa theo sổ cái】
+CHECK (delivery_count IS NULL OR delivery_count BETWEEN 1 AND 8)   -- contract_delivery_channels【Sửa theo sổ quyết định】
 ```
 
 **Trạng thái hợp đồng trở thành đối tượng tạo** (DEV §4.7)
@@ -148,13 +150,13 @@ UNIQUE(delivery_id) WHERE is_final_leg
 |---|---|---|
 | `warehouses` | `id, name, slip_name, kana, warehouse_type(picking｜relay｜return), carrier_id, status, warehouse_code, branch_code, address_fields, pick_count_threshold, ship_order_lead_days, thomas_csv_unit` | `pick_count_threshold` mặc định 300, `ship_order_lead_days` mặc định 3 (DEV §3.1). `return` = nơi trả hàng (nơi gửi trả hàng còn lại về trụ sở, v.v.). **Không có lead time** |
 | `warehouse_staff` | `id, warehouse_id, role(main｜sub), name, kana, email, tel` | Người phụ trách của kho (thông tin liên hệ. Không phải chủ thể đăng nhập) |
-| `carriers` | `id, name, kind(self｜outsourced), temp_types, service_weekdays, coolbag_no NULL, coolant_no NULL, has_coolant_mgmt, has_vending, inquiry_url, status` | `service_weekdays` = thứ hỗ trợ (2026-09-30). `coolbag_no`／`coolant_no` = số túi giữ lạnh · chất giữ lạnh (2026-09-30). Cũ: cột `areas` (4 vùng) → đã chuyển sang `carrier_areas` vào 2026-09-30 |
+| `carriers` | `id, name, kind(self｜outsourced), temp_types, ng_weekdays, coolbag_no NULL, coolant_no NULL, has_coolant_mgmt, has_vending, inquiry_url, status` | Thứ không giao được (cùng dạng với `ng_weekdays` của hợp đồng. Thứ 2〜Chủ nhật · ngày lễ. 2026-10-12 · sổ tiếp nhận #541. Cũ: `service_weekdays` = thứ hỗ trợ). `coolbag_no`／`coolant_no` = số túi giữ lạnh · chất giữ lạnh (2026-09-30). Cũ: cột `areas` (4 vùng) → đã chuyển sang `carrier_areas` vào 2026-09-30 |
 | `carrier_areas` | `carrier_id, prefecture_code` | Khu vực hỗ trợ (theo đơn vị tỉnh) (2026-09-30) |
 | `carrier_rates` | `id, carrier_id, prefecture_code, pay_amount, regional_surcharge NULL, note, updated_by, updated_at` | Bảng giá. Nhập bằng CSV. `regional_surcharge` = phụ phí vùng (**vận hành nhập tay. Không tự tính**). Đơn vị của `pay_amount` (mỗi lần／theo tháng) và việc có chia nhỏ hơn cấp tỉnh hay không là 【Cần xác nhận】 (DEV §3.2 cũng chưa quyết) |
 | `delivery_inquiries` | `id, site_id NULL, prospect_name NULL, postal_code NULL, prefecture_code, city NULL, address_line NULL, temp_types, note, created_by, created_at` | Yêu cầu hỏi về giao hàng (đơn vị gửi yêu cầu báo giá). Khi đang thương thảo chưa có cơ sở nên `site_id` có thể NULL |
 | `carrier_quote_responses` | `id, inquiry_id, carrier_id, requested_at, result(available｜unavailable) NULL, monthly_fee NULL, comment NULL, relay_warehouse_id NULL, responded_by NULL, responded_at NULL` | 1 công ty giao hàng ủy thác được yêu cầu báo giá = 1 dòng. `result` là NULL = chưa trả lời. `relay_warehouse_id` = điểm trung chuyển mà công ty giao hàng ủy thác đề xuất (`warehouse_type = relay`) |
 | `carrier_quote_attachments` | `id, response_id, file_path, uploaded_by, created_at` | Tệp đính kèm của phản hồi báo giá |
-| `products` | `id, code, name, temp_type, pack_size, shelf_life_days, unit_price, description, status` | `shelf_life_days` = **số ngày** hạn tiêu thụ (thuộc tính của sản phẩm). Dùng cho cảnh báo hạn tiêu thụ ngắn (DEV §3.3). **Không theo dõi hạn tiêu thụ theo lô (`expiry_date`)** (sổ cái) |
+| `products` | `id, code, name, temp_type, pack_size, shelf_life_days, unit_price, description, status` | `shelf_life_days` = **số ngày** hạn tiêu thụ (thuộc tính của sản phẩm). ~~Dùng cho cảnh báo hạn tiêu thụ ngắn~~〔2026-10-13 rút lại · sổ quyết định X. Giữ lại như thuộc tính của sản phẩm〕 (DEV §3.3). `temp_type` = **1 loại cho 1 sản phẩm** (đông lạnh／lạnh · thường／vật tư). `unit_price` = **giá bán (đã gồm thuế)** (hong 2026-10-06). `pack_size` (số lượng mỗi thùng) = **số cái mỗi thùng (1 thùng = N suất)** (chú thích §DDL của 納品サイクル設定 bản gốc). **Không dùng** cho tính toán giao hàng (phân bổ · xét dung lượng). Mục đích sử dụng thì 【要確認】 (cần xác nhận). Sản phẩm **không có tuyến** (tuyến do phân loại giao hàng của cơ sở nắm theo từng vùng nhiệt độ). **Không theo dõi hạn tiêu thụ theo lô (`expiry_date`)** (sổ quyết định) |
 | `product_warehouses` | `id, product_id, warehouse_id, status` | Sản phẩm × kho (nhiều-nhiều) |
 
 ```sql
@@ -172,7 +174,7 @@ UNIQUE(carrier_id, prefecture_code)   -- carrier_rates
 | Mã kho (cho THOMAS) | `配送_01` §3-1 #8: **vận hành nhập** (khác với ID kho. D3-2 2026/10/01) | Có `warehouse_code`, nhưng DEV §19.1 viết "dùng nguyên ID kho `WH00001`" | Có thể coi `warehouse_code` là giá trị do vận hành nhập hay không (API đặc tả 19.1 cũng vậy) |
 | Túi giữ lạnh · chất giữ lạnh | `配送_06` §12-5 (D3-5 2026/10/01): sổ cho mượn `carrier_coolers` theo từng đơn vị ủy thác (số · loại · số lượng · ngày giao · trạng thái · ghi chú · nhân viên giao hàng đã giao). **Không sao chép số vào dữ liệu giao hàng** | `carriers.coolbag_no／coolant_no`, `deliveries.coolbag_no／coolant_no` | Có thêm bảng sổ và bỏ các cột số ở `carriers` · `deliveries` hay không |
 | Mẫu URL theo dõi | `配送_01` §3-3 (O-4 2026/10/01): nhập URL chứa `{送り状番号}` theo từng công ty vận chuyển | Chỉ có `inquiry_url` | Có tách thành cột riêng với `inquiry_url` hay không (ví dụ `tracking_url_template`). 【Cần xác nhận】 "mẫu URL theo dõi" và `inquiry_url` (URL liên hệ) có phải là cùng một thứ không |
-| Ngày không giao ủy thác được | `配送_01` §3-3 · `配送_00` §1-4: do công ty vận chuyển nắm giữ | Không có cột · bảng | Có thêm bảng hay không |
+| Ngày không giao ủy thác được (theo ngày) | `配送_01` §3-3 · `配送_00` §1-4 (cũ): do công ty vận chuyển nắm giữ | Không có cột · bảng | **Không nắm giữ** (2026-10-12 · sổ quyết định S · sổ tiếp nhận #541). Điều kiện không giao được chỉ là thứ không giao được (Thứ 2〜Chủ nhật · ngày lễ) |
 
 ---
 
@@ -197,10 +199,10 @@ UNIQUE(delivery_no)                                   -- 【Bổ sung · 2026-10
 | `lead_time` | Lead time của **riêng 1 chuyến giao này**. Chỉ được nhập khi vận hành "Chỉ định riêng ngày" (DEV §6.0) |
 | `internal_memo` | Ghi chú vận hành (2026-09-30) 〔Bảng yêu cầu dòng 164 · Quyết_định_Trả_lời_phản_ánh_một_phần_bảng_yêu_cầu_20260930〕. Vận hành viết cho từng bản ghi dữ liệu giao hàng. **Chỉ trả về cho vận hành** (không xuất hiện trong API của Web doanh nghiệp) |
 | `source_trouble_delivery_id` | Chuyến giao xảy ra sự cố (có thể là cha hoặc con. DEV §9.4). Nhờ UNIQUE ở trên, **mỗi chuyến giao xảy ra sự cố chỉ có 1 bản ghi con tự động còn sống** (dù có nhiều báo cáo hay có thử lại). `source_trouble_report_id` là báo cáo đầu tiên đã tạo bản ghi con tự động, dùng để tham chiếu |
-| `freight_billable` | Có thanh toán cước vận chuyển hay không. Dùng cho cả chờ giao lại và dừng. Mặc định false, true thì bắt buộc có lý do (`freight_bill_reason`). Tên cũ `redelivery_billable` (DEV §13.4) |
-| `return_to_warehouse_id` | Chỉ khi nhân bản "gửi trả" (`duplicate_type = return`). Nơi trả hàng (`warehouses.warehouse_type = return`). Không thuộc đối tượng thanh toán (DEV §9.4) |
-| `cash_expected_amount`／`cash_collected_amount` | Số tiền thu dự kiến (sao từ cài đặt của cơ sở khi chốt tạo. Nếu không có thì 0)／số tiền thu thực tế do tài xế nhập (DEV §13.6). **Không nhập phí đỗ xe vào đây · không hiển thị trong ô thu tiền** (sổ cái. Phí đỗ xe nằm ở `delivery_parking_reports` của 14.7) |
-| `delivery_no`【Bổ sung · 2026-10-03】 | **Số giao hàng = `DL-yymmdd-nnnn`. Ngày là ngày xuất hàng dự kiến tại thời điểm tạo dữ liệu giao hàng** (sổ cái B "Ngày của Số giao hàng" · 決定_STEP4回答 Q2. Ví dụ `DL-261020-0021` = xuất ngày 10/20). Bản ghi con của nhân bản là Số giao hàng của cha + số nhánh `-1`〜`-9` (`配送_00` §2-4). Phiếu vận chuyển do ES đánh số (`es_generated`) là Số giao hàng + số hộp 2 chữ số (14.7). **Ngày là ngày xuất hàng dự kiến (ngày picking) tại thời điểm tạo dữ liệu giao hàng. Số đã gán thì không đổi** (sau này đổi ngày cũng không đánh số lại). Ngày thực tế đã xuất được lưu riêng ở "Ngày xuất hàng (thực tế)" `shipped_date` và hiển thị cạnh Số giao hàng trên màn hình 〔trả lời của hong 2026-10-03〕. 【Cần xác nhận】 Phạm vi số thứ tự của `nnnn` (theo từng ngày xuất hàng hay toàn bộ) |
+| `freight_billable` | Có xuất hóa đơn cước vận chuyển hay không. Dùng cho cả chờ giao lại và dừng. Mặc định false, true thì bắt buộc có lý do (`freight_bill_reason`). Tên cũ `redelivery_billable` (DEV §13.4) |
+| `return_to_warehouse_id` | Chỉ khi nhân bản "gửi trả" (`duplicate_type = return`). Nơi trả hàng (`warehouses.warehouse_type = return`). Không thuộc đối tượng xuất hóa đơn (DEV §9.4) |
+| `cash_expected_amount`／`cash_collected_amount` | Số tiền thu dự kiến (sao từ cài đặt của cơ sở khi chốt tạo. Nếu không có thì 0)／số tiền thu thực tế do tài xế nhập (DEV §13.6). **Không nhập phí đỗ xe vào đây · không hiển thị trong ô thu tiền** (sổ quyết định. Phí đỗ xe nằm ở `delivery_parking_reports` của 14.7) |
+| `delivery_no`【Bổ sung · 2026-10-03】 | **Số giao hàng = `DL-yymmdd-nnnn`. Ngày là ngày xuất hàng dự kiến tại thời điểm tạo dữ liệu giao hàng** (sổ quyết định B "Ngày của Số giao hàng" · 決定_STEP4回答 Q2. Ví dụ `DL-261020-0021` = xuất ngày 10/20). Bản ghi con của nhân bản là Số giao hàng của cha + số nhánh `-1`〜`-9` (`配送_00` §2-4). Phiếu vận chuyển do ES đánh số (`es_generated`) là Số giao hàng + số hộp 2 chữ số (14.7). **Ngày là ngày xuất hàng dự kiến (ngày picking) tại thời điểm tạo dữ liệu giao hàng. Số đã gán thì không đổi** (sau này đổi ngày cũng không đánh số lại). Ngày thực tế đã xuất được lưu riêng ở "Ngày xuất hàng (thực tế)" `shipped_date` và hiển thị cạnh Số giao hàng trên màn hình 〔trả lời của hong 2026-10-03〕. 【Cần xác nhận】 Phạm vi số thứ tự của `nnnn` (theo từng ngày xuất hàng hay toàn bộ) |
 | `coolbag_no`／`coolant_no` | 【Cần xác nhận】 `配送_06` §12-5 (2026/10/01) ghi "không sao chép số vào dữ liệu giao hàng". Có giữ lại cột hay không (bảng ở 14.5) |
 
 ---
@@ -215,7 +217,7 @@ UNIQUE(delivery_no)                                   -- 【Bổ sung · 2026-10
 | `trouble_app_reasons` | `app_reason_raw PK, type_code NULL` | Bảng ánh xạ lựa chọn của app tài xế → loại |
 | `trouble_reports` | `id, delivery_id, type_code NULL, reported_by, note, reported_at, app_reason_raw NULL, resolution(full｜partial｜partial_no_resend｜redelivery｜same_day_revisit｜stop) NULL, resolved_at, resolved_by, resolution_reason` | Báo cáo sự cố |
 | `delivery_attachments` | `id, delivery_id, kind, audience(carrier｜customer), file_path, uploaded_by, created_at` | Tài liệu của chuyến giao này (ảnh báo cáo, v.v.). Thêm giá trị biên lai đỗ xe vào `kind` 【Bổ sung · 2026-10-03】 (ví dụ `parking_receipt`. 【Cần xác nhận】 DEV không có danh sách giá trị của `kind`) |
-| `delivery_lines` | `id, delivery_id, product_id, planned_qty, delivered_qty, substituted_from_product_id NULL, stock_before NULL, stock_after NULL, disposed_qty NULL, note` | Chi tiết thực tế (theo sản phẩm). **Không có `expiry_date`** (sổ cái: không theo dõi hạn tiêu thụ. Xóa 2026-10-01) |
+| `delivery_lines` | `id, delivery_id, product_id, planned_qty, delivered_qty, substituted_from_product_id NULL, stock_before NULL, stock_after NULL, disposed_qty NULL, note` | Chi tiết thực tế (theo sản phẩm). **Không có `expiry_date`** (sổ quyết định: không theo dõi hạn tiêu thụ. Xóa 2026-10-01) |
 | `delivery_parking_reports`【Bổ sung · 2026-10-03】 | `id, delivery_id, delivery_leg_id NULL, parking_fee, receipt_attachment_id, reported_by, reported_at, note NULL, corrected_by NULL, corrected_at NULL, correction_reason NULL` | "Báo cáo đỗ xe" bên dưới |
 
 ```sql
@@ -231,7 +233,7 @@ UNIQUE(carrier_id, tracking_no)          -- delivery_tracking_numbers(ràng bu�
 | App tài xế | Ghi `stock_before`／`stock_after`／`disposed_qty` ở báo cáo giao hàng |
 | Giao một phần | Bản ghi dữ liệu giao hàng con (nhân bản) có `delivery_lines` **của riêng mình**. **Không ghi đè chi tiết của bản ghi cha** |
 | Không nhầm lẫn | Khác với chi tiết giao hàng của hợp đồng `contract_delivery_lines` (14.2) |
-| Hàng thay thế | `substituted_from_product_id` = sản phẩm gốc bị thay thế. Thanh toán theo đơn giá của sản phẩm gốc (DEV §13.5) |
+| Hàng thay thế | `substituted_from_product_id` = sản phẩm gốc bị thay thế. Xuất hóa đơn theo đơn giá của sản phẩm gốc (DEV §13.5) |
 
 **`delivery_attachments` (2026-09-30)** 〔Bảng yêu cầu dòng 164 · Quyết_định_Trả_lời_phản_ánh_một_phần_bảng_yêu_cầu_20260930〕: ảnh báo cáo có thể do **không chỉ tài xế mà cả vận hành** bổ sung (từ chi tiết dữ liệu giao hàng. `uploaded_by` = người dùng vận hành). Có thể bổ sung cả sau khi giao hàng. Ghi vào audit. Modal vuốt trái phải để xem ảnh là chuyện của màn hình.
 
@@ -244,7 +246,7 @@ UNIQUE(carrier_id, tracking_no)          -- delivery_tracking_numbers(ràng bu�
 | `type_code` là NULL | Chưa xác định loại. `auto_duplicate_due_at` **đã bị xóa** (2026-09-29) |
 | `resolved_by` | Cũng có thể là hệ thống (tự động giải quyết khi trễ. DEV §13.2.3) |
 
-**Báo cáo đỗ xe【Bổ sung · 2026-10-03】** (sổ cái B "Báo cáo đỗ xe": cần. Tài xế nhập ảnh biên lai + phí đỗ xe. Không hiển thị phí đỗ xe trong ô thu tiền. Căn cứ: ドライバーアプリ_仕様修正点 No.5)
+**Báo cáo đỗ xe【Bổ sung · 2026-10-03】** (sổ quyết định B "Báo cáo đỗ xe": cần. Tài xế nhập ảnh biên lai + phí đỗ xe. Không hiển thị phí đỗ xe trong ô thu tiền. Căn cứ: ドライバーアプリ_仕様修正点 No.5)
 
 | Quy tắc | Nội dung |
 |---|---|
@@ -253,7 +255,7 @@ UNIQUE(carrier_id, tracking_no)          -- delivery_tracking_numbers(ràng bu�
 | Người nhập | Tài xế được gán (app tài xế). Vận hành nhập hộ · sửa thì bắt buộc có lý do và ghi vào audit |
 | Chặng | `delivery_leg_id` = đỗ xe ở chặng nào. 【Cần xác nhận】 Có cần giữ đến mức chặng hay không |
 | Quan hệ với thu tiền | Không trộn với `cash_expected_amount`／`cash_collected_amount`. **Không hiển thị phí đỗ xe ở ô thu tiền · chênh lệch thu tiền mặt (quyết toán thực tế)** |
-| Quyết toán | **Tài xế ứng trước → công ty giao hàng ủy thác gộp lại thanh toán cho vận hành (quản trị hệ thống). Không thanh toán cho doanh nghiệp** 〔trả lời của hong 2026-10-03〕 |
+| Quyết toán | **Tài xế ứng trước → công ty giao hàng ủy thác gộp lại xuất hóa đơn cho vận hành (quản trị hệ thống). Không xuất hóa đơn cho doanh nghiệp** 〔trả lời của hong 2026-10-03〕 |
 | Web doanh nghiệp | **Không hiển thị** 〔trả lời của hong 2026-10-03〕 |
 | Hạn nhập · sửa | Nhập được cho đến khi giao hàng. Sửa được trong **7 ngày** sau khi giao hàng (giống các báo cáo khác) 〔trả lời của hong 2026-10-03〕 |
 
@@ -272,7 +274,7 @@ UNIQUE(delivery_id, rev)
 
 ---
 
-## 14.9 Thanh toán
+## 14.9 Hóa đơn
 
 | Bảng | Cột | Ghi chú |
 |---|---|---|
@@ -293,21 +295,21 @@ UNIQUE(contract_month_id, billing_type, payment_due_date)
 | `sites` | `id, corporation_id, name, kana, postal_code, address_fields, tel, contact_name, status, effective_from, effective_to` | Cơ sở (nơi giao hàng) |
 | `corporate_users`【Phương án】 | `id, corporation_id, role(corp_admin｜site_staff), name, email, status` | Phạm vi nhìn thấy của Web doanh nghiệp (#55). `corp_admin` = quản trị viên doanh nghiệp, `site_staff` = người phụ trách cơ sở |
 | `corporate_user_sites`【Phương án】 | `corporate_user_id, site_id` | Chỉ `site_staff` dùng (cơ sở được gán) |
-| `drivers` | `id, carrier_id, name, kana, tel, email, login_id, employment_type(self｜partner), area_codes, status, password_hash【Bổ sung · 2026-10-03】, password_updated_at【Bổ sung · 2026-10-03】, failed_login_count【Bổ sung · 2026-10-03】, locked_until NULL【Bổ sung · 2026-10-03】` | Tài xế. **Đăng nhập bằng `login_id` + mật khẩu** (sổ cái B "Đăng nhập của tài xế"). `email` là địa chỉ liên hệ khi cấp tài khoản (nếu bản thân không có email thì dùng email của quản trị viên. `配送_06` §12-3), **không dùng để đăng nhập** 【Sửa theo sổ cái】 (cũ: địa chỉ email + liên kết qua email. Cách viết của tích hợp §12-2 · REQ-DL-142) |
-| `driver_password_reset_codes`【Bổ sung · 2026-10-03】 | `id, driver_id, code_hash, issued_at, expires_at, attempt_count, used_at NULL, issued_by NULL` | **Mã xác thực 4 chữ số** để đặt lại mật khẩu (sổ cái). Bảng bên dưới |
+| `drivers` | `id, carrier_id, name, kana, tel, email, login_id, employment_type(self｜partner), area_codes, status, password_hash【Bổ sung · 2026-10-03】, password_updated_at【Bổ sung · 2026-10-03】, failed_login_count【Bổ sung · 2026-10-03】, locked_until NULL【Bổ sung · 2026-10-03】` | Tài xế. **Đăng nhập bằng `login_id` + mật khẩu** (sổ quyết định B "Đăng nhập của tài xế"). `email` là địa chỉ liên hệ khi cấp tài khoản (nếu bản thân không có email thì dùng email của quản trị viên. `配送_06` §12-3), **không dùng để đăng nhập** 【Sửa theo sổ quyết định】 (cũ: địa chỉ email + liên kết qua email. Cách viết của tích hợp §12-2 · REQ-DL-142) |
+| `driver_password_reset_codes`【Bổ sung · 2026-10-03】 | `id, driver_id, code_hash, issued_at, expires_at, attempt_count, used_at NULL, issued_by NULL` | **Mã xác thực 4 chữ số** để đặt lại mật khẩu (sổ quyết định). Bảng bên dưới |
 
 ```sql
 UNIQUE(login_id)                                           -- drivers【Bổ sung · 2026-10-03】
 ```
 
-**Đăng nhập và đặt lại mật khẩu của tài xế【Bổ sung · 2026-10-03】** (sổ cái B: ID đăng nhập + mật khẩu. Đặt lại bằng mã xác thực 4 chữ số 〈Figma là chuẩn〉. Căn cứ: ドライバーアプリ_仕様修正点 No.1)
+**Đăng nhập và đặt lại mật khẩu của tài xế【Bổ sung · 2026-10-03】** (sổ quyết định B: ID đăng nhập + mật khẩu. Đặt lại bằng mã xác thực 4 chữ số 〈Figma là chuẩn〉. Căn cứ: ドライバーアプリ_仕様修正点 No.1)
 
 | Quy tắc | Nội dung |
 |---|---|
 | ID đăng nhập | `drivers.login_id`. Duy nhất trên toàn hệ thống. **Hệ thống tự động đánh số (ví dụ `DR00001`). Không nhập tay** 〔trả lời của hong 2026-10-03〕 |
 | Mật khẩu | Chỉ lưu hash (`password_hash`). Không lưu bản rõ hay dạng có thể giải mã |
 | Mã xác thực | **Số 4 chữ số**. Không lưu bản thân mã mà chỉ lưu hash (`code_hash`). Dùng 1 lần thì ghi `used_at` và vô hiệu |
-| Nơi gửi mã | **Gửi email đến địa chỉ email đã đăng ký (`drivers.email`)** 〔trả lời của hong 2026-10-03 · sổ cái〕. Email là nơi nhận mã, không dùng để đăng nhập |
+| Nơi gửi mã | **Gửi email đến địa chỉ email đã đăng ký (`drivers.email`)** 〔trả lời của hong 2026-10-03 · sổ quyết định〕. Email là nơi nhận mã, không dùng để đăng nhập |
 | Hạn hiệu lực · số lần thử | 【Cần xác nhận】 Giá trị của `expires_at` (ví dụ 10 phút) và giới hạn của `attempt_count` (ví dụ 5 lần). 4 chữ số yếu trước vét cạn nên nhất định phải có giới hạn |
 | Vận hành làm hộ | Vận hành có thể "làm hộ đặt lại mật khẩu" (`配送_06` §12-3). **Công ty giao hàng ủy thác cũng làm hộ được cho tài xế của chính mình** 〔trả lời của hong 2026-10-03〕. Việc làm hộ ghi người thao tác vào `issued_by` và lưu vào audit |
 | Vô hiệu hóa | Khi nghỉ việc · hết hợp đồng thì vô hiệu hóa ngay `status` (`配送_06` §12-3). Tài xế bị vô hiệu không đăng nhập được |
@@ -380,7 +382,7 @@ UNIQUE(contract_month_id)                                           -- contract_
 | Sao ngày mốc | `delivery_cycles` sao `menu_open_date`／`order_start_date`／`order_close_date` từ `menus` có cùng `cycle_month` và đặt `marker_source = menu`. Nếu không có `menus` ở `published` thì dùng mốc tạm (DEV §8.3) |
 | Chốt số lượng | `order_finalize` lấy `order_quantities.confirmed_qty` theo khóa duy nhất của kế hoạch (DEV §8.2) |
 | Thế hệ giá | `contract_months.price_revision_gen` giữ `plan_rates.generation` đã snapshot, và `invoice_lines.plan_rate_generation` dùng giá trị đó (không tra lại master) |
-| Tỷ lệ đông lạnh | **Không nắm giữ** (sổ cái B "Tỷ lệ đông lạnh" · 28-155). Số lượng mỗi lần giao theo từng nhóm nhiệt độ là `monthly_cap ÷ std_delivery_count` (làm tròn lên) |
+| Tỷ lệ đông lạnh | **Không nắm giữ** (sổ quyết định B "Tỷ lệ đông lạnh" · 28-155). Số lượng mỗi lần giao theo từng nhóm nhiệt độ là `monthly_cap ÷ std_delivery_count` (làm tròn lên) |
 
 **【Cần xác nhận】 của 14.12**
 
@@ -411,14 +413,14 @@ UNIQUE(material_product_id, plan_code)   -- material_initial_sets
 
 ## 14.13 Snapshot theo tháng: tồn kho · báo cáo kiểm kê · quyết toán thực tế (bổ sung 7 · 2026-09-29)
 
-Quyết định: phần liên quan đến đăng ký 28-121 · 28-125. Màn hình của vận hành (quản lý tồn kho／quyết toán thực tế／chốt thanh toán) **xem được cả tháng trước**. Tháng đã chốt thì **chỉ đọc snapshot** và không tính lại từ dữ liệu hiện tại.
+Quyết định: phần liên quan đến đăng ký 28-121 · 28-125. Màn hình của vận hành (quản lý tồn kho／quyết toán thực tế／chốt hóa đơn) **xem được cả tháng trước**. Tháng đã chốt thì **chỉ đọc snapshot** và không tính lại từ dữ liệu hiện tại.
 
 | Hạng mục | Quy tắc |
 |---|---|
 | Kỳ | Giữ theo `cycle_month` của hợp đồng con. Kỳ của tồn kho = ngày 21 tháng trước〜ngày 20 tháng hiện tại |
 | Điều chỉnh tồn kho | Vận hành nhập trực tiếp. **Không cần phê duyệt**, tại thời điểm lưu sẽ **có hiệu lực ngay** lên tồn kho tính toán (`calc_qty`). Chỉ nhập được cho tháng mà quyết toán thực tế (`settlement_snapshots`) **chưa chốt**. Bắt buộc có lý do. Có thể nhập gộp cùng một lý do cho nhiều cơ sở |
 | Sau khi chốt | Không sửa điều chỉnh của tháng đó. Lỗi phát hiện sau được đưa vào `settlement` của **tháng sau** bằng dòng `invoice_lines.line_type = adjustment` (DEV §13.7) |
-| Báo cáo kiểm kê | 1 bản ghi cho cơ sở × tháng. Số lượng theo sản phẩm. Dù đến ngày 25 chưa có báo cáo vẫn chốt được, nhưng sẽ phát sinh phí hành chính (quy định phía thanh toán) |
+| Báo cáo kiểm kê | 1 bản ghi cho cơ sở × tháng. Số lượng theo sản phẩm. Dù đến ngày 25 chưa có báo cáo vẫn chốt được, nhưng sẽ phát sinh phí hành chính (quy định phía hóa đơn) |
 | Chốt quyết toán thực tế | Khi chốt, ghi `monthly_stock_snapshots` (theo sản phẩm) và `settlement_snapshots` (tổng) trong **1 transaction**. `prev_counted_qty` của tháng sau = `counted_qty` của snapshot tháng này |
 | Hủy chốt | Chỉ khi hợp đồng con đó chưa có hóa đơn. Ghi `unconfirmed_at` vào snapshot cũ (không xóa). Chốt lại thì thành snapshot mới. Màn hình đọc `unconfirmed_at IS NULL` |
 
@@ -428,7 +430,7 @@ Quyết định: phần liên quan đến đăng ký 28-121 · 28-125. Màn hìn
 | `stock_count_lines` | `id, stock_count_id, product_id, counted_qty` | Số lượng theo sản phẩm của báo cáo kiểm kê |
 | `stock_adjustments` | `id, site_id, cycle_month, product_id, delta_qty, reason, bulk_id NULL, created_by, created_at, cancelled_at NULL` | Điều chỉnh tồn kho (vận hành · không phê duyệt · có hiệu lực ngay). `bulk_id` = nhóm khi nhập gộp cho nhiều cơ sở |
 | `monthly_stock_snapshots` | `id, contract_month_id, site_id, cycle_month, product_id, prev_counted_qty, delivered_qty, sold_qty, disposed_qty, adjusted_qty, calc_qty, counted_qty NULL, loss_qty, unit_price, loss_amount, snapshot_at, unconfirmed_at NULL` | Ghi khi chốt quyết toán thực tế |
-| `settlement_snapshots` | `id, contract_month_id, cycle_month, sales_amount, loss_amount, deductible_amount, over_amount, price_adjust_diff, admin_fee, settlement_amount, cash_expected_amount, cash_collected_amount, cash_diff_amount, confirmed_at, confirmed_by, unconfirmed_at NULL` | Không giữ số tiền hỗ trợ bữa ăn (số tiền doanh nghiệp chịu đã nằm trong giá của gói · 28-134). `cash_*` = chỉ phần chọn thanh toán tiền mặt trên app (28-135). **Không đưa phí đỗ xe vào** (sổ cái) |
+| `settlement_snapshots` | `id, contract_month_id, cycle_month, sales_amount, loss_amount, deductible_amount, over_amount, price_adjust_diff, admin_fee, settlement_amount, cash_expected_amount, cash_collected_amount, cash_diff_amount, confirmed_at, confirmed_by, unconfirmed_at NULL` | Không giữ số tiền hỗ trợ bữa ăn (số tiền doanh nghiệp chịu đã nằm trong giá của gói · 28-134). `cash_*` = chỉ phần chọn thanh toán tiền mặt trên app (28-135). **Không đưa phí đỗ xe vào** (sổ quyết định) |
 
 ```sql
 UNIQUE(site_id, cycle_month)                                           -- stock_counts
@@ -455,12 +457,12 @@ Xuất hiện trong nội dung chính của `配送_09` §16 và các chỗ khá
 | `carrier_coolers` | `配送_06` §12-5 | Sổ cho mượn túi giữ lạnh · chất giữ lạnh (bảng ở 14.5) |
 | Lịch sử thay đổi hàng loạt tuyến giao hàng | `配送_03` §5-10 (tối 2026/10/01) | Số · ngày giờ thực thi · phương pháp (lọc／CSV) · bắt đầu áp dụng · số cơ sở · nội dung · đơn vị ủy thác đã thông báo của mỗi lần thay đổi hàng loạt |
 | Có liên kết THOMAS hay không · mã kho của `warehouses` | `配送_01` §3-1 | Bảng ở 14.5 |
-| Mẫu URL theo dõi · ngày không giao ủy thác được của `carriers` | `配送_01` §3-3 | Bảng ở 14.5 |
+| Mẫu URL theo dõi của `carriers` | `配送_01` §3-3 | Bảng ở 14.5 |
 | `contracts.receive_off_holiday` · `ai_qty_mode` · `delivery_note` | `配送_03` §5-1 | 【Cần xác nhận】 của 14.2 |
 | Nguồn của số lượng đã chốt (`ordered`／`standard`／`ai`) | `配送_04` §7-8 · `配送_08` §14-5 | 【Cần xác nhận】 của 14.12 |
 | Trạng thái override · snapshot căn cứ · thời điểm xác minh cuối | `配送_04` §8-1 | 【Cần xác nhận】 của 14.11 |
 | Loại · lặp lại · trạng thái của ngày không nhận được | `配送_03` §5-5 | 【Cần xác nhận】 của 14.11 |
-| Cài đặt hàng thay thế (3 mẫu: thay thế／bồi thường／chỉ loại bỏ) | `配送_07` §13-6 · sổ cái B "Xử lý hàng thay thế" | Sửa đồng thời chi tiết của đơn hàng và dữ liệu giao hàng, nhập `substituted_from_product_id`. Bảng của chính cài đặt thuộc phạm vi đặc tả quản lý menu 【Cần xác nhận】 định nghĩa ở đâu |
+| Cài đặt hàng thay thế (3 mẫu: thay thế／bồi thường／chỉ loại bỏ) | `配送_07` §13-6 · sổ quyết định B "Xử lý hàng thay thế" | Sửa đồng thời chi tiết của đơn hàng và dữ liệu giao hàng, nhập `substituted_from_product_id`. Bảng của chính cài đặt thuộc phạm vi đặc tả quản lý menu 【Cần xác nhận】 định nghĩa ở đâu |
 
 ---
 

@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>法人・拠点・契約 フェーズ1→2 の見方</title>
+<style>
+:root{--bg:#f4f6f9;--card:#fff;--line:#e5e9ef;--ink:#1f2933;--dim:#69737f;--blue:#1f5fb8;--lblue:#eef4fd;
+--ok:#0d7a55;--lok:#e6f5ee;--warn:#8a5a00;--lwarn:#fff6e0;--red:#c02339;--lred:#fdeaed;--pur:#6b3fa0;--lpur:#f3edfa}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:13.5px/1.7 -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif}
+.app{display:flex;min-height:100vh}
+.side{width:240px;flex-shrink:0;background:#fff;border-right:1px solid #dde3ea;padding:14px 0;position:sticky;top:0;height:100vh;overflow:auto}
+.side h1{font-size:14.5px;margin:0 14px 12px;line-height:1.45}
+.side h1 small{display:block;font-weight:400;color:#8a949e;font-size:11.5px}
+.side a{display:block;padding:7px 14px;font-size:12.5px;color:#2c3138;text-decoration:none;border-left:3px solid transparent;line-height:1.45}
+.side a small{display:block;color:#8a949e;font-size:11px}
+.side a:hover{background:#f7f9fb}
+.side a.on{background:var(--lblue);border-left-color:#3b7ddd;color:#1f5fb8;font-weight:600}
+.main{flex:1;min-width:0}
+.top{background:#fff;border-bottom:1px solid var(--line);padding:9px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+.top .t{font-weight:700}
+.lng{display:flex;gap:4px;background:#eef1f5;border-radius:999px;padding:3px}
+.lng button{border:0;background:transparent;padding:5px 13px;border-radius:999px;font:inherit;font-size:12px;font-weight:700;color:#69737f;cursor:pointer}
+.lng button.on{background:#0d7a55;color:#fff}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 20px 80px}
+section{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:0 0 16px;scroll-margin-top:60px}
+h2{font-size:17px;margin:0 0 4px}
+h2 .no{display:inline-block;background:var(--blue);color:#fff;border-radius:6px;font-size:12px;padding:1px 8px;margin-right:8px;vertical-align:2px}
+h2 + .sub{color:var(--dim);font-size:12.5px;margin:0 0 12px}
+h3{font-size:14px;margin:16px 0 6px}
+p{margin:6px 0}
+.bi{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.bi>.ja,.bi>.vi{min-width:0}
+.bi>.vi{border-left:1px dashed #d4dae2;padding-left:18px}
+.lab{display:inline-block;font-size:10.5px;font-weight:700;border-radius:4px;padding:0 6px;margin-bottom:2px}
+.ja .lab{background:#eef1f5;color:#4a5563}.vi .lab{background:var(--lok);color:var(--ok)}
+body.only-ja .vi, body.only-vi .ja{display:none}
+body.only-ja .bi, body.only-vi .bi{grid-template-columns:1fr}
+body.only-ja .bi>.vi, body.only-vi .bi>.vi{border-left:0;padding-left:0}
+body.only-ja .v, body.only-vi .j{display:none}
+.lab{display:none}body.both .lab{display:inline-block}
+ul{margin:4px 0;padding-left:20px}li{margin:2px 0}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+th,td{border:1px solid var(--line);padding:6px 9px;vertical-align:top;text-align:left}
+th{background:#f7f9fb;font-weight:700;white-space:nowrap}
+td .v, th .v{display:block;color:#0d6147;font-size:12px;margin-top:2px}
+body.only-vi td .v, body.only-vi th .v{color:inherit;font-size:inherit;margin:0}
+.scroll{overflow-x:auto}
+.hv{display:inline;font-weight:400;color:var(--ok)}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;border-radius:4px;padding:0 6px;white-space:nowrap}
+.t1{background:#eef1f5;color:#4a5563}.t2{background:var(--lblue);color:var(--blue)}.tn{background:var(--lok);color:var(--ok)}.tx{background:var(--lred);color:var(--red)}.tw{background:var(--lwarn);color:var(--warn)}
+.note{background:var(--lwarn);border:1px solid #f0dca8;border-radius:8px;padding:9px 12px;font-size:12.5px;margin:10px 0}
+.key{background:var(--lblue);border:1px solid #cfe0f5;border-radius:8px;padding:10px 14px;margin:10px 0}
+.fig{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fbfcfd;margin:10px 0;overflow-x:auto}
+.fig svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.figcap{font-size:11.5px;color:var(--dim);text-align:center;margin-top:4px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cmp .fig{margin:0}
+.cmp h4{margin:0 0 6px;font-size:13px;text-align:center}
+.flow{display:flex;flex-direction:column;gap:0;margin:10px 0}
+.step{display:grid;grid-template-columns:34px 1fr 1fr;gap:12px;align-items:start;padding:10px 0;border-bottom:1px dashed var(--line)}
+.step:last-child{border-bottom:0}
+.step .n{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:12.5px}
+.step b.w{display:inline-block;font-size:11px;color:var(--dim);font-weight:600;margin-left:6px}
+body.only-ja .step, body.only-vi .step{grid-template-columns:34px 1fr}
+.pill{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:999px;padding:0 8px;font-size:11.5px;margin:1px 2px}
+@media (max-width:900px){.bi,.cmp{grid-template-columns:1fr}.bi>.vi{border-left:0;padding-left:0;border-top:1px dashed #d4dae2;padding-top:10px}
+ .step{grid-template-columns:34px 1fr}.app{display:block}.side{display:none}}
+@media print{.side,.top .lng{display:none}section{break-inside:avoid}}
+
+.sw{font-size:12px;font-weight:700;color:#0d7a55;text-decoration:none;border:1px solid #bfe3d2;background:#e6f5ee;border-radius:999px;padding:4px 12px}
+</style></head>
+<body class="only-ja">
+<div class="app">
+<nav class="side">
+<h1>エンティティの見方<small>Phase 1 → Phase 2</small></h1>
+<a href="#s1">1. 結論</a>
+<a href="#s2">2. 全体像の比較</a>
+<a href="#s3">3. 見方の変わり目 8つ</a>
+<a href="#s4">4. 業務フロー</a>
+<a href="#s5">5. 1か月の例</a>
+<a href="#s6">6. どこで直すか</a>
+<a href="#s7">7. 変わるもの一覧</a>
+<a href="#s8">8. 移行の注意・決定事項</a>
+</nav>
+<div class="main">
+<div class="top">
+<div class="t">法人・拠点・契約 ― フェーズ1とフェーズ2の違い </div>
+
+<a class="sw" href="entity_phase1_phase2_説明_vi.html">Tiếng Việt 版 →</a></div>
+<div class="wrap">
+<p style="color:var(--dim);font-size:12px;margin:0 0 12px">作成 2026/09/25 ・根拠：<code>01_仕様/法人拠点契約子契約_項目一覧.md</code>（§0）／<code>03_Excel/法人拠点契約子契約_項目一覧.xlsx</code>「02_移行で変わるもの」44件／決定_v2.1（サイクル月の定義）／デモ <code>es_entity_demo_ja.html</code></p>
+<!-- 1 -->
+<section id="s1">
+<h2><span class="no">1</span>結論</h2>
+<div class="bi">
+<div class="ja">
+<p>フェーズ1は<b>「毎月作られる契約（CP…）1種類」</b>が、プラン・配送・料金・設備・割引をすべて抱えていました。フェーズ2は、それを<b>役割ごとに分けます</b>。</p>
+<ul>
+<li><b>法人</b>：請求書の発行単位・請求の既定値を持つ（画面を新設）</li>
+<li><b>拠点</b>：住所・アプリ設定・請求先と、<b>月をまたいで続く事実</b>（いま貸している設備・いま効いているオプション／値引き）を持つ</li>
+<li><b>親契約</b>：番号が変わらない契約の骨格（種別・状態・開始/終了・最低利用期間・代理店）</li>
+<li><b>子契約</b>：<b>1納品サイクル＝1件</b>。その月のプラン・配送・料金・請求ステータス。<b>フェーズ1の「契約」＝フェーズ2の子契約</b></li>
+<li><b>マスタ</b>（プラン・機種・オプション・値引き）：金額の出どころ。子契約は生成時に値を固める</li>
+<li><b>請求書</b>：子契約とは別物。1枚に複数の拠点・子契約、①前払い と ②実績精算 が乗る</li>
+</ul>
+<div class="key">覚え方：<b>「続く事実は拠点が持ち、変更は子契約で登録し、金額はマスタから来る」</b></div>
+</div>
+
+</div>
+</section>
+<!-- 2 -->
+<section id="s2">
+<h2><span class="no">2</span>全体像の比較</h2>
+<div class="sub">左：フェーズ1（現行）　右：フェーズ2</div>
+<div class="cmp">
+<div>
+<h4>フェーズ1</h4>
+<div class="fig">
+<svg font-family="Hiragino Sans,Noto Sans JP,sans-serif" viewbox="0 0 440 470" width="440">
+<defs><marker id="a1" markerheight="7" markerwidth="7" orient="auto" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0,0L10,5L0,10z" fill="#8a949e"></path></marker></defs>
+<rect fill="#fff" height="54" rx="8" stroke="#8a949e" width="160" x="140" y="14"></rect>
+<text fill="#1f2933" font-size="14" font-weight="700" text-anchor="middle" x="220" y="37">拠点</text>
+<text fill="#69737f" font-size="11" text-anchor="middle" x="220" y="56">（法人は名前だけ）</text>
+<line marker-end="url(#a1)" stroke="#8a949e" x1="220" x2="220" y1="68" y2="104"></line>
+<text fill="#69737f" font-size="11" x="228" y="90">毎月1件</text>
+<rect fill="#f7f9fb" height="200" rx="8" stroke="#8a949e" width="300" x="70" y="118"></rect>
+<rect fill="#f7f9fb" height="200" rx="8" stroke="#8a949e" width="300" x="80" y="110"></rect>
+<rect fill="#fff" height="208" rx="8" stroke="#1f2933" stroke-width="1.3" width="300" x="90" y="102"></rect>
+<text fill="#1f2933" font-size="14" font-weight="700" text-anchor="middle" x="240" y="126">契約 CP…（月ごと）</text>
+<text fill="#69737f" font-size="11" text-anchor="middle" x="240" y="143">1種類のレコードに全部入り</text>
+<g fill="#1f2933" font-size="12">
+<text x="108" y="170">・プラン・プラン想定数量</text>
+<text x="108" y="192">・配送区分（クール便）・配送回数 1つ</text>
+<text x="108" y="214">・料金を直接入力（¥70,000 など）</text>
+<text x="108" y="236">・設備（4つの表・名前は自由入力）</text>
+<text x="108" y="258">・割引の適用 1項目だけ</text>
+<text x="108" y="280">・翌月の変更も同じレコード＋適用月</text>
+<text fill="#c02339" x="108" y="300">・金額確定・請求書：なし</text>
+</g>
+<rect fill="#fdeaed" height="92" rx="8" stroke="#c02339" stroke-dasharray="5 4" width="360" x="40" y="350"></rect>
+<text fill="#c02339" font-size="13" font-weight="700" text-anchor="middle" x="220" y="376">システムの外（管理表）</text>
+
+<text fill="#1f2933" font-size="12" text-anchor="middle" x="220" y="420">オプション料金・値引き・請求書・入金期限</text>
+<line stroke="#c02339" stroke-dasharray="4 3" x1="220" x2="220" y1="310" y2="346"></line>
+</svg>
+<div class="figcap">1種類のレコードに全部入り。月をまたぐ事実（設備の貸出など）が残らない</div>
+</div>
+</div>
+<div>
+<h4>フェーズ2</h4>
+<div class="fig">
+<svg font-family="Hiragino Sans,Noto Sans JP,sans-serif" viewbox="0 0 520 470" width="520">
+<defs><marker id="a2" markerheight="7" markerwidth="7" orient="auto" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0,0L10,5L0,10z" fill="#1f5fb8"></path></marker>
+<marker id="a3" markerheight="7" markerwidth="7" orient="auto" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0,0L10,5L0,10z" fill="#6b3fa0"></path></marker></defs>
+<!-- 法人 -->
+<rect fill="#eef4fd" height="52" rx="8" stroke="#1f5fb8" width="210" x="20" y="12"></rect>
+<text fill="#1f5fb8" font-size="13.5" font-weight="700" text-anchor="middle" x="125" y="34">法人 CU00001（新設）</text>
+<text fill="#1f2933" font-size="10.5" text-anchor="middle" x="125" y="52">請求書の発行単位・既定値</text>
+<line marker-end="url(#a2)" stroke="#1f5fb8" x1="125" x2="125" y1="64" y2="88"></line><text fill="#69737f" font-size="10.5" x="132" y="81">1 : n</text>
+<!-- 拠点 -->
+<rect fill="#fff" height="96" rx="8" stroke="#1f5fb8" width="210" x="20" y="90"></rect>
+<text fill="#1f5fb8" font-size="13.5" font-weight="700" text-anchor="middle" x="125" y="111">拠点 CU00643</text>
+<text fill="#1f2933" font-size="10.5" text-anchor="middle" x="125" y="128">住所・アプリ設定・請求先</text>
+<rect fill="#e6f5ee" height="42" rx="6" stroke="#0d7a55" width="190" x="30" y="136"></rect>
+<text fill="#0d7a55" font-size="11.5" font-weight="700" text-anchor="middle" x="125" y="153">貸出一覧・適用一覧（見るだけ）</text>
+
+<line marker-end="url(#a2)" stroke="#1f5fb8" x1="125" x2="125" y1="186" y2="210"></line><text fill="#69737f" font-size="10.5" x="132" y="203">1 : n（お試し→本導入で別番号）</text>
+<!-- 親契約 -->
+<rect fill="#fff" height="52" rx="8" stroke="#1f5fb8" width="210" x="20" y="212"></rect>
+<text fill="#1f5fb8" font-size="13.5" font-weight="700" text-anchor="middle" x="125" y="234">親契約 CP0000001</text>
+<text fill="#1f2933" font-size="10.5" text-anchor="middle" x="125" y="252">番号不変・契約の骨格</text>
+<line marker-end="url(#a2)" stroke="#1f5fb8" x1="125" x2="125" y1="264" y2="288"></line><text fill="#69737f" font-size="10.5" x="132" y="281">1 : n（1サイクル＝1件）</text>
+<!-- 子契約 -->
+<rect fill="#f7f9fb" height="80" rx="8" stroke="#1f5fb8" width="210" x="30" y="298"></rect>
+<rect fill="#fff" height="80" rx="8" stroke="#1f5fb8" stroke-width="1.5" width="210" x="20" y="290"></rect>
+<text fill="#1f5fb8" font-size="13.5" font-weight="700" text-anchor="middle" x="125" y="311">子契約 CP0000001-202607</text>
+<text fill="#1f2933" font-size="10.5" text-anchor="middle" x="125" y="328">＝フェーズ1の「契約」</text>
+<text fill="#1f2933" font-size="10.5" text-anchor="middle" x="125" y="346">プラン・配送・料金①②・請求ステータス</text>
+<text fill="#0d7a55" font-size="10.5" text-anchor="middle" x="125" y="362">＋ 設備／オプション・割引の「異動」を登録</text>
+<!-- 異動 → 拠点 -->
+<path d="M20,340 C-2,300 -2,190 30,160" fill="none" marker-end="url(#a2)" stroke="#0d7a55" stroke-dasharray="4 3"></path>
+<text fill="#0d7a55" font-size="10" transform="rotate(-90 8 258)" x="4" y="258">異動が反映</text>
+<!-- マスタ -->
+<rect fill="#f3edfa" height="200" rx="8" stroke="#6b3fa0" width="200" x="300" y="12"></rect>
+<text fill="#6b3fa0" font-size="13.5" font-weight="700" text-anchor="middle" x="400" y="34">マスタ</text>
+<g fill="#1f2933" font-size="11.5">
+<text x="316" y="60">プランマスタ ES000012</text><text fill="#69737f" font-size="10" x="316" y="75">スタンダード／ライトの料金</text>
+<text x="316" y="98">機種マスタ RF/VM/MW/HW/BX</text><text fill="#69737f" font-size="10" x="316" y="113">料金・最低利用期間</text>
+<text x="316" y="136">オプションマスタ OP000001 <tspan fill="#0d7a55" font-weight="700">新</tspan></text><text fill="#69737f" font-size="10" x="316" y="151">A／B／C の3タイプ</text>
+<text x="316" y="174">値引きマスタ DC000001 <tspan fill="#0d7a55" font-weight="700">新</tspan></text><text fill="#69737f" font-size="10" x="316" y="189">重ねがけ・適用順</text>
+</g>
+<path d="M300,190 C270,230 260,290 240,320" fill="none" marker-end="url(#a3)" stroke="#6b3fa0"></path>
+<text fill="#6b3fa0" font-size="10.5" x="262" y="246">生成時に固める</text>
+
+<!-- 請求書 -->
+<rect fill="#fff6e0" height="70" rx="8" stroke="#8a5a00" width="210" x="290" y="300"></rect>
+<text fill="#8a5a00" font-size="13.5" font-weight="700" text-anchor="middle" x="395" y="322">請求書 INV-…（新設）</text>
+<text fill="#1f2933" font-size="10.5" text-anchor="middle" x="395" y="340">複数の拠点・子契約が乗る</text>
+<text fill="#1f2933" font-size="10.5" text-anchor="middle" x="395" y="356">① 前払い ＋ ② 実績精算</text>
+<line marker-end="url(#a2)" stroke="#8a5a00" x1="230" x2="288" y1="322" y2="322"></line>
+<line marker-end="url(#a2)" stroke="#8a5a00" x1="230" x2="288" y1="350" y2="350"></line>
+<text fill="#8a5a00" font-size="10" text-anchor="middle" x="259" y="317">①</text>
+<text fill="#8a5a00" font-size="10" text-anchor="middle" x="259" y="345">②</text>
+<text fill="#69737f" font-size="10.5" text-anchor="middle" x="395" y="386">n : m（子契約1件＝請求書1枚ではない）</text>
+<!-- batches -->
+<rect fill="#fff" height="54" rx="8" stroke="#d4dae2" stroke-dasharray="4 3" width="480" x="20" y="404"></rect>
+<text fill="#1f2933" font-size="11.5" font-weight="700" text-anchor="middle" x="260" y="424">日次バッチ</text>
+<text fill="#69737f" font-size="10.5" text-anchor="middle" x="260" y="443">子契約の生成 ・請求漏れ ・回収未完了 ・連動の不一致 を検知</text>
+</svg>
+<div class="figcap">役割ごとに分け、持ち主（正）を1か所にする</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3 -->
+<section id="s3">
+<h2><span class="no">3</span>見方の変わり目 8つ</h2>
+<div class="sub">開発・レビューで迷ったら、ここに戻ってください</div>
+<h3>① 契約は2層：親契約 ＋ 子契約 </h3>
+<div class="bi">
+<div class="ja"><p>フェーズ1の契約（CP…）は毎月作られていたので、<b>そのまま子契約</b>になります。その上に<b>番号が変わらない親契約</b>を1本かぶせます。親契約は拠点画面の「契約」タブで管理し、契約専用の画面は作りません。</p>
+<p>親契約＝契約を通して変わらないもの／子契約＝毎月決まる・途中で変わるものすべて。</p></div>
+
+</div>
+<h3>② 子契約は「1納品サイクル＝1件」 </h3>
+<div class="bi">
+<div class="ja"><p>暦の1日ではなく<b>4週の納品サイクル</b>が単位です（A1は必ず月曜）。子契約IDの <code>yyyymm</code> は<b>サイクル月</b>で、請求月ではありません。生成は<b>日次バッチ</b>が「基準日を過ぎた未生成のサイクル」を拾います。一意キーは <code>UNIQUE(親契約, サイクル月)</code>。</p>
+<div class="note">サイクル月の定義は決定_v2.1（2026/09/21）で<b>「14番目の枠 B7 が属する月」</b>です（「A1が属する年月」ではない）。項目一覧 §0.3 とデモも 2026/09/25 に更新済み。</div></div>
+
+</div>
+<h3>③ 「見る」は拠点、「登録」は子契約 </h3>
+<div class="bi">
+<div class="ja"><p>設備・オプション・値引きは、<b>月をまたいで続く事実</b>です。子契約に持たせると毎月コピーされるだけで「いつ貸して、いつ返ったか」が残りません。そこで：</p>
+<ul><li><b>持ち主</b>＝拠点の「設備・オプション」タブ（貸出一覧・適用一覧）。<b>見るだけ</b></li>
+<li><b>登録</b>＝子契約の「設備の異動」「オプション・割引の異動」。どの子契約で登録したかが適用月になる</li>
+<li><b>金額</b>＝子契約①の費目行（出どころ区分 model／option／discount）</li></ul>
+<p>同じものを2か所で直せる状態は作りません。</p></div>
+
+</div>
+<h3>④ 金額はマスタから来て、子契約で固まる </h3>
+<div class="bi">
+<div class="ja"><ul>
+<li>プラン固定額 → <b>プランマスタ</b>（契約に金額を直接入れない）</li>
+<li>設備の料金・最低利用期間 → <b>機種マスタ</b>（設備名の自由入力をやめる）</li>
+<li>オプション → <b>オプションマスタ（新設）</b>。A＝契約項目に連動（配送回数・ES-QR…、契約項目が正。料金は<b>変更した翌月から</b>）／B＝連動なし・継続／C＝単発</li>
+<li>値引き → <b>値引きマスタ（新設）</b>。重ねがけ可、<b>適用順は値引きごとに入力</b>。料金改定差額は約800拠点へCSV一括</li>
+<li>子契約は<b>生成時にスナップショット</b>。後からマスタを直しても過去月は変わらない</li></ul></div>
+
+</div>
+<h3>⑤ 請求は ①前払い と ②実績精算 の2表、請求書は別エンティティ </h3>
+<div class="bi">
+<div class="ja"><p>1つの子契約の金額は、確定タイミングも乗る請求書も違う2種類です。</p>
+<ul><li>① 固定額（前払い）：プラン・オプション・設備・値引き・スポット。請求月＝サイクル月 − 請求書発行リードタイム（請求月の<b>1日に送付</b>）</li>
+<li>② 実績精算（後払い）：棚卸の精算差額・繰越調整。対象期間 前月21日〜当月20日（<b>20日締め</b>）、請求月＝<b>サイクル月の翌月</b>（20日締め・25日確定のあと<b>翌月1日に送付</b>）</li>
+<li>金額は<b>税抜＋税率</b>で持ち、消費税は<b>請求書で税率ごとに上乗せ</b>する（プラン・機種・オプション・値引きとも）</li>
+<li>請求書番号・請求ステータス・確定者は<b>①②それぞれ</b>が持つ</li>
+<li>請求書は<b>子契約1件＝1枚ではない</b>。1枚に複数拠点・複数子契約（年一括は12件）と①②が乗る</li></ul></div>
+
+</div>
+<h3>⑥ 請求まわりは「正」を1つに </h3>
+<div class="scroll"><table>
+<tr><th><span class="j">項目</span></th><th><span class="j">正となる持ち主</span></th><th><span class="j">相手側</span></th></tr>
+<tr><td><span class="j">請求先（法人／この拠点）</span></td><td><span class="j"><b>拠点のみ</b></span></td><td><span class="j">法人は集計の参照と一括変更だけ</span></td></tr>
+<tr><td><span class="j">請求書の発行単位</span></td><td><span class="j"><b>法人のみ</b></span></td><td><span class="j">拠点は参照のみ</span></td></tr>
+<tr><td><span class="j">請求書発行リードタイム</span></td><td><span class="j">法人＝既定値、拠点＝上書き</span></td><td><span class="j">上書きは請求先＝この拠点のときだけ活性（拠点ごとの上書きは 9/25 に「許す」で確定）</span></td></tr>
+<tr><td><span class="j">支払方法・支払サイクル・Bill One（入金期限は固定ルールのため持たない）</span></td><td><span class="j"><b>請求先が指す側</b></span></td><td><span class="j">もう一方は非活性・保存しない</span></td></tr>
+<tr><td><span class="j">法人名</span></td><td><span class="j">法人名／法人名（契約）／請求先法人名 の3つ</span></td><td><span class="j">空欄は 請求先法人名→契約→法人名 の順にさかのぼる</span></td></tr>
+</table></div>
+<h3>⑦ お試しと本導入は別の親契約 </h3>
+<div class="bi">
+<div class="ja"><p>フェーズ1は同じ契約レコードで切り替えていました。フェーズ2は、本導入へ移るときに<b>新しい親契約番号を採番</b>します（最低利用期間を本導入の開始日から数えるため）。「お試し・本導入の切替（参照）」でお互いを指し、設備の貸出は拠点にあるのでそのまま続きます。</p></div>
+
+</div>
+<h3>⑧ 人の記憶に頼らず、バッチで検知する </h3>
+<div class="scroll"><table>
+<tr><th><span class="j">検知</span></th><th><span class="j">条件</span></th><th><span class="j">フェーズ1</span></th></tr>
+<tr><td><span class="j">請求漏れ</span></td><td><span class="j">請求確定日（25日）に、有効な契約なのにその請求月の子契約が無い</span></td><td><span class="tag tx">なし</span></td></tr>
+<tr><td><span class="j">回収未完了</span></td><td><span class="j">返却予定日 &lt; 今日 かつ 未返却数 &gt; 0</span></td><td><span class="tag tx">なし</span></td></tr>
+<tr><td><span class="j">連動の不一致（オプションA）</span></td><td><span class="j">契約項目の値と、立っている費目行が合わない</span></td><td><span class="tag tx">なし</span></td></tr>
+</table></div>
+</section>
+<!-- 4 -->
+<section id="s4">
+<h2><span class="no">4</span>業務フロー</h2>
+<div class="sub">申込から解約まで、どのエンティティが動くか</div>
+<div class="fig">
+<svg font-family="Hiragino Sans,Noto Sans JP,sans-serif" viewbox="0 0 1100 150" width="1100">
+<defs><marker id="a4" markerheight="7" markerwidth="7" orient="auto" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0,0L10,5L0,10z" fill="#8a949e"></path></marker></defs>
+<g font-size="12" text-anchor="middle">
+<rect fill="#eef4fd" height="72" rx="8" stroke="#1f5fb8" width="120" x="10" y="30"></rect><text fill="#1f5fb8" font-weight="700" x="70" y="56">1 申込・登録</text><text fill="#1f2933" font-size="10.5" x="70" y="74">法人・拠点</text>
+<line marker-end="url(#a4)" stroke="#8a949e" x1="130" x2="146" y1="66" y2="66"></line>
+<rect fill="#eef4fd" height="72" rx="8" stroke="#1f5fb8" width="120" x="148" y="30"></rect><text fill="#1f5fb8" font-weight="700" x="208" y="56">2 親契約</text><text fill="#1f2933" font-size="10.5" x="208" y="74">種別・開始日</text>
+<line marker-end="url(#a4)" stroke="#8a949e" x1="268" x2="284" y1="66" y2="66"></line>
+<rect fill="#fff" height="72" rx="8" stroke="#1f5fb8" stroke-width="1.5" width="130" x="286" y="30"></rect><text fill="#1f5fb8" font-weight="700" x="351" y="56">3 子契約の生成</text><text fill="#1f2933" font-size="10.5" x="351" y="74">日次バッチ・基準日</text>
+<line marker-end="url(#a4)" stroke="#8a949e" x1="416" x2="432" y1="66" y2="66"></line>
+<rect fill="#e6f5ee" height="72" rx="8" stroke="#0d7a55" width="130" x="434" y="30"></rect><text fill="#0d7a55" font-weight="700" x="499" y="56">4 変更・異動</text><text fill="#1f2933" font-size="10.5" x="499" y="74">子契約で登録</text>
+<line marker-end="url(#a4)" stroke="#8a949e" x1="564" x2="580" y1="66" y2="66"></line>
+<rect fill="#fff" height="72" rx="8" stroke="#1f5fb8" width="120" x="582" y="30"></rect><text fill="#1f5fb8" font-weight="700" x="642" y="56">5 納品</text><text fill="#1f2933" font-size="10.5" x="642" y="74">配送データ</text>
+<line marker-end="url(#a4)" stroke="#8a949e" x1="702" x2="718" y1="66" y2="66"></line>
+<rect fill="#fff6e0" height="72" rx="8" stroke="#8a5a00" width="130" x="720" y="30"></rect><text fill="#8a5a00" font-weight="700" x="785" y="56">6 確定（25日）</text><text fill="#1f2933" font-size="10.5" x="785" y="74">① と ② を別々に</text>
+<line marker-end="url(#a4)" stroke="#8a949e" x1="850" x2="866" y1="66" y2="66"></line>
+<rect fill="#fff6e0" height="72" rx="8" stroke="#8a5a00" width="100" x="868" y="30"></rect><text fill="#8a5a00" font-weight="700" x="918" y="56">7 請求書</text><text fill="#1f2933" font-size="10.5" x="918" y="74">翌月1日送付</text>
+<line marker-end="url(#a4)" stroke="#8a949e" x1="968" x2="984" y1="66" y2="66"></line>
+<rect fill="#fdeaed" height="72" rx="8" stroke="#c02339" width="104" x="986" y="30"></rect><text fill="#c02339" font-weight="700" x="1038" y="56">8 休止・解約</text><text fill="#1f2933" font-size="10.5" x="1038" y="74">承認・回収</text>
+</g>
+<path d="M499,102 C499,136 351,136 351,104" fill="none" marker-end="url(#a4)" stroke="#0d7a55" stroke-dasharray="4 3"></path>
+<text fill="#0d7a55" font-size="10.5" text-anchor="middle" x="425" y="146">毎サイクル繰り返す</text>
+</svg>
+</div>
+<div class="flow">
+<div class="step"><div class="n">1</div>
+<div class="ja"><b>申込・登録</b><b class="w">法人・拠点</b><br/>法人を登録（新規登録・法人名変更は運営承認不要・通知のみ）。拠点は法人IDに紐付けて追加（フェーズ1のように新規申込として再登録しない）。<b>法人なし拠点</b>も可。請求先は拠点で決める。</div>
+</div>
+<div class="step"><div class="n">2</div>
+<div class="ja"><b>親契約</b><b class="w">親契約</b><br/>契約種別（お試しキャンペーン／本導入）・契約開始日・代理店コードを持つ。最低利用期間は<b>いちばん長い設備の代表値（参照）</b>、満了日は自動計算。</div>
+</div>
+<div class="step"><div class="n">3</div>
+<div class="ja"><b>子契約の生成</b><b class="w">子契約</b><br/>日次バッチが基準日を過ぎた未生成のサイクルを拾う。基準日はリードタイムで決まる（当月請求＝オーダー開始日／2ヶ月前請求＝サイクル月の2ヶ月前／年一括＝12件まとめて）。本導入は自動更新、お試しは指定月数だけ。先の月は「子契約を先まで作る」で手動生成できる。プラン・単価・支払条件はここで<b>スナップショット</b>。</div>
+</div>
+<div class="step"><div class="n">4</div>
+<div class="ja"><b>変更・異動</b><b class="w">子契約 → 拠点</b><br/>翌月分の変更は<b>翌月の子契約を直す</b>。「適用月」の項目は無く、保存時に<b>「この子契約だけ／この子契約以降すべて」</b>をダイアログで選ぶ（後ろに生成済みがあるときだけ）。設備・オプション・割引の異動も子契約で登録し、結果が拠点の一覧に反映される。確定・請求済の子契約は金額に効く変更不可。</div>
+</div>
+<div class="step"><div class="n">5</div>
+<div class="ja"><b>納品</b><b class="w">配送データ</b><br/>配送データは子契約の配送ルート設定（冷蔵／冷凍／資材ごとに 倉庫・配送会社・途中経由・リードタイム）から作る。資材は都度配送。詳細は統合仕様書（サイクル・出荷・ピッキング・配送）。</div>
+</div>
+<div class="step"><div class="n">6</div>
+<div class="ja"><b>確定</b><b class="w">子契約 ①②</b><br/>20日締め → 25日確定 → <b>翌月1日に請求書を送付</b>。①は請求月の前月25日、②は締めた月（サイクル月）の25日に確定。ステータス：生成済／確定／拠点確定／法人確定／請求済。25日に請求漏れ検知。</div>
+</div>
+<div class="step"><div class="n">7</div>
+<div class="ja"><b>請求書</b><b class="w">請求書</b><br/>発行単位（法人まとめて／拠点ごと）に従い<b>毎月1日に送付</b>。「これから納品する月の①」と「締まった月の②」が1枚に並ぶのが普通。入金期限は1枚に1つ：①が乗れば<b>①のサイクル月の前月末</b>（当月請求はサイクル月の月末）、②だけなら<b>送付月の月末</b>。支払期限の管理は Bill One（<b>入金状況は取り込まない</b>）。請求書一覧は<b>法人Webにも出す</b>。</div>
+</div>
+<div class="step"><div class="n">8</div>
+<div class="ja"><b>休止・解約</b><b class="w">親契約・拠点</b><br/>即時解約にしない（理由→引き止め→承認→停止日→通知）。承認時に、適用月以降の<b>未確定の先行子契約を取消</b>し、貸出中の設備に<b>返却予定日を自動設定</b>（停止日＋1ヶ月）。休止は親契約の契約ステータスだけで表す。違約金は設備ごとに満了日で判定して合算。</div>
+</div>
+</div>
+</section>
+<!-- 5 -->
+<section id="s5">
+<h2><span class="no">5</span>1か月の例</h2>
+<div class="sub">子契約 CP0000001-202610（サイクル月 2026-10）・請求書発行リードタイム 1</div>
+<div class="scroll"><table>
+<tr><th></th><th><span class="j">① 固定額（前払い）</span></th><th><span class="j">② 実績精算（後払い）</span></th></tr>
+<tr><th><span class="j">中身</span></th><td><span class="j">プラン固定額・オプション・設備・値引き・スポット</span></td><td><span class="j">棚卸の精算差額（免責超過分）・繰越調整</span></td></tr>
+<tr><th><span class="j">対象期間</span></th><td><span class="j">2026-10 サイクル</span></td><td>2026/09/21〜10/20</td></tr>
+<tr><th><span class="j">請求月</span></th><td><span class="j">2026-09（＝10 − 1・9/1 送付）</span></td><td><span class="j">2026-11（サイクル月の翌月・11/1 送付）</span></td></tr>
+<tr><th><span class="j">確定</span></th><td>2026/08/25</td><td>2026/10/25</td></tr>
+<tr><th><span class="j">入金期限</span></th><td><span class="j">2026/09/30（サイクル月の前月末）</span></td><td><span class="j">11/1 送付の請求書の期限に乗る（同じ請求書の①＝サイクル 2026-12 → 11/30）。②だけなら送付月の月末（11/30）</span></td></tr>
+</table></div>
+<div class="bi">
+<div class="ja"><p>式はどちらも<b>契約・サイクル月が起点</b>：<br/><code>① の請求月 ＝ サイクル月 − リードタイム</code><br/><code>② の請求月 ＝ サイクル月 ＋ 1</code><br/><code>請求書は請求月の1日に送付</code><br/><code>入金期限 ＝ ① のサイクル月の前月末（リードタイム0はサイクル月の月末）／ ②だけなら送付月の月末</code><br/>リードタイムが何ヶ月でも、前払いの入金期限は同じ（サイクル 2026-10 なら 9/30）。<br/>フェーズ1は「請求月から見た翌月」だったため、2ヶ月前請求で意味が変わってしまっていました。</p></div>
+
+</div>
+</section>
+<!-- 6 -->
+<section id="s6">
+<h2><span class="no">6</span>どこで直すか（画面の見方）</h2>
+<div class="sub">デモ es_entity_demo_ja.html の画面と対応</div>
+<div class="scroll"><table>
+<tr><th><span class="j">直したいこと</span></th><th><span class="j">画面・タブ</span></th><th><span class="j">フェーズ1では</span></th></tr>
+<tr><td><span class="j">請求書の発行単位・リードタイム既定値</span></td><td><span class="j">法人情報編集 ＞ 請求</span></td><td><span class="tag tn">新</span></td></tr>
+<tr><td><span class="j">請求先・支払方法（請求先＝拠点のとき）</span></td><td><span class="j">拠点情報編集 ＞ 請求</span></td><td><span class="j">契約・顧客側で編集</span></td></tr>
+<tr><td><span class="j">契約種別・開始日・代理店</span></td><td><span class="j">拠点情報編集 ＞ 契約（親契約）</span></td><td><span class="j">毎月の契約に重複</span></td></tr>
+<tr><td><span class="j">翌月のプラン・配送回数・サイクル</span></td><td><span class="j">契約情報編集（子契約）＞ 契約 → 保存時に適用範囲</span></td><td><span class="j">同じレコード＋適用月</span></td></tr>
+<tr><td><span class="j">設備の貸出・回収・機種変更</span></td><td><span class="j">子契約 ＞ 設備・オプション ＞ 設備の異動</span></td><td><span class="j">契約内の4つの表</span></td></tr>
+<tr><td><span class="j">いま何を貸しているか確認</span></td><td><span class="j">拠点 ＞ 設備・オプション ＞ 貸出一覧（見るだけ）</span></td><td><span class="tag tx">追えない</span></td></tr>
+<tr><td><span class="j">オプション・割引をつける／やめる</span></td><td><span class="j">子契約 ＞ 設備・オプション ＞ オプション・割引の異動（A型は契約項目を直す）</span></td><td><span class="j">システム外・割引1項目</span></td></tr>
+<tr><td><span class="j">金額の修正</span></td><td><span class="j">子契約 ＞ 料金・請求 ＞ ①の費目行</span></td><td><span class="j">契約に直接入力</span></td></tr>
+<tr><td><span class="j">オプション・値引きの料金表</span></td><td><span class="j">オプションマスタ編集／値引きマスタ編集（運営Webのみ）</span></td><td><span class="tag tx">管理表</span></td></tr>
+</table></div>
+<div class="bi">
+<div class="ja"><p><b>法人Webに出さないもの</b>：変更履歴（全画面）・子契約の「料金・請求」タブ・配送ルート設定・社内のみの添付資料・代理店コード・社内備考・ES営業担当・Bill One ID・ユーザー現金利用。納品回数・納品サイクル・配送回数は変更申請のため参照できる。<b>請求書一覧は法人Webに出す</b>（2026/09/25）。</p></div>
+
+</div>
+</section>
+<!-- 7 -->
+<section id="s7">
+<h2><span class="no">7</span>フェーズ1→2 で変わるもの（主なもの）</h2>
+<div class="sub">全44件は Excel「02_移行で変わるもの」</div>
+<div class="scroll"><table>
+<tr><th>#</th><th><span class="j">フェーズ1</span></th><th><span class="j">フェーズ2</span></th></tr>
+<tr><td>1</td><td><span class="j">契約（CP…）が毎月作られ、全部を持つ</span></td><td><span class="j">親契約（不変）＋子契約（1サイクル1件）</span></td></tr>
+<tr><td>2</td><td><span class="j">翌月の変更も同じレコード＋適用月</span></td><td><span class="j">翌月の子契約を直す。保存時に適用範囲を選ぶ</span></td></tr>
+<tr><td>3</td><td><span class="j">契約に金額を直接入力</span></td><td><span class="j">プランマスタから引き、生成時にスナップショット</span></td></tr>
+<tr><td>4</td><td><span class="j">料金区分（丸1・丸2…）を増やす</span></td><td><span class="j">料金表1つ＋割引で吸収（差額自動）</span></td></tr>
+<tr><td>5</td><td><span class="j">設備名を自由入力・4つの表</span></td><td><span class="j">機種マスタから選択・1つの一覧・貸出は拠点が持つ</span></td></tr>
+<tr><td>6</td><td><span class="j">オプション・値引きはシステム外／割引1項目</span></td><td><span class="j">オプションマスタ・値引きマスタを新設、重ねがけ可</span></td></tr>
+<tr><td>7</td><td><span class="j">契約種別「本契約」、お試しと同じレコード</span></td><td><span class="j">お試しキャンペーン／本導入、別の親契約</span></td></tr>
+<tr><td>8</td><td><span class="j">配送区分「クール便」が温度帯の意味も兼ねる、配送回数1つ</span></td><td><span class="j">配送区分（COOL便／ES配送便）＋配送ルート設定（冷蔵・冷凍・資材ごと）</span></td></tr>
+<tr><td>9</td><td><span class="j">最低利用期間を自由入力・違約金の起算日を手で持つ</span></td><td><span class="j">機種マスタが持つ。満了日を自動計算、設備ごとに判定して合算</span></td></tr>
+<tr><td>10</td><td><span class="j">金額確定・請求書・入金期限がない</span></td><td><span class="j">①②の請求ステータス、請求書テーブル（法人Webにも一覧）、入金期限ルール</span></td></tr>
+<tr><td>11</td><td><span class="j">請求書発行リードタイムは固定の選択肢</span></td><td><span class="j">数字＋「ヶ月前請求」（0〜12）</span></td></tr>
+<tr><td>12</td><td><span class="j">法人名は1つ、法人の画面なし</span></td><td><span class="j">法人情報編集を新設、法人名は3つ</span></td></tr>
+<tr><td>13</td><td><span class="j">担当者は区分だけ、法人の請求担当者は単票</span></td><td><span class="j">法人・拠点とも担当者テーブル（メイン・請求担当者必須）</span></td></tr>
+<tr><td>14</td><td><span class="j">拠点に利用休止フラグ・設置フロア・開設日</span></td><td><span class="j">廃止。休止は親契約のステータスだけ</span></td></tr>
+<tr><td>15</td><td><span class="j">解約ボタンで即時解約</span></td><td><span class="j">承認フロー＋先行子契約の取消＋返却予定日</span></td></tr>
+<tr><td>16</td><td><span class="j">サービス率・口座情報を持つ</span></td><td><span class="j">廃止（口座はシステムで管理しない）</span></td></tr>
+</table></div>
+</section>
+<!-- 8 -->
+<section id="s8">
+<h2><span class="no">8</span>移行の注意・決定事項</h2>
+<div class="bi">
+<div class="ja">
+<h3>移行でいちばん事故が起きるところ</h3>
+<ul>
+<li>既存の CP… を子契約へ移し、拠点ごとに親契約を1本起こす。お試し→本契約の履歴は2本の親契約に分ける</li>
+<li>請求書テーブルの主キーを「子契約1件＝請求書1件」にしない。既存の費目名のカッコ書き（対象月）を対象期間の列へ</li>
+<li>設備データから貸出レコードを起こす（貸出日不明は要確認）。設備の月額と「オプション・設備管理費」の二重計上を確認</li>
+<li>値引きは 拠点ID＋値引き額 のCSVで約800拠点へ一括</li>
+<li>初回の請求確定日に請求漏れ検知を必ず1回まわす</li>
+</ul>
+<h3>2026/09/25 に決まったこと</h3>
+<ul>
+<li>拠点ごとの請求書発行リードタイムの上書き：<b>許す</b>（項目は残す）</li>
+<li>値引きの重ねがけの順番：<b>値引きごとに適用順を入力できる</b></li>
+<li>連動タイプAのオプションの効き始め：<b>翌月から</b></li>
+<li>請求書一覧：<b>法人Webに出す</b>（料金・請求タブは引き続き出さない）</li>
+<li>Bill One の入金状況：<b>取り込まない</b></li>
+<li>② 実績精算：<b>20日締め・25日確定・翌月1日送付、請求月はサイクル月の翌月</b>（6/21〜7/20 は 8/1 送付）</li>
+<li>請求書の送付と入金期限：<b>請求月の1日に送付</b>。入金期限は <b>① のサイクル月の前月末で固定</b>（当月請求はサイクル月の月末）、②だけの請求書は送付月の月末。1通に期限は1つ</li>
+<li>金額：<b>税抜＋税率</b>で持ち、消費税は請求書で税率ごとに上乗せ（オプション・値引きも）</li>
+</ul>
+<p>2026/09/25 に項目一覧（md／xlsx）とデモへ反映済み。② の請求月と送付日・入金期限は同日に見直し、デモ（es_entity_demo_ja.html）へ反映済み・項目一覧（md／xlsx）は未反映。法人確定の廃止は未決。</p></div>
+
+</div>
+</section>
+</div></div></div>
+<script>(function(){var links=document.querySelectorAll('.side a'),secs=[].map.call(links,function(a){return document.querySelector(a.getAttribute('href'))});
+function spy(){var y=window.scrollY+90,cur=0;secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i});links.forEach(function(a,i){a.classList.toggle('on',i===cur)})}
+window.addEventListener('scroll',spy);spy();})();</script>
+</body></html>

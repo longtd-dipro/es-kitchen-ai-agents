@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "595eb5f8-071b-497b-8d12-a18a62ac77fc",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Lịch_trình_Cycle_giao_hàng_picking/dataflow-aw-cycset-20261020-145207/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/Lịch_trình_Cycle_giao_hàng_picking/dataflow-aw-cycset-20261020-145207/aw-cycset.html",
+  "specification": {
+    "sha256": "1590d6939939fbc2d10e1f5332ba499f8ca80b0130e53b102671c4dd9c17f4e3",
+    "bytes": 37905
+  },
+  "artifact": {
+    "sha256": "7dcacdd1433998e269a85105ac2cfbf8b97812ac6e64427933495ced5c9fd0f2",
+    "bytes": 767501
+  }
+}

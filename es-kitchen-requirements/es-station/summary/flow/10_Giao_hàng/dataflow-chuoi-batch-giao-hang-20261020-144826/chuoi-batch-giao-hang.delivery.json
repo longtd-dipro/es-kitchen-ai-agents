@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "4177c9c3-cb99-40a8-9d1e-1ffcb98b75e1",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/10_Giao_hàng/dataflow-chuoi-batch-giao-hang-20261020-144826/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/10_Giao_hàng/dataflow-chuoi-batch-giao-hang-20261020-144826/chuoi-batch-giao-hang.html",
+  "specification": {
+    "sha256": "55dca93253d3f64e30edd7bed4e1b38e2ead81ee9b88e6eef39527fb2350df6c",
+    "bytes": 41295
+  },
+  "artifact": {
+    "sha256": "518b403245b8a02eb4018b27c223b2f49d6fe96d5ec9e7a2bd35f1e26ac81040",
+    "bytes": 781605
+  }
+}

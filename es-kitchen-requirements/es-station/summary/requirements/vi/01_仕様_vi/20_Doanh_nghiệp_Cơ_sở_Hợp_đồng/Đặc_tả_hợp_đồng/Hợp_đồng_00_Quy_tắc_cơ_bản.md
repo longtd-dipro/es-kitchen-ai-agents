@@ -1,8 +1,10 @@
+> Bản dịch tiếng Việt của `ja/01_仕様/20_法人・拠点・契約/契約仕様/契約_00_基本ルール.md` (nguồn es-station, bản 2026-10-20). Khi khác nhau, bản tiếng Nhật và `docs/決定台帳.md` là chuẩn.
+
 <!-- Nguồn: 20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/Doanh_nghiệp_Cơ_sở_Hợp_đồng_Hợp_đồng_con_Danh_sách_mục.md (tách ngày 2026-10-03. Nội dung giữ nguyên như thời điểm tách) -->
 
 # Danh sách mục: Doanh nghiệp・Cơ sở・Hợp đồng・Hợp đồng con (dựa trên màn hình thực tế của Phase 1)
 
-> Ngày tạo: 2026/09/15　Cập nhật lần cuối: 2026/10/01 (Trả lời đóng STEP3 còn lại・STEP1: hóa đơn phát hành vào ngày 1 tháng sau S6-2)／2026/10/01 (Phản ánh trả lời STEP2: thiết lập sử dụng app thuộc hợp đồng con・hóa đơn phát hành cuối tháng (→ cùng ngày sửa lại ở S6-2 thành phát hành ngày 1 tháng sau)・hiển thị trạng thái thanh toán・tháng thanh toán (trả trước)・thời gian sử dụng tối thiểu là tủ lạnh 3／máy bán hàng tự động 12 tháng・năm tháng bắt đầu hợp đồng ban đầu・thêm bớt người phụ trách của doanh nghiệp・tên doanh nghiệp v.v. phản ánh ngay + thông báo)／2026/09/25 (Quyết định ngày gửi hóa đơn・hạn thanh toán / phản ánh trạng thái thủ tục chuyển khoản・số tiền thu hồi khi hủy hợp đồng (ghi đè))　Đối tượng: Web Vận hành (chính)・Web Doanh nghiệp
+> Ngày tạo: 2026/09/15　Cập nhật lần cuối: 2026/10/01 (Trả lời đóng STEP3 còn lại・STEP1: hóa đơn phát hành vào ngày 1 tháng sau S6-2)／2026/10/01 (Phản ánh trả lời STEP2: thiết lập sử dụng app thuộc hợp đồng con・hóa đơn phát hành cuối tháng (→ cùng ngày sửa lại ở S6-2 thành phát hành ngày 1 tháng sau)・hiển thị trạng thái hóa đơn・tháng xuất hóa đơn (trả trước)・thời gian sử dụng tối thiểu là tủ lạnh 3／máy bán hàng tự động 12 tháng・năm tháng bắt đầu hợp đồng ban đầu・thêm bớt người phụ trách của doanh nghiệp・tên doanh nghiệp v.v. phản ánh ngay + thông báo)／2026/09/25 (Quyết định ngày gửi hóa đơn・hạn thanh toán / phản ánh trạng thái thủ tục chuyển khoản・số tiền thu hồi khi hủy hợp đồng (ghi đè))　Đối tượng: Web Vận hành (chính)・Web Doanh nghiệp
 > **Tái cấu trúc dựa trên màn hình thực tế của Phase 1 (Chỉnh sửa thông tin cơ sở / Chỉnh sửa thông tin hợp đồng)**, và chồng thêm các mục mới của Phase 2.
 > Có thể lọc cùng nội dung này trong `01_画面項目一覧` của bản Excel `Doanh_nghiệp_Cơ_sở_Hợp_đồng_Hợp_đồng_con_Danh_sách_mục.xlsx`.
 > **Những việc xử lý ngoài hệ thống**: Đăng ký tư vấn (HubSpot) → thông báo Slack → gặp mặt kinh doanh (ngoài hệ thống) → đăng ký trên ES Station. Việc tìm kiếm HubSpot từ màn hình ký hợp đồng được hoãn. [Nguồn gốc: 契約_詳細要件 §1・§10]／Máy tính phúc lợi đặt trên trang chủ, không đưa vào hệ thống. Không có giới hạn sử dụng theo số nhân viên. [Nguồn gốc: 契約_詳細要件 §8・REQ-CT-185]
@@ -15,23 +17,23 @@
 
 | Màn hình | Thực thể nắm giữ | Tab |
 |---|---|---|
-| **Chỉnh sửa thông tin doanh nghiệp** (mới ở P2) | Doanh nghiệp | **4 tab**: Thông tin cơ bản (địa chỉ・người phụ trách)／Thanh toán (điều kiện thanh toán・danh sách hóa đơn)／Danh sách cơ sở・hợp đồng／Lịch sử thay đổi |
-| **Chỉnh sửa thông tin cơ sở** | Cơ sở ＋ **Hợp đồng cha** | **5 tab**: Thông tin cơ bản (địa chỉ・người phụ trách・tài khoản)／**Hợp đồng** (danh sách hợp đồng cha・hợp đồng con)／**Thiết bị・Tùy chọn** (danh sách cho mượn・danh sách áp dụng tùy chọn/giảm giá)／Thanh toán (điều kiện thanh toán・danh sách hóa đơn)／Tài liệu・Lịch sử (tài liệu đính kèm・lịch sử thay đổi) |
-| **Chỉnh sửa thông tin hợp đồng (hợp đồng con)** | Hợp đồng con (hàng tháng) | **4 tab**: Hợp đồng (hợp đồng con・thông tin cơ sở・hợp đồng・lịch giao hàng/giao nhận・ghi chú)／Giá・Thanh toán (①②・tóm tắt số tiền・giảm giá/khoản chi trả)／**Thiết bị・Tùy chọn** (cấu hình thiết bị・biến động thiết bị・biến động tùy chọn/giảm giá・lắp đặt thu hồi・nguyện vọng khi đăng ký)／Lịch sử thay đổi |
+| **Chỉnh sửa thông tin doanh nghiệp** (mới ở P2) | Doanh nghiệp | **4 tab**: Thông tin cơ bản (địa chỉ・người phụ trách)／Hóa đơn (điều kiện hóa đơn・danh sách hóa đơn)／Danh sách cơ sở・hợp đồng／Lịch sử thay đổi |
+| **Chỉnh sửa thông tin cơ sở** | Cơ sở ＋ **Hợp đồng cha** | **5 tab**: Thông tin cơ bản (địa chỉ・người phụ trách・tài khoản)／**Hợp đồng** (danh sách hợp đồng cha・hợp đồng con)／**Thiết bị・Tùy chọn** (danh sách cho mượn・danh sách áp dụng tùy chọn/giảm giá)／Hóa đơn (điều kiện hóa đơn・danh sách hóa đơn)／Tài liệu・Lịch sử (tài liệu đính kèm・lịch sử thay đổi) |
+| **Chỉnh sửa thông tin hợp đồng (hợp đồng con)** | Hợp đồng con (hàng tháng) | **4 tab**: Hợp đồng (hợp đồng con・thông tin cơ sở・hợp đồng・lịch giao hàng/giao nhận・ghi chú)／Giá・Hóa đơn (①②・tóm tắt số tiền・giảm giá/khoản chi trả)／**Thiết bị・Tùy chọn** (cấu hình thiết bị・biến động thiết bị・biến động tùy chọn/giảm giá・lắp đặt thu hồi・nguyện vọng khi đăng ký)／Lịch sử thay đổi |
 
 **Số mục cũng đã được giảm (2026/09/16).** Dù đã gộp tab nhưng số ô trên mỗi màn hình vẫn quá nhiều nên đã giảm từ **401 mục → 364 mục**. Chỉ giảm 2 loại sau, và **không giảm bất kỳ ô nào mà Vận hành thực sự nhập**.
 
 | Phân loại | Cái gì | Ví dụ |
 |---|---|---|
-| **Bỏ** | Các mục "tham chiếu" mà cùng nội dung đã hiện ở màn hình khác hoặc phần tóm tắt phía trên màn hình | 3 mục "Thông tin cơ sở (tham chiếu)" của hợp đồng con／"① Thanh toán số tiền cố định (tham chiếu)" "② Thanh toán quyết toán theo thực tế (tham chiếu)"／"Trạng thái hợp đồng (từ hợp đồng cha)"／"Số dòng máy" |
-| **Gộp** | Các mục "tham chiếu" bị chia quá nhỏ gộp thành 1 ô | Trạng thái thanh toán của ①② (kỳ áp dụng・trạng thái ghi nhận・số hóa đơn・trạng thái・người xác nhận・hạn thanh toán → **Trạng thái thanh toán (tham chiếu)**)／ghi chép tạo／điều kiện kế thừa từ gói／phán định thời gian sử dụng tối thiểu・tiền phạt vi phạm／tình trạng hợp đồng con |
+| **Bỏ** | Các mục "tham chiếu" mà cùng nội dung đã hiện ở màn hình khác hoặc phần tóm tắt phía trên màn hình | 3 mục "Thông tin cơ sở (tham chiếu)" của hợp đồng con／"① Hóa đơn số tiền cố định (tham chiếu)" "② Hóa đơn quyết toán theo thực tế (tham chiếu)"／"Trạng thái hợp đồng (từ hợp đồng cha)"／"Số dòng máy" |
+| **Gộp** | Các mục "tham chiếu" bị chia quá nhỏ gộp thành 1 ô | Trạng thái hóa đơn của ①② (kỳ áp dụng・trạng thái ghi nhận・số hóa đơn・trạng thái・người xác nhận・hạn thanh toán → **Trạng thái hóa đơn (tham chiếu)**)／ghi chép tạo／điều kiện kế thừa từ gói／phán định thời gian sử dụng tối thiểu・tiền phạt vi phạm／tình trạng hợp đồng con |
 
 Với các mục đã gộp, cột triển khai (implementation) được ghi song song ở cột tên vật lý theo dạng phân cách bằng "/" như `period_from / period_to / posted_state / invoice_no / …`. **Dữ liệu nắm giữ không giảm.**
 
 | Màn hình・Tab | Số ô (trước → sau) |
 |---|---|
 | Hợp đồng con "Hợp đồng" | 29 → **17** |
-| Hợp đồng con "Giá・Thanh toán" | 28 → **14** |
+| Hợp đồng con "Giá・Hóa đơn" | 28 → **14** |
 | Cơ sở "Hợp đồng" | 17 → **13** |
 | Master giảm giá "Tính toán・Điều kiện" | 17 → **10** |
 
@@ -62,16 +64,16 @@ Trong demo đã thêm ô check **"Chỉ các mục nhập"**. Ẩn các ô tham 
 | | Nắm giữ |
 |---|---|
 | **Hợp đồng cha** (tab của màn hình cơ sở) | Những thứ không đổi trong suốt hợp đồng: số hợp đồng cha・loại hợp đồng・trạng thái hợp đồng・ngày bắt đầu／kết thúc hợp đồng・thời gian sử dụng tối thiểu・ngày hết hạn thời gian sử dụng tối thiểu・mã đại lý (cũ: thuộc chiến dịch chuyển từ công ty khác. Đã chuyển sang giảm giá chuyển từ công ty khác của master giảm giá nên xóa) |
-| **Hợp đồng con** (Chỉnh sửa thông tin hợp đồng) | Tất cả những gì quyết định hàng tháng／thay đổi giữa chừng: **gói・course・thiết lập giao hàng・lịch giao nhận・giá (khoản mục phí)・thiết bị・trạng thái thanh toán・lịch sử thay đổi** |
+| **Hợp đồng con** (Chỉnh sửa thông tin hợp đồng) | Tất cả những gì quyết định hàng tháng／thay đổi giữa chừng: **gói・course・thiết lập giao hàng・lịch giao nhận・giá (khoản mục phí)・thiết bị・trạng thái hóa đơn・lịch sử thay đổi** |
 
 - **Hợp đồng con là "1 bản ghi cho mỗi Chu kỳ giao hàng".** Chi tiết xem §0.3.
-- **Thay đổi hợp đồng cho tháng sau được thực hiện bằng cách sửa hợp đồng con của tháng sau, không phải hợp đồng cha.** Hợp đồng con của tháng hiện tại khi đã xác nhận・đã thanh toán thì không thể thay đổi ảnh hưởng đến số tiền.
+- **Thay đổi hợp đồng cho tháng sau được thực hiện bằng cách sửa hợp đồng con của tháng sau, không phải hợp đồng cha.** Hợp đồng con của tháng hiện tại khi đã xác nhận・đã xuất hóa đơn thì không thể thay đổi ảnh hưởng đến số tiền.
 - **Không có mục "tháng áp dụng thay đổi".** Thay vào đó, **khi bấm nút lưu của hợp đồng con, sẽ hỏi phạm vi áp dụng bằng hộp thoại**.
   - **Chỉ hợp đồng con này** … Chỉ sửa bản ghi của hợp đồng con này. Từ tháng sau trở đi vẫn được tạo theo thiết lập ban đầu
-  - **Tất cả từ hợp đồng con này trở đi** … Sau khi sửa hợp đồng con này, cũng cập nhật thiết lập nguồn tạo (cơ sở・hợp đồng cha・gói) về cùng giá trị. **Việc tự động tạo sẽ tạo phần của các Chu kỳ đã qua ngày chuẩn tạo (§0.3: quyết định theo lead time phát hành hóa đơn. Thanh toán trong tháng là ngày bắt đầu đặt hàng, thanh toán trước 2 tháng là 2 tháng trước, trả theo năm là 12 Chu kỳ), nên nếu không cập nhật nguồn tạo thì các hợp đồng con được tạo sau đó sẽ quay về giá trị cũ.** (Cũ: tự động tạo trước tối đa 1 tháng. Sửa theo 契約_01 §1, 2026-10-03) Các hợp đồng con chưa xác nhận đã tạo thủ công đến các tháng sau sẽ được sửa cùng lúc, **hợp đồng con đã xác nhận・đã thanh toán thì không sửa**
+  - **Tất cả từ hợp đồng con này trở đi** … Sau khi sửa hợp đồng con này, cũng cập nhật thiết lập nguồn tạo (cơ sở・hợp đồng cha・gói) về cùng giá trị. **Việc tự động tạo sẽ tạo phần của các Chu kỳ đã qua ngày chuẩn tạo (§0.3: quyết định theo lead time phát hành hóa đơn. Xuất hóa đơn trong tháng là ngày bắt đầu đặt hàng, xuất hóa đơn trước 2 tháng là 2 tháng trước, trả theo năm là 12 Chu kỳ), nên nếu không cập nhật nguồn tạo thì các hợp đồng con được tạo sau đó sẽ quay về giá trị cũ.** (Cũ: tự động tạo trước tối đa 1 tháng. Sửa theo 契約_01 §1, 2026-10-03) Các hợp đồng con chưa xác nhận đã tạo thủ công đến các tháng sau sẽ được sửa cùng lúc, **hợp đồng con đã xác nhận・đã xuất hóa đơn thì không sửa**
   - Kết quả đã chọn được lưu ở **"Phạm vi áp dụng"** của lịch sử thay đổi theo dạng "Chỉ 2026-07", "Tất cả từ 2026-07 trở đi".
 - **Khi giao hàng thay đổi giữa chừng cũng thay đổi ở hợp đồng con**, và áp dụng từ hợp đồng con của tháng sau.
-- **Giá thuộc về hợp đồng con.** Vì quản lý trạng thái thanh toán (đã tạo ～ đã thanh toán) ở hợp đồng con.
+- **Giá thuộc về hợp đồng con.** Vì quản lý trạng thái hóa đơn (đã tạo ～ đã xuất hóa đơn) ở hợp đồng con.
 - **Lịch sử thay đổi có ở cả cơ sở・hợp đồng cha và hợp đồng con.**
 - Trong khi có đơn đăng ký đang chờ phê duyệt, không thể trực tiếp sửa các mục là đối tượng của đơn trong hợp đồng con của cơ sở đó. Khi phê duyệt, nếu "giá trị trước thay đổi" của đơn khác với giá trị hiện tại thì dừng phê duyệt và để Vận hành xác nhận (契約_01 §1. Thêm 2026-10-03).
 
@@ -79,46 +81,49 @@ Trong demo đã thêm ô check **"Chỉ các mục nhập"**. Ẩn các ô tham 
 
 Chu kỳ giao hàng quay vòng theo 4 tuần, **ngày đầu Chu kỳ (A1) luôn là thứ Hai**. Không trùng với ngày 1 dương lịch, **cũng có khi là ngày cuối tháng trước**. Vì vậy không phải "tạo 1 bản ghi vào ngày 1 hàng tháng" mà làm như sau.
 
-- **1 Chu kỳ = 1 hợp đồng con.** Dù Chu kỳ vắt qua tháng dương lịch cũng không chia. **Tháng Chu kỳ = tháng mà ô thứ 14 (B7) thuộc về** (quyết định_v2.1・2026/09/21), `yyyymm` của số hợp đồng con chỉ tháng Chu kỳ (tháng thanh toán là mục khác).
+- **1 Chu kỳ = 1 hợp đồng con.** Dù Chu kỳ vắt qua tháng dương lịch cũng không chia. **Tháng Chu kỳ = tháng mà ô thứ 14 (B7) thuộc về** (quyết định_v2.1・2026/09/21), `yyyymm` của số hợp đồng con chỉ tháng Chu kỳ (tháng xuất hóa đơn là mục khác).
 - **Cách phân biệt phán định**: Số tiền cố định của gói và giới hạn số lượng cung cấp hàng tháng của đơn hàng được phán định theo **tháng Chu kỳ**, còn giao từng phần・giao lại・giao đột xuất được phán định theo **tháng dương lịch của ngày giao hàng**.
 - **Việc tạo là batch hàng ngày** lấy "**các Chu kỳ chưa tạo đã qua ngày chuẩn**". Không cố định theo ngày dương lịch.
 - **Ngày chuẩn tạo được quyết định theo lead time phát hành hóa đơn.**
 
 | Mẫu thanh toán | Thời điểm tạo hợp đồng con | Ví dụ (Chu kỳ tháng 9/2026) |
 |---|---|---|
-| Thanh toán trong tháng (chuẩn) | Ngày bắt đầu đặt hàng của Chu kỳ | Tạo vào 2026-08-01 → thanh toán tháng 9/2026 |
-| Thanh toán trước 2 tháng | Tạo trước **2 tháng** so với tháng Chu kỳ | Tạo trước 2026-06-25 → thanh toán tháng 7/2026 |
+| Xuất hóa đơn trong tháng (chuẩn) | Ngày bắt đầu đặt hàng của Chu kỳ | Tạo vào 2026-08-01 → hóa đơn tháng 9/2026 |
+| Xuất hóa đơn trước 2 tháng | Tạo trước **2 tháng** so với tháng Chu kỳ | Tạo trước 2026-06-25 → hóa đơn tháng 7/2026 |
 | Trả trước một lần cho 1 năm | **Tạo gộp 12 Chu kỳ** vào tháng bắt đầu hợp đồng・tháng gia hạn | 2026-04 tạo 12 bản ghi từ tháng 4/2026 đến tháng 3/2027 |
 
-- **Việc có tự động tạo hay không thay đổi tùy loại hợp đồng.** **Triển khai chính thức** là tự động gia hạn, tự động tạo 1 Chu kỳ đã qua ngày chuẩn. **Chiến dịch dùng thử** không tự động tạo mà chỉ tạo đúng số tháng đã chỉ định. Cả hai khi cần các Chu kỳ xa hơn thì bấm **"Tạo hợp đồng con trước"** ở phía trên tab "Hợp đồng" của cơ sở・danh sách (hợp đồng con), chọn tháng trong hộp thoại, xác nhận các hợp đồng con sẽ được tạo rồi mới tạo (không tạo lại các Chu kỳ đã có).
-- **Phát hiện sót thanh toán**: Vào ngày xác nhận thanh toán (25 hàng tháng), phát hiện **hợp đồng đang có hiệu lực nhưng không có hợp đồng con của tháng thanh toán đó** và đưa vào "Cần xác nhận". Vì nếu không có hợp đồng con thì không theo dõi được trạng thái thanh toán.
-- **Khi phê duyệt hủy hợp đồng・tạm dừng, hủy các hợp đồng con tạo trước chưa thanh toán (chưa xác nhận) từ tháng áp dụng trở đi.** Hiển thị số lượng bị hủy trên màn hình phê duyệt. Tháng kết thúc hợp đồng là "tháng giao hàng cuối cùng".
+- **Việc có tự động tạo hay không thay đổi tùy loại hợp đồng.** **Triển khai chính thức** là tự động gia hạn, tự động tạo 1 Chu kỳ đã qua ngày chuẩn. **Dùng thử** không tự động tạo mà chỉ tạo đúng số tháng đã chỉ định. Cả hai khi cần các Chu kỳ xa hơn thì bấm **"Tạo hợp đồng con trước"** ở phía trên tab "Hợp đồng" của cơ sở・danh sách (hợp đồng con), chọn tháng trong hộp thoại, xác nhận các hợp đồng con sẽ được tạo rồi mới tạo (không tạo lại các Chu kỳ đã có).
+- **Phát hiện bỏ sót hóa đơn**: Vào ngày chốt hóa đơn (25 hàng tháng), phát hiện **hợp đồng đang có hiệu lực nhưng không có hợp đồng con của tháng xuất hóa đơn đó** và đưa vào "Cần xác nhận". Vì nếu không có hợp đồng con thì không theo dõi được trạng thái hóa đơn.
+- **Khi phê duyệt hủy hợp đồng・tạm dừng, hủy các hợp đồng con tạo trước chưa xuất hóa đơn (chưa xác nhận) từ tháng áp dụng trở đi.** Hiển thị số lượng bị hủy trên màn hình phê duyệt. Tháng kết thúc hợp đồng là "tháng giao hàng cuối cùng".
 
 > **Đã giải quyết (2026/09/21 quyết định_v2.1)**: Tháng Chu kỳ không phải là "năm tháng mà A1 thuộc về" mà là **"tháng mà B7 thuộc về"**. Ví dụ "Chu kỳ tháng 9/2026 (A1＝2026-08-31)" có B7＝2026-09-13 nên là Chu kỳ tháng 9, đúng.
 
-### 0.4 Chiến dịch dùng thử và triển khai chính thức chuyển đổi trên cùng một hợp đồng cha (2026/09/16. Sửa theo sổ quyết định 2026-10-03)
+### 0.4 Dùng thử và triển khai chính thức chuyển đổi trên cùng một hợp đồng cha (2026/09/16. Sửa theo sổ quyết định 2026-10-03. 2026-10-15 thống nhất tên loại hợp đồng thành 「お試し」(dùng thử)「本導入」(triển khai chính thức) theo sổ quyết định AK S-2)
 
-|  | Chiến dịch dùng thử | Triển khai chính thức |
+|  | Dùng thử | Triển khai chính thức |
 |---|---|---|
-| Giá | Giảm giá chiến dịch dùng thử (DC000013): số tiền giảm = phí gói của gói 50・tủ lạnh・Lite (¥24,500). Không vượt quá số tiền thanh toán・mỗi doanh nghiệp 1 lần (**khi người nhận hóa đơn là từng cơ sở thì gắn vào cơ sở đầu tiên**). 1 cơ sở・50 Lite thì miễn phí. Nhiều cơ sở・đổi gói・kéo dài thời gian thì thanh toán phần chênh lệch (trả lời 2026/10/01 STEP1) (Cũ: không có nơi gắn khi người nhận hóa đơn là từng cơ sở. Sửa theo sổ quyết định 2026-10-03)<br>**Phần kéo dài của dùng thử không giảm giá (tính phí gói)** [hong trả lời 2026-10-03 (K1)] | Có phí |
-| Thời gian | Mặc định 1 tháng. Khách hàng không chỉnh sửa được. **Chỉ Vận hành mới kéo dài được** (tạm thời không giới hạn số lần・số tháng. Nếu dài thì chuyển sang triển khai chính thức). Web Doanh nghiệp hiển thị thời gian dùng thử và phần kéo dài (thêm ở danh sách vấn đề 2026-10-03) | Tự động gia hạn (gia hạn tháng trước) |
+| Giá | Giảm giá chiến dịch dùng thử (DC000013): số tiền giảm = phí gói của gói 50・tủ lạnh・Lite (¥24,500). Không vượt quá số tiền hóa đơn・mỗi doanh nghiệp 1 lần (**khi người nhận hóa đơn là từng cơ sở thì gắn vào cơ sở đầu tiên**). 1 cơ sở・50 Lite thì miễn phí. Nhiều cơ sở・đổi gói・kéo dài thời gian thì xuất hóa đơn phần chênh lệch (trả lời 2026/10/01 STEP1) (Cũ: không có nơi gắn khi người nhận hóa đơn là từng cơ sở. Sửa theo sổ quyết định 2026-10-03)<br>**Phần kéo dài của dùng thử không giảm giá (tính phí gói)** [hong trả lời 2026-10-03 (K1)] | Có phí |
+| Thời gian | Mặc định 1 tháng. Khách hàng không chỉnh sửa được. **Kéo dài là thao tác ẩn chỉ Vận hành dùng được (tạm thời)** (tạm thời không giới hạn số lần・số tháng. Nếu dài thì chuyển sang triển khai chính thức). Không hiển thị việc kéo dài trên màn hình・phần giải thích cho khách hàng (thay đổi 2026-10-14・sổ quyết định B. Thay thế nội dung 2026-10-03 "Web Doanh nghiệp hiển thị phần kéo dài") | Tự động gia hạn (gia hạn tháng trước) |
 | Đơn hàng | Doanh nghiệp không đặt hàng được (kể cả từ 2 tháng trở lên). Đơn hàng do hệ thống tự động tạo mỗi tháng (để khách trải nghiệm đồng đều nhiều sản phẩm khác nhau). Phát hộp vật tư [Nguồn gốc: 契約_詳細要件 yêu cầu (2026/10/02) REQ-CT-302] | Doanh nghiệp đặt hàng |
 | Gói mặc định | Lite. Số lần giao hàng tự động điều chỉnh theo gói | Theo nội dung đăng ký |
 | **Thời gian sử dụng tối thiểu** | **Không có** | Theo từng thiết bị (master dòng máy. Tủ lạnh 3 tháng・máy bán hàng tự động 12 tháng). Tính từ ngày cho mượn. Thiết bị đặt trong thời gian dùng thử tính từ ngày bắt đầu triển khai chính thức (2026/10/01 STEP2 trả lời Q8・§0.6) |
 | **Tiền phạt vi phạm** | **Không phát sinh** | Phát sinh khi hủy trước ngày hết hạn |
 | Hợp đồng con | Không tự động gia hạn, chỉ tạo đúng số tháng của thời gian dùng thử | Tự động gia hạn, tạo từng Chu kỳ một |
 
-- **Khi chuyển đổi cũng không đổi số hợp đồng cha.** Hợp đồng cha giữ **lịch sử loại hợp đồng** (Dùng thử: bắt đầu～kết thúc, Triển khai chính thức: bắt đầu～), thời gian sử dụng tối thiểu・tiền phạt vi phạm・tự động gia hạn được phán định **từ ngày bắt đầu triển khai chính thức**. Cơ sở và hợp đồng cha vẫn là 1 đối 1. Khi có khoảng trống từ lúc hết hạn dùng thử đến lúc bắt đầu triển khai chính thức thì xử lý giống tạm dừng (28-35), nếu tổng cộng quá 1 năm thì không phải chuyển đổi mà là đăng ký mới (28-37). Khi thiết bị đặt trong thời gian dùng thử nhiều hơn thiết bị cho mượn tiêu chuẩn của gói thì phần chênh lệch được thanh toán 1 lần duy nhất trên hóa đơn đầu tiên của triển khai chính thức (Vận hành sửa được dòng máy・số tiền), còn nếu ít hơn thì không hoàn tiền (danh sách vấn đề 10/02). (Cũ: khi chuyển đổi thì đánh số hợp đồng cha mới, hợp đồng cha phía dùng thử vẫn ở trạng thái kết thúc và lưu lại như lịch sử. Sửa theo sổ quyết định 2026-10-03)
-- Chuyển đổi chỉ thêm 1 dòng vào "lịch sử loại hợp đồng" của hợp đồng cha, không có mục trỏ lẫn nhau giữa các hợp đồng cha. Thiết lập cơ sở như chế độ khách được kế thừa, gói・thiết bị (ví dụ: CSC120→CSC180) Vận hành có thể thiết lập lại khi chuyển đổi. Chuyển đổi có thể thực hiện riêng cho từng cơ sở. (Cũ: "Chuyển đổi dùng thử・triển khai chính thức (tham chiếu)" của hợp đồng cha trỏ lẫn nhau. Sửa theo sổ quyết định 2026-10-03)
-- **Không giả định** đăng ký đồng thời chiến dịch dùng thử và triển khai chính thức.
+- **Khi chuyển đổi cũng không đổi số hợp đồng cha.** Hợp đồng cha giữ **lịch sử loại hợp đồng** (Dùng thử: bắt đầu～kết thúc, Triển khai chính thức: bắt đầu～), thời gian sử dụng tối thiểu・tiền phạt vi phạm・tự động gia hạn được phán định **từ ngày bắt đầu triển khai chính thức**. Cơ sở và hợp đồng cha vẫn là 1 đối 1. Khi có khoảng trống từ lúc hết hạn dùng thử đến lúc bắt đầu triển khai chính thức thì xử lý giống tạm dừng (28-35), nếu tổng cộng quá 1 năm thì không phải chuyển đổi mà là đăng ký mới (28-37). Khi thiết bị đặt trong thời gian dùng thử nhiều hơn thiết bị cho mượn tiêu chuẩn của gói thì phần chênh lệch được xuất hóa đơn 1 lần duy nhất trên hóa đơn đầu tiên của triển khai chính thức (Vận hành sửa được dòng máy・số tiền), còn nếu ít hơn thì không hoàn tiền (danh sách vấn đề 10/02). (Cũ: khi chuyển đổi thì đánh số hợp đồng cha mới, hợp đồng cha phía dùng thử vẫn ở trạng thái kết thúc và lưu lại như lịch sử. Sửa theo sổ quyết định 2026-10-03)
+- Chuyển đổi chỉ thêm 1 dòng vào "lịch sử loại hợp đồng" của hợp đồng cha, không có mục trỏ lẫn nhau giữa các hợp đồng cha. Thiết lập cơ sở như chế độ khách được kế thừa. **Gói・thiết bị・tùy chọn・giao hàng・hóa đơn・địa chỉ・người phụ trách do doanh nghiệp nhập ở Web Doanh nghiệp 「本導入に申し込む」 (Đăng ký triển khai chính thức) (lấy nội dung dùng thử làm giá trị ban đầu), Vận hành có thể sửa ở 「申込内容確認」 (Xác nhận nội dung đăng ký) của tiếp nhận** (gói chọn được trong tất cả các gói đang công khai. Khi chọn máy bán hàng tự động thì bắt buộc 「現場調査の結果」 (kết quả khảo sát hiện trường) ở màn hình phê duyệt). Khi phê duyệt thì giữ nguyên hợp đồng cha, đổi loại hợp đồng thành triển khai chính thức và cập nhật nội dung hợp đồng của cơ sở theo đúng nội dung đã nhập (không cấp số mới). Chuyển đổi có thể thực hiện riêng cho từng cơ sở〔hong trả lời 2026-10-15・sổ quyết định AK (T-1〜T-4), sổ tiếp nhận #639, form đăng ký §12. Cũ: gói・thiết bị do Vận hành thiết lập lại khi chuyển đổi〕. (Cũ: "Chuyển đổi dùng thử・triển khai chính thức (tham chiếu)" của hợp đồng cha trỏ lẫn nhau. Sửa theo sổ quyết định 2026-10-03)
+- **Không giả định** đăng ký đồng thời dùng thử và triển khai chính thức.
 
 > <br>Khi có khoảng trống giữa dùng thử và triển khai chính thức, hợp đồng cha chuyển sang "Tạm ngừng sử dụng" [hong trả lời 2026-10-03 (K2)]
 > Từ dùng thử → triển khai chính thức thì gói không giảm (dùng thử là gói 50 = thấp nhất). Không cần tính chênh lệch thiết bị [hong trả lời 2026-10-03 (K10)].
+>
+> **Đăng ký chuyển đổi dùng thử → triển khai chính thức, và ý định tiếp tục・trả lại sau khi kết thúc dùng thử, có hạn đến ngày 15 của tháng trước, giống như đơn hàng mới**〔quyết định 2026/10/09・sổ tiếp nhận #518〕 (ví dụ: tháng 9 là dùng thử và muốn triển khai chính thức từ tháng 10 thì hạn là 15/9. Nếu không có đăng ký thì hợp đồng tháng 10 không bắt đầu).
+> **Khi không triển khai chính thức**: màn hình quản lý doanh nghiệp phía khách hàng **chuyển sang chỉ xem sau khi Chu kỳ cuối cùng của dùng thử kết thúc** (vẫn đăng nhập được, chỉ có thể xem và 「本導入に申し込む」. Cũng có thể liên hệ・báo cáo kiểm kê). **Đã bỏ quyết định trước đây "dừng sử dụng (đóng màn hình) vào cuối tháng thứ hai sau lần giao hàng cuối"** (giữ chỉ xem mãi). Khi Vận hành nhận đăng ký 「切替」 (chuyển đổi) và chuyển đổi thì trở lại bình thường. Phía Vận hành giữ lại tài khoản để quản lý. Quản lý tiến độ chuyển từ bảng quản lý sang HubSpot〔quyết định 2026/10/09・hong trả lời 2026-10-12・2026-10-13 (chỉ xem trước)・**2026-10-14 (không đóng, vẫn chỉ xem và đăng ký được)**・sổ tiếp nhận #518・#519・#581〕.
 > 
 
 <!-- Chuyển từ 契約_07 (nội dung giữ nguyên. Chỉ sửa đơn vị phát hành・bản sao hợp đồng con) -->
 
-### 0.5 Về thanh toán, quyết định "cái nào là chuẩn" thành 1 (2026/09/15)
+### 0.5 Về hóa đơn, quyết định "cái nào là chuẩn" thành 1 (2026/09/15)
 
 Nếu cùng tên mục có ở cả doanh nghiệp và cơ sở thì không quyết định được cái nào đúng và tính nhất quán sẽ đổ vỡ. Theo quy tắc sau, **cố định chủ sở hữu thành 1**.
 
@@ -127,12 +132,12 @@ Nếu cùng tên mục có ở cả doanh nghiệp và cơ sở thì không quy�
 | **Người nhận hóa đơn** (doanh nghiệp／cơ sở này) | **Chỉ cơ sở** | **Không cho doanh nghiệp nắm giữ.** Màn hình doanh nghiệp chỉ hiển thị tổng hợp dưới dạng "Chi tiết người nhận hóa đơn (tham chiếu)", từ đó thay đổi hàng loạt người nhận hóa đơn của cơ sở |
 | Đơn vị phát hành hóa đơn (gộp／từng cơ sở) | **Chỉ doanh nghiệp** | Màn hình cơ sở chỉ hiển thị tham chiếu. **Doanh nghiệp chỉ tham chiếu**, thay đổi do Vận hành (tiếp nhận qua liên hệ) (Cũ: doanh nghiệp có thể gửi yêu cầu thay đổi và bắt buộc Vận hành phê duyệt. Sửa theo 請求ルール 4-6, 2026-10-03) |
 | Tên doanh nghiệp | **3 loại: tên doanh nghiệp／tên doanh nghiệp (hợp đồng)／tên doanh nghiệp người nhận hóa đơn** | Hiển thị màn hình dùng tên doanh nghiệp, hợp đồng dùng tên doanh nghiệp (hợp đồng), tên người nhận trên hóa đơn dùng tên doanh nghiệp người nhận hóa đơn. Nếu trống thì lần lượt lùi về: tên doanh nghiệp người nhận hóa đơn → tên doanh nghiệp (hợp đồng) → tên doanh nghiệp |
-| Lead time phát hành hóa đơn | **Doanh nghiệp là giá trị mặc định**, cơ sở ghi đè | **Dạng chọn**: 3 tháng trước (−3)／2 tháng trước (−2)／1 tháng trước (−1)／Trong tháng (0)／Tháng sau (+1・trả sau). Tháng thanh toán ＝ tháng Chu kỳ ＋ giá trị này (thay đổi 2026/09/29). **Chỉ khi người nhận hóa đơn＝cơ sở này mới kích hoạt ghi đè** (nếu người nhận hóa đơn＝doanh nghiệp thì theo giá trị của doanh nghiệp, vô hiệu hóa và không lưu). Cơ sở không có doanh nghiệp luôn có người nhận hóa đơn là cơ sở này nên bắt buộc nhập |
-| Phương thức thanh toán・chu kỳ thanh toán (khi trả theo năm là tháng khởi tính)・hạn thanh toán (ngày 27 của tháng thanh toán／ngày 27 tháng sau) | **Bên mà người nhận hóa đơn chỉ đến** | Người nhận hóa đơn＝doanh nghiệp → dùng giá trị của doanh nghiệp, phía cơ sở vô hiệu hóa và không lưu. Người nhận hóa đơn＝cơ sở này → dùng giá trị của cơ sở, phía doanh nghiệp không dùng |
+| Lead time phát hành hóa đơn | **Doanh nghiệp là giá trị mặc định**, cơ sở ghi đè | **Dạng chọn**: 3 tháng trước (−3)／2 tháng trước (−2)／1 tháng trước (−1)／Trong tháng (0)／Tháng sau (+1・trả sau). Tháng xuất hóa đơn ＝ tháng Chu kỳ ＋ giá trị này (thay đổi 2026/09/29). **Chỉ khi người nhận hóa đơn＝cơ sở này mới kích hoạt ghi đè** (nếu người nhận hóa đơn＝doanh nghiệp thì theo giá trị của doanh nghiệp, vô hiệu hóa và không lưu). Cơ sở không có doanh nghiệp luôn có người nhận hóa đơn là cơ sở này nên bắt buộc nhập |
+| Phương thức thanh toán・chu kỳ thanh toán (khi trả theo năm là tháng khởi tính)・hạn thanh toán (ngày 27 của tháng xuất hóa đơn／ngày 27 tháng sau) | **Bên mà người nhận hóa đơn chỉ đến** | Người nhận hóa đơn＝doanh nghiệp → dùng giá trị của doanh nghiệp, phía cơ sở vô hiệu hóa và không lưu. Người nhận hóa đơn＝cơ sở này → dùng giá trị của cơ sở, phía doanh nghiệp không dùng |
 | ID nơi phát hành Bill One | **Bên mà người nhận hóa đơn chỉ đến** | Như trên |
-| Người phụ trách thanh toán・email nhận | **Tab người phụ trách của bên mà người nhận hóa đơn chỉ đến** | Cả doanh nghiệp và cơ sở đều giữ trong bảng người phụ trách, người có phân loại "Người phụ trách thanh toán" là nơi nhận hóa đơn. Ở ô điều kiện thanh toán chỉ đặt hiển thị tham chiếu |
+| Người phụ trách hóa đơn・email nhận | **Tab người phụ trách của bên mà người nhận hóa đơn chỉ đến** | Cả doanh nghiệp và cơ sở đều giữ trong bảng người phụ trách, người có phân loại "Người phụ trách hóa đơn" là nơi nhận hóa đơn. Ở ô điều kiện hóa đơn chỉ đặt hiển thị tham chiếu |
 
-> **Phía hợp đồng con là "ảnh chụp (snapshot) của giá trị có hiệu lực tại thời điểm đó".** Người nhận hóa đơn・lead time phát hành hóa đơn・phương thức thanh toán・chu kỳ thanh toán của hợp đồng con được cố định khi tạo. Tên người nhận・nơi gửi (tên doanh nghiệp người nhận hóa đơn・người phụ trách thanh toán) được cố định lúc **phát hành** hóa đơn (契約_01 §2・Q5). Dù sau này sửa master thì điều kiện thanh toán của các tháng quá khứ cũng không đổi. (Cũ: chỉ sao chép phương thức thanh toán・chu kỳ thanh toán. Sửa theo 契約_01 §2, 2026-10-03)
+> **Phía hợp đồng con là "ảnh chụp (snapshot) của giá trị có hiệu lực tại thời điểm đó".** Người nhận hóa đơn・lead time phát hành hóa đơn・phương thức thanh toán・chu kỳ thanh toán của hợp đồng con được cố định khi tạo. Tên người nhận・nơi gửi (tên doanh nghiệp người nhận hóa đơn・người phụ trách hóa đơn) được cố định lúc **phát hành** hóa đơn (契約_01 §2・Q5). Dù sau này sửa master thì điều kiện hóa đơn của các tháng quá khứ cũng không đổi. (Cũ: chỉ sao chép phương thức thanh toán・chu kỳ thanh toán. Sửa theo 契約_01 §2, 2026-10-03)
 
 ### 0.6 Việc cho mượn thiết bị do cơ sở nắm giữ, và việc thu hồi chỉ được bảo đảm bằng phát hiện (2026/09/16)
 
@@ -161,7 +166,7 @@ Khi đăng ký biến động, ảnh hưởng đến danh sách cho mượn củ
 | Cái gì | Chủ sở hữu | Cách xử lý ở hợp đồng con |
 |---|---|---|
 | Đặt bao nhiêu máy nào ở đâu | **"Thiết bị・Tùy chọn" của cơ sở** | Tóm tắt và liên kết ở "Cấu hình thiết bị (tham chiếu)". Tăng giảm đăng ký ở "Biến động thiết bị" |
-| Phí ban đầu・phí hàng tháng của thiết bị | **Dòng khoản mục của số tiền thanh toán ở ① của hợp đồng con** (phân loại nguồn gốc＝model) | Sửa số tiền ở bảng ①. Chỉ tổng ở "Giá thiết bị (tham chiếu)" |
+| Phí ban đầu・phí hàng tháng của thiết bị | **Dòng khoản mục của số tiền hóa đơn ở ① của hợp đồng con** (phân loại nguồn gốc＝model) | Sửa số tiền ở bảng ①. Chỉ tổng ở "Giá thiết bị (tham chiếu)" |
 | Đặc tả dòng máy・giá tiêu chuẩn・thời gian sử dụng tối thiểu | **Master dòng máy** | Chỉ tham chiếu |
 
 **Giữ 3 giá trị: số lượng cho mượn・số lượng đã trả・số lượng chưa trả.** Như vậy thì quản lý theo từng máy hay theo số lượng đều xử lý cùng một dạng (cho mượn 2 hộp, trả 1 hộp = chưa trả 1). **Số máy riêng chỉ chuẩn bị cột, hiện cho phép để trống**. Khi nắm được thì điền, sau này có thể chuyển sang tách thành 1 máy 1 dòng.
@@ -172,11 +177,11 @@ Khi đăng ký biến động, ảnh hưởng đến danh sách cho mượn củ
 | Đã thu hồi | Số lượng chưa trả bằng 0. Mặc định ẩn |
 | **Chưa trả** | Quá ngày dự kiến trả mà số lượng chưa trả > 0 |
 
-**Chỉ có cảnh báo để bảo đảm không quên thu hồi.** Vì không tốn phí gỡ máy và dù thu hồi cũng không có tiền dịch chuyển nên **không có động cơ nào để nhắc nhở**. Thanh toán phát sinh hàng tháng nên để đó thì ai đó cũng nhận ra, nhưng việc thu hồi thì không ai gặp khó khăn nên nhiều năm cũng trôi qua.
+**Chỉ có cảnh báo để bảo đảm không quên thu hồi.** Vì không tốn phí gỡ máy và dù thu hồi cũng không có tiền dịch chuyển nên **không có động cơ nào để nhắc nhở**. Hóa đơn phát sinh hàng tháng nên để đó thì ai đó cũng nhận ra, nhưng việc thu hồi thì không ai gặp khó khăn nên nhiều năm cũng trôi qua.
 
 - Vào thời điểm phê duyệt hủy hợp đồng・tạm dừng, **tự động đặt ngày dự kiến trả** cho toàn bộ thiết bị đang cho mượn (mặc định là ngày dừng＋1 tháng. Hiểu "1 tháng" của REQ-CT-144 là thời gian ân hạn đến khi thu hồi thiết bị. Việc mua trên app cá nhân đến ngày hủy hợp đồng. Cách hiểu này đang chờ xác nhận với khách hàng) (Cũ: thống nhất với việc kết thúc sử dụng app. Sửa theo 契約_01 §6-4, 2026-10-03)
 - Batch hàng ngày hiển thị "**ngày dự kiến trả < hôm nay và số lượng chưa trả > 0**" vào danh sách của Vận hành là **chưa hoàn tất thu hồi**
-- Khi tiếp tục chưa trả thì **không tạo** thanh toán・tiền bồi thường (vì chưa có quy trình vận hành, chỉ dừng ở phát hiện)
+- Khi tiếp tục chưa trả thì **không tạo** hóa đơn・tiền bồi thường (vì chưa có quy trình vận hành, chỉ dừng ở phát hiện)
 
 **Giá do master dòng máy nắm giữ.** Hộp vật tư cũng đăng ký vào master dòng máy bằng BX, và đặt các gói là đối tượng thiết bị tiêu chuẩn ở phí ban đầu 0・phí hàng tháng 0 (sau này khi có phí chỉ cần điền số). **Thiết bị 0 yên không hiện trên hóa đơn nhưng vẫn còn trong hợp đồng với trạng thái đang cho mượn.** Phần còn lại ở hợp đồng con chỉ là **phán định miễn phí** ghi lý do "miễn phí có điều kiện".
 
@@ -191,7 +196,7 @@ Khi đăng ký biến động, ảnh hưởng đến danh sách cho mượn củ
 | Không hiển thị | Lý do |
 |---|---|
 | **Lịch sử thay đổi** (toàn bộ doanh nghiệp・cơ sở・hợp đồng cha・hợp đồng con) | Vì lộ tên người phụ trách của Vận hành. Khi có thay đổi thì Vận hành liên hệ, xác nhận bằng lịch sử trên Web Vận hành |
-| **Toàn bộ tab "Giá・Thanh toán" của hợp đồng con** | Vì nếu thấy thiết lập giá thì sẽ thấy cả các mục không muốn cho doanh nghiệp xem |
+| **Toàn bộ tab "Giá・Hóa đơn" của hợp đồng con** | Vì nếu thấy thiết lập giá thì sẽ thấy cả các mục không muốn cho doanh nghiệp xem |
 | **Thiết lập tuyến giao hàng** (kho picking・công ty vận chuyển・qua điểm trung gian・lead time・URL liên hệ) | Vì là thông tin quản lý logistics nội bộ |
 | **Tài liệu đính kèm (chỉ nội bộ・không công khai)** … tài liệu lộ trình vận chuyển vào cho đơn vị giao hàng ủy thác, tài liệu bổ sung của phía Vận hành | Vì là tài liệu cho đơn vị ủy thác・vận hành nội bộ. Tài liệu cho doanh nghiệp xem được tách thành "Tài liệu đính kèm (công khai cho doanh nghiệp)" |
 | Mã đại lý (có/không giới thiệu)／ghi chú nội bộ／nhân viên kinh doanh ES／ID nơi phát hành Bill One | Vì là thông tin vận hành nội bộ |
@@ -208,3 +213,12 @@ Khi đăng ký biến động, ảnh hưởng đến danh sách cho mượn củ
 | **P2 mới** | Mục thiết lập mới ở Phase 2 |
 
 ---
+
+---
+
+## Lịch sử thay đổi
+
+| Ngày họp | Đối tượng (mục・REQ) | Trước thay đổi | Sau thay đổi | Lý do thay đổi | Căn cứ (MM・thời điểm) | Trạng thái |
+|---|---|---|---|---|---|---|
+| 2026/10/09 | 0.4 Dùng thử → triển khai chính thức | Không ghi hạn đăng ký chuyển đổi・tài khoản sau khi kết thúc | Đăng ký chuyển đổi đến ngày 15 tháng trước. Khi không triển khai chính thức thì phía khách hàng chuyển sang chỉ xem sau khi kết thúc dùng thử (không đóng・đăng ký triển khai chính thức được), phía Vận hành giữ lại | Thỏa thuận với khách hàng + hong trả lời 2026-10-14 | 〔MM_20261009_1200 ［02:12:25］［02:19:59〜02:26:58］〕 sổ tiếp nhận #518・#519・#581 | 実装済（cloud） (đã triển khai) |
+| 2026/10/15 | 0.4 Dùng thử và triển khai chính thức／tên loại hợp đồng | Tên loại hợp đồng khác với sổ quyết định／gói・thiết bị khi chuyển đổi do Vận hành thiết lập lại | Tên loại hợp đồng = お試し／khi chuyển đổi thì doanh nghiệp nhập nội dung hợp đồng qua đăng ký, Vận hành sửa ở tiếp nhận | Phản ánh hong trả lời (sổ quyết định AK) | hong trả lời 2026-10-15・sổ quyết định AK (S-2・T-1〜T-4), sổ tiếp nhận #639 | 実装待ち (chờ triển khai) |

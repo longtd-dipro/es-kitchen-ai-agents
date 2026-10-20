@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "57d9aea5-62a4-4fed-aa0c-4e8b6240e7cc",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/45_Menu_Sản_phẩm/dataflow-menu-san-pham-20261020-144535/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/45_Menu_Sản_phẩm/dataflow-menu-san-pham-20261020-144535/menu-san-pham.html",
+  "specification": {
+    "sha256": "725fe0791f73b688575df1fd018c09c2f4a01525aaaf7631732027636f11a54f",
+    "bytes": 6574
+  },
+  "artifact": {
+    "sha256": "850b764c4bb4f993cdb90e8282b1ef543aa0a0dd09e36b1386b2fdfe0243b8a1",
+    "bytes": 766960
+  }
+}

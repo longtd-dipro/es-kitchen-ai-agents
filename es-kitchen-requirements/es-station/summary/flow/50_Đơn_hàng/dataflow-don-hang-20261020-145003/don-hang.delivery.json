@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "9097bd61-ad40-44f6-aab0-5437f4384082",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/50_Đơn_hàng/dataflow-don-hang-20261020-145003/candidate.json",
+  "output": "/Users/longtd/Desktop/WORK/Project Eskitchen/AI_AGENTS_ES_KITCHEN/es-kitchen-requirements/es-station/summary/flow/50_Đơn_hàng/dataflow-don-hang-20261020-145003/don-hang.html",
+  "specification": {
+    "sha256": "573e79f02a3fea23873a5dffa87d35acc4eb9d6a6277d92b463e446337daa19e",
+    "bytes": 6941
+  },
+  "artifact": {
+    "sha256": "ce2c7bd22edc72a2f801eb3e6aee5789fa048295f03688f8c222356f8bbdebd6",
+    "bytes": 766841
+  }
+}

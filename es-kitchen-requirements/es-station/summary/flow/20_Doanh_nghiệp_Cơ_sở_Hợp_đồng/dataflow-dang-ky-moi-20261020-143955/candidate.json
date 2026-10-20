@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Luồng dữ liệu đăng ký mới, thêm cơ sở và chuyển dùng thử→chính thức",
+    "output": "flow/20_Doanh_nghiệp_Cơ_sở_Hợp_đồng/dataflow-dang-ky-moi-20261020-143955/dang-ky-moi.html",
+    "viewBox": [
+      1080,
+      660
+    ],
+    "quality_profile": "showcase"
+  },
+  "stages": [
+    {
+      "label": "Lối vào"
+    },
+    {
+      "label": "Tiếp nhận"
+    },
+    {
+      "label": "Đăng ký tạm"
+    },
+    {
+      "label": "Lưu trữ"
+    },
+    {
+      "label": "Đăng ký chính thức"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "webnew",
+      "type": "frontend",
+      "label": "Web DN đăng ký",
+      "sublabel": "không đăng nhập",
+      "stage": 0,
+      "row": 0,
+      "tag": "3 bước"
+    },
+    {
+      "id": "webadd",
+      "type": "frontend",
+      "label": "Thêm cơ sở",
+      "sublabel": "「拠点を追加」",
+      "stage": 0,
+      "row": 1,
+      "tag": "2 bước"
+    },
+    {
+      "id": "opsin",
+      "type": "external",
+      "label": "Vận hành nhập",
+      "sublabel": "nhập thay・CSV",
+      "stage": 0,
+      "row": 2,
+      "tag": "kênh"
+    },
+    {
+      "id": "trial",
+      "type": "frontend",
+      "label": "Chuyển dùng thử→CT",
+      "sublabel": "本導入申込・切替",
+      "stage": 0,
+      "row": 3,
+      "tag": "切替"
+    },
+    {
+      "id": "req",
+      "type": "backend",
+      "label": "Yêu cầu AP-",
+      "sublabel": "受付中",
+      "stage": 1,
+      "row": 1,
+      "tag": "M1",
+      "height": 170
+    },
+    {
+      "id": "menu",
+      "type": "messagebus",
+      "label": "Menu công khai",
+      "sublabel": "sau 仮登録",
+      "stage": 2,
+      "row": 3,
+      "tag": "#771"
+    },
+    {
+      "id": "prov",
+      "type": "backend",
+      "label": "Đăng ký tạm",
+      "sublabel": "xác nhận ND",
+      "stage": 2,
+      "row": 1,
+      "tag": "vận hành"
+    },
+    {
+      "id": "ents",
+      "type": "database",
+      "label": "DN・CS・HĐ cha",
+      "sublabel": "+ HĐ con (仮の印)",
+      "stage": 3,
+      "row": 0,
+      "tag": "仮登録"
+    },
+    {
+      "id": "orders",
+      "type": "database",
+      "label": "Đơn hàng",
+      "sublabel": "基準数・khởi tạo",
+      "stage": 3,
+      "row": 2,
+      "tag": "khi trong kỳ"
+    },
+    {
+      "id": "accts",
+      "type": "security",
+      "label": "Tài khoản",
+      "sublabel": "doanh nghiệp・cơ sở",
+      "stage": 3,
+      "row": 1,
+      "tag": "mặc định ON"
+    },
+    {
+      "id": "final",
+      "type": "backend",
+      "label": "Đăng ký chính thức",
+      "sublabel": "本登録・từng cơ sở",
+      "stage": 4,
+      "row": 0,
+      "tag": "gỡ 仮の印"
+    },
+    {
+      "id": "mail",
+      "type": "external",
+      "label": "Email M2",
+      "sublabel": "ID + 初期PW",
+      "stage": 4,
+      "row": 1,
+      "tag": "luôn PW"
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "webnew",
+      "to": "req",
+      "label": "đăng ký mới",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "top",
+      "via": [
+        [
+          315,
+          157
+        ]
+      ]
+    },
+    {
+      "id": "f2",
+      "from": "webadd",
+      "to": "req",
+      "label": "thêm CS",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f3",
+      "from": "opsin",
+      "to": "req",
+      "label": "nhập thay",
+      "variant": "default",
+      "route": "straight"
+    },
+    {
+      "id": "f3b",
+      "from": "trial",
+      "to": "req",
+      "label": "切替",
+      "variant": "default",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "via": [
+        [
+          315,
+          499
+        ]
+      ],
+      "labelAt": [
+        250,
+        499
+      ]
+    },
+    {
+      "id": "f4",
+      "from": "req",
+      "to": "prov",
+      "label": "xác nhận xong",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f5",
+      "from": "prov",
+      "to": "ents",
+      "label": "tạo + 仮の印",
+      "variant": "emphasis",
+      "fromSide": "top",
+      "toSide": "left",
+      "via": [
+        [
+          530,
+          157
+        ]
+      ]
+    },
+    {
+      "id": "f6",
+      "from": "prov",
+      "to": "orders",
+      "label": "tạo đơn",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          530,
+          385
+        ]
+      ]
+    },
+    {
+      "id": "f7",
+      "from": "prov",
+      "to": "accts",
+      "label": "cấp TK",
+      "variant": "security",
+      "route": "straight"
+    },
+    {
+      "id": "f11",
+      "from": "menu",
+      "to": "orders",
+      "label": "デフォルト注文",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "via": [
+        [
+          745,
+          499
+        ]
+      ]
+    },
+    {
+      "id": "f8",
+      "from": "ents",
+      "to": "final",
+      "label": "gỡ 仮の印",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f9",
+      "from": "orders",
+      "to": "final",
+      "label": "予定・配送・貸出",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "right",
+      "via": [
+        [
+          1040,
+          385
+        ],
+        [
+          1040,
+          157
+        ]
+      ],
+      "labelAt": [
+        1000,
+        330
+      ]
+    },
+    {
+      "id": "f10",
+      "from": "accts",
+      "to": "mail",
+      "label": "M2 (初期PW)",
+      "variant": "security",
+      "route": "straight"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "5 lối vào (申込フォーム.md §1・§2・§12; ledger AN #736)",
+      "items": [
+        "Đăng ký mới (không đăng nhập), Thêm cơ sở, vận hành nhập thay, CSV hàng loạt, chuyển dùng thử→chính thức đều dồn vào cùng một yêu cầu AP-",
+        "Thêm cơ sở: 申請 ＞ 契約の申請 → お手続き「拠点を追加」, cả tài khoản DN lẫn cơ sở; danh sách cơ sở không còn nút này (AN #736・#737)",
+        "Chuyển: vận hành nhập thay 「切替」 hoặc 法人Web 「本導入申込」 (chỉ khi đã hết dùng thử); giữ nguyên 親契約",
+        "Vận hành tạo cơ sở・HĐ chỉ qua đăng ký → tiếp nhận; CSV 2 bước (kiểm tra→đăng ký), dòng lỗi bị bỏ, dòng khác vẫn đăng ký (§10-8, AL)"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Đăng ký tạm tạo gì (ledger L779 #764・L1183・#771; §10-4・§13)",
+      "items": [
+        "DN (khi mới), cơ sở, HĐ cha, và HĐ con của tháng bắt đầu kèm 仮の印: chưa tính vào giao hàng, hóa đơn, số cần đặt mua",
+        "Dòng order 基準数 chỉ tạo khi menu tháng đã công khai và đang trong kỳ order; nếu không thì tạo ở 本登録",
+        "#771: menu công khai sau 仮登録 → tạo HĐ con tháng đầu + デフォルト注文 (cả trường hợp chuyển)",
+        "Chuyển khi tháng đầu đã xác nhận/đã xuất HĐ: đổi HĐ con tháng đó sang 本導入, làm lại order (#782・#783)",
+        "Ghi chú: §10-2 còn câu 「子契約は作らない」 (cũ); ledger L779 thắng"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Đăng ký chính thức (§13; ledger L779)",
+      "items": [
+        "Theo từng cơ sở khi mục bắt buộc đã đủ: gỡ 仮の印, tạo 予定・配送データ・貸出 (kể cả bộ khởi tạo), HĐ cha có hiệu lực",
+        "Chuyển: tháng đã xuất HĐ thì chênh lệch thành 調整明細 ở hóa đơn sau (#782)",
+        "Còn 仮登録 sau hạn order ngày 15: vận hành chọn dời kỳ hoặc 代理オーダー (§10-5, 申請・承認.md §4-2)",
+        "Tên nút: 「この拠点を本登録」 (L309) vs 「この拠点を確定」 (§10-2) chưa thống nhất"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Form, tài khoản, M2 (ledger AT #16・#17・#36; #821)",
+      "items": [
+        "#16: mọi cơ sở 「この拠点に請求」 thì không hỏi billing của DN; 1 cơ sở thì điền sẵn thông tin cơ sở vào DN",
+        "#17: 「法人の担当者情報と同じ」 sao toàn bộ bảng メイン・サブ・請求 tại lúc đăng ký",
+        "Mã đại lý xác nhận ở 受付, nhập 1 lần gắn mọi 親契約 (L1353); chi tiết phí ở flow đại lý",
+        "M2 luôn gửi 初期パスワード (#821); ô 「アカウントを発行する」 OFF thì cấp ở 本登録; thêm cơ sở: gửi người phụ trách chính của cơ sở mới",
+        "要確認: người nhận M2 lúc 仮登録 — §10-6・メール一覧 (メイン・サブ・請求 全員) vs L1183 (メイン担当者＋申込者)"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Từ chối・rút lại (§10-7・§13) — không vẽ thành luồng",
+      "items": [
+        "Hủy order・bộ khởi tạo; cơ sở・HĐ cha・HĐ con・DN mới = 取消; tài khoản 停止",
+        "Chuyển bị từ chối: HĐ con trở lại dùng thử và order dùng thử (tự động) (#783)"
+      ]
+    }
+  ]
+}
