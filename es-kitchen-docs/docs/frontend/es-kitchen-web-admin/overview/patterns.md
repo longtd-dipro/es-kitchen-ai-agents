@@ -1,14 +1,37 @@
 # es-kitchen-web-admin — Patterns & Conventions
 
-> Nguồn = `es-kitchen-web-admin@633b2b7` ngày 2026-10-16. Đã đối chiếu: `services/client/api.ts`, `services/http/handleResponse.ts`, `routes/guards/RequirePermission.tsx`, `components/Common/BaseRichTextEditor`.
+> Nguồn = `es-kitchen-web-admin@633b2b7` ngày 2026-10-16. Đã đối chiếu: `services/client/api.ts`, `services/http/handleResponse.ts`, `routes/guards/RequirePermission.tsx`, `components/Common/BaseRichTextEditor`; ngoài ra xác minh lại `hooks/useMutationCustom.ts`, `hooks/useUnsavedChangesGuard.tsx`, `services/query/queryClient.ts`.
 
-> Đọc file này trước khi viết code React mới cho E03. Follow pattern đang có — không tự refactor.
+**File này nói gì:** các cách làm chuẩn của E03 (System Admin): gọi API, cache, form, bảng, phân quyền, xử lý lỗi và phiên hết hạn.
+**Đọc khi nào:** trước khi viết code React mới cho E03. Follow pattern đang có — không tự refactor.
+File này cũng là **tài liệu gốc** cho `es-kitchen-web-company` (E02) và `es-kitchen-web-supplier` (E04).
 
 ---
 
-## HTTP Client Pattern
+## 0. Tình huống → cách xử lý → file mẫu
 
-Tất cả API call đi qua singleton `API` — một instance của class `Requester`:
+| Tình huống | Cách xử lý | File / hook mẫu |
+|---|---|---|
+| Gọi API mới | Thêm hàm export vào service của domain | `services/client/account.service.ts` |
+| Lấy dữ liệu để hiển thị | `useQuery` (object syntax) + queryKey là hằng số | `ROLE_LIST_QUERY_KEY` |
+| Tạo/sửa/xoá + toast | `useMutationCustom` + `invalidateQueries` | `hooks/useMutationCustom.ts` |
+| Trang danh sách có phân trang/lọc | `useTableParams` + `BaseTable` | `pages/material-management/` |
+| Trang quá nhiều logic | Tách `use<Domain>Page.ts` | `useMaterialManagementPage.ts` |
+| Form tạo/sửa | react-hook-form + yup, `schema.ts` cạnh page | `role-management/create/schema.ts` |
+| Rời trang khi form dirty | `useUnsavedChangesGuard` | mọi create/edit page |
+| Ẩn nút theo quyền | `usePermissions().can(...)` | trang IP whitelist |
+| Chặn cả route theo quyền | `RequirePermission` + `ROUTE_PERMISSIONS` | `routes/guards/` |
+| Select tải từ API, cuộn vô hạn | `BaseInfiniteSelect` | `components/Common/Fields/` |
+| Phiên hết hạn / 401 | Đã xử lý trong interceptor, không tự xử lý lại | `handleResponse.ts` |
+| Kéo thả hàng trong bảng | `useTableRowDragDrop` | `hooks/useTableRowDragDrop.ts` |
+
+---
+
+## 1. HTTP client
+
+**Vấn đề:** mọi request cần cùng token, header, cách xử lý 401 — không muốn lặp ở từng service.
+
+**Cách làm:** tất cả API đi qua một singleton `API` (instance của class `Requester`). Interceptor = đoạn code tự chạy trước mỗi request và sau mỗi response.
 
 ```typescript
 // services/client/api.ts — KHÔNG sửa file này
@@ -43,11 +66,18 @@ const API = new Requester();
 export default API;
 ```
 
+**Bẫy:**
+- Response interceptor trả `res.data` → service nhận luôn body, không phải object axios.
+- Có flag `disabledToken` cho request không cần Bearer (vd login).
+- Đừng sửa `api.ts` cho nhu cầu của một trang.
+
 ---
 
-## Service Layer Pattern
+## 2. Service layer
 
-Mỗi domain có 1 service file trong `services/client/`. Pattern hiện tại: `const APIs` object chứa URL, mỗi hàm export riêng (không export object method). Service chỉ gọi `API`, không chứa React hook hay state.
+**Vấn đề:** URL và lời gọi API rải rác trong component sẽ khó sửa và khó tái dùng.
+
+**Cách làm:** mỗi domain có 1 file trong `services/client/`. Dùng `const APIs` chứa URL; **mỗi hàm export riêng**. Service chỉ gọi `API`, không chứa hook hay state.
 
 ```typescript
 // services/client/account.service.ts — pattern chuẩn
@@ -84,11 +114,19 @@ export const fetchAccountDetail = async (
 export const ROLE_SELECT_QUERY_KEY = 'role-list-select';
 ```
 
-> **Lưu ý thay đổi từ pattern cũ:** Trước đây code doc dùng `export const companyService = { ... }` (object export). Pattern thực tế trong codebase hiện tại là **individual function exports** + `const APIs`. Không tạo service object mới.
+**Bẫy:**
+- Doc cũ dùng `export const companyService = { ... }`. Code hiện tại là **individual function exports** + `const APIs`. Không tạo service object mới.
 
 ---
 
-## TanStack Query Pattern (v5)
+## 3. TanStack Query v5
+
+**Vấn đề:** cần cache, loading, refetch cho dữ liệu server mà không tự viết state.
+
+**Cách làm:**
+- `queryKey` = "tên ngăn kéo" của cache. Cùng key → cùng dữ liệu. Key gồm tên resource + params, nên đổi filter thì tự fetch lại.
+- `invalidateQueries` = báo "ngăn kéo này đã cũ" → query tự fetch lại. Gọi sau mỗi mutation thành công.
+- **Luôn dùng object syntax (v5).**
 
 ```typescript
 // ✅ v5 syntax — queryKey + queryFn object
@@ -97,23 +135,12 @@ const { data, isLoading, isFetching } = useQuery({
   queryFn: () => fetchRoleList(queryApiParams),
 });
 
-// ✅ Dùng useMutationCustom thay useMutation trực tiếp (xem section riêng bên dưới)
-const { mutate, isPending } = useMutationCustom({
-  mutationFn: (id: string) => deleteRole(id),
-  customSuccessMessage: '権限が正常に削除されました。',
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: [ROLE_LIST_QUERY_KEY] });
-  },
-});
-
 // ❌ v4 positional syntax — KHÔNG dùng
 useQuery(['companies', filters], () => fetchCompanies(filters));
-
-// ❌ useMutation trực tiếp — chỉ dùng khi cần toàn quyền kiểm soát error/success
-const { mutate } = useMutation({ mutationFn: ... });
 ```
 
-**queryKey convention — luôn export thành named constant:**
+**queryKey convention — luôn export thành hằng số có tên:**
+
 ```typescript
 // Trong page hook hoặc service file
 export const ROLE_LIST_QUERY_KEY = 'role-list';
@@ -127,16 +154,24 @@ queryKey: [ROLE_LIST_QUERY_KEY, queryApiParams]
 queryClient.invalidateQueries({ queryKey: [ROLE_LIST_QUERY_KEY] })
 ```
 
+**Cấu hình mặc định** (`services/query/queryClient.ts`): `staleTime: 0`, `gcTime: 0`, `retry: 1`, `refetchOnWindowFocus: false`; mutation `retry: 0`.
+- `staleTime: 0` + `gcTime: 0` nghĩa là gần như không cache: quay lại trang là gọi lại API.
+
+**Bẫy:**
+- Gõ chuỗi trực tiếp trong `queryKey` rồi gõ lệch ở `invalidateQueries` → bảng không refresh. Dùng hằng số.
+- `isFetching` ≠ `isLoading`: truyền `isLoading || isFetching` cho bảng để hiện loading cả lúc refetch.
+
 ---
 
-## useMutationCustom — Wrapper chuẩn cho mutation
+## 4. `useMutationCustom` — wrapper chuẩn cho mutation
 
-`src/hooks/useMutationCustom.ts` — bọc `useMutation` với auto toast. Dùng ở hầu hết mutation trong codebase.
+**Vấn đề:** mỗi mutation đều cần toast lỗi/thành công giống nhau.
+
+**Cách làm:** `src/hooks/useMutationCustom.ts` bọc `useMutation` v5, tự toast. Dùng ở hầu hết mutation. Toast dùng `react-toastify` (`toast.error` / `toast.success`), **không** dùng `App.useApp().message` của AntD. Message lỗi lấy từ `response.data.message`, rồi `error.message`, rồi `ERROR_MESSAGES.INTERNAL_ERROR`.
 
 ```typescript
 import { useMutationCustom } from '@/hooks/useMutationCustom';
 
-// ✅ Auto toast error từ response.data.message + tùy chọn success toast
 const { mutate: createRoleMutate, isPending } = useMutationCustom({
   mutationFn: (data: CreateRoleRequest) => createRole(data),
   customSuccessMessage: '権限が正常に作成されました。',   // toast.success khi done
@@ -155,13 +190,22 @@ const { mutate: createRoleMutate, isPending } = useMutationCustom({
 // skipAutoSuccessHandling: true → tắt auto toast.success
 ```
 
-Toast dùng `react-toastify` (`import { toast } from 'react-toastify'`), không phải `App.useApp().message` của AntD. `useMutationCustom` tự gọi `toast.error` / `toast.success` — không cần gọi thủ công trong `onError`/`onSuccess` nếu đã truyền message.
+```typescript
+// ✅ Mutation đơn giản dùng thẳng useMutation (chỉ khi cần toàn quyền kiểm soát error/success)
+const { mutate } = useMutation({ mutationFn: ... });
+```
+
+**Bẫy:**
+- Đã truyền message thì không `toast` thủ công thêm trong `onSuccess`/`onError` → toast đôi.
+- Dùng `isPending` (v5), không dùng `isLoading` của mutation.
 
 ---
 
-## useTableParams — URL-synchronized table state
+## 5. Bảng có phân trang: `useTableParams`
 
-`src/hooks/useTableParams.ts` — đồng bộ page/sort/filters vào URL query string. Dùng cho mọi list page có pagination.
+**Vấn đề:** user lọc/sort/sang trang rồi F5 hoặc gửi link — phải giữ nguyên trạng thái.
+
+**Cách làm:** `src/hooks/useTableParams.ts` đồng bộ page/sort/filters vào URL query string. Dùng cho mọi list page có pagination.
 
 ```typescript
 import useTableParams from '@/hooks/useTableParams';
@@ -195,13 +239,21 @@ const { tableParams, searchParams, handleFilterTable, handleResetFilers } = useT
 />
 ```
 
-Option `isNotChangeUrl: true` nếu page không muốn sync URL (dùng local state).
+**Bẫy:**
+- Muốn không đổi URL (vd bảng lồng nhau): `isNotChangeUrl: true` → dùng local state.
+- Key filter không khai trong `keyExtraParams` sẽ không lên URL.
+- Tên hàm là `handleResetFilers` (đúng chính tả của code, thiếu chữ "t").
 
 ---
 
-## usePermissions — RBAC hook
+## 6. Phân quyền: `usePermissions` (RBAC)
 
-`src/hooks/usePermissions.ts` — đọc từ Redux `auth.permissions`. Dùng để guard UI element theo quyền.
+**Vấn đề:** mỗi vai trò admin thấy/làm được khác nhau — cả ở cấp trang lẫn cấp nút.
+
+**Cách làm — 3 lớp:**
+1. **Route guard** `RequirePermission` (`routes/guards/RequirePermission.tsx`): map route prefix → quyền cần có qua hằng `ROUTE_PERMISSIONS`. Thiếu quyền → redirect `ROUTE.FORBIDDEN`.
+2. **Hook `usePermissions`** (`src/hooks/usePermissions.ts`, đọc Redux `auth.permissions`): ẩn/hiện nút.
+3. **Sidebar** lọc item theo `requiredPermissions` (xem mục 17).
 
 ```typescript
 import { usePermissions } from '@/hooks/usePermissions';
@@ -209,11 +261,9 @@ import { PERMISSIONS } from '@/constants/permissions';
 
 const { can, canAny, canAll, isSuperAdmin } = usePermissions();
 
-// Ẩn/hiện button theo quyền
 const canCreate = can(PERMISSIONS.SYSTEM_IP_WHITELIST_CREATE);
 const canDelete = can(PERMISSIONS.SYSTEM_IP_WHITELIST_DELETE);
 
-// Guard trong JSX
 {canCreate && <BaseButton onClick={handleCreate}>新規作成</BaseButton>}
 
 // canAny: có ít nhất 1 trong danh sách
@@ -221,15 +271,19 @@ const canDelete = can(PERMISSIONS.SYSTEM_IP_WHITELIST_DELETE);
 // isSuperAdmin: true → bypass mọi check
 ```
 
-Permission data từ `auth.permissions.flatPermissions` (mảng string) + `auth.permissions.isSuperAdmin`. Được dispatch qua `setCurrentPermissions(adminPermissions)` sau khi fetch `/admin/me`.
+- Dữ liệu quyền: `auth.permissions.flatPermissions` (mảng string) + `auth.permissions.isSuperAdmin`. Được dispatch qua `setCurrentPermissions(adminPermissions)` sau khi fetch `/admin/me`.
 
-Route-level guard: `RequirePermission` guard trong `routes/guards/RequirePermission.tsx` — map route prefix → required permissions qua `ROUTE_PERMISSIONS` constant.
+**Bẫy:**
+- `SUPER_ADMIN_ONLY_ROUTES` chặn non-super-admin **trước**; super admin bypass phần còn lại.
+- Ẩn nút ở UI chưa đủ — backend vẫn phải kiểm quyền (chưa xác minh phía BE trong tài liệu này).
 
 ---
 
-## useUnsavedChangesGuard — Navigation blocker
+## 7. Form chưa lưu: `useUnsavedChangesGuard`
 
-`src/hooks/useUnsavedChangesGuard.tsx` — ngăn user rời trang khi form đang dirty. Dùng ở mọi create/edit page có form.
+**Vấn đề:** user sửa form rồi lỡ bấm menu/đóng tab → mất dữ liệu.
+
+**Cách làm:** `src/hooks/useUnsavedChangesGuard.tsx` chặn rời trang khi form dirty (dirty = đã bị sửa so với ban đầu). Dùng ở mọi create/edit page có form. Hook trả về `guardModal`, `confirmNavigation`, `confirmDiscard`, `allowNextNavigation`.
 
 ```typescript
 import useUnsavedChangesGuard from '@/hooks/useUnsavedChangesGuard';
@@ -259,13 +313,17 @@ return (
 );
 ```
 
-`guardModal` render `DiscardChangesModal` — component dùng `BaseModalConfirm` type "warning". Guard cũng bắt `beforeunload` (đóng tab/refresh).
+- `guardModal` render `DiscardChangesModal` (dùng `BaseModalConfirm` type "warning"). Guard cũng bắt `beforeunload` (đóng tab/refresh).
+
+**Bẫy:**
+- Quên render `{guardModal}` → guard chặn mà không có modal.
+- Sau submit thành công mà navigate thường → vẫn bị chặn. Dùng `allowNextNavigation`.
 
 ---
 
-## useTableRowDragDrop — Drag-and-drop table rows
+## 8. Kéo thả hàng: `useTableRowDragDrop`
 
-`src/hooks/useTableRowDragDrop.ts` — cho phép kéo thả sắp xếp lại hàng trong table.
+`src/hooks/useTableRowDragDrop.ts` — kéo thả để sắp xếp lại hàng trong bảng.
 
 ```typescript
 import { useTableRowDragDrop } from '@/hooks/useTableRowDragDrop';
@@ -292,9 +350,11 @@ const { getDragHandleProps, getDragHandleClassName, getRowDragProps, getRowDragC
 
 ---
 
-## Redux Toolkit Pattern (v2)
+## 9. Redux Toolkit v2 (slice = một mảnh state + các hàm sửa nó)
 
-RTK chỉ dùng cho **client state** — không dùng cho server data (dùng TanStack Query cho đó).
+**Vấn đề:** cần state dùng chung nhiều trang nhưng không phải dữ liệu từ server (đăng nhập, quyền).
+
+**Cách làm:** RTK chỉ dùng cho **client state** — dữ liệu server dùng TanStack Query.
 
 ```typescript
 // stores/reducers/auth.ts — auth slice hiện tại
@@ -303,7 +363,7 @@ type AuthState = {
   refreshToken: string | null;
   status: string;
   user: AuthCurrentUser | null;
-  permissions: AdminPermissions | null;   // ← thêm mới: RBAC permissions
+  permissions: AdminPermissions | null;   // ← RBAC permissions
 };
 
 const authSlice = createSlice({
@@ -322,7 +382,7 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.status = SESSION_STATUS.AUTHENTICATED;
     },
-    setCurrentPermissions(state, action: PayloadAction<AdminPermissions>) {  // ← action mới
+    setCurrentPermissions(state, action: PayloadAction<AdminPermissions>) {
       state.permissions = action.payload;
     },
     clearAuthState(state) {
@@ -341,11 +401,13 @@ export const selectCurrentUser = (state: { auth: AuthState }) => state.auth.user
 export const selectCurrentPermissions = (state: { auth: AuthState }) => state.auth.permissions;
 ```
 
-Auth token lưu **cookie** (không phải localStorage). Đọc/ghi qua `services/http/authToken.ts`.
+**Bẫy:**
+- Token lưu **cookie** (không phải localStorage). Đọc/ghi qua `services/http/authToken.ts`.
+- Không nhét dữ liệu danh sách từ API vào Redux.
 
 ---
 
-## Auth Flow
+## 10. Luồng đăng nhập, 401, phân quyền
 
 ```
 App khởi động
@@ -371,7 +433,11 @@ Permission check mỗi route
 
 ---
 
-## Routing Pattern
+## 11. Routing
+
+**Vấn đề:** vừa cần trang public/private, vừa cần chặn theo quyền, vừa cần tải trang theo nhu cầu.
+
+**Cách làm:** `createBrowserRouter`; guard = route cha không có `path`, chỉ có `element`, bọc các route con.
 
 ```typescript
 // routes/index.tsx — createBrowserRouter
@@ -402,17 +468,19 @@ export const router = createBrowserRouter([
 ]);
 ```
 
-Route constants trong `constants/route.ts` — luôn dùng `ROUTE.xxx` thay vì string trực tiếp.
+- Hằng số route ở `constants/route.ts` — luôn dùng `ROUTE.xxx`, không gõ chuỗi trực tiếp.
+- **Lazy loading bắt buộc** (trang chỉ tải khi mở) với `withSuspense()`:
 
-Lazy loading bắt buộc với `withSuspense()`:
 ```typescript
 const RoleManagementPage = lazy(() => import('@/pages/account-management/role-management/page'));
 // Dùng: withSuspense(<RoleManagementPage />)
 ```
 
+**Checklist thêm trang:** tạo `pages/<domain>/page.tsx` (default export) → thêm `ROUTE.xxx` → lazy import + route trong `routes/index.tsx` → nếu cần quyền: khai trong `ROUTE_PERMISSIONS` và `requiredPermissions` của nav.
+
 ---
 
-## Page Structure Pattern
+## 12. Cấu trúc một page
 
 ```
 pages/<domain>/
@@ -421,7 +489,7 @@ pages/<domain>/
 ├── constants.ts                     ← QUERY_KEY, enums, tab items
 ├── helpers.ts                       ← Pure helper functions
 ├── hooks/
-│   └── use<Domain>Page.ts           ← Page-level hook (xem section bên dưới)
+│   └── use<Domain>Page.ts           ← Page-level hook (xem mục 13)
 ├── components/
 │   ├── FormSearch.tsx               ← Filter bar
 │   └── search.constants.ts         ← INITIAL_SEARCH_VALUES, types
@@ -432,13 +500,15 @@ pages/<domain>/
         └── use<Domain>DetailPage.ts
 ```
 
-Ví dụ thực tế: `pages/material-management/`, `pages/order-management/`, `pages/waste-disposal-management/`
+Ví dụ thực tế: `pages/material-management/`, `pages/order-management/`, `pages/waste-disposal-management/`.
 
 ---
 
-## Page-level Hook Pattern
+## 13. Page-level hook
 
-Các list page phức tạp tách toàn bộ logic ra hook riêng `pages/<domain>/hooks/use<Domain>Page.ts`. Pattern thấy ở: material, order, collection, waste-disposal, sales (3 tab), delivery-schedule, inventory, contract-detail.
+**Vấn đề:** list page phức tạp (filter + bảng + modal xoá + tab) làm `page.tsx` dài, khó đọc.
+
+**Cách làm:** tách toàn bộ logic ra `pages/<domain>/hooks/use<Domain>Page.ts`; `page.tsx` chỉ gọi hook và render. Thấy ở: material, order, collection, waste-disposal, sales (3 tab), delivery-schedule, inventory, contract-detail.
 
 ```typescript
 // pages/material-management/hooks/useMaterialManagementPage.ts
@@ -482,9 +552,9 @@ export default useMaterialManagementPage;
 
 ---
 
-## Column Definition Pattern
+## 14. Định nghĩa cột bảng
 
-Column definitions tách ra `_column<Domain>.tsx` co-located với page. Export factory function nhận callbacks:
+**Cách làm:** tách ra `_column<Domain>.tsx` cạnh page. Export một factory function nhận callback.
 
 ```typescript
 // pages/role-management/_columnTableRole.tsx
@@ -519,9 +589,12 @@ const columns = useMemo(() => getColumnTableRole({ onEdit: handleEdit, onDelete:
 
 ---
 
-## Form Pattern (react-hook-form v7 + yup)
+## 15. Form: react-hook-form v7 + yup
 
-**Schema co-location:** Schema đặt trong `schema.ts` cạnh page/component sử dụng, KHÔNG phải `validation/schemas.ts` toàn cục. File `validation/schemas.ts` chỉ chứa auth schemas (login, forgot-password, reset-password, OTP).
+**Vấn đề:** form cần validate, hiển thị lỗi và submit nhất quán.
+
+**Cách làm:**
+- Schema đặt trong `schema.ts` **cạnh page/component dùng nó**, KHÔNG gom vào `validation/schemas.ts`. File `validation/schemas.ts` chỉ chứa auth schemas (login, forgot-password, reset-password, OTP).
 
 ```typescript
 // pages/account-management/role-management/create/schema.ts
@@ -542,7 +615,7 @@ const form = useForm<RoleFormValues>({
 });
 ```
 
-**FormProvider cho form tree sâu** (nhiều component con cần dùng form):
+**FormProvider** = cho form dùng chung cho cây component sâu (không phải truyền `form` qua props):
 
 ```typescript
 // Page: bọc form trong FormProvider
@@ -561,10 +634,9 @@ import { useFormContext } from 'react-hook-form';
 const { control, watch } = useFormContext<CampaignCreateFormValues>();
 ```
 
-**Submit button tách khỏi form** (pattern dùng form `id`):
+**Nút Submit tách khỏi form** (dùng thuộc tính `form` = id của form):
 
 ```typescript
-// Form có id
 <form id="role-create-form" onSubmit={form.handleSubmit(handleSubmit)}>
   {/* ... */}
 </form>
@@ -575,9 +647,13 @@ const { control, watch } = useFormContext<CampaignCreateFormValues>();
 </BaseButton>
 ```
 
+**Bẫy:**
+- Không dùng yup cho form tìm kiếm (chỉ filter) — xem mục 13.
+- Không dùng Formik hay `Form.Item rules` của AntD (ràng buộc stack).
+
 ---
 
-## Ant Design v6 — Lưu ý breaking changes
+## 16. Ant Design v6 — lưu ý breaking changes
 
 ```typescript
 // ❌ v5 — không dùng
@@ -602,15 +678,15 @@ toast.error('エラーが発生しました。');
 />
 ```
 
-Khi dùng component Ant Design mới: kiểm tra docs v6 trước — API có thể khác v5.
+Dùng component AntD mới: kiểm tra docs v6 trước — API có thể khác v5.
 
 ---
 
-## Common Components — Các component thường dùng
+## 17. Component dùng chung
 
 ### BaseHeadingBreadcrumb
 
-Header chuẩn của mọi page: breadcrumb + title + action slot (children = buttons bên phải).
+Header chuẩn của mọi page: breadcrumb + title + chỗ cho nút bên phải (children).
 
 ```tsx
 import BaseHeadingBreadcrumb from '@/components/Common/BaseHeadingBreadcrumb';
@@ -632,7 +708,7 @@ import BaseHeadingBreadcrumb from '@/components/Common/BaseHeadingBreadcrumb';
 
 ### BaseInfiniteSelect
 
-Select với infinite scroll + debounced server search. Dùng cho mọi select load dữ liệu từ API.
+Select cuộn vô hạn + tìm kiếm phía server (debounce). Dùng cho mọi select lấy dữ liệu từ API.
 
 ```tsx
 import BaseInfiniteSelect from '@/components/Common/Fields/BaseInfiniteSelect';
@@ -652,11 +728,11 @@ import BaseInfiniteSelect from '@/components/Common/Fields/BaseInfiniteSelect';
 />
 ```
 
-Dùng `useInfiniteQuery` nội bộ. Tự debounce search 300ms. Tự giữ label cache khi scroll qua pages.
+Dùng `useInfiniteQuery` nội bộ. Tự debounce search 300ms. Tự giữ label cache khi cuộn qua các page.
 
 ### BaseRichTextEditor
 
-Rich text editor (Quill 2 — `quill` + `quill/dist/quill.snow.css`; TipTap đã bỏ khỏi `package.json`). Dùng cho notification content, mô tả dài.
+Rich text editor (Quill 2 — `quill` + `quill/dist/quill.snow.css`; TipTap đã bỏ khỏi `package.json`). Dùng cho nội dung notification, mô tả dài.
 
 ```tsx
 import BaseRichTextEditor from '@/components/Common/BaseRichTextEditor';
@@ -678,31 +754,26 @@ import BaseRichTextEditor from '@/components/Common/BaseRichTextEditor';
 
 ### DiscardChangesModal
 
-Modal xác nhận hủy thay đổi. Dùng qua `useUnsavedChangesGuard` — không cần render trực tiếp (hook trả về `guardModal` JSX).
+Modal xác nhận huỷ thay đổi. Dùng qua `useUnsavedChangesGuard` — không render trực tiếp (hook trả về `guardModal`).
 
----
-
-## CARD_CLASSNAME — Container chuẩn
+### CARD_CLASSNAME — container chuẩn
 
 ```typescript
 import { CARD_CLASSNAME } from '@/constants/common';
 // CARD_CLASSNAME = 'bg-white pt-4 px-4'
 
-// Trong page:
 <div className={CARD_CLASSNAME}>
   <FilterBar />
   <BaseTable ... />
 </div>
 
-// Có thể combine thêm class:
+// Có thể ghép thêm class:
 <div className={`${CARD_CLASSNAME} p-4 md:p-5`}>
 ```
 
----
+### forwardRef + useImperativeHandle
 
-## forwardRef + useImperativeHandle
-
-Dùng khi parent cần gọi method của child component (ví dụ: page gọi `openCreate()` trong content component).
+Dùng khi component cha cần gọi hàm của con (ví dụ: header của page bấm nút → mở modal nằm trong content).
 
 ```tsx
 // Content component expose handle
@@ -734,11 +805,9 @@ return (
 );
 ```
 
----
+### Sidebar — hiển thị theo quyền
 
-## Nav Sidebar — Permission-based visibility
-
-Sidebar dùng `usePermissions().canAny()` để ẩn nav items user không có quyền. Nav items khai báo `requiredPermissions` trong `constants/nav.ts`.
+Sidebar dùng `usePermissions().canAny()` để ẩn mục user không có quyền. Mục menu khai `requiredPermissions` trong `constants/nav.ts`.
 
 ```typescript
 // constants/nav.ts
@@ -747,19 +816,19 @@ export type NavItem = {
   labelJa: string;
   href?: string;
   icon: IconComponent;
-  requiredPermissions?: Permission[];  // ← nếu không khai báo → luôn hiển thị
+  requiredPermissions?: Permission[];  // ← không khai báo → luôn hiển thị
   children?: NavItem[];
 };
 
-// Nav component tự filter visibleNavItems dựa trên canAny(item.requiredPermissions)
-// Super admin thấy tất cả items (isSuperAdmin = true → bypass mọi check)
+// Nav component tự lọc visibleNavItems dựa trên canAny(item.requiredPermissions)
+// Super admin thấy tất cả (isSuperAdmin = true → bypass mọi check)
 ```
 
-Sidebar collapse/expand qua state ở `AuthLayout`. Ant Design `Menu` với `ConfigProvider` customize màu sắc.
+Thu gọn/mở rộng sidebar qua state ở `AuthLayout`. Ant Design `Menu` + `ConfigProvider` tuỳ chỉnh màu.
 
 ---
 
-## Component Conventions
+## 18. Quy ước component
 
 ```typescript
 // ✅ Default export cho lazy-loaded pages
@@ -780,7 +849,7 @@ type IpWhitelistFormModalProps = {
 
 ---
 
-## Utility Hooks
+## 19. Hook tiện ích
 
 ### useDebouncedValue
 
@@ -801,13 +870,13 @@ const { ref, isVisible } = useInView(0.5); // threshold
 // Dùng cho lazy load, animation trigger
 ```
 
-### useCompanyOptions / useSupplierOptions / useProductOptions / useMenuOptions / useCategoryOptions / usePaymentMethodOptions / useFavoriteLatestMonthOptions
+### Hook options cho dropdown
 
-Các hook trả về `{ data, isLoading }` cho select options. Mỗi hook wrap 1 `useQuery` + mapping. Dùng để populate dropdown trên form.
+`useCompanyOptions` / `useSupplierOptions` / `useProductOptions` / `useMenuOptions` / `useCategoryOptions` / `usePaymentMethodOptions` / `useFavoriteLatestMonthOptions`… trả về `{ data, isLoading }`. Mỗi hook bọc 1 `useQuery` + mapping. Dùng để đổ dữ liệu vào dropdown trên form.
 
 ---
 
-## useEffect — Dependency rules
+## 20. `useEffect` — luật dependency
 
 ```typescript
 // ✅ deps đầy đủ
@@ -821,4 +890,4 @@ useEffect(() => {
 }, []); // filters bị thiếu
 ```
 
-Không `// eslint-disable-next-line` để bypass warning — fix đúng deps (hoặc dùng `useCallback`/`useMemo` để stable hóa reference nếu cần).
+Không dùng `// eslint-disable-next-line` để bỏ warning — sửa đúng deps (hoặc `useCallback`/`useMemo` để ổn định reference).

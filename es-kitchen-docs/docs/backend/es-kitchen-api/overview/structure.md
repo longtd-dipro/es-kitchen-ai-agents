@@ -1,12 +1,49 @@
 # es-kitchen-api — Cấu trúc Source
 
-> Nguồn: `es-kitchen-api@4ca4dcd9` (branch `develop`) ngày 2026-10-16 · Cập nhật cuối: 2026-10-16
+> Nguồn: `es-kitchen-api@4ca4dcd9` (branch `develop`) ngày 2026-10-16 · Cập nhật cuối: 2026-10-16 (đối chiếu lại SHA 2026-10-29: vẫn `4ca4dcd9`)
 > Repo: `es-kitchen-api` · Stack: NestJS 11 / TypeScript 5.7 / PostgreSQL / TypeORM 0.3.28
-> Vai trò: Core API — phục vụ toàn bộ E01–E07 (Mobile, Web Admin, Company, Supplier, Outsource, Driver, User Web Ordering) + 2 client dịch vụ (AI PRO, HubSpot agent)
+
+**File này nói gì:** bản đồ của repo `es-kitchen-api` — hệ thống gồm những phần nào, đặt ở thư mục nào, và vì sao chia như vậy.
+**Đọc khi nào:** ngày đầu vào dự án, hoặc khi chưa biết "code của màn X nằm ở đâu".
+**Đọc tiếp:** cách viết code theo chuẩn của dự án → [patterns.md](patterns.md). Danh sách endpoint → `api-catalog.md`. Bảng DB → `erd.md`.
 
 ---
 
-## Tech stack
+## 1. Hệ thống này là gì, vì sao chia như vậy
+
+`es-kitchen-api` là **một** API duy nhất (NestJS) phục vụ **mọi** ứng dụng phía trước của ESKITCHEN: Mobile (E01), Web Company (E02), Web Admin (E03), Web Supplier (E04), Web Công ty vận chuyển (E05), Driver (E06), User Web Ordering (E07), cộng 2 dịch vụ bên ngoài gọi vào (AI PRO, HubSpot agent).
+
+Cách chia: **mỗi loại người dùng = một module riêng**, có prefix URL, guard (người gác cổng kiểm tra đăng nhập) và cấu hình JWT riêng. Lý do:
+
+- Admin không được gọi nhầm API của Driver, và ngược lại.
+- Sửa màn của Supplier không làm vỡ Admin.
+- Mỗi portal có Swagger riêng để FE đọc đúng phần của mình.
+
+```mermaid
+flowchart LR
+  subgraph Clients
+    M[Mobile E01 / Web đặt món E07]
+    C[Web Company E02]
+    A[Web Admin E03]
+    S[Web Supplier E04]
+    D5[Web Công ty vận chuyển E05]
+    D6[Driver E06]
+    X[AI PRO / HubSpot agent]
+  end
+  M --> U[user  — prefix rỗng]
+  C --> AC[admin-company — /company-admin]
+  A --> AD[admin — /admin]
+  S --> SU[supplier — /supplier]
+  D5 --> DE[deliverer — /deliverer]
+  D6 --> DR[driver — /driver]
+  X --> AP[ai-pro / hubspot-agent]
+  U & AC & AD & SU & DE & DR & AP --> E[(entities + PostgreSQL)]
+  U & AC & AD & SU & DE & DR & AP --> CM[commons: guard, interceptor, mail, pdf, elepay...]
+```
+
+---
+
+## 2. Tech stack
 
 | Layer | Package | Version (package.json) |
 |---|---|---|
@@ -29,11 +66,16 @@
 | Test | Jest | ^30.0.0 |
 | Payment | elepay (module nội bộ `commons/utiliz/elepay`, gọi HTTP, không SDK npm) | — |
 
-> **Cache/Message-broker:** không dùng Redis, không có queue lib (Bull/BullMQ). Socket.io cross-instance dùng **PostgreSQL LISTEN/NOTIFY** adapter (`src/commons/auth-session/postgres-socket-io.adapter.ts`). "Queue" = outbox table + scheduler (vd `menu_publish_mail`).
+!!! note "Không có Redis, không có queue"
+    Dự án **không dùng Redis** và **không có** thư viện queue (Bull/BullMQ).
+
+    - Socket.io chạy nhiều instance được nhờ **PostgreSQL LISTEN/NOTIFY** (`src/commons/auth-session/postgres-socket-io.adapter.ts`).
+    - "Hàng đợi" = bảng outbox + scheduler. Ví dụ: bảng `menu_publish_mail`.
+    - Cron chạy nhiều instance không bị trùng nhờ advisory lock của Postgres (xem patterns.md).
 
 ---
 
-## Scripts (package.json)
+## 3. Scripts (package.json)
 
 | Lệnh | Mục đích |
 |---|---|
@@ -48,7 +90,14 @@
 
 ---
 
-## Cấu trúc thư mục
+## 4. Cấu trúc thư mục
+
+Quy tắc nhớ nhanh:
+
+- Code theo **người dùng** → `src/modules/<role>/`
+- Bảng DB → `src/entities/` (một chỗ, dùng chung)
+- Thứ dùng chung nhiều role → `src/commons/`
+- Đăng nhập của End User → `src/auth/`
 
 ```
 es-kitchen-api/
@@ -110,9 +159,19 @@ es-kitchen-api/
 
 > **28 file `*.module.ts`** trong `src/`: `app` (1) + `auth` (1) + `commons/auth-session` (1) + 9 module role + 4 sub-module admin (collection, discard, invoice, stock) + 12 module `commons/utiliz`.
 
+**Bên trong một module role** (ví dụ `driver/`):
+
+| Thư mục | Chứa gì | Vai trò |
+|---|---|---|
+| `http/controllers/` | `driver-auth.controller.ts`, `driver-delivery.controller.ts`… | Nhận request, chỉ định route — không chứa nghiệp vụ |
+| `http/requests/` | DTO đầu vào | Mô tả + kiểm tra dữ liệu client gửi lên |
+| `http/responses/` | DTO đầu ra | Mô tả dữ liệu trả về (và để Swagger vẽ) |
+| `services/` | Service | Nghiệp vụ + truy cập DB |
+| `guards/` | `<role>.guard.ts` | Kiểm tra token của role đó |
+
 ---
 
-## Modules (src/modules/) — đếm bằng script (không tính `*.spec.ts`, `__tests__/`)
+## 5. Modules (src/modules/) — đếm bằng script (không tính `*.spec.ts`, `__tests__/`)
 
 | Module | Portal / Actor | Router prefix | Controllers | Services | Request DTO | Response DTO |
 |---|---|---|---|---|---|---|
@@ -128,7 +187,12 @@ es-kitchen-api/
 
 Ngoài `modules/`: `auth/auth.controller.ts` (User auth) và `commons/utiliz/mail/mail.controller.ts` → tổng 179 controller.
 
+!!! note "Hay nhầm"
+    URL của Company Admin là `/company-admin/...`, còn thư mục là `admin-company/`. Đừng lẫn.
+
 ### Nested trong `admin/`
+
+`admin/` quá lớn (88 controller) nên một số nhóm được tách thành sub-module hoặc thư mục con.
 
 | Thư mục | Loại | Controllers | Ghi chú |
 |---|---|---|---|
@@ -139,18 +203,32 @@ Ngoài `modules/`: `auth/auth.controller.ts` (User auth) và `commons/utiliz/mai
 | `discard/` (`DiscardModule`) | sub-module | 1 | Disposal reports |
 | `change-request/` `export/` `import/` `menu-history/` `product-history/` | thư mục | — | helper/service nội bộ admin |
 
+### Tìm nhanh: cần làm gì → xem ở đâu
+
+| Tình huống | Xem ở đâu |
+|---|---|
+| Thêm API cho màn System Admin | `src/modules/admin/http/controllers/` + `services/` |
+| Thêm API cho App Driver | `src/modules/driver/` |
+| Thêm bảng / cột | `src/entities/` + `database/migrations/` |
+| Dùng lại mail / PDF / QR / S3 | `src/commons/utiliz/` |
+| Thêm job chạy định kỳ | Service có `@Cron` (xem mục dưới + patterns.md) |
+| Đổi định dạng response chung | `src/commons/framework/interceptors/transform.interceptor.ts` |
+| Đổi cách xử lý lỗi chung | `src/commons/framework/filters/` (`AllExceptionsFilter`) |
+
 ### Scheduler / event / socket
 
-- **Cron** (`@Cron` + `@PostgreLock`, TZ Asia/Tokyo): stocktake, shipping-plan, menu, menu-ranking, notice (+channel), survey, agency-commission, company-order-publish/lock, supplier-order-generator, subsidy-monthly-closing, contract-generation, invoice-reconcile, payment-expiry/reminder, supplier-purchase-order-alert, auth-session-cleanup.
-- **Event emitter**: listener ở `admin/delivery/services` (contracts-registered, plan-inputs-changed), `admin/services` (menu-orders-opened, menu-publish-mail), `admin-company/listeners`, `auth-session` gateway.
+- **Cron** (job chạy theo lịch; `@Cron` + `@PostgreLock`, TZ Asia/Tokyo): stocktake, shipping-plan, menu, menu-ranking, notice (+channel), survey, agency-commission, company-order-publish/lock, supplier-order-generator, subsidy-monthly-closing, contract-generation, invoice-reconcile, payment-expiry/reminder, supplier-purchase-order-alert, auth-session-cleanup.
+- **Event emitter** (phát tín hiệu nội bộ để module khác phản ứng): listener ở `admin/delivery/services` (contracts-registered, plan-inputs-changed), `admin/services` (menu-orders-opened, menu-publish-mail), `admin-company/listeners`, `auth-session` gateway.
 - **Socket**: chỉ 1 gateway — `AuthSessionGateway` namespace `/admin` (event `session:ended`) cho System Admin.
 - **Không có** thư mục `queue/`/`batch/` riêng.
 
 ---
 
-## Entities
+## 6. Entities
 
-Flat layout tại `src/entities/*.entity.ts` — **224 file**. Nhóm chính:
+Entity = một class đại diện cho một bảng DB. Dự án để **phẳng** tại `src/entities/*.entity.ts` — **224 file**, không chia thư mục con theo module (nên nhiều module dùng chung được).
+
+Nhóm chính:
 
 - **Auth/User:** `user.entity.ts`, `admin.entity.ts`, `company-admin.entity.ts`, `auth-session.entity.ts`, `pending-user.entity.ts`
 - **Business core:** `company.entity.ts`, `parent-contract.entity.ts`, `contract-route.entity.ts`, `contract-fee-line.entity.ts`, `order.entity.ts`, `menu.entity.ts`, `product.entity.ts`, `category.entity.ts`, `supplier.entity.ts`
@@ -163,9 +241,13 @@ Flat layout tại `src/entities/*.entity.ts` — **224 file**. Nhóm chính:
 - **Mới từ ~2026-07:** delivery cycle/override/holiday (`delivery-cycle-*.entity.ts`, `delivery-override`, `holiday`), contract (`contract-route*`, `contract-fee-line`, `contract-billing-*`, `parent-contract*`), equipment (`equipment*`, `equipment-loan*`), stock (`branch-stock*`, `stock-setting`, `stock-reservation`, `inventory-stock-count`), survey (`survey*`), notice (`notice*`), allergen (`allergen`, `product-allergen`), agency (`agency*`), menu publish mail outbox (`menu-publish-mail*`), `audit-log`, `product-review`
 - **Reference/Config:** `notification.entity.ts`, …
 
+Chi tiết cột / quan hệ → `erd.md`.
+
 ---
 
-## Migrations
+## 7. Migrations
+
+Migration = file mô tả một lần đổi cấu trúc DB (tạo bảng, thêm cột…), chạy lần lượt theo thời gian. DB **không** tự đồng bộ từ entity, nên mọi thay đổi schema đều phải qua migration.
 
 - **Path:** `database/migrations/`
 - **Số lượng:** 303 file (mới nhất `1792124634205-AddDeliveryBlocksShipmentNoIndex.ts`)
@@ -173,21 +255,39 @@ Flat layout tại `src/entities/*.entity.ts` — **224 file**. Nhóm chính:
 - **Seed pattern:** file có prefix `Seed*` (ví dụ `SeedSuperAdmin1778385166498-SeedSuperAdmin.ts`)
 - **Sync mode:** OFF (`synchronize: false`) — chỉ chạy qua migration.
 
+Cách viết migration → patterns.md, mục "Migration".
+
 ---
 
-## Bootstrap — `src/main.ts`
+## 8. Bootstrap — `src/main.ts`
 
-Thiết lập global (`NestFactory.create` với `rawBody: true` cho webhook):
+Bootstrap = bước khởi động app. Đây là nơi gắn các "lớp bọc" áp dụng cho **mọi** request. `NestFactory.create` dùng `rawBody: true` (để kiểm chữ ký webhook).
+
+```mermaid
+flowchart LR
+  R[Request] --> G[Guard role<br/>kiểm token]
+  G --> P[ValidationPipe<br/>kiểm dữ liệu vào]
+  P --> C[Controller]
+  C --> S[Service]
+  S --> DB[(PostgreSQL)]
+  S --> I[TransformInterceptor<br/>bọc response]
+  I --> O[Response envelope]
+  C -. lỗi .-> F[AllExceptionsFilter]
+  S -. lỗi .-> F
+  F --> O
+```
+
+Thiết lập global:
 
 - **Versioning:** URI-based (`api/v1`, `api/v2`, …) với `VERSION_NEUTRAL` fallback
 - **Trust proxy:** enabled
 - **CORS:** enabled, credentials + `Content-Disposition` exposed
 - **Socket.io adapter:** `PostgresSocketIoAdapter` (LISTEN/NOTIFY)
-- **Global interceptors:**
-  - `TransformInterceptor` → response envelope
-  - `ClassSerializerInterceptor` → DTO serialization
-- **Global filter:** `AllExceptionsFilter`
-- **Global pipes:**
+- **Global interceptors** (code chạy trước/sau controller):
+  - `TransformInterceptor` → bọc response thành envelope chuẩn
+  - `ClassSerializerInterceptor` → serialize DTO (vd ẩn field `@Exclude()`)
+- **Global filter** (bắt lỗi): `AllExceptionsFilter`
+- **Global pipes** (kiểm tra/chuyển đổi dữ liệu vào):
   - `ValidationPipe` (whitelist, forbidNonWhitelisted, custom `exceptionFactory` → `ApiStatusCode.VALIDATION_ERROR`)
   - `BigIntValidationPipe` **không** global — dùng cục bộ qua `@Param('id', BigIntValidationPipe)` (vd `discard.controller.ts`)
 - **Swagger:** 7 tài liệu riêng (Admin gồm AdminModule + InvoiceModule + AdminStockModule; AdminCompany; User `/swagger`; Supplier; Driver; Deliverer; AiPro). `hubspot-agent` chưa có Swagger doc riêng.
@@ -196,7 +296,9 @@ Thiết lập global (`NestFactory.create` với `rawBody: true` cho webhook):
 
 ---
 
-## Auth
+## 9. Auth
+
+Auth = ai được gọi API nào. Mỗi role có JWT (token đăng nhập) cấu hình riêng nên token của Driver không dùng được ở Admin.
 
 - **Passport strategies** (`src/auth/strategies/`):
   - `jwt.strategy.ts` — Bearer token extraction
@@ -209,7 +311,7 @@ Thiết lập global (`NestFactory.create` với `rawBody: true` cho webhook):
 
 ---
 
-## Database config
+## 10. Database config
 
 `config/database.config.ts`:
 

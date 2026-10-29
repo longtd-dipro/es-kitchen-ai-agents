@@ -1,13 +1,35 @@
 # es-kitchen-web-supplier — Cấu trúc Source
 
-> Nguồn = `es-kitchen-web-supplier@57c8179` ngày 2026-10-16 (HEAD `main`, ~16 commit từ 2026-07-01). **Chưa commit (untracked, chưa merge):** `src/pages/profile/ProfilePage.tsx`, `src/services/client/profile.service.ts`, `src/models/profile.ts` — xem ghi chú ở Routes.
+> Nguồn = `es-kitchen-web-supplier@57c8179` ngày 2026-10-16 (HEAD `main`, ~16 commit từ 2026-07-01). **Chưa commit (untracked, chưa merge):** `src/pages/profile/ProfilePage.tsx`, `src/services/client/profile.service.ts`, `src/models/profile.ts` — xem ghi chú ở mục Routes.
 
-> Repo: `es-kitchen-web-supplier` · Epic: **E04 Supplier**
-> Vai trò: supplier quản lý menu, nhận đơn hàng, cập nhật trạng thái giao — self-service portal cho nhà cung cấp thực phẩm.
+**File này nói gì:** bản đồ repo E04 Supplier (cổng self-service cho nhà cung cấp): có những trang nào, dữ liệu và phiên đăng nhập chạy qua đâu, chỗ nào còn dữ liệu giả.
+**Đọc khi nào:** ngày đầu vào dự án, hoặc khi chưa biết "file này đặt ở đâu". Cách viết code → `patterns.md` cùng thư mục.
+
+- Repo: `es-kitchen-web-supplier` · Epic: **E04 Supplier**.
+- Vai trò: supplier quản lý menu, nhận đơn hàng, cập nhật trạng thái giao — portal self-service cho nhà cung cấp thực phẩm.
+- ⚠️ Đừng nhầm với E05 `es-kitchen-web-outsource-web-private` (Công ty vận chuyển).
 
 ---
 
-## Tech stack
+## 1. App gồm những phần nào
+
+```
+Trình duyệt → main.tsx (cookie → Redux, rồi dựng providers) → App → Router
+   ├─ PublicOnly: NonAuthLayout (login, quên MK…) · PublicLayout (/register)
+   └─ RequireAuth: AuthCenteredLayout (/reset-success) · AuthLayout (sidebar + header)
+                      └─ pages: dashboard · orders · menu-management · shipping-management · …
+                           ├─ hook TanStack Query ← services/client/*.service.ts → API
+                           └─ Redux: chỉ slice `auth`
+```
+
+Vì sao như vậy:
+- **Redux chỉ có `auth`** — mọi dữ liệu server do TanStack Query giữ.
+- **Sidebar tối giản** (~3–4 mục) — portal nhỏ hơn nhiều so với E03.
+- **Hết phiên có modal riêng** (`SessionExpiredModal`) để supplier biết vì sao bị đẩy ra.
+
+---
+
+## 2. Tech stack
 
 | Layer | Package | Version |
 |---|---|---|
@@ -32,7 +54,7 @@
 
 ---
 
-## Cấu trúc thư mục
+## 3. Cây thư mục
 
 ```
 es-kitchen-web-supplier/
@@ -40,7 +62,7 @@ es-kitchen-web-supplier/
 │   ├── components/       ← Auth (AuthBootstrap, AuthCard, SessionExpiredModal), Common (Base*), Supplier (bảng/section thông tin NCC)
 │   ├── constants/        ← routes, enums
 │   ├── enums/
-│   ├── hooks/            ← 12 hook (xem section Custom hooks)
+│   ├── hooks/            ← 12 hook (xem mục 7)
 │   ├── layouts/          ← AuthLayout · NonAuthLayout · AuthCenteredLayout · PublicLayout
 │   ├── models/
 │   ├── pages/            ← 10 thư mục: auth, dashboard, orders, menu-management, shipping-management, change-password, other, supplier-profile, supplier-register, profile (untracked)
@@ -67,85 +89,104 @@ es-kitchen-web-supplier/
 
 ---
 
-## Routes (top-level)
+## 4. Routes (cấp cao nhất)
 
 ### Public
 
-`NonAuthLayout` (`PublicOnly`): `/login` · `/forgot-password` · `/verify` · `/reset-password` · `PublicLayout`: `/register` (SupplierRegisterPage) · `AuthCenteredLayout`: `/reset-success`
+- `NonAuthLayout` (`PublicOnly`): `/login` · `/forgot-password` · `/verify` · `/reset-password`
+- `PublicLayout`: `/register` (SupplierRegisterPage)
+- `AuthCenteredLayout`: `/reset-success`
 
 ### Protected — `AuthLayout`
 
 `/dashboard` · `/orders` · `/orders/:id` · `/menu-management` · `/menu-management/:id` · `/shipping-management/:id` · `/change-password` · `/other` · `/profile`
 
-Tổng 15 route path (+ index → `/dashboard`, `*` → `/login`). `/profile` trỏ `SupplierProfilePage` (`pages/supplier-profile/`, đã commit). `pages/profile/ProfilePage.tsx` (untracked, form update profile qua `/account/profile`) **chưa được import vào router** — chưa merge. `ROUTE.SHIPPING_MANAGEMENT` (`/shipping-management`) khai báo nhưng chưa có route (chỉ có `/:id`).
+### Ghi chú
+
+- Tổng 15 route path (+ index → `/dashboard`, `*` → `/login`).
+- `/profile` trỏ `SupplierProfilePage` (`pages/supplier-profile/`, đã commit).
+- `pages/profile/ProfilePage.tsx` (untracked, form update profile qua `/account/profile`) **chưa được import vào router** — chưa merge.
+- `ROUTE.SHIPPING_MANAGEMENT` (`/shipping-management`) khai báo nhưng chưa có route (chỉ có `/:id`).
 
 ---
 
-## Pages (src/pages/)
+## 5. Pages (`src/pages/`)
 
 `auth/` (Login, ForgotPassword, Verify, ResetPassword, ResetSuccess) · `dashboard/` · `orders/` (OrdersPage, OrderDetailPage, OrderDetailEditModal) · `menu-management/` (list + detail) · `shipping-management/` (detail only) · `change-password/` · `supplier-profile/` · `supplier-register/` (mới) · `other/` · `profile/` (untracked)
 
----
-
-## Layouts
+### Layouts
 
 | Layout | Vai trò |
 |---|---|
-| `AuthLayout.tsx` | Main authenticated shell — sidebar (~120px, minimal 3-4 items) + header (~56px) + content |
-| `NonAuthLayout.tsx` | Public login/auth |
-| `AuthCenteredLayout.tsx` | Centered layout cho reset success |
-| `PublicLayout.tsx` | Layout công khai cho `/register` (đăng ký supplier) |
+| `AuthLayout.tsx` | Khung chính sau login — sidebar (~120px, tối giản 3-4 mục) + header (~56px) + content |
+| `NonAuthLayout.tsx` | Khung login / auth (public) |
+| `AuthCenteredLayout.tsx` | Khung căn giữa cho reset success |
+| `PublicLayout.tsx` | Khung công khai cho `/register` (đăng ký supplier) |
 
 ---
 
-## Redux store — `src/stores/`
+## 6. Dữ liệu đi từ API đến màn hình
 
-Single `reducers/auth.ts` (đã kiểm tồn tại; actions theo docs cũ: `setAuthTokens`, `setCurrentUser`, `clearAuthState`, `syncAuthStateFromCookies`). Không có slice khác — server state đưa hết vào TanStack Query.
+```
+API (backend)
+  ▲ axios + interceptor (gắn token, bắt 401)
+services/http/*  +  services/client/api.ts
+  ▲
+services/client/<domain>.service.ts   ← 1 hàm = 1 endpoint
+  ▲
+useQuery / useMutationCustom (hoặc hook domain như useSupplierOrders)
+  ▲
+page / component
+```
 
----
+### Redux store — `src/stores/`
 
-## API services — `src/services/`
+- Chỉ có `reducers/auth.ts` (đã kiểm tồn tại; actions theo docs cũ: `setAuthTokens`, `setCurrentUser`, `clearAuthState`, `syncAuthStateFromCookies`).
+- Không có slice khác — server state đưa hết vào TanStack Query.
+
+### API services — `src/services/`
 
 **HTTP:**
 - `http/axios.instance.ts`
 - `http/authToken.ts` — cookie helpers
 - `http/handleRequest.ts` — Bearer token
-- `http/handleResponse.ts` — error handling
-- `http/sessionExpired.ts` — pub/sub `subscribeSessionExpired`/`notifySessionExpired`; `isSessionExpiredError` = 401 + request đã có header Authorization
+- `http/handleResponse.ts` — xử lý lỗi
+- `http/sessionExpired.ts` — pub/sub (cơ chế "đăng ký nghe – phát tín hiệu") `subscribeSessionExpired` / `notifySessionExpired`; `isSessionExpiredError` = 401 + request đã có header Authorization
 
-**Query:** `query/queryClient.ts`
+**Query:** `query/queryClient.ts` — `staleTime` 5 phút, `retry: 1`, không refetch khi focus lại tab. (⚠️ Khác E03/E02: hai repo kia đặt `staleTime: 0`, `gcTime: 0` nên gần như không cache; E04 giữ cache 5 phút, không đặt `gcTime`.)
 
-**Client services (11 file trong `services/client/`):**
+**Client services (`services/client/`):**
 `api.ts` · `auth.service.ts` · `order.service.ts` (`/orders`) · `shipping.service.ts` · `supplier.service.ts` (`/register`, `/profile`, `/profile/history`) · `notice.service.ts` (`/notifications`) · `profile.service.ts` (**untracked**, `/account/me`, `/account/profile`) · `user.service.ts` · `file-upload.service.ts` (`/files/presigned-upload-url`) · `error-report.service.ts`
-+ **`shipping.fake.ts`** — fake duy nhất còn lại
++ **`shipping.fake.ts`** — fake duy nhất còn lại.
 
-> **Fake data pattern:** chỉ `shipping.service.ts` còn `USE_FAKE_DATA = true` (kèm `shipping.fake.ts`). `menu-management.service.ts` và `order.fake.ts` không còn tồn tại; trang menu-management/orders dùng `hooks/useSupplierOrders.ts` (API thật). Khi BE xong shipping: bỏ flag + file fake.
+> **Fake data:** chỉ `shipping.service.ts` còn `USE_FAKE_DATA = true` (kèm `shipping.fake.ts`). `menu-management.service.ts` và `order.fake.ts` không còn tồn tại; trang menu-management/orders dùng `hooks/useSupplierOrders.ts` (API thật). Khi BE xong shipping: bỏ flag + file fake.
 
 ---
 
-## Custom hooks — `src/hooks/`
+## 7. Custom hooks — `src/hooks/`
 
 `useAuth`, `useCan`, `useDebouncedValue`, `useInView`, `useMutationCustom`, `useTableParams`, `useUnsavedChangesGuard`, `router`, `useSessionExpired`, `useSupplierNotifications`, `useSupplierOrders`, `useSupplierSelfService`
 
 ---
 
-## Auth strategy
+## 8. Auth & phiên đăng nhập
 
-- Cookie-based JWT (access + refresh) qua `js-cookie`
-- Bootstrap `bootstrapAuthStateFromCookies()` trong `main.tsx`
-- Status enum: `UNAUTHENTICATED | LOADING | AUTHENTICATED`
-- `RequireAuth` / `PublicOnly` guard
-- 401 có Authorization header → `notifySessionExpired()` → `useSessionExpired` hiện `SessionExpiredModal` (components/Auth), khi xác nhận `clearAuthState` + redirect `/login?redirect=<path>`; 401 ở login/forgot-password (không có Authorization) không tính là hết phiên
+1. Cookie-based JWT (access + refresh) qua `js-cookie`.
+2. `bootstrapAuthStateFromCookies()` chạy trong `main.tsx` trước khi render.
+3. Status enum: `UNAUTHENTICATED | LOADING | AUTHENTICATED`.
+4. Guard: `RequireAuth` / `PublicOnly`.
+5. **401 có header Authorization** → `notifySessionExpired()` → `useSessionExpired` hiện `SessionExpiredModal` (`components/Auth`); khi xác nhận → `clearAuthState` + redirect `/login?redirect=<path>`.
+6. **401 ở login / forgot-password** (không có Authorization) **không** tính là hết phiên.
 
 ---
 
-## Path aliases — `tsconfig.app.json`
+## 9. Path aliases — `tsconfig.app.json`
 
 Chuẩn như các FE repo khác: `@`, `@components`, `@layouts`, `@pages`, `@routes`, `@services`, `@shared`, `@hooks`, `@utils`, `@types`, `@assets`.
 
 ---
 
-## Environment variables
+## 10. Environment variables
 
 | Var | Purpose |
 |---|---|
@@ -154,36 +195,31 @@ Chuẩn như các FE repo khác: `@`, `@components`, `@layouts`, `@pages`, `@rou
 
 ---
 
-## Bootstrap — `src/main.tsx`
+## 11. Bootstrap — `src/main.tsx`
 
-CSS imports:
+CSS import:
 1. AntD reset (`antd/dist/reset.css`)
 2. Tailwind (`src/styles/tailwind.css`)
 3. Global SCSS (`src/styles/globals.scss`)
 4. react-toastify CSS
 
-Provider stack:
+Provider stack (bọc ngoài → trong):
 1. `StrictMode` → `QueryClientProvider`
 2. Redux `Provider`
 3. `AntdProvider` (theme config) → `AntdApp`
 4. `App` + `ToastContainer` (react-toastify, autoClose 3000)
 
-Auth bootstrap từ cookies chạy trước render.
+Auth bootstrap từ cookie chạy trước render.
 
 ---
 
-## Styling
+## 12. Styling
 
-- **TailwindCSS 4.3.0** — utility classes
-- **Sass 1.99.0** — `_base.scss`, `nav.scss`, `globals.scss`, `_variables.scss`
-- **AntD 6.4** — light/dark theme qua `ConfigProvider`
+- **TailwindCSS 4.3.0** — utility classes.
+- **Sass 1.99.0** — `_base.scss`, `nav.scss`, `globals.scss`, `_variables.scss`.
+- **AntD 6.4** — light/dark theme qua `ConfigProvider`.
+- **Vite plugin:** `vite-plugin-svgr` — import SVG như React component.
 
 **Theme màu (E04):** primary purple `#6639BA` = `colors.primitives.purple.600`.
 
-> **Lưu ý:** purple **không có trong `colors.semantics.*` table** — dùng primitive trực tiếp. Khi tạo component chung cross-repo → cẩn thận color token vì E04 là repo duy nhất dùng purple.
-
----
-
-## Vite plugins
-
-- `vite-plugin-svgr` — import SVG as React component
+> **Lưu ý:** purple **không có trong bảng `colors.semantics.*`** — dùng primitive trực tiếp. Khi tạo component chung cross-repo → cẩn thận color token vì E04 là repo duy nhất dùng purple.

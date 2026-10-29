@@ -2,12 +2,37 @@
 
 > Nguồn = `es-kitchen-web-admin@633b2b7` ngày 2026-10-16 (HEAD `main`; working tree chỉ có `yarn.lock` untracked). ~49 commit từ 2026-08-21 đã được đối chiếu.
 
-> Repo: `es-kitchen-web-admin` · Epic: **E03 System Admin** · 115 `page.tsx` (121 lazy import trong router, 130 key trong `ROUTE`) có permission guard + 5 public auth page
-> Vai trò: quản trị toàn hệ thống — account, company, contract, master data, order, delivery, inventory, invoice, agency, notification.
+**File này nói gì:** bản đồ của repo E03 System Admin: app có những phần nào, thư mục nào chứa gì, dữ liệu và phiên đăng nhập chạy qua đâu.
+**Đọc khi nào:** ngày đầu vào dự án, hoặc khi chưa biết "file này nên đặt ở đâu". Cách viết code cụ thể → xem `patterns.md` cùng thư mục.
+
+- Repo: `es-kitchen-web-admin` · Epic: **E03 System Admin** · 115 `page.tsx` (121 lazy import trong router, 130 key trong `ROUTE`) có permission guard + 5 public auth page.
+- Vai trò: quản trị toàn hệ thống — account, company, contract, master data, order, delivery, inventory, invoice, agency, notification.
+- ⚠️ Đây là **E03**. Đừng nhầm với `es-kitchen-web-company` (E02 Company Admin).
 
 ---
 
-## Tech stack
+## 1. App gồm những phần nào (nhìn từ xa)
+
+```
+Trình duyệt
+  └─ main.tsx (dựng các "provider" bọc ngoài)
+       └─ App → Router (routes/index.tsx)
+            ├─ Public:  NonAuthLayout  → trang login, quên mật khẩu…
+            └─ Đã login: RequireAuth → RequirePermission → AuthLayout (sidebar + header)
+                           └─ pages/<domain>/page.tsx  (115 trang)
+                                 ├─ hooks (TanStack Query)  ← server data
+                                 ├─ Redux store             ← auth, vài state client
+                                 └─ services/client/*.service.ts → API (axios)
+```
+
+Vì sao tổ chức như vậy:
+- **Chia theo domain** (`pages/order-management`, `pages/invoice-management`…) để mỗi nghiệp vụ nằm gọn một chỗ.
+- **Server data ≠ client state:** dữ liệu từ API do TanStack Query giữ; Redux chỉ giữ thứ phía client (đăng nhập, quyền, trạng thái flow import).
+- **Mọi API đi qua một cửa** (`services/client/api.ts`) nên token, header, xử lý 401 chỉ viết một lần.
+
+---
+
+## 2. Tech stack
 
 | Layer | Package | Version |
 |---|---|---|
@@ -34,22 +59,23 @@
 | Date | dayjs | 1.11.19 |
 | Util | lodash | 4.17.23 |
 
-> Version lấy từ `package.json` + `node_modules` (socket.io-client, @dnd-kit, quill chưa có trong `node_modules` local → chỉ biết range `package.json`). Không có test runner (`npm test` = echo).
+> Version lấy từ `package.json` + `node_modules` (socket.io-client, @dnd-kit, quill chưa có trong `node_modules` local → chỉ biết range `package.json`).
+> **Không có test runner** (`npm test` = echo).
 
 ---
 
-## Cấu trúc thư mục
+## 3. Cây thư mục
 
 ```
 es-kitchen-web-admin/
 ├── src/
-│   ├── components/       ← Shared UI (Auth, Common, Counter, EquipmentConfiguration)
+│   ├── components/       ← UI dùng chung (Auth, Common, Counter, EquipmentConfiguration)
 │   ├── constants/        ← route paths, menu config, enums, errors, messages
 │   ├── enums/            ← TypeScript enums
 │   ├── hooks/            ← 24 custom hooks (auth, permissions, options, tables, mutations)
 │   ├── layouts/          ← AuthLayout · NonAuthLayout · AuthCenteredLayout
-│   ├── models/           ← Domain types (API response shapes)
-│   ├── pages/            ← Feature pages (24 thư mục domain / 115 page.tsx, xem section Pages)
+│   ├── models/           ← Kiểu dữ liệu domain (hình dạng response của API)
+│   ├── pages/            ← Trang theo domain (24 thư mục domain / 115 page.tsx)
 │   ├── routes/           ← `index.tsx` (createBrowserRouter) + `guards/` 3 route guards (RequireAuth, PublicOnly, RequirePermission)
 │   ├── services/
 │   │   ├── http/         ← axios.instance + handleRequest/handleResponse + authToken (js-cookie)
@@ -62,7 +88,7 @@ es-kitchen-web-admin/
 │   ├── stores/           ← Redux store + reducers (auth, counter, monthlyMenuImport)
 │   ├── styles/           ← tailwind.css + globals.scss + nav.scss + _variables.scss + _base.scss
 │   ├── types/            ← Ambient TypeScript types
-│   ├── utils/            ← Utility helpers
+│   ├── utils/            ← Hàm tiện ích
 │   ├── validation/       ← chỉ còn `schemas.ts` (schema chung); schema form đặt co-located `schema.ts` cạnh page
 │   ├── config.ts         ← `serverConfig` (api_server_url, auth) từ `import.meta.env`
 │   ├── App.tsx
@@ -77,39 +103,71 @@ es-kitchen-web-admin/
 
 ---
 
-## Routes (top-level)
+## 4. Bảng "cần tìm X thì mở đâu"
 
-### Public — wrapped bởi `NonAuthLayout`
+| Cần… | Mở | Ghi chú |
+|---|---|---|
+| Gọi một API | `services/client/<domain>.service.ts` | Dùng singleton `API` từ `api.ts` |
+| Hiểu 401 / hết phiên | `services/http/handleResponse.ts`, `services/client/api.ts`, `services/session/handleSessionEnded` | Xem mục 9 |
+| Thêm route | `routes/index.tsx` + `constants/route.ts` | Luôn dùng `ROUTE.xxx` |
+| Chặn trang theo quyền | `routes/guards/RequirePermission.tsx` | Map qua `ROUTE_PERMISSIONS` |
+| Ẩn/hiện nút theo quyền | `hooks/usePermissions` | Xem `patterns.md` |
+| Menu bên trái | `constants/nav.ts` | Có `requiredPermissions` |
+| Đổi theme AntD | `shared/` (AntdProvider + theme) | Màu chính xem mục 12 |
+| Dropdown lấy từ API | `hooks/use*Options.ts` | Xem mục 7 |
+
+---
+
+## 5. Routes (cấp cao nhất)
+
+### Public — bọc bởi `NonAuthLayout`
 
 `/login` · `/forgot-password` · `/verify` · `/verify-login-otp` · `/reset-password` (+ `/reset-success` cho `AuthCenteredLayout`)
 
-### Protected — wrapped bởi `AuthLayout` + `RequirePermission`
+### Protected — bọc bởi `AuthLayout` + `RequirePermission`
 
 `/dashboard` · `/account-management` (user · operation · role-management) · `/company-management` · `/corporate-management` · `/contract-management` (+ `/registration`) · `/master-management` (product · shipping · deliverer · relay-destination · supplier · plan · category · device · machine-model) · `/menu-management` (monthly · product-tag · service-option · discount) · `/order-management` · `/material-order` · `/category-management` · `/sales-management` · `/agency-management` · `/delivery-management` (date-change-requests · material-shipping · prepared-shipping · quotation-requests · schedule · shipments) · `/inventory-management` · `/invoice-management` · `/collection-management` · `/return-management` · `/waste-disposal-management` · `/review-management` · `/survey-management` · `/notification-management` · `/maintain-management` · `/version-management` · `/ip-whitelist-management`
 
-### Error / fallback
+### Lỗi / fallback
 
 `ROUTE.FORBIDDEN` (ForbiddenPage, `pages/403`) · `*` (redirect về `/login`)
 
 ---
 
-## Pages (src/pages/) — feature domains
+## 6. Pages (`src/pages/`) — các domain
 
 `403/`, `account-management/`, `agency-management/`, `auth/`, `collection-management/`, `company-management/`, `contract-management/`, `corporate-management/` (mới, có `mock.ts`), `dashboard/`, `delivery-management/`, `inventory-management/`, `invoice-management/`, `ip-whitelist-management/`, `maintain-management/`, `master-management/`, `material-order/`, `menu-management/`, `notification-management/`, `order-management/`, `return-management/`, `review-management/` (mới), `sales-management/`, `survey-management/`, `version-management/`, `waste-disposal-management/`.
 
----
-
-## Layouts
+### Layouts
 
 | Layout | Vai trò |
 |---|---|
-| `AuthLayout.tsx` | Main authenticated shell — sidebar (210px, accordion nav) + header (54px) + content |
-| `NonAuthLayout.tsx` | Public shell cho login/auth flow |
-| `AuthCenteredLayout.tsx` | Centered layout cho các trang authenticated đơn giản (reset success, …) |
+| `AuthLayout.tsx` | Khung chính sau khi login — sidebar (210px, accordion nav) + header (54px) + content |
+| `NonAuthLayout.tsx` | Khung cho login / auth flow (public) |
+| `AuthCenteredLayout.tsx` | Khung căn giữa cho trang đơn giản (reset success, …) |
 
 ---
 
-## Redux store — `src/stores/reducers/`
+## 7. Dữ liệu đi từ API đến màn hình
+
+```
+API (backend)
+  ▲
+  │  axios + interceptor (gắn token, bắt 401)
+services/client/api.ts  (singleton `API`, class Requester)
+  ▲
+services/client/<domain>.service.ts   ← mỗi hàm = 1 endpoint, không có React
+  ▲
+hook dùng useQuery / useMutationCustom   ← cache, loading, invalidate
+  ▲
+component / page   ← chỉ render; filter + trang + sort sync lên URL qua useTableParams
+```
+
+- **Service** = file gọi API thuần (không hook, không state).
+- **Hook TanStack Query** = lớp giữ cache + trạng thái loading/error.
+- **Redux** = chỉ client state. Ví dụ: `auth` giữ token, user, quyền.
+
+### Redux store — `src/stores/reducers/`
 
 | Slice | Vai trò |
 |---|---|
@@ -119,46 +177,54 @@ es-kitchen-web-admin/
 
 **Bootstrap:** `bootstrapAuthStateFromCookies()` dispatch trong `main.tsx` để sync cookie → Redux trước khi render.
 
----
+### API services — `src/services/`
 
-## API services — `src/services/`
+- **`client/api.ts`** — singleton `API` (class `Requester`): `baseURL=VITE_API_BASE_URL`, `Accept-Language: ja`, `paramsSerializer`, flag `disabledToken`; mọi `*.service.ts` dùng class này.
+- **`http/axios.instance.ts`** — axios instance.
+- **`http/handleRequest.ts`** — thêm `Authorization: Bearer <token>` + timezone header.
+- **`http/handleResponse.ts`** — xử lý lỗi + gọi `handleSessionEnded` khi 401.
+- **`http/authToken.ts`** — get/set/clear access + refresh token cookie.
+- **`query/queryClient.ts`** — TanStack Query: `staleTime: 0`, `gcTime: 0`, `retry: 1`, không refetch khi focus lại tab. Nghĩa là: **gần như không cache** — mở lại trang là gọi lại API.
+- **`client/*.service.ts`** — 52 service theo domain (auth, dashboard, delivery-schedule, inventory, category, product-tag, survey, deliverer, agency, ip-whitelist, registration, review, quotation-request, machine-model, referral/referral-fee-plan, shipment-management, …).
 
-- **`client/api.ts`** — singleton `API` (class `Requester`): `baseURL=VITE_API_BASE_URL`, `Accept-Language: ja`, `paramsSerializer`, flag `disabledToken`; mọi `*.service.ts` dùng class này
-- **`http/axios.instance.ts`** — axios instance
-- **`http/handleRequest.ts`** — thêm `Authorization: Bearer <token>` + timezone header
-- **`http/handleResponse.ts`** — error handling + trigger `handleSessionEnded` khi 401
-- **`http/authToken.ts`** — get/set/clear access + refresh token cookie
-- **`query/queryClient.ts`** — TanStack Query: `staleTime: 0`, `gcTime: 0`, `retry: 1`, no refetch on focus
-- **`client/*.service.ts`** — 52 domain service (auth, dashboard, delivery-schedule, inventory, category, product-tag, survey, deliverer, agency, ip-whitelist, registration, review, quotation-request, machine-model, referral/referral-fee-plan, shipment-management, …)
+### Custom hooks — `src/hooks/`
 
----
-
-## Custom hooks — `src/hooks/`
-
-**Auth/session:** `useAuth`, `usePermissions`, `useCan`, `useAdminSessionSocket`
-
-**Table + UI:** `useTableParams`, `useTableRowDragDrop`, `useDebouncedValue`, `useInView`, `useScrolledPast`, `useUnsavedChangesGuard`
-
-**Mutation:** `useMutationCustom`
-
-**Options (dropdown data sources):** `useCompanyOptions`, `useMenuOptions`, `useSupplierOptions`, `useProductOptions`, `useDelivererOptions`, `useCategoryOptions`, `useFavoriteLatestMonthOptions`, `usePaymentMethodOptions`, `useProductTags`, `useAllergenOptions`, `useRelayDestinationOptions`, `useWarehouseOptions`
-
-**Router:** `router.ts`
+- **Auth/session:** `useAuth`, `usePermissions`, `useCan`, `useAdminSessionSocket`
+- **Table + UI:** `useTableParams`, `useTableRowDragDrop`, `useDebouncedValue`, `useInView`, `useScrolledPast`, `useUnsavedChangesGuard`
+- **Mutation:** `useMutationCustom`
+- **Options (dữ liệu cho dropdown):** `useCompanyOptions`, `useMenuOptions`, `useSupplierOptions`, `useProductOptions`, `useDelivererOptions`, `useCategoryOptions`, `useFavoriteLatestMonthOptions`, `usePaymentMethodOptions`, `useProductTags`, `useAllergenOptions`, `useRelayDestinationOptions`, `useWarehouseOptions`
+- **Router:** `router.ts`
 
 ---
 
-## Auth strategy
+## 8. Bootstrap — `src/main.tsx`
 
-- **Cookie-based JWT** (js-cookie) — `access_token` + `refresh_token`
-- Expiry 7 ngày, SameSite=strict, path `/`
-- Axios interceptor gắn `Authorization: Bearer <access_token>` cho mọi request
-- **Session monitoring:** `useAdminSessionSocket()` lắng nghe `session:ended` từ socket.io server → dispatch `sessionEnded` → hiển thị `SessionEndedModal`
-- **401 response** (`http/handleResponse.ts`, `client/api.ts`): có `errorCode` AUTH_SESSION_* hoặc đang có session → `handleSessionEnded()` (hiện `SessionEndedModal`); chưa có session → `clearAuthState()`. Không auto-refresh — user phải login lại
-- **Redirect on login:** `?redirect=<encoded-path>` giữ đích sau login
+Provider = component bọc ngoài để cho cả app dùng chung một thứ (cache, store, theme). Thứ tự từ ngoài vào trong:
+
+1. `StrictMode`
+2. `QueryClientProvider` (TanStack Query)
+3. Redux `Provider`
+4. `AntdProvider` (`ConfigProvider` với `lightTheme`)
+5. `AntdApp` (Ant Design app context — cầu nối message, modal, notification)
+6. `ToastContainer` (react-toastify)
+7. `App` → `AuthBootstrap` (kiểm tra phiên) + `SessionEndedModal` + `RouterProvider`
 
 ---
 
-## Path aliases — `tsconfig.app.json`
+## 9. Auth & phiên đăng nhập
+
+- **JWT lưu cookie** (js-cookie) — `access_token` + `refresh_token`. Hạn 7 ngày, SameSite=strict, path `/`.
+- Axios interceptor (hàm chạy trước mỗi request / sau mỗi response) gắn `Authorization: Bearer <access_token>` cho mọi request.
+- **Theo dõi phiên:** `useAdminSessionSocket()` lắng nghe `session:ended` từ socket.io server → dispatch `sessionEnded` → hiện `SessionEndedModal`.
+- **Khi API trả 401** (`http/handleResponse.ts`, `client/api.ts`):
+  1. Có `errorCode` dạng AUTH_SESSION_* hoặc đang có session → `handleSessionEnded()` (hiện `SessionEndedModal`).
+  2. Chưa có session → `clearAuthState()`.
+  - **Không auto-refresh token** — user phải login lại.
+- **Redirect sau login:** `?redirect=<encoded-path>` giữ đích ban đầu.
+
+---
+
+## 10. Path aliases — `tsconfig.app.json`
 
 | Alias | Path |
 |---|---|
@@ -173,40 +239,27 @@ es-kitchen-web-admin/
 | `@utils` | `src/utils/` |
 | `@types` | `src/types/` |
 
-> Alias: `@`, `@components`, `@layouts`, `@pages`, `@routes`, `@services`, `@shared`, `@hooks`, `@utils`, `@types`, `@assets` (mỗi alias có thêm `/*`). **Gap còn lại:** `@assets` → `src/assets/` nhưng thư mục thật là `src/statics/` (đã kiểm 2026-10-16, `src/assets` không tồn tại). Code hiện chủ yếu import qua `@/...`.
+- Bản cũ còn ghi thêm alias `@assets` (mỗi alias có thêm `/*`).
+- ⚠️ **Gap còn lại:** `@assets` → `src/assets/` nhưng thư mục thật là `src/statics/` (đã kiểm 2026-10-16, `src/assets` không tồn tại). Đừng dùng `@assets`.
+- Code hiện chủ yếu import qua `@/...`.
 
 ---
 
-## Environment variables (.env.example)
+## 11. Environment variables (`.env.example`)
 
 | Var | Purpose |
 |---|---|
 | `VITE_API_BASE_URL` | Base URL API (`/api` default) |
 | `VITE_AUTH_URL` | Auth redirect URL |
-| `VITE_AUTH_SECRET` | Reserved (unused hiện tại) |
+| `VITE_AUTH_SECRET` | Reserved (hiện chưa dùng) |
 
 ---
 
-## Bootstrap — `src/main.tsx`
+## 12. Styling
 
-Provider stack (outer → inner):
+- **TailwindCSS 4** — utility-first (chính), `tailwind.css` với `@theme` override.
+- **Ant Design 6** — component dựng sẵn + theme tuỳ chỉnh qua `AntdProvider`.
+- **SCSS** — override toàn cục (`globals.scss`, `nav.scss`, `_variables.scss`, `_base.scss`).
+- **PostCSS 8.5.6** với autoprefixer; `prettier-plugin-tailwindcss` để sắp xếp class.
 
-1. `StrictMode`
-2. `QueryClientProvider` (TanStack Query)
-3. Redux `Provider`
-4. `AntdProvider` (`ConfigProvider` với `lightTheme`)
-5. `AntdApp` (Ant Design app context — message, modal, notification bridge)
-6. `ToastContainer` (react-toastify)
-7. `App` → `AuthBootstrap` (session check) + `SessionEndedModal` + `RouterProvider`
-
----
-
-## Styling
-
-- **TailwindCSS 4** — utility-first (primary), `tailwind.css` với `@theme` override
-- **Ant Design 6** — pre-built components + theme customization qua `AntdProvider`
-- **SCSS** — global overrides (`globals.scss`, `nav.scss`, `_variables.scss`, `_base.scss`)
-- **PostCSS 8.5.6** với autoprefixer
-- **prettier-plugin-tailwindcss** để sort class
-
-**Theme màu (E03):** primary blue `#0969DA` — mapping với `colors.semantics.company.500` trong design token (xem `.claude/rules/design_rule.md`).
+**Theme màu (E03):** primary blue `#0969DA` — ứng với `colors.semantics.company.500` trong design token (xem `.claude/rules/design_rule.md`).

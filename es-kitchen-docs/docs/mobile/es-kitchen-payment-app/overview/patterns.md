@@ -1,15 +1,43 @@
 # es-kitchen-payment-app — Patterns & Conventions
 
-> Đọc file này trước khi viết code Flutter mới cho E01. Follow pattern đang có — không tự refactor.
-> Source xác nhận từ codebase thực tế. **Nguồn:** es-kitchen-payment-app@71d89b8 (develop, commit cuối 2026-10-13) — đồng bộ ngày 2026-10-16.
+> **Nguồn:** es-kitchen-payment-app@71d89b8 (develop, commit cuối 2026-10-13) — đồng bộ ngày 2026-10-16. Code mẫu lấy từ codebase thực tế.
+
+**File này nói gì:** các cách làm chuẩn trong app Flutter E01 (state, gọi API, điều hướng, model, thanh toán, realtime, sizing, màu/font), mỗi cách kèm ví dụ thật và bẫy hay gặp.
+**Đọc khi:** trước khi viết code Flutter mới cho E01. Follow pattern đang có — không tự refactor.
+Muốn biết file nằm ở đâu, app gồm phần nào → `structure.md`.
 
 ---
 
-## 1. Provider / State Pattern (Riverpod)
+## 0. Tra nhanh: tình huống → cách xử lý → file mẫu
+
+| Tình huống | Cách xử lý | File mẫu |
+|---|---|---|
+| Thêm màn hình mới | Tạo `xxx_page.dart` + `@RoutePage()`, khai báo trong `app_router.dart`, chạy `build_runner` | `features/cart/ui/cart_page.dart`, `app/routers/app_router.dart` |
+| Quản lý state của màn | `Notifier<State>` + `NotifierProvider` + State `@immutable` có `copyWith` | `features/menu/{controller,state,provider}/` |
+| Gọi API mới | Thêm method vào `AppApi` + hằng số vào `app_endpoints.dart` + wrapper trong `ApiRepository`, chạy `build_runner` | `data/api/app_api.dart`, `data/repositories/repository.dart` |
+| Tạo model từ JSON | `@JsonSerializable()` + `@JsonKey(name:)` + `copyWith` tay | `data/models/categories/category_model.dart` |
+| Hiện loading / tắt toast lỗi / bỏ token | `@Extra({'showLoading': true})` / `{'skipShowError': true}` / `{'skipAuth': true}` | `data/api/app_api.dart` |
+| Chuyển màn | `context.router.push(...)` | §3.3 |
+| Hiện dialog / chuyển màn khi state đổi | `ref.listen(provider.select(...))` trong `build()` | `features/app_shell/app_shell_page.dart` |
+| Thanh toán | `ElepayFlutter.handleCharge` / `handleSource`, xử lý đủ 3 kết quả | `features/cart/controller/cart_controller.dart` |
+| Biết kết quả thanh toán | `OrderStatusRetryMixin` (không phải socket) | `app/base/order_status_retry_mixin.dart` |
+| Realtime | `SocketService` (hiện chưa dùng) | `app/core/services/socket/socket_service.dart` |
+| Kích thước UI | `.w` / `.h` / `.r` | §7 |
+| Màu, font | `ResColors()` / `ResTextStyles()` | §8 |
+
+---
+
+## 1. Provider / State (Riverpod)
+
+**Khái niệm:**
+- **Provider** = chỗ giữ một giá trị dùng chung (state, service, API client).
+- **Notifier** = class giữ state + các hàm làm state đổi. Trong app gọi là "Controller" (vd `MenuController`).
+- **`ref`** = tay cầm để đọc/theo dõi provider khác.
 
 ### 1.1 NotifierProvider — pattern chính
 
-Codebase dùng `Notifier<State>` + `NotifierProvider` (Riverpod 3.x). **Không dùng `StateNotifier` / `StateNotifierProvider`** (legacy).
+**Vấn đề:** cần 1 nơi giữ state màn hình và logic đổi state, tách khỏi UI.
+**Cách làm:** `Notifier<State>` + `NotifierProvider` (Riverpod 3.x). **Không dùng `StateNotifier` / `StateNotifierProvider`** (legacy).
 
 ```dart
 // features/menu/provider/menu_provider.dart
@@ -23,7 +51,11 @@ final searchProvider = NotifierProvider.autoDispose<SearchController, SearchStat
 );
 ```
 
-### 1.2 Controller — Notifier<State>
+**Bẫy:** quên `.autoDispose` cho màn tạm → state cũ còn sót khi vào lại màn.
+
+### 1.2 Controller — `Notifier<State>`
+
+**Cách làm:** `build()` trả state ban đầu; các hàm async gọi repository rồi gán `state = state.copyWith(...)`.
 
 ```dart
 // features/menu/controller/menu_controller.dart
@@ -53,9 +85,12 @@ class MenuController extends Notifier<MenuState> {
 }
 ```
 
-### 1.3 State — @immutable + manual copyWith
+**Bẫy:** dùng `ref.watch` trong hàm action → rebuild/leak không mong muốn. Trong action luôn `ref.read`.
 
-State class **không dùng @freezed**. Dùng `@immutable` + viết `copyWith()` thủ công:
+### 1.3 State — `@immutable` + `copyWith` viết tay
+
+**Vấn đề:** state phải bất biến để UI biết khi nào đổi.
+**Cách làm:** **không dùng `@freezed`**. Dùng `@immutable` và viết `copyWith()` thủ công.
 
 ```dart
 // features/menu/state/menu_state.dart
@@ -96,7 +131,11 @@ class MenuState {
 }
 ```
 
-### 1.4 UI Widget — ConsumerStatefulWidget / ConsumerWidget
+**Bẫy:** `copyWith` kiểu `x ?? this.x` không thể set field về `null`. Cần reset về null thì phải xử lý riêng (chưa có mẫu thống nhất trong tài liệu cũ — kiểm tra state cụ thể).
+
+### 1.4 UI — `ConsumerStatefulWidget` / `ConsumerWidget`
+
+**Cách làm:** `ref.read(...notifier)` để gọi action; `ref.watch(provider.select(...))` để chỉ rebuild khi 1 field đổi. Gọi action đầu tiên trong `addPostFrameCallback`.
 
 ```dart
 // features/menu/menu_page.dart
@@ -134,9 +173,12 @@ class _MenuPageState extends ConsumerState<MenuPage> {
 }
 ```
 
-### 1.5 ref.listen + .select() — side effect (dialog, navigation)
+**Bẫy:** gọi `ref.read(...)` thẳng trong `initState` mà không `addPostFrameCallback` + `mounted` → có thể đổi state khi widget đang build/đã dispose.
 
-Dùng `ref.listen` trong `build()` để trigger side effect mà không rebuild widget:
+### 1.5 Side effect (dialog, chuyển màn) — `ref.listen` + `.select()`
+
+**Vấn đề:** state đổi thì cần mở dialog/chuyển màn, nhưng không muốn rebuild widget.
+**Cách làm:** `ref.listen` trong `build()`.
 
 ```dart
 // features/app_shell/app_shell_page.dart
@@ -166,19 +208,21 @@ Widget build(BuildContext context) {
 }
 ```
 
-**Quy tắc:**
-- `NotifierProvider` là pattern chính — không dùng `StateNotifierProvider` (legacy)
-- `NotifierProvider.autoDispose` cho màn hình cần giải phóng state khi pop
-- `ref.read()` trong action/callback; `ref.watch()` trong `build()`
-- `ref.watch(provider.select(...))` để tránh rebuild thừa khi chỉ cần 1 field
-- `ref.listen()` trong `build()` cho side effect — không trong `initState`
-- Không dùng `Provider` (non-Riverpod), BLoC, GetX
+### Tóm quy tắc §1
+- `NotifierProvider` là pattern chính; `NotifierProvider.autoDispose` cho màn cần giải phóng state khi pop.
+- `ref.read()` trong action/callback; `ref.watch()` trong `build()`.
+- `ref.watch(provider.select(...))` khi chỉ cần 1 field.
+- `ref.listen()` trong `build()` cho side effect — không đặt trong `initState`.
+- Không dùng `Provider` kiểu ngoài Riverpod, BLoC, GetX.
 
 ---
 
-## 2. API Client Pattern (Retrofit + Dio)
+## 2. API Client (Retrofit + Dio)
 
-### 2.1 Provider chain
+### 2.1 Chuỗi provider
+
+**Vấn đề:** controller cần gọi API nhưng không nên biết chi tiết HTTP.
+**Cách làm:** 4 lớp nối nhau bằng provider.
 
 ```
 dioProvider (Dio)
@@ -200,9 +244,9 @@ final repositoryProvider = Provider<ApiRepository>((ref) {
 });
 ```
 
-### 2.2 AppApi — @RestApi()
+### 2.2 `AppApi` — `@RestApi()`
 
-Toàn bộ API call khai báo trong 1 abstract class duy nhất:
+**Cách làm:** toàn bộ endpoint khai báo trong **1 abstract class duy nhất**. `@Extra` điều khiển hành vi interceptor.
 
 ```dart
 // data/api/app_api.dart
@@ -238,9 +282,7 @@ abstract class AppApi {
 }
 ```
 
-### 2.3 ApiRepository — wrapper cho controller
-
-Controller không gọi `AppApi` trực tiếp, luôn qua `ApiRepository`:
+### 2.3 `ApiRepository` — lớp bọc cho controller
 
 ```dart
 // data/repositories/repository.dart
@@ -262,9 +304,11 @@ class ApiRepository {
 await ref.read(repositoryProvider).getCategories();
 ```
 
-### 2.4 Dio Interceptors
+### 2.4 Dio interceptors
 
-**AppInterceptor** (auth + loading + 401; rút gọn — bản thật còn log `kDebugMode`, bỏ qua `CancelToken.isCancel`, và `onResponse` tắt loading):
+Interceptor = bộ chặn chạy trước mỗi request / sau mỗi response / khi lỗi.
+
+**`AppInterceptor`** — gắn token, bật/tắt loading, xử lý 401. (Rút gọn: bản thật còn log `kDebugMode`, bỏ qua `CancelToken.isCancel`, và `onResponse` tắt loading.)
 
 ```dart
 // app/core/network/interceptors/app_interceptor.dart
@@ -305,7 +349,7 @@ class AppInterceptor extends Interceptor {
 }
 ```
 
-**NetworkInterceptor** (offline check):
+**`NetworkInterceptor`** — chặn request khi offline, không cần chạm server:
 
 ```dart
 class NetworkInterceptor extends Interceptor {
@@ -327,16 +371,33 @@ class NetworkInterceptor extends Interceptor {
 }
 ```
 
-**Quy tắc:**
-- Controller chỉ gọi `ref.read(repositoryProvider).methodName()` — không gọi `AppApi` trực tiếp
-- Tất cả endpoint khai báo trong `app_api.dart` — không tạo thêm `@RestApi` class
-- URL constant trong `app_endpoints.dart` — không hard-code string trong `app_api.dart`
-- `@Extra({'showLoading': true})` cho action quan trọng; `@Extra({'skipAuth': true})` cho endpoint không cần token; `@Extra({'skipShowError': true})` cho call background
-- `app_api.g.dart` là generated — không sửa tay; sau khi thêm method chạy `build_runner`
+### Bảng `@Extra`
+
+| Extra | Tác dụng | Dùng khi |
+|---|---|---|
+| `showLoading: true` | Bật loading overlay toàn app | Action quan trọng (vd `checkout`) |
+| `skipAuth: true` | Không gắn token | Endpoint public (login, đăng ký) |
+| `skipShowError: true` | Không hiện toast lỗi tự động | Call chạy nền, tự xử lý lỗi (vd `getElepayKey`) |
+
+### Thêm 1 API mới — các bước
+1. Thêm hằng số URL vào `app_endpoints.dart`.
+2. Thêm method vào `AppApi` (kèm `@Extra` nếu cần).
+3. Thêm wrapper vào `ApiRepository`.
+4. Chạy `build_runner` để sinh lại `app_api.g.dart`.
+5. Controller gọi `ref.read(repositoryProvider).xxx()`.
+
+**Bẫy:**
+- Gọi `AppApi` trực tiếp trong controller → phá quy ước.
+- Tạo thêm class `@RestApi` mới → không được, chỉ dùng `AppApi`.
+- Hard-code URL string trong `app_api.dart` → phải qua `app_endpoints.dart`.
+- Sửa tay `app_api.g.dart` → sẽ bị ghi đè.
+- Quên `skipAuth` cho endpoint public → request vẫn gắn token cũ; quên xử lý 401 → xem interceptor tự đẩy về `LoginRoute`.
 
 ---
 
-## 3. Routing Pattern (auto_route)
+## 3. Routing (auto_route)
+
+**Khái niệm:** auto_route sinh class `XxxRoute` từ page có `@RoutePage()`. Điều hướng dùng class đó, có kiểu và tham số rõ ràng.
 
 ### 3.1 Khai báo route
 
@@ -376,9 +437,9 @@ class AppRouter extends RootStackRouter {
 }
 ```
 
-### 3.2 Page annotation
+### 3.2 Thêm màn mới
 
-Mỗi page widget phải có `@RoutePage()`:
+1. Tạo page, gắn `@RoutePage()`:
 
 ```dart
 // features/cart/ui/cart_page.dart
@@ -390,11 +451,25 @@ class CartPage extends ConsumerStatefulWidget { ... }
 class ProductDetailsPage extends ConsumerWidget { ... }
 ```
 
+2. Thêm `AutoRoute(page: XxxRoute.page)` vào `app_router.dart` (trong `children` của `AppShellRoute` nếu là màn sau đăng nhập).
+3. Chạy `build_runner`.
+
+Convention: file `xxx_page.dart` → class `XxxPage` → route sinh ra `XxxRoute`.
+
 ### 3.2b Điều hướng từ push notification
 
-`push_notification/controller/` đọc `data['route']` rồi chọn route: `notification` → `NotificationDetailRoute` · `purchase-history-detail` → `PurchaseDetailRoute` · `survey-detail` → `NotificationDetailRoute` (dòng `SurveyRoute` đang comment) · `wishlist-detail` → `VoteProductRoute(wishListId)`. Trước khi push, đóng dialog/modal đang mở.
+`push_notification/controller/` đọc `data['route']` rồi chọn route:
 
-### 3.3 Navigation trong UI
+| `route` | Route mở |
+|---|---|
+| `notification` | `NotificationDetailRoute` |
+| `purchase-history-detail` | `PurchaseDetailRoute` |
+| `survey-detail` | `NotificationDetailRoute` (dòng `SurveyRoute` đang comment) |
+| `wishlist-detail` | `VoteProductRoute(wishListId)` |
+
+Trước khi push, đóng dialog/modal đang mở.
+
+### 3.3 Điều hướng trong UI
 
 ```dart
 // push — thêm route vào stack
@@ -414,19 +489,23 @@ context.router.replace(LoginRoute());
 ref.read(appRouterProvider).replaceAll([const LoginRoute()]);
 ```
 
-**Quy tắc:**
-- Luôn dùng `context.router.push(...)` — không `Navigator.push`
-- `app_router.gr.dart` là generated — không sửa tay; chỉ thêm route trong `app_router.dart`
-- Convention: file `xxx_page.dart` → annotation `@RoutePage()` → generated `XxxRoute`
-- `CustomRoute` khi cần transition tùy chỉnh; `AutoRoute` cho transition mặc định
+**Bẫy:**
+- Dùng `Navigator.push` → sai, luôn dùng `context.router`.
+- Sửa tay `app_router.gr.dart` → bị ghi đè; chỉ sửa `app_router.dart`.
+- Thêm page mới mà quên khai báo trong `app_router.dart` → không có route để push.
+- Ngoài widget (không có `context`) → dùng `ref.read(appRouterProvider)` như interceptor làm.
+- `CustomRoute` khi cần transition riêng; `AutoRoute` cho transition mặc định (Cupertino).
 
 ---
 
-## 4. Model Pattern (json_annotation)
+## 4. Model (json_annotation)
 
-> **Lưu ý quan trọng:** Codebase thực tế dùng `@JsonSerializable()` từ `json_annotation` (66 file) — **KHÔNG dùng `@freezed`** (0 file; `freezed` chỉ còn trong pubspec). `structure.md` đã sửa đồng bộ (2026-10-16).
+> **Quan trọng:** codebase thực tế dùng `@JsonSerializable()` từ `json_annotation` (66 file) — **KHÔNG dùng `@freezed`** (0 file; `freezed` chỉ còn trong pubspec). `structure.md` đã sửa đồng bộ (2026-10-16).
 
 ### 4.1 Model cơ bản
+
+**Vấn đề:** cần đổi JSON từ API thành object Dart có kiểu.
+**Cách làm:** `@JsonSerializable()` + `part 'xxx.g.dart'`; `fromJson`/`toJson` trỏ vào code sinh ra; `copyWith` viết tay.
 
 ```dart
 // data/models/categories/category_model.dart
@@ -467,9 +546,9 @@ class CategoryModel {
 }
 ```
 
-### 4.2 Custom fromJson helper
+### 4.2 Custom `fromJson` cho field kiểu lạ
 
-Khi field có kiểu dữ liệu phức tạp từ API:
+Khi API có thể trả `int`, `double` hoặc `String` cho cùng 1 field:
 
 ```dart
 // data/models/product/product_detail_model.dart
@@ -498,7 +577,9 @@ List<String>? _parseImages(dynamic value) {
 }
 ```
 
-### 4.3 Generic response wrappers
+### 4.3 Wrapper response dùng chung
+
+Mọi API trả về bọc trong `ApiResponse<T>` (có `data`, `statusCode`, `message`); danh sách phân trang bọc thêm `PaginatedResponse`.
 
 ```dart
 // data/models/ext/api_response.dart
@@ -519,21 +600,23 @@ Future<ApiResponse<List<CategoryModel>>> getCategories(...);
 Future<ApiResponse<PaginatedResponse<List<OrderModel>>>> getOrders(...);
 ```
 
-**Quy tắc:**
-- Dùng `@JsonSerializable()` + `json_annotation` — không `@freezed`
-- `@JsonKey(name: ...)` cho mọi field (ngay cả khi tên trùng) để tường minh
-- `@JsonKey(defaultValue: ...)` thay vì null check ở controller
-- Custom `fromJson` helper ở file-level khi API trả về kiểu không chuẩn
-- `.g.dart` là generated — không sửa tay; chạy `build_runner` sau mỗi thay đổi model
-- Mọi model phải có `fromJson` factory + `copyWith()` thủ công
+**Quy tắc & bẫy:**
+- Dùng `@JsonSerializable()` + `json_annotation` — không `@freezed`.
+- `@JsonKey(name: ...)` cho mọi field (kể cả khi tên trùng) để tường minh.
+- `@JsonKey(defaultValue: ...)` thay cho null check ở controller.
+- Custom `fromJson` ở mức file khi API trả kiểu không chuẩn (tránh crash `type 'String' is not a subtype of 'int'`).
+- `.g.dart` là generated — không sửa tay; chạy `build_runner` sau mỗi thay đổi model (quên → lỗi `_$XxxFromJson` không tìm thấy).
+- Mọi model có `fromJson` factory + `copyWith()` viết tay.
 
 ---
 
-## 5. Socket.IO Pattern
+## 5. Socket.IO
 
-> ⚠️ **Trạng thái 2026-10-16:** `SocketService` chưa được import/gọi ở đâu trong `lib/` (grep) — pattern bên dưới là code còn lại, không phải luồng đang chạy. Luồng đang chạy để lấy kết quả thanh toán: xem §6.3 (`OrderStatusRetryMixin`). Dùng lại socket cần xác nhận với BE/Tech Lead.
+> ⚠️ **Trạng thái 2026-10-16 (xác minh lại ở 71d89b8):** `SocketService` chưa được import/gọi ở đâu trong `lib/` — phần dưới là code còn lại, **không phải luồng đang chạy**. Luồng đang chạy để lấy kết quả thanh toán: xem §6.3 (`OrderStatusRetryMixin`). Muốn dùng lại socket → xác nhận với BE/Tech Lead trước.
 
-### 5.1 SocketService — Singleton
+**Vấn đề (khi còn dùng):** sau khi trả tiền, server báo kết quả charge qua socket; app cần chờ kết quả đó nhưng không chờ vô hạn.
+
+### 5.1 `SocketService` — singleton
 
 ```dart
 // app/core/services/socket/socket_service.dart
@@ -565,9 +648,7 @@ class SocketService {
 }
 ```
 
-### 5.2 Async wait với Completer + timeout
-
-Pattern dùng cho payment callback (chờ kết quả charge từ server qua socket):
+### 5.2 Chờ kết quả bằng `Completer` + timeout
 
 ```dart
 Future<Map<String, dynamic>?> waitForChargeResult(
@@ -599,18 +680,20 @@ Future<Map<String, dynamic>?> waitForChargeResult(
 }
 ```
 
-**Quy tắc:**
-- `SocketService` là singleton Dart — không expose qua Riverpod provider riêng
-- `SOCKET_URL` phải lấy từ `dotenv.env` — không hard-code
-- Guard `_socket?.connected == true` trước khi gọi `connect()` — tránh duplicate
-- Dùng `Completer` cho async wait event; luôn có timeout để không block vô hạn
-- `socket.off(event)` bắt buộc khi ngừng lắng nghe để tránh memory leak
+**Quy tắc & bẫy:**
+- `SocketService` là singleton Dart — không expose qua provider Riverpod riêng.
+- `SOCKET_URL` lấy từ `dotenv.env` — không hard-code.
+- Guard `_socket?.connected == true` trước `connect()` — tránh kết nối trùng.
+- `Completer` luôn đi kèm timeout để không block vô hạn.
+- `socket.off(event)` bắt buộc khi ngừng lắng nghe, nếu không rò rỉ bộ nhớ.
 
 ---
 
-## 6. Elepay Payment Pattern
+## 6. Thanh toán Elepay
 
-### 6.1 Init SDK (lazy, một lần duy nhất)
+**Khái niệm:** elepay là cổng thanh toán (Alipay, WeChat Pay, thẻ). App không tự xử lý thẻ: BE tạo "charge" và trả `metadata`, app đưa metadata cho SDK elepay hiện UI thanh toán.
+
+### 6.1 Khởi tạo SDK (lazy, một lần)
 
 ```dart
 // app/core/services/elepay/elepay_service.dart
@@ -643,7 +726,11 @@ final elepayServiceProvider = Provider<ElepayService>((ref) => ElepayService(ref
 ref.read(elepayServiceProvider).initElepay();
 ```
 
-### 6.2 Checkout flow
+### 6.2 Luồng checkout
+
+1. Gọi BE `checkout` → nhận `payment.metadata`.
+2. Đưa metadata cho `ElepayFlutter.handleCharge` → SDK hiện UI thanh toán.
+3. Xử lý 1 trong 3 kết quả: thành công / thất bại / huỷ.
 
 ```dart
 // features/cart/controller/cart_controller.dart — checkout credit card
@@ -691,14 +778,18 @@ Future<void> checkoutCreditCard() async {
 final sdkResult = await ElepayFlutter.handleSource(jsonEncode(res.data));
 ```
 
-**Quy tắc:**
-- Key elepay lấy từ API (`/user/elepay-key`) — không hard-code trong app
-- `ElepayFlutter.handleCharge(payload)` cho thanh toán; `ElepayFlutter.handleSource(payload)` cho đăng ký card
-- Luôn xử lý 3 kết quả: `ElepayResultSucceeded`, `ElepayResultFailed`, `ElepayResultCancelled`
-- `isPaymentProcessing` state bắt buộc để block double-tap; set `false` trong `finally`
-- iOS và Android có thể trả về message khác nhau — dùng `sdkResult.reason` trên iOS, `sdkResult.message` trên Android
+**Quy tắc & bẫy:**
+- Key elepay lấy từ API (`/user/elepay-key`) — không hard-code.
+- `handleCharge(payload)` cho thanh toán; `handleSource(payload)` cho đăng ký card.
+- Luôn xử lý đủ 3 kết quả: `ElepayResultSucceeded`, `ElepayResultFailed`, `ElepayResultCancelled`.
+- `isPaymentProcessing` bắt buộc để chặn bấm đúp; luôn set `false` trong `finally`.
+- iOS và Android trả message khác nhau: iOS dùng `sdkResult.reason`, Android dùng `sdkResult.message`.
+- `initElepay` nuốt lỗi (`catch (_) {}`): nếu lấy key thất bại, SDK chưa init mà không báo gì — kiểm tra khi thanh toán không lên UI.
 
-### 6.3 Xác nhận kết quả đơn sau thanh toán — OrderStatusRetryMixin
+### 6.3 Xác nhận kết quả đơn sau thanh toán — `OrderStatusRetryMixin`
+
+**Vấn đề:** thanh toán xong (thường qua app/trình duyệt khác), app quay lại nhưng chưa chắc biết đơn đã trả hay chưa.
+**Cách làm:** khi app `resumed`, gọi lại trạng thái đơn tối đa 3 lần, cách 2 giây.
 
 ```dart
 // app/base/order_status_retry_mixin.dart — mixin cho ConsumerState + WidgetsBindingObserver
@@ -707,17 +798,21 @@ static const Duration retryInterval = Duration(seconds: 2);
 // didChangeAppLifecycleState(resumed) → _startRetry() → ref.read(cartProvider.notifier).getOrderStatus(orderId)
 ```
 
-- Page cung cấp `retryOrderId`; gọi `initRetryObserver()` / `disposeRetryObserver()`
-- `PaymentMixin` (`app/base/payment_mixin.dart`) lắng nghe `cartProvider.select(isPaymentSuccess / isPaymentFailed / isCardCreated / errorMsg)` → `SuccessRoute` / `PaymentPendingRoute` / toast
+- Page cung cấp `retryOrderId`; gọi `initRetryObserver()` / `disposeRetryObserver()`.
+- `PaymentMixin` (`app/base/payment_mixin.dart`) lắng nghe `cartProvider.select(isPaymentSuccess / isPaymentFailed / isCardCreated / errorMsg)` → chuyển `SuccessRoute` / `PaymentPendingRoute` / hiện toast.
+
+**Bẫy:** quên `disposeRetryObserver()` khi dispose page → observer còn sống, gọi API thừa.
 
 ---
 
-## 7. Sizing Convention (flutter_screenutil)
+## 7. Sizing (flutter_screenutil)
+
+**Vấn đề:** màn hình điện thoại nhiều kích cỡ; số pixel cố định sẽ lệch.
+**Cách làm:** mọi kích thước đi qua `flutter_screenutil`.
 
 ### 7.1 Responsive sizing
 
 ```dart
-// Luôn dùng .w / .h / .r — không hard-code số pixel
 Container(
   width: 135.w,             // responsive width
   height: 32.h,             // responsive height
@@ -729,7 +824,7 @@ EdgeInsets.symmetric(horizontal: 16.w)
 EdgeInsets.only(top: 12.h, bottom: 16.h)
 ```
 
-### 7.2 Spacing via extension (awesome_extensions)
+### 7.2 Khoảng cách bằng extension (awesome_extensions)
 
 ```dart
 // awesome_extensions_flutter shorthand
@@ -740,7 +835,9 @@ widget.paddingOnly(top: 12.h)
 widget.paddingHorizontal(8.w)
 ```
 
-### 7.3 Dynamic sizing theo platform
+> Ghi chú: `awesome_extensions` không nằm trong bảng package của `structure.md` — (chưa xác minh) tên package/version trong pubspec; đối chiếu `pubspec.yaml` trước khi dựa vào.
+
+### 7.3 Theo platform
 
 ```dart
 // Chiều cao safe area khác nhau iOS / Android
@@ -752,20 +849,20 @@ MediaQuery.of(context).padding.bottom == 0
 ```
 
 **Quy tắc:**
-- `.w` cho width và horizontal spacing
-- `.h` cho height và vertical spacing
-- `.r` cho border radius
-- Không hard-code số pixel bất kỳ — mọi sizing qua `flutter_screenutil`
-- `MediaQuery.of(context).padding.bottom` cho safe area (không dùng hằng số cố định)
+- `.w` cho width và khoảng cách ngang; `.h` cho height và khoảng cách dọc; `.r` cho bo góc.
+- Không hard-code số pixel — mọi sizing qua `flutter_screenutil`.
+- Safe area dùng `MediaQuery.of(context).padding.bottom`, không dùng hằng số cố định.
 
 ---
 
-## 8. Color & Typography Tokens
+## 8. Màu & chữ (design token)
 
-### 8.1 ResColors — singleton
+**Vấn đề:** màu/font rải rác trong code sẽ lệch design system.
+**Cách làm:** lấy từ 2 singleton `ResColors` và `ResTextStyles`.
+
+### 8.1 `ResColors`
 
 ```dart
-// Dùng trong widget
 Container(color: ResColors().yellow)
 Text('...', style: TextStyle(color: ResColors().textHigh))
 Border.all(color: ResColors().neutral_200)
@@ -779,31 +876,32 @@ Border.all(color: ResColors().neutral_200)
 // ResColors().neutral_200   → #D0D7DE (border default)
 ```
 
-### 8.2 ResTextStyles — singleton
+### 8.2 `ResTextStyles`
 
-Convention đặt tên: `s{size}w{weight}` — size tính bằng logical pixel, weight là font weight:
+Đặt tên: `s{size}w{weight}` (size = logical pixel, weight = font weight).
 
 ```dart
-// Dùng trực tiếp
 Text('見出し', style: ResTextStyles().s18w700)
 
 // Override 1 thuộc tính
 Text('body', style: ResTextStyles().s14w400.copyWith(
   color: ResColors().textLow,
 ))
-
-// Các style thông dụng:
-// s12w400 → caption / helper (12px / w400)
-// s14w400 → body secondary  (14px / w400)
-// s14w500 → body medium      (14px / w500)
-// s16w500 → body default     (16px / w500)
-// s18w700 → heading          (18px / w700)
-// s24w700 → title            (24px / w700)
-// Font family NotoSansJP — không đổi
 ```
 
-**Quy tắc:**
-- Không hard-code hex color — dùng `ResColors().tokenName`
-- Không hard-code `TextStyle(fontSize: ..., fontWeight: ...)` trực tiếp — dùng `ResTextStyles().sXXwYYY`
-- `.copyWith()` để override màu/decoration mà giữ nguyên font family và size
-- `ResDMTextStyles` là font DM Sans — dùng riêng cho số/code; mặc định luôn là `ResTextStyles` (Noto Sans JP)
+| Style | Dùng cho |
+|---|---|
+| `s12w400` | caption / helper |
+| `s14w400` | body secondary |
+| `s14w500` | body medium |
+| `s16w500` | body default |
+| `s18w700` | heading |
+| `s24w700` | title |
+
+Font family NotoSansJP — không đổi.
+
+**Quy tắc & bẫy:**
+- Không hard-code hex — dùng `ResColors().tokenName`.
+- Không viết `TextStyle(fontSize: ..., fontWeight: ...)` trực tiếp — dùng `ResTextStyles().sXXwYYY`.
+- `.copyWith()` để đổi màu/decoration mà giữ font family và size.
+- `ResDMTextStyles` là font DM Sans — chỉ dùng cho số/code; mặc định luôn `ResTextStyles` (Noto Sans JP).

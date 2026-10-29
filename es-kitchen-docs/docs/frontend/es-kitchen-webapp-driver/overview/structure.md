@@ -1,220 +1,242 @@
 # es-kitchen-webapp-driver — Cấu trúc Source
 
 > Nguồn = es-kitchen-webapp-driver@62b870a ngày 2026-10-16 (HEAD; working tree có sửa `vite.config.ts` chưa commit — chỉ ghi nhận). Từ lần sync trước chỉ thay đổi nhỏ: nút マニュアル ở BottomNavigation (ESKITCHEN-1867) + CI self-hosted runner.
-> Repo: `es-kitchen-webapp-driver` · Epic: **E06 Driver Web App** (mobile-first web, không native)
-> Vai trò: driver nhận đơn, quản lý delivery, báo cáo issue, xem notification — workflow linear, không dashboard phức tạp.
+> Repo: `es-kitchen-webapp-driver` · Epic: **E06 Driver Web App** (web ưu tiên điện thoại, không phải app native).
+
+**File này nói gì:** bản đồ repo E06 — app dành cho tài xế, dùng công nghệ gì, thư mục nào chứa gì, có những trang nào.
+**Đọc khi:** mới vào repo, hoặc cần biết "file này nằm ở đâu".
+**Đọc tiếp:** `patterns.md` (cách làm từng việc).
+
+> **Khác lớn nhất so với E02/E03/E04/E05:** E06 **không dùng Ant Design, không dùng Redux**. Thay bằng **shadcn/ui + Base UI + Radix** (UI), **zustand** (state), **sonner** (toast). E07 `webapp-payment` cùng nhóm stack này.
 
 ---
 
-## Tech stack
+## 1. App này làm gì
 
-| Layer | Package | Version |
+Tài xế dùng trên điện thoại để: nhận đơn, làm các bước giao hàng (kể cả chụp ảnh, quét mã vạch, ghi nhận thu tiền), báo sự cố (issue), xem thông báo. Luồng thẳng, từng bước; không có dashboard phức tạp.
+
+---
+
+## 2. Tech stack
+
+| Lớp | Package | Version |
 |---|---|---|
 | Framework | React + React DOM | 19.2.6 |
 | Build | Vite | 8.0.13 |
-| Dev port | 3006 (host: true để test qua mobile) | |
-| Language | TypeScript | 6.0.3 |
-| UI base | **shadcn/ui** + @base-ui/react + radix-ui | 1.4.1 / 1.4.3 |
-| Icons | lucide-react | 1.16.0 |
-| CSS utility | TailwindCSS + `@tailwindcss/vite` | 4.3.0 |
-| Client state | **zustand** | 5.0.13 |
-| Server state | @tanstack/react-query | 5.100.10 |
+| Dev port | 3006 (`host: true` để test qua điện thoại) | |
+| Ngôn ngữ | TypeScript | 6.0.3 |
+| UI nền | **shadcn/ui** + @base-ui/react + radix-ui | 1.4.1 / 1.4.3 |
+| Icon | lucide-react | 1.16.0 |
+| CSS | TailwindCSS + `@tailwindcss/vite` | 4.3.0 |
+| State client | **zustand** | 5.0.13 |
+| State server (dữ liệu API) | @tanstack/react-query | 5.100.10 |
 | Router | react-router-dom | 7.15.1 |
-| Forms | react-hook-form + yup | 7.76.0 / 1.7.1 |
+| Form | react-hook-form + yup | 7.76.0 / 1.7.1 |
 | HTTP | axios | 1.16.1 |
-| Cookies | js-cookie | 3.0.7 |
-| Toast | **sonner** (không react-toastify) | 2.0.7 |
-| Date | date-fns + dayjs | 4.4.0 / 1.11.20 |
-| Barcode | react-barcode-scanner | 4.0.1 |
-| Class utility | class-variance-authority · clsx · tailwind-merge | 0.7.1 / 2.1.1 / 3.6.0 |
+| Cookie | js-cookie | 3.0.7 |
+| Toast | **sonner** (không dùng react-toastify) | 2.0.7 |
+| Ngày | date-fns + dayjs | 4.4.0 / 1.11.20 |
+| Quét mã vạch | react-barcode-scanner | 4.0.1 |
+| Gộp class | class-variance-authority · clsx · tailwind-merge | 0.7.1 / 2.1.1 / 3.6.0 |
 | Theme | next-themes | 0.4.6 |
-| UI khác | react-day-picker ^10.0.1 · shadcn CLI 4.7.0 · @fontsource-variable/noto-sans-jp 5.2.10 · tw-animate-css 1.4.0 | — |
+| Khác | react-day-picker ^10.0.1 · shadcn CLI 4.7.0 · @fontsource-variable/noto-sans-jp 5.2.10 · tw-animate-css 1.4.0 | — |
 
-> **Khác biệt lớn nhất với E02/E03/E04/E05:** **KHÔNG dùng Ant Design + KHÔNG dùng Redux**. Stack shadcn/ui + Base UI + Radix + zustand — cùng nhóm với E07 webapp-payment.
+### E06 khác các web còn lại thế nào
+
+| Việc | E02–E05 (web quản trị) | E06 (và E07) |
+|---|---|---|
+| Component UI | Ant Design | shadcn/ui + Base UI + Radix (`components/ui/`) + `components/Common/` |
+| State client | Redux Toolkit | zustand (`stores/useAuthStore.ts`) |
+| Toast | `message` của AntD / react-toastify | `sonner` |
+| Icon | Phosphor (E05) | lucide-react (+ SVG import `?react`) |
+| Màn hình | Desktop, có sidebar | Điện thoại, thanh tab dưới (bottom nav) |
 
 ---
 
-## Cấu trúc thư mục
+## 3. Cây thư mục
 
 ```
 es-kitchen-webapp-driver/
 ├── src/
-│   ├── components/       ← shadcn UI + custom components
-│   ├── constants/        ← route paths, enums, configs
+│   ├── components/       ui/ (shadcn) · Common/ (wrapper dự án) · Auth/
+│   ├── constants/        route, enum, config
 │   ├── enums/
-│   ├── hooks/            ← useAuth, useSessionExpired, useTableParams, …
-│   ├── layouts/          ← AuthLayout · NonAuthLayout · AuthCenteredLayout · Header · BottomNavigation · Logo
-│   ├── lib/              ← Utility libraries
+│   ├── hooks/            useAuth, useSessionExpired, useTableParams, ...
+│   ├── layouts/          AuthLayout · NonAuthLayout · AuthCenteredLayout · Header · BottomNavigation · Logo
+│   ├── lib/              utils (cn)
 │   ├── models/
-│   ├── pages/            ← account, auth, delivery, home, issues, notifications, orders
-│   ├── routes/           ← Router + guards (RequireAuth, PublicOnly)
+│   ├── pages/            account, auth, delivery, home, issues, notifications, orders
+│   ├── routes/           Router + guards (RequireAuth, PublicOnly)
 │   ├── services/
-│   │   ├── http/         ← axios + interceptors + session-expired
-│   │   ├── query/        ← TanStack Query client (staleTime 5min, retry 1)
-│   │   └── client/       ← 9 file (api.ts + 8 service)
+│   │   ├── http/         axios + interceptor + sessionExpired
+│   │   ├── query/        TanStack Query client (staleTime 5 phút, retry 1)
+│   │   └── client/       9 file (api.ts + 8 service)
 │   ├── shared/
-│   ├── statics/          ← images, fonts
-│   ├── stores/           ← **zustand** stores (useAuthStore)
-│   ├── styles/           ← global.css (Tailwind)
-│   ├── types/
-│   ├── utils/
-│   ├── validation/
+│   ├── statics/          images, fonts, icons
+│   ├── stores/           zustand (useAuthStore)
+│   ├── styles/           global.css (Tailwind)
+│   ├── types/  utils/  validation/
 │   ├── App.tsx
 │   └── main.tsx
-│
-├── vite.config.ts
-├── tsconfig.json
-└── package.json
+├── vite.config.ts · tsconfig.json · package.json
 ```
 
----
-
-## Routes (top-level)
-
-### Public — `NonAuthLayout`
-
-`/login` · `/forgot-password` · `/verify` · `/reset-password`
-
-### Protected — `AuthLayout` (Header + BottomNavigation + Outlet)
-
-`/home` (index → redirect) · `/delivery` · `/delivery/:id` · `/orders` · `/issues` · `/issues/:id` · `/account` · `/notifications` · `/notifications/:id`
-
-> Đếm từ `src/routes/index.tsx`: **14 route** (4 public + `/reset-success` + 9 protected) — không đổi so với bản trước. `*` → `/login`. `/orders` là trang placeholder (`OrdersPage.tsx`, không có service riêng); tab マニュアル ở BottomNavigation KHÔNG trỏ `/orders` mà mở `MANUAL_URL` (PDF ES Station) tab mới (`BottomNavigation.tsx`).
-
-### `AuthCenteredLayout`
-
-`/reset-success`
+**Quy ước co-location:** trang phức tạp có thư mục con `_components/`, `constants/`, `hooks/` ngay trong thư mục trang đó. Ví dụ `pages/delivery/` có `hooks/useDeliveryDetail`. Hook dùng chung nhiều trang mới lên `src/hooks/`.
 
 ---
 
-## Pages (src/pages/)
+## 4. Dữ liệu đi từ API đến màn hình
 
-`account/` (driver profile) · `auth/` (login, forgot, verify, reset, reset-success) · `delivery/` (DeliveryPage, DeliveryDetailPage + `_components/`: DeliveryCoolDetailPage / DeliveryESDetailPage / DeliveryWarehouseDetailPage, `_es/` multi-step ES Step1–5 + `useDeliveryESStep`; `constants/list.ts`; `hooks/` useDeliveryDetail/useDeliveryList/useParkingReport/useWarehouseReceipt) · `home/` (dashboard) · `issues/` (IssuesPage, IssueReportPage; hooks `useTroubleReport`) · `notifications/` (center + detail) · `orders/`
+```
+Page (vd DeliveryPage)
+   │
+   ▼
+hook trong pages/<x>/hooks (useDeliveryList)  ── TanStack Query: cache, loading, error
+   │
+   ▼
+service (services/client/delivery.service.ts)
+   │ API.get(...)  — Requester bọc axios
+   ▼
+interceptor: gắn Bearer token; 401 → báo phiên hết hạn / clearAuthState()
+   ▼
+Backend
+```
 
-**Pattern per-page:** page phức tạp có sub-folder `_components/`, `constants/`, `hooks/` bên trong page folder (co-location).
+- **zustand chỉ giữ phiên đăng nhập** (`useAuthStore`). Dữ liệu nghiệp vụ nằm trong cache TanStack Query.
+- Không có Socket.IO: thông báo lấy bằng gọi lại (polling) qua TanStack Query.
 
 ---
 
-## Layouts (mobile-optimized)
+## 5. Routes
+
+> Đếm từ `src/routes/index.tsx`: **14 route** (4 public + `/reset-success` + 9 protected) — không đổi so với bản trước. `*` → `/login`.
+
+| Nhóm | Layout | Route |
+|---|---|---|
+| Public (bọc `PublicOnly`) | `NonAuthLayout` | `/login` · `/forgot-password` · `/verify` · `/reset-password` |
+| Protected (bọc `RequireAuth`) | `AuthCenteredLayout` | `/reset-success` |
+| Protected | `AuthLayout` (Header + Outlet + BottomNavigation) | `/home` (index → redirect) · `/delivery` · `/delivery/:id` · `/orders` · `/issues` · `/issues/:id` · `/account` · `/notifications` · `/notifications/:id` |
+
+Lưu ý:
+- `/orders` là trang **placeholder** (`OrdersPage.tsx`, không có service riêng).
+- Tab 「マニュアル」 ở BottomNavigation **không** trỏ `/orders`. Nó mở `MANUAL_URL` (PDF ES Station) ở tab mới (`BottomNavigation.tsx`).
+
+---
+
+## 6. Pages (`src/pages/`)
+
+| Thư mục | Nội dung |
+|---|---|
+| `account/` | Hồ sơ tài xế |
+| `auth/` | login, forgot, verify, reset, reset-success |
+| `delivery/` | DeliveryPage, DeliveryDetailPage; `_components/`: DeliveryCoolDetailPage / DeliveryESDetailPage / DeliveryWarehouseDetailPage; `_es/` = luồng nhiều bước ES (Step1–5) + `useDeliveryESStep`; `constants/list.ts`; `hooks/`: useDeliveryDetail, useDeliveryList, useParkingReport, useWarehouseReceipt |
+| `home/` | Trang chủ (thống kê + lịch giao) |
+| `issues/` | IssuesPage, IssueReportPage; hook `useTroubleReport` |
+| `notifications/` | Danh sách + chi tiết |
+| `orders/` | Placeholder |
+
+---
+
+## 7. Layouts (tối ưu cho điện thoại)
 
 | File | Vai trò |
 |---|---|
-| `AuthLayout.tsx` | Header + Outlet + BottomNavigation — mobile tab bar |
-| `NonAuthLayout.tsx` | Simple wrapper cho login/auth |
-| `AuthCenteredLayout.tsx` | Centered layout cho reset success |
-| `Header.tsx` | Top nav bar (logo + back + user) |
-| `BottomNavigation.tsx` | Bottom tab (mimick mobile UX) |
-| `Logo.tsx` | Logo component |
+| `AuthLayout.tsx` | Header + Outlet + BottomNavigation (thanh tab dưới) |
+| `NonAuthLayout.tsx` | Khung đơn giản cho login/auth |
+| `AuthCenteredLayout.tsx` | Khung giữa màn hình (reset thành công, không có thanh tab) |
+| `Header.tsx` | Thanh trên (logo + nút back + user) |
+| `BottomNavigation.tsx` | Thanh tab dưới giống app điện thoại |
+| `Logo.tsx` | Logo |
 
-**Viewport constraints:** `max-w-3xl` (768px), `dvh` unit cho dynamic viewport height.
+Viewport: `max-w-3xl` (768px), đơn vị `dvh` (chiều cao khung nhìn động, tránh lỗi thanh địa chỉ trình duyệt điện thoại).
 
 ---
 
-## Store — zustand (KHÔNG Redux)
+## 8. Store — zustand (không Redux)
 
 `src/stores/useAuthStore.ts`:
-
-- State: `accessToken`, `refreshToken`, `user`, `status` (`LOADING | UNAUTHENTICATED | AUTHENTICATED`)
-- Actions: `setAuthTokens`, `setCurrentUser`, `clearAuthState`, `syncAuthStateFromCookies`
-
-Không có store khác — server data đưa vào TanStack Query.
+- State: `accessToken`, `refreshToken`, `user`, `status` (`LOADING | UNAUTHENTICATED | AUTHENTICATED`).
+- Actions: `setAuthTokens`, `setCurrentUser`, `clearAuthState`, `syncAuthStateFromCookies`.
+- Không có store khác — dữ liệu server đưa vào TanStack Query.
 
 ---
 
-## API services — `src/services/`
+## 9. API services (`src/services/`)
 
-**Client (8 service + `api.ts`):**
-`auth` · `delivery` · `home` · `notification` · `receipt` · `error-report` · `trouble-report` · `file-upload` (`.service.ts`) · `api.ts` (Requester class wrapping axios)
+**Client (8 service + `api.ts`):** `auth` · `delivery` · `home` · `notification` · `receipt` · `error-report` · `trouble-report` · `file-upload` (đuôi `.service.ts`) · `api.ts` (class `Requester` bọc axios).
 
 Endpoint (grep): `/auth/*`, `/account/me`, `/home`, `/schedules`, `/delivery-list`, `/notifications` (+`/unread-count`), `/trouble-reports` (+`/targets`), `/uploads/presigned-upload-url`, `/api/error/report`.
 
-**HTTP:**
-`axios.instance.ts` · `authToken.ts` · `handleRequest.ts` · `handleResponse.ts` · `sessionExpired.ts` · `index.ts`
+**HTTP:** `axios.instance.ts` · `authToken.ts` · `handleRequest.ts` · `handleResponse.ts` · `sessionExpired.ts` · `index.ts`.
 
-**Query:**
-`queryClient.ts` — `staleTime: 5min`, `retry: 1`, `refetchOnWindowFocus: false`, mutations `retry: 0` (khác E03: E03 dùng `staleTime: 0`)
+**Query:** `queryClient.ts` — `staleTime: 5 phút`, `retry: 1`, `refetchOnWindowFocus: false`, mutation `retry: 0` (E03 dùng `staleTime: 0`, khác).
 
 ---
 
-## Custom hooks — `src/hooks/`
+## 10. Custom hooks
 
-`useAuth`, `useCan`, `useDebouncedValue`, `useInView`, `useMutationCustom`, `useSessionExpired`, `useTableParams`, `router`. Hook theo page nằm trong `pages/<x>/hooks/` (delivery, home, issues, notifications). Util riêng: `utils/geolocation.ts`, `utils/photoDraft.ts`.
-
----
-
-## Auth strategy
-
-- **Cookie-based JWT** qua `js-cookie`
-- Bearer token inject qua request interceptor
-- `AuthBootstrap` component fetch current user on mount nếu có token
-- 401/expired → `sessionExpired.ts` handle → `SessionExpiredModal` + silent logout
-- Redirect với `?redirect=<encoded-path>` giữ đích sau login
+`src/hooks/`: `useAuth`, `useCan`, `useDebouncedValue`, `useInView`, `useMutationCustom`, `useSessionExpired`, `useTableParams`, `router`.
+Hook theo trang nằm trong `pages/<x>/hooks/` (delivery, home, issues, notifications). Util riêng: `utils/geolocation.ts`, `utils/photoDraft.ts`.
 
 ---
 
-## Path aliases
+## 11. Phiên đăng nhập
 
-Từ `tsconfig.json` + `vite.config.ts`:
+- JWT lưu cookie qua `js-cookie`; request interceptor gắn Bearer token.
+- `AuthBootstrap` lấy user hiện tại khi app mở, nếu có token.
+- 401: nếu request đã mang header `Authorization` → `sessionExpired.ts` báo cho `SessionExpiredModal`; 401 khác → `clearAuthState()`.
+- Redirect kèm `?redirect=<đường-dẫn-mã-hóa>` để quay lại đúng chỗ sau đăng nhập.
 
-| Alias | Path |
+---
+
+## 12. Path alias
+
+| Alias | Trỏ tới |
 |---|---|
 | `@/*` | `src/*` |
-| `@components` `@layouts` `@pages` `@routes` `@services` `@shared` `@hooks` `@utils` `@types` `@assets` | các folder tương ứng |
+| `@components` `@layouts` `@pages` `@routes` `@services` `@shared` `@hooks` `@utils` `@types` `@assets` | thư mục tương ứng |
 
 ---
 
-## Environment variables
+## 13. Biến môi trường
 
-| Var | Purpose |
+| Biến | Dùng để |
 |---|---|
-| `VITE_API_BASE_URL` | API server URL |
-| `VITE_AUTH_URL` | Authentication service URL |
+| `VITE_API_BASE_URL` | URL API |
+| `VITE_AUTH_URL` | URL dịch vụ xác thực |
 
 ---
 
-## Bootstrap — `src/main.tsx` + `App.tsx`
+## 14. Khởi động app
 
 ```
-main.tsx:
-  createRoot → StrictMode → QueryClientProvider → App
+main.tsx:  createRoot → StrictMode → QueryClientProvider → App
 
-App.tsx:
-  Fixed viewport container (max-w-3xl, mobile-optimized)
-  ├── <AuthBootstrap /> — fetch current user
+App.tsx:   khung cố định (max-w-3xl, tối ưu điện thoại)
+  ├── <AuthBootstrap />        lấy user hiện tại
   ├── <RouterProvider router={router} />
   ├── <SessionExpiredModal />
-  └── <Toaster /> — Sonner (top-center)
+  └── <Toaster />              Sonner, position="top-center"
 ```
 
-**Không Redux Provider · Không AntdProvider · Không ToastContainer (react-toastify).**
+Không có Redux Provider, AntdProvider, ToastContainer (react-toastify).
 
 ---
 
-## Styling
+## 15. Giao diện
 
-- **TailwindCSS 4.3** — `@tailwindcss/vite` (JIT) + `@tailwindcss/postcss`
-- **shadcn/ui + Radix + Base UI** primitives — không AntD
-- `tailwind-merge` + `class-variance-authority` cho class merging
-- `prettier-plugin-tailwindcss` để format
-- `tw-animate-css` cho animation utility
-- Global CSS: `src/styles/global.css`
+- TailwindCSS 4.3 — `@tailwindcss/vite` (JIT) + `@tailwindcss/postcss`.
+- shadcn/ui + Radix + Base UI — không có AntD.
+- `tailwind-merge` + `class-variance-authority` để gộp class; `prettier-plugin-tailwindcss` để format; `tw-animate-css` cho animation.
+- CSS toàn cục: `src/styles/global.css`.
+- **Màu chủ đạo (E06):** xanh dương `#0969DA` = `colors.semantics.company.500` (cùng token với E03) — theo doc cũ + `design_rule.md`. `src/index.css` dùng biến CSS của shadcn (chưa đối chiếu hex trong lượt sync này).
 
-**Theme màu (E06):** primary blue `#0969DA` = `colors.semantics.company.500` (**cùng token với E03**) — theo doc cũ + `design_rule.md`; `src/index.css` dùng biến CSS shadcn (chưa đối chiếu hex trong lượt sync này). Toaster Sonner: `position="top-center"`.
-
----
-
-## Vite config
-
-- Port 3006
-- `host: true` — expose ra LAN để test qua mobile browser
-- `@tailwindcss/vite` plugin (không dùng PostCSS chain)
+**Vite:** port 3006; `host: true` mở ra mạng LAN để test bằng điện thoại; dùng plugin `@tailwindcss/vite` (không đi qua chuỗi PostCSS).
 
 ---
 
-## Không có
+## 16. Không có
 
-- ❌ Ant Design
-- ❌ Redux Toolkit
-- ❌ react-toastify (dùng Sonner)
-- ❌ Socket.IO — notification qua polling TanStack Query
-- ❌ PWA manifest — không phải standalone app
+- Ant Design · Redux Toolkit · react-toastify (dùng Sonner).
+- Socket.IO — thông báo qua polling TanStack Query.
+- PWA manifest — không phải app độc lập.
