@@ -1,13 +1,48 @@
 # es-kitchen-payment-app — Cấu trúc Source
 
 > **Nguồn:** es-kitchen-payment-app@71d89b8 (develop, commit cuối 2026-10-13) — đồng bộ ngày 2026-10-16.
->
-> Repo: `es-kitchen-payment-app` · Epic: **E01 User Mobile App** (Flutter/Dart — iOS + Android)
-> Vai trò: end user đặt hàng, xem menu, quản lý order, payment (elepay), notification (FCM), scan QR — flow tương tự E07 nhưng native mobile.
+
+**File này nói gì:** bản đồ của app mobile E01 (User Mobile App, Flutter, iOS + Android): có những phần nào, nằm ở thư mục nào, dữ liệu chảy qua những lớp nào.
+**Đọc khi:** mới vào dự án, hoặc cần biết "code của X nằm ở đâu". Muốn biết "làm X thì làm thế nào" → sang `patterns.md`.
+
+App dành cho người dùng cuối: xem menu, đặt hàng, quản lý đơn, thanh toán (elepay), nhận thông báo (FCM), quét QR. Flow tương tự E07 nhưng là native mobile.
 
 ---
 
-## Tech stack
+## 1. Bức tranh tổng thể
+
+App chia 3 khối chính trong `lib/`. Lý do: tách "hạ tầng dùng chung" khỏi "dữ liệu" khỏi "màn hình", để sửa màn không làm hỏng phần gọi API.
+
+| Khối | Thư mục | Chứa gì | Ví dụ |
+|---|---|---|---|
+| Hạ tầng dùng chung | `lib/app/` | Router, network, service (FCM, elepay…), widget dùng chung | `AppInterceptor`, `ElepayService` |
+| Dữ liệu | `lib/data/` | Khai báo API, model, repository | `AppApi`, `CategoryModel`, `ApiRepository` |
+| Tính năng (màn hình) | `lib/features/` | Mỗi tính năng 1 thư mục tự chứa | `cart/`, `menu/`, `product_details/` |
+
+### Dữ liệu đi từ API đến màn hình
+
+```
+Server (REST)
+   │  Dio (+ AppInterceptor, NetworkInterceptor)
+   ▼
+AppApi (Retrofit)            ← lib/data/api/app_api.dart
+   ▼
+ApiRepository                ← lib/data/repositories/repository.dart
+   ▼
+Controller (Notifier)        ← lib/features/<module>/controller/
+   ▼  state = state.copyWith(...)
+State (class bất biến)       ← lib/features/<module>/state/
+   ▼  ref.watch(...)
+Page / Widget (UI)           ← lib/features/<module>/ui/ hoặc *_page.dart
+```
+
+Ví dụ thật: màn Menu → `MenuPage` gọi `menuProvider.notifier.fetchCategories()` → `MenuController` gọi `repositoryProvider` → `AppApi.getCategories()` → trả `ApiResponse<List<CategoryModel>>` → controller cập nhật `MenuState` → `MenuPage` rebuild.
+
+---
+
+## 2. Tech stack
+
+Mỗi dòng: package làm gì + version đang pin.
 
 | Layer | Package | Version |
 |---|---|---|
@@ -31,9 +66,19 @@
 | Network check | internet_connection_checker | ^1.0.0+1 |
 | Other | url_launcher · rxdart · device_info_plus · package_info_plus · vibration · app_links | 6.3.2 / 0.28.0 / 12.3.0 / 9.0.0 / 3.1.8 / 7.0.0 |
 
+Giải thích nhanh các khái niệm hay gặp:
+
+- **Riverpod (hooks_riverpod):** thư viện quản lý state. "Provider" là chỗ giữ một giá trị/đối tượng để nhiều màn dùng chung.
+- **Notifier:** class giữ state và có các hàm thay đổi state (vd `CartController`).
+- **Retrofit:** khai báo API bằng annotation (`@GET`, `@POST`), codegen sinh code gọi HTTP chạy trên Dio.
+- **Dio:** thư viện HTTP; có "interceptor" = bộ chặn request/response để gắn token, bật loading, bắt lỗi.
+- **auto_route:** khai báo route bằng annotation `@RoutePage()`, codegen sinh class `XxxRoute`.
+- **json_serializable:** codegen `fromJson/toJson` cho model. Dự án dùng cái này, **không dùng freezed** (xem mục 7).
+- **flavor:** 3 bản build (development / staging / production).
+
 ---
 
-## Cấu trúc thư mục
+## 3. Cấu trúc thư mục
 
 ```
 es-kitchen-payment-app/
@@ -112,62 +157,63 @@ es-kitchen-payment-app/
 
 ---
 
-## Feature modules (`lib/features/`) — 25 module + `widgets/`
+## 4. Feature modules (`lib/features/`)
 
-`app_shell`, `auth`, `basic_information`, `bottom_bar`, `cart`, `favorite`, `maintenance`, `menu`, `notification`, `notification_detail`, `payment_registration`, `policy`, `preview_guide`, `product_details`, `purchase_history`, `refund`, `review_history`, `scan_code`, `scan_qr`, `search`, `setting_allergy`, `splash`, `start`, `usage_guide`, `user`, `widgets`
+25 module + `widgets/`: `app_shell`, `auth`, `basic_information`, `bottom_bar`, `cart`, `favorite`, `maintenance`, `menu`, `notification`, `notification_detail`, `payment_registration`, `policy`, `preview_guide`, `product_details`, `purchase_history`, `refund`, `review_history`, `scan_code`, `scan_qr`, `search`, `setting_allergy`, `splash`, `start`, `usage_guide`, `user`, `widgets`.
 
-Module nhiều layer dùng cấu trúc con `controller/ provider/ state/ ui/ widgets/` (cart, product_details, purchase_history, notification_detail, maintenance…); module đơn giản chỉ có 1 file page (`scan_qr`, `policy`…). `maintenance/` không có `@RoutePage` — `MaintenanceBlocker` được gắn trong `app/app.dart`.
-
-**Convention:** mỗi feature là folder tự chứa — screen(s) + provider(s) + widget(s) private tới feature. Widgets dùng chung → `lib/app/widgets/` hoặc `lib/features/widgets/`.
-
----
-
-## Providers / State — Riverpod 3
-
-Providers phân tán theo domain, không tập trung một file:
-
-- `lib/app/core/network/provider/` — `network_provider.dart`, `dio_provider.dart`
-- `lib/features/<module>/{controller,provider,state}/` — Notifier + state theo module (vd `cart/provider/cart_provider.dart`)
-- `lib/app/core/services/push_notification/provider/` — `fcm_provider.dart`
-- `lib/app/core/services/elepay/` — `elepay_provider.dart`
-- `lib/app/widgets/loading_overlay/providers/` — `loading_provider.dart`
-- `lib/app/widgets/toast_overlay/provider/` — `toast_overlay_provider.dart`
-- `lib/data/repositories/provider/` — `repository_provider.dart`, `auth_repository_provider.dart`
-
-**Bootstrap override:** `sharedPrefsProvider` override trong `ProviderContainer` tại `main.dart`.
+- **Mỗi feature là 1 thư mục tự chứa:** màn hình + provider + widget riêng của feature.
+- **Module nhiều logic** chia con `controller/ provider/ state/ ui/ widgets/` (cart, product_details, purchase_history, notification_detail, maintenance…).
+- **Module đơn giản** chỉ có 1 file page (`scan_qr`, `policy`…).
+- **Ngoại lệ:** `maintenance/` không có `@RoutePage`; `MaintenanceBlocker` được gắn trong `app/app.dart` (chặn cả app khi bảo trì).
+- Widget dùng chung nhiều feature → `lib/app/widgets/` hoặc `lib/features/widgets/`.
 
 ---
 
-## API — Retrofit + Dio
+## 5. Providers / State — Riverpod 3
 
-- **`lib/data/api/app_api.dart`** — Retrofit client interface (416 dòng, ~71 method; gồm cart/stock, validate company + QR company, wishlist campaign/vote, survey, maintenance, app version)
-- **`lib/data/api/app_api.g.dart`** — Auto-generated từ codegen
-- **`lib/data/api/app_endpoints.dart`** — Endpoint path constants
+Provider nằm rải theo domain, không gom vào 1 file:
 
-**Repository pattern (DDD):**
-- `lib/data/repositories/auth_repository.dart`
-- `lib/data/repositories/repository.dart`
-- Repository wrap Retrofit calls → return typed models (freezed)
+| Vị trí | Provider |
+|---|---|
+| `lib/app/core/network/provider/` | `network_provider.dart`, `dio_provider.dart` |
+| `lib/features/<module>/{controller,provider,state}/` | Notifier + state của module (vd `cart/provider/cart_provider.dart`) |
+| `lib/app/core/services/push_notification/provider/` | `fcm_provider.dart` |
+| `lib/app/core/services/elepay/` | `elepay_provider.dart` |
+| `lib/app/widgets/loading_overlay/providers/` | `loading_provider.dart` |
+| `lib/app/widgets/toast_overlay/provider/` | `toast_overlay_provider.dart` |
+| `lib/data/repositories/provider/` | `repository_provider.dart`, `auth_repository_provider.dart` |
 
----
-
-## Models — json_serializable
-
-`lib/data/models/` — 19 folders theo domain:
-
-`app/` · `auth/` · `cart/` · `categories/` · `company/` · `device/` · `ext/` · `favorite/` · `feedback/` · `notification/` · `order/` · `payment/` · `product/` · `purchase/` · `review/` · `survey/` · `term/` · `toast/` · `user/`
-
-**Pattern:** 66 file annotate `@JsonSerializable()` → generate `.g.dart`. **0 file dùng `@freezed`** (bản docs cũ ghi freezed là sai). Không sửa tay generated file. Xem `patterns.md` §4.
+**Bootstrap override:** `sharedPrefsProvider` được override trong `ProviderContainer` tại `main.dart` (vì `SharedPreferences` phải khởi tạo async trước khi app chạy).
 
 ---
 
-## Routing — auto_route
+## 6. API — Retrofit + Dio
 
-- `lib/app/routers/app_router.dart` — 114 lines, define route tree
-- `lib/app/routers/app_router.gr.dart` — Generated
-- **35 `@RoutePage`** (đếm bằng grep trên `lib/`): 10 route gốc (Splash, Start, Login, ForgotPasswordEmail, ForgotPasswordOTP, Register, RegisterOTP, ScanQR, Success, Policy) + `AppShellRoute` với ~25 route con
+- **`lib/data/api/app_api.dart`** — Retrofit client interface, 416 dòng, ~71 method (gồm cart/stock, validate company + QR company, wishlist campaign/vote, survey, maintenance, app version).
+- **`lib/data/api/app_api.g.dart`** — generated, không sửa tay.
+- **`lib/data/api/app_endpoints.dart`** — hằng số đường dẫn endpoint.
+- **Repository:** `lib/data/repositories/auth_repository.dart` và `repository.dart` — bọc các call Retrofit, trả về model có kiểu. Controller gọi repository, không gọi `AppApi` trực tiếp.
 
-**Route tree:**
+---
+
+## 7. Models — json_serializable
+
+`lib/data/models/` có 19 thư mục theo domain: `app/` · `auth/` · `cart/` · `categories/` · `company/` · `device/` · `ext/` · `favorite/` · `feedback/` · `notification/` · `order/` · `payment/` · `product/` · `purchase/` · `review/` · `survey/` · `term/` · `toast/` · `user/`.
+
+- 66 file annotate `@JsonSerializable()` → sinh `.g.dart`.
+- **0 file dùng `@freezed`** (bản docs cũ ghi freezed là sai). `freezed` chỉ còn khai báo trong pubspec.
+- Không sửa tay file generated. Chi tiết → `patterns.md` §4.
+
+---
+
+## 8. Routing — auto_route
+
+- `lib/app/routers/app_router.dart` — 114 dòng, định nghĩa cây route.
+- `lib/app/routers/app_router.gr.dart` — generated.
+- **35 `@RoutePage`** (đếm bằng grep trên `lib/`): 10 route gốc (Splash, Start, Login, ForgotPasswordEmail, ForgotPasswordOTP, Register, RegisterOTP, ScanQR, Success, Policy) + `AppShellRoute` với ~25 route con.
+- Transition: Cupertino mặc định; slide/zoom cho splash/start/login.
+
+**Cây route** (người dùng đi từ trên xuống: mở app → màn bắt đầu/đăng nhập → khu vực đã đăng nhập):
 
 ```
 SplashRoute (initial, zoomIn) → StartRoute → LoginRoute · ForgotPassword* · Register* · ScanQR · Success · Policy
@@ -179,11 +225,19 @@ SplashRoute (initial, zoomIn) → StartRoute → LoginRoute · ForgotPassword* �
   → RedirectRoute('*' → '/')
 ```
 
-**Transitions:** Cupertino navigation, slide/zoom animation cho splash/start/login.
+`AppShellRoute` là "khung" của khu vực đã đăng nhập; các route con hiển thị bên trong nó.
 
 ---
 
-## Bootstrap — `main.dart`
+## 9. Bootstrap — `main.dart`
+
+Thứ tự khởi động (quan trọng vì cái sau phụ thuộc cái trước):
+
+1. Nạp `.env` (`dotenv.load`).
+2. Dọn cache cũ (`FunctionExt.clearCacheOnStartup`).
+3. Lấy `SharedPreferences`, tạo `ProviderContainer` và override `sharedPrefsProvider`.
+4. Khởi tạo FCM (`init`, `requestPermission`), đọc `fcmControllerProvider`, khởi tạo `deepLinkServiceProvider`.
+5. Khoá màn hình dọc, `runApp` với `UncontrolledProviderScope`.
 
 ```dart
 void main() => mainCommon(AppFlavor.production);   // flavor/main_*.dart gọi mainCommon(AppFlavor.x)
@@ -209,13 +263,17 @@ void mainCommon(AppFlavor flavor) async {
 }
 ```
 
-**Flavor entry:** `lib/flavor/main_development.dart` · `main_staging.dart` · `main_production.dart` — mỗi flavor gọi `mainCommon(AppFlavor.<x>)`. `AppFlavor.envFileName` map `.env` / `.env.stg` / `.env.prod`, nhưng `main.dart` hiện vẫn `dotenv.load(fileName: ".env")` cố định (chưa dùng `envFileName`).
+**Flavor entry:** `lib/flavor/main_development.dart` · `main_staging.dart` · `main_production.dart` — mỗi file gọi `mainCommon(AppFlavor.<x>)`.
+
+> Bẫy: `AppFlavor.envFileName` map `.env` / `.env.stg` / `.env.prod`, nhưng `main.dart` hiện vẫn `dotenv.load(fileName: ".env")` cố định (chưa dùng `envFileName`). Đổi flavor không tự đổi file env.
 
 ---
 
-## Env — flutter_dotenv
+## 10. Env — flutter_dotenv
 
-File `.env` (khai báo trong `pubspec.yaml` assets; không đọc giá trị theo policy). Code trong `lib/` **chỉ tham chiếu `BASE_URL` và `SOCKET_URL`** qua `dotenv.env[...]`; các key còn lại là cấu hình build/CI, **chưa verify được** từ code:
+File `.env` khai báo trong `pubspec.yaml` assets. Theo policy, tài liệu này không ghi giá trị.
+
+Code trong `lib/` **chỉ tham chiếu `BASE_URL` và `SOCKET_URL`** qua `dotenv.env[...]`. Các key còn lại là cấu hình build/CI, **chưa verify được** từ code:
 
 | Key | Purpose |
 |---|---|
@@ -234,83 +292,80 @@ File `.env` (khai báo trong `pubspec.yaml` assets; không đọc giá trị the
 
 ---
 
-## Firebase
+## 11. Firebase & push notification
 
 - **Project:** `eskitchen-testing-d2760`
-- **Config files:**
-  - `android/app/google-services.json`
-  - `ios/Runner/GoogleService-Info.plist`
-  - `macos/Runner/GoogleService-Info.plist`
-- **Services:** FCM (push notification) + Crashlytics
-- **FCM integration:** `lib/app/core/services/push_notification/`
+- **Config files:** `android/app/google-services.json` · `ios/Runner/GoogleService-Info.plist` · `macos/Runner/GoogleService-Info.plist` (không đọc nội dung các file này).
+- **Services:** FCM (push) + Crashlytics.
+- **Code FCM** trong `lib/app/core/services/push_notification/`:
   - `fcm_service.dart` — service
   - `fcm_provider.dart` — Riverpod provider
   - `fcm_controller.dart` — state notifier
   - `fcm_state.dart` — state model
   - `fcm_degate.dart` — DeployGate integration
-- **Điều hướng từ push** (field `route`): `notification` → NotificationDetail · `purchase-history-detail` → PurchaseDetail · `survey-detail` → NotificationDetail (route Survey đang comment) · `wishlist-detail` → VoteProduct
+- **Bấm vào push thì đi đâu** (đọc field `route` trong payload):
+
+| `route` | Màn mở |
+|---|---|
+| `notification` | NotificationDetail |
+| `purchase-history-detail` | PurchaseDetail |
+| `survey-detail` | NotificationDetail (route Survey đang bị comment) |
+| `wishlist-detail` | VoteProduct |
 
 ---
 
-## Payment — elepay_flutter
+## 12. Payment — elepay_flutter
 
-- `lib/app/core/services/elepay/`
-  - `elepay_provider.dart`
-  - `elepay_service.dart`
-- Package: `elepay_flutter 3.5.2`
-- Tích hợp với order flow + `payment_registration` feature
-- **Không tích hợp Stripe/PayPal** — chỉ elepay (Alipay + WeChat Pay + card qua elepay)
-
----
-
-## Socket.IO — real-time payment result
-
-- `lib/app/core/services/socket/socket_service.dart` — singleton
-- **Events:** `charge.succeeded`, `charge.failed`
-- **Timeout:** `SocketConfig.chargeResultTimeout` = 60s
-- **Config:** `lib/app/configs/socket_config.dart`
-
-> ⚠️ **Hiện không có nơi nào import `SocketService`** (grep toàn `lib/`) — code còn nhưng chưa dùng. Kết quả thanh toán hiện lấy bằng `OrderStatusRetryMixin` (`lib/app/base/order_status_retry_mixin.dart`): khi app `resumed` sau elepay → gọi `cartProvider.getOrderStatus` tối đa 3 lần, cách 2s; `PaymentMixin` điều hướng `SuccessRoute` / `PaymentPendingRoute`.
+- Code: `lib/app/core/services/elepay/` (`elepay_provider.dart`, `elepay_service.dart`).
+- Package: `elepay_flutter 3.5.2`.
+- Dùng trong luồng đặt hàng (feature `cart`) và `payment_registration`.
+- **Chỉ elepay** (Alipay + WeChat Pay + card qua elepay). Không tích hợp Stripe/PayPal.
+- Cách gọi chi tiết → `patterns.md` §6.
 
 ---
 
-## Platform config
+## 13. Socket.IO — hiện chưa dùng
 
-### Android
+- `lib/app/core/services/socket/socket_service.dart` — singleton.
+- Event: `charge.succeeded`, `charge.failed`. Timeout: `SocketConfig.chargeResultTimeout` = 60s. Config: `lib/app/configs/socket_config.dart`.
 
-- `android/app/google-services.json` — Firebase
-- `android/app/build.gradle.kts` — Kotlin build script
-- **Package name:** đọc từ `BUNDLE_ANDROID_ID` env
-
-### iOS
-
-- `ios/Runner/GoogleService-Info.plist` — Firebase
-- `ios/Runner.xcworkspace/` — CocoaPods managed
-- `ios/Podfile` — Firebase pods
-- **Bundle ID:** `BUNDLE_IOS_ID` env
-
-### Orientation
-
-`SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])` — chỉ portrait, không landscape.
+> ⚠️ **Hiện không có nơi nào import `SocketService`** (grep toàn `lib/`, xác minh lại 71d89b8) — code còn nhưng chưa chạy.
+> Kết quả thanh toán hiện lấy bằng `OrderStatusRetryMixin` (`lib/app/base/order_status_retry_mixin.dart`): khi app `resumed` sau elepay → gọi `cartProvider.getOrderStatus` tối đa 3 lần, cách 2s. `PaymentMixin` điều hướng `SuccessRoute` / `PaymentPendingRoute`.
 
 ---
 
-## Assets
+## 14. Platform config
 
-- `assets/images/` — 66 file (product photo, UI asset)
-- `assets/icons/` — 48 file + `allergens/` sub-folder (allergen SVG)
+| | Android | iOS |
+|---|---|---|
+| Firebase | `android/app/google-services.json` | `ios/Runner/GoogleService-Info.plist` |
+| Build | `android/app/build.gradle.kts` (Kotlin) | `ios/Runner.xcworkspace/` (CocoaPods), `ios/Podfile` (Firebase pods) |
+| ID app | đọc từ `BUNDLE_ANDROID_ID` | `BUNDLE_IOS_ID` |
+
+**Orientation:** `SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])` — chỉ portrait.
+
+---
+
+## 15. Assets
+
+- `assets/images/` — 66 file (ảnh sản phẩm, UI)
+- `assets/icons/` — 48 file + `allergens/` (SVG dị ứng)
 - `assets/fonts/` — NotoSansJP (6 weights) + DMSans (7 files)
 - `assets/gifs/` — 2 gif
-- Access qua `flutter_gen` — `lib/gen/assets.gen.dart`
+- Truy cập qua `flutter_gen`: `lib/gen/assets.gen.dart`.
 
 ---
 
-## Version convention
+## 16. Version convention
 
-- **Current:** `pubspec.yaml` version `0.1.1+9` (đối chiếu 2026-10-16) — build 9, format STG (`0.1.X`)
-- **Rule:**
-  - **DEV:** `0.0.<build>`
-  - **STG:** `0.1.<build>`
-  - **PROD:** `1.0.<build>`
-- Không đảo ngược, không skip STG → PROD.
-- Flavor entry points có sẵn — nhưng version quản lý tập trung qua `pubspec.yaml`.
+- **Hiện tại:** `pubspec.yaml` version `0.1.1+9` (đối chiếu 2026-10-16) — build 9, format STG (`0.1.X`).
+- **Quy tắc:**
+
+| Môi trường | Version |
+|---|---|
+| DEV | `0.0.<build>` |
+| STG | `0.1.<build>` |
+| PROD | `1.0.<build>` |
+
+- Không đảo ngược, không bỏ qua STG để lên thẳng PROD.
+- Flavor entry point có sẵn, nhưng version quản lý tập trung qua `pubspec.yaml`.

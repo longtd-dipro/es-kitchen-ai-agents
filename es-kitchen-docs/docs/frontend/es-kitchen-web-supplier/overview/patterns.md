@@ -1,46 +1,63 @@
 # es-kitchen-web-supplier — Patterns & Conventions
 
-> Nguồn = `es-kitchen-web-supplier@57c8179` ngày 2026-10-16 (+ file untracked `pages/profile`, `profile.service.ts`, `models/profile.ts` — chưa merge).
+> Nguồn = `es-kitchen-web-supplier@57c8179` ngày 2026-10-16 (+ file untracked `pages/profile`, `profile.service.ts`, `models/profile.ts` — chưa merge). Xác minh lại: `hooks/useMutationCustom.ts` (dùng `message` của `antd`), `hooks/useUnsavedChangesGuard.tsx`, `services/query/queryClient.ts`.
 
-> Repo này được scaffold từ cùng template với `es-kitchen-web-admin` — **dependencies giống hệt** (cùng version React 19.2, Vite, RTK 2.12, TanStack Query 5.10, Ant Design 6.4, react-hook-form 7.76, yup 1.7).
->
-> **Pattern chính → tham chiếu `frontend/es-kitchen-web-admin/overview/patterns.md`** (single source of truth). File này chỉ note những điểm **khác biệt** hoặc **ràng buộc riêng** của repo Supplier.
+**File này nói gì:** những điểm **riêng** của E04 Supplier so với web-admin: endpoint không có prefix, đăng nhập/quên mật khẩu nhiều bước, toast dùng `message` của AntD, dữ liệu giả cho shipping, cache 5 phút.
+**Đọc khi nào:** trước khi viết code React mới cho E04.
+
+Repo này scaffold từ cùng template với `es-kitchen-web-admin` — dependencies cùng họ (React 19.2, RTK 2.12, TanStack Query 5.10x, AntD 6.4, react-hook-form 7.76, yup 1.7). **Pattern chính → đọc `frontend/es-kitchen-web-admin/overview/patterns.md`** (nguồn chuẩn). File này chỉ ghi chỗ khác.
 
 ---
 
-## Stack reference
+## 0. Tình huống → cách xử lý → file mẫu
+
+| Tình huống | Cách xử lý | File mẫu |
+|---|---|---|
+| Thêm API | Hàm export trong `services/client/<x>.service.ts`, **không** prefix `/supplier/` | `order.service.ts` |
+| BE chưa xong | `USE_FAKE_DATA = true` + file `.fake.ts` | `shipping.service.ts` |
+| Mutation + toast | `useMutationCustom` (toast qua `message` của antd) | `hooks/useMutationCustom.ts` |
+| Trang danh sách | `useTableParams({ keyExtraParams })` | `pages/orders/OrdersPage.tsx` |
+| Chặn rời trang khi form dirty | `useUnsavedChangesGuard({ when: isDirty })` | trang có form edit |
+| Quên mật khẩu 4 bước | Truyền dữ liệu qua URL params | `pages/auth/*` |
+| Phiên hết hạn | Đã xử lý trong interceptor + `SessionExpiredModal` | `services/http/sessionExpired.ts` |
+| Form điều kiện | yup `.when()` | `orderSchema`, `shippingSchema` |
+
+---
+
+## 1. Stack tham chiếu
 
 | Layer | Library | Version | Pattern doc |
 |---|---|---|---|
-| HTTP client | Axios | 1.16 | [web-admin patterns — HTTP Client](../../es-kitchen-web-admin/overview/patterns.md#http-client-pattern) |
-| Server state | TanStack Query | 5.10 | [web-admin patterns — TanStack Query](../../es-kitchen-web-admin/overview/patterns.md#tanstack-query-pattern-v5) |
-| Client state | Redux Toolkit | 2.12 | [web-admin patterns — Redux Toolkit](../../es-kitchen-web-admin/overview/patterns.md#redux-toolkit-pattern-v2) |
-| Routing | react-router-dom | 7.15 | [web-admin patterns — Routing](../../es-kitchen-web-admin/overview/patterns.md#routing-pattern) |
-| Forms | react-hook-form + yup | 7.76 / 1.7 | [web-admin patterns — Form](../../es-kitchen-web-admin/overview/patterns.md) — section "Form Pattern" |
-| UI | Ant Design + TailwindCSS | 6.4 / 4.3 | [web-admin patterns — Ant Design v6](../../es-kitchen-web-admin/overview/patterns.md) — section "Ant Design v6" |
-| Auth tokens | js-cookie | 3.0 | Cookie storage (KHÔNG localStorage) |
+| HTTP client | Axios | 1.16 | [web-admin — HTTP client](../../es-kitchen-web-admin/overview/patterns.md#1-http-client) |
+| Server state | TanStack Query | 5.10 | [web-admin — TanStack Query](../../es-kitchen-web-admin/overview/patterns.md#3-tanstack-query-v5) |
+| Client state | Redux Toolkit | 2.12 | [web-admin patterns](../../es-kitchen-web-admin/overview/patterns.md) — mục 9 "Redux Toolkit v2" |
+| Routing | react-router-dom | 7.15 | [web-admin — Routing](../../es-kitchen-web-admin/overview/patterns.md#11-routing) |
+| Forms | react-hook-form + yup | 7.76 / 1.7 | [web-admin patterns](../../es-kitchen-web-admin/overview/patterns.md) — mục 15 "Form" |
+| UI | Ant Design + TailwindCSS | 6.4 / 4.3 | [web-admin patterns](../../es-kitchen-web-admin/overview/patterns.md) — mục 16 "Ant Design v6" |
+| Auth tokens | js-cookie | 3.0 | Cookie (KHÔNG localStorage) |
 
 ---
 
-## Khác biệt với web-admin
+## 2. Khác biệt với web-admin
 
 | Khía cạnh | web-admin (E03) | web-supplier (E04) |
 |---|---|---|
-| Stage | 115 page, 52 service | 15 route path + wildcard, 10 service file (+1 untracked), 1 fake |
+| Quy mô | 115 page, 52 service | 15 route path + wildcard, 10 service file (+1 untracked), 1 fake |
 | Domain | System Admin — quản trị toàn hệ thống | Supplier — quản lý menu, nhận đơn |
 | Locale | `'Accept-Language': 'ja'` | Giống — `Accept-Language: ja` trong `services/client/api.ts` |
-| Permission model | Operation vs User accounts | Supplier account (single role) — `useCan({ roles? })` |
-| Mutation wrapper | useMutation trực tiếp | `useMutationCustom` — auto error/success toast |
-| Auth flow | Single-step login | Multi-step: login + forgot-password + verify OTP + reset |
-| `message` API | `App.useApp()` hook | `message` import trực tiếp từ `antd` (trong `useMutationCustom`) |
+| Permission model | Operation vs User accounts, `usePermissions` | Supplier account (một vai trò) — `useCan({ roles? })` |
+| Mutation wrapper | `useMutationCustom` (toast `react-toastify`) | `useMutationCustom` (toast `message` của `antd`) |
+| Auth flow | Single-step login (+ OTP login, socket session) | Nhiều bước: login + forgot-password + verify OTP + reset |
+| Hết phiên | `SessionEndedModal` (socket + 401) | `SessionExpiredModal` (401 có Authorization) |
+| Cache mặc định | `staleTime: 0`, `gcTime: 0` | `staleTime` 5 phút |
 
 ---
 
-## Ràng buộc riêng
+## 3. Endpoint — KHÔNG có prefix `/supplier/`
 
-### 1. Endpoint path — KHÔNG có prefix `/supplier/`
+**Vấn đề:** dễ đoán endpoint theo tên portal, nhưng backend không đặt prefix theo portal.
 
-Endpoint thực tế trong codebase không dùng prefix `/supplier/`. Đây là quy ước của backend:
+**Cách làm:** viết path đúng như BE: `/auth/...`, `/account/...`, `/orders/...`.
 
 ```typescript
 // ✅ Đúng — services/client/auth.service.ts
@@ -64,9 +81,15 @@ const APIs = {
 // API.get('/admin/orders', params)     // đó là E03
 ```
 
-### 2. Auth flow — multi-step forgot password
+**Bẫy:** copy URL từ web-admin (`/admin/...`) sang đây sẽ 404.
 
-Luồng khôi phục mật khẩu truyền dữ liệu qua URL search params, không dùng Redux hay session storage:
+---
+
+## 4. Đăng nhập / quên mật khẩu nhiều bước
+
+**Vấn đề:** quên mật khẩu đi qua 4 trang, mỗi trang cần dữ liệu của trang trước.
+
+**Cách làm:** truyền qua **URL search params**, không dùng Redux hay session storage.
 
 ```
 ForgotPasswordPage  →  VerifyPage          →  ResetPasswordPage  →  ResetSuccessPage
@@ -74,13 +97,19 @@ POST /auth/forgot-password/request   POST /auth/forgot-password/verify-otp   POS
 ?supplierCode=S001&email=...         ?supplierCode=...&email=...&otp=XXXX     (marks session + dispatch setAuthTokens)
 ```
 
-- `PublicOnly` guard xử lý trường hợp đặc biệt: nếu đã authenticated và đang ở `/reset-password` thì redirect sang `/reset-success` (không bị block)
-- `markResetSuccessAccess()` / `canAccessResetSuccess()` — utility guard cho trang success
-- OTP resend countdown 60 giây, lock bằng `resendLockRef` để tránh double-submit
+- `PublicOnly` có trường hợp đặc biệt: nếu đã authenticated và đang ở `/reset-password` thì redirect sang `/reset-success` (không bị chặn).
+- `markResetSuccessAccess()` / `canAccessResetSuccess()` — tiện ích bảo vệ trang success.
+- OTP gửi lại có đếm ngược 60 giây, khoá bằng `resendLockRef` để tránh bấm đôi.
 
-### 3. `useMutationCustom` — wrapper mutation tiêu chuẩn
+**Bẫy:** truy cập thẳng `/reset-success` mà không đi qua bước reset sẽ không được vào (guard bằng `canAccessResetSuccess()` — hành vi cụ thể chưa chạy thử).
 
-Mọi mutation trong E04 đều dùng `useMutationCustom` thay vì `useMutation` trực tiếp.
+---
+
+## 5. `useMutationCustom` — wrapper mutation chuẩn
+
+**Vấn đề:** mỗi mutation cần toast lỗi/thành công giống nhau.
+
+**Cách làm:** mọi mutation trong E04 dùng `useMutationCustom` thay vì `useMutation` trực tiếp. Tự toast lỗi; có `customSuccessMessage` thì toast thành công.
 
 ```typescript
 // ✅ hooks/useMutationCustom.ts — dùng ở toàn bộ page
@@ -107,11 +136,17 @@ const mutation2 = useMutationCustom({
 <Button loading={mutation.isPending}>実行</Button>
 ```
 
-**Lưu ý:** `useMutationCustom` dùng `message` import trực tiếp từ `antd` (KHÔNG qua `App.useApp()`). Đây là exception so với Ant Design v6 guidelines — chấp nhận ở E04 vì hook này chạy ngoài component tree.
+**Bẫy:**
+- Hook dùng `message` **import trực tiếp từ `antd`** (không qua `App.useApp()`); `react-toastify` chỉ dùng cho `ToastContainer`. Khác E03/E02, nơi `useMutationCustom` gọi `toast` của `react-toastify`. Đừng copy nguyên hook giữa các repo mà không kiểm.
+- Lý do giữ cách này (theo doc cũ): hook chạy ngoài component tree nên không dùng được `App.useApp()`.
 
-### 4. Fake data pattern — BE endpoint chưa ready
+---
 
-Khi BE chưa implement endpoint, service file dùng `USE_FAKE_DATA` flag kèm file `.fake.ts`:
+## 6. Dữ liệu giả khi BE chưa sẵn sàng
+
+**Vấn đề:** UI shipping cần chạy trước khi BE xong.
+
+**Cách làm:** service có cờ `USE_FAKE_DATA` kèm file `.fake.ts`.
 
 ```typescript
 // services/client/shipping.service.ts
@@ -119,14 +154,20 @@ export const USE_FAKE_DATA = true;
 // if (USE_FAKE_DATA) { return getFakeShipmentDetail(...) }  // from shipping.fake.ts
 ```
 
-- Khi BE ready: set `USE_FAKE_DATA = false`, xóa import fake, xóa file `.fake.ts`
-- Service đang dùng fake (đã kiểm 2026-10-16): chỉ `shipping.service.ts` (`USE_FAKE_DATA = true`, `shipping.fake.ts`)
-- Service gọi API thật: `auth`, `order`, `supplier`, `notice`, `file-upload`, `error-report`, `user`, `profile` (untracked)
-- `order.fake.ts` / `menu-management.service.ts` đã bị xóa
+- Khi BE xong: `USE_FAKE_DATA = false`, xoá import fake, xoá file `.fake.ts`.
+- Đang fake (đã kiểm 2026-10-16): chỉ `shipping.service.ts` (`shipping.fake.ts`).
+- Gọi API thật: `auth`, `order`, `supplier`, `notice`, `file-upload`, `error-report`, `user`, `profile` (untracked).
+- `order.fake.ts` / `menu-management.service.ts` đã bị xoá.
 
-### 5. `useTableParams` — table state đồng bộ với URL
+**Bẫy:** quên tắt cờ khi BE xong → màn vẫn hiện dữ liệu giả mà không báo lỗi.
 
-Hook quản lý toàn bộ trạng thái bảng (phân trang, sort, filter) và đồng bộ vào URL search params:
+---
+
+## 7. `useTableParams` — bảng đồng bộ với URL
+
+**Vấn đề:** lọc/sort/phân trang phải giữ được khi F5 hoặc gửi link.
+
+**Cách làm:** hook quản lý page, sort, filter và đồng bộ vào URL search params.
 
 ```typescript
 // pages/orders/OrdersPage.tsx
@@ -160,11 +201,13 @@ const onFilter = (values: FilterFormValues) => {
 />
 ```
 
-- `isNotChangeUrl: true` → local state mode, không đổi URL (dùng cho nested table)
-- `handleResetFilers(keysKeep?)` → clear filter, giữ lại một số keys nếu cần
-- Batches URL updates qua `queueMicrotask` để tránh multiple navigation
+- `isNotChangeUrl: true` → chế độ state cục bộ, không đổi URL (dùng cho bảng lồng).
+- `handleResetFilers(keysKeep?)` → xoá filter, giữ lại một số key nếu cần.
+- Hook gom các lần cập nhật URL qua `queueMicrotask` để tránh navigate nhiều lần.
 
-### 6. `useUnsavedChangesGuard` — chặn navigation khi có thay đổi chưa lưu
+---
+
+## 8. `useUnsavedChangesGuard` — chặn rời trang khi có thay đổi chưa lưu
 
 ```typescript
 // Dùng ở các page có form edit
@@ -185,29 +228,34 @@ return (
 allowNextNavigation(() => navigate(ROUTE.ORDERS));
 ```
 
-- Dùng `useBlocker` (react-router v7) + `useBeforeUnload` (browser tab close)
-- `DiscardChangesModal` hiển thị confirm dialog
-- `confirmDiscard(action?)` — trigger modal kèm custom action khi confirm
+- Dùng `useBlocker` (react-router v7) + `useBeforeUnload` (đóng tab trình duyệt).
+- `DiscardChangesModal` hiển thị hộp xác nhận.
+- Hook trả về `guardModal`, `confirmNavigation`, `confirmDiscard`, `allowNextNavigation`. `confirmDiscard(action?)` = `confirmNavigation` với action tuỳ chọn.
 
-### 7. Component reuse
-
-`Base*` components trong `components/Common/` được copy từ web-admin. Khi sửa logic:
-- **Không tự sync** sang web-admin
-- Đề xuất tách thành package `@eskitchen/ui` shared nếu cần fix bug (cross-repo refactor — cần PM approve)
-
-### 8. Tailwind config
-
-TailwindCSS v4 — config qua PostCSS (`postcss.config.js`), KHÔNG có file `tailwind.config.js` cũ. Theme tokens trong `shared/theme/`.
-
-### 9. Test coverage
-
-`package.json` script `test` hiện là `echo "No tests configured" && exit 0`. Khi implement feature đầu tiên cần test:
-- Setup Jest + React Testing Library + msw
-- Coverage target: ≥ 70% cho component critical path
+**Bẫy:** quên render `{guardModal}`; hoặc navigate thường sau Save → vẫn bị chặn (dùng `allowNextNavigation`).
 
 ---
 
-## TanStack Query v5 — pattern thực tế
+## 9. Dùng lại component
+
+`Base*` trong `components/Common/` được copy từ web-admin.
+- **Không tự đồng bộ** sang web-admin khi sửa.
+- Cần sửa bug chung → đề xuất tách package dùng chung `@eskitchen/ui` (refactor cross-repo, cần PM duyệt).
+
+---
+
+## 10. Tailwind & test
+
+- **TailwindCSS v4** — cấu hình qua PostCSS (`postcss.config.js`), KHÔNG có `tailwind.config.js` kiểu cũ. Theme token trong `shared/theme/`.
+- **Test:** script `test` trong `package.json` hiện là `echo "No tests configured" && exit 0`. Khi cần test đầu tiên:
+  - Setup Jest + React Testing Library + msw.
+  - Coverage target: ≥ 70% cho component critical path.
+
+---
+
+## 11. TanStack Query v5 — pattern thực tế
+
+`queryKey` = tên ngăn cache (resource + params). `enabled` = chỉ chạy query khi điều kiện đúng. `invalidateQueries` = đánh dấu cũ để tự fetch lại.
 
 ```typescript
 // List query — queryKey gồm tên resource + toàn bộ searchParams
@@ -233,21 +281,22 @@ const mutation = useMutationCustom({
 });
 ```
 
+**Bẫy:**
+- `staleTime` 5 phút nên quay lại trang có thể thấy dữ liệu cũ nếu quên `invalidateQueries` sau mutation. (Khác E03/E02.)
+- Query key ở E04 là chuỗi viết thẳng — gõ lệch giữa `useQuery` và `invalidateQueries` thì bảng không refresh.
+
 ---
 
-## Form pattern — Controller + yup
+## 12. Form: Controller + yup
+
+**Cách làm:** schema đơn giản → `validation/schemas.ts` (vd `changePasswordSchema`, `signInSchema`, `forgotPasswordSchema`). Schema phức tạp, nhiều quy tắc điều kiện → inline trong file page (vd `orderSchema`, `shippingSchema`). Luôn dùng `Controller`, không dùng `register` trực tiếp.
 
 ```typescript
-// Schema trong validation/schemas.ts (shared) hoặc inline nếu page-specific + phức tạp
-// Ví dụ: changePasswordSchema, signInSchema, forgotPasswordSchema → validation/schemas.ts
-// Ví dụ: orderSchema, shippingSchema (nhiều conditional rule) → inline trong page file
-
 const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
   resolver: yupResolver(schema) as Resolver<FormData>,
   defaultValues: { field1: "", field2: "" },
 });
 
-// Luôn dùng Controller, không dùng register trực tiếp
 <Controller
   name="fieldName"
   control={control}
@@ -257,7 +306,8 @@ const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
 />
 ```
 
-**Conditional validation với `.when()`:**
+**Validate theo điều kiện với `.when()`:**
+
 ```typescript
 courierName: yup.string().when("deliveryMethod", {
   is: "direct",
@@ -266,9 +316,11 @@ courierName: yup.string().when("deliveryMethod", {
 }),
 ```
 
+**Bẫy:** khác web-admin (schema đặt `schema.ts` cạnh page) — E04 gom schema đơn giản vào `validation/schemas.ts`.
+
 ---
 
-## Routing pattern
+## 13. Routing
 
 ```
 createBrowserRouter([
@@ -292,20 +344,21 @@ createBrowserRouter([
 ])
 ```
 
-- `withSuspense(element, className?)` — wrapper `Suspense` + `BaseLoading` fallback
-- Auth pages dùng `AuthCard` component (centered card layout)
-- Authenticated pages dùng `BaseHeadingBreadcrumb` ở đầu trang
-- `useRouter()` custom hook (wrap `useNavigate`) — dùng thay vì `useNavigate` trực tiếp:
-  ```typescript
-  const router = useRouter();
-  router.push("/orders");    // navigate
-  router.replace("/login");  // replace
-  router.back();             // go back
-  ```
+- `withSuspense(element, className?)` — bọc `Suspense` + fallback `BaseLoading`.
+- Trang auth dùng `AuthCard` (thẻ căn giữa).
+- Trang sau login dùng `BaseHeadingBreadcrumb` ở đầu trang.
+- `useRouter()` (bọc `useNavigate`) — dùng thay cho `useNavigate` trực tiếp:
+
+```typescript
+const router = useRouter();
+router.push("/orders");    // navigate
+router.replace("/login");  // replace
+router.back();             // go back
+```
 
 ---
 
-## Redux — auth slice duy nhất
+## 14. Redux — chỉ slice `auth`
 
 ```typescript
 // stores/reducers/auth.ts — các action chính
@@ -317,36 +370,28 @@ dispatch(clearAuthState())                               // logout; 401 khi đan
 // LOADING = có cookie nhưng chưa fetch /account/me
 ```
 
-- `AuthBootstrap` component (mount trong root layout) dùng `queryClient.fetchQuery` để lấy `/account/me` và dispatch `setCurrentUser`
-- Tokens lưu trong cookie, đọc qua `getAccessToken()` / `getRefreshToken()` từ `services/http/`
+- Component `AuthBootstrap` (mount trong root layout) dùng `queryClient.fetchQuery` lấy `/account/me` rồi dispatch `setCurrentUser`.
+- Token lưu cookie, đọc qua `getAccessToken()` / `getRefreshToken()` từ `services/http/`.
 
 ---
 
-## Implementing feature mới — checklist
+## 15. Checklist làm feature mới
 
-Khi bắt đầu task implementation từ `features/<feature>/es-kitchen-web-supplier/tasks/task-X-Y.md`:
+Khi bắt đầu từ `features/<feature>/es-kitchen-web-supplier/tasks/task-X-Y.md`:
 
-1. Đọc DESIGN.md cùng folder để hiểu API contract
-2. Tạo service file trong `services/client/<feature>.service.ts`
-   - Nếu BE chưa ready: thêm `USE_FAKE_DATA = true` + file `.fake.ts`
-   - Không prefix `/supplier/` trong path endpoint
-3. Tạo page trong `pages/<feature>/` → `<Feature>Page.tsx` + `<Feature>DetailPage.tsx` + `components/`
-4. Add lazy import + route vào `routes/index.tsx` với `withSuspense()`
-5. Add route constant vào `constants/route.ts`
-6. Form: react-hook-form + yup
-   - Schema đơn giản → `validation/schemas.ts`
-   - Schema phức tạp (conditional) → inline trong page file
-7. Server state: TanStack Query v5 (object syntax), `queryKey` gồm resource + filter params
-8. Mutations: dùng `useMutationCustom` — không tự try/catch khi dùng hook này
-9. Unsaved changes: `useUnsavedChangesGuard({ when: isDirty })` nếu page có form edit
-10. Table page: `useTableParams({ keyExtraParams: [...] })` để sync filter + pagination vào URL
+1. Đọc DESIGN.md cùng thư mục để hiểu API contract.
+2. Tạo `services/client/<feature>.service.ts`.
+   - BE chưa xong: thêm `USE_FAKE_DATA = true` + file `.fake.ts`.
+   - Không prefix `/supplier/` trong path.
+3. Tạo page trong `pages/<feature>/`: `<Feature>Page.tsx` + `<Feature>DetailPage.tsx` + `components/`.
+4. Thêm lazy import + route trong `routes/index.tsx` với `withSuspense()`.
+5. Thêm route constant vào `constants/route.ts`.
+6. Form: react-hook-form + yup.
+   - Schema đơn giản → `validation/schemas.ts`.
+   - Schema phức tạp (điều kiện) → inline trong page.
+7. Server state: TanStack Query v5 (object syntax), `queryKey` gồm resource + filter params.
+8. Mutation: `useMutationCustom` — không tự try/catch khi dùng hook này.
+9. Có form edit: `useUnsavedChangesGuard({ when: isDirty })`.
+10. Trang bảng: `useTableParams({ keyExtraParams: [...] })` để sync filter + phân trang vào URL.
 
----
-
-## Trigger Tech Lead khi cần update overview
-
-Khi repo này đã có thêm feature → outdated overview:
-
-```
-"Hãy là Tech Lead, cập nhật overview docs cho repo es-kitchen-web-supplier"
-```
+Overview cũ (cần cập nhật khi repo có thêm feature) → nhờ Tech Lead: `"Hãy là Tech Lead, cập nhật overview docs cho repo es-kitchen-web-supplier"`.

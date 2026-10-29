@@ -1,25 +1,31 @@
 # es-kitchen-web-outsource-web-private — Patterns & Conventions
 
 > Nguồn = es-kitchen-web-outsource-web-private@9b0e677 ngày 2026-10-16 (trước đó xác nhận 2026-07-01).
-> Repo được scaffold từ cùng template với `es-kitchen-web-admin`. Dependencies tương tự.
-> File này document **pattern cụ thể đang chạy trong code**.
-> Pattern chung (TanStack Query v5, RTK v2, react-hook-form v7 ...) → tham chiếu thêm
-> `frontend/es-kitchen-web-admin/overview/patterns.md`.
+
+**File này nói gì:** các cách làm đang chạy thật trong code E05 (Công ty vận chuyển Web): gọi API, đăng nhập, route, danh sách, form, mutation, phân quyền…
+**Đọc khi:** sắp thêm trang / form / API mới vào repo này.
+**Đọc trước:** `structure.md` (bản đồ thư mục).
+Repo scaffold từ cùng template với `es-kitchen-web-admin` (E03). Pattern chung (TanStack Query v5, RTK v2, react-hook-form v7…) xem thêm `frontend/es-kitchen-web-admin/overview/patterns.md`.
 
 ---
 
-## Stack reference
+## 0. Tra nhanh: tình huống → cách xử lý → file mẫu
 
-| Layer | Library | Version |
-|---|---|---|
-| HTTP client | Axios | 1.16 |
-| Server state | TanStack Query | 5.10 |
-| Client state | Redux Toolkit | 2.12 |
-| Routing | react-router-dom | 7.15 |
-| Forms | react-hook-form + yup | 7.76 / 1.7 |
-| UI | Ant Design + TailwindCSS | 6.4 / 4.3 |
-| Build tool | Vite | 8 (web-admin dùng 7) |
-| Cookie | js-cookie | — |
+| Tình huống | Cách xử lý | Mục | File mẫu |
+|---|---|---|---|
+| Gọi API mới | Thêm hàm named export trong `services/client/<domain>.service.ts`, dùng `API.get/post/...` | §2 | `delivery.service.ts` |
+| Lấy dữ liệu để hiển thị | Hook `use<Domain>` bọc `useQuery` | §6 | `hooks/useDeliveries.ts` |
+| Ghi dữ liệu (lưu/xóa) | `useMutationCustom` (không dùng `useMutation` trần) | §6.3 | `useUpdateDelivery` |
+| Thêm trang | `lazy()` + `withSuspense` + `ROUTE` + (nav) | §4, §14 | `routes/index.tsx` |
+| Trang danh sách có lọc / phân trang | `useTableParams` + FilterBar | §7, §8 | `DeliveryStatusPage.tsx` |
+| Trang chi tiết có sửa | `useForm` + yup + nút 編集/保存 | §9 | `DeliveryStatusDetailForm.tsx` |
+| Form | Luôn `Controller` + field `Base*` | §10 | `validation/schemas.ts` |
+| Chặn người chưa đăng nhập | `RequireAuth` / `PublicOnly` | §3.5 | `routes/guards` |
+| Phân quyền theo vai trò | `useCan` + `<RequiredPermission>` | §11 | `utils/client/permission.ts` |
+| Phiên hết hạn | `SessionExpiredModal` + `sessionExpired.ts` | §3.6 | `services/http/sessionExpired.ts` |
+| Rời form đang sửa dở | `useUnsavedChangesGuard` + `DiscardChangesModal` | §11 | — |
+| Upload file | presigned URL | §12 | `file-upload.service.ts` |
+| Xuất / nhập CSV | `BaseButtonExport` / `BaseButtonDownload` | §12 | `collection-report.service.ts` |
 
 ---
 
@@ -28,87 +34,85 @@
 | Khía cạnh | web-admin (E03) | outsource-web-private (E05) |
 |---|---|---|
 | Vite | 7 | 8 |
-| Màu primary (sidebar active) | blue `#0969DA` | green `#1a7f37` (`Nav/index.tsx` itemSelectedBg, `antd-theme.ts` colorPrimary) |
-| Endpoint prefix | `/admin/*` | `/auth/*`, `/account/*` (xác nhận từ code) |
-| User type | System admin | Operation staff / deliverer |
-| Navigation scope | 160 functions | 7 mục: ホーム / スケジュール / 配送管理 / 見積もり管理 / 集金・駐車 / 配送スタッフ / プロフィール (đổi mật khẩu vào từ profile/route riêng, không còn trong NAV_ITEMS) |
-| Redux slices | nhiều | **chỉ `auth`** |
+| Màu chính (sidebar active) | xanh dương `#0969DA` | xanh lá `#1a7f37` (`Nav/index.tsx` itemSelectedBg, `antd-theme.ts` colorPrimary) |
+| Prefix endpoint | `/admin/*` | `/auth/*`, `/account/*` (xác nhận từ code) |
+| Người dùng | System admin | Nhân viên công ty vận chuyển / tài xế (operation staff / deliverer) |
+| Menu | 160 function | 7 mục (xem §5) |
+| Redux slice | nhiều | **chỉ `auth`** |
+| Hook dữ liệu | gọi `useQuery` trong page | hook riêng mỗi domain (`useDeliveries`…) |
 
 ---
 
-## 1. HTTP Client Pattern
+## 1. HTTP client
 
-Primary HTTP instance: `services/client/api.ts` — class `Requester` (singleton `API`).
+**Vấn đề:** mọi request cần cùng base URL, cookie, header ngôn ngữ, token.
+**Cách làm:** dùng một instance duy nhất, class `Requester`, xuất singleton `API` ở `services/client/api.ts`.
 
 ```typescript
-// services/client/api.ts
 const axiosInstance = axios.create({
   baseURL: serverConfig.api_server_url,   // import.meta.env.VITE_API_BASE_URL
   withCredentials: true,
   headers: { "Content-Type": "application/json", "Accept-Language": "ja" },
   paramsSerializer: params => serializeQueryParams(params ?? {}),
 });
-
-// interceptor request: inject Bearer token + timezone header
-// interceptor response: 401 → store.dispatch(clearAuthState())
+// interceptor request: gắn Bearer token + header timezone
+// interceptor response: xem §3.6
 ```
 
-Dùng `API.get / API.post / API.put / API.patch / API.delete` — không dùng `axiosInstance` trong
-`services/http/axios.instance.ts` (file đó là legacy scaffold, không được sử dụng trực tiếp).
+Gọi bằng `API.get / post / put / patch / delete`.
+
+**Bẫy:**
+- Đừng dùng `services/http/axios.instance.ts` trực tiếp — đó là file scaffold cũ, không được dùng.
+- Tải file: truyền `rawResponse: true` để lấy cả header Content-Disposition (`api.ts`).
 
 ---
 
-## 2. Service File Pattern
+## 2. Service file
 
-Mỗi domain có file riêng trong `services/client/`. Quy ước:
+**Vấn đề:** gọi API rải rác trong component thì khó sửa, khó test.
+**Cách làm:** mỗi domain 1 file `services/client/<domain>.service.ts`; hàm là *named export*, không dùng class hay object method.
 
 ```typescript
 // services/client/delivery.service.ts
-const APIs = {
-  LIST:   "/deliveries",
-  DETAIL: "/deliveries/:id",
-  UPDATE: "/deliveries/:id",
-};
+const APIs = { LIST: "/deliveries", DETAIL: "/deliveries/:id", UPDATE: "/deliveries/:id" };
 
-// Named export functions (không dùng class / object với method)
-export const fetchDeliveries = async (params?: DeliveryListParams): Promise<DeliveryListResult> => {
-  return API.get(APIs.LIST, params);
-};
+export const fetchDeliveries = async (params?: DeliveryListParams): Promise<DeliveryListResult> =>
+  API.get(APIs.LIST, params);
 
-export const fetchDeliveryById = async (id: string): Promise<DeliveryDetail> => {
-  return API.get(`/deliveries/${id}`);
-};
+export const fetchDeliveryById = async (id: string): Promise<DeliveryDetail> =>
+  API.get(`/deliveries/${id}`);
 
-export const updateDeliveryById = async (id: string, payload: UpdateDeliveryPayload): Promise<DeliveryDetail> => {
-  return API.patch(`/deliveries/${id}`, payload);
-};
+export const updateDeliveryById = async (id: string, payload: UpdateDeliveryPayload): Promise<DeliveryDetail> =>
+  API.patch(`/deliveries/${id}`, payload);
 ```
 
-**Hiện trạng (2026-10-16):** không còn mock data trong `src/` — mọi service gọi API thật, thường dạng `APIs = { LIST: "...", DETAIL: (id) => ... }`, unwrap `IBaseApiResponse<T>` rồi `return res.data`; service chuẩn hoá params (`toText`, `removeFalsyProperty`) vì API chạy `forbidNonWhitelisted` (param thừa như `sortBy/order` → 400, xem `collection-report.service.ts`). Download file: truyền `rawResponse: true` để lấy cả header Content-Disposition (`api.ts`).
+**Hiện trạng (2026-10-16):**
+- Không còn mock data trong `src/` — mọi service gọi API thật. Dạng thường gặp `APIs = { LIST: "...", DETAIL: (id) => ... }`, unwrap `IBaseApiResponse<T>` rồi `return res.data`.
+- Service chuẩn hóa params (`toText`, `removeFalsyProperty`) vì API chạy `forbidNonWhitelisted`: **param thừa (như `sortBy/order`) → HTTP 400** (xem `collection-report.service.ts`).
 
 Endpoint đang dùng (grep `services/client/`): `/auth/*`, `/account/*`, `/register` (+`/register/regions/{prefectures,cities,towns}`), `/profile` (+`/history`), `/me/contacts`, `/notifications` (+`/unread-count`), `/quotation-requests`, `/fee-change-requests` (+`/import`), `/delivery-blocks` (+`/timeline`, `/monthly-calendar`), `/relay-destinations`, `/drivers` (+`/bulk-issue-accounts[/preview]`), `/collection-reports/by-driver` (+`/export`), `/uploads/presigned-upload-url[s]`, `/api/error/report`.
 
-Endpoint thực tế đã xác nhận trong `auth.service.ts`:
+Endpoint auth thật (`auth.service.ts`):
 
 ```typescript
 const APIs = {
-  SIGNIN:                    "/auth/login",
-  ME:                        "/account/me",
-  LOGOUT:                    "/auth/logout",
-  FORGOT_PASSWORD:           "/auth/forgot-password/request",
-  VERIFY_FORGOT_PASSWORD_OTP:"/auth/forgot-password/verify-otp",
-  RESET_PASSWORD:            "/auth/forgot-password/reset-password",
-  CHANGE_PASSWORD:           "/account/change-password",
+  SIGNIN:                     "/auth/login",
+  ME:                         "/account/me",
+  LOGOUT:                     "/auth/logout",
+  FORGOT_PASSWORD:            "/auth/forgot-password/request",
+  VERIFY_FORGOT_PASSWORD_OTP: "/auth/forgot-password/verify-otp",
+  RESET_PASSWORD:             "/auth/forgot-password/reset-password",
+  CHANGE_PASSWORD:            "/account/change-password",
 };
 ```
 
-Không dùng prefix `/operation/*` — tên domain không phản ánh URL path thực tế.
+**Bẫy:** không có prefix `/operation/*` — tên domain không phản ánh URL thật. Chưa có API thì hỏi BE/TL, **không** tự thêm mock.
 
 ---
 
-## 3. Auth Flow Pattern
+## 3. Đăng nhập và phiên
 
-### 3.1 Token storage — js-cookie
+### 3.1 Token lưu ở cookie (js-cookie)
 
 ```typescript
 // services/http/authToken.ts
@@ -116,9 +120,9 @@ const ACCESS_TOKEN_KEY  = "access_token";
 const REFRESH_TOKEN_KEY = "refresh_token";
 const COOKIE_OPTIONS = { expires: 7, path: "/", sameSite: "strict" };
 
-setAuthCookies({ accessToken, refreshToken });   // set cả hai
-clearAuthCookies();                              // remove cả hai
-getAccessToken();                                // lấy access token
+setAuthCookies({ accessToken, refreshToken });  // set cả hai
+clearAuthCookies();                             // xóa cả hai
+getAccessToken();
 ```
 
 ### 3.2 Redux auth slice
@@ -128,51 +132,43 @@ getAccessToken();                                // lấy access token
 type AuthState = { accessToken, refreshToken, status, user }
 // SESSION_STATUS: "loading" | "authenticated" | "unauthenticated"
 
-// Actions:
-setAuthTokens({ accessToken, refreshToken })  // sau login/reset-password
+setAuthTokens({ accessToken, refreshToken })  // sau login / reset-password
 setCurrentUser(AuthCurrentUser)               // sau bootstrap
 clearAuthState()                              // logout / 401
 ```
 
-Bootstrap flow khởi động qua `AuthBootstrap` component (được mount ở root):
-1. Đọc cookies → nếu có token → `status = "loading"`
-2. Gọi `GET /account/me` qua `queryClient.fetchQuery`
-3. Response → `dispatch(setCurrentUser(...))` → `status = "authenticated"`
-4. 401 hoặc lỗi → `dispatch(clearAuthState())` → `status = "unauthenticated"`
+Khởi động qua component `AuthBootstrap` (mount ở root):
+1. Đọc cookie → có token thì `status = "loading"`.
+2. Gọi `GET /account/me` bằng `queryClient.fetchQuery`.
+3. Thành công → `setCurrentUser(...)` → `status = "authenticated"`.
+4. 401 hoặc lỗi → `clearAuthState()` → `status = "unauthenticated"`.
 
-### 3.3 Forgot password — 3-step OTP flow
+### 3.3 Quên mật khẩu — 3 bước OTP
 
 ```
 ForgotPasswordPage → VerifyPage → ResetPasswordPage → ResetSuccessPage
 POST /auth/forgot-password/request
-          ↓ redirect với ?delivererCode=&email=
+        ↓ redirect ?delivererCode=&email=
 POST /auth/forgot-password/verify-otp
-          ↓ redirect với ?delivererCode=&email=&otp=
-POST /auth/forgot-password/reset-password  (returns accessToken + refreshToken)
-          ↓ dispatch(setAuthTokens(...)) + router.replace(ROUTE.RESET_SUCCESS)
+        ↓ redirect ?delivererCode=&email=&otp=
+POST /auth/forgot-password/reset-password  (trả accessToken + refreshToken)
+        ↓ dispatch(setAuthTokens(...)) + router.replace(ROUTE.RESET_SUCCESS)
 ```
 
-State giữa các bước truyền qua **URL search params** (không dùng Redux / sessionStorage):
+State giữa các bước đi qua **URL search params** (không dùng Redux hay sessionStorage):
 
 ```typescript
-// ForgotPasswordPage → VerifyPage
-const params = new URLSearchParams({ delivererCode, email });
-router.push(`${ROUTE.VERIFY}?${params.toString()}`);
-
-// VerifyPage → ResetPasswordPage
 const params = new URLSearchParams({ delivererCode, email, otp });
 router.push(`${ROUTE.RESET_PASSWORD}?${params.toString()}`);
 ```
 
-Guard ngược: nếu thiếu param bắt buộc → `router.replace(ROUTE.FORGOT_PASSWORD)`.
+Guard ngược: thiếu param bắt buộc → `router.replace(ROUTE.FORGOT_PASSWORD)`.
 
-**OTP countdown** (VerifyPage):
+Đếm ngược gửi lại OTP (VerifyPage):
 
 ```typescript
 const OTP_RESEND_COUNTDOWN_SECONDS = 60;
-const [timeLeft, setTimeLeft] = useState(OTP_RESEND_COUNTDOWN_SECONDS);
-const resendLockRef = useRef(false);  // tránh double-click race
-
+const resendLockRef = useRef(false);  // tránh bấm đúp
 useEffect(() => {
   if (timeLeft <= 0) return;
   const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
@@ -180,13 +176,11 @@ useEffect(() => {
 }, [timeLeft]);
 ```
 
-### 3.4 Login pattern
+### 3.4 Login
 
-LoginPage không dùng `useMutationCustom` — dùng `useState(loading)` + manual try/catch:
+LoginPage **không** dùng `useMutationCustom`; dùng `useState(loading)` + try/catch tay:
 
 ```typescript
-// pages/auth/LoginPage.tsx
-const [loading, setLoading] = useState(false);
 const onSubmit = async (data) => {
   setLoading(true);
   try {
@@ -196,44 +190,50 @@ const onSubmit = async (data) => {
   } catch (error) {
     if (isAxiosError(error)) message.error(error.response?.data?.message || MESSAGES.LOGIN_FAILED);
     else message.error(MESSAGES.LOGIN_FAILED);
-  } finally {
-    setLoading(false);
-  }
+  } finally { setLoading(false); }
 };
 ```
 
----
-
-## 4. Route Guard Pattern
+### 3.5 Guard route
 
 ```
-PublicOnly    → bọc login / forgot-password / verify / reset-password
-RequireAuth   → bọc tất cả route sau login
+PublicOnly   → bọc login / forgot-password / verify / reset-password
+RequireAuth  → bọc mọi route sau đăng nhập
 ```
 
 ```typescript
-// RequireAuth.tsx
 export function RequireAuth() {
   const { isAuthenticated, isLoading } = useAuth();
   if (isLoading)        return <BaseLoading />;
   if (!isAuthenticated) return <Navigate to={`${ROUTE.LOGIN}?redirect=...`} replace />;
   return <Outlet />;
 }
+// PublicOnly: đã đăng nhập → <Navigate to={ROUTE.DASHBOARD} replace />
+```
 
-// PublicOnly.tsx — xử lý thêm case reset-password sau login thành công
-export function PublicOnly() {
-  const { isAuthenticated, isLoading } = useAuth();
-  if (isLoading)        return <BaseLoading />;
-  if (isAuthenticated)  return <Navigate to={ROUTE.DASHBOARD} replace />;
-  return <Outlet />;
+### 3.6 Phiên hết hạn (401)
+
+`services/http/handleResponse.ts` phân hai loại 401:
+
+```typescript
+onError: (error) => {
+  if (isSessionExpiredError(error)) notifySessionExpired();       // → SessionExpiredModal
+  else if (error.response?.status === 401) store.dispatch(clearAuthState());
+  return Promise.reject(error);
 }
 ```
 
+- `isSessionExpiredError` = 401 **và** request đã mang header `Authorization`. Lý do: login sai mật khẩu cũng trả 401 nhưng đó không phải hết phiên.
+- Chỉ thấy xóa phiên trong `handleResponse.ts`; không thấy gọi refresh token ở đó (đã đọc code).
+- `SessionExpiredModal` + `useSessionExpired` hiện modal thay vì đá văng đột ngột.
+
+**Bẫy:** gắn xử lý 401 mới ở chỗ khác sẽ trùng với interceptor này. Sửa tại `handleResponse.ts`.
+
 ---
 
-## 5. Routing Pattern
+## 4. Routing
 
-### 5.1 useRouter wrapper
+### 4.1 `useRouter` — bọc `useNavigate`
 
 ```typescript
 // hooks/router.ts — KHÔNG dùng useNavigate trực tiếp trong component
@@ -246,15 +246,14 @@ export function useRouter() {
     refresh: ()     => window.location.reload(),
   };
 }
-export function usePathname()      { return useLocation().pathname; }
-export function useSearchParams()  { return useRouterSearchParams()[0]; }
-export function useParams<T>()     { return useRouteParams() as T; }
+// cũng export: usePathname, useSearchParams, useParams<T>
 ```
 
-### 5.2 ROUTE constant
+### 4.2 Hằng `ROUTE`
+
+Mọi route mới phải thêm vào `constants/route.ts`:
 
 ```typescript
-// constants/route.ts — thêm mọi route mới vào đây
 export const ROUTE = {
   DASHBOARD: "/dashboard", ANNOUNCEMENTS: "/announcements", ORDERS: "/orders",
   PROFILE: "/profile", SCHEDULE: "/schedule", DELIVERY_STATUS: "/delivery-status",
@@ -265,41 +264,38 @@ export const ROUTE = {
 };
 ```
 
-### 5.3 Lazy load với withSuspense
+### 4.3 Lazy load với `withSuspense`
 
 ```typescript
-// routes/index.tsx
 const DeliveryStatusPage = lazy(() => import("@/pages/delivery-status/DeliveryStatusPage"));
 
 const withSuspense = (element: ReactElement, className?: string) => (
   <Suspense fallback={<BaseLoading className={className || ""} />}>{element}</Suspense>
 );
 
-// Auth routes (public): className để size loading khớp AuthCard
+// Route auth (public): thêm className để loading vừa khung AuthCard
 { path: ROUTE.LOGIN, element: withSuspense(<LoginPage />, "max-h-[511px] rounded-3xl") }
-// App routes (authenticated): không cần className
+// Route trong app: không cần className
 { path: ROUTE.DASHBOARD, element: withSuspense(<DashboardPage />) }
 ```
 
-### 5.4 Layout hierarchy
+### 4.4 Cây layout
 
 ```
 PublicOnly
-├── NonAuthLayout          (background image fullscreen + centered max-w-[464px])
+├── NonAuthLayout                      (ảnh nền full + khung giữa max-w-[464px])
 │   └── LoginPage
-├── NonAuthLayout background="gradient"   (flow reset mật khẩu)
-│   ├── ForgotPasswordPage / VerifyPage / ResetPasswordPage
-└── PublicPageLayout       (PublicTopNav + PublicFooter)
-    └── RegisterPage       (stepper đăng ký công ty vận chuyển)
+├── NonAuthLayout background="gradient"   (luồng reset mật khẩu)
+│   └── ForgotPasswordPage / VerifyPage / ResetPasswordPage
+└── PublicPageLayout                   (PublicTopNav + PublicFooter)
+    └── RegisterPage                   (stepper đăng ký công ty vận chuyển)
 
 RequireAuth
-├── AuthCenteredLayout     (giống NonAuthLayout — dùng cho ResetSuccessPage sau login)
-│   └── ResetSuccessPage
-└── AuthLayout             (sidebar 210px + Header + Content bg-[#F0F2F5])
+├── AuthCenteredLayout   └── ResetSuccessPage
+└── AuthLayout           (sidebar 210px + Header + Content bg-[#F0F2F5])
     ├── DashboardPage · AnnouncementDetailPage (/announcements/:id)
     ├── ProfilePage · SchedulePage
-    ├── OrdersPage / :id
-    ├── DeliveryStatusPage / :id
+    ├── OrdersPage / :id · DeliveryStatusPage / :id
     ├── BillPage (collection-reports, chỉ list)
     ├── EmployeePage / create / :id (driver)
     └── ChangePasswordPage
@@ -307,132 +303,102 @@ RequireAuth
 
 ---
 
-## 6. Navigation Pattern
+## 5. Menu bên trái (sidebar)
 
-NAV_ITEMS được định nghĩa trong `constants/nav.ts`:
+Định nghĩa trong `constants/nav.ts`: 7 mục.
 
 ```typescript
 export const NAV_ITEMS: NavItem[] = [
-  { key: "dashboard",       labelJa: "ホーム",         icon: HouseIcon,         href: ROUTE.DASHBOARD },
-  { key: "schedule",        labelJa: "スケジュール",   icon: CalendarBlankIcon, href: ROUTE.SCHEDULE },
-  { key: "delivery-status", labelJa: "配送管理",       icon: TruckIcon,         href: ROUTE.DELIVERY_STATUS },
-  { key: "orders",          labelJa: "見積もり管理",   icon: ClipboardTextIcon, href: ROUTE.ORDERS },
-  { key: "bill",            labelJa: "集金・駐車",     icon: WalletIcon,        href: ROUTE.COLLECTION_REPORTS },
-  { key: "employee",        labelJa: "配送スタッフ",   icon: UsersThreeIcon,    href: ROUTE.DRIVER },
-  { key: "profile",         labelJa: "プロフィール",   icon: UserCircleIcon,    href: ROUTE.PROFILE },
+  { key: "dashboard",       labelJa: "ホーム",       icon: HouseIcon,         href: ROUTE.DASHBOARD },
+  { key: "schedule",        labelJa: "スケジュール", icon: CalendarBlankIcon, href: ROUTE.SCHEDULE },
+  { key: "delivery-status", labelJa: "配送管理",     icon: TruckIcon,         href: ROUTE.DELIVERY_STATUS },
+  { key: "orders",          labelJa: "見積もり管理", icon: ClipboardTextIcon, href: ROUTE.ORDERS },
+  { key: "bill",            labelJa: "集金・駐車",   icon: WalletIcon,        href: ROUTE.COLLECTION_REPORTS },
+  { key: "employee",        labelJa: "配送スタッフ", icon: UsersThreeIcon,    href: ROUTE.DRIVER },
+  { key: "profile",         labelJa: "プロフィール", icon: UserCircleIcon,    href: ROUTE.PROFILE },
 ];
 ```
 
-Sidebar dùng AntD `ConfigProvider` để override màu menu:
-
-```typescript
-// components/Common/Nav/index.tsx
-<ConfigProvider theme={{ components: { Menu: {
-  itemSelectedBg:    "#1a7f37",  // E05 green
-  itemSelectedColor: "#ffffff",
-  itemBg:            "transparent",
-  itemHeight:        48,
-  itemBorderRadius:  8,
-  itemMarginBlock:   2,
-} } }}>
-```
-
-Sidebar collapse: 210px (expanded) ↔ 80px (collapsed icon-only). Mobile: `<Drawer>`.
+- Đổi mật khẩu vào từ profile / route riêng, **không** nằm trong `NAV_ITEMS`.
+- Màu menu override bằng AntD `ConfigProvider` (`components/Common/Nav/index.tsx`): `itemSelectedBg: "#1a7f37"`, `itemSelectedColor: "#ffffff"`, `itemHeight: 48`, `itemBorderRadius: 8`.
+- Thu gọn: 210px ↔ 80px (chỉ icon). Mobile: `<Drawer>`.
 
 ---
 
-## 7. TanStack Query Pattern (v5)
+## 6. TanStack Query (v5, object syntax)
 
-### 7.1 List query với keepPreviousData
+### 6.1 Danh sách — giữ dữ liệu cũ khi đổi trang
 
 ```typescript
 // hooks/useDeliveries.ts
 export const useDeliveries = (params: DeliveryListParams) =>
   useQuery({
-    queryKey: ["deliveries", params],   // params object là dependency
+    queryKey: ["deliveries", params],     // params là dependency
     queryFn:  () => fetchDeliveries(params),
-    placeholderData: keepPreviousData,  // tránh flash khi đổi trang
+    placeholderData: keepPreviousData,    // tránh nháy khi đổi trang
   });
 ```
 
-### 7.2 Detail query với enabled guard
+### 6.2 Chi tiết — chỉ gọi khi có id
 
 ```typescript
 export const useDeliveryDetail = (id: string) =>
   useQuery({
     queryKey: ["delivery-detail", id],
     queryFn:  () => fetchDeliveryById(id),
-    enabled:  !!id,                     // không fetch khi id rỗng
+    enabled:  !!id,
   });
 ```
 
-### 7.3 Mutation qua `useMutationCustom`
+### 6.3 Mutation — bắt buộc qua `useMutationCustom`
 
-Không dùng `useMutation` trực tiếp — bắt buộc dùng wrapper `useMutationCustom`:
-
-```typescript
-// hooks/useMutationCustom.ts — tự động message.error khi thất bại
-export function useMutationCustom<TData, TError, TVariables, TContext>(
-  options: UseMutationCustomOptions<...>
-) {
-  return useMutation({
-    onError: (error) => {
-      if (!skipAutoErrorHandling) message.error(getErrorMessage(error));
-      onError?.(error);
-    },
-    onSuccess: (data, variables, context) => {
-      if (!skipAutoSuccessHandling && customSuccessMessage) message.success(customSuccessMessage);
-      onSuccess?.(data, variables, context);
-    },
-  });
-}
-```
+Wrapper tự `message.error(...)` khi thất bại.
 
 ```typescript
-// Dùng trong hook domain
 export const useUpdateDelivery = (id: string) => {
   const queryClient = useQueryClient();
   return useMutationCustom({
     mutationFn: (payload: UpdateDeliveryPayload) => updateDeliveryById(id, payload),
     customSuccessMessage: "保存しました。",
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["delivery-detail", id] });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["delivery-detail", id] }),
   });
 };
 ```
 
-Options đáng chú ý:
-- `customSuccessMessage` → auto `message.success(...)` khi thành công
-- `skipAutoErrorHandling: true` → tự xử lý error trong `onError` (xem VerifyPage OTP)
-- `skipAutoSuccessHandling: true` → tự gọi `message.success(...)` với format tùy chỉnh (xem ChangePasswordPage)
+Option đáng nhớ:
+- `customSuccessMessage` → tự `message.success(...)`.
+- `skipAutoErrorHandling: true` → tự xử lý lỗi trong `onError` (xem VerifyPage OTP).
+- `skipAutoSuccessHandling: true` → tự gọi `message.success` với nội dung riêng (xem §13).
+
+**Bẫy:** quên `invalidateQueries` sau mutation → màn hình vẫn hiện dữ liệu cũ.
 
 ---
 
-## 8. List Page Pattern
+## 7. Trang danh sách (List page)
 
-Cấu trúc lặp lại ở DeliveryStatusPage, EmployeePage, BillPage:
+Lặp lại ở DeliveryStatusPage, EmployeePage, BillPage.
+
+**Vấn đề:** lọc + sắp xếp + phân trang phải giữ được khi F5 / gửi link.
+**Cách làm:** `useTableParams` đồng bộ page / sort / filter lên URL query string. `keyExtraParams` quyết định field lọc nào được lưu lên URL. Reset bằng `handleResetFilers()`.
 
 ```typescript
-// pages/delivery-status/DeliveryStatusPage.tsx
 const FILTER_KEYS = ["invoiceNo", "destination", "status", "dateFrom", "dateTo", ...];
 
 export default function DeliveryStatusPage() {
   const { tableParams, searchParams, handleFilterTable, handleResetFilers } =
     useTableParams<DeliveryTableRecord, DeliveryListParams>({
       sortBy: DEFAULT_DELIVERY_SORT_BY,
-      keyExtraParams: FILTER_KEYS,       // sync filter keys lên URL
+      keyExtraParams: FILTER_KEYS,
     });
 
   const { data, isLoading } = useDeliveries(searchParams);
-  const items  = data?.items ?? [];
-  const total  = data?.total ?? 0;
+  const items = data?.items ?? [];
+  const total = data?.total ?? 0;
 
   const columns = useMemo(
     () => getDeliveryColumns({ page: tableParams.page, rowsPerPage: tableParams.rowsPerPage }),
     [tableParams.page, tableParams.rowsPerPage]
   );
-
   const rangeStart = total === 0 ? 0 : (tableParams.page - 1) * tableParams.rowsPerPage + 1;
   const rangeEnd   = Math.min(tableParams.page * tableParams.rowsPerPage, total);
 
@@ -440,308 +406,187 @@ export default function DeliveryStatusPage() {
     <div className="py-6">
       <BaseHeadingBreadcrumb title="..." breadcrumbItems={[{ title: "..." }]} />
       <div className="space-y-5 rounded-lg bg-white p-5">
-        <DeliveryFilterBar
-          onSearch={handleFilterTable}
-          onClear={handleResetFilers}
-          sortValue={String(tableParams.sortBy)}
-          sortOrder={tableParams.sort}
-          onSortChange={value => tableParams.setSortBy(value)}
-          onToggleSortOrder={() => tableParams.setSort(tableParams.sort === "ASC" ? "DESC" : "ASC")}
-        />
-        <BaseTable<Delivery>
-          columns={columns}
-          dataSource={items}
-          loading={isLoading}
-          total={total}
-          rowKey="id"
-          page={tableParams.page}
-          rowsPerPage={tableParams.rowsPerPage}
-          setPage={tableParams.setPage}
-          setRowsPerPage={tableParams.setRowsPerPage}
-          setSort={tableParams.setSort}
-          setSortBy={tableParams.setSortBy}
-          paginationSummary={`${total}件中 ${rangeStart}–${rangeEnd}件`}
-        />
+        <DeliveryFilterBar onSearch={handleFilterTable} onClear={handleResetFilers}
+          sortValue={String(tableParams.sortBy)} sortOrder={tableParams.sort}
+          onSortChange={v => tableParams.setSortBy(v)}
+          onToggleSortOrder={() => tableParams.setSort(tableParams.sort === "ASC" ? "DESC" : "ASC")} />
+        <BaseTable<Delivery> columns={columns} dataSource={items} loading={isLoading} total={total}
+          rowKey="id" page={tableParams.page} rowsPerPage={tableParams.rowsPerPage}
+          setPage={tableParams.setPage} setRowsPerPage={tableParams.setRowsPerPage}
+          setSort={tableParams.setSort} setSortBy={tableParams.setSortBy}
+          paginationSummary={`${total}件中 ${rangeStart}–${rangeEnd}件`} />
       </div>
     </div>
   );
 }
 ```
 
-**useTableParams**: sync page / sort / filter vào URL query string. `keyExtraParams` xác định
-field nào được persist. Reset filter dùng `handleResetFilers()`.
+**Bẫy:**
+- Gửi thêm param ngoài whitelist lên API → 400 (xem §2).
+- Quên đưa field lọc mới vào `keyExtraParams` → lọc không lưu lên URL.
 
 ---
 
-## 9. Filter Bar Pattern
+## 8. Thanh lọc (Filter bar)
 
-FilterBar (DeliveryFilterBar, EmployeeFilterBar, BillFilterBar) luôn có `useForm` nội bộ:
+DeliveryFilterBar, EmployeeFilterBar, BillFilterBar đều có `useForm` **riêng bên trong**; trang chỉ nhận kết quả qua `onSearch`.
 
 ```typescript
-// pages/delivery-status/components/DeliveryFilterBar.tsx
-const DeliveryFilterBar = ({ onSearch, onClear, sortValue, sortOrder, onSortChange, onToggleSortOrder }) => {
-  const { control, handleSubmit, reset } = useForm<DeliveryFilterValues>({
-    defaultValues: DEFAULT_VALUES,
-  });
+const { control, handleSubmit, reset } = useForm<DeliveryFilterValues>({ defaultValues: DEFAULT_VALUES });
+const handleClear = () => { reset(DEFAULT_VALUES); onClear(); };
 
-  const handleClear = () => {
-    reset(DEFAULT_VALUES);
-    onClear();
-  };
-
-  return (
-    <form onSubmit={handleSubmit(onSearch)}
-          className="grid grid-cols-2 items-start gap-4 sm:grid-cols-3 lg:grid-cols-6">
-      <Controller name="invoiceNo" control={control}
-        render={({ field }) => (
-          <BaseInput name="invoiceNo" className="h-10!" placeholder="送り状NO"
-            isShowMessageError={false}   // filter field không show lỗi
-            prefix={<img src={SearchIcon} ... />}
-            value={field.value} onChange={field.onChange} />
-        )}
-      />
-      {/* ... các field khác ... */}
-      <BaseLinkedDatePickerFields<DeliveryFilterValues>
-        control={control} fromName="dateFrom" toName="dateTo"
-        format={DATE_FORMAT.JAPANESE_YEAR_MONTH_DAY_FORMAT}
-      />
-      <BaseSortDropdownField
-        value={sortValue} options={DELIVERY_SORT_OPTIONS}
-        sortOrder={sortOrder} onChange={onSortChange} onToggleSortOrder={onToggleSortOrder}
-      />
-      <div className="flex items-center gap-3">
-        <BaseButton buttonType="outlinePrimary" htmlType="button" onClick={handleClear}>クリア</BaseButton>
-        <BaseButton type="primary"              htmlType="submit">検索</BaseButton>
-      </div>
-    </form>
-  );
-};
+<form onSubmit={handleSubmit(onSearch)} className="grid grid-cols-2 items-start gap-4 sm:grid-cols-3 lg:grid-cols-6">
+  <Controller name="invoiceNo" control={control}
+    render={({ field }) => (
+      <BaseInput name="invoiceNo" className="h-10!" placeholder="送り状NO"
+        isShowMessageError={false}  // ô lọc không hiện lỗi
+        value={field.value} onChange={field.onChange} />
+    )} />
+  <BaseLinkedDatePickerFields<DeliveryFilterValues> control={control}
+    fromName="dateFrom" toName="dateTo" format={DATE_FORMAT.JAPANESE_YEAR_MONTH_DAY_FORMAT} />
+  <BaseSortDropdownField value={sortValue} options={DELIVERY_SORT_OPTIONS}
+    sortOrder={sortOrder} onChange={onSortChange} onToggleSortOrder={onToggleSortOrder} />
+  <BaseButton buttonType="outlinePrimary" htmlType="button" onClick={handleClear}>クリア</BaseButton>
+  <BaseButton type="primary" htmlType="submit">検索</BaseButton>
+</form>
 ```
 
-Sort options và default sortBy được export từ file `deliveryFilter.constants.ts`
-cùng thư mục với FilterBar.
+Sort options và sortBy mặc định export từ `deliveryFilter.constants.ts` (cùng thư mục FilterBar).
 
 ---
 
-## 10. Detail Page Pattern
+## 9. Trang chi tiết (Detail page)
 
-Cấu trúc lặp ở DeliveryStatusDetailPage, EmployeeDetailPage:
+Lặp ở DeliveryStatusDetailPage, EmployeeDetailPage. Mặc định **chỉ xem**; bấm 「編集」 mới sửa được.
 
 ```typescript
 // pages/delivery-status/components/DeliveryStatusDetailForm.tsx
-export default function DeliveryStatusDetailForm({ data }: { data: DeliveryDetail }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const updateMutation = useUpdateDelivery(data.id);
+const [isEditing, setIsEditing] = useState(false);
+const updateMutation = useUpdateDelivery(data.id);
+const { control, handleSubmit, reset, formState: { errors } } = useForm<DeliveryAssignFormValues>({
+  resolver: yupResolver(deliveryAssignSchema) as Resolver<DeliveryAssignFormValues>,
+  defaultValues: { assignedStaffId: data.assignedStaffId },
+});
 
-  const { control, handleSubmit, reset, formState: { errors } } =
-    useForm<DeliveryAssignFormValues>({
-      resolver: yupResolver(deliveryAssignSchema) as Resolver<DeliveryAssignFormValues>,
-      defaultValues: { assignedStaffId: data.assignedStaffId },
-    });
-
-  const onSubmit: SubmitHandler<DeliveryAssignFormValues> = async values => {
-    await updateMutation.mutateAsync(values);
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => { reset(); setIsEditing(false); };
-
-  return (
-    <div className="py-6">
-      <BaseHeadingBreadcrumb title="..." breadcrumbItems={[{ title: <AppLink href={ROUTE.DELIVERY_STATUS}>...</AppLink> }]}>
-        {isEditing ? (
-          <div className="flex gap-3">
-            <BaseButton buttonType="default" onClick={handleCancel} className="h-12! w-[138.5px]!">キャンセル</BaseButton>
-            <BaseButton type="primary" loading={updateMutation.isPending}
-              onClick={handleSubmit(onSubmit)} className="h-12! w-[138.5px]!">保存</BaseButton>
-          </div>
-        ) : (
-          <BaseButton type="primary" onClick={() => setIsEditing(true)} className="h-12! w-[138.5px]!">編集</BaseButton>
-        )}
-      </BaseHeadingBreadcrumb>
-
-      {/* Delivery: DetailSection wrapper */}
-      <DetailSection title="配送スタッフ選択">
-        <Controller name="assignedStaffId" control={control} render={...} />
-      </DetailSection>
-
-      {/* Employee: BaseCollapseSection variant="tab" */}
-      <BaseCollapseSection variant="tab" title="基本情報" className="rounded-none">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {/* fields */}
-        </div>
-      </BaseCollapseSection>
-    </div>
-  );
-}
+const onSubmit: SubmitHandler<DeliveryAssignFormValues> = async values => {
+  await updateMutation.mutateAsync(values);
+  setIsEditing(false);
+};
+const handleCancel = () => { reset(); setIsEditing(false); };
 ```
 
-Button sizes trong detail header: `h-12! w-[138.5px]!` (edit/cancel/save) hoặc `h-12! w-21!` (employee delete/edit).
+- Header: đang sửa → nút 「キャンセル」 + 「保存」; không sửa → nút 「編集」.
+- Delivery bọc nội dung bằng `DetailSection`; Employee dùng `BaseCollapseSection variant="tab"`.
+- Cỡ nút ở header: `h-12! w-[138.5px]!` (sửa/hủy/lưu) hoặc `h-12! w-21!` (xóa/sửa của employee).
+- Mỗi detail page có `*Tabs.constants.ts` (orders, delivery-status, driver, profile).
 
 ---
 
-## 11. Form Pattern
+## 10. Form
+
+**Cách làm:** schema yup gom ở `validation/schemas.ts`; field luôn dùng `Controller` + `render`, **không** dùng `register` trực tiếp.
 
 ```typescript
-// Tất cả schema trong validation/schemas.ts
 export const deliveryAssignSchema = yup.object().shape({
   assignedStaffId: yup.string().required("配送スタッフは必須項目です。"),
 });
 
-// Trong component — luôn cast Resolver khi TypeScript cần
 const { control, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
-  resolver: yupResolver(schema) as Resolver<FormData>,
+  resolver: yupResolver(schema) as Resolver<FormData>,   // cast khi TypeScript cần
   defaultValues: { ... },
 });
 
-// Field luôn dùng Controller + render (không dùng register trực tiếp)
-<Controller
-  name="fieldName"
-  control={control}
+<Controller name="fieldName" control={control}
   render={({ field }) => (
-    <BaseInput
-      {...field}           // hoặc value={field.value} onChange={field.onChange}
-      label="ラベル"
-      error={errors.fieldName?.message}
-      isRequired           // hiển thị dấu *
-      className="h-10!"    // filter fields; h-11! cho auth forms
-    />
-  )}
-/>
+    <BaseInput {...field} label="ラベル" error={errors.fieldName?.message}
+      isRequired            // hiện dấu *
+      className="h-10!" />  // ô lọc h-10!; form auth h-11!
+  )} />
 ```
 
-Các field component hay dùng (tất cả trong `components/Common/Fields/`):
-- `BaseInput` — text, hỗ trợ `isUppercase`, `trimSpace`, `blockSpace`, `isShowMessageError`
-- `BaseInputPassword` — password với eye icon, `maxLength`
-- `BaseSelect` — dropdown, `isShowSearch`, `allowClear`
-- `BaseDatePicker` — single date
-- `BaseLinkedDatePickerFields` — date range (from/to), linked validation
-- `BaseOTPInput` — 4-digit OTP input
-- `BaseTextArea` — multiline
+Field có sẵn trong `components/Common/Fields/`:
+- `BaseInput` — hỗ trợ `isUppercase`, `trimSpace`, `blockSpace`, `isShowMessageError`.
+- `BaseInputPassword` — có icon mắt, `maxLength`.
+- `BaseSelect` — `isShowSearch`, `allowClear`. Ngoài ra có `BaseInfiniteSelect`, `BaseTreeSelect` (chưa đọc props).
+- `BaseDatePicker` (1 ngày) · `BaseLinkedDatePickerFields` (từ/đến, kiểm tra liên kết).
+- `BaseOTPInput` — OTP 4 số.
+- `BaseTextArea`, Checkbox/Radio.
 
 ---
 
-## 12. Auth Page Pattern
+## 11. Phân quyền, form dở dang
 
-Tất cả 5 trang auth dùng `AuthCard` wrapper:
+- **Phân quyền:** `useCan({ roles })` và component `<RequiredPermission>` (`components/Common/RequiredPermission`). `validateUserPermissions` chỉ kiểm `roles` (`utils/client/permission.ts`).
+- **Form sửa dở:** `useUnsavedChangesGuard` (.tsx) + `DiscardChangesModal` hỏi lại trước khi rời trang.
 
-```typescript
-// components/Auth/AuthCard.tsx
-<div className="auth-card flex w-full flex-col items-center rounded-3xl bg-[#ffffff]/95 p-8 shadow-2xl backdrop-blur">
-  {/* Logo */}
-  {title && <h1 className="text-txt-high mb-4 text-2xl font-bold">{title}</h1>}
-  {subtitle && <div className="... whitespace-pre-line">{subtitle}</div>}
-  <div className="w-full">{children}</div>
-</div>
-```
+---
+
+## 12. Tính năng đặc thù
+
+| Tính năng | Cách làm |
+|---|---|
+| Mã bưu điện / vùng | `usePostalCodeSearch`, `PostalAddressPickerModal`; dữ liệu `public/postal/` sinh bởi `npm run postal:build`; vùng đăng ký lấy từ `/register/regions/*` |
+| Upload file | Presigned URL (`file-upload.service.ts`, `/uploads/presigned-upload-url[s]`) + `BaseUploadFile` / `BaseFilePreviewModal`; đính kèm giao hàng ở `delivery-status/deliveryAttachment.utils.ts` |
+| Export / import CSV | `BaseButtonExport` / `BaseButtonDownload` (collection-reports export, `/fee-change-requests/import`) |
+| Lịch | `components/ScheduleCalendar` (MonthCalendarGrid, CycleTag, TemperatureTag…) + `pages/schedule/components/week`; trạng thái lịch đồng bộ URL qua `scheduleUrl.ts` |
+
+---
+
+## 13. Trang auth và các mẫu nhỏ
+
+**AuthCard:** 5 trang auth dùng chung khung `components/Auth/AuthCard.tsx` (nền `bg-[#ffffff]/95`, `rounded-3xl`, logo, `title`, `subtitle`, `children`).
 
 ```typescript
 // pages/auth/ForgotPasswordPage.tsx — mẫu điển hình
-export default function ForgotPasswordPage() {
-  const forgotPasswordMutation = useMutationCustom({
-    mutationFn: forgotPassword,
-    onSuccess: (_response, variables) => {
-      const params = new URLSearchParams({ delivererCode: variables.delivererCode, email: variables.email });
-      router.push(`${ROUTE.VERIFY}?${params.toString()}`);
-    },
-  });
-
-  return (
-    <AuthCard title="パスワード再設定" subtitle={"...\n..."}>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-        {/* Controller fields */}
-        <BaseButtonAuth label="認証コードを送信" loading={forgotPasswordMutation.isPending} htmlType="submit" />
-      </form>
-    </AuthCard>
-  );
-}
+const forgotPasswordMutation = useMutationCustom({
+  mutationFn: forgotPassword,
+  onSuccess: (_res, variables) => {
+    const params = new URLSearchParams({ delivererCode: variables.delivererCode, email: variables.email });
+    router.push(`${ROUTE.VERIFY}?${params.toString()}`);
+  },
+});
+<AuthCard title="パスワード再設定" subtitle={"...\n..."}>
+  <form onSubmit={handleSubmit(onSubmit)}>
+    <BaseButtonAuth label="認証コードを送信" loading={forgotPasswordMutation.isPending} htmlType="submit" />
+  </form>
+</AuthCard>
 ```
 
-`BaseButtonAuth` — full-width button dùng riêng cho auth pages (khác `BaseButton` dùng trong app).
+`BaseButtonAuth` = nút full-width chỉ dùng ở trang auth (khác `BaseButton` trong app).
 
----
-
-## 13. BaseHeadingBreadcrumb Pattern
-
-Dùng ở đầu mọi page trong AuthLayout:
+**BaseHeadingBreadcrumb:** đầu mọi trang trong `AuthLayout`; `children` hiện ở bên phải (nút hành động); breadcrumb có link dùng `AppLink`.
 
 ```typescript
-// components/Common/BaseHeadingBreadcrumb/index.tsx
-<BaseHeadingBreadcrumb
-  title="委託配送状況一覧"
-  breadcrumbItems={[{ title: "配送状況管理" }]}
-  // breadcrumb có link dùng AppLink:
-  // breadcrumbItems={[{ title: <AppLink href={ROUTE.DELIVERY_STATUS}>配送状況管理</AppLink> }]}
->
-  {/* children hiển thị ở bên phải (action buttons) */}
-  <BaseButton type="primary" ...>編集</BaseButton>
+<BaseHeadingBreadcrumb title="委託配送状況一覧"
+  breadcrumbItems={[{ title: <AppLink href={ROUTE.DELIVERY_STATUS}>配送状況管理</AppLink> }]}>
+  <BaseButton type="primary">編集</BaseButton>
 </BaseHeadingBreadcrumb>
 ```
 
----
-
-## 14. ChangePasswordPage Pattern
-
-ChangePasswordPage (route `/change-password`) đặc biệt ở chỗ dùng `skipAutoSuccessHandling: true`
-để render JSX trong `message.success`:
+**ChangePasswordPage** (`/change-password`): dùng `skipAutoSuccessHandling: true` để tự render JSX trong `message.success`.
 
 ```typescript
-const changePasswordMutation = useMutationCustom({
-  mutationFn: changePassword,
-  skipAutoSuccessHandling: true,  // tự gọi message.success với JSX
-});
-
-const onSubmit = async (data) => {
-  await changePasswordMutation.mutateAsync({ oldPassword, newPassword });
-  message.success({
-    content: (
-      <div className="text-txt-high">
-        <p className="mb-0 font-medium">成功しました</p>
-        <p className="mb-0">パスワードを変更しました。</p>
-      </div>
-    ),
-    style: { minWidth: 320 },
-  });
-  reset();
-};
+const changePasswordMutation = useMutationCustom({ mutationFn: changePassword, skipAutoSuccessHandling: true });
+await changePasswordMutation.mutateAsync({ oldPassword, newPassword });
+message.success({ content: (<div><p className="mb-0 font-medium">成功しました</p><p className="mb-0">パスワードを変更しました。</p></div>), style: { minWidth: 320 } });
+reset();
 ```
 
 ---
 
-## 15. Implementing Feature Mới — Checklist
+## 14. Checklist thêm tính năng mới
 
-1. Đọc DESIGN.md + API Contract trong task file
-2. Tạo service file trong `services/client/<domain>.service.ts`
-   - Endpoint thực tế theo API Contract (không dùng prefix `/operation/*`)
-   - Chưa có API: hỏi BE/TL, KHÔNG thêm mock (repo hiện không còn mock)
-3. Tạo hooks trong `hooks/use<Domain>.ts` — `useQuery` / `useMutationCustom`
+1. Đọc DESIGN.md + API Contract trong task file.
+2. Tạo `services/client/<domain>.service.ts` — endpoint theo API Contract (không dùng `/operation/*`). Chưa có API: hỏi BE/TL, không thêm mock.
+3. Tạo `hooks/use<Domain>.ts` — `useQuery` / `useMutationCustom`.
 4. Tạo page trong `pages/<domain>/`:
    - List: `<Domain>Page.tsx` + `components/<Domain>FilterBar.tsx` + `components/<domain>Columns.tsx`
-   - Detail: `<Domain>DetailPage.tsx` (lazy-loads `<Domain>DetailForm.tsx`)
-   - Filter constants: `components/<domain>Filter.constants.ts`
-5. Thêm route vào `routes/index.tsx`: `lazy()` + `withSuspense()`
-6. Thêm route constant vào `constants/route.ts`
-7. Thêm NAV_ITEMS entry vào `constants/nav.ts` nếu có menu mới
-8. Yup schema vào `validation/schemas.ts`
-9. **KHÔNG** tạo Redux slice mới trừ khi có client state thực sự (auth là slice duy nhất hiện tại)
+   - Detail: `<Domain>DetailPage.tsx` (lazy-load `<Domain>DetailForm.tsx`)
+   - Hằng lọc: `components/<domain>Filter.constants.ts`
+5. Thêm route vào `routes/index.tsx` (`lazy()` + `withSuspense()`).
+6. Thêm hằng vào `constants/route.ts`.
+7. Có menu mới → thêm vào `constants/nav.ts`.
+8. Schema yup → `validation/schemas.ts`.
+9. **Không** tạo Redux slice mới trừ khi có client state thật (hiện chỉ `auth`).
 
----
-
-## Trigger Tech Lead khi cần update overview
-
-```
-"Hãy là Tech Lead, cập nhật overview docs cho repo es-kitchen-web-outsource-web-private"
-```
-
----
-
-## 16. Bổ sung 2026-10-16 (từ code thật)
-
-- **Permission:** `useCan({ roles })` + `<RequiredPermission>` (`components/Common/RequiredPermission`), `validateUserPermissions` chỉ kiểm `roles` (`utils/client/permission.ts`).
-- **Postal code / vùng:** `usePostalCodeSearch`, `PostalAddressPickerModal`, dữ liệu `public/postal/` sinh bởi `npm run postal:build`; vùng đăng ký lấy từ `/register/regions/*`.
-- **Upload file:** presigned URL (`file-upload.service.ts`, `/uploads/presigned-upload-url[s]`) + `BaseUploadFile`/`BaseFilePreviewModal`; đính kèm giao hàng ở `delivery-status/deliveryAttachment.utils.ts`.
-- **Export / Import CSV:** `BaseButtonExport`/`BaseButtonDownload` (collection-reports export, `/fee-change-requests/import`).
-- **Lịch:** `components/ScheduleCalendar` (MonthCalendarGrid, CycleTag, TemperatureTag…) + `pages/schedule/components/week`; state lịch đồng bộ URL qua `scheduleUrl.ts`.
-- **Tab detail:** mỗi detail page có `*Tabs.constants.ts` (orders, delivery-status, driver, profile).
-- **Session hết hạn:** `SessionExpiredModal` + `services/http/sessionExpired.ts`; `useUnsavedChangesGuard` + `DiscardChangesModal` cho form dở.
-- **Fields:** `components/Common/Fields/Base*` (Input, Select, InfiniteSelect, TreeSelect, DatePicker, LinkedDatePickerFields, OTPInput, Checkbox/Radio…) dùng với react-hook-form.
+Cập nhật doc này: nhờ Tech Lead — "Hãy là Tech Lead, cập nhật overview docs cho repo es-kitchen-web-outsource-web-private".

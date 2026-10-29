@@ -1,15 +1,38 @@
 # es-kitchen-webapp-driver — Patterns & Conventions
 
 > Nguồn = es-kitchen-webapp-driver@62b870a ngày 2026-10-16.
-> Đọc file này trước khi viết code React cho E06 Driver Web App.
-> Stack khác với các web repo khác: **Zustand** thay RTK, **shadcn/ui** thay Ant Design.
+
+**File này nói gì:** cách làm đang chạy thật trong E06 (Driver Web App): state, UI, gọi API, đăng nhập, layout điện thoại, modal, quét mã vạch, luồng giao hàng ES nhiều bước.
+**Đọc khi:** sắp viết code React cho E06.
+**Nhớ:** stack khác các web còn lại — **Zustand thay Redux Toolkit, shadcn/ui thay Ant Design, sonner thay message/react-toastify**. Tên file/hook ở đây đều có trong bản cũ; chưa đọc lại toàn bộ source ngoài các mục đã ghi.
 
 ---
 
-## State Management — Zustand (không phải Redux)
+## 0. Tra nhanh: tình huống → cách xử lý → file mẫu
+
+| Tình huống | Cách xử lý | Mục | File mẫu |
+|---|---|---|---|
+| Cần state toàn cục mới | Tạo store zustand mới trong `stores/`, không nhét vào `useAuthStore` | §1 | `stores/useAuthStore.ts` |
+| Cần nút/ô nhập/checkbox | Dùng `components/ui/*` (shadcn); thêm bằng `npx shadcn@latest add <name>` | §2 | `components/ui/` |
+| Gọi API mới | Thêm service trong `services/client/`; xác nhận endpoint với BE (không prefix `/admin/`) | §3 | `auth.service.ts` |
+| Ghi dữ liệu | `useMutationCustom` | §5 | `hooks/useMutationCustom.ts` |
+| Hiện thông báo | `toast` từ `sonner` | §6 | `components/ui/sonner.tsx` |
+| Dùng icon SVG | `import X from "…svg?react"` | §8 | `statics/icons/` |
+| Trang chính (home/list) | Bọc bằng `BaseBottomSheet` | §11 | — |
+| Trang chi tiết toàn màn hình | `PageLayout` | §12 | `delivery/_components` |
+| Popup giữa / popup đáy | `BaseCenterModal` / `ModalBottom` | §13 | — |
+| Quét mã vạch | `BaseBarcodeCameraArea` | §14 | `ESStep3Scanner.tsx` |
+| Luồng nhiều bước | Bước lưu trên URL `?step=` | §15 | `useDeliveryESStep.ts` |
+| Phiên hết hạn | Interceptor + `SessionExpiredModal` | §4 | `services/http/handleResponse.ts` |
+
+---
+
+## 1. State — Zustand (không phải Redux)
+
+**Vấn đề:** cần giữ phiên đăng nhập ở một chỗ mọi component đọc được.
+**Cách làm:** một store zustand, `stores/useAuthStore.ts`.
 
 ```typescript
-// stores/useAuthStore.ts
 export const useAuthStore = create<AuthState & AuthActions>(set => ({
   accessToken: initialAccessToken,
   refreshToken: initialRefreshToken,
@@ -20,74 +43,65 @@ export const useAuthStore = create<AuthState & AuthActions>(set => ({
     setAuthCookies({ accessToken, refreshToken });
     set({ accessToken, refreshToken, user: null, status: SESSION_STATUS.LOADING });
   },
-
-  setCurrentUser(user) {
-    set({ user, status: SESSION_STATUS.AUTHENTICATED });
-  },
-
+  setCurrentUser(user) { set({ user, status: SESSION_STATUS.AUTHENTICATED }); },
   clearAuthState() {
     clearAuthCookies();
     set({ accessToken: null, refreshToken: null, user: null, status: SESSION_STATUS.UNAUTHENTICATED });
   },
-
-  // Đọc lại từ cookie — gọi khi tab focus / visibility change
-  syncAuthStateFromCookies() {
-    const accessToken = getAccessToken();
-    const refreshToken = getRefreshToken();
-    set({
-      accessToken,
-      refreshToken,
-      status: accessToken && refreshToken ? SESSION_STATUS.LOADING : SESSION_STATUS.UNAUTHENTICATED,
-      user: null,
-    });
-  },
+  // đọc lại từ cookie — gọi khi tab focus / visibility change
+  syncAuthStateFromCookies() { /* đọc cookie → set status LOADING hoặc UNAUTHENTICATED */ },
 }));
 
-// Dùng trong component
+// trong component
 const { user, setCurrentUser, clearAuthState } = useAuthStore();
 ```
 
-> ⚠️ Không import `useSelector`, `useDispatch`, hay bất kỳ RTK API nào ở repo này.
-
-Khi thêm state mới: tạo Zustand store mới, không nhét vào `useAuthStore`.
+**Bẫy:**
+- Không import `useSelector`, `useDispatch` hay API RTK nào ở repo này.
+- State mới → store zustand mới. Không nhét thêm vào `useAuthStore`.
+- Ngoài component (như interceptor) đọc store bằng `useAuthStore.getState()`.
 
 ---
 
-## UI Components — shadcn/ui + Common/*
+## 2. UI — shadcn/ui + `components/Common/*`
 
-Repo này dùng **shadcn/ui** thay Ant Design. Components nằm trong `src/components/ui/`.
+**Cách làm:** component gốc ở `src/components/ui/` (shadcn). Phía trên là lớp wrapper `src/components/Common/`.
 
 ```typescript
-// ✅ Dùng shadcn components
+// ✅ đúng
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-
-// ❌ Không import từ antd
-import { Button } from "antd"; // SAI — antd không có trong repo này
+// ❌ sai — antd không có trong repo này
+import { Button } from "antd";
 ```
 
-Bên cạnh shadcn, repo có layer **`src/components/Common/`** chứa các wrapper cao cấp hơn:
-
-| Component | Mô tả |
+| Component (`components/Common/`) | Việc |
 |---|---|
-| `PageLayout` | Full-screen overlay qua `createPortal`, dùng cho trang chi tiết |
-| `BaseBottomSheet` | Card container `rounded-t-[24px]` cho nội dung chính mỗi page |
-| `BaseCenterModal` | Modal overlay centered, `createPortal` |
-| `ModalBottom` | Modal bottom sheet, `createPortal`, safe area aware |
-| `BaseAuthButton` | CTA button gradient xanh (full-width, 52px) |
-| `BaseGradientButton` | FAB-style gradient button (square 44px, thường gắn icon scan) |
-| `BaseSegmentedTabs` | Tab sliding indicator tự custom |
-| `BasePhotoUpload` | Upload ảnh với preview grid 3 cột, iOS-safe hidden input |
+| `PageLayout` | Lớp phủ toàn màn hình qua `createPortal`, cho trang chi tiết |
+| `BaseBottomSheet` | Thẻ trắng bo góc trên `rounded-t-[24px]`, chứa nội dung chính mỗi trang |
+| `BaseCenterModal` | Modal giữa màn hình, `createPortal` |
+| `ModalBottom` | Modal dạng bottom sheet, `createPortal`, tính safe area |
+| `BaseAuthButton` | Nút CTA gradient xanh (full-width, 52px) |
+| `BaseGradientButton` | Nút kiểu FAB gradient (vuông 44px, thường gắn icon quét) |
+| `BaseSegmentedTabs` | Tab có thanh trượt tự viết |
+| `BasePhotoUpload` | Upload ảnh, preview lưới 3 cột, input ẩn an toàn cho iOS |
 | `BaseSectionTitle` | Tiêu đề section trong trang chi tiết |
 
-Thêm component shadcn mới: `npx shadcn@latest add <component-name>`
+Thêm component shadcn mới: `npx shadcn@latest add <component-name>`.
+
+Gộp class có điều kiện bằng `cn()`:
+
+```typescript
+import { cn } from "@/lib/utils";
+<div className={cn("base-class", isActive && "active-class", className)} />
+```
 
 ---
 
-## HTTP Client Pattern
+## 3. HTTP client và endpoint
 
-Cùng `Requester` class pattern với các web repo khác:
+**Cách làm:** cùng pattern `Requester` như các web khác.
 
 ```typescript
 // services/client/api.ts
@@ -95,132 +109,30 @@ const API = new Requester();
 export default API;
 ```
 
-API prefix của driver **không có prefix** như `/admin/` hay `/admin-company/`:
+Endpoint auth thật (`services/client/auth.service.ts`):
 
 ```typescript
-// services/client/auth.service.ts — endpoint thực tế
 const APIs = {
   SIGNIN: "/auth/login",
-  ME: "/account/me",                              // ⚠️ không phải /company/me
+  ME: "/account/me",                                          // không phải /company/me
   LOGOUT: "/auth/logout",
   FORGOT_PASSWORD: "/auth/forgot-password/request",
   VERIFY_FORGOT_PASSWORD_OTP: "/auth/forgot-password/verify-otp",
-  RESET_PASSWORD: "/auth/forgot-password/reset-password", // ⚠️ không phải /confirm
+  RESET_PASSWORD: "/auth/forgot-password/reset-password",     // không phải /confirm
 };
+
+export const signIn = async (values: { driverCode: string; password: string }):
+  Promise<IBaseApiResponse<AdminLoginResponse>> => API.post(APIs.SIGNIN, values);
 ```
 
-Login dùng `driverCode` + `password` (không phải `email` hay `companyCode`):
-
-```typescript
-export const signIn = async (values: {
-  driverCode: string;   // ⚠️ field là driverCode, không phải companyCode
-  password: string;
-}): Promise<IBaseApiResponse<AdminLoginResponse>> => {
-  return API.post(APIs.SIGNIN, values);
-};
-```
-
-401 response → interceptor tự gọi `useAuthStore.getState().clearAuthState()`.
+**Bẫy:**
+- **Không có prefix** `/admin/` hay `/admin-company/`.
+- Login dùng `driverCode` + `password` — không phải `email` hay `companyCode`.
+- Hiện không còn `MOCK_*` trong `src/` (đã grep). Trang mới phải gọi API thật.
 
 ---
 
-## TanStack Query Pattern (v5)
-
-Cùng object syntax với các repo khác:
-
-```typescript
-// ✅ v5 syntax
-const { data } = useQuery({
-  queryKey: ['driver-orders', filters],
-  queryFn: () => driverService.getOrders(filters),
-});
-
-// ✅ Dùng useMutationCustom thay useMutation trực tiếp (xem section riêng bên dưới)
-const { mutate } = useMutationCustom({
-  mutationFn: (orderId: string) => driverService.updateOrderStatus(orderId),
-  customSuccessMessage: "更新しました",
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['driver-orders'] });
-  },
-});
-```
-
-> Hiện tại nhiều page vẫn dùng mock data (`MOCK_*`). Khi implement API thật, thay `useState(MOCK_*)` bằng `useQuery`.
-
----
-
-## useMutationCustom — Mutation Wrapper
-
-Wrapper bọc `useMutation` với auto toast error/success. **Dùng thay cho `useMutation` trực tiếp trong mọi mutation**.
-
-```typescript
-import { useMutationCustom } from "@/hooks/useMutationCustom";
-
-const { mutate, isPending } = useMutationCustom({
-  mutationFn: deliveryService.completeDelivery,
-
-  // Auto toast.error với message từ response — mặc định bật
-  // skipAutoErrorHandling: true,          // tắt nếu muốn tự xử lý error
-
-  // Auto toast.success — chỉ bật khi có customSuccessMessage
-  customSuccessMessage: "配送完了しました",
-
-  onSuccess: (data) => {
-    queryClient.invalidateQueries({ queryKey: ['deliveries'] });
-    navigate(ROUTE.HOME);
-  },
-});
-```
-
----
-
-## Toast — sonner (không phải AntD message)
-
-```typescript
-import { toast } from "sonner";
-
-// ✅ Dùng sonner
-toast.success("配送完了しました");
-toast.error("エラーが発生しました");
-
-// ❌ Không dùng
-import { message } from "antd"; // SAI
-```
-
-`<Toaster />` đã được mount tại root qua `components/ui/sonner.tsx`.
-
----
-
-## shadcn cn() Utility
-
-```typescript
-import { cn } from "@/lib/utils";
-
-// Kết hợp class có điều kiện
-<div className={cn("base-class", isActive && "active-class", className)} />
-```
-
----
-
-## SVG Import via `?react`
-
-Tất cả icon SVG import qua vite-plugin-svgr với suffix `?react` để render thành React component:
-
-```typescript
-// ✅ Đúng — trở thành React component
-import ScanBarcodeIcon from "@/statics/icons/scan-barcode.svg?react";
-import TruckIcon from "@/statics/icons/truck.svg?react";
-
-// Dùng như component thông thường, có thể truyền className
-<TruckIcon className="text-text-low size-3.5 shrink-0" />
-<ScanBarcodeIcon className="w-full" />
-```
-
-Không import SVG dưới dạng URL string rồi dùng `<img src>` — mất khả năng tô màu qua CSS.
-
----
-
-## Auth Flow
+## 4. Đăng nhập và phiên hết hạn
 
 ```
 App khởi động → AuthBootstrap.tsx → syncAuthStateFromCookies()
@@ -228,375 +140,320 @@ App khởi động → AuthBootstrap.tsx → syncAuthStateFromCookies()
   → setCurrentUser() → status = AUTHENTICATED
 
 Login → POST /auth/login (driverCode + password)
-  → setAuthTokens() → cookies + Zustand store (status = LOADING)
+  → setAuthTokens() → cookie + store (status = LOADING)
   → fetchCurrentUser() → setCurrentUser()
   → redirect /home
-
-401 → Axios interceptor → clearAuthState() → status = UNAUTHENTICATED → redirect /login
 ```
+
+Xử lý 401 (`services/http/handleResponse.ts`):
+
+```typescript
+onError: (error) => {
+  if (isSessionExpiredError(error)) notifySessionExpired();      // → SessionExpiredModal
+  else if (error.response?.status === 401) useAuthStore.getState().clearAuthState();
+  return Promise.reject(error);
+}
+```
+
+- `isSessionExpiredError` = 401 **và** request đã mang header `Authorization`. Lý do: login/quên mật khẩu sai cũng trả 401, đó không phải hết phiên (`sessionExpired.ts`).
+- Chỉ thấy xóa phiên; không thấy gọi refresh token trong `handleResponse.ts`.
+- Guard: `PublicOnly` đã đăng nhập → `/home`; `RequireAuth` chưa đăng nhập → `/login` (kèm `?redirect=`).
 
 ---
 
-## Layout Structure
+## 5. TanStack Query (v5, object syntax) và `useMutationCustom`
 
-Tất cả trang đã auth wrap trong `AuthLayout`:
+**Truy vấn:**
+
+```typescript
+const { data } = useQuery({
+  queryKey: ['driver-orders', filters],
+  queryFn: () => driverService.getOrders(filters),
+});
+```
+
+(Ví dụ minh họa của bản cũ; hook thật theo trang: `useDeliveryList`, `useDeliveryDetail`… trong `pages/delivery/hooks/`.)
+
+Mặc định (`queryClient.ts`): `staleTime` 5 phút, `retry: 1`, không refetch khi focus cửa sổ.
+
+**Ghi dữ liệu — luôn qua `useMutationCustom`** (wrapper bọc `useMutation`, tự `toast.error` với message từ response):
+
+```typescript
+import { useMutationCustom } from "@/hooks/useMutationCustom";
+
+const { mutate, isPending } = useMutationCustom({
+  mutationFn: deliveryService.completeDelivery,
+  // skipAutoErrorHandling: true,      // tắt toast lỗi tự động nếu muốn tự xử lý
+  customSuccessMessage: "配送完了しました",   // chỉ có thì mới toast.success
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['deliveries'] });
+    navigate(ROUTE.HOME);
+  },
+});
+```
+
+Option: `skipAutoErrorHandling`, `skipAutoSuccessHandling`, `customErrorMessage`, `customSuccessMessage`.
+
+**Bẫy:** quên `invalidateQueries` → danh sách vẫn hiện dữ liệu cũ (cache 5 phút).
+
+---
+
+## 6. Toast — sonner
+
+```typescript
+import { toast } from "sonner";
+toast.success("配送完了しました");
+toast.error("エラーが発生しました");
+// ❌ import { message } from "antd";
+```
+
+`<Toaster />` đã mount ở root (`components/ui/sonner.tsx`, `top-center`).
+
+---
+
+## 7. Hook dùng chung
+
+| Hook | Việc |
+|---|---|
+| `useTableParams` | Đồng bộ phân trang / sort / lọc với URL; dùng `queueMicrotask` để gộp cập nhật |
+| `useMutationCustom` | `useMutation` + toast tự động (§5) |
+| `useAuth` | Đọc `user` từ `useAuthStore`, có `driverName` |
+| `useDebouncedValue` | Trì hoãn giá trị ô tìm kiếm |
+| `useInView` | IntersectionObserver cho hiệu ứng lazy (ngắt sau lần hiện đầu) |
+| `useCan` | Kiểm quyền theo vai trò |
+
+---
+
+## 8. Icon SVG — import `?react`
+
+```typescript
+// ✅ trở thành component React (đổi màu được qua CSS)
+import ScanBarcodeIcon from "@/statics/icons/scan-barcode.svg?react";
+<TruckIcon className="text-text-low size-3.5 shrink-0" />
+```
+
+**Bẫy:** import SVG thành chuỗi URL rồi `<img src>` → mất khả năng tô màu bằng CSS.
+
+---
+
+## 9. Layout và thanh tab dưới
 
 ```
 AuthLayout
-├── <Outlet />           ← các page render vào đây
-│   (AuthCenteredLayout hoặc AuthLayout tùy group)
-└── BottomNavigation     ← fixed, luôn hiển thị
+├── <Outlet />          các trang render ở đây
+└── BottomNavigation    cố định, luôn hiện
+(AuthCenteredLayout: trang reset-success, không có thanh tab)
 ```
 
-**BottomNavigation** — 5 tabs, `NavLink` + `isActive` swap icon outline/bold:
+`BottomNavigation`: 5 tab, `NavLink` + `isActive` đổi icon outline/bold.
 
 | Tab | Route | Icon |
 |---|---|---|
 | ホーム | `/home` | home / home-bold |
-| マニュアル | link ngoài `MANUAL_URL` (PDF ES Station, `target="_blank"`) — không phải `/orders` | book / book-bold |
+| マニュアル | link ngoài `MANUAL_URL` (PDF ES Station, `target="_blank"`) — **không** phải `/orders` | book / book-bold |
 | 配送一覧 | `/delivery` | truck / truck-bold |
 | トラブル | `/issues` | siren / siren-bold |
 | アカウント | `/account` | account / account-bold |
 
 ---
 
-## Routing Pattern
+## 10. Routing
 
 ```typescript
-// routes/index.tsx — cấu trúc thực tế
+// routes/index.tsx
 export const router = createBrowserRouter([
-  {
-    element: <PublicOnly />,        // redirect → /home nếu đã auth
+  { element: <PublicOnly />,            // đã đăng nhập → /home
+    children: [{ element: withSuspense(<NonAuthLayout />), children: [
+      { path: ROUTE.LOGIN, element: <LoginPage /> },
+      { path: ROUTE.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
+      { path: ROUTE.VERIFY, element: <VerifyCodePage /> },
+      { path: ROUTE.RESET_PASSWORD, element: <ResetPasswordPage /> },
+    ] }] },
+  { element: <RequireAuth />,           // chưa đăng nhập → /login
     children: [
-      {
-        element: withSuspense(<NonAuthLayout />),
-        children: [
-          { path: ROUTE.LOGIN, element: <LoginPage /> },
-          { path: ROUTE.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
-          { path: ROUTE.VERIFY, element: <VerifyCodePage /> },
-          { path: ROUTE.RESET_PASSWORD, element: <ResetPasswordPage /> },
-        ],
-      },
-    ],
-  },
-  {
-    element: <RequireAuth />,       // redirect → /login nếu chưa auth
-    children: [
-      {
-        element: <AuthCenteredLayout />,   // trang reset thành công (không có bottom nav)
-        children: [
-          { path: ROUTE.RESET_SUCCESS, element: withSuspense(<ResetSuccessPage />) },
-        ],
-      },
-      {
-        element: <AuthLayout />,           // trang chính — có bottom nav
-        children: [
-          { path: ROUTE.HOME, element: withSuspense(<HomePage />) },
-          { path: ROUTE.DELIVERY, element: withSuspense(<DeliveryPage />) },
-          { path: ROUTE.DELIVERY_DETAIL, element: withSuspense(<DeliveryDetailPage />) },
-          { path: ROUTE.ORDERS, element: withSuspense(<OrdersPage />) },
-          { path: ROUTE.ISSUES, element: withSuspense(<IssuesPage />) },
-          { path: ROUTE.ACCOUNT, element: withSuspense(<AccountPage />) },
-          { path: ROUTE.NOTIFICATIONS, element: withSuspense(<NotificationsPage />) },
-        ],
-      },
-    ],
-  },
+      { element: <AuthCenteredLayout />, children: [{ path: ROUTE.RESET_SUCCESS, element: withSuspense(<ResetSuccessPage />) }] },
+      { element: <AuthLayout />, children: [
+        { path: ROUTE.HOME, element: withSuspense(<HomePage />) },
+        { path: ROUTE.DELIVERY, element: withSuspense(<DeliveryPage />) },
+        { path: ROUTE.DELIVERY_DETAIL, element: withSuspense(<DeliveryDetailPage />) },
+        { path: ROUTE.ORDERS, element: withSuspense(<OrdersPage />) },
+        { path: ROUTE.ISSUES, element: withSuspense(<IssuesPage />) },
+        { path: ROUTE.ACCOUNT, element: withSuspense(<AccountPage />) },
+        { path: ROUTE.NOTIFICATIONS, element: withSuspense(<NotificationsPage />) },
+      ] },
+    ] },
   { path: "*", element: <Navigate to={ROUTE.LOGIN} replace /> },
 ]);
 ```
 
-Tất cả page lazy-loaded qua `React.lazy` + `withSuspense` (fallback = `BaseLoadingFullScreen`).
+Mọi trang lazy-load qua `React.lazy` + `withSuspense` (fallback = `BaseLoadingFullScreen`). Đây là rút gọn; các route `/issues/:id`, `/notifications/:id` có trong `structure.md` §5.
 
 ---
 
-## BaseBottomSheet — Container Card chính
+## 11. `BaseBottomSheet` — thẻ nội dung chính
 
-Dùng để bọc nội dung chính của các trang home/delivery/orders — tạo hiệu ứng card trắng bo góc trên, tự padding tránh bottom nav:
+Dùng cho home / delivery / orders: thẻ trắng bo góc trên, tự chừa chỗ cho thanh tab dưới.
 
 ```tsx
-import BaseBottomSheet from "@/components/Common/BaseBottomSheet";
-
-// Dùng trong page
 <div className="flex flex-1 flex-col">
   <Logo />
   <Header />
-
-  <BaseBottomSheet>
-    {/* nội dung trang */}
-  </BaseBottomSheet>
+  <BaseBottomSheet>{/* nội dung trang */}</BaseBottomSheet>
 </div>
 ```
 
-Đã xử lý `padding-bottom: calc(--bottom-nav-height + env(safe-area-inset-bottom) + 16px)` — **không tự thêm padding bottom** khi wrap bằng `BaseBottomSheet`.
+Đã tính sẵn `padding-bottom: calc(--bottom-nav-height + env(safe-area-inset-bottom) + 16px)`.
+**Bẫy:** không tự thêm padding-bottom khi đã bọc bằng `BaseBottomSheet`.
 
 ---
 
-## PageLayout — Full-Screen Overlay cho trang chi tiết
+## 12. `PageLayout` — trang chi tiết toàn màn hình
 
-Dùng cho tất cả trang chi tiết giao hàng (COOL detail, ES delivery steps). Render qua `createPortal` vào `document.body`, z-index 20, che toàn màn hình kể cả bottom nav.
+Dùng cho mọi trang chi tiết giao hàng (COOL, các bước ES). Render qua `createPortal` vào `document.body`, z-index 20, che cả thanh tab dưới.
 
 ```tsx
-import PageLayout from "@/components/Common/PageLayout";
-
 <PageLayout
   title="COOL便"
-  header={{ onBack: () => navigate(-1) }}   // mặc định: navigate(-1) hoặc về /home
-  headerActions={
-    <Button variant="icon" size="icon" onClick={handleIssue}>
-      <SirenIcon className="size-6!" />
-    </Button>
-  }
+  header={{ onBack: () => navigate(-1) }}     // mặc định: navigate(-1) hoặc về /home
+  headerActions={<Button variant="icon" size="icon" onClick={handleIssue}><SirenIcon className="size-6!" /></Button>}
   footer={{
-    confirmText: "完了",
-    onConfirm: handleComplete,
-    confirmDisabled: !allChecked,
-    cancelText: "戻る",          // optional — nếu có thì footer 2 cột
-    onCancel: handleBack,
+    confirmText: "完了", onConfirm: handleComplete, confirmDisabled: !allChecked,
+    cancelText: "戻る", onCancel: handleBack,   // có cancelText thì footer 2 cột
   }}
   className="flex flex-1 flex-col"
 >
-  {/* nội dung trang — scroll tự động qua main overflow-y-auto */}
-  <div className="flex flex-col gap-4 px-4 py-4">
-    ...
-  </div>
+  <div className="flex flex-col gap-4 px-4 py-4">...</div>   {/* cuộn tự động qua main overflow-y-auto */}
 </PageLayout>
 ```
 
-**Quan trọng:** Không dùng `BaseBottomSheet` bên trong `PageLayout` — `PageLayout` đã tự quản lý scroll.
+**Bẫy:** không đặt `BaseBottomSheet` bên trong `PageLayout` — `PageLayout` đã tự quản lý cuộn.
 
 ---
 
-## Modal Patterns
+## 13. Modal — chọn theo kiểu hiển thị
 
-Hai loại modal, chọn theo UX:
-
-### BaseCenterModal — Modal giữa màn hình
+| Cần | Dùng | Ghi chú |
+|---|---|---|
+| Hộp thoại giữa màn hình | `BaseCenterModal` | `createPortal`, bấm nền để đóng, bo 24px; props `open`, `onClose`, `title?`, `showCloseButton?` (mặc định false) |
+| Bảng trượt từ đáy | `ModalBottom` | `rounded-t-2xl`, tự tính `env(safe-area-inset-bottom)`; `showCloseButton` mặc định true |
 
 ```tsx
-import BaseCenterModal from "@/components/Common/BaseCenterModal";
-
-<BaseCenterModal
-  open={showModal}
-  onClose={() => setShowModal(false)}
-  title="タイトル"           // optional
-  showCloseButton={true}    // optional, default false
->
-  <p>内容...</p>
+<BaseCenterModal open={showModal} onClose={() => setShowModal(false)} title="タイトル" showCloseButton>
   <Button onClick={handleConfirm}>確認</Button>
 </BaseCenterModal>
+<ModalBottom open={showSheet} onClose={() => setShowSheet(false)} title="フィルター">...</ModalBottom>
 ```
-
-Render qua `createPortal`, click backdrop đóng modal. Border radius 24px.
-
-### ModalBottom — Bottom Sheet Modal
-
-```tsx
-import ModalBottom from "@/components/Common/ModalBottom";
-
-<ModalBottom
-  open={showSheet}
-  onClose={() => setShowSheet(false)}
-  title="フィルター"
-  showCloseButton={true}    // default true
->
-  {/* nội dung */}
-</ModalBottom>
-```
-
-`rounded-t-2xl`, padding bottom tự tính `env(safe-area-inset-bottom)`.
 
 ---
 
-## Barcode Scanner — BaseBarcodeCameraArea
+## 14. Quét mã vạch — `BaseBarcodeCameraArea`
 
-Dùng `react-barcode-scanner` (polyfill `BarcodeDetector` browser API) để quét barcode/QR qua camera sau.
+**Vấn đề:** tài xế quét mã vạch/QR bằng camera sau.
+**Cách làm:** `react-barcode-scanner` (polyfill `BarcodeDetector`).
 
 ```tsx
-import "react-barcode-scanner/polyfill";  // import ở file consumer
+import "react-barcode-scanner/polyfill";   // import ở file dùng
 import BaseBarcodeCameraArea from "./_shared/BaseBarcodeCameraArea";
 
 <BaseBarcodeCameraArea
-  onScan={(value: string) => {
-    // value = rawValue của barcode được detect
-    handleBarcodeScanned(value);
-  }}
-  paused={showResultModal}   // tạm dừng scan khi modal kết quả đang mở
+  onScan={(value: string) => handleBarcodeScanned(value)}   // value = rawValue
+  paused={showResultModal}                                  // dừng quét khi modal kết quả mở
 />
 ```
 
-**Camera states:** `idle` (chưa bật) → user tap → `granted` (đang scan) hoặc `denied`/`unsupported`.
+- Trạng thái camera: `idle` → người dùng chạm → `granted` (đang quét) hoặc `denied` / `unsupported`.
+- Cooldown 3 giây: cùng một mã bị bỏ qua 3 giây sau lần quét đầu.
+- Cần HTTPS: component tự kiểm `window.isSecureContext`, báo lỗi nếu không.
+- Camera tự tắt trong cleanup của `useEffect` — không cần tắt thêm từ ngoài.
 
-**Cooldown 3s:** barcode giống nhau bị bỏ qua 3 giây sau lần scan đầu (tránh trigger liên tục).
-
-**HTTPS required:** `BaseBarcodeCameraArea` tự check `window.isSecureContext`, hiển thị error nếu không phải HTTPS.
-
-**Cleanup:** stream camera được stop trong `useEffect` cleanup — **không cần gọi thêm** từ bên ngoài.
-
-Pattern dùng scan: bấm nút FAB `BaseGradientButton` để navigate đến sub-view scanner (`ESStepView.Step2Scan`), sau khi scan xong mở `BaseCenterModal` để confirm số lượng:
+Luồng dùng: bấm FAB `BaseGradientButton` → sang sub-view quét (`ESStepView.Step2Scan`) → quét xong mở `BaseCenterModal` xác nhận số lượng.
 
 ```tsx
-// ESStep2Inventory.tsx — FAB button mở scanner sub-view
-<BaseGradientButton onClick={() => step.goTo(ESStepView.Step2Scan)}>
-  <ScanIcon className="size-6 shrink-0 text-white" />
-</BaseGradientButton>
-
-// ESStep3Scanner.tsx — scanner sub-view gọi callback
+// ESStep2Inventory.tsx
+<BaseGradientButton onClick={() => step.goTo(ESStepView.Step2Scan)}><ScanIcon className="size-6 shrink-0 text-white" /></BaseGradientButton>
+// ESStep3Scanner.tsx
 <BaseBarcodeCameraArea onScan={step.openStep3ScanModal} paused={step.showStep3ScanModal} />
 ```
 
 ---
 
-## ES Delivery Multi-Step Flow
+## 15. Luồng giao hàng ES nhiều bước
 
-ES배送便 có flow nhiều bước, state được quản lý bởi `useDeliveryESStep` hook và persisted qua URL search param `?step=`.
+**Vấn đề:** giao ES có nhiều bước; bấm nút Back của trình duyệt phải về đúng bước, reload không mất bước.
+**Cách làm:** bước hiện tại lưu trên URL `?step=`, quản lý bởi hook `useDeliveryESStep`.
 
 ```typescript
-// useDeliveryESStep.ts — step navigation qua URL
-import { useSearchParams } from "react-router-dom";
-
 export enum ESStepView {
-  Detail      = "detail",
-  Step1       = "step1",       // 陳列前写真
-  Step2       = "step2",       // 在庫/廃棄
-  Step2Scan   = "step2-scan",  // scanner sub-view
-  Step2Confirm= "step2-confirm",
-  Step3       = "step3",       // 陳列
-  Step3Scan   = "step3-scan",
-  Step3Confirm= "step3-confirm",
-  Step4       = "step4",       // 陳列後写真
-  Step5       = "step5",       // 集金登録
+  Detail = "detail",
+  Step1 = "step1",             // 陳列前写真
+  Step2 = "step2",             // 在庫/廃棄
+  Step2Scan = "step2-scan",    // sub-view quét
+  Step2Confirm = "step2-confirm",
+  Step3 = "step3",             // 陳列
+  Step3Scan = "step3-scan",
+  Step3Confirm = "step3-confirm",
+  Step4 = "step4",             // 陳列後写真
+  Step5 = "step5",             // 集金登録
 }
-
-// goTo thay đổi ?step= trong URL — browser back button hoạt động đúng
-step.goTo(ESStepView.Step2);
+step.goTo(ESStepView.Step2);   // đổi ?step= trên URL
 ```
 
-`DeliveryDetailPage` đọc `?type=` param để quyết định render `DeliveryESDetailPage` hay `DeliveryCoolDetailPage`:
+`DeliveryDetailPage` đọc `?type=` để chọn màn:
 
 ```tsx
-const DeliveryDetailPage = () => {
-  const [searchParams] = useSearchParams();
-  const type = searchParams.get("type") as DeliveryType | null;
-  return type === DeliveryType.ES ? <DeliveryESDetailPage /> : <DeliveryCoolDetailPage />;
-};
+const type = searchParams.get("type") as DeliveryType | null;
+return type === DeliveryType.ES ? <DeliveryESDetailPage /> : <DeliveryCoolDetailPage />;
 ```
 
-**ArrangementStepper** hiển thị tiến trình 5 bước (陳列前 → 在庫/廃棄 → 陳列 → 陳列後 → 集金登録):
+`ArrangementStepper` hiện 5 bước (陳列前 → 在庫/廃棄 → 陳列 → 陳列後 → 集金登録):
 
 ```tsx
-import ArrangementStepper from "./_shared/ArrangementStepper";
-
-// activeIndex: step đang làm (0-based), completedUpTo: số bước đã xong
-<ArrangementStepper activeIndex={1} completedUpTo={1} />
+<ArrangementStepper activeIndex={1} completedUpTo={1} />   // activeIndex: bước đang làm (từ 0); completedUpTo: số bước đã xong
 ```
 
 ---
 
-## Order Card Patterns
+## 16. Thẻ đơn hàng, trang chủ, tab
 
-Hai loại card dùng chung pattern (icon badge + company + status + depot + address + phones):
+**Hai loại thẻ** (cùng bố cục: badge icon + công ty + trạng thái + kho + địa chỉ + số điện thoại):
 
-| Component | Dùng ở | Click behavior |
+| Component | Dùng ở | Khi bấm |
 |---|---|---|
-| `DeliveryOrderCard` | HomePage (DayGroup) | `Link` navigate → `/delivery/:id?type=` |
-| `OrderListCard` | DeliveryPage (ES/COOL tab) | `button` + `onClick` prop |
+| `DeliveryOrderCard` | HomePage (DayGroup) | `Link` → `/delivery/:id?type=` |
+| `OrderListCard` | DeliveryPage (tab ES/COOL) | `button` + prop `onClick` |
 
 ```tsx
-// DeliveryOrderCard — clickable: false khi dùng bên trong DepotCard (warehouse child)
-<DeliveryOrderCard order={order} clickable={true} isChildrenCard={false} />
-
-// OrderListCard — TROUBLE status: tự pin lên đầu list + hiện alert strip đỏ
+<DeliveryOrderCard order={order} clickable={true} isChildrenCard={false} />  // clickable=false khi nằm trong DepotCard
+// OrderListCard: trạng thái TROUBLE tự ghim lên đầu + dải cảnh báo đỏ
 const filtered = [...items].sort((a, b) => (a.status === "TROUBLE" ? -1 : b.status === "TROUBLE" ? 1 : 0));
-filtered.map(order => <OrderListCard key={order.id} order={order} onClick={() => handleClick(order)} />)
 ```
 
-**DepotCard** — card kho hàng, collapsible, hiển thị danh sách child orders khi expand:
+- `DepotCard`: thẻ kho, thu gọn/mở, hiện đơn con khi mở: `<DepotCard depot={warehouseItem} onPress={...} />`.
+- `StatusBadge`: union phân biệt 2 loại: `<StatusBadge variant="order" status={order.status} />` hoặc `variant="warehouse"`.
+
+**Trang chủ:** `DeliveryStats` (tổng / hoàn thành / còn lại + thanh tiến độ) phủ lên ảnh nền; `DeliverySchedule` trong `BaseBottomSheet` render các `DayGroup` (mỗi nhóm: WAREHOUSE lên đầu, COMPLETED xuống cuối); `EmptyAllDays` khi không có gì.
+
+**`BaseSegmentedTabs`:** tab có thanh trượt, tính vị trí bằng `offsetLeft` + `offsetWidth` trong `useEffect`.
 
 ```tsx
-<DepotCard depot={warehouseItem} onPress={() => setSelectedDepot(warehouseItem)} />
-```
-
-**StatusBadge** — dùng discriminated union để type-safe với 2 loại status:
-
-```tsx
-import StatusBadge from "./StatusBadge";
-
-<StatusBadge variant="order" status={order.status} />     // OrderStatus
-<StatusBadge variant="warehouse" status={depot.status} /> // WarehouseStatus
-```
-
----
-
-## Home Page — DeliveryStats + DeliverySchedule
-
-Home page gồm 2 thành phần chính:
-
-```tsx
-// Stats card (overlays bg image)
-<div className="mx-4">
-  <DeliveryStats stats={stats} />   // tổng/hoàn thành/còn lại + progress bar animated
-</div>
-
-// Schedule sheet (BaseBottomSheet)
-<BaseBottomSheet className="mt-3">
-  <DeliverySchedule schedule={schedule} />
-  {allEmpty && <EmptyAllDays />}
-</BaseBottomSheet>
-```
-
-`DeliverySchedule` render danh sách `DayGroup`, mỗi group sort item: WAREHOUSE lên đầu, COMPLETED xuống cuối.
-
----
-
-## BaseSegmentedTabs — Sliding Indicator Tabs
-
-Custom tab với sliding indicator dùng `offsetLeft` + `offsetWidth` tính qua `useEffect`:
-
-```tsx
-import BaseSegmentedTabs from "@/components/Common/BaseSegmentedTabs";
-import type { SegmentedTabItem } from "@/components/Common/BaseSegmentedTabs";
-
 const tabs: SegmentedTabItem[] = [
-  { key: "warehouse", label: "倉庫受付" },
-  { key: "es", label: "ES配送便" },
-  { key: "cool", label: "COOL便" },
+  { key: "warehouse", label: "倉庫受付" }, { key: "es", label: "ES配送便" }, { key: "cool", label: "COOL便" },
 ];
-
 <BaseSegmentedTabs tabs={tabs} activeKey={activeTab} onChange={setActiveTab} />
 ```
 
-`DeliveryTab` (`delivery/_components/DeliveryTab.tsx`) là variant của `BaseSegmentedTabs` hiển thị badge count.
+`DeliveryTab` (`delivery/_components/DeliveryTab.tsx`) là biến thể có badge đếm số.
 
 ---
 
-## Custom Hooks
+## 17. Checklist thêm trang mới
 
-| Hook | Mô tả |
-|---|---|
-| `useTableParams` | Sync pagination/sort/filter với URL search params; dùng `queueMicrotask` để batch updates |
-| `useMutationCustom` | Wrapper useMutation + auto toast (xem section riêng) |
-| `useAuth` | Đọc `user` từ `useAuthStore`, expose `driverName` |
-| `useDebouncedValue` | Debounce giá trị input cho search |
-| `useInView` | IntersectionObserver hook cho lazy-animate (disconnect sau lần đầu visible) |
-| `useCan` | Permission check dựa trên user role |
-
----
-
-## Thêm page mới — Checklist
-
-- [ ] Tạo folder trong `src/pages/<domain>/`
-- [ ] Thêm lazy import + route vào `routes/index.tsx`
-- [ ] Thêm route path vào `constants/route.ts`
-- [ ] Thêm service file `services/client/<domain>.service.ts` nếu cần API mới
-- [ ] API endpoint **không có prefix** `/admin/` — xác nhận với BE trước khi code
-- [ ] Login field là `driverCode` (không phải `companyCode` hay `email`)
-- [ ] ME endpoint là `/account/me` (không phải `/company/me`)
-- [ ] Dùng shadcn/ui + `components/Common/*` — không import từ `antd`
-- [ ] State mới → Zustand store mới trong `stores/` — không nhét vào `useAuthStore`
-- [ ] Toast → `sonner`, không dùng `antd message`
-- [ ] Mutation → `useMutationCustom` thay `useMutation` trực tiếp
-- [ ] SVG icon → import `?react` suffix, không dùng `<img src>`
-- [ ] Trang chi tiết (full-screen overlay) → dùng `PageLayout`
-- [ ] Trang chính (home/list) → bọc nội dung bằng `BaseBottomSheet`
-- [ ] Modal centered → `BaseCenterModal`; modal bottom sheet → `ModalBottom`
+- [ ] Tạo thư mục `src/pages/<domain>/`.
+- [ ] Thêm lazy import + route vào `routes/index.tsx`; thêm path vào `constants/route.ts`.
+- [ ] Cần API mới → `services/client/<domain>.service.ts`; endpoint **không có prefix `/admin/`**, xác nhận với BE trước.
+- [ ] Login là `driverCode`; ME là `/account/me`.
+- [ ] UI: shadcn/ui + `components/Common/*`; không import `antd`.
+- [ ] State mới → store zustand mới; toast → `sonner`; mutation → `useMutationCustom`.
+- [ ] Icon SVG → `?react`.
+- [ ] Trang chi tiết toàn màn hình → `PageLayout`; trang chính → `BaseBottomSheet`.
+- [ ] Modal giữa → `BaseCenterModal`; modal đáy → `ModalBottom`.
