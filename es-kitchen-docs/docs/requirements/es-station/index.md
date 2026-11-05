@@ -268,7 +268,6 @@ Ký hiệu: **+** Thêm mới · **-** Xóa · **~** Sửa nội dung.
 
 | Mã | Nhóm | Mức | Màn hình | Prototype | Nội dung thay đổi chi tiết |
 |---|---|---|---|---|---|
-
 | `AW_ACCT` | Admin | 🟢 Nhỏ | Danh sách tài khoản | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_ACCT_Danh_s%C3%A1ch_t%C3%A0i_kho%E1%BA%A3n.html" target="_blank">🔗 Xem</a> | + Thêm: CSV出力 / タブ / 検索条件…<br>~ Sửa: 0件の表示 / CSV出力 / タブ / 検索条件… |
 | `AW_ACTL` | Admin | 🔴 Lớn | Quyết toán thực tế | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_ACTL_Quy%E1%BA%BFt_to%C3%A1n_th%E1%BB%B1c_t%C3%ADch.html" target="_blank">🔗 Xem</a> | + Thêm: 確定済みの行 / 参照のみの画面 / 休止中の行…<br>- Xóa: 0件の表示 / 確定の結果 / 確定済みの行…<br>~ Sửa: ヘッダー / 画面名 / CSV出力 / 見出しの下の情報… |
 | `AW_AGCY` | Admin | 🟢 Nhỏ | Master đại lý | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_AGCY_Master_%C4%91%E1%BA%A1i_l%C3%BD.html" target="_blank">🔗 Xem</a> | + Thêm: ヘッダー / CSV出力 / 新規登録…<br>- Xóa: タブ（紹介履歴・支払履歴・変更履歴）<br>~ Sửa: ヘッダー / CSV出力 / 新規登録 / 検索条件… |
