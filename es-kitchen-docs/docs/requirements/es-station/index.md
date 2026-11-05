@@ -28,8 +28,11 @@ Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/
 
 !!! info "Cách dùng"
     - **Yêu cầu:** bấm `VI` hoặc `JA` để mở file Markdown (trang đầy đủ trong wiki).
-    - **Flow / Thiết kế màn hình:** bấm **Toàn trang** để mở file HTML ở **tab mới, full màn hình**. Thiết kế màn hình mở bằng tiếng Việt; bấm 「日本語」 trên thanh trên để xem bản gốc.
+    - **Flow / Thiết kế màn hình / Demo:** bấm **Toàn trang** để mở file HTML ở **tab mới, full màn hình**. Thiết kế màn hình mở bằng tiếng Việt; bấm 「日本語」 trên thanh trên để xem bản gốc.
     - Bản `vi` là bản dịch; bản `ja` là bản gốc. Khi khác nhau, **`docs/決定台帳.md` (sổ quyết định) là chuẩn**, sau đó đến bản JA.
+
+!!! note "Cập nhật 2026-10-20"
+    Đồng bộ theo es-station `main` 3fa8a3ceb (PR #152, 2026-10-20): 30 flow (27 sửa/vẽ lại + 3 mới), 49 file đặc tả JA và 48 bản VI, 93 tài liệu thiết kế màn hình song ngữ. Chi tiết từng file ở [§5. Báo cáo cập nhật 2026-10-20](#5-bao-cao-cap-nhat-2026-10-20).
 
 ## 1. Flow diagrams (archify)
 
@@ -148,98 +151,213 @@ Trang tổng hợp tài liệu **ES-STATION** (nguồn `es-kitchen-requirements/
 
 ## 3. Thiết kế màn hình (SPEC 05_画面設計書) — song ngữ VI / JA
 
-91 tài liệu thiết kế màn hình (bản es-station 2026-10-20, giai đoạn tạo lại 2). Mỗi file có ảnh màn hình đánh số và định nghĩa từng mục; mở bằng tiếng Việt, bấm 「日本語」 để xem bản gốc. Các file này là **SPEC**, không phải demo.
+93 tài liệu thiết kế màn hình (bản es-station 2026-10-20, giai đoạn tạo lại 2). Mỗi file có ảnh màn hình đánh số và định nghĩa từng mục; mở bằng tiếng Việt, bấm 「日本語」 để xem bản gốc. Các file này là **SPEC**, không phải demo.
 
 | # | Nhóm | Mã | Màn hình | Trạng thái | Dung lượng | Mở |
 |---:|---|---|---|---|---:|---|
 | 1 | Tổng quan | — | Danh sách thông báo và email (メッセージ・メール一覧) | Cập nhật | 2.0 MB | <a href="prototype/Danh_s%C3%A1ch_th%C3%B4ng_b%C3%A1o_v%C3%A0_email.html" target="_blank">Toàn trang</a> |
-| 2 | Admin | `AW_ACCT` | Danh sách tài khoản | 🆕 Mới | 966 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_ACCT_Danh_s%C3%A1ch_t%C3%A0i_kho%E1%BA%A3n.html" target="_blank">Toàn trang</a> |
-| 3 | Admin | `AW_ACTL` | Đối soát thực tế | Cập nhật | 3.8 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_ACTL_Quy%E1%BA%BFt_to%C3%A1n_th%E1%BB%B1c_t%C3%ADch.html" target="_blank">Toàn trang</a> |
-| 4 | Admin | `AW_AGCY` | Master đại lý | 🆕 Mới | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_AGCY_Master_%C4%91%E1%BA%A1i_l%C3%BD.html" target="_blank">Toàn trang</a> |
-| 5 | Admin | `AW_APPL` | Quản lý đơn hợp đồng | Cập nhật | 3.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_APPL_Qu%E1%BA%A3n_l%C3%BD_y%C3%AAu_c%E1%BA%A7u_h%E1%BB%A3p_%C4%91%E1%BB%93ng.html" target="_blank">Toàn trang</a> |
-| 6 | Admin | `AW_BILL` | Chốt và phát hành hóa đơn | Cập nhật | 3.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_BILL_Ch%E1%BB%91t_thanh_to%C3%A1n_v%C3%A0_h%C3%B3a_%C4%91%C6%A1n.html" target="_blank">Toàn trang</a> |
-| 7 | Admin | `AW_BRCH` | Danh sách cơ sở | Mới (thay AW_ALL) | 4.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_BRCH_Danh_s%C3%A1ch_c%C6%A1_s%E1%BB%9F.html" target="_blank">Toàn trang</a> |
-| 8 | Admin | `AW_CATE` | Quản lý danh mục sản phẩm | 🆕 Mới | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_CATE_Qu%E1%BA%A3n_l%C3%BD_danh_m%E1%BB%A5c_s%E1%BA%A3n_ph%E1%BA%A9m.html" target="_blank">Toàn trang</a> |
-| 9 | Admin | `AW_CNSG` | Master đơn vị vận chuyển ủy thác | 🆕 Mới | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_CNSG_Master_%C4%91%C6%A1n_v%E1%BB%8B_v%E1%BA%ADn_chuy%E1%BB%83n_%E1%BB%A7y_th%C3%A1c.html" target="_blank">Toàn trang</a> |
-| 10 | Admin | `AW_COLL` | Quản lý thu tiền | 🆕 Mới | 953 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_COLL_Qu%E1%BA%A3n_l%C3%BD_thu_ti%E1%BB%81n.html" target="_blank">Toàn trang</a> |
-| 11 | Admin | `AW_CONT` | Danh sách hợp đồng con | Mới (thay AW_ALL) | 4.7 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_CONT_Danh_s%C3%A1ch_h%E1%BB%A3p_%C4%91%E1%BB%93ng_con.html" target="_blank">Toàn trang</a> |
-| 12 | Admin | `AW_COOL` | Sổ túi giữ lạnh | 🆕 Mới | 1.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_COOL_S%E1%BB%95_t%C3%BAi_gi%E1%BB%AF_l%E1%BA%A1nh.html" target="_blank">Toàn trang</a> |
-| 13 | Admin | `AW_CORP` | Danh sách doanh nghiệp | Mới (thay AW_ALL) | 3.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_CORP_Danh_s%C3%A1ch_doanh_nghi%E1%BB%87p.html" target="_blank">Toàn trang</a> |
-| 14 | Admin | `AW_CYCL` | Cài đặt chu kỳ giao hàng | 🆕 Mới | 2.8 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_CYCL_C%C3%A0i_%C4%91%E1%BA%B7t_chu_k%E1%BB%B3_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 15 | Admin | `AW_DASH` | Dashboard | 🆕 Mới | 2.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_DASH_Dashboard.html" target="_blank">Toàn trang</a> |
-| 16 | Admin | `AW_DISC` | Master giảm giá | Cập nhật | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_DISC_Master_Gi%E1%BA%A3m_gi%C3%A1.html" target="_blank">Toàn trang</a> |
-| 17 | Admin | `AW_DLVR` | Quản lý xuất kho・giao hàng | 🆕 Mới | 2.9 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_DLVR_Qu%E1%BA%A3n_l%C3%BD_xu%E1%BA%A5t_kho_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 18 | Admin | `AW_DRVR` | Nhân viên giao hàng | 🆕 Mới | 1.7 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_DRVR_Nh%C3%A2n_vi%C3%AAn_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 19 | Admin | `AW_FAVO` | Tổng hợp yêu thích | Cập nhật | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_FAVO_T%E1%BB%95ng_h%E1%BB%A3p_y%C3%AAu_th%C3%ADch.html" target="_blank">Toàn trang</a> |
-| 20 | Admin | `AW_FEPA` | Lịch sử chi trả | 🆕 Mới | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_FEPA_L%E1%BB%8Bch_s%E1%BB%AD_chi_tr%E1%BA%A3.html" target="_blank">Toàn trang</a> |
-| 21 | Admin | `AW_FEPL` | Master phí giới thiệu | 🆕 Mới | 1.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_FEPL_Master_ph%C3%AD_gi%E1%BB%9Bi_thi%E1%BB%87u.html" target="_blank">Toàn trang</a> |
-| 22 | Admin | `AW_INTK` | Tiếp nhận | 🆕 Mới | 2.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_INTK_Ti%E1%BA%BFp_nh%E1%BA%ADn.html" target="_blank">Toàn trang</a> |
-| 23 | Admin | `AW_IPWL` | Quản lý IP whitelist | 🆕 Mới | 1.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_IPWL_Qu%E1%BA%A3n_l%C3%BD_IP_whitelist.html" target="_blank">Toàn trang</a> |
-| 24 | Admin | `AW_MATE` | Master vật tư | 🆕 Mới | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MATE_Master_v%E1%BA%ADt_t%C6%B0.html" target="_blank">Toàn trang</a> |
-| 25 | Admin | `AW_MENU` | Menu tháng | 🆕 Mới | 7.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MENU_Menu_th%C3%A1ng.html" target="_blank">Toàn trang</a> |
-| 26 | Admin | `AW_MNTN` | Quản lý bảo trì | 🆕 Mới | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MNTN_Qu%E1%BA%A3n_l%C3%BD_b%E1%BA%A3o_tr%C3%AC.html" target="_blank">Toàn trang</a> |
-| 27 | Admin | `AW_MODL` | Master dòng máy | Cập nhật | 1.8 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MODL_Master_D%C3%B2ng_m%C3%A1y.html" target="_blank">Toàn trang</a> |
-| 28 | Admin | `AW_MORD` | Quản lý đơn hàng vật tư | 🆕 Mới | 1.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MORD_Qu%E1%BA%A3n_l%C3%BD_%C4%91%C6%A1n_h%C3%A0ng_v%E1%BA%ADt_t%C6%B0.html" target="_blank">Toàn trang</a> |
-| 29 | Admin | `AW_MPO` | Đặt mua vật tư | 🆕 Mới | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MPO_%C4%90%E1%BA%B7t_mua_v%E1%BA%ADt_t%C6%B0.html" target="_blank">Toàn trang</a> |
-| 30 | Admin | `AW_NOTI` | Thông báo | Cập nhật | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_NOTI_Th%C3%B4ng_b%C3%A1o.html" target="_blank">Toàn trang</a> |
-| 31 | Admin | `AW_OPTN` | Master tùy chọn | Cập nhật | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_OPTN_Master_T%C3%B9y_ch%E1%BB%8Dn.html" target="_blank">Toàn trang</a> |
-| 32 | Admin | `AW_ORDR` | Quản lý đơn hàng sản phẩm | 🆕 Mới | 3.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_ORDR_Qu%E1%BA%A3n_l%C3%BD_%C4%91%C6%A1n_h%C3%A0ng_s%E1%BA%A3n_ph%E1%BA%A9m.html" target="_blank">Toàn trang</a> |
-| 33 | Admin | `AW_PERM` | Quyền (vai trò) | 🆕 Mới | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_PERM_Quy%E1%BB%81n_vai_tr%C3%B2.html" target="_blank">Toàn trang</a> |
-| 34 | Admin | `AW_PLAN` | Master gói | Cập nhật | 2.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_PLAN_Master_G%C3%B3i.html" target="_blank">Toàn trang</a> |
-| 35 | Admin | `AW_PROD` | Master sản phẩm | 🆕 Mới | 2.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_PROD_Master_s%E1%BA%A3n_ph%E1%BA%A9m.html" target="_blank">Toàn trang</a> |
-| 36 | Admin | `AW_PURC` | Đặt hàng | 🆕 Mới | 2.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_PURC_%C4%90%E1%BA%B7t_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 37 | Admin | `AW_QUOT` | Yêu cầu báo giá | 🆕 Mới (màn mới) | 1.8 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_QUOT_Y%C3%AAu_c%E1%BA%A7u_b%C3%A1o_gi%C3%A1.html" target="_blank">Toàn trang</a> |
-| 38 | Admin | `AW_RECV` | Đăng ký nhập kho | 🆕 Mới | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_RECV_%C4%90%C4%83ng_k%C3%BD_nh%E1%BA%ADp_kho.html" target="_blank">Toàn trang</a> |
-| 39 | Admin | `AW_REFE` | Lịch sử giới thiệu | 🆕 Mới | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_REFE_L%E1%BB%8Bch_s%E1%BB%AD_gi%E1%BB%9Bi_thi%E1%BB%87u.html" target="_blank">Toàn trang</a> |
-| 40 | Admin | `AW_REVI` | Đánh giá và ý kiến | Cập nhật | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_REVI_%C4%90%C3%A1nh_gi%C3%A1_v%C3%A0_%C3%BD_ki%E1%BA%BFn.html" target="_blank">Toàn trang</a> |
-| 41 | Admin | `AW_RVEW` | Mục cần xác nhận | 🆕 Mới | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_RVEW_M%E1%BB%A5c_c%E1%BA%A7n_x%C3%A1c_nh%E1%BA%ADn.html" target="_blank">Toàn trang</a> |
-| 42 | Admin | `AW_SALE` | Quản lý mua hàng | Cập nhật | 1.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SALE_Qu%E1%BA%A3n_l%C3%BD_mua_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 43 | Admin | `AW_SCHD` | Lịch giao hàng | 🆕 Mới | 3.7 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SCHD_L%E1%BB%8Bch_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 44 | Admin | `AW_SETT` | Cài đặt liên kết hướng dẫn | 🆕 Mới | 860 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SETT_C%C3%A0i_%C4%91%E1%BA%B7t_li%C3%AAn_k%E1%BA%BFt_h%C6%B0%E1%BB%9Bng_d%E1%BA%ABn.html" target="_blank">Toàn trang</a> |
-| 45 | Admin | `AW_SHIP` | Chỉ thị xuất kho・Nhập kết quả | 🆕 Mới | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SHIP_Ch%E1%BB%89_th%E1%BB%8B_xu%E1%BA%A5t_kho_Nh%E1%BA%ADp_k%E1%BA%BFt_qu%E1%BA%A3.html" target="_blank">Toàn trang</a> |
-| 46 | Admin | `AW_SMP` | Mẫu kinh doanh | 🆕 Mới | 1.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SMP_M%E1%BA%ABu_kinh_doanh.html" target="_blank">Toàn trang</a> |
-| 47 | Admin | `AW_STCK` | Kiểm kê (tồn kho chi nhánh) | Cập nhật | 2.8 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_STCK_Ki%E1%BB%83m_k%C3%AA.html" target="_blank">Toàn trang</a> |
-| 48 | Admin | `AW_SUPP` | Master nhà cung cấp | 🆕 Mới | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SUPP_Master_nh%C3%A0_cung_c%E1%BA%A5p.html" target="_blank">Toàn trang</a> |
-| 49 | Admin | `AW_SURV` | Quản lý khảo sát | Cập nhật | 1.8 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SURV_Qu%E1%BA%A3n_l%C3%BD_kh%E1%BA%A3o_s%C3%A1t.html" target="_blank">Toàn trang</a> |
-| 50 | Admin | `AW_VERS` | Phiên bản & cập nhật bắt buộc | 🆕 Mới | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_VERS_Phi%C3%AAn_b%E1%BA%A3n_c%E1%BA%ADp_nh%E1%BA%ADt_b%E1%BA%AFt_bu%E1%BB%99c.html" target="_blank">Toàn trang</a> |
-| 51 | Admin | `AW_WHS` | Tồn kho kho | 🆕 Mới | 1.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_WHS_T%E1%BB%93n_kho_kho.html" target="_blank">Toàn trang</a> |
-| 52 | Admin | `AW_WRHS` | Master kho | 🆕 Mới | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_WRHS_Master_kho.html" target="_blank">Toàn trang</a> |
-| 53 | Doanh nghiệp | `CW_AUTH` | Đăng nhập・Đăng ký mới | 🆕 Mới | 2.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_AUTH_%C4%90%C4%83ng_nh%E1%BA%ADp_%C4%90%C4%83ng_k%C3%BD_m%E1%BB%9Bi.html" target="_blank">Toàn trang</a> |
-| 54 | Doanh nghiệp | `CW_BILL` | Hóa đơn | Cập nhật | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_BILL_H%C3%B3a_%C4%91%C6%A1n.html" target="_blank">Toàn trang</a> |
-| 55 | Doanh nghiệp | `CW_CORP` | Thông tin doanh nghiệp | 🆕 Mới | 1.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_CORP_Th%C3%B4ng_tin_doanh_nghi%E1%BB%87p.html" target="_blank">Toàn trang</a> |
-| 56 | Doanh nghiệp | `CW_CREQ` | Yêu cầu hợp đồng | 🆕 Mới | 1.7 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_CREQ_Y%C3%AAu_c%E1%BA%A7u_h%E1%BB%A3p_%C4%91%E1%BB%93ng.html" target="_blank">Toàn trang</a> |
-| 57 | Doanh nghiệp | `CW_DLV` | Chi tiết đơn giao hàng | Cập nhật | 1.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_DLV_Chi_ti%E1%BA%BFt_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 58 | Doanh nghiệp | `CW_DLVL` | Danh sách giao hàng | 🆕 Mới (màn mới) | 981 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_DLVL_Danh_s%C3%A1ch_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 59 | Doanh nghiệp | `CW_HIST` | Lịch sử đơn hàng | Cập nhật | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_HIST_L%E1%BB%8Bch_s%E1%BB%AD_%C4%91%C6%A1n_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 60 | Doanh nghiệp | `CW_HOME` | Trang chủ | Cập nhật | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_HOME_Trang_ch%E1%BB%A7.html" target="_blank">Toàn trang</a> |
-| 61 | Doanh nghiệp | `CW_MAT` | Đặt vật tư | Cập nhật | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_MAT_%C4%90%E1%BA%B7t_v%E1%BA%ADt_t%C6%B0.html" target="_blank">Toàn trang</a> |
-| 62 | Doanh nghiệp | `CW_NEWS` | Thông báo | 🆕 Mới | 910 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_NEWS_Th%C3%B4ng_b%C3%A1o.html" target="_blank">Toàn trang</a> |
-| 63 | Doanh nghiệp | `CW_ORDER` | Đặt hàng sản phẩm | Cập nhật | 3.9 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_ORDER_%C4%90%E1%BA%B7t_s%E1%BA%A3n_ph%E1%BA%A9m.html" target="_blank">Toàn trang</a> |
-| 64 | Doanh nghiệp | `CW_REVW` | Đánh giá | 🆕 Mới | 1.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_REVW_%C4%90%C3%A1nh_gi%C3%A1.html" target="_blank">Toàn trang</a> |
-| 65 | Doanh nghiệp | `CW_SALE` | Mua hàng・Quản lý người dùng | 🆕 Mới | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_SALE_Mua_h%C3%A0ng_Qu%E1%BA%A3n_l%C3%BD_ng%C6%B0%E1%BB%9Di_d%C3%B9ng.html" target="_blank">Toàn trang</a> |
-| 66 | Doanh nghiệp | `CW_SITE` | Quản lý cơ sở | 🆕 Mới | 3.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_SITE_Qu%E1%BA%A3n_l%C3%BD_c%C6%A1_s%E1%BB%9F.html" target="_blank">Toàn trang</a> |
-| 67 | Doanh nghiệp | `CW_STOCK` | Báo cáo kiểm kê | Cập nhật | 3.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_STOCK_B%C3%A1o_c%C3%A1o_ki%E1%BB%83m_k%C3%AA.html" target="_blank">Toàn trang</a> |
-| 68 | Doanh nghiệp | `CW_TRSW` | Đăng ký triển khai chính thức | 🆕 Mới | 1.8 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_TRSW_%C4%90%C4%83ng_k%C3%BD_tri%E1%BB%83n_khai_ch%C3%ADnh_th%E1%BB%A9c.html" target="_blank">Toàn trang</a> |
-| 69 | Nhà cung cấp | `SW_AUTH` | Đăng nhập, đặt lại mật khẩu, đăng ký giao dịch | Cập nhật | 810 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_AUTH_%C4%90%C4%83ng_nh%E1%BA%ADp_v%C3%A0_%C4%91%C4%83ng_k%C3%BD_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
-| 70 | Nhà cung cấp | `SW_HOME` | Trang chủ・chi tiết thông báo・danh sách thông báo | Cập nhật | 777 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_HOME_Trang_ch%E1%BB%A7_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
-| 71 | Nhà cung cấp | `SW_MANU` | Hướng dẫn thao tác | Cập nhật | 677 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_MANU_H%C6%B0%E1%BB%9Bng_d%E1%BA%ABn_thao_t%C3%A1c_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
-| 72 | Nhà cung cấp | `SW_ORDR` | Đặt hàng: danh sách đơn nhận・chi tiết đơn・nhập CSV trả lời | Cập nhật | 1.8 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_ORDR_%C4%90%E1%BA%B7t_h%C3%A0ng_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
-| 73 | Nhà cung cấp | `SW_PROF` | Hồ sơ | Cập nhật | 867 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_PROF_H%E1%BB%93_s%C6%A1_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
-| 74 | Đối tác vận chuyển | `OW_AUTH` | Đăng nhập・Đặt lại mật khẩu・Đăng ký | 🆕 Mới | 928 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_AUTH_%C4%90%C4%83ng_nh%E1%BA%ADp_%C4%90%E1%BA%B7t_l%E1%BA%A1i_m%E1%BA%ADt_kh%E1%BA%A9u_%C4%90%C4%83ng_k%C3%BD.html" target="_blank">Toàn trang</a> |
-| 75 | Đối tác vận chuyển | `OW_COLL` | Quản lý thu tiền | 🆕 Mới | 828 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_COLL_Qu%E1%BA%A3n_l%C3%BD_thu_ti%E1%BB%81n.html" target="_blank">Toàn trang</a> |
-| 76 | Đối tác vận chuyển | `OW_DELV` | Quản lý giao hàng | 🆕 Mới | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_DELV_Qu%E1%BA%A3n_l%C3%BD_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 77 | Đối tác vận chuyển | `OW_HOME` | Trang chủ・Chi tiết thông báo | 🆕 Mới | 876 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_HOME_Trang_ch%E1%BB%A7_Chi_ti%E1%BA%BFt_th%C3%B4ng_b%C3%A1o.html" target="_blank">Toàn trang</a> |
-| 78 | Đối tác vận chuyển | `OW_PROF` | Hồ sơ | 🆕 Mới | 913 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_PROF_H%E1%BB%93_s%C6%A1.html" target="_blank">Toàn trang</a> |
-| 79 | Đối tác vận chuyển | `OW_QUOT` | Yêu cầu báo giá | 🆕 Mới | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_QUOT_Y%C3%AAu_c%E1%BA%A7u_b%C3%A1o_gi%C3%A1.html" target="_blank">Toàn trang</a> |
-| 80 | Đối tác vận chuyển | `OW_SCHD` | Lịch | 🆕 Mới | 1.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_SCHD_L%E1%BB%8Bch.html" target="_blank">Toàn trang</a> |
-| 81 | Đối tác vận chuyển | `OW_STAF` | Nhân viên giao hàng | 🆕 Mới | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_STAF_Nh%C3%A2n_vi%C3%AAn_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 82 | Đối tác vận chuyển | `OW_TRBL` | Sự cố | 🆕 Mới | 929 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_TRBL_S%E1%BB%B1_c%E1%BB%91.html" target="_blank">Toàn trang</a> |
-| 83 | Web tài xế | `DA_AUTH` | Tài khoản・Đăng nhập・Mật khẩu | 🆕 Mới | 1.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_AUTH_T%C3%A0i_kho%E1%BA%A3n_%C4%90%C4%83ng_nh%E1%BA%ADp_M%E1%BA%ADt_kh%E1%BA%A9u.html" target="_blank">Toàn trang</a> |
-| 84 | Web tài xế | `DA_COOL` | COOL便 | 🆕 Mới | 972 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_COOL_COOL%E4%BE%BF.html" target="_blank">Toàn trang</a> |
-| 85 | Web tài xế | `DA_ESDL` | ES配送便 | 🆕 Mới | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_ESDL_ES%E9%85%8D%E9%80%81%E4%BE%BF.html" target="_blank">Toàn trang</a> |
-| 86 | Web tài xế | `DA_HOME` | Trang chủ・Danh sách giao hàng | 🆕 Mới | 2.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_HOME_Trang_ch%E1%BB%A7_Danh_s%C3%A1ch_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
-| 87 | Web tài xế | `DA_MANU` | Hướng dẫn sử dụng | 🆕 Mới | 820 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_MANU_H%C6%B0%E1%BB%9Bng_d%E1%BA%ABn_s%E1%BB%AD_d%E1%BB%A5ng.html" target="_blank">Toàn trang</a> |
-| 88 | Web tài xế | `DA_NOTI` | Thông báo | 🆕 Mới | 818 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_NOTI_Th%C3%B4ng_b%C3%A1o.html" target="_blank">Toàn trang</a> |
-| 89 | Web tài xế | `DA_RECV` | Nhận hàng (kho・trung chuyển) | 🆕 Mới | 2.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_RECV_Nh%E1%BA%ADn_h%C3%A0ng_kho_trung_chuy%E1%BB%83n.html" target="_blank">Toàn trang</a> |
-| 90 | Web tài xế | `DA_RPTD` | Báo sự cố | 🆕 Mới | 1.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_RPTD_B%C3%A1o_s%E1%BB%B1_c%E1%BB%91.html" target="_blank">Toàn trang</a> |
-| 91 | Web tài xế | `DA_STCK` | Kiểm kê | 🆕 Mới | 927 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_STCK_Ki%E1%BB%83m_k%C3%AA.html" target="_blank">Toàn trang</a> |
+| 2 | Admin | `AW_ACCT` | Danh sách tài khoản | Cập nhật (11-03) | 1.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_ACCT_Danh_s%C3%A1ch_t%C3%A0i_kho%E1%BA%A3n.html" target="_blank">Toàn trang</a> |
+| 3 | Admin | `AW_ACTL` | Đối soát thực tế | Cập nhật (11-03) | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_ACTL_Quy%E1%BA%BFt_to%C3%A1n_th%E1%BB%B1c_t%C3%ADch.html" target="_blank">Toàn trang</a> |
+| 4 | Admin | `AW_AGCY` | Master đại lý | Cập nhật (11-03) | 1.7 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_AGCY_Master_%C4%91%E1%BA%A1i_l%C3%BD.html" target="_blank">Toàn trang</a> |
+| 5 | Admin | `AW_APPL` | Quản lý đơn hợp đồng | Cập nhật (11-03) | 3.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_APPL_Qu%E1%BA%A3n_l%C3%BD_y%C3%AAu_c%E1%BA%A7u_h%E1%BB%A3p_%C4%91%E1%BB%93ng.html" target="_blank">Toàn trang</a> |
+| 6 | Admin | `AW_BILL` | Chốt và phát hành hóa đơn | Cập nhật (11-03) | 3.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_BILL_Ch%E1%BB%91t_thanh_to%C3%A1n_v%C3%A0_h%C3%B3a_%C4%91%C6%A1n.html" target="_blank">Toàn trang</a> |
+| 7 | Admin | `AW_BRCH` | Danh sách cơ sở | Cập nhật (11-03) | 3.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_BRCH_Danh_s%C3%A1ch_c%C6%A1_s%E1%BB%9F.html" target="_blank">Toàn trang</a> |
+| 8 | Admin | `AW_CATE` | Quản lý danh mục sản phẩm | Cập nhật (11-03) | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_CATE_Qu%E1%BA%A3n_l%C3%BD_danh_m%E1%BB%A5c_s%E1%BA%A3n_ph%E1%BA%A9m.html" target="_blank">Toàn trang</a> |
+| 9 | Admin | `AW_CNSG` | Master đơn vị vận chuyển ủy thác | Cập nhật (11-03) | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_CNSG_Master_%C4%91%C6%A1n_v%E1%BB%8B_v%E1%BA%ADn_chuy%E1%BB%83n_%E1%BB%A7y_th%C3%A1c.html" target="_blank">Toàn trang</a> |
+| 10 | Admin | `AW_COLL` | Quản lý thu tiền | Cập nhật (11-03) | 945 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_COLL_Qu%E1%BA%A3n_l%C3%BD_thu_ti%E1%BB%81n.html" target="_blank">Toàn trang</a> |
+| 11 | Admin | `AW_CONT` | Danh sách hợp đồng con | Cập nhật (11-03) | 3.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_CONT_Danh_s%C3%A1ch_h%E1%BB%A3p_%C4%91%E1%BB%93ng_con.html" target="_blank">Toàn trang</a> |
+| 12 | Admin | `AW_COOL` | Sổ túi giữ lạnh | Cập nhật (11-03) | 1.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_COOL_S%E1%BB%95_t%C3%BAi_gi%E1%BB%AF_l%E1%BA%A1nh.html" target="_blank">Toàn trang</a> |
+| 13 | Admin | `AW_CORP` | Danh sách doanh nghiệp | Cập nhật (11-03) | 3.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_CORP_Danh_s%C3%A1ch_doanh_nghi%E1%BB%87p.html" target="_blank">Toàn trang</a> |
+| 14 | Admin | `AW_CYCL` | Cài đặt chu kỳ giao hàng | Cập nhật (11-03) | 3.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_CYCL_C%C3%A0i_%C4%91%E1%BA%B7t_chu_k%E1%BB%B3_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 15 | Admin | `AW_DASH` | Dashboard | Cập nhật (11-03) | 2.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_DASH_Dashboard.html" target="_blank">Toàn trang</a> |
+| 16 | Admin | `AW_DISC` | Master giảm giá | Cập nhật (11-03) | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_DISC_Master_Gi%E1%BA%A3m_gi%C3%A1.html" target="_blank">Toàn trang</a> |
+| 17 | Admin | `AW_DLVR` | Quản lý xuất kho・giao hàng | Cập nhật (11-03) | 3.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_DLVR_Qu%E1%BA%A3n_l%C3%BD_xu%E1%BA%A5t_kho_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 18 | Admin | `AW_DRVR` | Nhân viên giao hàng | Cập nhật (11-03) | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_DRVR_Nh%C3%A2n_vi%C3%AAn_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 19 | Admin | `AW_FAVO` | Tổng hợp yêu thích | Cập nhật (11-03) | 1.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_FAVO_T%E1%BB%95ng_h%E1%BB%A3p_y%C3%AAu_th%C3%ADch.html" target="_blank">Toàn trang</a> |
+| 20 | Admin | `AW_FEPA` | Lịch sử chi trả | Cập nhật (11-03) | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_FEPA_L%E1%BB%8Bch_s%E1%BB%AD_chi_tr%E1%BA%A3.html" target="_blank">Toàn trang</a> |
+| 21 | Admin | `AW_FEPL` | Master phí giới thiệu | Cập nhật (11-03) | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_FEPL_Master_ph%C3%AD_gi%E1%BB%9Bi_thi%E1%BB%87u.html" target="_blank">Toàn trang</a> |
+| 22 | Admin | `AW_INTK` | Tiếp nhận | Cập nhật (11-03) | 2.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_INTK_Ti%E1%BA%BFp_nh%E1%BA%ADn.html" target="_blank">Toàn trang</a> |
+| 23 | Admin | `AW_IPWL` | Quản lý IP whitelist | Cập nhật (11-03) | 950 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_IPWL_Qu%E1%BA%A3n_l%C3%BD_IP_whitelist.html" target="_blank">Toàn trang</a> |
+| 24 | Admin | `AW_MATE` | Master vật tư | Cập nhật (11-03) | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MATE_Master_v%E1%BA%ADt_t%C6%B0.html" target="_blank">Toàn trang</a> |
+| 25 | Admin | `AW_MENU` | Menu tháng | Cập nhật (11-03) | 7.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MENU_Menu_th%C3%A1ng.html" target="_blank">Toàn trang</a> |
+| 26 | Admin | `AW_MIGR` | Cần bổ sung sau di chuyển | 🆕 Mới (màn mới) | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MIGR_C%E1%BA%A7n_b%E1%BB%95_sung_sau_di_chuy%E1%BB%83n.html" target="_blank">Toàn trang</a> |
+| 27 | Admin | `AW_MNTN` | Quản lý bảo trì | Cập nhật (11-03) | 823 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MNTN_Qu%E1%BA%A3n_l%C3%BD_b%E1%BA%A3o_tr%C3%AC.html" target="_blank">Toàn trang</a> |
+| 28 | Admin | `AW_MODL` | Master dòng máy | Cập nhật (11-03) | 1.8 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MODL_Master_D%C3%B2ng_m%C3%A1y.html" target="_blank">Toàn trang</a> |
+| 29 | Admin | `AW_MORD` | Quản lý đơn hàng vật tư | Cập nhật (11-03) | 2.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MORD_Qu%E1%BA%A3n_l%C3%BD_%C4%91%C6%A1n_h%C3%A0ng_v%E1%BA%ADt_t%C6%B0.html" target="_blank">Toàn trang</a> |
+| 30 | Admin | `AW_MPO` | Đặt mua vật tư | Cập nhật (11-03) | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_MPO_%C4%90%E1%BA%B7t_mua_v%E1%BA%ADt_t%C6%B0.html" target="_blank">Toàn trang</a> |
+| 31 | Admin | `AW_NOTI` | Thông báo | Cập nhật (11-03) | 2.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_NOTI_Th%C3%B4ng_b%C3%A1o.html" target="_blank">Toàn trang</a> |
+| 32 | Admin | `AW_OPTN` | Master tùy chọn | Cập nhật (11-03) | 2.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_OPTN_Master_T%C3%B9y_ch%E1%BB%8Dn.html" target="_blank">Toàn trang</a> |
+| 33 | Admin | `AW_ORDR` | Quản lý đơn hàng sản phẩm | Cập nhật (11-03) | 3.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_ORDR_Qu%E1%BA%A3n_l%C3%BD_%C4%91%C6%A1n_h%C3%A0ng_s%E1%BA%A3n_ph%E1%BA%A9m.html" target="_blank">Toàn trang</a> |
+| 34 | Admin | `AW_PERM` | Quyền (vai trò) | Cập nhật (11-03) | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_PERM_Quy%E1%BB%81n_vai_tr%C3%B2.html" target="_blank">Toàn trang</a> |
+| 35 | Admin | `AW_PLAN` | Master gói | Cập nhật (11-03) | 2.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_PLAN_Master_G%C3%B3i.html" target="_blank">Toàn trang</a> |
+| 36 | Admin | `AW_PROD` | Master sản phẩm | Cập nhật (11-03) | 2.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_PROD_Master_s%E1%BA%A3n_ph%E1%BA%A9m.html" target="_blank">Toàn trang</a> |
+| 37 | Admin | `AW_PURC` | Đặt hàng | Cập nhật (11-03) | 3.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_PURC_%C4%90%E1%BA%B7t_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 38 | Admin | `AW_QUOT` | Yêu cầu báo giá | Cập nhật (11-03) | 2.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_QUOT_Y%C3%AAu_c%E1%BA%A7u_b%C3%A1o_gi%C3%A1.html" target="_blank">Toàn trang</a> |
+| 39 | Admin | `AW_RECV` | Đăng ký nhập kho | Cập nhật (11-03) | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_RECV_%C4%90%C4%83ng_k%C3%BD_nh%E1%BA%ADp_kho.html" target="_blank">Toàn trang</a> |
+| 40 | Admin | `AW_REFE` | Lịch sử giới thiệu | Cập nhật (11-03) | 1.7 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_REFE_L%E1%BB%8Bch_s%E1%BB%AD_gi%E1%BB%9Bi_thi%E1%BB%87u.html" target="_blank">Toàn trang</a> |
+| 41 | Admin | `AW_REVI` | Đánh giá và ý kiến | Cập nhật (11-03) | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_REVI_%C4%90%C3%A1nh_gi%C3%A1_v%C3%A0_%C3%BD_ki%E1%BA%BFn.html" target="_blank">Toàn trang</a> |
+| 42 | Admin | `AW_RVEW` | Mục cần xác nhận | Cập nhật (11-03) | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_RVEW_M%E1%BB%A5c_c%E1%BA%A7n_x%C3%A1c_nh%E1%BA%ADn.html" target="_blank">Toàn trang</a> |
+| 43 | Admin | `AW_SALE` | Quản lý mua hàng | Cập nhật (11-03) | 2.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SALE_Qu%E1%BA%A3n_l%C3%BD_mua_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 44 | Admin | `AW_SCHD` | Lịch giao hàng | Cập nhật (11-03) | 3.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SCHD_L%E1%BB%8Bch_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 45 | Admin | `AW_SETT` | Cài đặt liên kết hướng dẫn | Cập nhật (11-03) | 868 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SETT_C%C3%A0i_%C4%91%E1%BA%B7t_li%C3%AAn_k%E1%BA%BFt_h%C6%B0%E1%BB%9Bng_d%E1%BA%ABn.html" target="_blank">Toàn trang</a> |
+| 46 | Admin | `AW_SHIP` | Chỉ thị xuất kho・Nhập kết quả | Cập nhật (11-03) | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SHIP_Ch%E1%BB%89_th%E1%BB%8B_xu%E1%BA%A5t_kho_Nh%E1%BA%ADp_k%E1%BA%BFt_qu%E1%BA%A3.html" target="_blank">Toàn trang</a> |
+| 47 | Admin | `AW_SMP` | Mẫu kinh doanh | Cập nhật (11-03) | 1.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SMP_M%E1%BA%ABu_kinh_doanh.html" target="_blank">Toàn trang</a> |
+| 48 | Admin | `AW_STCK` | Kiểm kê (tồn kho chi nhánh) | Cập nhật (11-03) | 3.7 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_STCK_Ki%E1%BB%83m_k%C3%AA.html" target="_blank">Toàn trang</a> |
+| 49 | Admin | `AW_SUPP` | Master nhà cung cấp | Cập nhật (11-03) | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SUPP_Master_nh%C3%A0_cung_c%E1%BA%A5p.html" target="_blank">Toàn trang</a> |
+| 50 | Admin | `AW_SURV` | Quản lý khảo sát | Cập nhật (11-03) | 1.7 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_SURV_Qu%E1%BA%A3n_l%C3%BD_kh%E1%BA%A3o_s%C3%A1t.html" target="_blank">Toàn trang</a> |
+| 51 | Admin | `AW_VERS` | Phiên bản & cập nhật bắt buộc | Cập nhật (11-03) | 906 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_VERS_Phi%C3%AAn_b%E1%BA%A3n_c%E1%BA%ADp_nh%E1%BA%ADt_b%E1%BA%AFt_bu%E1%BB%99c.html" target="_blank">Toàn trang</a> |
+| 52 | Admin | `AW_WHS` | Tồn kho kho | Cập nhật (11-03) | 2.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_WHS_T%E1%BB%93n_kho_kho.html" target="_blank">Toàn trang</a> |
+| 53 | Admin | `AW_WRHS` | Master kho | Cập nhật (11-03) | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_AW_WRHS_Master_kho.html" target="_blank">Toàn trang</a> |
+| 54 | Doanh nghiệp | `CW_ALTS` | Xác nhận hàng thay thế | 🆕 Mới | 840 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_ALTS_X%C3%A1c_nh%E1%BA%ADn_h%C3%A0ng_thay_th%E1%BA%BF.html" target="_blank">Toàn trang</a> |
+| 55 | Doanh nghiệp | `CW_AUTH` | Đăng nhập・Đăng ký mới | Cập nhật (11-03) | 2.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_AUTH_%C4%90%C4%83ng_nh%E1%BA%ADp_%C4%90%C4%83ng_k%C3%BD_m%E1%BB%9Bi.html" target="_blank">Toàn trang</a> |
+| 56 | Doanh nghiệp | `CW_BILL` | Hóa đơn | Cập nhật (11-03) | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_BILL_H%C3%B3a_%C4%91%C6%A1n.html" target="_blank">Toàn trang</a> |
+| 57 | Doanh nghiệp | `CW_CORP` | Thông tin doanh nghiệp | Cập nhật (11-03) | 1.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_CORP_Th%C3%B4ng_tin_doanh_nghi%E1%BB%87p.html" target="_blank">Toàn trang</a> |
+| 58 | Doanh nghiệp | `CW_CREQ` | Yêu cầu hợp đồng | Cập nhật (11-03) | 1.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_CREQ_Y%C3%AAu_c%E1%BA%A7u_h%E1%BB%A3p_%C4%91%E1%BB%93ng.html" target="_blank">Toàn trang</a> |
+| 59 | Doanh nghiệp | `CW_DLV` | Chi tiết đơn giao hàng | Cập nhật (11-03) | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_DLV_Chi_ti%E1%BA%BFt_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 60 | Doanh nghiệp | `CW_DLVL` | Danh sách giao hàng | Cập nhật (11-03) | 956 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_DLVL_Danh_s%C3%A1ch_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 61 | Doanh nghiệp | `CW_HIST` | Lịch sử đơn hàng | Cập nhật (11-03) | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_HIST_L%E1%BB%8Bch_s%E1%BB%AD_%C4%91%C6%A1n_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 62 | Doanh nghiệp | `CW_HOME` | Trang chủ | Cập nhật (11-03) | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_HOME_Trang_ch%E1%BB%A7.html" target="_blank">Toàn trang</a> |
+| 63 | Doanh nghiệp | `CW_MAT` | Đặt vật tư | Cập nhật (11-03) | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_MAT_%C4%90%E1%BA%B7t_v%E1%BA%ADt_t%C6%B0.html" target="_blank">Toàn trang</a> |
+| 64 | Doanh nghiệp | `CW_NEWS` | Thông báo | Cập nhật (11-03) | 860 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_NEWS_Th%C3%B4ng_b%C3%A1o.html" target="_blank">Toàn trang</a> |
+| 65 | Doanh nghiệp | `CW_ORDER` | Đặt hàng sản phẩm | Cập nhật (11-03) | 3.6 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_ORDER_%C4%90%E1%BA%B7t_s%E1%BA%A3n_ph%E1%BA%A9m.html" target="_blank">Toàn trang</a> |
+| 66 | Doanh nghiệp | `CW_REVW` | Đánh giá | Cập nhật (11-03) | 1.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_REVW_%C4%90%C3%A1nh_gi%C3%A1.html" target="_blank">Toàn trang</a> |
+| 67 | Doanh nghiệp | `CW_SALE` | Mua hàng・Quản lý người dùng | Cập nhật (11-03) | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_SALE_Mua_h%C3%A0ng_Qu%E1%BA%A3n_l%C3%BD_ng%C6%B0%E1%BB%9Di_d%C3%B9ng.html" target="_blank">Toàn trang</a> |
+| 68 | Doanh nghiệp | `CW_SITE` | Quản lý cơ sở | Cập nhật (11-03) | 3.9 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_SITE_Qu%E1%BA%A3n_l%C3%BD_c%C6%A1_s%E1%BB%9F.html" target="_blank">Toàn trang</a> |
+| 69 | Doanh nghiệp | `CW_STOCK` | Báo cáo kiểm kê | Cập nhật (11-03) | 3.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_STOCK_B%C3%A1o_c%C3%A1o_ki%E1%BB%83m_k%C3%AA.html" target="_blank">Toàn trang</a> |
+| 70 | Doanh nghiệp | `CW_TRSW` | Đăng ký triển khai chính thức | Cập nhật (11-03) | 2.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_CW_TRSW_%C4%90%C4%83ng_k%C3%BD_tri%E1%BB%83n_khai_ch%C3%ADnh_th%E1%BB%A9c.html" target="_blank">Toàn trang</a> |
+| 71 | Nhà cung cấp | `SW_AUTH` | Đăng nhập, đặt lại mật khẩu, đăng ký giao dịch | Cập nhật (11-03) | 803 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_AUTH_%C4%90%C4%83ng_nh%E1%BA%ADp_v%C3%A0_%C4%91%C4%83ng_k%C3%BD_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
+| 72 | Nhà cung cấp | `SW_HOME` | Trang chủ・chi tiết thông báo・danh sách thông báo | Cập nhật (11-03) | 770 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_HOME_Trang_ch%E1%BB%A7_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
+| 73 | Nhà cung cấp | `SW_MANU` | Hướng dẫn thao tác | Cập nhật (11-03) | 691 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_MANU_H%C6%B0%E1%BB%9Bng_d%E1%BA%ABn_thao_t%C3%A1c_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
+| 74 | Nhà cung cấp | `SW_ORDR` | Đặt hàng: danh sách đơn nhận・chi tiết đơn・nhập CSV trả lời | Cập nhật (11-03) | 2.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_ORDR_%C4%90%E1%BA%B7t_h%C3%A0ng_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
+| 75 | Nhà cung cấp | `SW_PROF` | Hồ sơ | Cập nhật (11-03) | 852 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_SW_PROF_H%E1%BB%93_s%C6%A1_B%E1%BA%A3n_nh%C3%A1p.html" target="_blank">Toàn trang</a> |
+| 76 | Đối tác vận chuyển | `OW_AUTH` | Đăng nhập・Đặt lại mật khẩu・Đăng ký | Cập nhật (11-03) | 1.5 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_AUTH_%C4%90%C4%83ng_nh%E1%BA%ADp_%C4%90%E1%BA%B7t_l%E1%BA%A1i_m%E1%BA%ADt_kh%E1%BA%A9u_%C4%90%C4%83ng_k%C3%BD.html" target="_blank">Toàn trang</a> |
+| 77 | Đối tác vận chuyển | `OW_COLL` | Quản lý thu tiền | Cập nhật (11-03) | 799 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_COLL_Qu%E1%BA%A3n_l%C3%BD_thu_ti%E1%BB%81n.html" target="_blank">Toàn trang</a> |
+| 78 | Đối tác vận chuyển | `OW_DELV` | Quản lý giao hàng | Cập nhật (11-03) | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_DELV_Qu%E1%BA%A3n_l%C3%BD_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 79 | Đối tác vận chuyển | `OW_HOME` | Trang chủ・Chi tiết thông báo | Cập nhật (11-03) | 873 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_HOME_Trang_ch%E1%BB%A7_Chi_ti%E1%BA%BFt_th%C3%B4ng_b%C3%A1o.html" target="_blank">Toàn trang</a> |
+| 80 | Đối tác vận chuyển | `OW_PROF` | Hồ sơ | Cập nhật (11-03) | 889 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_PROF_H%E1%BB%93_s%C6%A1.html" target="_blank">Toàn trang</a> |
+| 81 | Đối tác vận chuyển | `OW_QUOT` | Yêu cầu báo giá | Cập nhật (11-03) | 1.2 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_QUOT_Y%C3%AAu_c%E1%BA%A7u_b%C3%A1o_gi%C3%A1.html" target="_blank">Toàn trang</a> |
+| 82 | Đối tác vận chuyển | `OW_SCHD` | Lịch | Cập nhật (11-03) | 900 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_SCHD_L%E1%BB%8Bch.html" target="_blank">Toàn trang</a> |
+| 83 | Đối tác vận chuyển | `OW_STAF` | Nhân viên giao hàng | Cập nhật (11-03) | 1.3 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_STAF_Nh%C3%A2n_vi%C3%AAn_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 84 | Đối tác vận chuyển | `OW_TRBL` | Sự cố | Cập nhật (11-03) | 889 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_OW_TRBL_S%E1%BB%B1_c%E1%BB%91.html" target="_blank">Toàn trang</a> |
+| 85 | Web tài xế | `DA_AUTH` | Tài khoản・Đăng nhập・Mật khẩu | Cập nhật (11-03) | 1.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_AUTH_T%C3%A0i_kho%E1%BA%A3n_%C4%90%C4%83ng_nh%E1%BA%ADp_M%E1%BA%ADt_kh%E1%BA%A9u.html" target="_blank">Toàn trang</a> |
+| 86 | Web tài xế | `DA_COOL` | COOL便 | Cập nhật (11-03) | 945 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_COOL_COOL%E4%BE%BF.html" target="_blank">Toàn trang</a> |
+| 87 | Web tài xế | `DA_ESDL` | ES配送便 | Cập nhật (11-03) | 1.4 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_ESDL_ES%E9%85%8D%E9%80%81%E4%BE%BF.html" target="_blank">Toàn trang</a> |
+| 88 | Web tài xế | `DA_HOME` | Trang chủ・Danh sách giao hàng | Cập nhật (11-03) | 1.1 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_HOME_Trang_ch%E1%BB%A7_Danh_s%C3%A1ch_giao_h%C3%A0ng.html" target="_blank">Toàn trang</a> |
+| 89 | Web tài xế | `DA_MANU` | Hướng dẫn sử dụng | Cập nhật (11-03) | 801 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_MANU_H%C6%B0%E1%BB%9Bng_d%E1%BA%ABn_s%E1%BB%AD_d%E1%BB%A5ng.html" target="_blank">Toàn trang</a> |
+| 90 | Web tài xế | `DA_NOTI` | Thông báo | Cập nhật (11-03) | 823 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_NOTI_Th%C3%B4ng_b%C3%A1o.html" target="_blank">Toàn trang</a> |
+| 91 | Web tài xế | `DA_RECV` | Nhận hàng (kho・trung chuyển) | Cập nhật (11-03) | 992 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_RECV_Nh%E1%BA%ADn_h%C3%A0ng_kho_trung_chuy%E1%BB%83n.html" target="_blank">Toàn trang</a> |
+| 92 | Web tài xế | `DA_RPTD` | Báo sự cố | Cập nhật (11-03) | 1.0 MB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_RPTD_B%C3%A1o_s%E1%BB%B1_c%E1%BB%91.html" target="_blank">Toàn trang</a> |
+| 93 | Web tài xế | `DA_STCK` | Kiểm kê | Cập nhật (11-03) | 921 KB | <a href="prototype/Thi%E1%BA%BFt_k%E1%BA%BF_m%C3%A0n_h%C3%ACnh_DA_STCK_Ki%E1%BB%83m_k%C3%AA.html" target="_blank">Toàn trang</a> |
+
+## 4. Demo tham khảo (Prototype)
+
+!!! warning "Không phải bản chuẩn"
+    Demo bấm thử của giai đoạn 1 / bản nháp, **chưa** cập nhật theo sổ quyết định 2026-10-20. Theo quy định dự án, demo chỉ để tham khảo; nội dung chuẩn là §1–§3.
+
+| # | Nhóm | File | Liên quan | Dung lượng | Mở |
+|---:|---|---|---|---:|---|
+| 1 | Doanh nghiệp | `Demo_form_đăng_ký_Web_doanh_nghiệp.html` | CW_AUTH (đăng ký mới) | 313 KB | <a href="prototype/Demo_form_%C4%91%C4%83ng_k%C3%BD_Web_doanh_nghi%E1%BB%87p.html" target="_blank">Toàn trang</a> |
+| 2 | Admin | `Prototype_Admin_Duyet_DangKy_Company.html` | AW_APPL · AW_INTK (duyệt đăng ký) | 2.2 MB | <a href="prototype/Prototype_Admin_Duyet_DangKy_Company.html" target="_blank">Toàn trang</a> |
+| 3 | Admin | `Prototype_Công_ty-hợp_đồng_ja.html` | AW_CORP · AW_BRCH · AW_CONT (tiếng Nhật) | 357 KB | <a href="prototype/Prototype_C%C3%B4ng_ty-h%E1%BB%A3p_%C4%91%E1%BB%93ng_ja.html" target="_blank">Toàn trang</a> |
+| 4 | Admin | `Prototype_lich_trinh.html` | AW_SCHD · AW_CYCL · AW_DLVR | 1.3 MB | <a href="prototype/Prototype_lich_trinh.html" target="_blank">Toàn trang</a> |
+
+## 5. Báo cáo thay đổi prototype — wiki (10-20) → mới (11-03)
+
+Nguồn so sánh: git HEAD `es-kitchen-docs` (= wiki 2026-10-20) vs prototype đã sync từ `docs/05_画面設計書/出力/` ngày 2026-11-05.
+Cột **Row C/A/D** = Sửa / Thêm / Xóa số mục trong tài liệu thiết kế. **View +/-** = thêm/bỏ trạng thái màn hình.
+
+| Mã | Nhóm | Mức | View +/- | Row C/A/D | Ghi chú nhanh |
+|---|---|---|---|---|---|
+| `AW_SCHD` | Admin | 🔴 Lớn | +0/-0 | C981/A0/D0 | Lịch giao hàng — sửa rất nhiều nội dung |
+| `AW_BRCH` | Admin | 🔴 Lớn | +0/-0 | C498/A3/D1 | Danh sách cơ sở |
+| `AW_CONT` | Admin | 🔴 Lớn | +0/-0 | C454/A7/D0 | Hợp đồng con |
+| `AW_APPL` | Admin | 🔴 Lớn | +2/-0 | C409/A16/D6 | Quản lý đơn — thêm 2 view mới |
+| `AW_PROD` | Admin | 🔴 Lớn | +0/-0 | C381/A0/D0 | Master sản phẩm |
+| `AW_PLAN` | Admin | 🔴 Lớn | +0/-0 | C359/A3/D0 | Master gói |
+| `AW_DLVR` | Admin | 🔴 Lớn | +0/-0 | C328/A5/D1 | Quản lý giao hàng |
+| `AW_CORP` | Admin | 🔴 Lớn | +8/-0 | C320/A3/D16 | Danh sách DN — thêm 8 view mới |
+| `AW_MENU` | Admin | 🔴 Lớn | +0/-0 | C301/A0/D10 | Menu tháng — xóa 10 mục |
+| `AW_BILL` | Admin | 🔴 Lớn | +0/-2 | C273/A4/D1 | Hóa đơn — bỏ 2 view |
+| `AW_ACTL` | Admin | 🔴 Lớn | +0/-0 | C212/A0/D0 | Quyết toán thực tế |
+| `CW_SITE` | DN | 🔴 Lớn | +0/-0 | C163/A15/D12 | Quản lý cơ sở — thêm 15 / xóa 12 mục |
+| `AW_DASH` | Admin | 🔴 Lớn | +2/-0 | C93/A3/D6 | Dashboard — thêm 2 view (e38 mới) |
+| `AW_QUOT` | Admin | 🔴 Lớn | +3/-0 | C140/A18/D16 | Báo giá — thêm 3 view, thêm 18/xóa 16 mục |
+| `AW_INTK` | Admin | 🔴 Lớn | +2/-3 | C111/A1/D5 | Tiếp nhận — thay đổi cấu trúc view |
+| `AW_CNSG` | Admin | 🔴 Lớn | +0/-0 | C106/A11/D0 | Đơn vị ủy thác — thêm 11 mục |
+| `AW_MATE` | Admin | 🔴 Lớn | +0/-0 | C79/A11/D0 | Master vật tư — thêm 11 mục |
+| `AW_OPTN` | Admin | 🟡 Vừa | +4/-0 | C126/A0/D0 | Master tùy chọn — thêm 4 view |
+| `AW_RVEW` | Admin | 🟡 Vừa | +0/-0 | C95/A5/D4 | Mục cần xác nhận |
+| `AW_SHIP` | Admin | 🟡 Vừa | +0/-0 | C97/A1/D5 | Chỉ thị xuất kho |
+| `AW_ORDR` | Admin | 🟡 Vừa | +0/-0 | C179/A3/D5 | Quản lý đơn hàng sản phẩm |
+| `CW_AUTH` | DN | 🟡 Vừa | +2/-0 | C181/A0/D0 | Đăng ký — thêm 2 view, 14 nội dung đổi |
+| `CW_REVW` | DN | 🟡 Vừa | +0/-0 | C46/A6/D0 | Đánh giá — thêm 6 mục |
+| `DA_HOME` | Tài xế | 🟡 Vừa | +2/-0 | C102/A0/D4 | Trang chủ driver — thêm 2 view |
+| `OW_HOME` | Ủy thác | 🟡 Vừa | +3/-0 | C39/A0/D2 | Thêm 3 view |
+| `OW_QUOT` | Ủy thác | 🟡 Vừa | +3/-0 | C94/A0/D0 | Báo giá — thêm 3 view |
+| `CW_ORDER` | DN | 🟡 Vừa | +1/-0 | C175/A2/D2 | Đặt hàng sản phẩm |
+| `AW_STCK` | Admin | 🟡 Vừa | +1/-0 | C173/A0/D0 | Kiểm kê — thêm 1 view |
+| `CW_STOCK` | DN | 🟡 Vừa | +1/-0 | C94/A1/D0 | Báo cáo kiểm kê |
+| `AW_SALE` | Admin | 🟡 Vừa | +1/-0 | C161/A1/D1 | Mua hàng |
+| `AW_DISC` | Admin | 🟡 Vừa | +1/-0 | C136/A3/D3 | Master giảm giá |
+| `AW_SURV` | Admin | 🟡 Vừa | +1/-0 | C205/A0/D2 | Khảo sát |
+| `AW_PURC` | Admin | 🟡 Vừa | +0/-0 | C214/A2/D1 | Đặt hàng |
+| `AW_WRHS` | Admin | 🟡 Vừa | +0/-0 | C84/A4/D0 | Master kho |
+| `AW_RECV` | Admin | 🟡 Vừa | +0/-0 | C73/A5/D0 | Đăng ký nhập kho |
+| `SW_ORDR` | NCC | 🟡 Vừa | +0/-0 | C206/A1/D1 | Đặt hàng nhà cung cấp |
+| `CW_CREQ` | DN | 🟡 Vừa | +0/-0 | C159/A2/D0 | Yêu cầu hợp đồng |
+| `AW_MPO` | Admin | 🟡 Vừa | +0/-0 | C155/A1/D0 | Đặt mua vật tư |
+| `OW_DELV` | Ủy thác | 🟡 Vừa | +1/-0 | C129/A1/D0 | Quản lý giao hàng ủy thác |
+| `AW_NOTI` | Admin | 🟡 Vừa | +0/-0 | C117/A0/D0 | Thông báo |
+| `AW_MORD` | Admin | 🟡 Vừa | +0/-0 | C112/A0/D0 | Quản lý đơn vật tư |
+| `AW_CNSG` | Admin | 🟡 Vừa | +0/-0 | C106/A11/D0 | *(xem Lớn)* |
+| `AW_SUPP` | Admin | 🟡 Vừa | +0/-0 | C94/A1/D0 | Master nhà cung cấp |
+| `AW_CYCL` | Admin | 🟡 Vừa | +0/-0 | C128/A0/D0 | Chu kỳ giao hàng |
+| `OW_STAF` | Ủy thác | 🟡 Vừa | +0/-0 | C101/A0/D0 | Nhân viên giao hàng |
+| `CW_DLV` | DN | 🟡 Vừa | +0/-0 | C98/A0/D0 | Chi tiết giao hàng |
+| `DA_ESDL` | Tài xế | 🟡 Vừa | +0/-0 | C192/A0/D0 | ES配送便 |
+| `AW_SMP` | Admin | 🟡 Vừa | +0/-0 | C176/A0/D0 | Mẫu kinh doanh |
+| `AW_MODL` | Admin | 🟡 Vừa | +0/-0 | C185/A0/D0 | Master dòng máy |
+| `AW_WHS` | Admin | 🟡 Vừa | +0/-0 | C165/A0/D0 | Tồn kho kho |
+| `AW_FAVO` | Admin | 🟢 Nhỏ | +0/-0 | C67/A0/D0 | Tổng hợp yêu thích |
+| `AW_REFE` | Admin | 🟢 Nhỏ | +0/-0 | C62/A0/D0 | Lịch sử giới thiệu |
+| `AW_REVI` | Admin | 🟢 Nhỏ | +0/-0 | C58/A0/D0 | Đánh giá & ý kiến |
+| `AW_FEPL` | Admin | 🟢 Nhỏ | +0/-0 | C57/A0/D0 | Master phí giới thiệu |
+| `AW_FEPA` | Admin | 🟢 Nhỏ | +0/-0 | C51/A0/D0 | Lịch sử chi trả |
+| `CW_HIST` | DN | 🟢 Nhỏ | +0/-0 | C67/A0/D0 | Lịch sử đơn hàng |
+| `CW_SALE` | DN | 🟢 Nhỏ | +0/-0 | C79/A0/D0 | Mua hàng & user |
+| `CW_CORP` | DN | 🟢 Nhỏ | +0/-1 | C86/A0/D1 | Thông tin DN |
+| `CW_TRSW` | DN | 🟢 Nhỏ | +0/-0 | C61/A0/D0 | Triển khai chính thức |
+| `CW_DLVL` | DN | 🟢 Nhỏ | +0/-0 | C27/A2/D0 | Danh sách giao hàng |
+| `CW_HOME` | DN | 🟢 Nhỏ | +0/-0 | C50/A0/D0 | Trang chủ DN |
+| `CW_MAT` | DN | 🟢 Nhỏ | +0/-0 | C31/A0/D0 | Đặt vật tư |
+| `CW_NEWS` | DN | 🟢 Nhỏ | +0/-0 | C33/A0/D0 | Thông báo DN |
+| `CW_BILL` | DN | 🟢 Nhỏ | +0/-0 | C67/A1/D0 | Hóa đơn DN |
+| `DA_AUTH` | Tài xế | 🟢 Nhỏ | +1/-0 | C44/A0/D1 | Đăng nhập tài xế |
+| `DA_COOL` | Tài xế | 🟢 Nhỏ | +0/-0 | C47/A0/D0 | COOL便 |
+| `DA_RECV` | Tài xế | 🟢 Nhỏ | +0/-0 | C67/A0/D0 | Nhận hàng kho |
+| `DA_RPTD` | Tài xế | 🟢 Nhỏ | +0/-0 | C37/A1/D0 | Báo sự cố |
+| `DA_STCK` | Tài xế | 🟢 Nhỏ | +0/-0 | C24/A1/D0 | Kiểm kê tài xế |
+| `DA_NOTI` | Tài xế | 🟢 Nhỏ | +1/-0 | C13/A0/D0 | Thông báo tài xế |
+| `DA_MANU` | Tài xế | 🟢 Nhỏ | +0/-0 | C3/A0/D0 | Hướng dẫn tài xế |
+| `OW_AUTH` | Ủy thác | 🟢 Nhỏ | +0/-0 | C74/A0/D0 | Đăng nhập ủy thác |
+| `OW_COLL` | Ủy thác | 🟢 Nhỏ | +1/-0 | C25/A0/D0 | Thu tiền ủy thác |
+| `OW_PROF` | Ủy thác | 🟢 Nhỏ | +1/-0 | C40/A0/D1 | Hồ sơ ủy thác |
+| `OW_SCHD` | Ủy thác | 🟢 Nhỏ | +1/-0 | C33/A0/D0 | Lịch ủy thác |
+| `OW_TRBL` | Ủy thác | 🟢 Nhỏ | +1/-0 | C44/A0/D0 | Sự cố ủy thác |
+| `OW_STAF` | Ủy thác | 🟢 Nhỏ | +0/-0 | C101/A0/D0 | Nhân viên giao hàng |
+| `SW_AUTH` | NCC | 🟢 Nhỏ | +0/-0 | C63/A1/D0 | Đăng nhập NCC |
+| `SW_HOME` | NCC | 🟢 Nhỏ | +0/-0 | C50/A0/D0 | Trang chủ NCC |
+| `SW_MANU` | NCC | 🟢 Nhỏ | +1/-0 | C10/A0/D0 | Hướng dẫn NCC |
+| `SW_PROF` | NCC | 🟢 Nhỏ | +0/-0 | C51/A1/D0 | Hồ sơ NCC |
+| `AW_ACCT` | Admin | 🟢 Nhỏ | +0/-0 | C26/A0/D0 | Danh sách tài khoản |
+| `AW_AGCY` | Admin | 🟢 Nhỏ | +0/-0 | C60/A0/D0 | Master đại lý |
+| `AW_CATE` | Admin | 🟢 Nhỏ | +0/-0 | C44/A2/D2 | Danh mục sản phẩm |
+| `AW_COLL` | Admin | 🟢 Nhỏ | +0/-0 | C38/A0/D0 | Thu tiền |
+| `AW_COOL` | Admin | 🟢 Nhỏ | +0/-0 | C41/A0/D0 | Túi giữ lạnh |
+| `AW_DRVR` | Admin | 🟢 Nhỏ | +0/-0 | C66/A0/D0 | Nhân viên giao hàng |
+| `AW_IPWL` | Admin | 🟢 Nhỏ | +0/-0 | C24/A0/D0 | IP whitelist |
+| `AW_MNTN` | Admin | 🟢 Nhỏ | +0/-0 | C18/A0/D0 | Bảo trì |
+| `AW_PERM` | Admin | 🟢 Nhỏ | +0/-0 | C28/A1/D0 | Quyền vai trò |
+| `AW_SETT` | Admin | 🟢 Nhỏ | +0/-0 | C15/A0/D1 | Cài đặt liên kết |
+| `AW_VERS` | Admin | 🟢 Nhỏ | +0/-0 | C22/A0/D0 | Phiên bản bắt buộc |
+| `AW_MORD` | Admin | 🟢 Nhỏ | +0/-0 | C112/A0/D0 | Đơn hàng vật tư |
